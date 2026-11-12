@@ -9,6 +9,9 @@ import Bio.SeqUtils as SU
 from Bio.SeqUtils import CheckSum, lcc, IsoelectricPoint, ProtParam, MeltingTemp
 from Bio.SeqIO import _FormatToIterator, _FormatToWriter
 from Bio.Align import substitution_matrices as SMMod
+from Bio.PDB import Atom as PAtom, Residue as PResidue, Chain as PChain, Model as PModel, Structure as PStructure, Entity as PEntity, StructureBuilder as PBuilder, PDBParser as PParser
+import importlib
+PHeader = importlib.import_module('Bio.PDB.parse_pdb_header')  # `import ... as` would give the shadowing function
 from Bio.Nexus import Nexus as NexusMod, Trees as TreesMod, Nodes as NodesMod, StandardData as StandardDataMod
 
 def members(cls):
@@ -63,5 +66,14 @@ inv = {
   "Bio.Nexus.Trees": {"functions": funcs(TreesMod), "classes": {"Tree": members(TreesMod.Tree)}},
   "Bio.Nexus.Nodes": {"classes": {"Chain": members(NodesMod.Chain), "Node": members(NodesMod.Node)}},
   "Bio.Nexus.StandardData": {"classes": {"StandardData": members(StandardDataMod.StandardData)}},
+  "Bio.PDB.Entity": {"classes": {"Entity": members(PEntity.Entity), "DisorderedEntityWrapper": members(PEntity.DisorderedEntityWrapper)}},
+  "Bio.PDB.Atom": {"classes": {"Atom": members(PAtom.Atom), "DisorderedAtom": members(PAtom.DisorderedAtom)}},
+  "Bio.PDB.Residue": {"classes": {"Residue": members(PResidue.Residue), "DisorderedResidue": members(PResidue.DisorderedResidue)}},
+  "Bio.PDB.Chain": {"classes": {"Chain": members(PChain.Chain)}},
+  "Bio.PDB.Model": {"classes": {"Model": members(PModel.Model)}},
+  "Bio.PDB.Structure": {"classes": {"Structure": members(PStructure.Structure)}},
+  "Bio.PDB.StructureBuilder": {"classes": {"StructureBuilder": members(PBuilder.StructureBuilder)}},
+  "Bio.PDB.PDBParser": {"classes": {"PDBParser": members(PParser)}},
+  "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }
 print(json.dumps(inv, indent=1))

@@ -10,6 +10,7 @@ TypeScript libraries replacing common Python bioengineering tooling. The goal is
 | `@biolibs/seqrecord` | Biopython `Bio.SeqRecord` | **At parity**: `SeqRecord`, slicing, `+`, `reverseComplement`, `translate`, per-letter annotations |
 | `@biolibs/seqio` | `Bio.SeqIO` | FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, the binary formats, the alignment formats, PDB SEQRES, GFA, UniProt XML and ACE done; the structure formats and indexing remain |
 | `@biolibs/nexus` | `Bio.Nexus` | NEXUS `Nexus` class (read, edit, write), `Tree`, `Node`, `Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus` done; `bootstrap`, `randomize`, `display`, file-name based `export_*` not ported |
+| `@biolibs/pdb` | `Bio.PDB` (first slice) | Structure hierarchy with disorder, `StructureBuilder`, `PDBParser`, header parsing done; mmCIF, `PDBIO`, `Polypeptide`, geometry, `NeighborSearch` not ported |
 | `@biolibs/align` | `Bio.Align` | `MultipleSeqAlignment`, the substitution matrices and `PairwiseAligner` scoring and alignment done; the `Alignment` file formats are not yet ported |
 | `@biolibs/phylo` | `Bio.Phylo` | Newick parse/write, patristic distance |
 | `@biolibs/seqtools` | `Bio.SeqUtils` | `gc_fraction`, `GC123`, `GC_skew`, `nt_search`, `seq1`/`seq3`, `molecular_weight`, `six_frame_translations`, `CodonAdaptationIndex`, `CheckSum`, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp` done |

@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 703 / 722 applicable items verified against Biopython.**
+**Progress: 919 / 1043 applicable items verified against Biopython.**
 
 
 
@@ -1121,3 +1121,406 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [-] `__repr__(self, /)`
 - [x] `__str__(self)`
 - [x] `raw(self)`
+
+## Bio.PDB.Entity
+
+
+### Bio.PDB.Entity.Entity
+
+- [x] `__contains__(self, id)`
+- [ ] `__delitem__(self, id)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, id)`
+- [x] `__gt__(self, other)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, id)`
+- [x] `__iter__(self)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
+- [x] `__repr__(self, /)`
+- [-] `__str__(self, /)`
+- [x] `add(self, entity: ~_Child)`
+- [ ] `center_of_mass(self, geometric=False)`
+- [x] `copy(self)`
+- [x] `detach_child(self, id)`
+- [x] `detach_parent(self)`
+- [x] `get_full_id(self)`
+- [x] `get_id(self)`
+- [ ] `get_iterator(self)`
+- [ ] `get_level(self)`
+- [x] `get_list(self)`
+- [x] `get_parent(self)`
+- [x] `has_id(self, id)`
+- [x] `id`
+- [x] `insert(self, pos: int, entity: ~_Child)`
+- [x] `set_parent(self, entity: ~_Parent)`
+- [x] `strictly_equals(self: ~_Self, other: ~_Self, compare_coordinates: bool = False) -> bool`
+- [ ] `transform(self, rot, tran)`
+
+### Bio.PDB.Entity.DisorderedEntityWrapper
+
+- [ ] `__contains__(self, id)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, other)`
+- [ ] `__getitem__(self, id)`
+- [ ] `__gt__(self, other)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, id)`
+- [x] `__iter__(self)`
+- [ ] `__le__(self, other)`
+- [x] `__len__(self)`
+- [ ] `__lt__(self, other)`
+- [x] `__repr__(self, /)`
+- [ ] `__setitem__(self, id, child)`
+- [-] `__str__(self, /)`
+- [x] `copy(self)`
+- [ ] `detach_parent(self)`
+- [x] `disordered_add(self, child)`
+- [ ] `disordered_get(self, id=None)`
+- [ ] `disordered_get_id_list(self)`
+- [x] `disordered_get_list(self)`
+- [ ] `disordered_has_id(self, id)`
+- [ ] `disordered_remove(self, child)`
+- [ ] `disordered_select(self, id)`
+- [x] `get_id(self)`
+- [x] `get_parent(self)`
+- [x] `is_disordered(self)`
+- [x] `set_parent(self, parent)`
+- [x] `strictly_equals(self, other: 'DisorderedEntityWrapper', compare_coordinates: bool = False) -> bool`
+
+## Bio.PDB.Atom
+
+
+### Bio.PDB.Atom.Atom
+
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__gt__(self, other)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, name: str, coord: numpy.ndarray, bfactor: float | None, occupancy: float | None, altloc: str, fullname: str, serial_number, element: str | None = None, pqr_charge: float | None = None, radius: float | None = None)`
+- [x] `__le__(self, other)`
+- [x] `__lt__(self, other)`
+- [x] `__repr__(self)`
+- [-] `__str__(self, /)`
+- [x] `copy(self)`
+- [x] `detach_parent(self)`
+- [x] `flag_disorder(self)`
+- [x] `get_altloc(self) -> str`
+- [x] `get_anisou(self) -> numpy.ndarray | None`
+- [x] `get_bfactor(self) -> float | None`
+- [x] `get_charge(self) -> float | None`
+- [x] `get_coord(self) -> numpy.ndarray`
+- [x] `get_full_id(self)`
+- [x] `get_fullname(self) -> str`
+- [x] `get_id(self) -> str`
+- [ ] `get_level(self) -> str`
+- [x] `get_name(self) -> str`
+- [x] `get_occupancy(self) -> float | None`
+- [x] `get_parent(self) -> Bio.PDB.Residue.Residue | None`
+- [x] `get_radius(self) -> float | None`
+- [x] `get_serial_number(self)`
+- [x] `get_sigatm(self) -> numpy.ndarray | None`
+- [x] `get_siguij(self) -> numpy.ndarray | None`
+- [ ] `get_vector(self) -> Bio.PDB.vectors.Vector`
+- [x] `is_disordered(self) -> int`
+- [ ] `set_altloc(self, altloc: str)`
+- [x] `set_anisou(self, anisou_array: numpy.ndarray | None)`
+- [ ] `set_bfactor(self, bfactor: float | None)`
+- [ ] `set_charge(self, pqr_charge: float | None)`
+- [ ] `set_coord(self, coord: numpy.ndarray)`
+- [ ] `set_occupancy(self, occupancy: float | None)`
+- [x] `set_parent(self, parent)`
+- [ ] `set_radius(self, radius: float | None)`
+- [ ] `set_serial_number(self, n)`
+- [x] `set_sigatm(self, sigatm_array: numpy.ndarray | None)`
+- [x] `set_siguij(self, siguij_array: numpy.ndarray | None)`
+- [x] `strictly_equals(self: ~_AtomT, other: ~_AtomT, compare_coordinates: bool = False) -> bool`
+- [ ] `transform(self, rot: numpy.ndarray, tran: numpy.ndarray)`
+
+### Bio.PDB.Atom.DisorderedAtom
+
+- [ ] `__contains__(self, id)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, other)`
+- [ ] `__getitem__(self, id)`
+- [ ] `__gt__(self, other)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, id: str)`
+- [x] `__iter__(self)`
+- [ ] `__le__(self, other)`
+- [ ] `__len__(self)`
+- [ ] `__lt__(self, other)`
+- [x] `__repr__(self)`
+- [ ] `__setitem__(self, id, child)`
+- [-] `__str__(self, /)`
+- [ ] `center_of_mass(self)`
+- [x] `copy(self)`
+- [ ] `detach_parent(self)`
+- [x] `disordered_add(self, atom)`
+- [ ] `disordered_get(self, id=None)`
+- [ ] `disordered_get_id_list(self)`
+- [x] `disordered_get_list(self) -> list[Bio.PDB.Atom.Atom]`
+- [ ] `disordered_has_id(self, id)`
+- [ ] `disordered_remove(self, altloc: str)`
+- [ ] `disordered_select(self, id)`
+- [x] `get_id(self)`
+- [x] `get_parent(self)`
+- [x] `is_disordered(self)`
+- [x] `set_parent(self, parent)`
+- [x] `strictly_equals(self, other: 'DisorderedEntityWrapper', compare_coordinates: bool = False) -> bool`
+- [ ] `transform(self, rot: numpy.ndarray, tran: numpy.ndarray)`
+
+## Bio.PDB.Residue
+
+
+### Bio.PDB.Residue.Residue
+
+- [x] `__contains__(self, id)`
+- [ ] `__delitem__(self, id)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, id)`
+- [x] `__gt__(self, other)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, id, resname, segid)`
+- [x] `__iter__(self)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
+- [x] `__repr__(self)`
+- [-] `__str__(self, /)`
+- [x] `add(self, atom)`
+- [ ] `center_of_mass(self, geometric=False)`
+- [x] `copy(self)`
+- [x] `detach_child(self, id)`
+- [x] `detach_parent(self)`
+- [x] `flag_disordered(self)`
+- [x] `get_atoms(self)`
+- [x] `get_full_id(self)`
+- [x] `get_id(self)`
+- [ ] `get_iterator(self)`
+- [ ] `get_level(self)`
+- [x] `get_list(self)`
+- [x] `get_parent(self)`
+- [x] `get_resname(self)`
+- [x] `get_segid(self)`
+- [x] `get_unpacked_list(self)`
+- [x] `has_id(self, id)`
+- [x] `id`
+- [x] `insert(self, pos: int, entity: ~_Child)`
+- [x] `is_disordered(self)`
+- [x] `set_parent(self, entity: ~_Parent)`
+- [x] `strictly_equals(self: ~_ResidueT, other: ~_ResidueT, compare_coordinates: bool = False) -> bool`
+- [ ] `transform(self, rot, tran)`
+
+### Bio.PDB.Residue.DisorderedResidue
+
+- [ ] `__contains__(self, id)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, other)`
+- [ ] `__getitem__(self, id)`
+- [ ] `__gt__(self, other)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, id)`
+- [x] `__iter__(self)`
+- [ ] `__le__(self, other)`
+- [ ] `__len__(self)`
+- [ ] `__lt__(self, other)`
+- [x] `__repr__(self)`
+- [ ] `__setitem__(self, id, child)`
+- [-] `__str__(self, /)`
+- [x] `add(self, atom)`
+- [x] `copy(self)`
+- [ ] `detach_parent(self)`
+- [x] `disordered_add(self, residue)`
+- [ ] `disordered_get(self, id=None)`
+- [ ] `disordered_get_id_list(self)`
+- [x] `disordered_get_list(self)`
+- [ ] `disordered_has_id(self, id)`
+- [ ] `disordered_remove(self, resname)`
+- [ ] `disordered_select(self, id)`
+- [x] `get_id(self)`
+- [x] `get_parent(self)`
+- [x] `is_disordered(self)`
+- [x] `set_parent(self, parent)`
+- [x] `sort(self)`
+- [x] `strictly_equals(self, other: 'DisorderedEntityWrapper', compare_coordinates: bool = False) -> bool`
+
+## Bio.PDB.Chain
+
+
+### Bio.PDB.Chain.Chain
+
+- [x] `__contains__(self, id)`
+- [ ] `__delitem__(self, id)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, id)`
+- [x] `__gt__(self, other)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, id)`
+- [x] `__iter__(self)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
+- [x] `__repr__(self)`
+- [-] `__str__(self, /)`
+- [x] `add(self, entity: ~_Child)`
+- [ ] `atom_to_internal_coordinates(self, verbose: bool = False) -> None`
+- [ ] `center_of_mass(self, geometric=False)`
+- [x] `copy(self)`
+- [x] `detach_child(self, id)`
+- [x] `detach_parent(self)`
+- [x] `get_atoms(self)`
+- [x] `get_full_id(self)`
+- [x] `get_id(self)`
+- [ ] `get_iterator(self)`
+- [ ] `get_level(self)`
+- [x] `get_list(self)`
+- [x] `get_parent(self)`
+- [ ] `get_residues(self)`
+- [x] `get_unpacked_list(self)`
+- [x] `has_id(self, id)`
+- [x] `id`
+- [x] `insert(self, pos: int, entity: ~_Child)`
+- [ ] `internal_to_atom_coordinates(self, verbose: bool = False, start: int | None = None, fin: int | None = None)`
+- [x] `set_parent(self, entity: ~_Parent)`
+- [x] `strictly_equals(self: ~_Self, other: ~_Self, compare_coordinates: bool = False) -> bool`
+- [ ] `transform(self, rot, tran)`
+
+## Bio.PDB.Model
+
+
+### Bio.PDB.Model.Model
+
+- [x] `__contains__(self, id)`
+- [ ] `__delitem__(self, id)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, id)`
+- [x] `__gt__(self, other)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, id, serial_num=None)`
+- [x] `__iter__(self)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
+- [x] `__repr__(self)`
+- [-] `__str__(self, /)`
+- [x] `add(self, entity: ~_Child)`
+- [ ] `atom_to_internal_coordinates(self, verbose: bool = False) -> None`
+- [ ] `center_of_mass(self, geometric=False)`
+- [x] `copy(self)`
+- [x] `detach_child(self, id)`
+- [x] `detach_parent(self)`
+- [x] `get_atoms(self)`
+- [ ] `get_chains(self)`
+- [x] `get_full_id(self)`
+- [x] `get_id(self)`
+- [ ] `get_iterator(self)`
+- [ ] `get_level(self)`
+- [x] `get_list(self)`
+- [x] `get_parent(self)`
+- [ ] `get_residues(self)`
+- [x] `has_id(self, id)`
+- [x] `id`
+- [x] `insert(self, pos: int, entity: ~_Child)`
+- [ ] `internal_to_atom_coordinates(self, verbose: bool = False) -> None`
+- [x] `set_parent(self, entity: ~_Parent)`
+- [x] `strictly_equals(self: ~_Self, other: ~_Self, compare_coordinates: bool = False) -> bool`
+- [ ] `transform(self, rot, tran)`
+
+## Bio.PDB.Structure
+
+
+### Bio.PDB.Structure.Structure
+
+- [x] `__contains__(self, id)`
+- [ ] `__delitem__(self, id)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, id)`
+- [x] `__gt__(self, other)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, id)`
+- [x] `__iter__(self)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
+- [x] `__repr__(self)`
+- [-] `__str__(self, /)`
+- [x] `add(self, entity: ~_Child)`
+- [ ] `atom_to_internal_coordinates(self, verbose: bool = False) -> None`
+- [ ] `center_of_mass(self, geometric=False)`
+- [x] `copy(self)`
+- [x] `detach_child(self, id)`
+- [x] `detach_parent(self)`
+- [x] `get_atoms(self)`
+- [ ] `get_chains(self)`
+- [x] `get_full_id(self)`
+- [x] `get_id(self)`
+- [ ] `get_iterator(self)`
+- [ ] `get_level(self)`
+- [x] `get_list(self)`
+- [ ] `get_models(self)`
+- [x] `get_parent(self)`
+- [ ] `get_residues(self)`
+- [x] `has_id(self, id)`
+- [x] `id`
+- [x] `insert(self, pos: int, entity: ~_Child)`
+- [ ] `internal_to_atom_coordinates(self, verbose: bool = False) -> None`
+- [x] `set_parent(self, entity: ~_Parent)`
+- [x] `strictly_equals(self: ~_Self, other: ~_Self, compare_coordinates: bool = False) -> bool`
+- [ ] `transform(self, rot, tran)`
+
+## Bio.PDB.StructureBuilder
+
+
+### Bio.PDB.StructureBuilder.StructureBuilder
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [ ] `__repr__(self, /)`
+- [-] `__str__(self, /)`
+- [x] `get_structure(self)`
+- [x] `init_atom(self, name: str, coord: numpy.ndarray, b_factor: float | None, occupancy: float | None, altloc: str, fullname: str, serial_number=None, element: str | None = None, pqr_charge: float | None = None, radius: float | None = None, is_pqr: bool = False)`
+- [x] `init_chain(self, chain_id: str)`
+- [x] `init_model(self, model_id: int, serial_num: int | None = None)`
+- [x] `init_residue(self, resname: str, field: str, resseq: int, icode: str)`
+- [x] `init_seg(self, segid: str)`
+- [x] `init_structure(self, structure_id: str)`
+- [x] `set_anisou(self, anisou_array)`
+- [x] `set_header(self, header)`
+- [x] `set_line_counter(self, line_counter: int)`
+- [x] `set_sigatm(self, sigatm_array)`
+- [x] `set_siguij(self, siguij_array)`
+- [x] `set_symmetry(self, spacegroup, cell)`
+
+## Bio.PDB.PDBParser
+
+
+### Bio.PDB.PDBParser.PDBParser
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, PERMISSIVE=True, get_header=False, structure_builder=None, QUIET=False, is_pqr=False)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [ ] `__repr__(self, /)`
+- [-] `__str__(self, /)`
+- [x] `get_header(self)`
+- [x] `get_structure(self, id, file)`
+- [x] `get_trailer(self)`
+
+## Bio.PDB.parse_pdb_header
+
+- [x] `parse_pdb_header(infile)`

@@ -168,6 +168,33 @@ nexus_members("Bio.Nexus.Nodes", "Node", node_ops, extra_done=("__init__",), na=
 if any(c["kind"] == "standard" and "raw" in c for c in nx):
     nexus_members("Bio.Nexus.StandardData", "StandardData", {"raw"}, extra_done=("__init__", "__str__", "__len__", "__getitem__", "__iter__"), na=("__next__",))
 
+# ---- Bio.PDB (packages/pdb/test/golden/pdb.json: parsed structures plus operations on them) ----
+pdb = json.load(open(f"{here}/../packages/pdb/test/golden/pdb.json"))["cases"]
+if any(c["kind"] != "ops" and "structure" in c for c in pdb):
+    PDB_BOILER = ("__hash__", "__str__")                 # object boilerplate / no Python-level behaviour
+    ENTITY = ("__contains__", "__eq__", "__ge__", "__getitem__", "__gt__", "__init__", "__iter__", "__le__", "__len__", "__lt__", "__repr__",
+              "add", "copy", "detach_child", "detach_parent", "get_full_id", "get_id", "get_parent", "has_id", "id", "insert", "set_parent", "strictly_equals")
+    def pdb_members(mod, cls, done):
+        for m in inv[mod]["classes"][cls]:
+            if m in done: mark(f"{mod}.{cls}.{m}")
+            elif m in PDB_BOILER: mark(f"{mod}.{cls}.{m}", "na")
+    pdb_members("Bio.PDB.Entity", "Entity", ENTITY)
+    pdb_members("Bio.PDB.Structure", "Structure", ENTITY + ("get_atoms",))
+    pdb_members("Bio.PDB.Model", "Model", ENTITY + ("get_atoms",))
+    pdb_members("Bio.PDB.Chain", "Chain", ENTITY + ("get_atoms", "get_unpacked_list"))
+    pdb_members("Bio.PDB.Residue", "Residue", ENTITY + ("get_atoms", "get_unpacked_list", "flag_disordered", "get_resname", "get_segid", "is_disordered"))
+    DIS = ("__init__", "__repr__", "__iter__", "copy", "disordered_add", "disordered_get_list", "get_id", "get_parent", "is_disordered", "set_parent", "strictly_equals")
+    pdb_members("Bio.PDB.Entity", "DisorderedEntityWrapper", DIS)
+    pdb_members("Bio.PDB.Atom", "DisorderedAtom", DIS)
+    pdb_members("Bio.PDB.Residue", "DisorderedResidue", DIS + ("add", "sort"))
+    pdb_members("Bio.PDB.Atom", "Atom", ("__eq__", "__ge__", "__gt__", "__init__", "__le__", "__lt__", "__repr__", "copy", "flag_disorder", "get_altloc", "get_anisou", "get_bfactor", "get_charge",
+              "get_coord", "get_full_id", "get_fullname", "get_id", "get_name", "get_occupancy", "get_parent", "get_radius", "get_serial_number", "get_sigatm", "get_siguij", "is_disordered",
+              "set_anisou", "set_parent", "set_sigatm", "set_siguij", "strictly_equals", "detach_parent"))
+    pdb_members("Bio.PDB.StructureBuilder", "StructureBuilder", ("__init__", "get_structure", "init_atom", "init_chain", "init_model", "init_residue", "init_seg", "init_structure",
+              "set_anisou", "set_header", "set_line_counter", "set_sigatm", "set_siguij", "set_symmetry"))
+    pdb_members("Bio.PDB.PDBParser", "PDBParser", ("__init__", "get_header", "get_structure", "get_trailer"))
+    mark("Bio.PDB.parse_pdb_header.parse_pdb_header")
+
 # ---- Bio.Align.substitution_matrices (packages/align/test/golden/matrices.json) ----
 sm = json.load(open(f"{here}/../packages/align/test/golden/matrices.json"))["cases"]
 if any(c["kind"] == "load" and "matrix" in c for c in sm): mark("Bio.Align.substitution_matrices.load")

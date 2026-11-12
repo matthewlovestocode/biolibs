@@ -13,6 +13,7 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, the binary formats, the alignment formats, PDB SEQRES, GFA, UniProt XML and ACE done; the structure formats and indexing remain | [seqio.md](seqio.md) |
 | `@biolibs/align` | `Bio.Align`: `MultipleSeqAlignment`, the 30 substitution matrices and `PairwiseAligner` with scoring and alignment and `Alignment` (printing, indexing, counts, mapping and more; file formats not yet ported) | [align.md](align.md) |
 | `@biolibs/nexus` | `Bio.Nexus`: NEXUS reader/writer and editor, `Tree`/`Node`/`Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus`. Powers the `nexus` format in `seqio` | [nexus.md](nexus.md) |
+| `@biolibs/pdb` | `Bio.PDB` first slice: `Structure`/`Model`/`Chain`/`Residue`/`Atom` (with disorder), `StructureBuilder`, `PDBParser` and PDB header parsing | [pdb.md](pdb.md) |
 | `@biolibs/phylo` | Newick phylogenetic trees | [phylo.md](phylo.md) |
 | `@biolibs/seqtools` | Bio.SeqUtils: GC, molecular weight, codon adaptation index, checksums, protein analysis, melting temperature | [seqtools.md](seqtools.md) |
 
