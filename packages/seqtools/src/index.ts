@@ -12,6 +12,8 @@
  * - `checksum.ts`, `sha1.ts`: `crc32`, `crc64`, `gcg`, `seguid`
  * - `lcc.ts`: `lccSimp`, `lccMult`
  * - `amino-counts.ts`, `isoelectric.ts`, `protparam.ts`: `IsoelectricPoint`, `ProteinAnalysis`
+ * - `melting-salt.ts`, `melting-simple.ts`, `melting-nn.ts`: `tmWallace`, `tmGC`, `tmNN`, `saltCorrection`, `chemCorrection`, `makeTable`
+ * - `data/melting-temp-data.ts` (generated): nearest-neighbour tables
  * - `stderr.ts`: where `proteinScale` warnings go
  * - `data/prot-param-data.ts` (generated): amino acid scales
  *
@@ -31,4 +33,5 @@ export * from "./amino-counts.js";
 export * from "./isoelectric.js";
 export * from "./protparam.js";
 export * from "./stderr.js";
+export * from "./melting.js";
 export * as ProtParamData from "./data/prot-param-data.js";

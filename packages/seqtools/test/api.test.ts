@@ -21,3 +21,24 @@ describe("seqtools API", () => {
     expect(cai.size).toBe(64);
   });
 });
+
+import { ProteinAnalysis, crc32, seguid, setStderrWriter, tmNN, tmWallace, MeltingTempData } from "@biolibs/seqtools";
+
+describe("seqtools submodules", () => {
+  it("melting temperatures", () => {
+    expect(tmWallace("ACGTTGCAATGCCGTA")).toBe(48);
+    expect(tmNN("CGTTCCAAAGATGTGGGCATGAGCTTAC")).toBeCloseTo(60.3209, 3);
+    expect(Object.keys(MeltingTempData.dnaNn3)).toContain("AA/TT");
+  });
+  it("checksums", () => {
+    expect(crc32("ACGT")).toBe(2735644658);
+    expect(seguid("ACGT")).toBe("IQiZThf2zKn/I1KtqStlEdsHYDQ");
+  });
+  it("protein analysis warns on standard error for unknown letters", () => {
+    let seen = "";
+    const old = setStderrWriter((t) => { seen += t; });
+    new ProteinAnalysis("MKXLAAG").proteinScale(new Map([["M", 1], ["K", 2]]), 3);
+    setStderrWriter(old);
+    expect(seen).toContain("is not a standard amino acid");
+  });
+});

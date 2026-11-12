@@ -106,3 +106,12 @@ export class ZeroDivisionError extends BioError {
     this.name = "ZeroDivisionError";
   }
 }
+
+/** Mirrors Python's `UnboundLocalError`: a local variable was used before it was given a value. */
+export class UnboundLocalError extends BioError {
+  /** @param message - Python's wording, `"cannot access local variable 'x' where it is not associated with a value"`. */
+  constructor(message: string) {
+    super(message);
+    this.name = "UnboundLocalError";
+  }
+}

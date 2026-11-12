@@ -11,7 +11,7 @@ TypeScript libraries replacing common Python bioengineering tooling. The goal is
 | `@biolibs/seqio` | `Bio.SeqIO` | FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics and seqXML done; the rest in progress |
 | `@biolibs/align` | `pairwise2` / `PairwiseAligner` | global/local alignment, edit distance |
 | `@biolibs/phylo` | `Bio.Phylo` | Newick parse/write, patristic distance |
-| `@biolibs/seqtools` | `Bio.SeqUtils` | `gc_fraction`, `GC123`, `GC_skew`, `nt_search`, `seq1`/`seq3`, `molecular_weight`, `six_frame_translations`, `CodonAdaptationIndex` done; submodules in progress |
+| `@biolibs/seqtools` | `Bio.SeqUtils` | `gc_fraction`, `GC123`, `GC_skew`, `nt_search`, `seq1`/`seq3`, `molecular_weight`, `six_frame_translations`, `CodonAdaptationIndex`, `CheckSum`, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp` done |
 
 Full documentation (APIs, conventions, examples) is in [docs/](docs/README.md).
 

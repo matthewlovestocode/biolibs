@@ -160,3 +160,31 @@ for n in [x for x in dir(PPD) if not x.startswith("_")]:
     lines.append(f"/** {PPD_DESCRIPTIONS[n]} */\nexport const {RENAMES.get(n, camel(n))}: {ts_type(v)} = {js(v)};\n\n")
 open(os.path.join(SU_OUT, "prot-param-data.ts"), "w").write("".join(lines))
 print("protparam constants written")
+
+# ---------------------------------------------------------------------------------------------
+# Bio.SeqUtils.MeltingTemp thermodynamic tables -> packages/seqtools/src/data/melting-temp-data.ts
+from Bio.SeqUtils import MeltingTemp as MT
+MT_DESCRIPTIONS = {
+  "DNA_NN1": "DNA nearest-neighbour thermodynamics of Breslauer et al. 1986. Each key is a neighbour pair such as `AA/TT` (or an initiation term) and each value `[enthalpy (kcal/mol), entropy (cal/mol/K)]`.",
+  "DNA_NN2": "DNA nearest-neighbour thermodynamics of Sugimoto et al. 1996, as `[dH kcal/mol, dS cal/mol/K]` per neighbour pair.",
+  "DNA_NN3": "DNA nearest-neighbour thermodynamics of Allawi and SantaLucia 1997 (the default for `TmNN`), as `[dH kcal/mol, dS cal/mol/K]`.",
+  "DNA_NN4": "DNA nearest-neighbour thermodynamics of SantaLucia and Hicks 2004, as `[dH kcal/mol, dS cal/mol/K]`.",
+  "RNA_NN1": "RNA nearest-neighbour thermodynamics of Freier et al. 1986, as `[dH kcal/mol, dS cal/mol/K]`.",
+  "RNA_NN2": "RNA nearest-neighbour thermodynamics of Xia et al. 1998, as `[dH kcal/mol, dS cal/mol/K]`.",
+  "RNA_NN3": "RNA nearest-neighbour thermodynamics of Chen et al. 2012 (includes GU pairs), as `[dH kcal/mol, dS cal/mol/K]`.",
+  "R_DNA_NN1": "RNA/DNA hybrid nearest-neighbour thermodynamics of Sugimoto et al. 1995, as `[dH kcal/mol, dS cal/mol/K]`.",
+  "DNA_IMM1": "Internal single mismatch thermodynamics for DNA (Allawi and SantaLucia 1997-1998, Peyret et al. 1999 and others), as `[dH kcal/mol, dS cal/mol/K]`.",
+  "DNA_TMM1": "Terminal mismatch thermodynamics for DNA (Bommarito et al. 2000), as `[dH kcal/mol, dS cal/mol/K]`.",
+  "DNA_DE1": "Dangling-end thermodynamics for DNA (Bommarito et al. 2000), as `[dH kcal/mol, dS cal/mol/K]`.",
+  "RNA_DE1": "Dangling-end thermodynamics for RNA (Turner and Mathews 2010), as `[dH kcal/mol, dS cal/mol/K]`.",
+}
+lines = [HDR, "/**\n * Thermodynamic tables from Biopython's `Bio.SeqUtils.MeltingTemp`, as plain objects mapping a neighbour description to `[dH, dS]`.\n */\n\n"]
+for n in [x for x in dir(MT) if not x.startswith("_")]:
+    v = getattr(MT, n)
+    if callable(v) or type(v).__name__ == "module": continue
+    if n not in MT_DESCRIPTIONS:
+        raise SystemExit(f"MeltingTemp.{n} has no entry in MT_DESCRIPTIONS (gen_data.py); describe it before regenerating")
+    ts = "Record<string, [number, number]>"
+    lines.append(f"/** {MT_DESCRIPTIONS[n]} */\nexport const {camel(n.lower())}: {ts} = {js(v)};\n\n")
+open(os.path.join(SU_OUT, "melting-temp-data.ts"), "w").write("".join(lines))
+print("melting temp tables written")

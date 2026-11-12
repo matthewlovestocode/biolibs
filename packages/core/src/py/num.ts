@@ -92,3 +92,28 @@ export function pySum(values: Iterable<number>): number {
   // Do not let the correction turn an infinite or NaN sum into NaN.
   return compensation !== 0 && Number.isFinite(compensation) ? sum + compensation : sum;
 }
+
+/**
+ * Python's `repr()` of a float: shortest round-trip digits, `.0` on whole numbers, and scientific
+ * notation (`1e-05`, `2.5e-08`, `1e+16`) outside `1e-4 <= |x| < 1e16`.
+ *
+ * @example
+ * ```ts
+ * pyFloatRepr(0);          // "0.0"
+ * pyFloatRepr(2.5e-8);     // "2.5e-08"
+ * ```
+ */
+export function pyFloatRepr(x: number): string {
+  if (Number.isNaN(x)) return "nan";
+  if (!Number.isFinite(x)) return x < 0 ? "-inf" : "inf";
+  if (x === 0) return Object.is(x, -0) ? "-0.0" : "0.0";
+  const abs = Math.abs(x);
+  if (abs >= 1e-4 && abs < 1e16) {
+    const t = String(x);
+    return t.includes(".") || t.includes("e") ? t : t + ".0";
+  }
+  // Scientific: mantissa digits from JavaScript's shortest form, exponent with at least two digits.
+  const [mant, exp] = x.toExponential().split("e") as [string, string];
+  const e = Number(exp);
+  return `${mant}e${e < 0 ? "-" : "+"}${String(Math.abs(e)).padStart(2, "0")}`;
+}

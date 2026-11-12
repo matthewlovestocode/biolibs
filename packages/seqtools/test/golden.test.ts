@@ -19,6 +19,7 @@ interface Case {
 const NAMES: Record<string, (...a: any[]) => unknown> = {
   gc_fraction: U.gcFraction, GC123: U.gc123, GC_skew: U.gcSkew, nt_search: U.ntSearch, seq1: U.seq1, seq3: U.seq3,
   molecular_weight: U.molecularWeight, six_frame_translations: U.sixFrameTranslations,
+  Tm_Wallace: U.tmWallace, Tm_GC: U.tmGC, Tm_NN: U.tmNN, salt_correction: U.saltCorrection, chem_correction: U.chemCorrection, make_table: U.makeTable,
   crc32: U.crc32, crc64: U.crc64, gcg: U.gcg, seguid: U.seguid, lcc_simp: U.lccSimp, lcc_mult: U.lccMult,
 };
 const PA_METHODS: Record<string, string> = {
@@ -56,19 +57,32 @@ function runObject(c: Case & Record<string, any>): Record<string, unknown> {
 const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
 
 /** Python keyword names become the trailing positional arguments in this port. */
-const KW_ORDER: Record<string, string[]> = { molecular_weight: ["double_stranded", "circular", "monoisotopic"] };
+const KW_ORDER: Record<string, string[]> = {
+  molecular_weight: ["double_stranded", "circular", "monoisotopic"],
+  Tm_Wallace: ["check", "strict"],
+  Tm_GC: ["check", "strict", "valueset", "userset", "Na", "K", "Tris", "Mg", "dNTPs", "saltcorr", "mismatch"],
+  Tm_NN: ["check", "strict", "c_seq", "shift", "nn_table", "tmm_table", "imm_table", "de_table", "dnac1", "dnac2", "selfcomp", "Na", "K", "Tris", "Mg", "dNTPs", "saltcorr"],
+  salt_correction: ["Na", "K", "Tris", "Mg", "dNTPs", "method", "seq"],
+  chem_correction: ["DMSO", "fmd", "DMSOfactor", "fmdfactor", "fmdmethod", "GC"],
+};
 
 function call(c: Case): Json {
-  const args = c.args!.map(dec);
   const fn = NAMES[c.fn!]!;
+  const raw = (a: any): unknown => (a && typeof a === "object" && "$table" in a ? (U.MeltingTempData as any)[tableName(a.$table)] : dec(a));
+  const args = c.args!.map(raw);
   if (c.kw) {
     const names = KW_ORDER[c.fn!]!;
-    const fixed = c.fn === "molecular_weight" ? 2 : args.length;
-    const rest = names.map((n) => (n in c.kw! ? c.kw![n] : false));
+    // Keyword arguments become positional ones; any not given stay undefined so the default applies.
+    const positional = names.map((n) => (n in c.kw! ? raw(c.kw![n]) : undefined));
+    const fixed = c.fn === "molecular_weight" ? 2 : c.fn === "Tm_NN" || c.fn === "Tm_GC" || c.fn === "Tm_Wallace" ? 1 : c.fn === "chem_correction" ? 1 : 0;
+    const rest = c.fn === "molecular_weight" ? positional.map((v) => v ?? false) : positional;
     return enc(fn(...args.slice(0, fixed), ...rest));
   }
   return enc(fn(...args));
 }
+
+/** The camelCase export for a Python table name (`DNA_NN3` becomes `dnaNn3`). */
+const tableName = (n: string): string => n.toLowerCase().replace(/_([a-z0-9])/g, (_, ch: string) => ch.toUpperCase());
 
 function runCai(c: Case): Record<string, unknown> {
   const out: Record<string, unknown> = {};
@@ -136,7 +150,7 @@ function compare(c: Case & Record<string, any>): string | null {
   return null;
 }
 /** Functions built on log, exp or pow, whose last bit depends on the C library behind Python. */
-const LIBM = new Set(["lcc_simp", "lcc_mult"]);
+const LIBM = new Set(["lcc_simp", "lcc_mult", "Tm_GC", "Tm_NN", "salt_correction"]);
 const round = (c: Case, v: unknown): string =>
   JSON.stringify(v, (_, x) => (typeof x === "number" && !Number.isInteger(x) && LIBM.has(c.fn ?? "") ? Number(x.toPrecision(14)) : x));
 /** Structural equality where numbers may differ by a relative 1e-12 (log, exp and pow differ in the last bits between C libraries). */

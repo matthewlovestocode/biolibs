@@ -7,7 +7,7 @@ or {"kind": "cai", ...} for CodonAdaptationIndex.
 import json, os, random, sys, warnings
 sys.path.insert(0, os.path.dirname(__file__))
 from Bio import SeqUtils as SU
-from Bio.SeqUtils import CheckSum, lcc, ProtParam, ProtParamData, IsoelectricPoint
+from Bio.SeqUtils import CheckSum, lcc, ProtParam, ProtParamData, IsoelectricPoint, MeltingTemp
 import contextlib, io
 from Bio.Data import CodonTable
 from Bio.Seq import Seq
@@ -63,7 +63,13 @@ def run(c):
                     except Exception as e:
                         out["ops_out"].append({"exc": {"type": tname(e), "msg": emsg(e)}})
             else:
-                out["result"] = enc(next(getattr(m, c["fn"]) for m in (SU, CheckSum, lcc) if hasattr(m, c["fn"]))(*[dec(a) for a in c["args"]], **c.get("kw", {})))
+                def arg(a):
+                    if isinstance(a, dict) and "$table" in a: return getattr(MeltingTemp, a["$table"])
+                    if isinstance(a, dict) and a.get("$") == "dict" and c["fn"] in ("Tm_NN", "Tm_GC", "make_table"):     # table dicts hold tuples
+                        return {k: tuple(v) for k, v in dec(a).items()}
+                    return dec(a)
+                kw = {k: arg(v) for k, v in c.get("kw", {}).items()}
+                out["result"] = enc(next(getattr(m, c["fn"]) for m in (SU, CheckSum, lcc, MeltingTemp) if hasattr(m, c["fn"]))(*[arg(a) for a in c["args"]], **kw))
         except Exception as e:
             out["exc"] = {"type": tname(e), "msg": emsg(e)}
     out["warnings"] = [str(x.message) for x in w]
@@ -170,6 +176,70 @@ for a in ([ "", 4], ["ACGT", 0], ["ACGT", -1], ["ACGT", 4], ["ACGT", 5], ["ACGT"
     add({"fn": "lcc_mult", "args": a})
 for t in ("", "A", "AAAA", "ACGT", "acgt", "NNNN", "ACGTN"): add({"fn": "lcc_simp", "args": [t]})
 add({"fn": "lcc_simp", "args": [5]}); add({"fn": "lcc_simp", "args": [None]})
+# ---- MeltingTemp
+NN_NAMES = ["DNA_NN1", "DNA_NN2", "DNA_NN3", "DNA_NN4", "RNA_NN1", "RNA_NN2", "RNA_NN3", "R_DNA_NN1"]
+def mseq(n, alpha="ACGT"): return dna(n, alpha)
+for _ in range(80):
+    t = mseq(rnd.randint(0, 40), rnd.choice(["ACGT", "ACGT", "acgt", "ACGU", "ACGTN", "ACGTBDHKMNRVYWS", "AC GT\n", "ACGTX"]))
+    for kw in ({}, {"check": False}, {"strict": False}):
+        add({"fn": "Tm_Wallace", "args": [t], "kw": kw})
+    if rnd.random() < .3: add({"fn": "Tm_Wallace", "args": [S(t)]})
+for _ in range(120):
+    t = mseq(rnd.randint(0, 50), rnd.choice(["ACGT", "ACGT", "acgt", "ACGU", "ACGTX", "ACGTN", "ACGTBDHKMNRVYWS"]))
+    kw = {}
+    if rnd.random() < .5: kw["strict"] = rnd.random() < .5
+    if rnd.random() < .5: kw["valueset"] = rnd.choice([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, -1])
+    if rnd.random() < .2: kw["userset"] = rnd.choice([LST(80.0, 0.4, 600, 1), LST(1, 2, 3), LST(1, 2, 3, 4, 5), LST()])
+    if rnd.random() < .5: kw["Na"] = rnd.choice([0, 20, 50, 100.5])
+    if rnd.random() < .3: kw["K"] = rnd.choice([0, 10, 50])
+    if rnd.random() < .3: kw["Tris"] = rnd.choice([0, 10, 20])
+    if rnd.random() < .3: kw["Mg"] = rnd.choice([0, 1.5, 2, 5])
+    if rnd.random() < .3: kw["dNTPs"] = rnd.choice([0, 0.2, 0.8, 3])
+    if rnd.random() < .5: kw["saltcorr"] = rnd.choice([0, 1, 2, 3, 4, 5, 6, 7, 8])
+    if rnd.random() < .3: kw["mismatch"] = False
+    if rnd.random() < .1: kw["check"] = False
+    add({"fn": "Tm_GC", "args": [t], "kw": kw})
+for _ in range(220):
+    n = rnd.randint(2, 40)
+    t = mseq(n, rnd.choice(["ACGT", "ACGT", "ACGT", "acgt", "ACGU", "ACGTI", "ACGTN", "ACGTX"]))
+    tab = rnd.choice(NN_NAMES)
+    kw = {"nn_table": {"$table": tab}} if rnd.random() < .7 else {}
+    if rnd.random() < .3:
+        comp = list(t.translate(str.maketrans("ACGTacgtU", "TGCAtgcaA")))
+        for _ in range(rnd.randint(0, 3)):
+            if comp: comp[rnd.randrange(len(comp))] = rnd.choice("ACGT")
+        if rnd.random() < .3: comp = comp[rnd.randint(0, 3):]
+        kw["c_seq"] = "".join(comp)
+    if rnd.random() < .3: kw["shift"] = rnd.choice([-2, -1, 1, 2, 3, 0, 1.5])
+    if rnd.random() < .3: kw["strict"] = False
+    if rnd.random() < .2: kw["selfcomp"] = True
+    if rnd.random() < .3: kw["dnac1"] = rnd.choice([25, 50, 250, 0, 12.5])
+    if rnd.random() < .3: kw["dnac2"] = rnd.choice([25, 0, 50, 100])
+    if rnd.random() < .4: kw["saltcorr"] = rnd.choice([0, 1, 2, 3, 4, 5, 6, 7, 8])
+    if rnd.random() < .4: kw["Na"] = rnd.choice([0, 20, 50, 150])
+    if rnd.random() < .3: kw["K"] = rnd.choice([0, 20, 50])
+    if rnd.random() < .3: kw["Tris"] = rnd.choice([0, 10, 20])
+    if rnd.random() < .3: kw["Mg"] = rnd.choice([0, 1.5, 2, 5])
+    if rnd.random() < .3: kw["dNTPs"] = rnd.choice([0, 0.2, 0.8])
+    if rnd.random() < .2: kw["check"] = False
+    if rnd.random() < .15: kw["tmm_table"] = {"$table": "DNA_TMM1"}
+    if rnd.random() < .15: kw["imm_table"] = {"$table": "DNA_IMM1"}
+    if rnd.random() < .15: kw["de_table"] = {"$table": "RNA_DE1"}
+    add({"fn": "Tm_NN", "args": [t], "kw": kw})
+for t, kw in (("CGTTCCAAAGATGTGGGCATGAGCTTAC", {}), ("CGTTCCAAAGATGTGGGCATGAGCTTAC", {"c_seq": "GCAAGGTTTCTACACCCGTACTCGAATG"}), ("ACGT", {"nn_table": {"$": "dict", "v": []}}), ("ACGT", {"nn_table": {"$": "dict", "v": [["AC/TG", LST(1, 2)]]}}),
+              ("ACGT", {"nn_table": {"$": "dict", "v": [["init", LST(0, 0)]]}, "strict": False}), ("", {}), ("A", {}), ("AAAAAAAA", {}), ("TTTTTTTT", {}), ("ACGTACGT", {"shift": 100}), ("ACGT", {"c_seq": ""}), ("ACGT", {"c_seq": S("TGCA")}), (S("ACGTAC"), {})):
+    add({"fn": "Tm_NN", "args": [t], "kw": kw})
+for _ in range(150):
+    kw = {}
+    for k, vals in (("Na", [0, 20, 50, 150]), ("K", [0, 10, 50]), ("Tris", [0, 10, 20]), ("Mg", [0, 1.5, 5]), ("dNTPs", [0, 0.2, 0.8, 8])):
+        if rnd.random() < .5: kw[k] = rnd.choice(vals)
+    kw["method"] = rnd.choice([0, 1, 2, 3, 4, 5, 6, 7, 8, 2.5])
+    if rnd.random() < .8: kw["seq"] = mseq(rnd.randint(0, 40))
+    add({"fn": "salt_correction", "args": [], "kw": kw})
+for _ in range(60):
+    add({"fn": "chem_correction", "args": [rnd.choice([50.0, 62.5, 70, -5])], "kw": {k: v for k, v in (("DMSO", rnd.choice([0, 3, 10])), ("fmd", rnd.choice([0, 5, 20])), ("fmdmethod", rnd.choice([1, 2, 3])), ("GC", rnd.choice([None, 40, 60.5, -1])), ("DMSOfactor", rnd.choice([0.75, 0.6])), ("fmdfactor", rnd.choice([0.65, 0.5]))) if rnd.random() < .6}})
+add({"fn": "make_table", "args": []}); add({"fn": "make_table", "args": [{"$table": "DNA_NN3"}]}); add({"fn": "make_table", "args": [None, {"$": "dict", "v": [["AA/TT", LST(-1, -2)], ["new", LST(3, 4)]]}]})
+add({"fn": "make_table", "args": [{"$table": "DNA_NN3"}, {"$": "dict", "v": [["init", LST(9, 9)]]}]}); add({"fn": "make_table", "args": [None, {"$": "dict", "v": []}]})
 # ---- ProteinAnalysis / IsoelectricPoint
 PROT = "ACDEFGHIKLMNPQRSTVWY"
 PALL = PROT + "BXZUO*-"

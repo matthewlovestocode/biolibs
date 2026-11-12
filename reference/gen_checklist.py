@@ -12,7 +12,7 @@ for k, v in seed.items(): status.setdefault(k, v)
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 
 mark = lambda k: {"done": "[x]", "partial": "[~]", "na": "[-]"}.get(status.get(k), "[ ]")
-L = ["# Biopython parity checklist (Bio.Seq + Bio.SeqIO)", "",
+L = ["# Biopython parity checklist", "",
      f"Generated from Biopython {inv['version']} by `reference/gen_checklist.py`. "
      "`[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). "
      "Edit `reference/status.json`, then re-run the script.", ""]

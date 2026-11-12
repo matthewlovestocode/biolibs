@@ -114,7 +114,18 @@ for m in ("format", "__format__"):
 # ---- Bio.SeqUtils (packages/seqtools/test/golden/sequtils.json) ----
 su = json.load(open(f"{here}/../packages/seqtools/test/golden/sequtils.json"))["cases"]
 su_fns = {c["fn"] for c in su if "fn" in c and ("result" in c or "exc" in c)}
-for fn in su_fns: mark(f"Bio.SeqUtils.{fn}")
+SU_MODULES = ("Bio.SeqUtils", "Bio.SeqUtils.CheckSum", "Bio.SeqUtils.lcc", "Bio.SeqUtils.MeltingTemp")
+for fn in su_fns:
+    for mod in SU_MODULES:
+        if fn in inv[mod].get("functions", {}): mark(f"{mod}.{fn}")
+# classes driven by method-call cases
+for kind, mod, cls in (("pa", "Bio.SeqUtils.ProtParam", "ProteinAnalysis"), ("ip", "Bio.SeqUtils.IsoelectricPoint", "IsoelectricPoint")):
+    used = {op[0] for c in su if c.get("kind") == kind for op in c.get("ops", [])}
+    if any(c.get("kind") == kind for c in su): mark(f"{mod}.{cls}.__init__")
+    for m in inv[mod]["classes"][cls]:
+        key = f"{mod}.{cls}.{m}"
+        if m in used: mark(key)
+        elif m.startswith("__") and m != "__init__": mark(key, "na")         # object boilerplate
 mark("Bio.SeqUtils.xGC_skew", "na")                  # opens a Tkinter window; gcSkew provides the data it plots
 cai = [c for c in su if c.get("kind") == "cai"]
 if cai:
