@@ -1255,6 +1255,76 @@ def stockholm_cases():
              [ar(1, [["accession", "x\ny"]], desc="two\nlines")], [ar(1, [["accession", 5]])], [ar(1, [["start", 1], ["end", 2]]), ar(1, [["start", 1], ["end", 2]])], [REC(S("ACGTA"), "has space", "n", "")], [ar(1, [], name=None)]]
     align_cases("stockholm", base, extra_writer=extra)
 
+
+def msf_text(rnd, protein=True, header="!!AA_MULTIPLE_ALIGNMENT 1.0", n=None, L=None, weights=True):
+    n = n or rnd.randint(1, 4); L = L or rnd.randint(1, 120)
+    alpha = "ACDEFGHIKLMNPQRSTVWY" if protein else "ACGT"
+    ids = ["seq%d" % i for i in range(n)]
+    seqs = ["".join(rnd.choice(alpha + "..~") for _ in range(L)) for _ in range(n)]
+    out = [header, "", "   test.msf  MSF: %d  Type: %s  January 01, 2020 12:00  Check: 1234 .." % (L, "P" if protein else "N"), ""]
+    for i in range(n): out.append(" Name: %s oo  Len:    %d  Check:  %d  Weight:  %s" % (ids[i], L, rnd.randint(0, 9999), "1.00" if weights else "x"))
+    out += ["", "//", ""]
+    for start in range(0, L, 50):
+        end = min(start + 50, L)
+        out.append("%12d%s%d" % (start + 1, " " * 20, end) if rnd.random() < .7 else "%d %d" % (start + 1, end))
+        for i in range(n):
+            chunk = seqs[i][start:end]
+            out.append("%-12s%s" % (ids[i], " ".join(chunk[j:j+10] for j in range(0, len(chunk), 10))))
+        out.append("")
+    return "\n".join(out) + "\n"
+
+def msf_cases():
+    rnd2 = random.Random(93)
+    base = [msf_text(rnd2, rnd2.random() < .6, rnd2.choice(["!!AA_MULTIPLE_ALIGNMENT 1.0", "!!NA_MULTIPLE_ALIGNMENT 1.0", "PileUp"])) for _ in range(60)]
+    base.append(base[0] + base[1])
+    base += ["", "\n", "wrong header\n", "PileUp\n", "!!AA_MULTIPLE_ALIGNMENT\n\n  MSF: 4  Type: P  Check: 1 ..\n", "!!AA_MULTIPLE_ALIGNMENT\n\nx MSF: x Type: P Check: 1 ..\n", "!!AA_MULTIPLE_ALIGNMENT\n\nx MSF: 4 Type: Q Check: 1 ..\n",
+             "PileUp\n\n MSF: 4  Type: P  Check: 1 ..\n\n Name: a oo  Len: 4  Check: 1  Weight: 1.0\n Name: a oo  Len: 4  Check: 1  Weight: 1.0\n\n//\n\n", "PileUp\n\n MSF: 4  Type: P  Check: 1 ..\n\n Name: a b oo  Len: 4  Check: 1  Weight: 1.0\n\n//\n\n",
+             "PileUp\n\n MSF: 4  Type: P  Check: 1 ..\n\n Name: a oo  Len: 4  Check: 1\n\n//\n\n", "PileUp\n\n MSF: 4  Type: P  Check: 1 ..\n\n//\n"]
+    allt = list(base)
+    for t in base:
+        for _ in range(6): allt.append(mutate_text(t, rnd2, junk=("//", "!!AA_MULTIPLE_ALIGNMENT", "PileUp", " Name: x oo  Len: 3  Check: 1  Weight: 1.0", "1 50", "seq0 ACGT")))
+    for t in allt: add({"kind": "parse", "format": "msf", "text": t})
+    for t in rnd2.sample(allt, 40): add({"kind": "read", "format": "msf", "text": t})
+    add({"kind": "parse", "format": "msf", "bytes": "x"})
+    for t in rnd2.sample(base[:60], 8):
+        for out in ("fasta", "clustal"): add({"kind": "convert", "format": "msf", "text": t, "out": out, "molecule_type": None})
+
+def emboss_text(rnd, L=None, ids=("seqA", "seqB"), extra_header=True, alignments=1):
+    out = []
+    for _ in range(alignments):
+        L = L or rnd.randint(5, 120)
+        a = "".join(rnd.choice("ACGT-") for _ in range(L)); b = "".join(rnd.choice("ACGT-") for _ in range(L))
+        a = a.replace("--", "A-"); b = b.replace("--", "C-")
+        out += ["########################################", "# Program: needle", "# Rundate: Mon 1 Jan 2020 00:00:00", "# Align_format: srspair", "# Report_file: stdout", "########################################", "",
+                "#=======================================", "#", "# Aligned_sequences: 2", "# 1: %s" % ids[0], "# 2: %s" % ids[1], "# Matrix: EBLOSUM62", "# Gap_penalty: 10.0", "#", "# Length: %d" % L]
+        if extra_header: out += ["# Identity:      %d/%d (50.0%%)" % (L // 2, L), "# Similarity:    %d/%d (50.0%%)" % (L // 2, L), "# Gaps:          %d/%d (10.0%%)" % (L // 10, L), "# Score: %s" % rnd.choice(["30.0", "1.5", "100"])]
+        out += ["# ", "#", "#=======================================", ""]
+        pa = pb = 0
+        for s in range(0, L, 50):
+            ca, cb = a[s:s+50], b[s:s+50]
+            na, nb = len(ca.replace("-", "")), len(cb.replace("-", ""))
+            sa, ea = (pa + 1, pa + na) if na else (pa, pa)
+            sb, eb = (pb + 1, pb + nb) if nb else (pb, pb)
+            out.append("%-15s %5d %s %5d" % (ids[0], sa, ca, ea)); out.append(" " * 21 + "".join("|" if x == y and x != "-" else " " for x, y in zip(ca, cb)))
+            out.append("%-15s %5d %s %5d" % (ids[1], sb, cb, eb)); out.append("")
+            pa += na; pb += nb
+        out += ["", "#---------------------------------------", "#---------------------------------------", ""]
+    return "\n".join(out) + "\n"
+
+def emboss_cases():
+    rnd2 = random.Random(94)
+    base = [emboss_text(rnd2, ids=rnd2.choice([("seqA", "seqB"), ("a_long_identifier_x", "b"), ("x", "y")]), extra_header=rnd2.random() < .8, alignments=rnd2.choice([1, 1, 2])) for _ in range(60)]
+    base += ["", "\n", "#=======================================\n", "#=======================================\n#\n# Aligned_sequences: 2\n# 1: a\n# 2: b\n#\n", "#=======================================\n# Length: 5\n", "#=======================================\n# Aligned_sequences: x\n",
+             "#=======================================\n# Aligned_sequences: 2\n# 1: a\n# 3: b\n", "no header\n", "#=======================================\n#\n# Aligned_sequences: 1\n# 1: a\n# Length: 4\n#=======================================\n\na                  1 ACGT     4\n"]
+    allt = list(base)
+    for t in base:
+        for _ in range(6): allt.append(mutate_text(t, rnd2, junk=("#=======================================", "#---------------------------------------", "# Length: 3", "# Score: x", "seqA               1 ACGT     4", "|||")))
+    for t in allt: add({"kind": "parse", "format": "emboss", "text": t})
+    for t in rnd2.sample(allt, 40): add({"kind": "read", "format": "emboss", "text": t})
+    add({"kind": "parse", "format": "emboss", "bytes": "x"})
+    for t in rnd2.sample(base[:60], 8):
+        for out in ("fasta", "clustal"): add({"kind": "convert", "format": "emboss", "text": t, "out": out, "molecule_type": None})
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1335,6 +1405,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

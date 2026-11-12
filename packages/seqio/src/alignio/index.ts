@@ -8,6 +8,8 @@
  * - `phylip.ts`: `phylip`, `phylip-sequential`, `phylip-relaxed`
  * - `clustal.ts`: `clustal`
  * - `stockholm.ts`: `stockholm`
+ * - `msf.ts`: `msf`
+ * - `emboss.ts`: `emboss`
  */
 
 import { MultipleSeqAlignment } from "@biolibs/align";
@@ -16,6 +18,8 @@ import { registerIterator, registerWriter } from "../registry.js";
 import { alignmentSequenceIterator, alignmentSequenceWriter } from "./bridge.js";
 import { ClustalIterator, ClustalWriter } from "./clustal.js";
 import type { AlignmentIteratorClass, AlignmentWriterClass } from "./interfaces.js";
+import { EmbossIterator } from "./emboss.js";
+import { MsfIterator } from "./msf.js";
 import { StockholmIterator, StockholmWriter } from "./stockholm.js";
 import { PhylipIterator, PhylipWriter, RelaxedPhylipIterator, RelaxedPhylipWriter, SequentialPhylipIterator, SequentialPhylipWriter } from "./phylip.js";
 
@@ -25,6 +29,8 @@ const READERS: [string, AlignmentIteratorClass][] = [
   ["phylip-sequential", SequentialPhylipIterator],
   ["phylip-relaxed", RelaxedPhylipIterator],
   ["stockholm", StockholmIterator],
+  ["msf", MsfIterator],
+  ["emboss", EmbossIterator],
 ];
 const WRITERS: [string, AlignmentWriterClass][] = [
   ["clustal", ClustalWriter as AlignmentWriterClass],
@@ -49,3 +55,5 @@ export * from "./interfaces.js";
 export * from "./phylip.js";
 export * from "./clustal.js";
 export * from "./stockholm.js";
+export * from "./msf.js";
+export * from "./emboss.js";
