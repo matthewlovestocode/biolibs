@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/seq" },
+    { "path": "packages/seqio" },
+    { "path": "packages/align" },
+    { "path": "packages/phylo" },
+    { "path": "packages/seqtools" }
+  ]
+}

@@ -1,0 +1,66 @@
+# @biolibs/core
+
+Shared types, Python-style errors and warnings used by the other packages. No dependencies.
+
+## Errors
+
+All errors derive from `BioError`, so one `instanceof` check catches any biolibs input problem. The subclasses mirror Python's built-in exceptions, because Biopython raises these and ports reproduce its messages exactly.
+
+| Class | Python equivalent | Typical cause |
+|---|---|---|
+| `BioError` | – | Base class; malformed biological input |
+| `ValueError` | `ValueError` | Right type, bad value (empty separator, negative length, non-ASCII text, unknown codon table name) |
+| `IndexError` | `IndexError` | Sequence index out of range |
+| `KeyError` | `KeyError` | Missing lookup key (genetic code id, codon). `message` is the key itself |
+
+`@biolibs/seq` adds `UndefinedSequenceError` (a `ValueError`) and `CodonTable.TranslationError`.
+
+```ts
+try {
+  new Seq("é");
+} catch (e) {
+  if (e instanceof ValueError) console.error(e.message); // 'ascii' codec can't encode character '\xe9' in position 0: ...
+  else throw e;
+}
+```
+
+Wrong argument *types* are programming errors and throw the built-in `TypeError`, not a `BioError`.
+
+## Warnings
+
+Biopython uses Python's `warnings` module for recoverable problems (for example a partial codon during translation). The equivalent here:
+
+| Function | Purpose |
+|---|---|
+| `warn(message, category?)` | Emit a warning. Category defaults to `"BiopythonWarning"` |
+| `setWarningHandler(handler)` | Replace the global handler (default: `console.warn`). Returns the previous handler |
+| `captureWarnings(fn)` | Run `fn`; returns `{ result?, error?, warnings }` and prints nothing |
+
+```ts
+const { result, warnings } = captureWarnings(() => new Seq("ATGA").translate());
+warnings[0].message; // "Partial codon, len(sequence) not a multiple of three. ..."
+```
+
+`captureWarnings` is also how the golden tests compare warnings against Biopython's.
+
+## Types
+
+### `SeqRecord`
+
+A named sequence as produced by `@biolibs/seqio` parsers (currently an interface; it will become a class when Bio.SeqRecord is ported).
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` | First header token (FASTA/FASTQ) or accession (GenBank) |
+| `description` | `string` | Full header line, or DEFINITION |
+| `sequence` | `string` | Residues without whitespace |
+| `quality?` | `number[]` | Per-base Phred scores (FASTQ only) |
+| `annotations?` | `Record<string, unknown>` | Format-specific extras |
+
+### `Alphabet`
+
+`"dna" | "rna" | "protein"`. Informational.
+
+### `assert(cond, message)`
+
+Throws `BioError(message)` unless `cond` is truthy; narrows types for TypeScript.

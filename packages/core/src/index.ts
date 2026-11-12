@@ -1,0 +1,15 @@
+/**
+ * @packageDocumentation
+ * Shared types, Python-style errors and warnings used across the biolibs packages.
+ * This package has no runtime dependencies.
+ *
+ * - `errors.ts`: {@link BioError} and Python-style subclasses
+ * - `warnings.ts`: `warn`, `setWarningHandler`, `captureWarnings`
+ * - `types.ts`: `SeqRecord`, `Alphabet`
+ * - `assert.ts`: `assert`
+ */
+
+export * from "./errors.js";
+export * from "./warnings.js";
+export * from "./types.js";
+export * from "./assert.js";
