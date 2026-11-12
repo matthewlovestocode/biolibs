@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 447 / 498 applicable items verified against Biopython.**
+**Progress: 459 / 544 applicable items verified against Biopython.**
 
 
 
@@ -695,12 +695,106 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 ## Bio.SeqUtils
 
-- [ ] `GC123(seq)`
-- [~] `GC_skew(seq, window=100)`
-- [~] `gc_fraction(seq, ambiguous='remove')`
-- [ ] `molecular_weight(seq, seq_type='DNA', double_stranded=False, circular=False, monoisotopic=False)`
-- [ ] `nt_search(seq, subseq)`
-- [ ] `seq1(seq, custom_map=None, undef_code='X')`
-- [ ] `seq3(seq, custom_map=None, undef_code='Xaa')`
-- [ ] `six_frame_translations(seq, genetic_code=1)`
-- [ ] `xGC_skew(seq, window=1000, zoom=100, r=300, px=100, py=100)`
+- [x] `GC123(seq)`
+- [x] `GC_skew(seq, window=100)`
+- [x] `gc_fraction(seq, ambiguous='remove')`
+- [x] `molecular_weight(seq, seq_type='DNA', double_stranded=False, circular=False, monoisotopic=False)`
+- [x] `nt_search(seq, subseq)`
+- [x] `seq1(seq, custom_map=None, undef_code='X')`
+- [x] `seq3(seq, custom_map=None, undef_code='Xaa')`
+- [x] `six_frame_translations(seq, genetic_code=1)`
+- [-] `xGC_skew(seq, window=1000, zoom=100, r=300, px=100, py=100)`
+
+### Bio.SeqUtils.CodonAdaptationIndex
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__getitem__(self, key, /)`
+- [-] `__gt__(self, value, /)`
+- [x] `__init__(self, sequences, table=NCBICodonTableDNA(id=1, names=['Standard', 'SGC0'], ...))`
+- [-] `__iter__(self, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self)`
+- [x] `calculate(self, sequence)`
+- [-] `clear(self, /)`
+- [-] `copy(self, /)`
+- [-] `fromkeys(iterable, value=None, /)`
+- [-] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [x] `optimize(self, sequence, seq_type='DNA', strict=True)`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [-] `setdefault(self, key, default=None, /)`
+- [-] `update?`
+- [-] `values(self, /)`
+
+## Bio.SeqUtils.CheckSum
+
+- [ ] `crc32(seq)`
+- [ ] `crc64(s)`
+- [ ] `gcg(seq)`
+- [ ] `seguid(seq)`
+
+## Bio.SeqUtils.lcc
+
+- [ ] `lcc_mult(seq, wsize)`
+- [ ] `lcc_simp(seq)`
+
+## Bio.SeqUtils.IsoelectricPoint
+
+
+### Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [ ] `__init__(self, protein_sequence, aa_content=None)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [ ] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [ ] `charge_at_pH(self, pH)`
+- [ ] `pi(self, pH=7.775, min_=4.05, max_=12)`
+
+## Bio.SeqUtils.ProtParam
+
+
+### Bio.SeqUtils.ProtParam.ProteinAnalysis
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [ ] `__init__(self, prot_sequence, monoisotopic=False)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [ ] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [ ] `aromaticity(self)`
+- [ ] `charge_at_pH(self, pH)`
+- [ ] `count_amino_acids(self)`
+- [ ] `flexibility(self)`
+- [ ] `gravy(self, scale='KyteDoolitle')`
+- [ ] `instability_index(self)`
+- [ ] `isoelectric_point(self)`
+- [ ] `molar_extinction_coefficient(self)`
+- [ ] `molecular_weight(self)`
+- [ ] `protein_scale(self, param_dict, window, edge=1.0)`
+- [ ] `secondary_structure_fraction(self)`
+
+## Bio.SeqUtils.MeltingTemp
+
+- [ ] `Tm_GC(seq, check=True, strict=True, valueset=7, userset=None, Na=50, K=0, Tris=0, Mg=0, dNTPs=0, saltcorr=0, mismatch=True)`
+- [ ] `Tm_NN(seq, check=True, strict=True, c_seq=None, shift=0, nn_table=None, tmm_table=None, imm_table=None, de_table=None, dnac1=25, dnac2=25, selfcomp=False, Na=50, K=0, Tris=0, Mg=0, dNTPs=0, saltcorr=5)`
+- [ ] `Tm_Wallace(seq, check=True, strict=True)`
+- [ ] `chem_correction(melting_temp, DMSO=0, fmd=0, DMSOfactor=0.75, fmdfactor=0.65, fmdmethod=1, GC=None)`
+- [ ] `make_table(oldtable=None, values=None)`
+- [ ] `salt_correction(Na=0, K=0, Tris=0, Mg=0, dNTPs=0, method=1, seq=None)`

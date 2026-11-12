@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/seqtools",
   "version": "0.1.0",
-  "description": "GC content, melting temperature, restriction sites (Bio.SeqUtils, Bio.Restriction)",
+  "description": "Port of Biopython Bio.SeqUtils: GC content, molecular weight, translation views, codon adaptation index",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -111,5 +111,17 @@ mark("Bio.SeqIO.convert", "done" if direct <= conv else "partial")
 for m in ("format", "__format__"):
     if {"genbank", "embl", "fasta"} <= formatted: mark(f"Bio.SeqRecord.SeqRecord.{m}")
 
+# ---- Bio.SeqUtils (packages/seqtools/test/golden/sequtils.json) ----
+su = json.load(open(f"{here}/../packages/seqtools/test/golden/sequtils.json"))["cases"]
+su_fns = {c["fn"] for c in su if "fn" in c and ("result" in c or "exc" in c)}
+for fn in su_fns: mark(f"Bio.SeqUtils.{fn}")
+mark("Bio.SeqUtils.xGC_skew", "na")                  # opens a Tkinter window; gcSkew provides the data it plots
+cai = [c for c in su if c.get("kind") == "cai"]
+if cai:
+    for m in ("__init__", "calculate", "optimize", "__str__"): mark(f"Bio.SeqUtils.CodonAdaptationIndex.{m}")
+    for m in inv["Bio.SeqUtils"]["classes"]["CodonAdaptationIndex"]:
+        key = f"Bio.SeqUtils.CodonAdaptationIndex.{m}"
+        if key not in status: mark(key, "na")        # dict protocol, inherited; the TS class is a Map
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

@@ -7,8 +7,7 @@ sp = f"{here}/status.json"
 status = json.load(open(sp)) if os.path.exists(sp) else {}
 # Seed: things the first scaffold covers partially.
 seed = {k: "partial" for k in [
-  "Bio.Seq.complement","Bio.Seq.reverse_complement","Bio.Seq.transcribe","Bio.Seq.back_transcribe","Bio.Seq.translate",
-  "Bio.SeqUtils.gc_fraction","Bio.SeqUtils.GC_skew"]}
+  "Bio.Seq.complement","Bio.Seq.reverse_complement","Bio.Seq.transcribe","Bio.Seq.back_transcribe","Bio.Seq.translate"]}
 for k, v in seed.items(): status.setdefault(k, v)
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 
@@ -42,8 +41,8 @@ L.extend(["", "### Parse formats", ""])
 for f in inv["Bio.SeqIO"]["parse_formats"]: item(f"Bio.SeqIO.parse:{f}", f"parse: {f}")
 L.extend(["", "### Write formats", ""])
 for f in inv["Bio.SeqIO"]["write_formats"]: item(f"Bio.SeqIO.write:{f}", f"write: {f}")
-L.extend(["", "## Bio.SeqUtils", ""])
-for fn, sig in inv["Bio.SeqUtils"].items(): item(f"Bio.SeqUtils.{fn}", f"{fn}{sig}")
+for mod in ("Bio.SeqUtils", "Bio.SeqUtils.CheckSum", "Bio.SeqUtils.lcc", "Bio.SeqUtils.IsoelectricPoint", "Bio.SeqUtils.ProtParam", "Bio.SeqUtils.MeltingTemp"):
+    section(mod, mod, inv[mod])
 L[3:3] = ["", f"**Progress: {tot[1]} / {tot[0]} applicable items verified against Biopython.**", ""]
 open(f"{here}/../PARITY.md", "w").write("\n".join(L) + "\n")
 print(tot)

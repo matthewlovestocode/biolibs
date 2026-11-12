@@ -13,7 +13,7 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics and seqXML done; more in progress | [seqio.md](seqio.md) |
 | `@biolibs/align` | Pairwise alignment and edit distance | [align.md](align.md) |
 | `@biolibs/phylo` | Newick phylogenetic trees | [phylo.md](phylo.md) |
-| `@biolibs/seqtools` | GC content, melting temperature, restriction digests | [seqtools.md](seqtools.md) |
+| `@biolibs/seqtools` | Bio.SeqUtils: GC content, molecular weight, code conversion, codon adaptation index | [seqtools.md](seqtools.md) |
 
 ## Dependency graph
 

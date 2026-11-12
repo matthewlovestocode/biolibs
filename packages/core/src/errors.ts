@@ -97,3 +97,12 @@ export class NotImplementedError extends BioError {
     this.name = "NotImplementedError";
   }
 }
+
+/** Mirrors Python's `ZeroDivisionError`: division by zero. */
+export class ZeroDivisionError extends BioError {
+  /** @param message - Python's wording, normally `"division by zero"`. */
+  constructor(message = "division by zero") {
+    super(message);
+    this.name = "ZeroDivisionError";
+  }
+}

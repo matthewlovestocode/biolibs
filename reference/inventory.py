@@ -6,6 +6,7 @@ from Bio.Data import CodonTable, IUPACData
 from Bio.SeqUtils import (gc_fraction, GC123, GC_skew, seq3, seq1, molecular_weight,
                           six_frame_translations, CodonAdaptationIndex)
 import Bio.SeqUtils as SU
+from Bio.SeqUtils import CheckSum, lcc, IsoelectricPoint, ProtParam, MeltingTemp
 from Bio.SeqIO import _FormatToIterator, _FormatToWriter
 
 def members(cls):
@@ -40,6 +41,11 @@ inv = {
   "Bio.Data.CodonTable": {"functions": funcs(CodonTable), "classes": {"CodonTable": members(CodonTable.CodonTable), "NCBICodonTable": members(CodonTable.NCBICodonTable)},
                           "table_ids": sorted(CodonTable.generic_by_id)},
   "Bio.Data.IUPACData": sorted(n for n in dir(IUPACData) if not n.startswith("_")),
-  "Bio.SeqUtils": funcs(SU),
+  "Bio.SeqUtils": {"functions": funcs(SU), "classes": {"CodonAdaptationIndex": members(SU.CodonAdaptationIndex)}},
+  "Bio.SeqUtils.CheckSum": {"functions": funcs(CheckSum)},
+  "Bio.SeqUtils.lcc": {"functions": funcs(lcc)},
+  "Bio.SeqUtils.IsoelectricPoint": {"classes": {"IsoelectricPoint": members(IsoelectricPoint.IsoelectricPoint)}},
+  "Bio.SeqUtils.ProtParam": {"classes": {"ProteinAnalysis": members(ProtParam.ProteinAnalysis)}},
+  "Bio.SeqUtils.MeltingTemp": {"functions": funcs(MeltingTemp)},
 }
 print(json.dumps(inv, indent=1))

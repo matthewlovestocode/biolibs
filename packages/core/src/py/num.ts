@@ -69,3 +69,26 @@ export function pyFormatFixed(x: number, digits: number): string {
   }
   return x.toFixed(digits);
 }
+
+/**
+ * Python's `sum()` of floats. CPython 3.12+ adds them with Neumaier compensation, so the result can
+ * differ in the last bits from a plain left-to-right sum.
+ *
+ * @example
+ * ```ts
+ * pySum([0.1, 0.2, 0.3]);   // 0.6 (a naive sum gives 0.6000000000000001)
+ * ```
+ */
+export function pySum(values: Iterable<number>): number {
+  let sum = 0;
+  let compensation = 0;
+  for (const x of values) {
+    const t = sum + x;
+    // Keep what the addition rounded away, using whichever operand is larger as the reference.
+    if (Math.abs(sum) >= Math.abs(x)) compensation += sum - t + x;
+    else compensation += x - t + sum;
+    sum = t;
+  }
+  // Do not let the correction turn an infinite or NaN sum into NaN.
+  return compensation !== 0 && Number.isFinite(compensation) ? sum + compensation : sum;
+}

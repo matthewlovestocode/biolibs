@@ -1,55 +1,46 @@
 # @biolibs/seqtools
 
-Practical wet-lab sequence utilities, covering parts of Biopython's `Bio.SeqUtils` and `Bio.Restriction`. Depends on `@biolibs/seq`.
-
-## Composition
-
-### `gcContent(seq): number`
-Fraction of G, C and S bases in `[0, 1]`, case-insensitive. Returns `0` for an empty string. The denominator is the full sequence length, so ambiguity codes lower the result.
-
-### `gcSkew(seq): number`
-`(G − C) / (G + C)`, or `0` if there are no G or C.
-
-## Melting temperature
-
-### `meltingTemp(seq): number`
-Basic Tm estimate in °C for a DNA oligo:
-- under 14 nt: Wallace rule, `2·(A+T) + 4·(G+C)`;
-- 14 nt or longer: `64.9 + 41·(G+C − 16.4) / N`.
-
-Throws `BioError` for an empty sequence. This is a rough estimate: it ignores salt, concentration and nearest-neighbour effects, so use it for screening, not final primer design.
-
-## Restriction enzymes
-
-### `ENZYMES: Record<string, RestrictionEnzyme>`
-Built-in enzymes: EcoRI, BamHI, HindIII, NotI, XhoI, NdeI, SalI, PstI, SmaI, KpnI, XbaI, SacI, EcoRV.
+A TypeScript port of Biopython's `Bio.SeqUtils`: GC content, molecular weight, amino acid code conversion, six-frame translation display, and the codon adaptation index. Verified against Biopython 1.88 with about 2,800 recorded calls. See [PARITY.md](../PARITY.md).
 
 ```ts
-interface RestrictionEnzyme {
-  name: string;
-  site: string; // recognition sequence, IUPAC codes allowed
-  cut: number;  // top-strand cut offset from the start of the site
-}
+import { gcFraction, molecularWeight, seq3, ntSearch } from "@biolibs/seqtools";
+
+gcFraction("ACTGN");                 // 0.5   (N is left out of the denominator)
+gcFraction("ACTGN", "weighted");     // 0.5
+molecularWeight("ACGT", "DNA");      // 1253.8027
+seq3("MAIV*");                       // "MetAlaIleValTer"
+ntSearch("ACGTGGAGAGATGAT", "GRG");  // ["G[AG]G", 5, 7]
 ```
 
-You can pass your own object of this shape anywhere an enzyme name is accepted:
+Every function takes plain text, a `Seq` or a `MutableSeq`.
 
-```ts
-const MyEnzyme = { name: "MyI", site: "GANNTC", cut: 1 };
+## Functions
+
+| Python | TypeScript | Notes |
+|---|---|---|
+| `gc_fraction(seq, ambiguous="remove")` | `gcFraction(seq, ambiguous?)` | `"remove"`, `"ignore"` or `"weighted"`; other values throw `ValueError` |
+| `GC123(seq)` | `gc123(seq)` | `[overall, pos1, pos2, pos3]` percentages; `ZeroDivisionError` with no A/C/G/T |
+| `GC_skew(seq, window=100)` | `gcSkew(seq, window?)` | one value per window; `window` 0 is a `ValueError`, a non-integer a `TypeError` |
+| `nt_search(seq, subseq)` | `ntSearch(seq, subseq)` | IUPAC-aware, overlapping matches; `seq` must be text (Python rejects `Seq` too) |
+| `seq1(seq, custom_map, undef_code)` | `seq1(seq, customMap?, undefCode?)` | `customMap` is a `Map` or plain object |
+| `seq3(seq, custom_map, undef_code)` | `seq3(seq, customMap?, undefCode?)` | |
+| `molecular_weight(seq, seq_type, double_stranded, circular, monoisotopic)` | `molecularWeight(seq, seqType?, doubleStranded?, circular?, monoisotopic?)` | positional flags; also accepts a `SeqRecord` |
+| `six_frame_translations(seq, genetic_code)` | `sixFrameTranslations(seq, geneticCode?)` | returns text, or a `Seq`/`MutableSeq` holding it when given one (Biopython does the same) |
+| `CodonAdaptationIndex` | `CodonAdaptationIndex` | extends `Map`; `calculate`, `optimize`, `toString` |
+| `xGC_skew` | not ported | it opens a Tkinter window; `gcSkew` gives the data it plots |
+
+## Differences from Python
+
+- **Sums.** Python 3.12+ adds floats with compensated summation; `@biolibs/core`'s `pySum` does the same, so `molecularWeight` and weighted `gcFraction` agree to the last digit.
+- **`ntSearch` with an empty pattern** loops forever in Python; here it throws `RuntimeError`.
+- **`CodonAdaptationIndex.calculate`** uses `Math.log` and `Math.exp`, which can differ from Python's C library in the last bit (tests allow 1e-14 relative difference).
+- `Seq`-typed arguments are converted to text first, so the results match Python for ordinary input; exotic input types (lists of letters, bytes) are not supported.
+
+## Source layout
+
+```
+packages/seqtools/src/
+  args.ts  gc.ts  search.ts  names.ts  weight.ts  six-frame.ts  cai.ts  index.ts
 ```
 
-### `findSites(dna, enzyme): number[]`
-0-based start positions of recognition sites, sorted, including overlapping matches. Non-palindromic sites are also searched on the reverse strand (reported as the start of the matching site on the forward coordinates). `enzyme` is a name from `ENZYMES` or a `RestrictionEnzyme`. Throws `BioError` for unknown names.
-
-### `digest(dna, enzymes): string[]`
-Digest a **linear** molecule with one or more enzymes and return the fragments in order. Cuts are made on the top strand only (overhangs are not modelled).
-
-```ts
-const dna = "AAAGAATTCCCCGGATCCTTT";
-findSites(dna, "EcoRI");               // [3]
-digest(dna, ["EcoRI", "BamHI"]);       // ["AAAG", "AATTCCCCG", "GATCCTTT"]
-```
-
-## Not yet supported
-
-Circular digestion, overhang/sticky-end modelling, type IIS enzymes with remote cut sites (cut offsets beyond the site are accepted but untested), the full REBASE enzyme database, nearest-neighbour Tm, primer design.
+The earlier string-only scaffold (restriction digests, Wallace Tm) was removed; melting temperature returns as a port of `Bio.SeqUtils.MeltingTemp` and restriction enzymes as `Bio.Restriction`.
