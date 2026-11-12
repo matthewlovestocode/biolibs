@@ -29,7 +29,7 @@ function applyMut(s: any, [kind, path, v]: [string, number[], any]): void {
     case "occupancy": x.occupancy = v === null ? null : Number(val(v)); break;
     case "charge": x.pqrCharge = v === null ? null : Number(val(v)); break;
     case "radius": x.radius = v === null ? null : Number(val(v)); break;
-    case "coord": x.setCoord(v.map((c: unknown) => Number(val(c)))); break;
+    case "coord": x.setCoord(Float32Array.from(v.map((c: unknown) => Number(val(c))))); break;
     case "serial": x.serialNumber = v === "nan" ? Number.NaN : v; break;
     case "element": x.element = v; break;
     case "altloc": x.altloc = v; break;

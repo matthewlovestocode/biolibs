@@ -12,6 +12,11 @@ export class AssertionError extends Error {
   override name = "AssertionError";
 }
 
+/** Python `ZeroDivisionError`. */
+export class ZeroDivisionError extends Error {
+  override name = "ZeroDivisionError";
+}
+
 /** Python `UnboundLocalError` (a local variable read before assignment). */
 export class UnboundLocalError extends Error {
   override name = "UnboundLocalError";

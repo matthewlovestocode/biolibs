@@ -3,6 +3,7 @@
  * `@biolibs/pdb`: a TypeScript port of Biopython's `Bio.PDB`, starting with the structure hierarchy and the PDB parser.
  *
  * - `exceptions.ts`: `PDBConstructionException` and friends
+ * - `geometry.ts`: `transformCoord`, `centerOfMass`, `averageCoords`
  * - `entity.ts`: `Entity`, `DisorderedEntityWrapper`
  * - `atom.ts`: `Atom`, `DisorderedAtom`
  * - `residue.ts`: `Residue`, `DisorderedResidue`
@@ -23,6 +24,7 @@
 
 export * from "./exceptions.js";
 export * from "./util.js";
+export * from "./geometry.js";
 export * from "./entity.js";
 export * from "./atom.js";
 export * from "./residue.js";

@@ -1,10 +1,12 @@
 /** `Atom` and `DisorderedAtom` (Biopython's `Bio.PDB.Atom`). Coordinates are single-precision, like NumPy's `"f"` arrays. */
 
-import { pyRepr, warn } from "@biolibs/core";
+import { ValueError, pyRepr, warn } from "@biolibs/core";
 import { IUPACData } from "@biolibs/seq";
 import { DisorderedEntityWrapper, type Child, type Entity } from "./entity.js";
 import { PDB_CONSTRUCTION_WARNING } from "./exceptions.js";
-import { compareIds, idsEqual, type EntityId } from "./util.js";
+import { averageCoords, transformCoord, type Coord, type RotMatrix } from "./geometry.js";
+import { Vector } from "./vectors.js";
+import { compareIds, idKey, idsEqual, pyStr, type EntityId } from "./util.js";
 
 /** Python `str.capitalize()`: first character upper case, the rest lower case. */
 const capitalize = (s: string): string => (s.length === 0 ? s : s[0]!.toUpperCase() + s.slice(1).toLowerCase());
@@ -28,7 +30,7 @@ export class Atom implements Child {
   /** The name as written in the file, spaces included, e.g. `" CA "`. */
   fullname: string;
   /** Coordinates (single precision). */
-  coord: Float32Array;
+  coord: Coord;
   /** B-factor. */
   bfactor: number | null;
   /** Occupancy. */
@@ -165,7 +167,10 @@ export class Atom implements Child {
   /** Set the B-factor. */
   setBfactor(bfactor: number | null): void { this.bfactor = bfactor; }
   /** Set the coordinates. */
-  setCoord(coord: ArrayLike<number>): void { this.coord = Float32Array.from(coord); }
+  setCoord(coord: ArrayLike<number>): void {
+    // Python stores the array as given, keeping its dtype; plain lists become double precision.
+    this.coord = coord instanceof Float32Array ? Float32Array.from(coord) : Float64Array.from(coord);
+  }
   /** Set the alternative location. */
   setAltloc(altloc: string): void { this.altloc = altloc; }
   /** Set the occupancy. */
@@ -213,7 +218,7 @@ export class Atom implements Child {
     return [...this.parent.getFullId(), [this.name, this.altloc] as unknown as EntityId];
   }
   /** The coordinates. */
-  getCoord(): Float32Array { return this.coord; }
+  getCoord(): Coord { return this.coord; }
   /** The B-factor. */
   getBfactor(): number | null { return this.bfactor; }
   /** The occupancy. */
@@ -229,10 +234,21 @@ export class Atom implements Child {
   /** The radius. */
   getRadius(): number | null { return this.radius; }
 
-  /** Rotate and translate: `coord = coord @ rot + tran` (single precision). */
-  transform(rot: number[][], tran: ArrayLike<number>): void {
-    const c = this.coord;
-    this.coord = Float32Array.from([0, 1, 2], (j) => c[0]! * rot[0]![j]! + c[1]! * rot[1]![j]! + c[2]! * rot[2]![j]! + tran[j]!);
+  /**
+   * Rotate and translate: `coord = coord @ rot + tran`. The coordinates become double precision unless the matrix
+   * and translation are `Float32Array`s too.
+   *
+   * @param rot - A right-multiplying 3x3 matrix.
+   * @param tran - The translation.
+   */
+  transform(rot: RotMatrix, tran: ArrayLike<number>): void {
+    this.coord = transformCoord(this.coord, rot, tran);
+  }
+
+  /** @returns The coordinates as a {@link Vector}. */
+  getVector(): Vector {
+    if (this.coord.length !== 3) throw new ValueError(this.coord.length > 3 ? `too many values to unpack (expected 3, got ${this.coord.length})` : `not enough values to unpack (expected 3, got ${this.coord.length})`);
+    return new Vector(this.coord[0]!, this.coord[1]!, this.coord[2]!);
   }
 
   /** A copy without a parent, with its own coordinates and extra data. */
@@ -302,9 +318,10 @@ export class DisorderedAtom extends DisorderedEntityWrapper {
 
   /** Remove the alternative with this altloc, selecting the one with the highest occupancy next. */
   disorderedRemove(altloc: string): void {
-    const atom = this.childDict.get(`s${altloc}`) as Atom;
+    const atom = this.childDict.get(idKey(altloc)) as Atom | undefined;
+    if (atom === undefined) throw Object.assign(new Error(pyStr(altloc)), { name: "KeyError" });
     const isSelected = this.selectedChild === atom;
-    this.childDict.delete(`s${altloc}`);
+    this.childDict.delete(idKey(altloc));
     atom.detachParent();
     if (isSelected && this.childDict.size > 0) {
       const sorted = ([...this.childDict.values()] as Atom[]).sort((a, b) => (a.occupancy ?? 0) - (b.occupancy ?? 0));
@@ -317,7 +334,19 @@ export class DisorderedAtom extends DisorderedEntityWrapper {
   }
 
   /** Apply `coord = coord @ rot + tran` to every alternative. */
-  transform(rot: number[][], tran: ArrayLike<number>): void {
-    for (const child of this) child.transform(rot, tran);
+  transform(rot: RotMatrix, tran: ArrayLike<number>): void {
+    for (const child of this) child.coord = transformCoord(child.coord, rot, tran);
+  }
+
+  /**
+   * The mean position of the alternatives (all assumed to have the same mass).
+   *
+   * @returns A float32 array.
+   * @throws ValueError when there are no alternatives.
+   */
+  centerOfMass(): Float32Array {
+    const children = this.disorderedGetList();
+    if (children.length === 0) throw new ValueError(`${this.repr()} does not have children`);
+    return averageCoords(children.map((a) => a.coord), null);
   }
 }

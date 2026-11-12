@@ -216,6 +216,31 @@ if any(c["kind"] == "pdb" and "written" in c for c in pio):
 if any(c["kind"] == "mmcif" and "written" in c for c in pio) and any(c["kind"] == "dict" and "written" in c for c in pio):
     pio_members("Bio.PDB.mmcifio", "MMCIFIO", ("__init__", "save", "set_dict", "set_structure"))
 
+# ---- Bio.PDB entity operations (packages/pdb/test/golden/pdbops.json) ----
+po = json.load(open(f"{here}/../packages/pdb/test/golden/pdbops.json"))["cases"]
+MODS = {"Atom": "Bio.PDB.Atom", "DisorderedAtom": "Bio.PDB.Atom", "Residue": "Bio.PDB.Residue", "DisorderedResidue": "Bio.PDB.Residue", "Chain": "Bio.PDB.Chain", "Model": "Bio.PDB.Model", "Structure": "Bio.PDB.Structure"}
+DIS_METHODS = {"has": "disordered_has_id", "ids": "disordered_get_id_list", "get": "disordered_get", "select": "disordered_select", "remove": "disordered_remove"}
+ITEM_METHODS = {"len": "__len__", "contains": "__contains__", "get": "__getitem__"}
+LIST_METHODS = {"residues": "get_residues", "chains": "get_chains", "models": "get_models", "atoms": "get_atoms"}
+hits = set()
+for c in po:
+    for op, out, t in zip(c["ops"], c["ops_out"], c["types"]):
+        if "result" not in out or t not in MODS: continue
+        k = op[0]
+        m = {"transform": "transform", "com": "center_of_mass", "vector": "get_vector", "level": "get_level", "iterator": "get_iterator", "delitem": "__delitem__",
+             "setitem": "__setitem__", "detach_parent": "detach_parent"}.get(k)
+        if k == "set": m = "set_" + op[2]
+        elif k == "dis": m = DIS_METHODS[op[2]]
+        elif k == "item": m = ITEM_METHODS[op[2]]
+        elif k in LIST_METHODS: m = LIST_METHODS[k]
+        if m: hits.add((t, m))
+for t, m in hits:
+    mod = MODS[t]
+    if m in inv[mod]["classes"].get(t, {}): mark(f"{mod}.{t}.{m}")
+    # Entity and DisorderedEntityWrapper are the shared bases; a hit on any subclass exercises them
+    base = "Entity" if t in ("Residue", "Chain", "Model", "Structure") else "DisorderedEntityWrapper" if t.startswith("Disordered") else None
+    if base and m in inv["Bio.PDB.Entity"]["classes"][base]: mark(f"Bio.PDB.Entity.{base}.{m}")
+
 # ---- Bio.PDB.vectors (packages/pdb/test/golden/vectors.json) ----
 vc = json.load(open(f"{here}/../packages/pdb/test/golden/vectors.json"))["cases"]
 vec_ops = {c["op"] for c in vc if "result" in c}

@@ -31,7 +31,56 @@ export function compareIds(a: unknown, b: unknown): number {
     if (a === b) return 0;
     throw new TypeError("'<' not supported between instances of 'NoneType' and other types");
   }
-  throw new TypeError(`'<' not supported between instances of '${typeof a}' and '${typeof b}'`);
+  throw new TypeError(`'<' not supported between instances of '${idTypeName(a)}' and '${idTypeName(b)}'`);
+}
+
+/** Python's type name for an id: `str`, `int`, `tuple` or `NoneType`. */
+function idTypeName(x: unknown): string {
+  if (x === null || x === undefined) return "NoneType";
+  if (Array.isArray(x)) return "tuple";
+  return typeof x === "string" ? "str" : typeof x === "number" ? "int" : typeof x;
+}
+
+/** The id an {@link idKey} string stands for. */
+export function keyToId(key: string): EntityId {
+  if (key[0] === "n") return Number(key.slice(1));
+  if (key[0] === "t") return JSON.parse(key.slice(1)) as EntityId;
+  return key.slice(1);
+}
+
+/**
+ * Python's `sorted(ids)`: CPython's run detection and binary insertion sort, so that comparing ids of different
+ * kinds raises the same `TypeError` (naming the same two types) as Python does.
+ *
+ * @param ids - The ids to sort.
+ * @returns A new sorted array.
+ * @throws TypeError when two ids cannot be compared.
+ */
+export function pySortedIds(ids: readonly EntityId[]): EntityId[] {
+  const a = [...ids];
+  const n = a.length;
+  if (n < 2) return a;
+  const lt = (x: EntityId, y: EntityId): boolean => compareIds(x, y) < 0;
+  // count_run: the leading ascending (or strictly descending, then reversed) run
+  let run = 2;
+  if (lt(a[1]!, a[0]!)) {
+    while (run < n && lt(a[run]!, a[run - 1]!)) run++;
+    a.splice(0, run, ...a.slice(0, run).reverse());
+  } else {
+    while (run < n && !lt(a[run]!, a[run - 1]!)) run++;
+  }
+  // binarysort: insert each remaining element at its position among the sorted prefix
+  for (let start = run; start < n; start++) {
+    const pivot = a[start]!;
+    let l = 0, r = start;
+    while (l < r) {
+      const p = l + ((r - l) >> 1);
+      if (lt(pivot, a[p]!)) r = p; else l = p + 1;
+    }
+    a.splice(start, 1);
+    a.splice(l, 0, pivot);
+  }
+  return a;
 }
 
 /** Structural equality of ids (`a == b`). */
@@ -45,7 +94,8 @@ export function idsEqual(a: unknown, b: unknown): boolean {
  * @param id - An entity id.
  * @returns The text Python's f-string formatting would give.
  */
-export function pyStr(id: EntityId): string {
+export function pyStr(id: EntityId | null | undefined): string {
+  if (id === null || id === undefined) return "None";
   if (!Array.isArray(id)) return String(id);
   const parts = (id as readonly (string | number)[]).map((x) => (typeof x === "string" ? `'${x}'` : String(x)));
   return `(${parts.join(", ")}${parts.length === 1 ? "," : ""})`;

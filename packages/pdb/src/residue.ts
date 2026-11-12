@@ -3,7 +3,7 @@
 import { DisorderedEntityWrapper, Entity, type Child } from "./entity.js";
 import { PDBConstructionException } from "./exceptions.js";
 import type { Atom, DisorderedAtom } from "./atom.js";
-import type { EntityId } from "./util.js";
+import { idKey, pyStr, type EntityId } from "./util.js";
 
 /** The id of a residue: `[hetero flag, sequence number, insertion code]`. */
 export type ResidueId = [string, number, string];
@@ -65,6 +65,7 @@ export class Residue extends Entity<Atom | DisorderedAtom> implements Child {
   getUnpackedList(): Atom[] {
     const out: Atom[] = [];
     for (const atom of this.getList()) {
+      // Truthiness, not `=== 2`, as in Python: a plain atom flagged as disordered (1) fails here too.
       if (atom.isDisordered()) out.push(...(atom as DisorderedAtom).disorderedGetList());
       else out.push(atom as Atom);
     }
@@ -124,9 +125,10 @@ export class DisorderedResidue extends DisorderedEntityWrapper {
 
   /** Remove a version by residue name; another version becomes the selected one. */
   disorderedRemove(resname: string): void {
-    const residue = this.childDict.get(`s${resname}`)!;
+    const residue = this.childDict.get(idKey(resname)) as Residue | undefined;
+    if (residue === undefined) throw Object.assign(new Error(pyStr(resname)), { name: "KeyError" });
     const isSelected = this.selectedChild === residue;
-    this.childDict.delete(`s${resname}`);
+    this.childDict.delete(idKey(resname));
     residue.detachParent();
     if (isSelected && this.childDict.size > 0) {
       const next = this.childDict.keys().next().value as string;

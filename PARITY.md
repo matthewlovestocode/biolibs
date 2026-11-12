@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 980 / 1136 applicable items verified against Biopython.**
+**Progress: 1049 / 1136 applicable items verified against Biopython.**
 
 
 
@@ -1128,7 +1128,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 ### Bio.PDB.Entity.Entity
 
 - [x] `__contains__(self, id)`
-- [ ] `__delitem__(self, id)`
+- [x] `__delitem__(self, id)`
 - [x] `__eq__(self, other)`
 - [x] `__ge__(self, other)`
 - [x] `__getitem__(self, id)`
@@ -1142,14 +1142,14 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `__repr__(self, /)`
 - [-] `__str__(self, /)`
 - [x] `add(self, entity: ~_Child)`
-- [ ] `center_of_mass(self, geometric=False)`
+- [x] `center_of_mass(self, geometric=False)`
 - [x] `copy(self)`
 - [x] `detach_child(self, id)`
 - [x] `detach_parent(self)`
 - [x] `get_full_id(self)`
 - [x] `get_id(self)`
-- [ ] `get_iterator(self)`
-- [ ] `get_level(self)`
+- [x] `get_iterator(self)`
+- [x] `get_level(self)`
 - [x] `get_list(self)`
 - [x] `get_parent(self)`
 - [x] `has_id(self, id)`
@@ -1157,14 +1157,14 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `insert(self, pos: int, entity: ~_Child)`
 - [x] `set_parent(self, entity: ~_Parent)`
 - [x] `strictly_equals(self: ~_Self, other: ~_Self, compare_coordinates: bool = False) -> bool`
-- [ ] `transform(self, rot, tran)`
+- [x] `transform(self, rot, tran)`
 
 ### Bio.PDB.Entity.DisorderedEntityWrapper
 
-- [ ] `__contains__(self, id)`
+- [x] `__contains__(self, id)`
 - [ ] `__eq__(self, value, /)`
 - [ ] `__ge__(self, other)`
-- [ ] `__getitem__(self, id)`
+- [x] `__getitem__(self, id)`
 - [ ] `__gt__(self, other)`
 - [-] `__hash__(self, /)`
 - [x] `__init__(self, id)`
@@ -1173,17 +1173,17 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `__len__(self)`
 - [ ] `__lt__(self, other)`
 - [x] `__repr__(self, /)`
-- [ ] `__setitem__(self, id, child)`
+- [x] `__setitem__(self, id, child)`
 - [-] `__str__(self, /)`
 - [x] `copy(self)`
-- [ ] `detach_parent(self)`
+- [x] `detach_parent(self)`
 - [x] `disordered_add(self, child)`
-- [ ] `disordered_get(self, id=None)`
-- [ ] `disordered_get_id_list(self)`
+- [x] `disordered_get(self, id=None)`
+- [x] `disordered_get_id_list(self)`
 - [x] `disordered_get_list(self)`
-- [ ] `disordered_has_id(self, id)`
-- [ ] `disordered_remove(self, child)`
-- [ ] `disordered_select(self, id)`
+- [x] `disordered_has_id(self, id)`
+- [x] `disordered_remove(self, child)`
+- [x] `disordered_select(self, id)`
 - [x] `get_id(self)`
 - [x] `get_parent(self)`
 - [x] `is_disordered(self)`
@@ -1215,7 +1215,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `get_full_id(self)`
 - [x] `get_fullname(self) -> str`
 - [x] `get_id(self) -> str`
-- [ ] `get_level(self) -> str`
+- [x] `get_level(self) -> str`
 - [x] `get_name(self) -> str`
 - [x] `get_occupancy(self) -> float | None`
 - [x] `get_parent(self) -> Bio.PDB.Residue.Residue | None`
@@ -1223,21 +1223,21 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `get_serial_number(self)`
 - [x] `get_sigatm(self) -> numpy.ndarray | None`
 - [x] `get_siguij(self) -> numpy.ndarray | None`
-- [ ] `get_vector(self) -> Bio.PDB.vectors.Vector`
+- [x] `get_vector(self) -> Bio.PDB.vectors.Vector`
 - [x] `is_disordered(self) -> int`
-- [ ] `set_altloc(self, altloc: str)`
+- [x] `set_altloc(self, altloc: str)`
 - [x] `set_anisou(self, anisou_array: numpy.ndarray | None)`
-- [ ] `set_bfactor(self, bfactor: float | None)`
-- [ ] `set_charge(self, pqr_charge: float | None)`
-- [ ] `set_coord(self, coord: numpy.ndarray)`
-- [ ] `set_occupancy(self, occupancy: float | None)`
+- [x] `set_bfactor(self, bfactor: float | None)`
+- [x] `set_charge(self, pqr_charge: float | None)`
+- [x] `set_coord(self, coord: numpy.ndarray)`
+- [x] `set_occupancy(self, occupancy: float | None)`
 - [x] `set_parent(self, parent)`
-- [ ] `set_radius(self, radius: float | None)`
-- [ ] `set_serial_number(self, n)`
+- [x] `set_radius(self, radius: float | None)`
+- [x] `set_serial_number(self, n)`
 - [x] `set_sigatm(self, sigatm_array: numpy.ndarray | None)`
 - [x] `set_siguij(self, siguij_array: numpy.ndarray | None)`
 - [x] `strictly_equals(self: ~_AtomT, other: ~_AtomT, compare_coordinates: bool = False) -> bool`
-- [ ] `transform(self, rot: numpy.ndarray, tran: numpy.ndarray)`
+- [x] `transform(self, rot: numpy.ndarray, tran: numpy.ndarray)`
 
 ### Bio.PDB.Atom.DisorderedAtom
 
@@ -1253,24 +1253,24 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `__len__(self)`
 - [ ] `__lt__(self, other)`
 - [x] `__repr__(self)`
-- [ ] `__setitem__(self, id, child)`
+- [x] `__setitem__(self, id, child)`
 - [-] `__str__(self, /)`
-- [ ] `center_of_mass(self)`
+- [x] `center_of_mass(self)`
 - [x] `copy(self)`
-- [ ] `detach_parent(self)`
+- [x] `detach_parent(self)`
 - [x] `disordered_add(self, atom)`
-- [ ] `disordered_get(self, id=None)`
-- [ ] `disordered_get_id_list(self)`
+- [x] `disordered_get(self, id=None)`
+- [x] `disordered_get_id_list(self)`
 - [x] `disordered_get_list(self) -> list[Bio.PDB.Atom.Atom]`
-- [ ] `disordered_has_id(self, id)`
-- [ ] `disordered_remove(self, altloc: str)`
-- [ ] `disordered_select(self, id)`
+- [x] `disordered_has_id(self, id)`
+- [x] `disordered_remove(self, altloc: str)`
+- [x] `disordered_select(self, id)`
 - [x] `get_id(self)`
 - [x] `get_parent(self)`
 - [x] `is_disordered(self)`
 - [x] `set_parent(self, parent)`
 - [x] `strictly_equals(self, other: 'DisorderedEntityWrapper', compare_coordinates: bool = False) -> bool`
-- [ ] `transform(self, rot: numpy.ndarray, tran: numpy.ndarray)`
+- [x] `transform(self, rot: numpy.ndarray, tran: numpy.ndarray)`
 
 ## Bio.PDB.Residue
 
@@ -1278,7 +1278,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 ### Bio.PDB.Residue.Residue
 
 - [x] `__contains__(self, id)`
-- [ ] `__delitem__(self, id)`
+- [x] `__delitem__(self, id)`
 - [x] `__eq__(self, other)`
 - [x] `__ge__(self, other)`
 - [x] `__getitem__(self, id)`
@@ -1292,7 +1292,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `__repr__(self)`
 - [-] `__str__(self, /)`
 - [x] `add(self, atom)`
-- [ ] `center_of_mass(self, geometric=False)`
+- [x] `center_of_mass(self, geometric=False)`
 - [x] `copy(self)`
 - [x] `detach_child(self, id)`
 - [x] `detach_parent(self)`
@@ -1300,8 +1300,8 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `get_atoms(self)`
 - [x] `get_full_id(self)`
 - [x] `get_id(self)`
-- [ ] `get_iterator(self)`
-- [ ] `get_level(self)`
+- [x] `get_iterator(self)`
+- [x] `get_level(self)`
 - [x] `get_list(self)`
 - [x] `get_parent(self)`
 - [x] `get_resname(self)`
@@ -1313,34 +1313,34 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `is_disordered(self)`
 - [x] `set_parent(self, entity: ~_Parent)`
 - [x] `strictly_equals(self: ~_ResidueT, other: ~_ResidueT, compare_coordinates: bool = False) -> bool`
-- [ ] `transform(self, rot, tran)`
+- [x] `transform(self, rot, tran)`
 
 ### Bio.PDB.Residue.DisorderedResidue
 
-- [ ] `__contains__(self, id)`
+- [x] `__contains__(self, id)`
 - [ ] `__eq__(self, value, /)`
 - [ ] `__ge__(self, other)`
-- [ ] `__getitem__(self, id)`
+- [x] `__getitem__(self, id)`
 - [ ] `__gt__(self, other)`
 - [-] `__hash__(self, /)`
 - [x] `__init__(self, id)`
 - [x] `__iter__(self)`
 - [ ] `__le__(self, other)`
-- [ ] `__len__(self)`
+- [x] `__len__(self)`
 - [ ] `__lt__(self, other)`
 - [x] `__repr__(self)`
-- [ ] `__setitem__(self, id, child)`
+- [x] `__setitem__(self, id, child)`
 - [-] `__str__(self, /)`
 - [x] `add(self, atom)`
 - [x] `copy(self)`
-- [ ] `detach_parent(self)`
+- [x] `detach_parent(self)`
 - [x] `disordered_add(self, residue)`
-- [ ] `disordered_get(self, id=None)`
-- [ ] `disordered_get_id_list(self)`
+- [x] `disordered_get(self, id=None)`
+- [x] `disordered_get_id_list(self)`
 - [x] `disordered_get_list(self)`
-- [ ] `disordered_has_id(self, id)`
-- [ ] `disordered_remove(self, resname)`
-- [ ] `disordered_select(self, id)`
+- [x] `disordered_has_id(self, id)`
+- [x] `disordered_remove(self, resname)`
+- [x] `disordered_select(self, id)`
 - [x] `get_id(self)`
 - [x] `get_parent(self)`
 - [x] `is_disordered(self)`
@@ -1354,7 +1354,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 ### Bio.PDB.Chain.Chain
 
 - [x] `__contains__(self, id)`
-- [ ] `__delitem__(self, id)`
+- [x] `__delitem__(self, id)`
 - [x] `__eq__(self, other)`
 - [x] `__ge__(self, other)`
 - [x] `__getitem__(self, id)`
@@ -1369,18 +1369,18 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [-] `__str__(self, /)`
 - [x] `add(self, entity: ~_Child)`
 - [ ] `atom_to_internal_coordinates(self, verbose: bool = False) -> None`
-- [ ] `center_of_mass(self, geometric=False)`
+- [x] `center_of_mass(self, geometric=False)`
 - [x] `copy(self)`
 - [x] `detach_child(self, id)`
 - [x] `detach_parent(self)`
 - [x] `get_atoms(self)`
 - [x] `get_full_id(self)`
 - [x] `get_id(self)`
-- [ ] `get_iterator(self)`
-- [ ] `get_level(self)`
+- [x] `get_iterator(self)`
+- [x] `get_level(self)`
 - [x] `get_list(self)`
 - [x] `get_parent(self)`
-- [ ] `get_residues(self)`
+- [x] `get_residues(self)`
 - [x] `get_unpacked_list(self)`
 - [x] `has_id(self, id)`
 - [x] `id`
@@ -1388,7 +1388,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `internal_to_atom_coordinates(self, verbose: bool = False, start: int | None = None, fin: int | None = None)`
 - [x] `set_parent(self, entity: ~_Parent)`
 - [x] `strictly_equals(self: ~_Self, other: ~_Self, compare_coordinates: bool = False) -> bool`
-- [ ] `transform(self, rot, tran)`
+- [x] `transform(self, rot, tran)`
 
 ## Bio.PDB.Model
 
@@ -1396,7 +1396,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 ### Bio.PDB.Model.Model
 
 - [x] `__contains__(self, id)`
-- [ ] `__delitem__(self, id)`
+- [x] `__delitem__(self, id)`
 - [x] `__eq__(self, other)`
 - [x] `__ge__(self, other)`
 - [x] `__getitem__(self, id)`
@@ -1411,26 +1411,26 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [-] `__str__(self, /)`
 - [x] `add(self, entity: ~_Child)`
 - [ ] `atom_to_internal_coordinates(self, verbose: bool = False) -> None`
-- [ ] `center_of_mass(self, geometric=False)`
+- [x] `center_of_mass(self, geometric=False)`
 - [x] `copy(self)`
 - [x] `detach_child(self, id)`
 - [x] `detach_parent(self)`
 - [x] `get_atoms(self)`
-- [ ] `get_chains(self)`
+- [x] `get_chains(self)`
 - [x] `get_full_id(self)`
 - [x] `get_id(self)`
-- [ ] `get_iterator(self)`
-- [ ] `get_level(self)`
+- [x] `get_iterator(self)`
+- [x] `get_level(self)`
 - [x] `get_list(self)`
 - [x] `get_parent(self)`
-- [ ] `get_residues(self)`
+- [x] `get_residues(self)`
 - [x] `has_id(self, id)`
 - [x] `id`
 - [x] `insert(self, pos: int, entity: ~_Child)`
 - [ ] `internal_to_atom_coordinates(self, verbose: bool = False) -> None`
 - [x] `set_parent(self, entity: ~_Parent)`
 - [x] `strictly_equals(self: ~_Self, other: ~_Self, compare_coordinates: bool = False) -> bool`
-- [ ] `transform(self, rot, tran)`
+- [x] `transform(self, rot, tran)`
 
 ## Bio.PDB.Structure
 
@@ -1438,7 +1438,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 ### Bio.PDB.Structure.Structure
 
 - [x] `__contains__(self, id)`
-- [ ] `__delitem__(self, id)`
+- [x] `__delitem__(self, id)`
 - [x] `__eq__(self, other)`
 - [x] `__ge__(self, other)`
 - [x] `__getitem__(self, id)`
@@ -1453,27 +1453,27 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [-] `__str__(self, /)`
 - [x] `add(self, entity: ~_Child)`
 - [ ] `atom_to_internal_coordinates(self, verbose: bool = False) -> None`
-- [ ] `center_of_mass(self, geometric=False)`
+- [x] `center_of_mass(self, geometric=False)`
 - [x] `copy(self)`
 - [x] `detach_child(self, id)`
 - [x] `detach_parent(self)`
 - [x] `get_atoms(self)`
-- [ ] `get_chains(self)`
+- [x] `get_chains(self)`
 - [x] `get_full_id(self)`
 - [x] `get_id(self)`
-- [ ] `get_iterator(self)`
-- [ ] `get_level(self)`
+- [x] `get_iterator(self)`
+- [x] `get_level(self)`
 - [x] `get_list(self)`
-- [ ] `get_models(self)`
+- [x] `get_models(self)`
 - [x] `get_parent(self)`
-- [ ] `get_residues(self)`
+- [x] `get_residues(self)`
 - [x] `has_id(self, id)`
 - [x] `id`
 - [x] `insert(self, pos: int, entity: ~_Child)`
 - [ ] `internal_to_atom_coordinates(self, verbose: bool = False) -> None`
 - [x] `set_parent(self, entity: ~_Parent)`
 - [x] `strictly_equals(self: ~_Self, other: ~_Self, compare_coordinates: bool = False) -> bool`
-- [ ] `transform(self, rot, tran)`
+- [x] `transform(self, rot, tran)`
 
 ## Bio.PDB.StructureBuilder
 

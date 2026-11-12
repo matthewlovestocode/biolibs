@@ -1,6 +1,6 @@
 # @biolibs/pdb
 
-A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers the PDB, PQR and mmCIF writers and the vector/rotation geometry of `Bio.PDB.vectors`. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`) and 5,298 geometry cases (`vectors.json`, `gen_vector_cases.py`).
+A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers the PDB, PQR and mmCIF writers and the vector/rotation geometry of `Bio.PDB.vectors`. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`) 5,298 geometry cases (`vectors.json`, `gen_vector_cases.py`) and 1,400 entity-operation cases (`pdbops.json`, `gen_pdbops_cases.py`).
 
 ## Parsing
 
@@ -68,6 +68,10 @@ v.leftMultiply(rotaxis2m(Math.PI, new Vector(1, 0, 0)));
 Python operators become methods: `+` `add`, `-` `sub`, `*` `dot`, `**` `cross` (or component-wise product with a scalar or list), `/` `div`, `v[i]` `get`/`set`, `in` `has`. Matrices are `number[][]` (a NumPy array's rows); homogeneous 4x4 helpers (`homogRotMtx`, `coordSpace`, `multiCoordSpace`, ...) live in `homog.ts`.
 
 Numerical notes: the cross product reproduces NumPy's `det` (LU factorisation then `exp(sum(log))`), and NumPy's `RuntimeWarning`s (division by zero, invalid value, sqrt of a negative) are emitted through `warn` with category `RuntimeWarning`. NumPy's SIMD `sin`/`cos`/`exp` can differ from JavaScript's in the last bit, so the golden test compares floats to 1e-9 (1e-6 after an `arccos`, which amplifies such differences near 0 and π; a dihedral of ±π counts as equal either way). Cases the golden set avoids because NumPy's own output is undefined: `multiCoordSpace` where the second and third points coincide (uninitialised memory), and `coordSpace` with the first point equal to the second (the result is rounding noise).
+
+## Moving and measuring structures
+
+`entity.transform(rot, tran)` applies `coord @ rot + tran` to every atom below, `atom.getVector()` returns the coordinates as a `Vector`, and `entity.centerOfMass(geometric?)` gives the center of mass (or of geometry) as a float32 array. NumPy's dtype rules carry over: coordinates stay `Float32Array` only when `rot` (as `Float32Array` rows) and `tran` (a `Float32Array`) are single precision too; any `number[]`/`Float64Array` operand makes the result `Float64Array`, as a float64 NumPy array does. A transform with a 3xN matrix gives N-component coordinates, as in NumPy. On a `DisorderedAtom`, `transform` moves every alternative, whereas on a `DisorderedResidue` it reaches only the selected residue (Python forwards the call), and `centerOfMass` follows Biopython's own queue so a stray child in a disordered wrapper fails the same way.
 
 ## Hierarchy
 

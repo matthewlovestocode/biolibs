@@ -5,7 +5,8 @@
 
 import { warn } from "@biolibs/core";
 import { PDBConstructionException } from "./exceptions.js";
-import { compareIds, idKey, idsEqual, pyStr, type EntityId } from "./util.js";
+import { centerOfMass, type RotMatrix } from "./geometry.js";
+import { compareIds, idKey, idsEqual, keyToId, pySortedIds, pyStr, type EntityId } from "./util.js";
 
 /** Anything with an id and a parent: an entity or an atom. */
 export interface Child {
@@ -21,6 +22,8 @@ export interface Child {
   getId(): EntityId;
   /** Deep-ish copy without a parent. */
   copy(): Child;
+  /** Apply a rotation and translation to the coordinates. */
+  transform(rot: RotMatrix, tran: ArrayLike<number>): void;
 }
 
 /** The base class of Structure, Model, Chain and Residue. */
@@ -170,6 +173,11 @@ export abstract class Entity<C extends Child = Child> {
     this.childDict.set(idKey(entityId), entity);
   }
 
+  /** @returns An iterator over the children (Python `get_iterator`). */
+  getIterator(): IterableIterator<C> {
+    return this.childList[Symbol.iterator]();
+  }
+
   /** A copy of the list of children. */
   getList(): C[] {
     return [...this.childList];
@@ -203,6 +211,26 @@ export abstract class Entity<C extends Child = Child> {
     if (idKey(this.id) !== idKey(o.id)) return false;
     if (this.childList.length !== o.childList.length) return false;
     return this.childList.every((c, k) => (c as unknown as Entity<Child>).strictlyEquals(o.childList[k], compareCoordinates));
+  }
+
+  /**
+   * Apply a right-multiplying rotation and a translation to every atom below.
+   *
+   * @param rot - A 3x3 matrix.
+   * @param tran - The translation.
+   */
+  transform(rot: RotMatrix, tran: ArrayLike<number>): void {
+    for (const o of this.getList()) o.transform(rot, tran);
+  }
+
+  /**
+   * The center of mass (or geometry) of all atoms below, as a float32 array.
+   *
+   * @param geometric - Weight every atom equally.
+   * @throws ValueError for an entity without children.
+   */
+  centerOfMass(geometric = false): Float32Array {
+    return centerOfMass(this as never, geometric);
   }
 
   /** A copy of this entity with copies of all its children (no parent). */
@@ -239,6 +267,18 @@ export abstract class DisorderedEntityWrapper {
   childDict = new Map<string, Child>();
   /** The currently selected alternative. */
   selectedChild: Child | null = null;
+
+  /**
+   * Transform the selected child only (Python forwards unknown methods to it); `DisorderedAtom` overrides this to move every alternative.
+   *
+   * @param rot - A 3x3 matrix.
+   * @param tran - The translation.
+   * @throws TypeError (Python's AttributeError) when nothing is selected.
+   */
+  transform(rot: RotMatrix, tran: ArrayLike<number>): void {
+    if (this.selectedChild === null) throw new TypeError("'NoneType' object has no attribute 'transform'");
+    this.selectedChild.transform(rot, tran);
+  }
   /** The parent entity. */
   parent: Entity<Child> | null = null;
   /** Any other attribute is read from the selected child (Python's `__getattr__`). */
@@ -298,10 +338,20 @@ export abstract class DisorderedEntityWrapper {
     for (const child of this.disorderedGetList()) child.detachParent();
   }
 
+  /**
+   * Python `wrapper[id] = child`: store a child under an id without touching the selection or the child's parent.
+   *
+   * @param id - The key.
+   * @param child - The alternative to store.
+   */
+  set(id: EntityId, child: Child): void {
+    this.childDict.set(idKey(id), child);
+  }
+
   /** Select the alternative with this id. @throws Error (KeyError) when absent. */
   disorderedSelect(id: EntityId): void {
     const child = this.childDict.get(idKey(id));
-    if (child === undefined) throw Object.assign(new Error(String(id)), { name: "KeyError" });
+    if (child === undefined) throw Object.assign(new Error(pyStr(id)), { name: "KeyError" });
     this.selectedChild = child;
   }
 
@@ -317,7 +367,7 @@ export abstract class DisorderedEntityWrapper {
 
   /** Sorted ids of the alternatives. */
   disorderedGetIdList(): EntityId[] {
-    return [...this.childDict.keys()].map((k) => k.slice(1)).sort();
+    return pySortedIds([...this.childDict.keys()].map(keyToId));
   }
 
   /** The alternative with this id, or the selected one when no id is given. */
