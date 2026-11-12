@@ -33,3 +33,18 @@ export function pyFirstWord(s: string): string {
 export function pyIsLower(s: string): boolean {
   return s === s.toLowerCase() && s !== s.toUpperCase();
 }
+
+/** Python `str.split()` with no arguments: the whitespace-separated words. */
+export function pySplit(s: string): string[] {
+  return s.split(new RegExp(`[${WS}]+`)).filter((w) => w.length > 0);
+}
+
+/** Python `str.isascii()`. */
+export function pyIsAscii(s: string): boolean {
+  return !/[^\x00-\x7f]/.test(s);
+}
+
+/** Python `str.isprintable()`: no control, format, surrogate, private-use, unassigned or separator characters other than the ASCII space. */
+export function pyIsPrintable(s: string): boolean {
+  return !/[\p{C}\p{Z}]/u.test(s.replaceAll(" ", ""));
+}

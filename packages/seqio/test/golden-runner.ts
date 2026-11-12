@@ -3,19 +3,24 @@
  * A parse case records the records produced before any error, then the error.
  */
 import { captureWarnings } from "@biolibs/core";
-import { LineStream, StringHandle, convert, parse, read, simpleFastaParser, fastaTwoLineParser, toDict, write, FastaTwoLineWriter, FastaWriter } from "@biolibs/seqio";
+import * as SeqIO from "@biolibs/seqio";
+import {
+  FastaTwoLineWriter, FastaWriter, FastqIlluminaWriter, FastqPhredWriter, FastqSolexaWriter, LineStream, QualPhredWriter, StringHandle,
+  convert, fastaTwoLineParser, fastqGeneralIterator, pairedFastaQualIterator, parse, read, simpleFastaParser, toDict, write,
+} from "@biolibs/seqio";
 import { dec, enc } from "../../seqrecord/test/golden-runner";
 
 type J = null | boolean | number | string | { [k: string]: unknown };
 
 export interface Case {
   kind: string; format?: string | number | null; text?: string; bytes?: string; out?: string; molecule_type?: string | null;
-  records?: unknown[]; record?: unknown; cls?: string; args?: unknown[]; parser?: string; single?: boolean; bad_handle?: string;
+  records?: unknown[]; record?: unknown; cls?: string; fasta?: string; qual?: string; fn?: string; args?: unknown[]; parser?: string; single?: boolean; bad_handle?: string;
   exc?: { type: string; msg: string | null }; warnings: string[];
   result?: J; count?: number; text_out?: string; pairs?: J[]; keys?: string[];
 }
 
-const WRITERS: Record<string, any> = { FastaWriter, FastaTwoLineWriter };
+const WRITERS: Record<string, any> = { FastaWriter, FastaTwoLineWriter, QualPhredWriter, FastqPhredWriter, FastqSolexaWriter, FastqIlluminaWriter };
+const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
 
 /** Outcome as recorded by Python, so the two can be compared field by field. */
 export interface Outcome {
@@ -66,6 +71,19 @@ export function runCase(c: Case): Outcome {
         }
         break;
       }
+      case "fastq_general": {
+        const items: J[] = [];
+        out.pairs = items;
+        for (const triple of fastqGeneralIterator(source(c))) items.push(triple);
+        break;
+      }
+      case "paired": {
+        const recs: J[] = [];
+        out.parsed = recs;
+        for (const r of pairedFastaQualIterator(c.fasta, c.qual)) recs.push(enc(r));
+        break;
+      }
+      case "func": out.result = (SeqIO as any)[camel(c.fn!)](...(c.args ?? [])) as J; break;
       case "simple_parser": {
         const items: J[] = [];
         out.pairs = items;

@@ -1,6 +1,6 @@
 # @biolibs/seqio
 
-A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 3,000 recorded calls for the FASTA family; each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
+A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 6,800 recorded calls so far (FASTA and FASTQ/QUAL families); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
 
 ```ts
 import { parse, read, write, toDict, convert, StringHandle } from "@biolibs/seqio";
@@ -31,7 +31,7 @@ Unlike Python, nothing here opens files, so the library works in Node and in the
 | `SeqIO.read(handle, format)` | `read(source, format)` | exactly one record, else `ValueError` |
 | `SeqIO.write(records, handle, format)` | `write(records, target, format)` | returns the record count |
 | `SeqIO.to_dict(records, key_function)` | `toDict(records, keyFunction?)` | returns a `Map`; duplicates raise `ValueError` |
-| `SeqIO.convert(in, fmt, out, fmt, molecule_type)` | `convert(source, inFormat, target, outFormat, moleculeType?)` | general path only so far |
+| `SeqIO.convert(in, fmt, out, fmt, molecule_type)` | `convert(source, inFormat, target, outFormat, moleculeType?)` | uses Biopython's direct FASTQ paths; GenBank/EMBL to FASTA come with those formats |
 | `SeqIO.index`, `SeqIO.index_db` | not yet | need file access |
 
 Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names match Biopython's.
@@ -44,10 +44,22 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 | `fasta-2line` | yes | yes (no wrapping) |
 | `fasta-pearson` | yes | |
 | `fasta-blast` | yes | |
+| `fastq`, `fastq-sanger` | yes | yes |
+| `fastq-solexa` | yes | yes |
+| `fastq-illumina` | yes | yes |
+| `qual` | yes | yes |
 
 `fasta` requires the file to begin with `>` (comments are an error with a helpful message); use `fasta-pearson` (`;` comments, text before the first `>` ignored) or `fasta-blast` (`#`, `!`, `;` comments) for those files. `fasta-blast` reproduces a bug in Biopython 1.88: after the first record it does not advance its saved header line, so later records reuse the first header. The output is identical to Biopython's.
 
-Other formats (FASTQ, GenBank, EMBL, tab, ...) are being added; see PARITY.md.
+### FASTQ and QUAL
+
+- Scores are decoded to `letterAnnotations`: `phred_quality` for `fastq`/`fastq-sanger` (PHRED+33, 0 to 93) and `fastq-illumina` (PHRED+64, 0 to 62), `solexa_quality` for `fastq-solexa` (Solexa+64, -5 to 62). Characters outside the valid range raise `InvalidCharError`, which shows the character and its context.
+- Writers accept either kind of score and convert (Solexa to PHRED and back), warning when values are capped. Missing, `None`/`null`, or unusable qualities raise the same errors as Biopython.
+- `qual` records have an undefined sequence of the right length; negative scores become 0 with a warning. `pairedFastaQualIterator(fasta, qual)` merges a FASTA and a QUAL file.
+- `fastqGeneralIterator(source)` yields raw `[title, sequence, quality]` strings with no decoding (fast, and used by the direct converters).
+- Score helpers: `solexaQualityFromPhred`, `phredQualityFromSolexa` (identical numeric behaviour to Python, including banker's rounding and the overflow error for huge PHRED values).
+
+Other formats (GenBank, EMBL, tab, ...) are being added; see PARITY.md.
 
 ## Readers and writers
 
@@ -75,5 +87,6 @@ Register your own format with `registerIterator(name, Class)` and `registerWrite
 packages/seqio/src/
   api.ts  handles.ts  errors.ts  interfaces.ts  registry.ts  index.ts
   fasta/   parsers.ts  iterators.ts  writers.ts  index.ts
+  fastq/   scores.ts  general-iterator.ts  iterators.ts  qual-iterator.ts  paired.ts  writers.ts  qual-writer.ts  converters.ts  errors.ts  index.ts
 ```
 Each format family lives in its own directory and registers itself with `registry.ts`.

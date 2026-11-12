@@ -61,3 +61,12 @@ export class KeyError extends BioError {
     this.name = "KeyError";
   }
 }
+
+/** Mirrors Python's `OverflowError`: a numeric result is too large to represent (for example `10 ** 400.0`). */
+export class OverflowError extends BioError {
+  /** @param message - Python's text, e.g. `(34, 'Result too large')`. */
+  constructor(message: string) {
+    super(message);
+    this.name = "OverflowError";
+  }
+}

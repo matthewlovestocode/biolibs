@@ -4,7 +4,7 @@ import { ValueError, pyContains, pyIsLower } from "@biolibs/core";
 import { SeqRecord } from "@biolibs/seqrecord";
 import type { WriteHandle } from "./handles.js";
 import type { SequenceIterator } from "./interfaces.js";
-import { FORMAT_TO_ITERATOR, FORMAT_TO_WRITER } from "./registry.js";
+import { FORMAT_TO_ITERATOR, FORMAT_TO_WRITER, getConverter } from "./registry.js";
 
 /** Check the shape of a format name, with Biopython's messages. */
 function checkFormat(format: unknown): asserts format is string {
@@ -109,6 +109,8 @@ export function convert(source: unknown, inFormat: string, target: WriteHandle, 
       throw new ValueError(`Unexpected molecule type, '${moleculeType}'`);
     }
   }
+  const direct = getConverter(inFormat, outFormat);
+  if (direct) return direct(source, target);
   let records: Iterable<SeqRecord> = parse(source, inFormat);
   if (moleculeType) {
     const mt = moleculeType;

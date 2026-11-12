@@ -9,7 +9,7 @@ for (const file of readdirSync(dir).filter((f) => f.startsWith("seqio-") && f.en
   // Group by case kind and format so a failure names the reader or writer that diverges.
   const groups = new Map<string, Case[]>();
   for (const c of cases) {
-    const key = `${c.kind}${c.format !== undefined && c.format !== null ? ` ${String(c.format)}` : ""}${c.cls ? ` ${c.cls}` : ""}${c.parser ? ` ${c.parser}` : ""}`;
+    const key = `${c.kind}${c.format !== undefined && c.format !== null ? ` ${String(c.format)}` : ""}${c.cls ? ` ${c.cls}` : ""}${c.parser ? ` ${c.parser}` : ""}${c.fn ? ` ${c.fn}` : ""}`;
     (groups.get(key) ?? groups.set(key, []).get(key)!).push(c);
   }
   describe(`${file}: parity with Biopython ${biopython}`, () => {

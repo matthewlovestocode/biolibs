@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 416 / 498 applicable items verified against Biopython.**
+**Progress: 426 / 498 applicable items verified against Biopython.**
 
 
 
@@ -628,10 +628,10 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: fasta-blast`
 - [ ] `parse: fasta-m10`
 - [x] `parse: fasta-pearson`
-- [ ] `parse: fastq`
-- [ ] `parse: fastq-illumina`
-- [ ] `parse: fastq-sanger`
-- [ ] `parse: fastq-solexa`
+- [x] `parse: fastq`
+- [x] `parse: fastq-illumina`
+- [x] `parse: fastq-sanger`
+- [x] `parse: fastq-solexa`
 - [ ] `parse: gb`
 - [ ] `parse: gck`
 - [ ] `parse: genbank`
@@ -652,7 +652,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `parse: phylip-relaxed`
 - [ ] `parse: phylip-sequential`
 - [ ] `parse: pir`
-- [ ] `parse: qual`
+- [x] `parse: qual`
 - [ ] `parse: seqxml`
 - [ ] `parse: sff`
 - [ ] `parse: sff-trim`
@@ -670,10 +670,10 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `write: embl`
 - [x] `write: fasta`
 - [x] `write: fasta-2line`
-- [ ] `write: fastq`
-- [ ] `write: fastq-illumina`
-- [ ] `write: fastq-sanger`
-- [ ] `write: fastq-solexa`
+- [x] `write: fastq`
+- [x] `write: fastq-illumina`
+- [x] `write: fastq-sanger`
+- [x] `write: fastq-solexa`
 - [ ] `write: gb`
 - [ ] `write: genbank`
 - [ ] `write: imgt`
@@ -686,7 +686,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `write: phylip-relaxed`
 - [ ] `write: phylip-sequential`
 - [ ] `write: pir`
-- [ ] `write: qual`
+- [x] `write: qual`
 - [ ] `write: seqxml`
 - [ ] `write: sff`
 - [ ] `write: stockholm`
