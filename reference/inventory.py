@@ -15,6 +15,7 @@ PM2D = importlib.import_module('Bio.PDB.MMCIF2Dict')
 PMP = importlib.import_module('Bio.PDB.MMCIFParser')
 PIO = importlib.import_module('Bio.PDB.PDBIO')  # the module, not the shadowing class
 PMIO = importlib.import_module('Bio.PDB.mmcifio')
+PSASA = importlib.import_module('Bio.PDB.SASA')
 PNS = importlib.import_module('Bio.PDB.NeighborSearch')
 PKD = importlib.import_module('Bio.PDB.kdtrees')
 PSel = importlib.import_module('Bio.PDB.Selection')
@@ -95,6 +96,7 @@ inv = {
   "Bio.PDB.NeighborSearch": {"classes": {"NeighborSearch": members(PNS.NeighborSearch)}},
   "Bio.PDB.kdtrees": {"classes": {c: members(getattr(PKD, c)) for c in ("KDTree", "Point", "Neighbor")}},
   "Bio.PDB.Selection": {"functions": funcs(PSel)},
+  "Bio.PDB.SASA": {"classes": {"ShrakeRupley": members(PSASA.ShrakeRupley)}},
   "Bio.PDB.vectors": {"functions": funcs(PVec), "classes": {"Vector": members(PVec.Vector)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }

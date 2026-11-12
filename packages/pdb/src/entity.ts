@@ -40,6 +40,8 @@ export abstract class Entity<C extends Child = Child> {
   childDict = new Map<string, C>();
   /** Free-form extra data. */
   xtra: Record<string, unknown> = {};
+  /** Solvent accessible surface area, set by `ShrakeRupley.compute` at the chosen level. */
+  declare sasa?: number;
   private idValue: EntityId;
 
   /** @param id - The id of this entity within its parent. */
@@ -261,6 +263,8 @@ function forwardToSelected<T extends DisorderedEntityWrapper>(wrapper: T): T {
 
 /** Holds the alternative versions (altlocs, or point-mutated residues) of one position; one of them is selected. */
 export abstract class DisorderedEntityWrapper {
+  /** Solvent accessible surface area, set by `ShrakeRupley.compute` (on the wrapper itself, not its children). */
+  declare sasa?: number;
   /** The id shared by all alternatives. */
   id: EntityId;
   /** Alternatives by id key. */

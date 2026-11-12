@@ -239,6 +239,13 @@ for cls in ("Point", "Neighbor"): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "parti
 for cls in ("KDTree",): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "na")
 mark("Bio.PDB.NeighborSearch.NeighborSearch.__repr__", "na")   # default object repr
 
+# ---- Bio.PDB.SASA (packages/pdb/test/golden/sasa.json) ----
+sc = json.load(open(f"{here}/../packages/pdb/test/golden/sasa.json"))["cases"]
+if any("ops_out" in c for c in sc):
+    for m in ("__init__", "_compute_sphere"): mark(f"Bio.PDB.SASA.ShrakeRupley.{m}")
+if any("result" in r for c in sc for r in c.get("ops_out", [])): mark("Bio.PDB.SASA.ShrakeRupley.compute")
+mark("Bio.PDB.SASA.ShrakeRupley.__repr__", "na")   # default object repr
+
 # ---- Bio.SVDSuperimposer and Bio.PDB.Superimposer (svd.json, superimposer.json) ----
 svdc = json.load(open(f"{here}/../packages/svdsuperimposer/test/golden/svd.json"))["cases"]
 SVD_OPS = {"set": ("set", "__init__"), "run": ("run",), "transformed": ("get_transformed",), "rotran": ("get_rotran",), "init_rms": ("get_init_rms", "_rms"), "rms": ("get_rms",)}

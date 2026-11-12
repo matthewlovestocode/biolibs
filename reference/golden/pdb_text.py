@@ -9,7 +9,7 @@ def pdb_line(rec, serial, fullname, alt, resname, chain, seq, icode, xyz, occ, b
     if pqr: return head + "%8.4f%8.4f" % (occ, b) + "\n"
     return head + "%6.2f%6.2f      %-4s%2s\n" % (occ, b, segid, elem)
 
-def gen_pdb(rnd, pqr=False):
+def gen_pdb(rnd, pqr=False, box=90):
     lines = []
     nmodels = rnd.choice([1, 1, 1, 2, 3])
     for m in range(nmodels):
@@ -24,7 +24,7 @@ def gen_pdb(rnd, pqr=False):
                 alts = [" "] if rnd.random() < 0.8 else [" ", "A", "B"]
                 for fullname, elem in rnd.sample(ATOMS, rnd.randint(1, 5)):
                     for alt in (alts if rnd.random() < 0.3 else alts[:1]):
-                        xyz = [rnd.uniform(-90, 90) for _ in range(3)]
+                        xyz = [rnd.uniform(-box, box) for _ in range(3)]
                         if rnd.random() < 0.05: xyz[0] = rnd.choice([0.0005, 0.0625, -0.0005, 1234.5675])
                         occ = rnd.choice([1.0, 0.5, 0.33, 0.0])
                         b = rnd.choice([rnd.uniform(0, 99), rnd.uniform(0, 99), 999.99, 0.0, 12.5]) if not pqr else rnd.uniform(0.5, 2.5)

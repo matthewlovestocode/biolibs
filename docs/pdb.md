@@ -1,6 +1,6 @@
 # @biolibs/pdb
 
-A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers the PDB, PQR and mmCIF writers and the vector/rotation geometry of `Bio.PDB.vectors`. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`) 5,298 geometry cases (`vectors.json`, `gen_vector_cases.py`) 1,400 entity-operation cases (`pdbops.json`, `gen_pdbops_cases.py`) 1,718 polypeptide cases (`polypeptide.json`, `gen_poly_cases.py`) 388 superimposer cases (`superimposer.json`, `gen_svd_cases.py`) and 1,713 neighbor-search cases (`nsearch.json`, `gen_nsearch_cases.py`).
+A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers the PDB, PQR and mmCIF writers and the vector/rotation geometry of `Bio.PDB.vectors`. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`) 5,298 geometry cases (`vectors.json`, `gen_vector_cases.py`) 1,400 entity-operation cases (`pdbops.json`, `gen_pdbops_cases.py`) 1,718 polypeptide cases (`polypeptide.json`, `gen_poly_cases.py`) 388 superimposer cases (`superimposer.json`, `gen_svd_cases.py`) 1,713 neighbor-search cases (`nsearch.json`, `gen_nsearch_cases.py`) and 505 surface-area cases (`sasa.json`, `gen_sasa_cases.py`).
 
 ## Parsing
 
@@ -94,6 +94,18 @@ ns.searchAll(4.0, "A");                  // pairs of atoms within 4 Å of each o
 
 `KDTree` is a port of Biopython's C extension: the same tree (median split by cycling axes, leaf buckets), the same traversal, so `search` and `neighborSearch` return points in the order the C code does. Two things differ in principle from running the C code on your platform. First, the C code sorts with `qsort`, whose treatment of equal coordinates is platform-dependent; here the sort is stable, so results are identical whenever no two points share a coordinate value (the golden cases are chosen that way). Second, above atom level Biopython's `search_all` deduplicates pairs through a Python `set`, so its order changes from run to run; here the pairs come in first-appearance order, and the tests compare them sorted. `unfoldEntities` (going up a level keeps first-appearance order) is deterministic in both. `Point.repr()` and `Neighbor.repr()` follow the C source's `%g` format, but the Python 3.15 build used for the goldens raises `SystemError` on them, so they are not golden-verified.
 
+## Solvent accessible surface area
+
+```ts
+import { ShrakeRupley } from "@biolibs/pdb";
+
+const sr = new ShrakeRupley(1.4, 100);          // probe radius (Å), points per atom, optional radii by element
+sr.compute(structure, "R");                      // levels A, R, C, M, S (not above the entity's own level)
+structure.childList[0]!.childList[0]!.childList[0]!.sasa;
+```
+
+Every atom gets a `sasa` property, and so does every entity of the chosen level (the sum over its atoms). Elements missing from `ATOMIC_RADII` get 2.0 Å and are added to `radiiDict`, as Python's `defaultdict` does. The sphere points are the golden spiral in single precision and the KD tree is the one above, so the counts match Biopython's exactly; the sums are compared to 1e-9 because the order of additions differs from NumPy's.
+
 ## Superimposing
 
 ```ts
@@ -125,4 +137,4 @@ Details kept faithful to Biopython:
 
 ## Not yet ported
 
-`transform`/`center_of_mass`, internal coordinates, DSSP/SASA, and the SeqIO formats `pdb-atom`, `cif-atom`, `cif-seqres`.
+Internal coordinates (`internal_coords`, `ic_data`, `ic_rebuild`), DSSP and NACCESS (which run external programs), `HSExposure`, `ResidueDepth`, `FragmentMapper`, `StructureAlignment`/`cealign`, `PDBList`, `PDBMLParser`, `PICIO`, `SCADIO`, `binary_cif`/MMTF and `alphafold_db`. The SeqIO formats `pdb-atom`, `cif-atom` and `cif-seqres` are in `@biolibs/seqio`.

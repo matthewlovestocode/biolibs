@@ -53,6 +53,8 @@ export class Atom implements Child {
   serialNumber: number | string | null;
   /** Free-form extra data. */
   xtra: Record<string, unknown> = {};
+  /** Solvent accessible surface area, set by `ShrakeRupley.compute`. */
+  declare sasa?: number;
   /** Upper-case element symbol (`"X"` when unknown). */
   element: string;
   /** Atomic mass (NaN when unknown). */

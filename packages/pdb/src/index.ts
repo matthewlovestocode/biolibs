@@ -23,6 +23,7 @@
  * - `kdtrees.ts`: `KDTree`, `Point`, `Neighbor`
  * - `selection.ts`: `unfoldEntities`, `uniqueify`, `getUniqueParents`, `entityLevels`
  * - `neighbor-search.ts`: `NeighborSearch`
+ * - `sasa.ts`: `ShrakeRupley`, `ATOMIC_RADII`
  * - `mmcifio.ts`: `MMCIFIO`
  * - `vectors.ts`: `Vector`
  * - `rotations.ts`: `rotaxis2m`, `rotmat`, `refmat`, `m2rotaxis`, `calcAngle`, `calcDihedral`, `vectorToAxis`
@@ -55,3 +56,4 @@ export * from "./superimposer.js";
 export * from "./kdtrees.js";
 export * from "./selection.js";
 export * from "./neighbor-search.js";
+export * from "./sasa.js";

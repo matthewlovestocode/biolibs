@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1087 / 1232 applicable items verified against Biopython.**
+**Progress: 1089 / 1241 applicable items verified against Biopython.**
 
 
 
@@ -1831,6 +1831,22 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `get_unique_parents(entity_list)`
 - [x] `unfold_entities(entity_list, target_level)`
 - [x] `uniqueify(items)`
+
+## Bio.PDB.SASA
+
+
+### Bio.PDB.SASA.ShrakeRupley
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self, probe_radius=1.4, n_points=100, radii_dict=None)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [x] `compute(self, entity, level='A')`
 
 ## Bio.PDB.parse_pdb_header
 
