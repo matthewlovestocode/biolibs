@@ -190,13 +190,15 @@ open(os.path.join(SU_OUT, "melting-temp-data.ts"), "w").write("".join(lines))
 print("melting temp tables written")
 
 # ---------------------------------------------------------------------------------------------
-# Bio.Data.PDBData residue-name tables -> packages/seqio/src/pdb/pdb-data.ts (used by pdb-seqres)
+# Bio.Data.PDBData residue-name tables -> packages/pdb/src/pdb-data.ts (used by Polypeptide and by SeqIO pdb-seqres)
 from Bio.Data import PDBData
-PDB_OUT = os.path.join(os.path.dirname(__file__), "..", "packages", "seqio", "src", "pdb")
+PDB_OUT = os.path.join(os.path.dirname(__file__), "..", "packages", "pdb", "src")
 os.makedirs(PDB_OUT, exist_ok=True)
 PDB_DESCRIPTIONS = {
   "protein_letters_3to1": "Upper-case three-letter residue names of the 20 standard amino acids mapped to one-letter codes, e.g. `ALA` to `A`.",
   "protein_letters_3to1_extended": "Residue names of modified and non-standard amino acids (as found in PDB files) mapped to the one-letter code of the parent residue, e.g. `MSE` to `M`.",
+  "nucleic_letters_3to1": "Residue names of the eight canonical nucleotides (DNA `DA`, `DC`, `DG`, `DT`, RNA `A`, `C`, `G`, `U`, padded to three characters) mapped to one-letter codes.",
+  "nucleic_letters_3to1_extended": "Residue names of canonical and modified nucleotides (padded to three characters, as found in PDB files) mapped to the one-letter code of the parent nucleotide.",
 }
 lines = [HDR, "/**\n * Residue-name tables from Biopython's `Bio.Data.PDBData`, used to turn PDB residue names into one-letter codes.\n */\n\n"]
 for n, d in PDB_DESCRIPTIONS.items():

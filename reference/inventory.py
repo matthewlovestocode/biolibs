@@ -15,6 +15,7 @@ PM2D = importlib.import_module('Bio.PDB.MMCIF2Dict')
 PMP = importlib.import_module('Bio.PDB.MMCIFParser')
 PIO = importlib.import_module('Bio.PDB.PDBIO')  # the module, not the shadowing class
 PMIO = importlib.import_module('Bio.PDB.mmcifio')
+PPoly = importlib.import_module('Bio.PDB.Polypeptide')
 PVec = importlib.import_module('Bio.PDB.vectors')
 PHeader = importlib.import_module('Bio.PDB.parse_pdb_header')  # `import ... as` would give the shadowing function
 from Bio.Nexus import Nexus as NexusMod, Trees as TreesMod, Nodes as NodesMod, StandardData as StandardDataMod
@@ -83,6 +84,7 @@ inv = {
   "Bio.PDB.MMCIFParser": {"classes": {c: {n: _sig(getattr(PMP, c).__dict__[n]) for n in vars(getattr(PMP, c)) if (n == "__init__" or not n.startswith("_")) and callable(getattr(PMP, c).__dict__[n])} for c in ("MMCIFParser", "FastMMCIFParser")}},
   "Bio.PDB.PDBIO": {"classes": {c: members(getattr(PIO, c)) for c in ("Select", "StructureIO", "PDBIO")}},
   "Bio.PDB.mmcifio": {"classes": {"MMCIFIO": members(PMIO.MMCIFIO)}},
+  "Bio.PDB.Polypeptide": {"functions": funcs(PPoly), "classes": {c: members(getattr(PPoly, c)) for c in ("Polypeptide", "CaPPBuilder", "PPBuilder")}},
   "Bio.PDB.vectors": {"functions": funcs(PVec), "classes": {"Vector": members(PVec.Vector)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }

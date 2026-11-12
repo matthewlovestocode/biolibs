@@ -216,6 +216,20 @@ if any(c["kind"] == "pdb" and "written" in c for c in pio):
 if any(c["kind"] == "mmcif" and "written" in c for c in pio) and any(c["kind"] == "dict" and "written" in c for c in pio):
     pio_members("Bio.PDB.mmcifio", "MMCIFIO", ("__init__", "save", "set_dict", "set_structure"))
 
+# ---- Bio.PDB.Polypeptide (packages/pdb/test/golden/polypeptide.json) ----
+pc = json.load(open(f"{here}/../packages/pdb/test/golden/polypeptide.json"))["cases"]
+for f in {c["func"] for c in pc if c["kind"] == "func" and ("result" in c or "exc" in c)}: mark(f"Bio.PDB.Polypeptide.{f}")
+built = [p for c in pc if c["kind"] == "build" for p in c.get("pps", [])]
+if built:
+    for m in ("__repr__", "get_ca_list", "get_phi_psi_list", "get_tau_list", "get_theta_list", "get_sequence"): mark(f"Bio.PDB.Polypeptide.Polypeptide.{m}")
+for m in inv["Bio.PDB.Polypeptide"]["classes"]["Polypeptide"]:
+    if hasattr(list, m) and m != "__repr__": mark(f"Bio.PDB.Polypeptide.Polypeptide.{m}", "na")   # inherited list built-ins (JS Array)
+for cls in ("CaPPBuilder", "PPBuilder"): mark(f"Bio.PDB.Polypeptide.{cls}.__repr__", "na")   # default object repr
+for b in ("ca", "pp"):
+    cls = "CaPPBuilder" if b == "ca" else "PPBuilder"
+    if any(c["kind"] == "build" and c["builder"] == b and "pps" in c for c in pc):
+        for m in ("__init__", "build_peptides"): mark(f"Bio.PDB.Polypeptide.{cls}.{m}")
+
 # ---- Bio.PDB entity operations (packages/pdb/test/golden/pdbops.json) ----
 po = json.load(open(f"{here}/../packages/pdb/test/golden/pdbops.json"))["cases"]
 MODS = {"Atom": "Bio.PDB.Atom", "DisorderedAtom": "Bio.PDB.Atom", "Residue": "Bio.PDB.Residue", "DisorderedResidue": "Bio.PDB.Residue", "Chain": "Bio.PDB.Chain", "Model": "Bio.PDB.Model", "Structure": "Bio.PDB.Structure"}

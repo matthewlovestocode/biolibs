@@ -4,7 +4,7 @@ import { IndexError, UnboundLocalError, ValueError, pySplit, pyStrip } from "@bi
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 import { SequenceIterator } from "../interfaces.js";
-import { proteinLetters3to1, proteinLetters3to1Extended } from "./pdb-data.js";
+import { proteinLetters3to1, proteinLetters3to1Extended } from "@biolibs/pdb";
 
 /** Residue name to one-letter code, standard amino acids overlaid with the extended (modified residue) table. */
 const AA_3_TO_1: Record<string, string> = { ...proteinLetters3to1, ...proteinLetters3to1Extended };

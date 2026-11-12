@@ -16,6 +16,9 @@
  * - `pyformat.ts`: Python `%`-format helpers and exception classes the writers use
  * - `structure-io.ts`: `Select`, `StructureIO`
  * - `pdbio.ts`: `PDBIO`, `formatBFactor`
+ * - `pdb-data.ts`: residue-name tables (generated from `Bio.Data.PDBData`)
+ * - `aa-codes.ts`: `isAa`, `isNucleic`, index/name lookups
+ * - `polypeptide.ts`: `Polypeptide`, `PPBuilder`, `CaPPBuilder`
  * - `mmcifio.ts`: `MMCIFIO`
  * - `vectors.ts`: `Vector`
  * - `rotations.ts`: `rotaxis2m`, `rotmat`, `refmat`, `m2rotaxis`, `calcAngle`, `calcDihedral`, `vectorToAxis`
@@ -41,3 +44,6 @@ export * from "./mmcifio.js";
 export * from "./vectors.js";
 export * from "./rotations.js";
 export * from "./homog.js";
+export * from "./pdb-data.js";
+export * from "./aa-codes.js";
+export * from "./polypeptide.js";
