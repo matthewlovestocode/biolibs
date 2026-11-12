@@ -19,6 +19,7 @@
  * - `pdb-data.ts`: residue-name tables (generated from `Bio.Data.PDBData`)
  * - `aa-codes.ts`: `isAa`, `isNucleic`, index/name lookups
  * - `polypeptide.ts`: `Polypeptide`, `PPBuilder`, `CaPPBuilder`
+ * - `superimposer.ts`: `Superimposer`
  * - `mmcifio.ts`: `MMCIFIO`
  * - `vectors.ts`: `Vector`
  * - `rotations.ts`: `rotaxis2m`, `rotmat`, `refmat`, `m2rotaxis`, `calcAngle`, `calcDihedral`, `vectorToAxis`
@@ -47,3 +48,4 @@ export * from "./homog.js";
 export * from "./pdb-data.js";
 export * from "./aa-codes.js";
 export * from "./polypeptide.js";
+export * from "./superimposer.js";

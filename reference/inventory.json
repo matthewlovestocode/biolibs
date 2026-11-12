@@ -1796,6 +1796,44 @@
    }
   }
  },
+ "Bio.PDB.Superimposer": {
+  "classes": {
+   "Superimposer": {
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self)",
+    "__le__": "(self, value, /)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self, /)",
+    "__str__": "(self, /)",
+    "apply": "(self, atom_list)",
+    "set_atoms": "(self, fixed, moving)"
+   }
+  }
+ },
+ "Bio.SVDSuperimposer": {
+  "classes": {
+   "SVDSuperimposer": {
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self)",
+    "__le__": "(self, value, /)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self, /)",
+    "__str__": "(self, /)",
+    "get_init_rms": "(self)",
+    "get_rms": "(self)",
+    "get_rotran": "(self)",
+    "get_transformed": "(self)",
+    "run": "(self)",
+    "set": "(self, reference_coords, coords)"
+   }
+  }
+ },
  "Bio.PDB.vectors": {
   "functions": {
    "calc_angle": "(v1, v2, v3)",

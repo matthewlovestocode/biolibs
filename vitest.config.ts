@@ -7,7 +7,7 @@ const src = (name: string) =>
 export default defineConfig({
   resolve: {
     alias: Object.fromEntries(
-      ["core", "seq", "seqio", "align", "phylo", "seqtools", "seqfeature", "seqrecord", "nexus", "pdb"].map((n) => [`@biolibs/${n}`, src(n)]),
+      ["core", "seq", "seqio", "align", "phylo", "seqtools", "seqfeature", "seqrecord", "nexus", "svdsuperimposer", "pdb"].map((n) => [`@biolibs/${n}`, src(n)]),
     ),
   },
   test: { include: ["packages/*/test/**/*.test.ts"] },

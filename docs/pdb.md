@@ -1,6 +1,6 @@
 # @biolibs/pdb
 
-A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers the PDB, PQR and mmCIF writers and the vector/rotation geometry of `Bio.PDB.vectors`. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`) 5,298 geometry cases (`vectors.json`, `gen_vector_cases.py`) 1,400 entity-operation cases (`pdbops.json`, `gen_pdbops_cases.py`) and 1,718 polypeptide cases (`polypeptide.json`, `gen_poly_cases.py`).
+A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers the PDB, PQR and mmCIF writers and the vector/rotation geometry of `Bio.PDB.vectors`. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`) 5,298 geometry cases (`vectors.json`, `gen_vector_cases.py`) 1,400 entity-operation cases (`pdbops.json`, `gen_pdbops_cases.py`) 1,718 polypeptide cases (`polypeptide.json`, `gen_poly_cases.py`) and 388 superimposer cases (`superimposer.json`, `gen_svd_cases.py`).
 
 ## Parsing
 
@@ -82,6 +82,19 @@ new PPBuilder().buildPeptides(chain, 0);                          // aaOnly = 0 
 
 `PPBuilder` joins residues whose C and N atoms are within 1.8 Å (checking every alternative location and selecting the bonded ones), `CaPPBuilder` uses CA-CA within 4.3 Å. A `Polypeptide` is an array of residues with `getCaList`, `getPhiPsiList`, `getTauList`, `getThetaList` (the angles also land in each residue's `xtra`), `getSequence` and `repr`. `isAa`/`isNucleic` take a residue or a name (residue names are padded to three characters first, which is why `"A  "` is a nucleotide); `indexToOne`, `oneToIndex`, `indexToThree` and `threeToIndex` use the 20 standard amino acids sorted by one-letter code. The residue-name tables (`pdb-data.ts`, generated from `Bio.Data.PDBData`) live in this package; `@biolibs/seqio` imports them from here.
 
+## Superimposing
+
+```ts
+import { Superimposer } from "@biolibs/pdb";
+
+const sup = new Superimposer();
+sup.setAtoms(fixedAtoms, movingAtoms);   // same length; coordinates are read in double precision
+sup.rms;  sup.rotran;
+sup.apply(movingAtoms);                   // or any atoms, e.g. a whole chain's: rotation and translation in single precision
+```
+
+`setAtoms` throws `PDBException` for lists of different length and `apply` throws one before a transformation exists. The SVD itself is in `@biolibs/svdsuperimposer`.
+
 ## Moving and measuring structures
 
 `entity.transform(rot, tran)` applies `coord @ rot + tran` to every atom below, `atom.getVector()` returns the coordinates as a `Vector`, and `entity.centerOfMass(geometric?)` gives the center of mass (or of geometry) as a float32 array. NumPy's dtype rules carry over: coordinates stay `Float32Array` only when `rot` (as `Float32Array` rows) and `tran` (a `Float32Array`) are single precision too; any `number[]`/`Float64Array` operand makes the result `Float64Array`, as a float64 NumPy array does. A transform with a 3xN matrix gives N-component coordinates, as in NumPy. On a `DisorderedAtom`, `transform` moves every alternative, whereas on a `DisorderedResidue` it reaches only the selected residue (Python forwards the call), and `centerOfMass` follows Biopython's own queue so a stray child in a disordered wrapper fails the same way.
@@ -100,4 +113,4 @@ Details kept faithful to Biopython:
 
 ## Not yet ported
 
-`Superimposer` (needs `SVDSuperimposer`), `NeighborSearch`, `transform`/`center_of_mass`, internal coordinates, DSSP/SASA, and the SeqIO formats `pdb-atom`, `cif-atom`, `cif-seqres`.
+`NeighborSearch`, `transform`/`center_of_mass`, internal coordinates, DSSP/SASA, and the SeqIO formats `pdb-atom`, `cif-atom`, `cif-seqres`.

@@ -216,6 +216,21 @@ if any(c["kind"] == "pdb" and "written" in c for c in pio):
 if any(c["kind"] == "mmcif" and "written" in c for c in pio) and any(c["kind"] == "dict" and "written" in c for c in pio):
     pio_members("Bio.PDB.mmcifio", "MMCIFIO", ("__init__", "save", "set_dict", "set_structure"))
 
+# ---- Bio.SVDSuperimposer and Bio.PDB.Superimposer (svd.json, superimposer.json) ----
+svdc = json.load(open(f"{here}/../packages/svdsuperimposer/test/golden/svd.json"))["cases"]
+SVD_OPS = {"set": ("set", "__init__"), "run": ("run",), "transformed": ("get_transformed",), "rotran": ("get_rotran",), "init_rms": ("get_init_rms", "_rms"), "rms": ("get_rms",)}
+for c in svdc:
+    for op, out in zip(c["ops"], c["ops_out"]):
+        if "result" in out:
+            for m in SVD_OPS[op[0]]: mark(f"Bio.SVDSuperimposer.SVDSuperimposer.{m}")
+supc = json.load(open(f"{here}/../packages/pdb/test/golden/superimposer.json"))["cases"]
+SUP_OPS = {"set": "set_atoms", "apply": "apply"}
+for c in supc:
+    for op, out in zip(c["ops"], c["ops_out"]):
+        if "result" in out and op[0] in SUP_OPS: mark(f"Bio.PDB.Superimposer.Superimposer.{SUP_OPS[op[0]]}")
+if supc: mark("Bio.PDB.Superimposer.Superimposer.__init__")
+mark("Bio.PDB.Superimposer.Superimposer.__repr__", "na"); mark("Bio.SVDSuperimposer.SVDSuperimposer.__repr__", "na")   # default object repr
+
 # ---- Bio.PDB.Polypeptide (packages/pdb/test/golden/polypeptide.json) ----
 pc = json.load(open(f"{here}/../packages/pdb/test/golden/polypeptide.json"))["cases"]
 for f in {c["func"] for c in pc if c["kind"] == "func" and ("result" in c or "exc" in c)}: mark(f"Bio.PDB.Polypeptide.{f}")

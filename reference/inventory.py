@@ -15,6 +15,8 @@ PM2D = importlib.import_module('Bio.PDB.MMCIF2Dict')
 PMP = importlib.import_module('Bio.PDB.MMCIFParser')
 PIO = importlib.import_module('Bio.PDB.PDBIO')  # the module, not the shadowing class
 PMIO = importlib.import_module('Bio.PDB.mmcifio')
+PSup = importlib.import_module('Bio.PDB.Superimposer')
+SVDMod = importlib.import_module('Bio.SVDSuperimposer')
 PPoly = importlib.import_module('Bio.PDB.Polypeptide')
 PVec = importlib.import_module('Bio.PDB.vectors')
 PHeader = importlib.import_module('Bio.PDB.parse_pdb_header')  # `import ... as` would give the shadowing function
@@ -85,6 +87,8 @@ inv = {
   "Bio.PDB.PDBIO": {"classes": {c: members(getattr(PIO, c)) for c in ("Select", "StructureIO", "PDBIO")}},
   "Bio.PDB.mmcifio": {"classes": {"MMCIFIO": members(PMIO.MMCIFIO)}},
   "Bio.PDB.Polypeptide": {"functions": funcs(PPoly), "classes": {c: members(getattr(PPoly, c)) for c in ("Polypeptide", "CaPPBuilder", "PPBuilder")}},
+  "Bio.PDB.Superimposer": {"classes": {"Superimposer": members(PSup.Superimposer)}},
+  "Bio.SVDSuperimposer": {"classes": {"SVDSuperimposer": members(SVDMod.SVDSuperimposer)}},
   "Bio.PDB.vectors": {"functions": funcs(PVec), "classes": {"Vector": members(PVec.Vector)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }

@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1065 / 1166 applicable items verified against Biopython.**
+**Progress: 1075 / 1190 applicable items verified against Biopython.**
 
 
 
@@ -1728,6 +1728,44 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [-] `__repr__(self, /)`
 - [ ] `__str__(self, /)`
 - [x] `build_peptides(self, entity, aa_only=1)`
+
+## Bio.PDB.Superimposer
+
+
+### Bio.PDB.Superimposer.Superimposer
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [x] `apply(self, atom_list)`
+- [x] `set_atoms(self, fixed, moving)`
+
+## Bio.SVDSuperimposer
+
+
+### Bio.SVDSuperimposer.SVDSuperimposer
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [x] `get_init_rms(self)`
+- [x] `get_rms(self)`
+- [x] `get_rotran(self)`
+- [x] `get_transformed(self)`
+- [x] `run(self)`
+- [x] `set(self, reference_coords, coords)`
 
 ## Bio.PDB.parse_pdb_header
 
