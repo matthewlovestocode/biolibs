@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 438 / 498 applicable items verified against Biopython.**
+**Progress: 443 / 498 applicable items verified against Biopython.**
 
 
 
@@ -651,15 +651,15 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `parse: phylip`
 - [ ] `parse: phylip-relaxed`
 - [ ] `parse: phylip-sequential`
-- [ ] `parse: pir`
+- [x] `parse: pir`
 - [x] `parse: qual`
 - [ ] `parse: seqxml`
 - [ ] `parse: sff`
 - [ ] `parse: sff-trim`
 - [ ] `parse: snapgene`
 - [ ] `parse: stockholm`
-- [ ] `parse: swiss`
-- [ ] `parse: tab`
+- [x] `parse: swiss`
+- [x] `parse: tab`
 - [ ] `parse: twobit`
 - [ ] `parse: uniprot-xml`
 - [ ] `parse: xdna`
@@ -685,12 +685,12 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `write: phylip`
 - [ ] `write: phylip-relaxed`
 - [ ] `write: phylip-sequential`
-- [ ] `write: pir`
+- [x] `write: pir`
 - [x] `write: qual`
 - [ ] `write: seqxml`
 - [ ] `write: sff`
 - [ ] `write: stockholm`
-- [ ] `write: tab`
+- [x] `write: tab`
 - [ ] `write: xdna`
 
 ## Bio.SeqUtils

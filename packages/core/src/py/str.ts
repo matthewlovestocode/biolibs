@@ -18,6 +18,11 @@ export function pyRstrip(s: string): string {
   return s.replace(TRAILING, "");
 }
 
+/** Python `str.lstrip()`. */
+export function pyLstrip(s: string): string {
+  return s.replace(LEADING, "");
+}
+
 /**
  * `s.split(None, 1)[0]`: the first whitespace-delimited word.
  *

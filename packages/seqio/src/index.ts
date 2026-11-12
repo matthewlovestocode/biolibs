@@ -16,6 +16,9 @@
 import "./fasta/index.js"; // registers the formats
 import "./fastq/index.js";
 import "./insdc/index.js";
+import "./tab/index.js";
+import "./pir/index.js";
+import "./swiss/index.js";
 
 export * from "./api.js";
 export * from "./errors.js";
@@ -25,3 +28,6 @@ export { FORMAT_TO_ITERATOR, FORMAT_TO_WRITER, registerConverter, registerIterat
 export * from "./fasta/index.js";
 export * from "./fastq/index.js";
 export * from "./insdc/index.js";
+export * from "./tab/index.js";
+export * from "./pir/index.js";
+export * from "./swiss/index.js";

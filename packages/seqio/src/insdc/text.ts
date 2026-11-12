@@ -31,7 +31,7 @@ export function rsplitLast(s: string): string[] {
 /** Unpack exactly two items, raising Python's `ValueError` otherwise. */
 export function unpackTwo<T>(items: T[]): [T, T] {
   if (items.length < 2) throw new ValueError(`not enough values to unpack (expected 2, got ${items.length})`);
-  if (items.length > 2) throw new ValueError("too many values to unpack (expected 2)");
+  if (items.length > 2) throw new ValueError(`too many values to unpack (expected 2, got ${items.length})`);
   return [items[0]!, items[1]!];
 }
 

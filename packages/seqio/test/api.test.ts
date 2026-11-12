@@ -4,7 +4,7 @@ import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 import {
   FORMAT_TO_ITERATOR, FORMAT_TO_WRITER, FastaWriter, LineStream, QualPhredWriter, SequenceIterator, SequenceWriter, StreamModeError, StringHandle,
-  parse, read, registerIterator, registerWriter, toDict, write,
+  parse, parseSwissProt, read, readSwissProt, SwissProtParserError, registerIterator, registerWriter, toDict, write,
 } from "@biolibs/seqio";
 
 const rec = (id: string, seq: string, quals?: number[]) => new SeqRecord(new Seq(seq), id, "n", `${id} d`, null, null, null, quals ? { phred_quality: quals } : null);
@@ -106,5 +106,28 @@ describe("iterator lifecycle and helpers", () => {
     const chunks: string[] = [];
     expect(write(rec("a", "ACGT"), { write: (t: string) => chunks.push(t) }, "fasta")).toBe(1);
     expect(chunks.join("")).toBe(">a d\nACGT\n"); // the description starts with the id, so it is the whole header
+  });
+});
+
+describe("SwissProt parser", () => {
+  const entry = "ID   A_B Reviewed; 4 AA.\nAC   P1;\nOS   Some one.\nSQ   SEQUENCE   4 AA;  1 MW;  X CRC64;\n     MKVL\n//\n";
+
+  it("parseSwissProt yields entries and readSwissProt returns exactly one", () => {
+    const [rec] = [...parseSwissProt(entry)];
+    expect(rec!.accessions).toEqual(["P1"]);
+    expect(rec!.sequence).toBe("MKVL");
+    expect(readSwissProt(entry).entryName).toBe("A_B");
+    expect(() => readSwissProt(entry + entry)).toThrow("More than one SwissProt record found");
+    expect(() => readSwissProt("")).toThrow("No SwissProt record found");
+  });
+
+  it("reports SwissProtParserError with the offending line", () => {
+    try {
+      [...parseSwissProt("XX\n")];
+      throw new Error("should have thrown");
+    } catch (e) {
+      expect(e).toBeInstanceOf(SwissProtParserError);
+      expect((e as SwissProtParserError).line).toBe("XX\n");
+    }
   });
 });

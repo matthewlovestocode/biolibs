@@ -1,6 +1,6 @@
 # @biolibs/seqio
 
-A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 11,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL and IMGT); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
+A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 14,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR and SwissProt); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
 
 ```ts
 import { parse, read, write, toDict, convert, StringHandle } from "@biolibs/seqio";
@@ -53,6 +53,9 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 | `embl` | yes | yes |
 | `embl-cds` | yes (one record per CDS feature) | |
 | `imgt` | yes | yes |
+| `tab` | yes | yes |
+| `pir` | yes | yes (wraps at 60) |
+| `swiss` | yes | |
 
 `fasta` requires the file to begin with `>` (comments are an error with a helpful message); use `fasta-pearson` (`;` comments, text before the first `>` ignored) or `fasta-blast` (`#`, `!`, `;` comments) for those files. `fasta-blast` reproduces a bug in Biopython 1.88: after the first record it does not advance its saved header line, so later records reuse the first header. The output is identical to Biopython's.
 
@@ -70,7 +73,13 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 - Writers (`GenBankWriter`, `EmblWriter`, `ImgtWriter`) reproduce Biopython's column layout exactly, including its validity checks (LOCUS name and length limits, missing `molecule_type`, bad dates and divisions, undefined sequences with `contig` annotation).
 - `record.format("genbank" | "embl" | "imgt")` works, and `convert` uses the direct GenBank/EMBL to FASTA paths.
 
-Other formats (tab, pir, swiss, ...) are being added; see PARITY.md.
+### tab, PIR and SwissProt
+
+- `tab`: one `title<TAB>sequence` line per record; a line with any other number of tabs is a `ValueError` (blank lines are skipped).
+- `pir`: NBRF files (`>P1;ID`, description, sequence ending in `*`). The type code goes to `annotations["PIR-type"]`. `PirWriter(target, wrap = 60, record2title = null, code = null)` picks `D1`/`RL`/`P1`/`XX` from `molecule_type` unless `code` is given.
+- `swiss`: UniProt/SwissProt text entries. The first accession is the `id`; cross-references become `dbxrefs`; `FT` lines become features; references become `Reference` objects. The underlying parser is also exported as `parseSwissProt(text)` / `readSwissProt(text)` (Biopython's `Bio.SwissProt`), producing `SwissProtRecord` objects whose fields are camelCased (`entryName`, `geneName`, `proteinExistence`, ...). Parse failures are `SwissProtParserError` (a `ValueError`, with the bad `line`).
+
+Other formats (pdb, phd, seqxml, ...) are being added; see PARITY.md.
 
 ## Readers and writers
 
@@ -99,6 +108,9 @@ packages/seqio/src/
   api.ts  handles.ts  errors.ts  interfaces.ts  registry.ts  index.ts
   fasta/   parsers.ts  iterators.ts  writers.ts  index.ts
   fastq/   scores.ts  general-iterator.ts  iterators.ts  qual-iterator.ts  paired.ts  writers.ts  qual-writer.ts  converters.ts  errors.ts  index.ts
+  tab/     iterator.ts  writer.ts  index.ts
+  pir/     iterator.ts  writer.ts  index.ts
+  swiss/   records.ts  text.ts  fields.ts  features.ts  parser.ts  iterator.ts  index.ts
   insdc/   text.ts  cleaner.ts  consumer.ts  scanner.ts  genbank-scanner.ts  embl-scanner.ts  iterators.ts
            location-string.ts  writer-base.ts  genbank-writer.ts  embl-writer.ts  converters.ts  index.ts
 ```

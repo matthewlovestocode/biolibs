@@ -10,7 +10,7 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/seq` | `Seq`/`MutableSeq`, all 27 genetic codes, IUPAC data. At parity with Biopython's `Bio.Seq` | [seq.md](seq.md) |
 | `@biolibs/seqfeature` | Positions, locations, `SeqFeature`. At parity with Biopython's `Bio.SeqFeature` | [seqfeature.md](seqfeature.md) |
 | `@biolibs/seqrecord` | `SeqRecord`: sequence + annotations + features. At parity with Biopython's `Bio.SeqRecord` | [seqrecord.md](seqrecord.md) |
-| `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL and IMGT done; more in progress | [seqio.md](seqio.md) |
+| `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR and SwissProt done; more in progress | [seqio.md](seqio.md) |
 | `@biolibs/align` | Pairwise alignment and edit distance | [align.md](align.md) |
 | `@biolibs/phylo` | Newick phylogenetic trees | [phylo.md](phylo.md) |
 | `@biolibs/seqtools` | GC content, melting temperature, restriction digests | [seqtools.md](seqtools.md) |

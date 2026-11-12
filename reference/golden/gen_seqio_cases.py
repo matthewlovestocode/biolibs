@@ -8,7 +8,7 @@ import io, json, os, random, sys, warnings
 sys.path.insert(0, os.path.dirname(__file__))
 import Bio
 from Bio import SeqIO
-from Bio.SeqIO import FastaIO, QualityIO as Q
+from Bio.SeqIO import FastaIO, QualityIO as Q, PirIO
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 from Bio.SeqFeature import SeqFeature, SimpleLocation, CompoundLocation, Reference, ExactPosition, BeforePosition, AfterPosition, WithinPosition
@@ -28,7 +28,7 @@ def src(case):
     return io.BytesIO(case["bytes"].encode("latin-1")) if "bytes" in case else io.StringIO(case["text"])
 
 WRITERS = {"FastaWriter": FastaIO.FastaWriter, "FastaTwoLineWriter": FastaIO.FastaTwoLineWriter, "QualPhredWriter": Q.QualPhredWriter,
-           "FastqPhredWriter": Q.FastqPhredWriter, "FastqSolexaWriter": Q.FastqSolexaWriter, "FastqIlluminaWriter": Q.FastqIlluminaWriter}
+           "PirWriter": PirIO.PirWriter, "FastqPhredWriter": Q.FastqPhredWriter, "FastqSolexaWriter": Q.FastqSolexaWriter, "FastqIlluminaWriter": Q.FastqIlluminaWriter}
 
 def run(case):
     kind = case["kind"]
@@ -496,6 +496,179 @@ def insdc_write_cases():
                 add({"kind": "convert", "format": fmt, "text": buf.getvalue(), "out": out_fmt, "molecule_type": None})
     add({"kind": "convert", "format": "genbank", "text": "LOCUS", "out": "fasta", "molecule_type": None})
 
+
+# ------------------------------------------------------------------ tab / pir / swiss
+def mutate_text(t, rnd, junk=("XX", "//", "\t", ">", ";x", "  ")):
+    """Randomly damage a text file: drop/duplicate/swap/blank/garble lines, cut it short, or flip characters."""
+    lines = t.split("\n")
+    if not lines: return t
+    k = rnd.choice(["delete", "dup", "trunc", "garble", "swap", "blank", "indent", "chars", "insert", "nonl"])
+    i = rnd.randrange(len(lines))
+    if k == "delete": del lines[i]
+    elif k == "dup": lines.insert(i, lines[i])
+    elif k == "trunc": return t[:rnd.randrange(len(t) + 1)]
+    elif k == "garble": lines[i] = "".join(rnd.choice("ABC /=\"()<>.,;:0123456789 \t*-") for _ in range(rnd.randint(0, 40)))
+    elif k == "swap" and len(lines) > 1: j = rnd.randrange(len(lines)); lines[i], lines[j] = lines[j], lines[i]
+    elif k == "blank": lines[i] = ""
+    elif k == "indent": lines[i] = " " + lines[i] if rnd.random() < .5 else lines[i][1:]
+    elif k == "chars":
+        l = list(lines[i])
+        if l: l[rnd.randrange(len(l))] = rnd.choice("x /\"-_0;=\t*"); lines[i] = "".join(l)
+    elif k == "insert": lines.insert(i, rnd.choice(junk))
+    elif k == "nonl": return t.rstrip("\n")
+    return "\n".join(lines)
+
+def rand_seq(rnd, alphabet, lo=0, hi=150):
+    return "".join(rnd.choice(alphabet) for _ in range(rnd.randint(lo, hi)))
+
+def simple_records(rnd, n, alphabet="ACGTN", ids=True):
+    out = []
+    for i in range(n):
+        out.append(REC(S(rand_seq(rnd, alphabet, 0, 90)), rnd.choice(["r%d" % i, "id_%d.1" % i, "a b", "x", "<unknown id>", "tab\tid", "nl\nid", "é"]) if ids else "r%d" % i,
+                       rnd.choice(["n", "<unknown name>"]), rnd.choice(["d", "", "two words", "<unknown description>", "a\nb"]),
+                       annotations=rnd.choice([[], [["molecule_type", "DNA"]], [["molecule_type", "RNA"]], [["molecule_type", "protein"]], [["molecule_type", "mRNA"]], [["molecule_type", "weird"]]])))
+    return out
+
+def writer_extra_cases():
+    base = [REC(S("ACGT"), "a", "n", "d"), REC(U(5), "u", "n", "d"), REC(M("ACGT"), "m", "n", "d"), REC(None, "s", "n", "d"), REC(S(""), "e", "n", "d"),
+            REC(S("AC\tGT"), "t", "n", "d"), REC(S("AC\nGT"), "t", "n", "d"), REC(S("AC\rGT"), "t", "n", "d")]
+    return base
+
+def tab_cases():
+    texts = ["", "\n", "a\tACGT\n", "a\tACGT", "a\tAC\nb\tGG\n", " a \t AC GT \n", "\t\n", "a\t\n", "\tAC\n", "a\tb\tc\n", "noTab\n", "a b\n\n\nc\td\n", "a\tAC\r\nb\tGG\r\n", "  \n \t \n", "a\t\t\n", "é\tAC\n",
+             "id1\tMKV\nid2\tMKVL\n", "a\tAC\n\nb\tGG\n", "\n\na\tAC\n"]
+    rnd2 = random.Random(31)
+    base = list(texts)
+    for i in range(60):
+        recs = simple_records(rnd2, rnd2.randint(1, 5), ids=False)
+        base.append("".join("%s\t%s\n" % (r["id"], r["seq"]["v"]) for r in recs if "v" in r["seq"]))
+    allt = list(base)
+    for t in base:
+        for _ in range(4): allt.append(mutate_text(t, rnd2))
+    for t in allt:
+        add({"kind": "parse", "format": "tab", "text": t})
+    for t in rnd2.sample(allt, 50): add({"kind": "read", "format": "tab", "text": t})
+    add({"kind": "parse", "format": "tab", "bytes": "a\tAC\n"})
+    for r in writer_extra_cases() + simple_records(rnd2, 60):
+        add({"kind": "write", "format": "tab", "records": [r]})
+        add({"kind": "format", "format": "tab", "record": r})
+    recs = simple_records(rnd2, 6, ids=False)
+    add({"kind": "write", "format": "tab", "records": recs}); add({"kind": "write", "format": "tab", "records": []})
+    for t in ["a\tACGT\nb\tTT\n", ">a d\nACGT\n>b\nTT\n"]:
+        add({"kind": "convert", "format": "tab" if "\t" in t else "fasta", "text": t, "out": "fasta" if "\t" in t else "tab", "molecule_type": None})
+        add({"kind": "convert", "format": "tab" if "\t" in t else "fasta", "text": t, "out": "genbank", "molecule_type": "DNA"})
+    add({"kind": "convert", "format": "tab", "text": "a\tACGT\nb\tTT\n", "out": "pir", "molecule_type": None})
+
+PIR_HAND = [
+">P1;CYC_BOVIN\nCytochrome c - bovine\nGDVEKGKKIF VQKCAQCHTV EAGGKHKVGP NLHGLFGRKT GQAPGFTYTD ANKNKGITWK\nEETLMEYLEN PKKYIPGTKM IFAGIKKKGE RADLIAYLKK ATNE*\n",
+">DL;SEQ1\ndescription of seq\nACGTACGT*\n>RL;SEQ2\nrna one\nACGUACGU*\n",
+">XX;UNK\n\nAAAA*\n", ">N3;N\nrna\nACGU*\n>RC;R\nr\nAC*\n>DC;D\nd\nAC*\n>F1;F\nf\nMK*\n>D1;D\nd\nAC*\n",
+"junk before\n>P1;A\ndesc\nMKV*\n", ">P1;A\ndesc\nMKV\n", ">P1;A\ndesc\n", ">P1;A\n", ">P1;A", ">P1", ">P1;", ">ZZ;A\nd\nMK*\n", ">P1:A\nd\nMK*\n", ">P1;A\nd\n*\n", ">P1;A\nd\n\n>P1;B\nd\nMK*\n",
+">P1;A\nd\nMK K*\n", ">P1;A  \nd  \nMK*  \n", "", "\n", "no header\n", ">P1;A\nd\nMK*\n\n", ">\n", ">P1;A\nd\nMK*\n>P1;B\n", ">P1;A\nd\nMK*\n>", ">P1;A\nd\nMK*\n>P1", "\n>P1;A\nd\nMK*\n", ">P1;A\r\nd\r\nMK*\r\n",
+">P1;A\nd\nM\nK\n*\n", ">P1;A\nd\n*", ">P1;A\nd\n **\n", ">P1;A\nd\nMK*extra\n",
+]
+
+def pir_cases():
+    rnd2 = random.Random(32)
+    base = list(PIR_HAND)
+    for i in range(60):
+        recs = simple_records(rnd2, rnd2.randint(1, 4), alphabet="ACGTMKVLN")
+        buf = io.StringIO()
+        try: SeqIO.write([dec(r) for r in recs], buf, "pir"); base.append(buf.getvalue())
+        except Exception: pass
+    allt = list(base)
+    for t in base:
+        for _ in range(5): allt.append(mutate_text(t, rnd2, junk=("XX", ">P1;Z", "*", ">", "\t", ">P1;")))
+    for t in allt: add({"kind": "parse", "format": "pir", "text": t})
+    for t in rnd2.sample(allt, 60): add({"kind": "read", "format": "pir", "text": t})
+    add({"kind": "parse", "format": "pir", "bytes": ">P1;A\nd\nMK*\n"})
+    recs = writer_extra_cases() + simple_records(rnd2, 80, alphabet="ACGTMKVL")
+    for r in recs:
+        add({"kind": "write", "format": "pir", "records": [r]})
+        add({"kind": "format", "format": "pir", "record": r})
+    long = REC(S("ACGT" * 40), "long", "name", "descr", annotations=[["molecule_type", "DNA"]])
+    for wrap in (60, 10, 7, 1, 200, 0, None, -1, 2.5):
+        add({"kind": "writer", "cls": "PirWriter", "args": [wrap], "records": [long, REC(S("MKV"), "p", "pn", "pd", annotations=[["molecule_type", "protein"]]), REC(S(""), "empty", "n", "d")]})
+    for code in ("P1", "F1", "D1", "DL", "DC", "RL", "RC", "N3", "XX", "ZZ", "", None, "d1"):
+        add({"kind": "writer", "cls": "PirWriter", "args": [60, None, code], "records": [long]})
+    add({"kind": "write", "format": "pir", "records": []})
+    add({"kind": "write", "format": "pir", "records": simple_records(rnd2, 5, alphabet="MKV", ids=False)})
+    for t in (">P1;A\nd\nMKV*\n>DL;B\ne\nACGT*\n",):
+        for out in ("fasta", "pir", "tab", "genbank"): add({"kind": "convert", "format": "pir", "text": t, "out": out, "molecule_type": None})
+
+
+# ------------------------------------------------------------------ swiss
+def ft_old(name, frm, to, desc):
+    return f"FT   {name:<8} {frm:>6} {to:>6}       {desc}"
+
+def swiss_entry(rnd, style=None):
+    """Build a SwissProt entry with a random selection of line types; style is 'new' or 'old'."""
+    style = style or rnd.choice(["new", "old"])
+    L = []
+    n = rnd.randint(30, 140)
+    seq = rand_seq(rnd, "ACDEFGHIKLMNPQRSTVWY", n, n)
+    name = "%s_%s" % (rnd.choice(["CYC", "ABC1", "P53", "KIN"]), rnd.choice(["BOVIN", "HUMAN", "ECOLI"]))
+    if style == "new":
+        L.append(f"ID   {name:<24}{rnd.choice(['Reviewed', 'Unreviewed'])};{n:>12} AA.")
+    else:
+        L.append(f"ID   {name:<12} {rnd.choice(['STANDARD', 'PRELIMINARY', 'IPI'])};      {rnd.choice(['PRT;', ''])}{n:>6} AA.")
+    L.append("AC   " + "; ".join(rnd.choice(["P62894", "Q9XYZ1", "A0A024R161", "P00001"]) + str(i) for i in range(rnd.randint(1, 3))) + ";")
+    if style == "new":
+        L += ["DT   01-JUL-1989, integrated into UniProtKB/Swiss-Prot.", "DT   01-JUL-1989, sequence version 2.", "DT   10-FEB-2021, entry version 150."]
+    else:
+        L += ["DT   21-JUL-1986 (Rel. 01, Created)", "DT   01-JAN-1990 (Rel. 14, Last sequence update)", "DT   01-NOV-1997 (Rel. 35, Last annotation update)"]
+    if rnd.random() < .85: L += rnd.choice([["DE   RecName: Full=Cytochrome c;", "DE   AltName: Full=Other name;"], ["DE   CYTOCHROME C."], ["DE   RecName: Full=Kinase;", "DE            Short=K;", "DE   Flags: Fragment;"]])
+    if rnd.random() < .7: L += rnd.choice([["GN   Name=CYCS; Synonyms=CYC, CYC1; ORFNames=XY1;"], ["GN   Name=A; ORFNames=B1, B2;", "GN   and", "GN   Name=B;"], ["GN   OrderedLocusNames=At1g01010;"], ["GN   Name=Long;", "GN   Synonyms=a, b, c;"]])
+    L.append("OS   " + rnd.choice(["Bos taurus (Bovine).", "Escherichia coli (strain K12)."]))
+    if rnd.random() < .2: L.append("OG   Mitochondrion.")
+    L += ["OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;", "OC   Eutheria; Laurasiatheria; Artiodactyla; Ruminantia; Pecora; Bovidae;", "OC   Bovinae; Bos."][:rnd.randint(1, 3)]
+    L.append(rnd.choice(["OX   NCBI_TaxID=9913;", "OX   NCBI_TaxID=9913 {ECO:0000312|EMBL:AAA};", "OX   NCBI_TaxID=9913, 9914;"]))
+    if rnd.random() < .25: L.append("OH   NCBI_TaxID=9606; Homo sapiens (Human).")
+    for r in range(rnd.randint(0, 3)):
+        L.append(f"RN   [{r+1}]" + rnd.choice(["", " {ECO:0000269|PubMed:1}"]))
+        L.append("RP   NUCLEOTIDE SEQUENCE [MRNA].")
+        if rnd.random() < .6: L += rnd.choice([["RC   STRAIN=Holstein; TISSUE=Heart;"], ["RC   STRAIN=Holstein; TISSUE=Heart, and Liver;"], ["RC   STRAIN=A", "RC   long strain name; TISSUE=Brain;"], ["RC   SPECIES=x;"]])
+        if rnd.random() < .8: L.append(rnd.choice(["RX   PubMed=3456789; DOI=10.1000/xyz;", "RX   MEDLINE=88123456; PubMed=3456789;", "RX   PubMed=3456789;", "RX   AGRICOLA=IND1;", "RX   DOI=10.1/x [NCBI, ExPASy, Israel, Japan];", "RX   PubMed=3456789;", "RX   PubMed=3456789; DOI=10.1000/xyz;", "RX   PubMed=3456789;", "RX   MEDLINE=88123456; PubMed=3456789;"] + (["RX   Bogus=1; Other;", "RX   MEDLINE; 88123456."] if rnd.random() < .12 else [])))
+        L.append("RG   The consortium;" if rnd.random() < .2 else "RA   Smith J., Jones K.;")
+        if rnd.random() < .8: L += rnd.choice([['RT   "A title that wraps-', 'RT   around two lines.";'], ['RT   "Short title.";'], ["RT   ;"]])
+        L.append("RL   J. Biol. Chem. 255:1-2(1980).")
+    for c in range(rnd.randint(0, 3)):
+        L.append("CC   -----------------------------------------------------------------------" if rnd.random() < .2 else "CC   -!- FUNCTION: Electron carrier protein.")
+        L.append("CC       Second line of the comment.")
+    for d in range(rnd.randint(0, 4)): L.append(rnd.choice(["DR   EMBL; X1; Y1; -.", "DR   PDB; 1AKK; X-ray; 1.50 A; A=2-104.", "DR   GO; GO:0005506; F:iron ion binding; IEA:InterPro.", "DR   X"]))
+    if rnd.random() < .8: L.append(rnd.choice(["PE   1: Evidence at protein level", "PE   2: Evidence at transcript level", "PE   5: Uncertain"]))
+    if rnd.random() < .8: L += rnd.choice([["KW   Electron transport; Heme; Iron."], ["KW   Acetylation {ECO:0000255};", "KW   Phosphoprotein."], ["KW   Alpha."]])
+    for f in range(rnd.randint(0, 4)):
+        if style == "old" or rnd.random() < .3:
+            L.append(ft_old(rnd.choice(["SIGNAL", "CHAIN", "VARSPLIC", "VAR_SEQ", "MOD_RES", "DOMAIN"]), rnd.randint(1, 20), rnd.choice([rnd.randint(21, 90), "?", "<30", ">99"]), rnd.choice(["Description here.", "AB CD -> EF GH (in isoform 2).", "By similarity."])))
+            if rnd.random() < .5: L.append("FT" + " " * 32 + rnd.choice(["continued text", "more-", "/FTId=PRO_0000123456."]))
+        else:
+            L.append(f"FT   {rnd.choice(['SIGNAL', 'CHAIN', 'VAR_SEQ', 'VARIANT']):<8} " + " " * 7 + rnd.choice(["1..19", "20", "iso-2:1..5", "<1..>9", "?..5"]))
+            for q in rnd.sample(['/note="Signal peptide"', '/evidence="ECO:0000255"', '/id="PRO_0000123456"', '/ftid="x"', '/variation="AB CD -> EF (in isoform 2)"'], rnd.randint(0, 3)):
+                L.append("FT" + " " * 19 + q)
+            if rnd.random() < .3: L.append("FT" + " " * 19 + "continuation text\"")
+    L.append(f"SQ   SEQUENCE   {n} AA;  {n*110} MW;  3B4F6D0E8F2B3D7C CRC64;")
+    for i in range(0, len(seq), 60):
+        chunk = seq[i:i+60]
+        L.append("     " + " ".join(chunk[j:j+10] for j in range(0, len(chunk), 10)))
+    L.append("//")
+    return "\n".join(L) + "\n"
+
+def swiss_cases():
+    rnd2 = random.Random(33)
+    base = [swiss_entry(rnd2) for _ in range(160)]
+    base.append(base[0] + base[1] + base[2])
+    base += ["", "\n", "ID", "ID   X", "ID   A Reviewed; 5 AA.\n", "ID   A Reviewed; 5 AA.\n//\n", "ID   A Reviewed; 5 AA.\nAC   P1;\n//\n", "XX\n", "ID   A Reviewed; x AA.\n//\n", "ID   A Weird; 5 AA.\n//\n", "ID   A STANDARD; DNA; 5 AA.\n//\n",
+             "ID   A Reviewed; 5 AA.\nAC   P1;\n**   comment\n//\n", "ID   A Reviewed; 5 AA.\nZZ   unknown\n//\n", "ID   A Reviewed; 5 AA.\nAC   P1;\n\n//\n", "ID   A Reviewed; 5 AA.\nRP   x\n//\n"]
+    allt = list(base)
+    for t in base[:160]:
+        for _ in range(7): allt.append(mutate_text(t, rnd2, junk=("XX", "RN   [1]", "RC   A=b", "FT   CHAIN", "CC   -!- X", "OX   NCBI_TaxID=1;", "SQ   X", "//", "GN   and", "DT   x")))
+    for t in allt: add({"kind": "parse", "format": "swiss", "text": t})
+    for t in rnd2.sample(allt, 80): add({"kind": "read", "format": "swiss", "text": t})
+    add({"kind": "parse", "format": "swiss", "bytes": "ID   A Reviewed; 5 AA.\n"})
+    for t in rnd2.sample(base[:160], 30):
+        for out in ("fasta", "genbank"): add({"kind": "convert", "format": "swiss", "text": t, "out": out, "molecule_type": None})
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -576,6 +749,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases()}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")
