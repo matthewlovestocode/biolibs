@@ -2,3 +2,4 @@
 
 export * from "./int.js";
 export * from "./repr.js";
+export * from "./str.js";

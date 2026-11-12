@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 406 / 498 applicable items verified against Biopython.**
+**Progress: 416 / 498 applicable items verified against Biopython.**
 
 
 
@@ -604,13 +604,13 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 ## Bio.SeqIO
 
-- [ ] `convert(in_file, in_format, out_file, out_format, molecule_type=None)`
+- [~] `convert(in_file, in_format, out_file, out_format, molecule_type=None)`
 - [ ] `index(filename, format, alphabet=None, key_function=None)`
 - [ ] `index_db(index_filename, filenames=None, format=None, alphabet=None, key_function=None)`
-- [ ] `parse(handle, format, alphabet=None)`
-- [ ] `read(handle, format, alphabet=None)`
-- [ ] `to_dict(sequences, key_function=None)`
-- [ ] `write(sequences: collections.abc.Iterable[Bio.SeqRecord.SeqRecord] | Bio.SeqRecord.SeqRecord, handle: IO[str] | os.PathLike | str | bytes, format: str) -> int`
+- [x] `parse(handle, format, alphabet=None)`
+- [x] `read(handle, format, alphabet=None)`
+- [x] `to_dict(sequences, key_function=None)`
+- [x] `write(sequences: collections.abc.Iterable[Bio.SeqRecord.SeqRecord] | Bio.SeqRecord.SeqRecord, handle: IO[str] | os.PathLike | str | bytes, format: str) -> int`
 
 ### Parse formats
 
@@ -623,18 +623,18 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `parse: embl`
 - [ ] `parse: embl-cds`
 - [ ] `parse: emboss`
-- [~] `parse: fasta`
-- [ ] `parse: fasta-2line`
-- [ ] `parse: fasta-blast`
+- [x] `parse: fasta`
+- [x] `parse: fasta-2line`
+- [x] `parse: fasta-blast`
 - [ ] `parse: fasta-m10`
-- [ ] `parse: fasta-pearson`
-- [~] `parse: fastq`
+- [x] `parse: fasta-pearson`
+- [ ] `parse: fastq`
 - [ ] `parse: fastq-illumina`
 - [ ] `parse: fastq-sanger`
 - [ ] `parse: fastq-solexa`
-- [~] `parse: gb`
+- [ ] `parse: gb`
 - [ ] `parse: gck`
-- [~] `parse: genbank`
+- [ ] `parse: genbank`
 - [ ] `parse: genbank-cds`
 - [ ] `parse: gfa1`
 - [ ] `parse: gfa2`
@@ -668,9 +668,9 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 - [ ] `write: clustal`
 - [ ] `write: embl`
-- [~] `write: fasta`
-- [ ] `write: fasta-2line`
-- [~] `write: fastq`
+- [x] `write: fasta`
+- [x] `write: fasta-2line`
+- [ ] `write: fastq`
 - [ ] `write: fastq-illumina`
 - [ ] `write: fastq-sanger`
 - [ ] `write: fastq-solexa`

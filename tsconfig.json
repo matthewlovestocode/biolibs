@@ -8,9 +8,6 @@
       "path": "packages/seq"
     },
     {
-      "path": "packages/seqio"
-    },
-    {
       "path": "packages/align"
     },
     {
@@ -24,6 +21,9 @@
     },
     {
       "path": "packages/seqrecord"
+    },
+    {
+      "path": "packages/seqio"
     }
   ]
 }

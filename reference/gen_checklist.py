@@ -8,8 +8,7 @@ status = json.load(open(sp)) if os.path.exists(sp) else {}
 # Seed: things the first scaffold covers partially.
 seed = {k: "partial" for k in [
   "Bio.Seq.complement","Bio.Seq.reverse_complement","Bio.Seq.transcribe","Bio.Seq.back_transcribe","Bio.Seq.translate",
-  "Bio.SeqIO.parse:fasta","Bio.SeqIO.write:fasta","Bio.SeqIO.parse:fastq","Bio.SeqIO.write:fastq",
-  "Bio.SeqIO.parse:genbank","Bio.SeqIO.parse:gb","Bio.SeqUtils.gc_fraction","Bio.SeqUtils.GC_skew"]}
+  "Bio.SeqUtils.gc_fraction","Bio.SeqUtils.GC_skew"]}
 for k, v in seed.items(): status.setdefault(k, v)
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 

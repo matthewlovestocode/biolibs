@@ -1,64 +1,79 @@
 # @biolibs/seqio
 
-Parse and write sequence file formats, equivalent to Biopython's `Bio.SeqIO`. All functions operate on **text** (strings), not files or streams, so they work in Node and the browser. Read files yourself (`fs.readFileSync(path, "utf8")`) and pass the contents in. Records are `SeqRecord` objects from `@biolibs/core`.
-
-## FASTA
-
-### `parseFasta(text): SeqRecord[]`
-- Header line `>id description` gives `id` (first token) and `description` (the full header, as Biopython does).
-- Multi-line sequences are joined; whitespace is stripped.
-- Blank lines and `;` comment lines are skipped.
-- Throws `BioError` if sequence data appears before any `>` header.
-
-### `writeFasta(records, lineWidth = 60): string`
-Writes `>description` (falling back to `id`) and wraps the sequence at `lineWidth`.
+A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 3,000 recorded calls for the FASTA family; each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
 
 ```ts
-const recs = parseFasta(">a first\nACGT\nAC\n");
-// [{ id: "a", description: "a first", sequence: "ACGTAC" }]
-writeFasta(recs, 4); // ">a first\nACGT\nAC\n"
+import { parse, read, write, toDict, convert, StringHandle } from "@biolibs/seqio";
+
+const fasta = ">a first record\nACGTAC\nGT\n>b\nTTGG\n";
+
+for (const record of parse(fasta, "fasta")) console.log(record.id, record.seq!.toString()); // a ACGTACGT, b TTGG
+
+const out = new StringHandle();
+write(parse(fasta, "fasta"), out, "fasta-2line");
+out.getvalue();        // ">a first record\nACGTACGT\n>b\nTTGG\n"
 ```
 
-## FASTQ
+## No file system: text in, text out
 
-### `parseFastq(text): SeqRecord[]`
-Strict 4-line FASTQ. Qualities are decoded as Phred+33 into `record.quality`. Throws `BioError` if:
-- the line count is not a multiple of 4,
-- a header doesn't start with `@` or the separator doesn't start with `+`,
-- sequence and quality lengths differ.
+Unlike Python, nothing here opens files, so the library works in Node and in the browser.
 
-Multi-line FASTQ is not supported.
+- **Inputs are the file's contents** as a string (a string is *never* a file name), or a `LineStream` over it. In Node: `parse(fs.readFileSync(path, "utf8"), "fasta")`.
+- **Outputs are any object with `write(text)`**, such as `StringHandle` (like `io.StringIO`; call `.getvalue()`). A Node `fs.WriteStream` also works.
+- Binary data passed to a text format throws `StreamModeError("Fasta files must be opened in text mode.")`, as in Biopython.
+- Lines end at `"\n"` only (like `io.StringIO`); a `"\r"` stays in the text. Python's file objects translate `"\r\n"` for you; do that yourself if needed.
 
-### `writeFastq(records): string`
-Throws if a record has no `quality`.
+## Functions
 
-### `decodePhred(qualityString, offset = 33): number[]`
-### `encodePhred(scores, offset = 33): string`
-Use `offset = 64` for old Illumina 1.3–1.7 data.
+| Python | TypeScript | Notes |
+|---|---|---|
+| `SeqIO.parse(handle, format)` | `parse(source, format)` | returns an iterator of records; `close()` releases it |
+| `SeqIO.read(handle, format)` | `read(source, format)` | exactly one record, else `ValueError` |
+| `SeqIO.write(records, handle, format)` | `write(records, target, format)` | returns the record count |
+| `SeqIO.to_dict(records, key_function)` | `toDict(records, keyFunction?)` | returns a `Map`; duplicates raise `ValueError` |
+| `SeqIO.convert(in, fmt, out, fmt, molecule_type)` | `convert(source, inFormat, target, outFormat, moleculeType?)` | general path only so far |
+| `SeqIO.index`, `SeqIO.index_db` | not yet | need file access |
+
+Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names match Biopython's.
+
+## Formats
+
+| Format | Read | Write |
+|---|---|---|
+| `fasta` | yes | yes (wraps at 60) |
+| `fasta-2line` | yes | yes (no wrapping) |
+| `fasta-pearson` | yes | |
+| `fasta-blast` | yes | |
+
+`fasta` requires the file to begin with `>` (comments are an error with a helpful message); use `fasta-pearson` (`;` comments, text before the first `>` ignored) or `fasta-blast` (`#`, `!`, `;` comments) for those files. `fasta-blast` reproduces a bug in Biopython 1.88: after the first record it does not advance its saved header line, so later records reuse the first header. The output is identical to Biopython's.
+
+Other formats (FASTQ, GenBank, EMBL, tab, ...) are being added; see PARITY.md.
+
+## Readers and writers
+
+Every reader is a class (`FastaIterator`, ...) whose instances are iterators; every writer is a class (`FastaWriter`, ...) with `writeRecord`, `writeRecords`, `writeFile` and a static `asString(record)` (Python's `to_string`). `FastaWriter(target, wrap = 60, record2title = null)` takes a custom header function:
 
 ```ts
-const [r] = parseFastq("@r1\nACGT\n+\nIIII\n");
-r.quality; // [40, 40, 40, 40]
+new FastaWriter(out, 80, (rec) => `${rec.id} len=${rec.length}`).writeFile(records);
 ```
 
-## GenBank
+`record.format("fasta")` on a `SeqRecord` now works (`@biolibs/seqio` registers its writers there).
 
-### `parseGenBank(text): SeqRecord[]`
-Minimal parser for GenBank flat files (multiple entries separated by `//`).
+The low-level parsers `simpleFastaParser(lines)` and `fastaTwoLineParser(lines)` yield `[title, sequence]` pairs.
 
-| Record field | Source |
-|---|---|
-| `id` | First `ACCESSION` (falls back to the LOCUS name) |
-| `description` | `DEFINITION` (continuation lines joined) |
-| `sequence` | `ORIGIN` block, digits and spaces removed (case preserved) |
-| `annotations.locus` | LOCUS name |
-| `annotations.length` | Length declared on the LOCUS line |
-| `annotations.version` | `VERSION` |
-| `annotations.organism` | `ORGANISM` |
-| `annotations.featuresRaw` | Raw text of the `FEATURES` table |
+Register your own format with `registerIterator(name, Class)` and `registerWriter(name, Class)`.
 
-Throws `BioError` if an entry lacks a LOCUS line. Feature-table parsing and a GenBank writer are not implemented yet.
+## Intentional differences from Python
 
-## Not yet supported
+- Sources are contents, not paths or handles (see above); `parse` takes no `alphabet` (it was removed from Biopython too).
+- `read()` and `parse()` iterators have no context-manager protocol; `read()` closes for you, otherwise call `close()`.
+- Where Python raises `AttributeError` for a wrong argument type, TypeScript throws `TypeError`.
 
-GenBank features and writer, EMBL, Stockholm, gzip streaming, indexed random access.
+## Source layout
+
+```
+packages/seqio/src/
+  api.ts  handles.ts  errors.ts  interfaces.ts  registry.ts  index.ts
+  fasta/   parsers.ts  iterators.ts  writers.ts  index.ts
+```
+Each format family lives in its own directory and registers itself with `registry.ts`.

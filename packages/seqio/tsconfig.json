@@ -1,6 +1,24 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": { "rootDir": "src", "outDir": "dist" },
-  "include": ["src"],
-  "references": [ { "path": "../core" },{ "path": "../seq" } ]
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../seq"
+    },
+    {
+      "path": "../seqfeature"
+    },
+    {
+      "path": "../seqrecord"
+    }
+  ]
 }

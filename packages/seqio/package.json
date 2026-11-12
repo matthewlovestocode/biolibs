@@ -1,12 +1,24 @@
 {
   "name": "@biolibs/seqio",
   "version": "0.1.0",
-  "description": "FASTA/FASTQ/GenBank parsing and writing (Biopython Bio.SeqIO)",
+  "description": "Sequence file formats (Biopython Bio.SeqIO)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
-  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
-  "dependencies": { "@biolibs/core": "0.1.0","@biolibs/seq": "0.1.0" }
+  "dependencies": {
+    "@biolibs/core": "0.1.0",
+    "@biolibs/seq": "0.1.0",
+    "@biolibs/seqfeature": "0.1.0",
+    "@biolibs/seqrecord": "0.1.0"
+  }
 }

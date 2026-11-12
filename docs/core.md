@@ -47,24 +47,6 @@ warnings[0].message; // "Partial codon, len(sequence) not a multiple of three. .
 
 Small functions that let ports reproduce Biopython's behaviour and messages exactly: `pyInt` (Python's `int(str)`), `pyRepr` and `pyStr` (`repr`/`str` of `None`, bools, lists, dicts, and objects with `repr()`), `pyTypeName`/`pyClassRepr` (type names for error messages; `registerPythonClasses(module, names)` teaches it `<class 'Bio.X.Y'>`), `pyEquals` (`==` for plain data), `pyTruthy` and `pyContains` (`in`).
 
-## Types
-
-### `SeqRecord`
-
-A plain record shape used by the early `@biolibs/seqio` scaffold. It is superseded by the real `SeqRecord` class in `@biolibs/seqrecord` and will be removed when SeqIO is ported.
-
-| Field | Type | Notes |
-|---|---|---|
-| `id` | `string` | First header token (FASTA/FASTQ) or accession (GenBank) |
-| `description` | `string` | Full header line, or DEFINITION |
-| `sequence` | `string` | Residues without whitespace |
-| `quality?` | `number[]` | Per-base Phred scores (FASTQ only) |
-| `annotations?` | `Record<string, unknown>` | Format-specific extras |
-
-### `Alphabet`
-
-`"dna" | "rna" | "protein"`. Informational.
-
-### `assert(cond, message)`
+## `assert(cond, message)`
 
 Throws `BioError(message)` unless `cond` is truthy; narrows types for TypeScript.

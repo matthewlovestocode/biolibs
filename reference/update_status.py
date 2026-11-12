@@ -84,5 +84,24 @@ for m in inv["Bio.SeqRecord"]["classes"]["SeqRecord"]:
     elif m in r_ops: mark(key)
     elif m == "__hash__": mark(key, "na")
 
+# ---- Bio.SeqIO (packages/seqio/test/golden/seqio-*.json) ----
+import glob
+parsed, written, kinds = set(), set(), set()
+for f in glob.glob(f"{here}/../packages/seqio/test/golden/seqio-*.json"):
+    for c in json.load(open(f))["cases"]:
+        kinds.add(c["kind"])
+        fmt = c.get("format")
+        if not isinstance(fmt, str) or "exc" in c and c["exc"]["msg"] and c["exc"]["msg"].startswith("Unknown format"): continue
+        if c["kind"] in ("parse", "read") and "exc" not in c or c["kind"] in ("parse", "read") and c.get("parsed"): parsed.add(fmt)
+        if c["kind"] == "write" and "exc" not in c: written.add(fmt)
+for fmt in parsed: mark(f"Bio.SeqIO.parse:{fmt}")
+for fmt in written: mark(f"Bio.SeqIO.write:{fmt}")
+if {"parse", "read", "write", "to_dict"} <= kinds:
+    for fn in ("parse", "read", "write", "to_dict"):
+        for k in list(status):
+            pass
+        mark(f"Bio.SeqIO.{fn}")
+if "convert" in kinds: mark("Bio.SeqIO.convert", "partial")   # general path only; Biopython's format-specific fast paths come with their formats
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})
