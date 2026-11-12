@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 426 / 498 applicable items verified against Biopython.**
+**Progress: 438 / 498 applicable items verified against Biopython.**
 
 
 
@@ -206,7 +206,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `__repr__(self) -> str`
 - [x] `__str__(self) -> str`
 - [x] `count(self, sub, start=None, end=None)`
-- [~] `format(self, format: str) -> str`
+- [x] `format(self, format: str) -> str`
 - [x] `islower(self)`
 - [x] `isupper(self)`
 - [x] `letter_annotations`
@@ -604,7 +604,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 ## Bio.SeqIO
 
-- [~] `convert(in_file, in_format, out_file, out_format, molecule_type=None)`
+- [x] `convert(in_file, in_format, out_file, out_format, molecule_type=None)`
 - [ ] `index(filename, format, alphabet=None, key_function=None)`
 - [ ] `index_db(index_filename, filenames=None, format=None, alphabet=None, key_function=None)`
 - [x] `parse(handle, format, alphabet=None)`
@@ -620,8 +620,8 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `parse: cif-atom`
 - [ ] `parse: cif-seqres`
 - [ ] `parse: clustal`
-- [ ] `parse: embl`
-- [ ] `parse: embl-cds`
+- [x] `parse: embl`
+- [x] `parse: embl-cds`
 - [ ] `parse: emboss`
 - [x] `parse: fasta`
 - [x] `parse: fasta-2line`
@@ -632,14 +632,14 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: fastq-illumina`
 - [x] `parse: fastq-sanger`
 - [x] `parse: fastq-solexa`
-- [ ] `parse: gb`
+- [x] `parse: gb`
 - [ ] `parse: gck`
-- [ ] `parse: genbank`
-- [ ] `parse: genbank-cds`
+- [x] `parse: genbank`
+- [x] `parse: genbank-cds`
 - [ ] `parse: gfa1`
 - [ ] `parse: gfa2`
 - [ ] `parse: ig`
-- [ ] `parse: imgt`
+- [x] `parse: imgt`
 - [ ] `parse: maf`
 - [ ] `parse: mauve`
 - [ ] `parse: msf`
@@ -667,16 +667,16 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 ### Write formats
 
 - [ ] `write: clustal`
-- [ ] `write: embl`
+- [x] `write: embl`
 - [x] `write: fasta`
 - [x] `write: fasta-2line`
 - [x] `write: fastq`
 - [x] `write: fastq-illumina`
 - [x] `write: fastq-sanger`
 - [x] `write: fastq-solexa`
-- [ ] `write: gb`
-- [ ] `write: genbank`
-- [ ] `write: imgt`
+- [x] `write: gb`
+- [x] `write: genbank`
+- [x] `write: imgt`
 - [ ] `write: maf`
 - [ ] `write: mauve`
 - [ ] `write: nexus`

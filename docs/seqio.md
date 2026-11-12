@@ -1,6 +1,6 @@
 # @biolibs/seqio
 
-A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 6,800 recorded calls so far (FASTA and FASTQ/QUAL families); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
+A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 11,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL and IMGT); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
 
 ```ts
 import { parse, read, write, toDict, convert, StringHandle } from "@biolibs/seqio";
@@ -31,7 +31,7 @@ Unlike Python, nothing here opens files, so the library works in Node and in the
 | `SeqIO.read(handle, format)` | `read(source, format)` | exactly one record, else `ValueError` |
 | `SeqIO.write(records, handle, format)` | `write(records, target, format)` | returns the record count |
 | `SeqIO.to_dict(records, key_function)` | `toDict(records, keyFunction?)` | returns a `Map`; duplicates raise `ValueError` |
-| `SeqIO.convert(in, fmt, out, fmt, molecule_type)` | `convert(source, inFormat, target, outFormat, moleculeType?)` | uses Biopython's direct FASTQ paths; GenBank/EMBL to FASTA come with those formats |
+| `SeqIO.convert(in, fmt, out, fmt, molecule_type)` | `convert(source, inFormat, target, outFormat, moleculeType?)` | uses Biopython's direct paths (FASTQ to anything, GenBank/EMBL to FASTA) and the general path otherwise |
 | `SeqIO.index`, `SeqIO.index_db` | not yet | need file access |
 
 Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names match Biopython's.
@@ -48,6 +48,11 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 | `fastq-solexa` | yes | yes |
 | `fastq-illumina` | yes | yes |
 | `qual` | yes | yes |
+| `genbank`, `gb` | yes | yes |
+| `genbank-cds` | yes (one record per CDS feature) | |
+| `embl` | yes | yes |
+| `embl-cds` | yes (one record per CDS feature) | |
+| `imgt` | yes | yes |
 
 `fasta` requires the file to begin with `>` (comments are an error with a helpful message); use `fasta-pearson` (`;` comments, text before the first `>` ignored) or `fasta-blast` (`#`, `!`, `;` comments) for those files. `fasta-blast` reproduces a bug in Biopython 1.88: after the first record it does not advance its saved header line, so later records reuse the first header. The output is identical to Biopython's.
 
@@ -59,7 +64,13 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 - `fastqGeneralIterator(source)` yields raw `[title, sequence, quality]` strings with no decoding (fast, and used by the direct converters).
 - Score helpers: `solexaQualityFromPhred`, `phredQualityFromSolexa` (identical numeric behaviour to Python, including banker's rounding and the overflow error for huge PHRED values).
 
-Other formats (GenBank, EMBL, tab, ...) are being added; see PARITY.md.
+### GenBank, EMBL and IMGT
+
+- Readers follow Biopython's scanner/consumer split (`insdc/scanner.ts`, `genbank-scanner.ts`, `embl-scanner.ts`, `consumer.ts`): headers, references, comments, feature tables (locations, fuzzy positions, compound locations, qualifiers), `CONTIG`/`CO` and `ORIGIN`/`SQ` sequences, including the same warnings and `ValueError`/`ParserFailureError` messages for malformed input.
+- Writers (`GenBankWriter`, `EmblWriter`, `ImgtWriter`) reproduce Biopython's column layout exactly, including its validity checks (LOCUS name and length limits, missing `molecule_type`, bad dates and divisions, undefined sequences with `contig` annotation).
+- `record.format("genbank" | "embl" | "imgt")` works, and `convert` uses the direct GenBank/EMBL to FASTA paths.
+
+Other formats (tab, pir, swiss, ...) are being added; see PARITY.md.
 
 ## Readers and writers
 
@@ -88,5 +99,7 @@ packages/seqio/src/
   api.ts  handles.ts  errors.ts  interfaces.ts  registry.ts  index.ts
   fasta/   parsers.ts  iterators.ts  writers.ts  index.ts
   fastq/   scores.ts  general-iterator.ts  iterators.ts  qual-iterator.ts  paired.ts  writers.ts  qual-writer.ts  converters.ts  errors.ts  index.ts
+  insdc/   text.ts  cleaner.ts  consumer.ts  scanner.ts  genbank-scanner.ts  embl-scanner.ts  iterators.ts
+           location-string.ts  writer-base.ts  genbank-writer.ts  embl-writer.ts  converters.ts  index.ts
 ```
 Each format family lives in its own directory and registers itself with `registry.ts`.

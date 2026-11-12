@@ -12,8 +12,8 @@ from Bio.SeqIO import FastaIO, QualityIO as Q
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 from Bio.SeqFeature import SeqFeature, SimpleLocation, CompoundLocation, Reference, ExactPosition, BeforePosition, AfterPosition, WithinPosition
-from codec import S, M, U, LST
-from codec_feature import enc, dec, REC, FEAT, SL as LOC
+from codec import S, M, U, LST, P as SPART
+from codec_feature import enc, dec, REC, FEAT, X, CL, SL as LOC_, pos
 
 FAMILY = sys.argv[1] if len(sys.argv) > 1 else "fasta"
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "seqio", "test", "golden", f"seqio-{FAMILY}.json")
@@ -229,8 +229,7 @@ def fastq_cases():
     for x in (None, 0, 0.5, 1, 2, 5, 10, 20, 30, 40, 50, 62, 93, 100, 1000, -1, -0.5, 1e-9, 2.5, 7.25): add({"kind": "func", "fn": "solexa_quality_from_phred", "args": [x]})
     for x in (None, -10, -6, -5, -4.5, -3, -1, 0, 1, 5, 10, 20, 30, 40, 62, 100, 0.5, 2.5, 7.25): add({"kind": "func", "fn": "phred_quality_from_solexa", "args": [x]})
 
-def genbank_cases():
-    HAND = [
+GENBANK_HAND = [
 """LOCUS       SCU49845     120 bp    DNA             PLN       21-JUN-1999
 DEFINITION  Saccharomyces cerevisiae TCP1-beta gene, partial cds; and Axl2p
             (AXL2) and Rev7p (REV7) genes, complete cds.
@@ -324,53 +323,59 @@ CONTIG      join(AA000001.1:1..2500,gap(100),AA000002.1:1..2400)
 "LOCUS       OLDFMT       12 bp    DNA             PLN       21-JUN-1999\nDEFINITION  old.\nACCESSION   OLDFMT\nORIGIN\n        1 acgtacgtac gt\n//\n",
 "LOCUS       WGSREC             10 bp    DNA     linear   BCT 01-JAN-2000\nDEFINITION  wgs.\nACCESSION   WGSREC\nVERSION     WGSREC.1\nWGS         AAAA01000001-AAAA01000100\nWGS_SCAFLD  CM000001-CM000002\nORIGIN\n        1 acgtacgtac\n//\n",
     ]
+
+def make_record(rnd, i):
+    L = rnd.randint(20, 110)
+    seq = "".join(rnd.choice("ACGT") for _ in range(L))
+    r = SeqRecord(Seq(seq), id=f"ACC{i:05d}.{rnd.randint(1, 3)}", name=f"LOC{i}", description=rnd.choice(["A test sequence.", "Long description " * 6, "x", "Gene for something, complete cds"]))
+    a = r.annotations
+    a["molecule_type"] = rnd.choice(["DNA", "mRNA", "genomic DNA", "RNA"])
+    if rnd.random() < .7: a["topology"] = rnd.choice(["linear", "circular"])
+    a["data_file_division"] = rnd.choice(["BCT", "PLN", "UNK", "PRI"])
+    a["date"] = rnd.choice(["01-JAN-2000", "15-MAR-1999", "31-DEC-2020"])
+    a["accessions"] = [f"ACC{i:05d}"] + ([f"EXTRA{i}"] if rnd.random() < .3 else [])
+    a["sequence_version"] = int(r.id.split(".")[1])
+    if rnd.random() < .7: a["organism"] = rnd.choice(["Homo sapiens", "Escherichia coli K-12", "Mus musculus"])
+    if rnd.random() < .6: a["taxonomy"] = rnd.choice([["Eukaryota", "Metazoa", "Chordata"], ["Bacteria", "Proteobacteria"], ["Viruses"]])
+    if rnd.random() < .5: a["keywords"] = rnd.choice([["alpha", "beta"], ["only"]])
+    if rnd.random() < .5: a["source"] = rnd.choice(["human", "bacterium", "mouse"])
+    if rnd.random() < .5: a["comment"] = rnd.choice(["One line comment.", "Line one.\nLine two.", "A very long comment " * 8])
+    if rnd.random() < .4:
+        ref = Reference(); ref.authors = "Smith,J. and Jones,K."; ref.title = rnd.choice(["A title", "Direct Submission"]); ref.journal = "J. Test 1 (2), 3-4 (2000)"; ref.pubmed_id = rnd.choice(["", "12345"])
+        ref.location = [SimpleLocation(0, L)]
+        a["references"] = [ref]
+    if rnd.random() < .3: r.dbxrefs = ["BioProject:PRJ1", "BioSample:SAMN2"]
+    feats = [SeqFeature(SimpleLocation(0, L, 1), "source", qualifiers={"organism": ["Test org"], "mol_type": ["genomic DNA"]})]
+    for _ in range(rnd.randint(0, 4)):
+        s0 = rnd.randint(0, L - 10); e0 = rnd.randint(s0 + 3, min(L, s0 + 60))
+        kind = rnd.choice(["simple", "minus", "join", "fuzzy", "single", "order"])
+        if kind == "simple": loc = SimpleLocation(s0, e0, 1)
+        elif kind == "minus": loc = SimpleLocation(s0, e0, -1)
+        elif kind == "join" and e0 - s0 > 7: loc = CompoundLocation([SimpleLocation(s0, s0 + 3, 1), SimpleLocation(s0 + 5, e0, 1)])
+        elif kind == "order" and e0 - s0 > 7: loc = CompoundLocation([SimpleLocation(s0, s0 + 3, -1), SimpleLocation(s0 + 5, e0, -1)], "order")
+        elif kind == "fuzzy": loc = SimpleLocation(BeforePosition(s0), AfterPosition(e0), 1)
+        else: loc = SimpleLocation(s0, s0 + 1, 1)
+        q = {}
+        if rnd.random() < .8: q["gene"] = [rnd.choice(["abc", "xyz1", "geneA"])]
+        if rnd.random() < .5: q["note"] = [rnd.choice(["short", "a longer note that must be wrapped across several lines in the output file " * 2, 'with "quotes"'])]
+        if rnd.random() < .3: q["pseudo"] = [None] if False else [""]
+        if rnd.random() < .3: q["db_xref"] = ["GeneID:1", "UniProtKB:P1"]
+        if rnd.random() < .3: q["codon_start"] = ["1"]
+        if rnd.random() < .3: q["translation"] = ["MKV" * rnd.randint(1, 30)]
+        feats.append(SeqFeature(loc, rnd.choice(["gene", "CDS", "misc_feature", "mRNA", "exon"]), qualifiers=q))
+    r.features = feats
+    return r
+
+def insdc_cases(fmt, HAND, cds_fmt, alias, extra=()):
     def rec_text(rnd, i):
-        L = rnd.randint(20, 110)
-        seq = "".join(rnd.choice("ACGT") for _ in range(L))
-        r = SeqRecord(Seq(seq), id=f"ACC{i:05d}.{rnd.randint(1, 3)}", name=f"LOC{i}", description=rnd.choice(["A test sequence.", "Long description " * 6, "x", "Gene for something, complete cds"]))
-        a = r.annotations
-        a["molecule_type"] = rnd.choice(["DNA", "mRNA", "genomic DNA", "RNA"])
-        if rnd.random() < .7: a["topology"] = rnd.choice(["linear", "circular"])
-        a["data_file_division"] = rnd.choice(["BCT", "PLN", "UNK", "PRI"])
-        a["date"] = rnd.choice(["01-JAN-2000", "15-MAR-1999", "31-DEC-2020"])
-        a["accessions"] = [f"ACC{i:05d}"] + ([f"EXTRA{i}"] if rnd.random() < .3 else [])
-        a["sequence_version"] = int(r.id.split(".")[1])
-        if rnd.random() < .7: a["organism"] = rnd.choice(["Homo sapiens", "Escherichia coli K-12", "Mus musculus"])
-        if rnd.random() < .6: a["taxonomy"] = rnd.choice([["Eukaryota", "Metazoa", "Chordata"], ["Bacteria", "Proteobacteria"], ["Viruses"]])
-        if rnd.random() < .5: a["keywords"] = rnd.choice([["alpha", "beta"], ["only"]])
-        if rnd.random() < .5: a["source"] = rnd.choice(["human", "bacterium", "mouse"])
-        if rnd.random() < .5: a["comment"] = rnd.choice(["One line comment.", "Line one.\nLine two.", "A very long comment " * 8])
-        if rnd.random() < .4:
-            ref = Reference(); ref.authors = "Smith,J. and Jones,K."; ref.title = rnd.choice(["A title", "Direct Submission"]); ref.journal = "J. Test 1 (2), 3-4 (2000)"; ref.pubmed_id = rnd.choice(["", "12345"])
-            ref.location = [SimpleLocation(0, L)]
-            a["references"] = [ref]
-        if rnd.random() < .3: r.dbxrefs = ["BioProject:PRJ1", "BioSample:SAMN2"]
-        feats = [SeqFeature(SimpleLocation(0, L, 1), "source", qualifiers={"organism": ["Test org"], "mol_type": ["genomic DNA"]})]
-        for _ in range(rnd.randint(0, 4)):
-            s0 = rnd.randint(0, L - 10); e0 = rnd.randint(s0 + 3, min(L, s0 + 60))
-            kind = rnd.choice(["simple", "minus", "join", "fuzzy", "single", "order"])
-            if kind == "simple": loc = SimpleLocation(s0, e0, 1)
-            elif kind == "minus": loc = SimpleLocation(s0, e0, -1)
-            elif kind == "join" and e0 - s0 > 7: loc = CompoundLocation([SimpleLocation(s0, s0 + 3, 1), SimpleLocation(s0 + 5, e0, 1)])
-            elif kind == "order" and e0 - s0 > 7: loc = CompoundLocation([SimpleLocation(s0, s0 + 3, -1), SimpleLocation(s0 + 5, e0, -1)], "order")
-            elif kind == "fuzzy": loc = SimpleLocation(BeforePosition(s0), AfterPosition(e0), 1)
-            else: loc = SimpleLocation(s0, s0 + 1, 1)
-            q = {}
-            if rnd.random() < .8: q["gene"] = [rnd.choice(["abc", "xyz1", "geneA"])]
-            if rnd.random() < .5: q["note"] = [rnd.choice(["short", "a longer note that must be wrapped across several lines in the output file " * 2, 'with "quotes"'])]
-            if rnd.random() < .3: q["pseudo"] = [None] if False else [""]
-            if rnd.random() < .3: q["db_xref"] = ["GeneID:1", "UniProtKB:P1"]
-            if rnd.random() < .3: q["codon_start"] = ["1"]
-            if rnd.random() < .3: q["translation"] = ["MKV" * rnd.randint(1, 30)]
-            feats.append(SeqFeature(loc, rnd.choice(["gene", "CDS", "misc_feature", "mRNA", "exon"]), qualifiers=q))
-        r.features = feats
+        r = make_record(rnd, i)
         buf = io.StringIO()
         try:
-            SeqIO.write(r, buf, "genbank")
+            SeqIO.write(r, buf, fmt)
             return buf.getvalue()
         except Exception:
             return None
-    texts = list(HAND)
+    texts = list(HAND) + list(extra)
     for i in range(70):
         t = rec_text(rnd, i)
         if t: texts.append(t)
@@ -401,14 +406,176 @@ CONTIG      join(AA000001.1:1..2500,gap(100),AA000002.1:1..2400)
     for t in allt[:]:
         if rnd.random() < .15: allt.append(mutate(mutate(t, rnd), rnd))
     for t in allt:
-        add({"kind": "parse", "format": "genbank", "text": t})
+        add({"kind": "parse", "format": fmt, "text": t})
     for t in rnd.sample(allt, 90):
-        add({"kind": "read", "format": "genbank", "text": t}); add({"kind": "parse", "format": "gb", "text": t})
-    for t in rnd.sample(allt, 120): add({"kind": "parse", "format": "genbank-cds", "text": t})
-    for t in ["", "\n", "LOCUS", "LOCUS       ", "random\ntext\n", "//\n//\n"]:
-        add({"kind": "parse", "format": "genbank", "text": t}); add({"kind": "parse", "format": "genbank-cds", "text": t})
-    add({"kind": "parse", "format": "genbank", "bytes": "LOCUS       A 1 bp\n"})
+        add({"kind": "read", "format": fmt, "text": t}); add({"kind": "parse", "format": alias, "text": t})
+    for t in rnd.sample(allt, 120): add({"kind": "parse", "format": cds_fmt, "text": t})
+    for t in ["", "\n", "LOCUS", "LOCUS       ", "ID   ", "ID   X;", "random\ntext\n", "//\n//\n"]:
+        add({"kind": "parse", "format": fmt, "text": t}); add({"kind": "parse", "format": cds_fmt, "text": t})
+    add({"kind": "parse", "format": fmt, "bytes": "ID   A;\n"})
 
-{"fasta": family_cases, "fastq": fastq_cases, "genbank": genbank_cases}[FAMILY]()
+def insdc_write_cases():
+    def R(seq, id="X1.1", name="NAME", desc="a description", dbx=(), feats=(), ann=(), letter=None):
+        return REC(seq, id, name, desc, list(dbx), list(feats), [list(a) for a in ann], letter)
+    DNA = ("molecule_type", "DNA")
+    def feat(loc, typ="gene", quals=()): return FEAT(loc, typ, "<unknown id>", quals)
+    LOC = lambda a, b, st=1, ref=None, db=None: LOC_(a, b, st, ref, db)
+    def PO(cls, v, *r): return pos(cls, v, *r)
+    ref1 = {"$": "ref", "authors": "Smith J., Jones K. " * 4, "consrtm": "A consortium", "title": "A long title " * 5, "journal": "J. Test 1:1-2(2000)", "medline_id": "123", "pubmed_id": "456", "comment": "remark text", "location": [LOC(0, 10)]}
+    ref2 = {"$": "ref", "authors": "", "consrtm": "", "title": "", "journal": "", "medline_id": "", "pubmed_id": "", "comment": "", "location": []}
+    ref3 = {"$": "ref", "authors": "X", "consrtm": "", "title": "T", "journal": "J", "medline_id": "", "pubmed_id": "", "comment": "", "location": [LOC(0, 3), LOC(5, 8)]}
+    S0 = S("ACGTACGTAC" * 13)
+    recs = {
+     "plain": R(S("ACGTACGTAC"), ann=[DNA]), "nomol": R(S("ACGT")), "protein": R(S("MKVLAAGIVG"), ann=[("molecule_type", "protein")]), "rna": R(S("ACGU"), ann=[("molecule_type", "mRNA")]),
+     "weird_mol": R(S("ACGT"), ann=[("molecule_type", "weird thing")]), "longmol": R(S("ACGT"), ann=[("molecule_type", "unassigned DNA")]), "toolong_mol": R(S("ACGT"), ann=[("molecule_type", "x" * 12)]),
+     "long": R(S0, ann=[DNA]), "long130": R(S("A" * 130), ann=[DNA]), "len60": R(S("A" * 60), ann=[DNA]), "len61": R(S("C" * 61), ann=[DNA]), "empty": R(S(""), ann=[DNA]),
+     "nameunk": R(S("ACGT"), "ID9.2", "<unknown name>", "d", ann=[DNA]), "bothunk": R(S("ACGT"), "<unknown id>", "<unknown name>", "d", ann=[DNA, ("accession", "ACC1")]), "longname": R(S("ACGT"), "ID1.1", "ThisIsAVeryLongLocusNameOver16", "d", ann=[DNA]),
+     "longname2": R(S("ACGT"), "ID1.1", "L" * 30, "d", ann=[DNA]), "spacename": R(S("ACGT"), "ID1.1", "has space", "d", ann=[DNA]), "noversion": R(S("ACGT"), "ACC", "N", "d", ann=[DNA]), "badversion": R(S("ACGT"), "ACC.x", "N", "d", ann=[DNA]),
+     "accsemi": R(S("ACGT"), "A;B", "N", "d", ann=[DNA]), "accspace": R(S("ACGT"), "A B", "N", "d", ann=[DNA]), "accession_ann": R(S("ACGT"), "ACC.3", "N", "d", ann=[DNA, ("accession", "OTHER")]), "gi": R(S("ACGT"), "ACC.1", "N", "d", ann=[DNA, ("gi", "12345")]),
+     "unkdesc": R(S("ACGT"), "A.1", "N", "<unknown description>", ann=[DNA]), "emptydesc": R(S("ACGT"), "A.1", "N", "", ann=[DNA]), "longdesc": R(S("ACGT"), "A.1", "N", "word " * 40, ann=[DNA]), "nlsdesc": R(S("ACGT"), "A.1", "N", "line1\nline2", ann=[DNA]),
+     "topo_lin": R(S("ACGT"), ann=[DNA, ("topology", "linear")]), "topo_circ": R(S("ACGT"), ann=[DNA, ("topology", "circular")]), "topo_bad": R(S("ACGT"), ann=[DNA, ("topology", "very-long-topology")]),
+     "div_pri": R(S("ACGT"), ann=[DNA, ("data_file_division", "PRI")]), "div_bct": R(S("ACGT"), ann=[DNA, ("data_file_division", "BCT")]), "div_hum": R(S("ACGT"), ann=[DNA, ("data_file_division", "HUM")]), "div_unk": R(S("ACGT"), ann=[DNA, ("data_file_division", "UNK")]),
+     "div_bogus": R(S("ACGT"), ann=[DNA, ("data_file_division", "BOGUS")]), "div_long": R(S("ACGT"), ann=[DNA, ("data_file_division", "TOOLONG")]),
+     "date_ok": R(S("ACGT"), ann=[DNA, ("date", "15-MAR-1999")]), "date_short": R(S("ACGT"), ann=[DNA, ("date", "15-MAR-99")]), "date_bad_month": R(S("ACGT"), ann=[DNA, ("date", "15-XYZ-1999")]), "date_feb30": R(S("ACGT"), ann=[DNA, ("date", "30-FEB-2000")]),
+     "date_leap": R(S("ACGT"), ann=[DNA, ("date", "29-FEB-2000")]), "date_noleap": R(S("ACGT"), ann=[DNA, ("date", "29-FEB-1900")]), "date_list": R(S("ACGT"), ann=[DNA, ("date", {"$": "list", "v": ["01-JAN-2000"]})]),
+     "date_list2": R(S("ACGT"), ann=[DNA, ("date", {"$": "list", "v": ["01-JAN-2000", "02-JAN-2000"]})]), "date_int": R(S("ACGT"), ann=[DNA, ("date", 5)]), "date_text": R(S("ACGT"), ann=[DNA, ("date", "xx-xxx-xxxx")]),
+     "kw": R(S("ACGT"), ann=[DNA, ("keywords", {"$": "list", "v": ["alpha", "beta", "gamma"]})]), "kw_dot": R(S("ACGT"), ann=[DNA, ("keywords", {"$": "list", "v": ["alpha."]})]), "kw_empty": R(S("ACGT"), ann=[DNA, ("keywords", {"$": "list", "v": []})]),
+     "kw_long": R(S("ACGT"), ann=[DNA, ("keywords", {"$": "list", "v": ["keyword number %d" % i for i in range(12)]})]),
+     "seg": R(S("ACGT"), ann=[DNA, ("segment", "1 of 2")]), "seg_list": R(S("ACGT"), ann=[DNA, ("segment", {"$": "list", "v": ["1 of 2"]})]), "seg_list2": R(S("ACGT"), ann=[DNA, ("segment", {"$": "list", "v": ["a", "b"]})]),
+     "source_org": R(S("ACGT"), ann=[DNA, ("source", "human"), ("organism", "Homo sapiens")]), "org_long": R(S("ACGT"), ann=[DNA, ("organism", "O" * 100)]), "tax": R(S("ACGT"), ann=[DNA, ("taxonomy", {"$": "list", "v": ["Eukaryota", "Metazoa", "Chordata"]})]),
+     "tax_dot": R(S("ACGT"), ann=[DNA, ("taxonomy", {"$": "list", "v": ["Eukaryota."]})]), "tax_long": R(S("ACGT"), ann=[DNA, ("taxonomy", {"$": "list", "v": ["Taxon%d" % i for i in range(25)]})]), "dbsrc": R(S("ACGT"), ann=[DNA, ("db_source", "REFSEQ: x")]),
+     "dbsrc_list": R(S("ACGT"), ann=[DNA, ("db_source", {"$": "list", "v": ["a", "b"]})]), "dbx": R(S("ACGT"), dbx=["BioProject:PRJ1", "BioSample: SAMN2", "Other:x"], ann=[DNA]), "dbx_proj": R(S("ACGT"), dbx=["Project:PRJ7", "A:b"], ann=[DNA]), "dbx_none": R(S("ACGT"), dbx=["noColon"], ann=[DNA]),
+     "refs": R(S("ACGT" * 5), ann=[DNA, ("references", {"$": "list", "v": [ref1, ref2, ref3]})]), "refs_prot": R(S("MKVL"), ann=[("molecule_type", "protein"), ("references", {"$": "list", "v": [ref1]})]), "refs_junk": R(S("ACGT"), ann=[DNA, ("references", {"$": "list", "v": ["not a ref", ref3]})]),
+     "comment_str": R(S("ACGT"), ann=[DNA, ("comment", "one line")]), "comment_multi": R(S("ACGT"), ann=[DNA, ("comment", "line one\nline two\n" + "long " * 30)]), "comment_list": R(S("ACGT"), ann=[DNA, ("comment", {"$": "list", "v": ["a", "b c"]})]),
+     "comment_empty_list": R(S("ACGT"), ann=[DNA, ("comment", {"$": "list", "v": []})]), "comment_bad": R(S("ACGT"), ann=[DNA, ("comment", 5)]),
+     "struct": R(S("ACGT"), ann=[DNA, ("structured_comment", {"$": "dict", "v": [["Assembly-Data", {"$": "dict", "v": [["Method", "SPAdes"], ["Technology Used", "Illumina"]]}], ["Other", {"$": "dict", "v": [["k", "v"]]}]]}), ("comment", "plain too")]),
+     "struct_only": R(S("ACGT"), ann=[DNA, ("structured_comment", {"$": "dict", "v": [["A", {"$": "dict", "v": [["x", "y"]]}]]})]), "struct_empty": R(S("ACGT"), ann=[DNA, ("structured_comment", {"$": "dict", "v": []})]),
+     "undef": R(U(10), ann=[DNA]), "undef_contig": R(U(10), ann=[DNA, ("contig", "join(A:1..5,gap(5))")]), "undef_contig_list": R(U(10), ann=[DNA, ("contig", {"$": "list", "v": ["join(A:1..5,", "gap(5))"]})]),
+     "undef_contig_long": R(U(10), ann=[DNA, ("contig", "join(" + ",".join("ACC%05d.1:1..100" % i for i in range(12)) + ")")]), "undef_contig_nocomma": R(U(10), ann=[DNA, ("contig", "x" * 100)]), "partial": R(SPART(10, [(0, "ACG")]), ann=[DNA]),
+     "mutable": R(M("ACGT"), ann=[DNA]), "noseq": R(None, ann=[DNA]),
+    }
+    feats = {
+     "f_simple": [feat(LOC(0, 10))], "f_minus": [feat(LOC(2, 8, -1))], "f_single": [feat(LOC(4, 5))], "f_between": [feat(LOC(4, 4))], "f_between_end": [feat(LOC(10, 10))], "f_unstranded": [feat(LOC(1, 9, None))], "f_zerostrand": [feat(LOC(1, 9, 0))],
+     "f_join": [feat(CL([LOC(0, 3), LOC(5, 8)], "join"))], "f_join_minus": [feat(CL([LOC(5, 8, -1), LOC(0, 3, -1)], "join"))],
+     "f_order": [feat(CL([LOC(0, 3, -1), LOC(5, 8, -1)], "order"))], "f_mixed": [feat(CL([LOC(0, 3, 1), LOC(5, 8, -1)], "join"))],
+     "f_bond": [feat(CL([LOC(0, 1), LOC(5, 6)], "bond"))], "f_fuzzy": [feat(LOC(PO("BeforePosition", 1), PO("AfterPosition", 9)))], "f_within": [feat(LOC(PO("WithinPosition", 2, 2, 4), PO("WithinPosition", 8, 6, 8)))],
+     "f_oneof": [feat(LOC(PO("OneOfPosition", 2, [X(2), X(4)]), PO("OneOfPosition", 9, [X(7), X(9)])))], "f_betweenpos": [feat(LOC(PO("BetweenPosition", 3, 3, 4), X(8)))], "f_uncertain": [feat(LOC(PO("UncertainPosition", 3), X(8)))],
+     "f_unk_start": [feat(LOC({"$": "pos", "cls": "UnknownPosition"}, X(8)))], "f_unk_end": [feat(LOC(X(2), {"$": "pos", "cls": "UnknownPosition"}))], "f_unk_both": [feat(LOC({"$": "pos", "cls": "UnknownPosition"}, {"$": "pos", "cls": "UnknownPosition"}))],
+     "f_ref": [feat(LOC(1, 5, 1, "NC_9.1"))], "f_refdb": [feat(LOC(1, 5, 1, "NC_9.1", "GenBank"))], "f_longjoin": [feat(CL([LOC(i * 10, i * 10 + 5) for i in range(12)], "join"))],
+     "f_none_loc": [feat(None)], "f_notype": [FEAT(LOC(0, 3), "", "<unknown id>", [])], "f_spacetype": [feat(LOC(0, 3), "misc feature")], "f_longtype": [feat(LOC(0, 3), "a_very_long_feature_key")], "f_badtype": [feat(LOC(0, 3), "bad$type")],
+     "q_basic": [feat(LOC(0, 5), "gene", [("gene", {"$": "list", "v": ["abc"]}), ("note", {"$": "list", "v": ["n1", "n2"]})])], "q_flag": [feat(LOC(0, 5), "gene", [("pseudo", {"$": "list", "v": [""]})])],
+     "q_int": [feat(LOC(0, 5), "CDS", [("codon_start", {"$": "list", "v": [1]}), ("number", 5), ("note", {"$": "list", "v": [7]})])], "q_noquote": [feat(LOC(0, 5), "CDS", [("transl_table", {"$": "list", "v": ["11"]}), ("anticodon", {"$": "list", "v": ["(pos:1..3,aa:Met)"]})])],
+     "q_quote": [feat(LOC(0, 5), "gene", [("note", {"$": "list", "v": ['a "quoted" b']})])], "q_long": [feat(LOC(0, 5), "gene", [("note", {"$": "list", "v": ["long note words " * 12]})])], "q_longword": [feat(LOC(0, 5), "gene", [("note", {"$": "list", "v": ["x" * 150]})])],
+     "q_translation": [feat(LOC(0, 5), "CDS", [("translation", {"$": "list", "v": ["MKV" * 40]})])], "q_scalar": [feat(LOC(0, 5), "gene", [("gene", "scalar")])], "q_badkey": [feat(LOC(0, 5), "gene", [("bad key!", {"$": "list", "v": ["v"]})])],
+     "q_longkey": [feat(LOC(0, 5), "gene", [("k" * 25, {"$": "list", "v": ["v"]})])], "q_none": [feat(LOC(0, 5), "gene", [("flag", None), ("flag2", {"$": "list", "v": [None]})])], "q_empty_list": [feat(LOC(0, 5), "gene", [("k", {"$": "list", "v": []})])],
+     "q_newline": [feat(LOC(0, 5), "gene", [("note", {"$": "list", "v": ["line1\nline2"]})])],
+    }
+    out = {}
+    for fk, fl in feats.items():
+        out["feat_" + fk] = R(S("ACGTACGTAC"), "F.1", "FN", "feature test", [], fl, [DNA])
+    recs.update(out)
+    rnd2 = random.Random(55)
+    for i in range(40): recs[f"rand{i}"] = enc(make_record(rnd2, i))
+    for fmt in ("genbank", "gb", "embl", "imgt"):
+        for nm, rec in recs.items():
+            add({"kind": "write", "format": fmt, "records": [rec]})
+            if rnd.random() < .25: add({"kind": "format", "format": fmt, "record": rec})
+        add({"kind": "write", "format": fmt, "records": [recs["plain"], recs["long"], recs["refs"], recs["tax"]]})
+        add({"kind": "write", "format": fmt, "records": []})
+    # converters and round trips through the writers
+    for fmt, writer_fmt in (("genbank", "genbank"), ("embl", "embl")):
+        pass
+    rnd3 = random.Random(77)
+    for fmt in ("genbank", "embl"):
+        for i in range(25):
+            rec = make_record(rnd3, 100 + i)
+            buf = io.StringIO()
+            try: SeqIO.write(rec, buf, fmt)
+            except Exception: continue
+            for out_fmt in ("fasta", "genbank", "embl", "imgt", "fastq"):
+                add({"kind": "convert", "format": fmt, "text": buf.getvalue(), "out": out_fmt, "molecule_type": None})
+    add({"kind": "convert", "format": "genbank", "text": "LOCUS", "out": "fasta", "molecule_type": None})
+
+EMBL_HAND = [
+"""ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
+XX
+AC   AB000001;
+XX
+DE   Test EMBL record
+DE   with a continuation.
+XX
+KW   test; example.
+XX
+OS   Arabidopsis thaliana
+OC   Eukaryota; Viridiplantae; Streptophyta.
+XX
+RN   [1]
+RP   1-60
+RX   PUBMED; 12345.
+RA   Smith J., Jones K.;
+RT   "A title";
+RL   J. Test 1:2-3(2000).
+XX
+DR   MD5; abcdef.
+XX
+CC   A comment line.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..60
+FT                   /organism="Arabidopsis thaliana"
+FT                   /mol_type="genomic DNA"
+FT   CDS             join(1..20,30..50)
+FT                   /gene="abc"
+FT                   /translation="MKV
+FT                   AAA"
+XX
+SQ   Sequence 60 BP; 15 A; 15 C; 15 G; 15 T; 0 other;
+     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt        60
+//
+""",
+"""ID   X56734; SV 1; circular; mRNA; STD; PLN; 30 BP.
+XX
+AC   X56734; S46826;
+DE   T.aestivum mRNA.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   CDS             <1..>30
+FT                   /product="x"
+XX
+SQ   Sequence 30 BP;
+     acgtacgtac gtacgtacgt acgtacgtac                                         30
+//
+""",
+"ID   A00001; 1; ; DNA; ; STD; 10 BP.\nAC   A00001;\nDE   old style.\nSQ   Sequence 10 BP;\n     acgtacgtac        10\n//\n",
+"ID   OLD1 standard; DNA; PLN; 12 BP.\nAC   OLD1;\nDE   old.\nSQ   Sequence 12 BP;\n     acgtacgtac gt        12\n//\n",
+"ID   PAT1; SV 1; linear; unassigned DNA; PAT; HUM; 8 BP.\nAC   PAT1;\nDE   patent.\nSQ   Sequence 8 BP;\n     acgtacgt        8\n//\n",
+"ID   KIPO1  standard; PRT; 8 AA.\nDE   protein.\nSQ   Sequence 8 AA;\n     mkvlaagi        8\n//\n",
+"ID   CON1; SV 1; linear; genomic DNA; CON; BCT; 100 BP.\nAC   CON1;\nDE   contig.\nCO   join(AA000001.1:1..50,AA000002.1:1..50)\n//\n",
+]
+IMGT_HAND = [
+"""ID   HLA00001; SV 1; standard; DNA; HUM; 40 BP.
+XX
+AC   HLA00001;
+DE   HLA-A*01:01:01:01, Human MHC Class I.
+XX
+FH   Key                 Location/Qualifiers
+FH
+FT   source          1..40
+FT                   /organism="Homo sapiens"
+FT   CDS             1..>40
+FT                   /gene="HLA-A"
+XX
+SQ   Sequence 40 BP;
+     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt        40
+//
+""",
+]
+{"fasta": family_cases, "fastq": fastq_cases,
+ "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
+ "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
+ "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
+ "insdcwrite": insdc_write_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")
