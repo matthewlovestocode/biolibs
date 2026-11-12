@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 926 / 1050 applicable items verified against Biopython.**
+**Progress: 944 / 1093 applicable items verified against Biopython.**
 
 
 
@@ -617,8 +617,8 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: abi`
 - [x] `parse: abi-trim`
 - [x] `parse: ace`
-- [ ] `parse: cif-atom`
-- [ ] `parse: cif-seqres`
+- [x] `parse: cif-atom`
+- [x] `parse: cif-seqres`
 - [x] `parse: clustal`
 - [x] `parse: embl`
 - [x] `parse: embl-cds`
@@ -645,7 +645,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: msf`
 - [x] `parse: nexus`
 - [x] `parse: nib`
-- [ ] `parse: pdb-atom`
+- [x] `parse: pdb-atom`
 - [x] `parse: pdb-seqres`
 - [x] `parse: phd`
 - [x] `parse: phylip`
@@ -1542,6 +1542,70 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 - [x] `__init__(self, structure_builder=None, auth_chains=True, auth_residues=True, QUIET=False)`
 - [x] `get_structure(self, structure_id, filename)`
+
+## Bio.PDB.PDBIO
+
+
+### Bio.PDB.PDBIO.Select
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [x] `__repr__(self)`
+- [ ] `__str__(self, /)`
+- [x] `accept_atom(self, atom)`
+- [x] `accept_chain(self, chain)`
+- [x] `accept_model(self, model)`
+- [x] `accept_residue(self, residue)`
+
+### Bio.PDB.PDBIO.StructureIO
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [x] `set_structure(self, pdb_object)`
+
+### Bio.PDB.PDBIO.PDBIO
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self, use_model_flag=0, is_pqr=False)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [x] `save(self, file, select=<Select all>, write_end=True, preserve_atom_numbering=False)`
+- [x] `set_structure(self, pdb_object)`
+
+## Bio.PDB.mmcifio
+
+
+### Bio.PDB.mmcifio.MMCIFIO
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [x] `save(self, filepath, select=<Select all>, preserve_atom_numbering=False)`
+- [x] `set_dict(self, dic)`
+- [x] `set_structure(self, pdb_object)`
 
 ## Bio.PDB.parse_pdb_header
 

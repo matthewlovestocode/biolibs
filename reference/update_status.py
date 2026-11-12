@@ -203,6 +203,19 @@ for parser, cls in (("mmcif", "MMCIFParser"), ("fast", "FastMMCIFParser")):
     if any(c["kind"] == "parse" and c["parser"] == parser and "structure" in c for c in mc):
         for m in ("__init__", "get_structure"): mark(f"Bio.PDB.MMCIFParser.{cls}.{m}")
 
+# ---- Bio.PDB writers (packages/pdb/test/golden/pdbio.json) ----
+pio = json.load(open(f"{here}/../packages/pdb/test/golden/pdbio.json"))["cases"]
+def pio_members(mod, cls, done):
+    for m in inv[mod]["classes"][cls]:
+        if m in done: mark(f"{mod}.{cls}.{m}")
+if any(c["kind"] == "pdb" and "written" in c for c in pio):
+    for mod, cls in (("Bio.PDB.PDBIO", "StructureIO"), ("Bio.PDB.PDBIO", "PDBIO"), ("Bio.PDB.mmcifio", "MMCIFIO")): mark(f"{mod}.{cls}.__repr__", "na")   # default object repr
+    pio_members("Bio.PDB.PDBIO", "Select", ("__init__", "__repr__", "accept_atom", "accept_chain", "accept_model", "accept_residue"))
+    pio_members("Bio.PDB.PDBIO", "StructureIO", ("__init__", "set_structure"))
+    pio_members("Bio.PDB.PDBIO", "PDBIO", ("__init__", "save", "set_structure"))
+if any(c["kind"] == "mmcif" and "written" in c for c in pio) and any(c["kind"] == "dict" and "written" in c for c in pio):
+    pio_members("Bio.PDB.mmcifio", "MMCIFIO", ("__init__", "save", "set_dict", "set_structure"))
+
 # ---- Bio.Align.substitution_matrices (packages/align/test/golden/matrices.json) ----
 sm = json.load(open(f"{here}/../packages/align/test/golden/matrices.json"))["cases"]
 if any(c["kind"] == "load" and "matrix" in c for c in sm): mark("Bio.Align.substitution_matrices.load")

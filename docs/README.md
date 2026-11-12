@@ -10,10 +10,10 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/seq` | `Seq`/`MutableSeq`, all 27 genetic codes, IUPAC data. At parity with Biopython's `Bio.Seq` | [seq.md](seq.md) |
 | `@biolibs/seqfeature` | Positions, locations, `SeqFeature`. At parity with Biopython's `Bio.SeqFeature` | [seqfeature.md](seqfeature.md) |
 | `@biolibs/seqrecord` | `SeqRecord`: sequence + annotations + features. At parity with Biopython's `Bio.SeqRecord` | [seqrecord.md](seqrecord.md) |
-| `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, the binary formats, the alignment formats, PDB SEQRES, GFA, UniProt XML and ACE done; the structure formats and indexing remain | [seqio.md](seqio.md) |
+| `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, the binary formats, the alignment formats, PDB and mmCIF sequences (SEQRES and atoms), GFA, UniProt XML and ACE done; indexing remains | [seqio.md](seqio.md) |
 | `@biolibs/align` | `Bio.Align`: `MultipleSeqAlignment`, the 30 substitution matrices and `PairwiseAligner` with scoring and alignment and `Alignment` (printing, indexing, counts, mapping and more; file formats not yet ported) | [align.md](align.md) |
 | `@biolibs/nexus` | `Bio.Nexus`: NEXUS reader/writer and editor, `Tree`/`Node`/`Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus`. Powers the `nexus` format in `seqio` | [nexus.md](nexus.md) |
-| `@biolibs/pdb` | `Bio.PDB` first slice: `Structure`/`Model`/`Chain`/`Residue`/`Atom` (with disorder), `StructureBuilder`, PDB and mmCIF parsers (`PDBParser`, `MMCIFParser`, `MMCIF2Dict`) and PDB header parsing | [pdb.md](pdb.md) |
+| `@biolibs/pdb` | `Bio.PDB` first slice: `Structure`/`Model`/`Chain`/`Residue`/`Atom` (with disorder), `StructureBuilder`, PDB and mmCIF parsers (`PDBParser`, `MMCIFParser`, `MMCIF2Dict`), PDB header parsing and the `PDBIO`/`MMCIFIO` writers | [pdb.md](pdb.md) |
 | `@biolibs/phylo` | Newick phylogenetic trees | [phylo.md](phylo.md) |
 | `@biolibs/seqtools` | Bio.SeqUtils: GC, molecular weight, codon adaptation index, checksums, protein analysis, melting temperature | [seqtools.md](seqtools.md) |
 
@@ -27,6 +27,7 @@ core  <-- seq  <-- nexus  <-- seqio
   |         '---- seqtools
   +---- align
   +---- phylo
+  +---- pdb  <-- seqio (pdb-atom, cif-atom, cif-seqres)
 ```
 
 Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none.

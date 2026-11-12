@@ -13,6 +13,8 @@ from Bio.PDB import Atom as PAtom, Residue as PResidue, Chain as PChain, Model a
 import importlib
 PM2D = importlib.import_module('Bio.PDB.MMCIF2Dict')
 PMP = importlib.import_module('Bio.PDB.MMCIFParser')
+PIO = importlib.import_module('Bio.PDB.PDBIO')  # the module, not the shadowing class
+PMIO = importlib.import_module('Bio.PDB.mmcifio')
 PHeader = importlib.import_module('Bio.PDB.parse_pdb_header')  # `import ... as` would give the shadowing function
 from Bio.Nexus import Nexus as NexusMod, Trees as TreesMod, Nodes as NodesMod, StandardData as StandardDataMod
 
@@ -78,6 +80,8 @@ inv = {
   "Bio.PDB.PDBParser": {"classes": {"PDBParser": members(PParser)}},
   "Bio.PDB.MMCIF2Dict": {"classes": {"MMCIF2Dict": {n: _sig(getattr(PM2D.MMCIF2Dict, n)) for n in vars(PM2D.MMCIF2Dict) if n == "__init__" or not n.startswith("__")}}},
   "Bio.PDB.MMCIFParser": {"classes": {c: {n: _sig(getattr(PMP, c).__dict__[n]) for n in vars(getattr(PMP, c)) if (n == "__init__" or not n.startswith("_")) and callable(getattr(PMP, c).__dict__[n])} for c in ("MMCIFParser", "FastMMCIFParser")}},
+  "Bio.PDB.PDBIO": {"classes": {c: members(getattr(PIO, c)) for c in ("Select", "StructureIO", "PDBIO")}},
+  "Bio.PDB.mmcifio": {"classes": {"MMCIFIO": members(PMIO.MMCIFIO)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }
 print(json.dumps(inv, indent=1))

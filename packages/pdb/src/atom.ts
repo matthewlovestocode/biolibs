@@ -270,7 +270,13 @@ export class DisorderedAtom extends DisorderedEntityWrapper {
 
   /** The alternatives sorted by the code point of their altloc. */
   override disorderedGetList(): Atom[] {
-    return ([...this.childDict.values()] as Atom[]).sort((a, b) => a.altloc.codePointAt(0)! - b.altloc.codePointAt(0)!);
+    // Python sorts with key=ord(altloc), computed for every child (even a single one): it needs exactly one character.
+    const keyed = ([...this.childDict.values()] as Atom[]).map((a) => {
+      const chars = Array.from(a.altloc);
+      if (chars.length !== 1) throw new TypeError(`ord() expected a character, but string of length ${chars.length} found`);
+      return { a, key: chars[0]!.codePointAt(0)! };
+    });
+    return keyed.sort((p, q) => p.key - q.key).map((k) => k.a);
   }
 
   /**
