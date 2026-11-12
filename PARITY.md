@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 497 / 528 applicable items verified against Biopython.**
+**Progress: 526 / 542 applicable items verified against Biopython.**
 
 
 
@@ -619,14 +619,14 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `parse: ace`
 - [ ] `parse: cif-atom`
 - [ ] `parse: cif-seqres`
-- [ ] `parse: clustal`
+- [x] `parse: clustal`
 - [x] `parse: embl`
 - [x] `parse: embl-cds`
-- [ ] `parse: emboss`
+- [x] `parse: emboss`
 - [x] `parse: fasta`
 - [x] `parse: fasta-2line`
 - [x] `parse: fasta-blast`
-- [ ] `parse: fasta-m10`
+- [x] `parse: fasta-m10`
 - [x] `parse: fasta-pearson`
 - [x] `parse: fastq`
 - [x] `parse: fastq-illumina`
@@ -640,24 +640,24 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `parse: gfa2`
 - [x] `parse: ig`
 - [x] `parse: imgt`
-- [ ] `parse: maf`
-- [ ] `parse: mauve`
-- [ ] `parse: msf`
+- [x] `parse: maf`
+- [x] `parse: mauve`
+- [x] `parse: msf`
 - [ ] `parse: nexus`
 - [x] `parse: nib`
 - [ ] `parse: pdb-atom`
 - [ ] `parse: pdb-seqres`
 - [x] `parse: phd`
-- [ ] `parse: phylip`
-- [ ] `parse: phylip-relaxed`
-- [ ] `parse: phylip-sequential`
+- [x] `parse: phylip`
+- [x] `parse: phylip-relaxed`
+- [x] `parse: phylip-sequential`
 - [x] `parse: pir`
 - [x] `parse: qual`
 - [~] `parse: seqxml`
 - [x] `parse: sff`
 - [x] `parse: sff-trim`
 - [~] `parse: snapgene`
-- [ ] `parse: stockholm`
+- [x] `parse: stockholm`
 - [x] `parse: swiss`
 - [x] `parse: tab`
 - [x] `parse: twobit`
@@ -666,7 +666,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 ### Write formats
 
-- [ ] `write: clustal`
+- [x] `write: clustal`
 - [x] `write: embl`
 - [x] `write: fasta`
 - [x] `write: fasta-2line`
@@ -677,21 +677,48 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `write: gb`
 - [x] `write: genbank`
 - [x] `write: imgt`
-- [ ] `write: maf`
-- [ ] `write: mauve`
+- [x] `write: maf`
+- [x] `write: mauve`
 - [ ] `write: nexus`
 - [x] `write: nib`
 - [x] `write: phd`
-- [ ] `write: phylip`
-- [ ] `write: phylip-relaxed`
-- [ ] `write: phylip-sequential`
+- [x] `write: phylip`
+- [x] `write: phylip-relaxed`
+- [x] `write: phylip-sequential`
 - [x] `write: pir`
 - [x] `write: qual`
 - [x] `write: seqxml`
 - [x] `write: sff`
-- [ ] `write: stockholm`
+- [x] `write: stockholm`
 - [x] `write: tab`
 - [x] `write: xdna`
+
+## Bio.Align
+
+
+### Bio.Align.MultipleSeqAlignment
+
+- [x] `__add__(self, other)`
+- [x] `__delitem__(self, index)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [x] `__getitem__(self, index)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, records, alphabet=None, annotations=None, column_annotations=None)`
+- [x] `__iter__(self)`
+- [-] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self)`
+- [x] `__str__(self)`
+- [ ] `alignment`
+- [x] `append(self, record)`
+- [x] `column_annotations`
+- [x] `extend(self, records)`
+- [x] `get_alignment_length(self)`
+- [x] `sort(self, key=None, reverse=False)`
+- [ ] `substitutions`
 
 ## Bio.SeqUtils
 

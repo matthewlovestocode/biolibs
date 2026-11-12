@@ -41,6 +41,7 @@ inv = {
   "Bio.Data.CodonTable": {"functions": funcs(CodonTable), "classes": {"CodonTable": members(CodonTable.CodonTable), "NCBICodonTable": members(CodonTable.NCBICodonTable)},
                           "table_ids": sorted(CodonTable.generic_by_id)},
   "Bio.Data.IUPACData": sorted(n for n in dir(IUPACData) if not n.startswith("_")),
+  "Bio.Align": {"classes": {"MultipleSeqAlignment": members(Align.MultipleSeqAlignment)}},
   "Bio.SeqUtils": {"functions": funcs(SU), "classes": {"CodonAdaptationIndex": members(SU.CodonAdaptationIndex)}},
   "Bio.SeqUtils.CheckSum": {"functions": funcs(CheckSum)},
   "Bio.SeqUtils.lcc": {"functions": funcs(lcc)},

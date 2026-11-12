@@ -806,6 +806,33 @@
   "unambiguous_rna_weight_ranges",
   "unambiguous_rna_weights"
  ],
+ "Bio.Align": {
+  "classes": {
+   "MultipleSeqAlignment": {
+    "__add__": "(self, other)",
+    "__delitem__": "(self, index)",
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__getitem__": "(self, index)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self, records, alphabet=None, annotations=None, column_annotations=None)",
+    "__iter__": "(self)",
+    "__le__": "(self, value, /)",
+    "__len__": "(self)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self)",
+    "__str__": "(self)",
+    "alignment": "property",
+    "append": "(self, record)",
+    "column_annotations": "property",
+    "extend": "(self, records)",
+    "get_alignment_length": "(self)",
+    "sort": "(self, key=None, reverse=False)",
+    "substitutions": "property"
+   }
+  }
+ },
  "Bio.SeqUtils": {
   "functions": {
    "GC123": "(seq)",

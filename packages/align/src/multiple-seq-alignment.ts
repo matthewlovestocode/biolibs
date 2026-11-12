@@ -80,6 +80,11 @@ export class MultipleSeqAlignment implements Iterable<SeqRecord> {
     this.columnAnnotations = columnAnnotations ?? new Map();
   }
 
+  /** The per-column annotations if they have been created, else null (Python's `_per_col_annotations`). @internal */
+  peekColumnAnnotations(): RestrictedDict | null {
+    return this.perColumn;
+  }
+
   /** Per-column annotations; each value must be as long as the alignment. */
   get columnAnnotations(): RestrictedDict {
     if (this.perColumn === null) this.perColumn = new RestrictedDict(this.records.length ? this.getAlignmentLength() : 0);

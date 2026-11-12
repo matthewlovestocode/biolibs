@@ -1,52 +1,29 @@
 # @biolibs/align
 
-Pairwise sequence alignment, in the spirit of Biopython's `pairwise2` / `PairwiseAligner`. Works on any strings (DNA, RNA, protein, or arbitrary text).
-
-## Alignment
-
-### `globalAlign(a, b, options?): Alignment`
-Needleman–Wunsch end-to-end alignment with a linear gap penalty.
-
-### `localAlign(a, b, options?): Alignment`
-Smith–Waterman best local alignment. Returns the highest-scoring local segment (one optimal alignment if several tie).
-
-### `AlignOptions`
-
-| Option | Default | Meaning |
-|---|---|---|
-| `match` | `1` | Score for identical characters |
-| `mismatch` | `-1` | Score for different characters |
-| `gap` | `-2` | Linear penalty per gap position (use a negative number) |
-| `score` | – | `(a, b) => number` custom substitution scorer; overrides `match`/`mismatch` (e.g. a BLOSUM lookup) |
-
-### `Alignment`
-
-| Field | Meaning |
-|---|---|
-| `score` | Optimal alignment score |
-| `a`, `b` | Aligned strings of equal length, `-` for gaps |
-| `aRange`, `bRange` | `[start, end)` positions in the original sequences covered by the alignment (whole sequence for global) |
+A TypeScript port of Biopython's `Bio.Align`. So far it holds `MultipleSeqAlignment`; the pairwise aligner and the newer `Alignment` class are not yet ported (the earlier string-only scaffold was removed). Verified against Biopython 1.88 with about 1,900 recorded operations. See [PARITY.md](../PARITY.md).
 
 ```ts
-const r = globalAlign("ACGT", "AGT", { gap: -1 });
-// r.a === "ACGT", r.b === "A-GT", r.score === 2
+import { MultipleSeqAlignment } from "@biolibs/align";
+import { Seq } from "@biolibs/seq";
+import { SeqRecord } from "@biolibs/seqrecord";
 
-const l = localAlign("TTTACGTAAA", "GGGACGTCCC");
-// l.a === "ACGT", l.score === 4, l.aRange === [3, 7]
+const aln = new MultipleSeqAlignment([new SeqRecord(new Seq("AC-T"), "a"), new SeqRecord(new Seq("ACGT"), "b")]);
+aln.length;                    // 2 rows
+aln.getAlignmentLength();      // 4 columns
+aln.get(0, 2);                 // "-"          (Python aln[0, 2])
+aln.get({ start: 1 }, 3);      // "T"          (Python aln[1:, 3])
+aln.format("clustal");         // needs @biolibs/seqio to be imported
 ```
 
-## Metrics
+| Python | TypeScript |
+|---|---|
+| `MultipleSeqAlignment(records, annotations=, column_annotations=)` | `new MultipleSeqAlignment(records, null, annotations?, columnAnnotations?)` |
+| `len(aln)`, `aln.get_alignment_length()` | `aln.length`, `aln.getAlignmentLength()` |
+| `aln[i]`, `aln[a:b]`, `aln[i, j]`, `aln[rows, cols]` | `aln.get(i)`, `aln.get(slice)`, `aln.get(i, j)`, `aln.get(rows, cols)` |
+| `aln.append(r)`, `aln.extend(rs)`, `aln + other` | `append`, `extend`, `add` |
+| `del aln[i]`, `aln.sort(key, reverse)` | `aln.delete(i)`, `aln.sort(key, reverse)` |
+| `aln.column_annotations` | `aln.columnAnnotations` (a `RestrictedDict`) |
+| `format(aln, "fmt")` | `aln.format("fmt")` |
+| `aln.substitutions`, `aln.alignment` | not yet (need substitution matrices and the `Alignment` class) |
 
-### `identity(alignment): number`
-Fraction of alignment columns where both characters are identical and not gaps.
-
-### `editDistance(a, b): number`
-Levenshtein distance (unit-cost insert, delete, substitute).
-
-## Complexity
-
-Both alignment functions use O(n·m) time and memory (a score matrix plus a traceback matrix). That's fine for sequences up to a few thousand characters; for genome-scale inputs use a seed-and-extend approach.
-
-## Not yet supported
-
-Affine gap penalties, built-in substitution matrices (BLOSUM/PAM), semi-global alignment, enumerating all optimal alignments, banded alignment.
+Records must all have the same length (`ValueError` otherwise); a record without a sequence raises `TypeError` when the alignment length is needed, as `len(None)` does in Python.

@@ -10,8 +10,8 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/seq` | `Seq`/`MutableSeq`, all 27 genetic codes, IUPAC data. At parity with Biopython's `Bio.Seq` | [seq.md](seq.md) |
 | `@biolibs/seqfeature` | Positions, locations, `SeqFeature`. At parity with Biopython's `Bio.SeqFeature` | [seqfeature.md](seqfeature.md) |
 | `@biolibs/seqrecord` | `SeqRecord`: sequence + annotations + features. At parity with Biopython's `Bio.SeqRecord` | [seqrecord.md](seqrecord.md) |
-| `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML and the binary formats (nib, twoBit, GCK, xdna, ABIF, SnapGene, SFF) done; more in progress | [seqio.md](seqio.md) |
-| `@biolibs/align` | Pairwise alignment and edit distance | [align.md](align.md) |
+| `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML and the binary formats and the alignment formats (all but nexus) done; more in progress | [seqio.md](seqio.md) |
+| `@biolibs/align` | `Bio.Align`: `MultipleSeqAlignment` (pairwise aligner not yet ported) | [align.md](align.md) |
 | `@biolibs/phylo` | Newick phylogenetic trees | [phylo.md](phylo.md) |
 | `@biolibs/seqtools` | Bio.SeqUtils: GC, molecular weight, codon adaptation index, checksums, protein analysis, melting temperature | [seqtools.md](seqtools.md) |
 
@@ -50,13 +50,11 @@ npm test        # runs vitest across all packages
 Using a package from another workspace package or app:
 
 ```ts
-import { Seq } from "@biolibs/seq";
-import { parseFasta } from "@biolibs/seqio";
+import { parse } from "@biolibs/seqio";
 
-const [rec] = parseFasta(">gene\nATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG\n");
-const seq = new Seq(rec.sequence);
-console.log(seq.translate({ toStop: true }).toString()); // "MAIVMGR"
-console.log(seq.reverseComplement().toString());
+const [rec] = parse(">gene\nATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG\n", "fasta");
+console.log(rec.seq!.translate({ toStop: true }).toString()); // "MAIVMGR"
+console.log(rec.seq!.reverseComplement().toString());
 ```
 
 Packages are not yet published to npm; inside this monorepo they resolve through npm workspaces (`node_modules/@biolibs/*` symlinks to `packages/*`). Run `npm run build` first so the `dist/` output exists.
@@ -75,10 +73,10 @@ Packages are not yet published to npm; inside this monorepo they resolve through
 | `Seq(s).reverse_complement()` | `new Seq(s).reverseComplement()` |
 | `Seq(s).transcribe()` | `new Seq(s).transcribe()` |
 | `Seq(s).translate(to_stop=True)` | `new Seq(s).translate({ toStop: true })` |
-| `SeqIO.parse(f, "fasta")` | `parseFasta(text)` |
-| `SeqIO.write(recs, f, "fastq")` | `writeFastq(recs)` |
-| `pairwise2.align.globalms` | `globalAlign(a, b, { match, mismatch, gap })` |
+| `SeqIO.parse(f, "fasta")` | `parse(text, "fasta")` |
+| `SeqIO.write(recs, f, "fastq")` | `write(recs, out, "fastq")` |
+| `pairwise2.align.globalms` | not yet ported |
 | `Phylo.read(f, "newick")` | `parseNewick(text)` |
-| `SeqUtils.gc_fraction(s)` | `gcContent(s)` |
-| `SeqUtils.MeltingTemp.Tm_Wallace` | `meltingTemp(s)` (short oligos) |
-| `Restriction.EcoRI.search(seq)` | `findSites(dna, "EcoRI")` |
+| `SeqUtils.gc_fraction(s)` | `gcFraction(s)` |
+| `SeqUtils.MeltingTemp.Tm_Wallace` | `tmWallace(s)` |
+| `Restriction.EcoRI.search(seq)` | not yet ported |

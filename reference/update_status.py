@@ -113,6 +113,14 @@ mark("Bio.SeqIO.convert", "done" if direct <= conv else "partial")
 for m in ("format", "__format__"):
     if {"genbank", "embl", "fasta"} <= formatted: mark(f"Bio.SeqRecord.SeqRecord.{m}")
 
+# ---- Bio.Align.MultipleSeqAlignment (packages/align/test/golden/msa.json) ----
+if os.path.exists(f"{here}/../packages/align/test/golden/msa.json"):
+    for m in inv["Bio.Align"]["classes"]["MultipleSeqAlignment"]:
+        key = f"Bio.Align.MultipleSeqAlignment.{m}"
+        if m in ("alignment", "substitutions"): continue         # need the new Alignment class and substitution matrices
+        elif m in ("__repr__", "__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__"): mark(key, "na")   # object boilerplate; __repr__ shows a memory address
+        else: mark(key)
+
 # ---- Bio.SeqUtils (packages/seqtools/test/golden/sequtils.json) ----
 su = json.load(open(f"{here}/../packages/seqtools/test/golden/sequtils.json"))["cases"]
 su_fns = {c["fn"] for c in su if "fn" in c and ("result" in c or "exc" in c)}
