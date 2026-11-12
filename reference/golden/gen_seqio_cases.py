@@ -1605,6 +1605,106 @@ def pdb_cases():
     for t in r2.sample(base[:120], 15):
         for out in ("fasta", "tab"): add({"kind": "convert", "format": "pdb-seqres", "text": t, "out": out, "molecule_type": None})
 
+# ------------------------------------------------------------------ pdb-atom / cif-atom / cif-seqres
+AA3 = ["ALA", "ARG", "ASN", "ASP", "CYS", "GLN", "GLU", "GLY", "HIS", "ILE", "LEU", "LYS", "MET", "PHE", "PRO", "SER", "THR", "TRP", "TYR", "VAL"]
+def struct_atoms(rnd):
+    """Chains of residues (with numbering gaps, out-of-order runs, hetero residues, lower-case names); one or two models."""
+    atoms = []
+    for model in range(1, rnd.choice([1, 1, 1, 2]) + 1):
+        for ch in rnd.sample("ABCDXYZ", rnd.randint(1, 3)):
+            num = rnd.randint(1, 20)
+            for _ in range(rnd.randint(1, 12)):
+                r = rnd.random()
+                if r < .08: num += rnd.randint(2, 6)
+                elif r < .12: num -= rnd.randint(1, 8)
+                res = rnd.choice(AA3 + ["MSE", "SEP", "HOH", "ZN", "UNK", "ala", "NAG"])
+                het = "HETATM" if res in ("MSE", "SEP", "HOH", "ZN", "NAG") and rnd.random() < .8 else "ATOM"
+                icode = rnd.choice([" ", " ", " ", " ", "A"])
+                for name in rnd.sample(["N", "CA", "C", "O"], rnd.randint(1, 3)):
+                    atoms.append(dict(model=model, chain=ch, num=num, icode=icode, res=res, het=het, name=name))
+                num += 1
+    return atoms
+
+def pdb_text(rnd, atoms, header=True):
+    out = []
+    if header: out.append(f"HEADER    TEST PROTEIN                            01-JAN-00   {''.join(rnd.choice('123456789') for _ in range(4))}              \n")
+    serial = 1; cur = None
+    for a in atoms:
+        if a["model"] != cur:
+            if cur is not None: out.append("ENDMDL\n")
+            cur = a["model"]; out.append(f"MODEL     {cur:4d}\n")
+        nm = (" " + a["name"]).ljust(4)[:4] if len(a["name"]) < 4 else a["name"]
+        out.append("%-6s%5d %-4s %3s %1s%4d%1s   %8.3f%8.3f%8.3f%6.2f%6.2f          %2s\n" % (a["het"], serial, nm, a["res"], a["chain"], a["num"], a["icode"], rnd.uniform(-9, 9), rnd.uniform(-9, 9), rnd.uniform(-9, 9), 1.0, 10.0, a["name"][0]))
+        serial += 1
+    if cur is not None: out.append("ENDMDL\n")
+    out.append("END\n")
+    return "".join(out)
+
+def cif_text(rnd, atoms, idcode):
+    cols = "group_PDB id type_symbol label_atom_id label_alt_id label_comp_id label_asym_id label_seq_id pdbx_PDB_ins_code Cartn_x Cartn_y Cartn_z occupancy B_iso_or_equiv auth_seq_id auth_asym_id pdbx_PDB_model_num".split()
+    out = ["data_TEST\n"]
+    if idcode is not None: out.append(f"_entry.id {idcode}\n")
+    out.append("loop_\n" + "".join(f"_atom_site.{c}\n" for c in cols))
+    for i, a in enumerate(atoms, 1):
+        ic = "?" if a["icode"] == " " else a["icode"]
+        out.append(" ".join([a["het"], str(i), a["name"][0], a["name"], ".", a["res"], a["chain"].lower(), str(a["num"]), ic, "%.3f" % rnd.uniform(-9, 9), "%.3f" % rnd.uniform(-9, 9), "%.3f" % rnd.uniform(-9, 9), "1.00", "10.00", str(a["num"]), a["chain"], str(a["model"])]) + "\n")
+    out.append("#\n")
+    return "".join(out)
+
+def atom_family_cases(kind):
+    r3 = random.Random(31 if kind == "pdb" else 32)
+    texts = []
+    for _ in range(150):
+        atoms = struct_atoms(r3)
+        texts.append(pdb_text(r3, atoms, header=r3.random() < .85) if kind == "pdb" else cif_text(r3, atoms, r3.choice(["1ABC", "?", None, "2XYZ"])))
+    if kind == "pdb":
+        texts += ["", "\n", "HEADER    X                                       01-JAN-00   1ABC\n", "ATOM      1  CA  ALA A   1       0.000   0.000   0.000  1.00 10.00           C  \n",
+                  "ATOM      1  CA  ALA A   1       0.000   0.000   0.000  1.00 10.00           C  \nATOM      2  CA  GLY A   5       0.000   0.000   0.000  1.00 10.00           C  \nATOM      3  CA  SER A   3       0.000   0.000   0.000  1.00 10.00           C  \nATOM      4  CA  VAL A   4       0.000   0.000   0.000  1.00 10.00           C  \n",
+                  "HETATM    1  O   HOH A   1       0.000   0.000   0.000  1.00 10.00           O  \n"]
+    else:
+        texts += ["", "\n", "data_X\n", "data_X\n_entry.id 1ABC\n", "data_X\nloop_\n_atom_site.id\n1\n"]
+    allt = list(texts)
+    for t in texts[:100]:
+        for _ in range(3): allt.append(mutate_text(t, r3, junk=("ATOM", "HETATM", "MODEL", "ENDMDL", "HEADER", "loop_", "_atom_site.id", "data_X", "ALA", "# c")))
+    fmt = "pdb-atom" if kind == "pdb" else "cif-atom"
+    for t in allt: add({"kind": "parse", "format": fmt, "text": t})
+    for t in r3.sample(allt, 40): add({"kind": "read", "format": fmt, "text": t})
+    for t in r3.sample(texts[:100], 10):
+        for out in ("fasta", "tab"): add({"kind": "convert", "format": fmt, "text": t, "out": out, "molecule_type": None})
+
+def cif_seqres_text(rnd):
+    pid = rnd.choice(["1ABC", "2XYZ", "3DEF"])
+    chains = rnd.sample("ABCDE", rnd.randint(1, 3))
+    out = ["data_X\n"]
+    out.append("loop_\n_pdbx_poly_seq_scheme.asym_id\n_pdbx_poly_seq_scheme.mon_id\n")
+    for c in chains:
+        for _ in range(rnd.randint(1, 8)): out.append(f"{c} {rnd.choice(RES3[:23])}\n")
+    out.append("#\n")
+    refs = []
+    for i, c in enumerate(chains, 1):
+        if rnd.random() < .7: refs.append((str(i), c, rnd.choice(["UNP", "GB"]), rnd.choice(["POL_HV1N5", "ABC_HUMAN"]), rnd.choice(["P12497", "Q9XXXX"])))
+    if refs and rnd.random() < .9:
+        out.append("loop_\n_struct_ref.id\n_struct_ref.db_name\n_struct_ref.db_code\n_struct_ref.pdbx_db_accession\n")
+        for rid, c, db, code, acc in refs: out.append(f"{rid} {db} {code} {acc}\n")
+        out.append("#\nloop_\n_struct_ref_seq.ref_id\n_struct_ref_seq.pdbx_PDB_id_code\n_struct_ref_seq.pdbx_strand_id\n")
+        for rid, c, db, code, acc in refs: out.append(f"{rid} {pid} {c}\n")
+        if rnd.random() < .3: out.append(f"{rnd.choice(['1', '9'])} {pid} {rnd.choice(chains)}\n")
+        out.append("#\n")
+    return "".join(out)
+
+def cif_seqres_cases():
+    r3 = random.Random(33)
+    base = [cif_seqres_text(r3) for _ in range(150)]
+    base += ["", "\n", "data_X\n", "data_X\n_pdbx_poly_seq_scheme.asym_id A\n_pdbx_poly_seq_scheme.mon_id ALA\n", "data_X\n_pdbx_poly_seq_scheme.asym_id A\n",
+             "data_X\nloop_\n_struct_ref_seq.ref_id\n_struct_ref_seq.pdbx_PDB_id_code\n_struct_ref_seq.pdbx_strand_id\n1 1ABC A\n"]
+    allt = list(base)
+    for t in base[:100]:
+        for _ in range(4): allt.append(mutate_text(t, r3, junk=("loop_", "_struct_ref.id", "_pdbx_poly_seq_scheme.mon_id", "A ALA", "data_X", "# c")))
+    for t in allt: add({"kind": "parse", "format": "cif-seqres", "text": t})
+    for t in r3.sample(allt, 40): add({"kind": "read", "format": "cif-seqres", "text": t})
+    for t in r3.sample(base[:100], 10):
+        for out in ("fasta", "tab"): add({"kind": "convert", "format": "cif-seqres", "text": t, "out": out, "molecule_type": None})
+
 # ------------------------------------------------------------------ gfa1 / gfa2
 import hashlib
 def gfa_tags(rnd, seq):
@@ -1785,6 +1885,6 @@ def ace_cases():
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "mauve": mauve_cases, "maf": maf_cases, "nexus": nexus_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases, "pdb-seqres": pdb_cases, "gfa1": lambda: gfa_cases(False), "gfa2": lambda: gfa_cases(True), "uniprot-xml": uniprot_cases, "ace": ace_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "mauve": mauve_cases, "maf": maf_cases, "nexus": nexus_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases, "pdb-seqres": pdb_cases, "pdb-atom": lambda: atom_family_cases("pdb"), "cif-atom": lambda: atom_family_cases("cif"), "cif-seqres": cif_seqres_cases, "gfa1": lambda: gfa_cases(False), "gfa2": lambda: gfa_cases(True), "uniprot-xml": uniprot_cases, "ace": ace_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

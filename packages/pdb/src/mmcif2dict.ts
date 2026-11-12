@@ -13,11 +13,10 @@ const WHITESPACE_CHARS = new Set([" ", "\t"]);
  * quote only closes when followed by whitespace or the end of the line.
  *
  * @param line - A line without surrounding whitespace.
- * @returns The tokens in order.
+ * @returns The tokens in order, produced lazily: tokens before a bad quote are delivered before the error is raised.
  * @throws {@link ValueError} when a quote is still open at the end of the line.
  */
-export function splitLine(line: string): string[] {
-  const out: string[] = [];
+export function* splitLine(line: string): Generator<string> {
   const cs = Array.from(line);
   let inToken = false;
   let quoteOpenChar: string | null = null;
@@ -27,7 +26,7 @@ export function splitLine(line: string): string[] {
     if (WHITESPACE_CHARS.has(c)) {
       if (inToken && quoteOpenChar === null) {
         inToken = false;
-        out.push(cs.slice(start, i).join(""));
+        yield cs.slice(start, i).join("");
       }
     } else if (QUOTE_CHARS.has(c)) {
       if (quoteOpenChar === null && !inToken) {
@@ -37,19 +36,19 @@ export function splitLine(line: string): string[] {
       } else if (c === quoteOpenChar && (i + 1 === cs.length || WHITESPACE_CHARS.has(cs[i + 1]!))) {
         quoteOpenChar = null;
         inToken = false;
-        out.push(cs.slice(start, i).join(""));
+        yield cs.slice(start, i).join("");
       }
     } else if (c === "#" && !inToken) {
       // A comment: "#" is an ordinary character inside quotes and inside an unquoted token.
-      return out;
+      return;
     } else if (!inToken) {
       inToken = true;
       start = i;
     }
   }
-  if (inToken) out.push(cs.slice(start).join(""));
+  if (inToken) yield cs.slice(start).join("");
   if (quoteOpenChar !== null) throw new ValueError("Line ended with quote open: " + line);
-  return out;
+  return;
 }
 
 /**
