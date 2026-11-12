@@ -1,7 +1,7 @@
 /** Abstract base classes for sequence positions. */
 
-import { pyInt } from "../py/int.js";
-import { pyTypeName } from "../py/repr.js";
+import { pyInt } from "@biolibs/core";
+import { pyTypeName } from "@biolibs/core";
 
 /**
  * A position within a sequence, possibly fuzzy (Biopython's `Position`).

@@ -1,7 +1,7 @@
 /** Parsing of GenBank-style position text. */
 
 import { ValueError } from "@biolibs/core";
-import { pyInt } from "../py/int.js";
+import { pyInt } from "@biolibs/core";
 import type { Position } from "./base.js";
 import { AfterPosition, BeforePosition } from "./before-after.js";
 import { ExactPosition, UncertainPosition } from "./exact.js";

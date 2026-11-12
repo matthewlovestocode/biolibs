@@ -1,7 +1,7 @@
 /** `OneOfPosition`: one of several possible positions. */
 
 import { ValueError } from "@biolibs/core";
-import { pyRepr } from "../py/repr.js";
+import { pyRepr } from "@biolibs/core";
 import { IntPosition, type Position } from "./base.js";
 
 /** A position that is one of several candidates, written `one-of(3,6)`. */

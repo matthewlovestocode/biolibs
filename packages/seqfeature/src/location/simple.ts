@@ -2,7 +2,7 @@
 
 import { ValueError } from "@biolibs/core";
 import { ExactPosition, IntPosition, Position } from "../position/index.js";
-import { pyClassRepr, pyRepr, pyTypeName } from "../py/repr.js";
+import { pyClassRepr, pyRepr, pyTypeName } from "@biolibs/core";
 import { Location, type ParentSequence, type References, type Strand } from "./base.js";
 import { CompoundLocation } from "./compound.js";
 import { lookupReference, reverseComplementOf, sliceParent } from "./extract-util.js";

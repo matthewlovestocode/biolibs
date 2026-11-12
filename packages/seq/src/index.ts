@@ -20,5 +20,6 @@ export {
   type SeqDataLike,
 } from "./seqdata/index.js";
 export type { PySlice } from "./pybytes/index.js";
+export { sliceIndices, rangeLength } from "./pybytes/index.js";
 export * as CodonTable from "./codon-table/index.js";
 export * as IUPACData from "./data/iupac-data.js";

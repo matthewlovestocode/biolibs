@@ -1,6 +1,6 @@
 /** Python's `int(str)` for decimal text. */
 
-import { ValueError } from "@biolibs/core";
+import { ValueError } from "../errors.js";
 import { pyRepr } from "./repr.js";
 
 /**

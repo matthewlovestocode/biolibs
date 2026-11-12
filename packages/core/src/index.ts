@@ -7,9 +7,11 @@
  * - `warnings.ts`: `warn`, `setWarningHandler`, `captureWarnings`
  * - `types.ts`: `SeqRecord`, `Alphabet`
  * - `assert.ts`: `assert`
+ * - `py/`: Python-compatible `int()`, `repr()`, `==` and type names
  */
 
 export * from "./errors.js";
 export * from "./warnings.js";
 export * from "./types.js";
 export * from "./assert.js";
+export * from "./py/index.js";

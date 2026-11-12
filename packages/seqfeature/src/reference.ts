@@ -1,7 +1,7 @@
 /** `Reference`: a literature reference attached to a record. */
 
 import type { Location } from "./location/index.js";
-import { pyRepr } from "./py/repr.js";
+import { pyRepr } from "@biolibs/core";
 
 /** Bibliographic reference from a GenBank record (Biopython's `Reference`). */
 export class Reference {

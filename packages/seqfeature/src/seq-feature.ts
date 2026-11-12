@@ -1,26 +1,16 @@
 /** `SeqFeature`: an annotated region of a sequence. */
 
-import { ValueError } from "@biolibs/core";
 import { MutableSeq, Seq } from "@biolibs/seq";
 import type { ParentSequence, References } from "./location/index.js";
 import { CompoundLocation, SimpleLocation } from "./location/index.js";
 import type { Position } from "./position/index.js";
-import { pyInt } from "./py/int.js";
-import { pyRepr, pyStr } from "./py/repr.js";
+import { ValueError, pyEquals, pyInt, pyRepr, pyStr } from "@biolibs/core";
 
 /** Qualifiers of a feature: key to value, usually a list of strings (as in GenBank). */
 export type Qualifiers = Map<string, unknown>;
 
 /** Qualifier input: a `Map`, a plain object, or an iterable of pairs. */
 export type QualifiersInput = Map<string, unknown> | Record<string, unknown> | Iterable<[string, unknown]>;
-
-/** Deep equality for qualifier values (strings, numbers, arrays, maps). */
-function deepEqual(a: unknown, b: unknown): boolean {
-  if (a === b) return true;
-  if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((v, i) => deepEqual(v, b[i]));
-  if (a instanceof Map && b instanceof Map) return a.size === b.size && [...a].every(([k, v]) => b.has(k) && deepEqual(v, b.get(k)));
-  return false;
-}
 
 /**
  * A region of a sequence with a type (`"gene"`, `"CDS"`, ...), an id and
@@ -74,7 +64,7 @@ export class SeqFeature {
       this.id === other.id &&
       this.type === other.type &&
       (this.location === null ? other.location === null : this.location.equals(other.location)) &&
-      deepEqual(this.qualifiers, other.qualifiers)
+      pyEquals(this.qualifiers, other.qualifiers)
     );
   }
 

@@ -3,7 +3,7 @@
 import { ValueError, warn } from "@biolibs/core";
 import { AssertionError, LocationParserError } from "../errors.js";
 import { ExactPosition, Position } from "../position/index.js";
-import { pyInt } from "../py/int.js";
+import { pyInt } from "@biolibs/core";
 import { Location } from "./base.js";
 import { CompoundLocation } from "./compound.js";
 import { CATEGORY_ORDER, LOCATION_CATEGORY, SPLIT } from "./patterns.js";

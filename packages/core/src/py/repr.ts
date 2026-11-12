@@ -53,14 +53,61 @@ export function pyTypeName(x: unknown): string {
   return typeof x;
 }
 
-/** Biopython classes defined in `Bio.SeqFeature`, for `<class 'Bio.SeqFeature.X'>` messages. */
-const FEATURE_CLASSES = new Set([
-  "SeqFeature", "Reference", "SimpleLocation", "CompoundLocation", "ExactPosition", "UncertainPosition", "UnknownPosition",
-  "WithinPosition", "BetweenPosition", "BeforePosition", "AfterPosition", "OneOfPosition",
-]);
+/** Class name to the Python module that defines it, for `<class 'Bio.Seq.Seq'>`-style messages. */
+const CLASS_MODULES = new Map<string, string>();
+
+/**
+ * Tell {@link pyClassRepr} which Python module a class belongs to, so error
+ * messages can say `<class 'Bio.SeqFeature.SimpleLocation'>` like Biopython.
+ *
+ * @param module - Python module path, e.g. `"Bio.SeqFeature"`.
+ * @param names - Class names defined in that module.
+ */
+export function registerPythonClasses(module: string, names: string[]): void {
+  for (const n of names) CLASS_MODULES.set(n, module);
+}
 
 /** Python's `str(type(x))`, e.g. `<class 'int'>` or `<class 'Bio.SeqFeature.SimpleLocation'>`. */
 export function pyClassRepr(x: unknown): string {
   const n = pyTypeName(x);
-  return FEATURE_CLASSES.has(n) ? `<class 'Bio.SeqFeature.${n}'>` : n === "Seq" || n === "MutableSeq" ? `<class 'Bio.Seq.${n}'>` : `<class '${n}'>`;
+  const module = CLASS_MODULES.get(n);
+  return module ? `<class '${module}.${n}'>` : `<class '${n}'>`;
+}
+
+/**
+ * Python `==` for plain data: primitives, arrays (lists), `Map`s (dicts), and
+ * objects with an `equals()` method.
+ */
+export function pyEquals(a: unknown, b: unknown): boolean {
+  if (a === b) return true;
+  if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((v, i) => pyEquals(v, b[i]));
+  if (a instanceof Map && b instanceof Map) return a.size === b.size && [...a].every(([k, v]) => b.has(k) && pyEquals(v, b.get(k)));
+  if (a !== null && typeof a === "object" && typeof (a as { equals?: unknown }).equals === "function") return (a as { equals(o: unknown): boolean }).equals(b);
+  return false;
+}
+
+/** Python truthiness: `None`, `0`, `""`, `[]` and empty dicts are false; everything else is true. */
+export function pyTruthy(x: unknown): boolean {
+  if (x === null || x === undefined) return false;
+  if (typeof x === "boolean") return x;
+  if (typeof x === "number") return x !== 0;
+  if (typeof x === "string") return x.length > 0;
+  if (Array.isArray(x)) return x.length > 0;
+  if (x instanceof Map) return x.size > 0;
+  return true;
+}
+
+/**
+ * Python's `needle in haystack` for strings (substring), lists (membership) and dicts (key).
+ *
+ * @throws TypeError for other container types, with Python's message.
+ */
+export function pyContains(needle: unknown, haystack: unknown): boolean {
+  if (typeof haystack === "string") {
+    if (typeof needle !== "string") throw new TypeError(`'in <string>' requires string as left operand, not ${pyTypeName(needle)}`);
+    return haystack.includes(needle);
+  }
+  if (Array.isArray(haystack)) return haystack.some((h) => pyEquals(h, needle));
+  if (haystack instanceof Map) return haystack.has(needle);
+  throw new TypeError(`argument of type '${pyTypeName(haystack)}' is not a container or iterable`);
 }

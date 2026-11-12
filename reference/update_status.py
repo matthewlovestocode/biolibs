@@ -72,5 +72,17 @@ for cls, members in inv["Bio.SeqFeature"]["classes"].items():
         elif m == "__getnewargs__": mark(key, "na")    # pickling support
 for fn in inv["Bio.SeqFeature"].get("functions", {}): pass
 
+# ---- Bio.SeqRecord (packages/seqrecord/test/golden/seqrecord.json) ----
+rec = json.load(open(f"{here}/../packages/seqrecord/test/golden/seqrecord.json"))["cases"]
+r_ops = {c["op"] for c in rec if "op" in c}
+r_ctor = any("ctor" in c for c in rec)
+for m in inv["Bio.SeqRecord"]["classes"]["SeqRecord"]:
+    key = f"Bio.SeqRecord.SeqRecord.{m}"
+    if m == "__bool__": mark(key, "na")                 # no truthiness protocol in TypeScript (Biopython returns True)
+    elif m in ("format", "__format__"): mark(key, "partial")   # "" and unknown formats verified; real formats need Bio.SeqIO writers
+    elif m == "__init__" and r_ctor: mark(key)
+    elif m in r_ops: mark(key)
+    elif m == "__hash__": mark(key, "na")
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

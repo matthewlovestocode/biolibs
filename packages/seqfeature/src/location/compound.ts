@@ -3,7 +3,7 @@
 import { ValueError } from "@biolibs/core";
 import { NotImplementedError } from "../errors.js";
 import { IntPosition, type Position } from "../position/index.js";
-import { pyClassRepr, pyRepr } from "../py/repr.js";
+import { pyClassRepr, pyRepr } from "@biolibs/core";
 import { Location, type ParentSequence, type References, type Strand } from "./base.js";
 import { concatParts } from "./extract-util.js";
 import { SimpleLocation } from "./simple.js";

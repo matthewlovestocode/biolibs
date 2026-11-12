@@ -21,6 +21,9 @@
     },
     {
       "path": "packages/seqfeature"
+    },
+    {
+      "path": "packages/seqrecord"
     }
   ]
 }

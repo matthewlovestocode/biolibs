@@ -43,11 +43,15 @@ warnings[0].message; // "Partial codon, len(sequence) not a multiple of three. .
 
 `captureWarnings` is also how the golden tests compare warnings against Biopython's.
 
+## Python-compatible helpers (`py/`)
+
+Small functions that let ports reproduce Biopython's behaviour and messages exactly: `pyInt` (Python's `int(str)`), `pyRepr` and `pyStr` (`repr`/`str` of `None`, bools, lists, dicts, and objects with `repr()`), `pyTypeName`/`pyClassRepr` (type names for error messages; `registerPythonClasses(module, names)` teaches it `<class 'Bio.X.Y'>`), `pyEquals` (`==` for plain data), `pyTruthy` and `pyContains` (`in`).
+
 ## Types
 
 ### `SeqRecord`
 
-A named sequence as produced by `@biolibs/seqio` parsers (currently an interface; it will become a class when Bio.SeqRecord is ported).
+A plain record shape used by the early `@biolibs/seqio` scaffold. It is superseded by the real `SeqRecord` class in `@biolibs/seqrecord` and will be removed when SeqIO is ported.
 
 | Field | Type | Notes |
 |---|---|---|
