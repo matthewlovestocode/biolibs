@@ -5,7 +5,7 @@ Case kinds: parse, read, write, writer, format, to_dict, convert, simple_parser.
 A parse case records the records yielded before any error, then the error.
 """
 import io, json, os, random, sys, warnings
-sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import Bio
 from Bio import SeqIO
 from Bio.SeqIO import FastaIO, QualityIO as Q, PirIO, SeqXmlIO
@@ -24,8 +24,22 @@ def emsg(e):
     if type(e).__name__ == "AttributeError" or isinstance(e, UnicodeError): return None
     return str(e.args[0]) if isinstance(e, KeyError) and e.args else str(e)
 
+import tempfile, resource
+try: resource.setrlimit(resource.RLIMIT_AS, (6 * 2**30, 6 * 2**30))     # corrupt twoBit counts must fail fast, not allocate
+except (ValueError, OSError): pass
+
+OPENED = []
 def src(case):
+    if "bytes" in case and case.get("format") == "twobit":      # numpy reads this format from a real file
+        f = tempfile.NamedTemporaryFile(suffix=".2bit", delete=False); f.write(case["bytes"].encode("latin-1")); f.close()
+        h = open(f.name, "rb"); OPENED.append(h)
+        return h
     return io.BytesIO(case["bytes"].encode("latin-1")) if "bytes" in case else io.StringIO(case["text"])
+
+def out_text(h, case):
+    v = h.getvalue()
+    if not case.get("binary"): return v
+    return v.decode("latin-1") if case["binary"] == "bytes" else v.decode("utf-8")
 
 WRITERS = {"SeqXmlWriter": SeqXmlIO.SeqXmlWriter, "FastaWriter": FastaIO.FastaWriter, "FastaTwoLineWriter": FastaIO.FastaTwoLineWriter, "QualPhredWriter": Q.QualPhredWriter,
            "PirWriter": PirIO.PirWriter, "FastqPhredWriter": Q.FastqPhredWriter, "FastqSolexaWriter": Q.FastqSolexaWriter, "FastqIlluminaWriter": Q.FastqIlluminaWriter}
@@ -54,7 +68,20 @@ def run(case):
                     else:
                         out["count"] = WRITERS[case["cls"]](h, *case.get("args", [])).write_file(recs)
                 finally:
-                    out["text_out"] = h.getvalue().decode("utf-8") if case.get("binary") else h.getvalue()
+                    out["text_out"] = out_text(h, case)
+            elif kind == "twobit_ops":
+                res = []
+                out["ops_out"] = res
+                for r in SeqIO.parse(src(case), "twobit"):
+                    for op in case["ops"]:
+                        try:
+                            sq = r.seq
+                            if op[0] == "get": res.append(enc(sq[op[1]]))
+                            else:
+                                sq = {"slice": sq, "upper": sq.upper(), "lower": sq.lower()}[op[0]]
+                                res.append(enc(sq[slice(*op[1:])]))
+                        except Exception as e:
+                            res.append({"exc": {"type": tname(e), "msg": emsg(e)}})
             elif kind == "format":
                 out["result"] = dec(case["record"]).format(case["format"])
             elif kind == "to_dict":
@@ -65,7 +92,7 @@ def run(case):
                 try:
                     out["count"] = SeqIO.convert(src(case), case["format"], h, case["out"], case.get("molecule_type"))
                 finally:
-                    out["text_out"] = h.getvalue().decode("utf-8") if case.get("binary") else h.getvalue()
+                    out["text_out"] = out_text(h, case)
             elif kind == "fastq_general":
                 items = []
                 out["pairs"] = items
@@ -83,14 +110,28 @@ def run(case):
                 for pair in fn(io.StringIO(case["text"])): items.append(list(pair))
         except Exception as e:
             out["exc"] = {"type": tname(e), "msg": None if tname(e) == "SAXParseException" else emsg(e)}   # expat's wording is not reproduced
+        finally:
+            for h in OPENED: h.close()
+            OPENED.clear()
     out["warnings"] = [str(x.message) for x in w]
     return out
 
 cases, seen = [], set()
+import signal
+class CaseTimeout(BaseException): pass
+def _alarm(signum, frame): raise CaseTimeout()
+signal.signal(signal.SIGALRM, _alarm)
+
 def add(c):
+    """Record a case; one that runs for more than 2 seconds (a corrupt count that makes Biopython loop for ages) is dropped."""
     k = json.dumps(c, sort_keys=True)
     if k in seen: return
-    seen.add(k); c.update(run(c)); cases.append(c)
+    seen.add(k)
+    signal.setitimer(signal.ITIMER_REAL, 2.0)
+    try: c.update(run(c))
+    except CaseTimeout: return
+    finally: signal.setitimer(signal.ITIMER_REAL, 0)
+    cases.append(c)
 
 # ------------------------------------------------------------------------------- inputs
 FASTA_TEXTS = ["", "\n", ">", ">\n", ">a", ">a\n", ">a\nACGT", ">a\nACGT\n", ">a desc here\nAC GT\nTTT\n>b\n\n>c\nGG", "no header\n>a\nAC\n", ";comment\n>a\nAC\n",
@@ -871,6 +912,124 @@ def seqxml_cases():
     add({"kind": "convert", "format": "fasta", "text": ">a d\nACGT\n", "out": "seqxml", "binary": True, "molecule_type": "DNA"})
     add({"kind": "convert", "format": "fasta", "text": ">a d\nACGT\n", "out": "seqxml", "molecule_type": "DNA"})
 
+
+# ------------------------------------------------------------------ nib / twobit / gck / xdna
+import binfiles as BF
+
+def rand_dna(rnd, lo, hi, alpha="ACGT"): return "".join(rnd.choice(alpha) for _ in range(rnd.randint(lo, hi)))
+
+def nib_cases():
+    rnd2 = random.Random(71)
+    base = []
+    for n in list(range(0, 12)) + [30, 31, 100, 101]:
+        buf = io.BytesIO()
+        try: SeqIO.write(SeqRecord(Seq(rand_dna(rnd2, n, n, "ACGTNacgtn"))), buf, "nib"); base.append(buf.getvalue())
+        except Exception: pass
+    base += [b"", b"\x3a", b"\x3a\x3d\xe9\x6b", b"\x6b\xe9\x3d\x3a", b"\x6b\xe9\x3d\x3a\x00\x00\x00\x04\x00\x00", b"\x3a\x3d\xe9\x6b\x04\x00\x00\x00\x01\x23", b"\x3a\x3d\xe9\x6b\x03\x00\x00\x00\x01\x23", b"\x3a\x3d\xe9\x6b\x03\x00\x00\x00\x01\x2d",
+             b"\x6b\xe9\x3d\x3a\x00\x00\x00\x04\x01\x23", b"\x3a\x3d\xe9\x6b\x04\x00\x00\x00\x01\x23\x45\x67", b"\x3a\x3d\xe9\x6b\x00\x00\x00\x00", b"\x3a\x3d\xe9\x6b\x00\x00\x00", b"\x3a\x3d\xe9\x6b\x04\x00\x00\x00\x44\xcc"]
+    allb = list(base)
+    for b in base:
+        for _ in range(8): allb.append(BF.mutate_bytes(b, rnd2))
+    for b in allb: add({"kind": "parse", "format": "nib", "bytes": BF.lat(b)})
+    for b in rnd2.sample(allb, 40): add({"kind": "read", "format": "nib", "bytes": BF.lat(b)})
+    add({"kind": "parse", "format": "nib", "text": "abc"})
+    seqs = [Seq(rand_dna(rnd2, 0, 20, "ACGTNacgtn")) for _ in range(30)] + [Seq("ACGTX"), Seq("ACGU"), Seq("acgt-"), Seq("ACGTTGCA"), Seq("A"), Seq("")]
+    for sq in seqs:
+        rec = REC(S(str(sq)), "r", "n", "d")
+        add({"kind": "write", "format": "nib", "binary": "bytes", "records": [rec]}); add({"kind": "format", "format": "nib", "record": rec})
+        add({"kind": "write", "format": "nib", "records": [rec]})
+    for r in (REC(U(4), "u", "n", "d"), REC(M("ACGT"), "m", "n", "d"), REC(None, "z", "n", "d")): add({"kind": "write", "format": "nib", "binary": "bytes", "records": [r]})
+    add({"kind": "write", "format": "nib", "binary": "bytes", "records": []})
+    add({"kind": "write", "format": "nib", "binary": "bytes", "records": [REC(S("ACGT"), "a"), REC(S("ACGT"), "b")]})
+    for b in rnd2.sample(base[:20], 8):
+        for out in ("fasta", "nib"): add({"kind": "convert", "format": "nib", "bytes": BF.lat(b), "out": out, "binary": "bytes" if out == "nib" else False, "molecule_type": None})
+
+def twobit_cases():
+    rnd2 = random.Random(72)
+    base = []
+    for _ in range(40):
+        seqs = {}
+        for i in range(rnd2.randint(0, 4)):
+            dna = rand_dna(rnd2, 0, 60, "ACGT")
+            dna = "".join(c.lower() if rnd2.random() < .2 else c for c in dna)
+            if dna and rnd2.random() < .5:
+                a = rnd2.randrange(len(dna)); dna = dna[:a] + "N" * rnd2.randint(1, 8) + dna[a:]
+            seqs[rnd2.choice(["chr1", "chr2", "seq_%d" % i, "x"])] = dna
+        base.append(BF.twobit_file(seqs, little=rnd2.random() < .7))
+    base += [BF.twobit_file({"a": "ACGT"}), BF.twobit_file({"a": "ACGTACGTAC" * 5}, little=False), BF.twobit_file({"a": ""}), BF.twobit_file({}), BF.twobit_file({"a": "ACGT"}, version=1), BF.twobit_file({"a": "ACGT"}, version=2),
+             BF.twobit_file({"a": "ACGT"}, reserved=1), BF.twobit_file({"a": "ACGT"}, seq_reserved=7), b"", b"\x43\x27\x41\x1a", b"\x1a\x41\x27\x43", b"\x43\x27", b"\x00\x00\x00\x00", BF.twobit_file({"a": "NNNNACGTnnnnacgt"}), BF.twobit_file({"a": "acgtacgtacgt"}), BF.twobit_file({"a": "ACGT", "b": "TTTT"})]
+    allb = list(base)
+    for b in base:
+        for _ in range(6): allb.append(BF.mutate_bytes(b, rnd2))
+    for b in allb: add({"kind": "parse", "format": "twobit", "bytes": BF.lat(b)})
+    for b in rnd2.sample(allb, 30): add({"kind": "read", "format": "twobit", "bytes": BF.lat(b)})
+    ops = [["get", 0], ["get", 3], ["get", -1], ["get", 100], ["get", -100], ["slice", None, None, None], ["slice", 1, 5, None], ["slice", None, None, 2], ["slice", None, None, -1], ["slice", 8, 2, -2], ["slice", 0, 10, 3],
+           ["slice", 5, 5, None], ["slice", -10, None, None], ["slice", 2, 100, 1], ["slice", None, None, 0], ["upper", None, None, None], ["lower", None, None, None], ["lower", 2, 6, None], ["upper", 1, 9, 2], ["lower", None, None, -3]]
+    for b in rnd2.sample(base[:40], 20):
+        add({"kind": "twobit_ops", "format": "twobit", "bytes": BF.lat(b), "ops": ops})
+    add({"kind": "twobit_ops", "format": "twobit", "bytes": BF.lat(BF.twobit_file({"a": "NNNNACGTnnnnacgtACGTACGTTTTTGGGGCCCCAAAA", "b": "acgtACGT"})), "ops": ops})
+
+def gck_cases():
+    rnd2 = random.Random(73)
+    base = []
+    for _ in range(40):
+        seq = rand_dna(rnd2, 0, 80)
+        feats = []
+        for _ in range(rnd2.randint(0, 4)):
+            a = rnd2.randint(0, max(0, len(seq))); b = rnd2.randint(a, max(a, len(seq)))
+            feats.append((a, b, rnd2.choice([0, 1, 5]), rnd2.random() < .5, rnd2.choice(["", "gene A", "lacZ"]), rnd2.choice(["", "a comment"]), rnd2.choice([0, 0, 0, 1])))
+        base.append(BF.gck_file(seq, feats, name=rnd2.choice(["construct 1", "pUC19 plasmid", "x"]), circular=rnd2.random() < .5, sites=rnd2.choice([0, 0, 2]), versions=rnd2.choice([(), (None,), ("a note", None)])))
+    base += [b"", b"\x00" * 10, b"\x00" * 24, b"\x00" * 23, BF.gck_file("ACGT", seq_len_override=100), BF.gck_file("ACGT", [(3, 1, 0, False, "", "", 0)]), BF.gck_file("ACGT", [(0, 4, 0, False, "", "", 0)], trailer=700)]
+    allb = list(base)
+    for b in base:
+        for _ in range(6): allb.append(BF.mutate_bytes(b, rnd2))
+    for b in allb: add({"kind": "parse", "format": "gck", "bytes": BF.lat(b)})
+    for b in rnd2.sample(allb, 30): add({"kind": "read", "format": "gck", "bytes": BF.lat(b)})
+    add({"kind": "parse", "format": "gck", "text": "abc"})
+    for b in rnd2.sample(base[:40], 8): add({"kind": "convert", "format": "gck", "bytes": BF.lat(b), "out": "genbank", "molecule_type": "DNA"})
+
+def xdna_cases():
+    rnd2 = random.Random(74)
+    def xrec(seq, mol, topo, feats, desc="d", rid="r1"):
+        ann = [["molecule_type", mol]] if mol else []
+        if topo: ann.append(["topology", topo])
+        return REC(S(seq), rid, rid, desc, features=feats, annotations=ann)
+    def xf(a, b, st, typ="gene", quals=()): return FEAT(LOC_(a, b, st), typ, "<unknown id>", quals)
+    recs = []
+    for _ in range(40):
+        seq = rand_dna(rnd2, 0, 60)
+        feats = []
+        for _ in range(rnd2.randint(0, 4)):
+            a = rnd2.randint(0, len(seq)); b = rnd2.randint(a, len(seq))
+            quals = rnd2.choice([[], [("label", LST("lab"))], [("note", LST("a note")), ("gene", LST("x y"))], [("label", LST("l")), ("translation", LST("MK")), ("db_xref", LST("a", "b"))]])
+            feats.append(xf(a, b, rnd2.choice([1, -1, None]), rnd2.choice(["gene", "CDS", "", "misc_feature"]), quals))
+        recs.append(xrec(seq, rnd2.choice([None, "DNA", "RNA", "protein", "dsDNA", "weird"]), rnd2.choice([None, "linear", "circular"]), feats, rnd2.choice(["d", "r1 already", "", "multi word desc"]), rnd2.choice(["r1", "id2", "id with space"])))
+    base = []
+    for r in recs:
+        buf = io.BytesIO()
+        try: SeqIO.write(dec(r), buf, "xdna"); base.append(buf.getvalue())
+        except Exception: pass
+    base += [b"", b"\x00" * 111, b"\x00" * 112, b"\x01" + b"\x00" * 111]
+    allb = list(base)
+    for b in base:
+        for _ in range(6): allb.append(BF.mutate_bytes(b, rnd2))
+    for b in allb: add({"kind": "parse", "format": "xdna", "bytes": BF.lat(b)})
+    for b in rnd2.sample(allb, 40): add({"kind": "read", "format": "xdna", "bytes": BF.lat(b)})
+    add({"kind": "parse", "format": "xdna", "text": "abc"})
+    extra = [xrec("ACGT", "DNA", None, [xf(0, 2, 1, "gene", [("label", LST("a"*300))])]), xrec("ACGT", "DNA", None, [xf(0, 2, 1, "gene", [("note", LST("é"))])]), xrec("ACGT", "DNA", None, [xf(0, 2, 1, "gene", [("note", "abc")])]),
+             xrec("ACGT", "DNA", None, [xf(0, 2, 1, "gene", [("label", LST())])]), xrec("ACGT", "DNA", None, [xf(0, 2, 1, "gene", [("note", 5)])]), xrec("ACGT", "DNA", None, [xf(0, 2, 1, "gene", [("label", "lab")])]),
+             xrec("ACGT", "DNA", None, [FEAT(SL_fuzzy(), "gene")]), xrec("ACGT", "DNA", None, [xf(0, 2, 1) for _ in range(300)]), xrec("ACGT", "DNA", None, [FEAT(None, "gene")]),
+             xrec("ACGT", LST("DNA"), None, []), xrec("ACGT", 5, None, []), xrec("ACGT", "DNA", "circular", [], desc="é"), xrec("é", "DNA", None, []), xrec("", "DNA", None, []), xrec("ACGT", "DNA", None, [], rid=""), xrec("ACGT", "DNA", None, [], desc="x" * 300),
+             REC(U(4), "u", "n", "d"), REC(M("ACGT"), "m", "m", "d"), REC(None, "n", "n", "d")]
+    for r in recs[:25] + extra:
+        add({"kind": "write", "format": "xdna", "binary": "bytes", "records": [r]}); add({"kind": "format", "format": "xdna", "record": r})
+    add({"kind": "write", "format": "xdna", "binary": "bytes", "records": []}); add({"kind": "write", "format": "xdna", "binary": "bytes", "records": recs[:2]}); add({"kind": "write", "format": "xdna", "records": [recs[0]]})
+    for b in rnd2.sample(base[:40], 10):
+        for out in ("xdna", "genbank"): add({"kind": "convert", "format": "xdna", "bytes": BF.lat(b), "out": out, "binary": "bytes" if out == "xdna" else False, "molecule_type": None})
+
+def SL_fuzzy():
+    return LOC_({"$": "pos", "cls": "BeforePosition", "v": 1}, 3, 1)
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -951,6 +1110,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

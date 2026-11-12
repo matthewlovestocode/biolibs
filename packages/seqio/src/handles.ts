@@ -117,6 +117,16 @@ export class BinaryStream {
     this.pos = end;
     return chunk;
   }
+
+  /** Move to an absolute position (Python `seek(offset)`); positions past the end read as empty. */
+  seek(offset: number): void {
+    this.pos = Math.max(0, offset);
+  }
+
+  /** The current position (Python `tell()`). */
+  tell(): number {
+    return this.pos;
+  }
 }
 
 /**

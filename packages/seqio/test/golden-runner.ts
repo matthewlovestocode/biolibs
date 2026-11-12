@@ -14,7 +14,7 @@ type J = null | boolean | number | string | { [k: string]: unknown };
 
 export interface Case {
   kind: string; format?: string | number | null; text?: string; bytes?: string; out?: string; molecule_type?: string | null;
-  binary?: boolean; records?: unknown[]; record?: unknown; cls?: string; fasta?: string; qual?: string; fn?: string; args?: unknown[]; parser?: string; single?: boolean; bad_handle?: string;
+  binary?: boolean | string; records?: unknown[]; record?: unknown; cls?: string; fasta?: string; qual?: string; fn?: string; args?: unknown[]; parser?: string; single?: boolean; bad_handle?: string;
   exc?: { type: string; msg: string | null }; warnings: string[];
   result?: J; count?: number; text_out?: string; pairs?: J[]; keys?: string[];
 }
@@ -24,7 +24,7 @@ const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperC
 
 /** Outcome as recorded by Python, so the two can be compared field by field. */
 export interface Outcome {
-  parsed?: J[]; result?: J; count?: number; text_out?: string; keys?: string[]; pairs?: J[];
+  parsed?: J[]; ops_out?: J[]; result?: J; count?: number; text_out?: string; keys?: string[]; pairs?: J[];
   exc?: { type: string; msg: string }; warnings: string[];
 }
 
@@ -56,7 +56,7 @@ export function runCase(c: Case): Outcome {
             out.count = new WRITERS[c.cls!](h, ...(c.args ?? [])).writeFile(recs);
           }
         } finally {
-          out.text_out = h instanceof BytesHandle ? new TextDecoder().decode(h.getvalue()) : h.getvalue();
+          out.text_out = h instanceof BytesHandle ? (c.binary === "bytes" ? String.fromCharCode(...h.getvalue()) : new TextDecoder().decode(h.getvalue())) : h.getvalue();
         }
         break;
       }
@@ -67,7 +67,26 @@ export function runCase(c: Case): Outcome {
         try {
           out.count = convert(source(c), c.format as string, h as any, c.out!, c.molecule_type ?? null);
         } finally {
-          out.text_out = h instanceof BytesHandle ? new TextDecoder().decode(h.getvalue()) : h.getvalue();
+          out.text_out = h instanceof BytesHandle ? (c.binary === "bytes" ? String.fromCharCode(...h.getvalue()) : new TextDecoder().decode(h.getvalue())) : h.getvalue();
+        }
+        break;
+      }
+      case "twobit_ops": {
+        const res: J[] = [];
+        out.ops_out = res as never;
+        for (const r of parse(source(c), "twobit")) {
+          for (const op of (c as any).ops as any[][]) {
+            try {
+              let sq: any = r.seq;
+              if (op[0] === "get") res.push(enc(sq.at(op[1])));
+              else {
+                sq = op[0] === "upper" ? sq.upper() : op[0] === "lower" ? sq.lower() : sq;
+                res.push(enc(sq.slice(op[1], op[2], op[3])));
+              }
+            } catch (e) {
+              res.push({ exc: { type: (e as Error).name, msg: (e as Error).message } });
+            }
+          }
         }
         break;
       }
@@ -102,7 +121,7 @@ export function runCase(c: Case): Outcome {
 /** First difference between Python's recorded outcome and ours, or null. */
 export function diff(c: Case & Record<string, any>, got: Outcome): string | null {
   const want = c;
-  for (const key of ["parsed", "result", "count", "keys", "pairs", "text_out"] as const) {
+  for (const key of ["parsed", "ops_out", "result", "count", "keys", "pairs", "text_out"] as const) {
     if (key in want || key in got) {
       if (JSON.stringify(want[key]) !== JSON.stringify((got as any)[key])) return `${key}: expected ${JSON.stringify(want[key])}, got ${JSON.stringify((got as any)[key])}`;
     }

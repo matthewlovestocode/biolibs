@@ -115,3 +115,12 @@ export class UnboundLocalError extends BioError {
     this.name = "UnboundLocalError";
   }
 }
+
+/** Mirrors Python's `MemoryError`: an allocation is too large to attempt. */
+export class MemoryError extends BioError {
+  /** @param message - What could not be allocated. */
+  constructor(message = "") {
+    super(message);
+    this.name = "MemoryError";
+  }
+}

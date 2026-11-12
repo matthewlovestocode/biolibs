@@ -111,3 +111,20 @@ export function pyContains(needle: unknown, haystack: unknown): boolean {
   if (haystack instanceof Map) return haystack.has(needle);
   throw new TypeError(`argument of type '${pyTypeName(haystack)}' is not a container or iterable`);
 }
+
+/**
+ * Iterate like Python's `for x in obj`: a string gives its characters, a list its items, a `Map` its keys.
+ *
+ * @throws TypeError ("'int' object is not iterable") for anything else.
+ * @example
+ * ```ts
+ * [...pyIter("ab")];   // ["a", "b"]
+ * ```
+ */
+export function* pyIter(x: unknown): Generator<unknown> {
+  if (typeof x === "string") yield* x;
+  else if (Array.isArray(x) || x instanceof Uint8Array) yield* x;
+  else if (x instanceof Map) yield* x.keys();
+  else if (x instanceof Set) yield* x;
+  else throw new TypeError(`'${pyTypeName(x)}' object is not iterable`);
+}
