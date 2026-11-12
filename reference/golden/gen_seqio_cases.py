@@ -47,6 +47,8 @@ WRITERS = {"SffWriter": SffIO.SffWriter, "SeqXmlWriter": SeqXmlIO.SeqXmlWriter, 
 def run(case):
     kind = case["kind"]
     out = {}
+    from Bio.AlignIO import MauveIO as _MauveIO
+    _MauveIO.MauveIterator._ids = []       # the class-level id list would otherwise leak between cases
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         try:
@@ -1356,6 +1358,34 @@ def fasta_m10_cases():
     add({"kind": "parse", "format": "fasta-m10", "bytes": "x"})
     for t in rnd2.sample(base[:60], 6): add({"kind": "convert", "format": "fasta-m10", "text": t, "out": "fasta", "molecule_type": None})
 
+
+def mauve_cases():
+    rnd2 = random.Random(96)
+    def mrec(i, L, start=None, end=None, strand=None, name=None):
+        ann = [] if start is None else [["start", start], ["end", end]] + ([["strand", strand]] if strand is not None else [])
+        nm = name if name is not None else str(i + 1)
+        return REC(S("".join(rnd2.choice("ACGT-") for _ in range(L))), "contig%d" % i, nm, "", annotations=ann)
+    base = []
+    for _ in range(50):
+        L = rnd2.randint(3, 130); n = rnd2.randint(1, 4)
+        recs = [mrec(i, L, *rnd2.choice([(None, None, None), (0, L, 1), (5, 5 + L, -1), (0, 0, 1), (1, 0, 1)]), name=rnd2.choice([None, None, "x", "12"])) for i in range(n)]
+        t = align_text(recs, "mauve")
+        if t: base.append(t)
+    base += ["#FormatVersion Mauve1\n#Sequence1Entry\t1\n> 1:1-8 + seq1.fa\nACGTACGT\n> 2:1-8 - seq2.fa # real2\nACGTACGT\n=\n", "> 1:0-0 + a.fa\n\n> 2:1-4 + b.fa\nACGT\n=\n", "> 1:1-4 + a.fa\nACGT\n=\n> 2:1-4 + b.fa\nACGT\n=\n", "> bad header\nACGT\n=\n", "ACGT\n=\n", "#only comment\n", "", "\n", "=\n", "> 1:1-4 + a.fa\nACGT\n> 1:5-8 + a.fa\nACGT\n=\n", "> 1:1-4 + a.fa\nACGT\n> 2:1-2 + b.fa\nAC\n=\n"]
+    allt = list(base)
+    for t in base:
+        for _ in range(6): allt.append(mutate_text(t, rnd2, junk=("=", "> 1:1-4 + a.fa", "> 3:1-4 - c.fa # c", "#Seq", "ACGT", "> x")))
+    for t in allt: add({"kind": "parse", "format": "mauve", "text": t})
+    for t in rnd2.sample(allt, 40): add({"kind": "read", "format": "mauve", "text": t})
+    add({"kind": "parse", "format": "mauve", "bytes": "x"})
+    sets = [[mrec(0, 10, 0, 10, 1), mrec(1, 10, 0, 10, -1)], [mrec(0, 10)], [mrec(0, 10, 3, 13, 1, name="7")], [mrec(0, 10, 0, 0, 1), mrec(1, 10, 0, 0, 1)], [mrec(0, 10, 1, 0, 1), mrec(1, 10, 1, 0, 1)], [mrec(0, 100, 0, 100, 1)], [mrec(0, 10, 0, 10, 1, name="1/1-10")],
+            [mrec(0, 10, 0, 10, 1, name="a/0-10")], [mrec(0, 10, 0, 10, "x")], [mrec(0, 10, 0, "z", 1)], [REC(S("ACGT"), "i\nd", "n", "")], [REC(S("ACGT"), "id", "bad name\nx", "")], [REC(S("ACGT"), "id", None, "")], [mrec(0, 10, "a", 3, 1)], [mrec(0, 90, 0, 90, 1)]]
+    for recs in sets:
+        add({"kind": "write", "format": "mauve", "records": recs})
+    for t in rnd2.sample(base[:50], 6):
+        for out in ("fasta", "mauve"): add({"kind": "convert", "format": "mauve", "text": t, "out": out, "molecule_type": None})
+    align_cases("mauve", base[:5])
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1436,6 +1466,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "mauve": mauve_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

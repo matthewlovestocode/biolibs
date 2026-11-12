@@ -11,6 +11,7 @@
  * - `msf.ts`: `msf`
  * - `emboss.ts`: `emboss`
  * - `fasta-m10.ts`: `fasta-m10`
+ * - `mauve.ts`: `mauve`
  */
 
 import { MultipleSeqAlignment } from "@biolibs/align";
@@ -21,6 +22,7 @@ import { ClustalIterator, ClustalWriter } from "./clustal.js";
 import type { AlignmentIteratorClass, AlignmentWriterClass } from "./interfaces.js";
 import { EmbossIterator } from "./emboss.js";
 import { FastaM10Iterator } from "./fasta-m10.js";
+import { MauveIterator, MauveWriter } from "./mauve.js";
 import { MsfIterator } from "./msf.js";
 import { StockholmIterator, StockholmWriter } from "./stockholm.js";
 import { PhylipIterator, PhylipWriter, RelaxedPhylipIterator, RelaxedPhylipWriter, SequentialPhylipIterator, SequentialPhylipWriter } from "./phylip.js";
@@ -34,6 +36,7 @@ const READERS: [string, AlignmentIteratorClass][] = [
   ["msf", MsfIterator],
   ["emboss", EmbossIterator],
   ["fasta-m10", FastaM10Iterator],
+  ["mauve", MauveIterator],
 ];
 const WRITERS: [string, AlignmentWriterClass][] = [
   ["clustal", ClustalWriter as AlignmentWriterClass],
@@ -41,6 +44,7 @@ const WRITERS: [string, AlignmentWriterClass][] = [
   ["phylip-sequential", SequentialPhylipWriter as AlignmentWriterClass],
   ["phylip-relaxed", RelaxedPhylipWriter as AlignmentWriterClass],
   ["stockholm", StockholmWriter as AlignmentWriterClass],
+  ["mauve", MauveWriter as AlignmentWriterClass],
 ];
 
 for (const [fmt, cls] of READERS) registerIterator(fmt, alignmentSequenceIterator(fmt, cls));
@@ -61,3 +65,4 @@ export * from "./stockholm.js";
 export * from "./msf.js";
 export * from "./emboss.js";
 export * from "./fasta-m10.js";
+export * from "./mauve.js";

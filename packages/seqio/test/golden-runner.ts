@@ -5,7 +5,7 @@
 import { captureWarnings } from "@biolibs/core";
 import * as SeqIO from "@biolibs/seqio";
 import {
-  FastaTwoLineWriter, FastaWriter, FastqIlluminaWriter, FastqPhredWriter, FastqSolexaWriter, LineStream, PirWriter, SeqXmlWriter, SffWriter, BytesHandle, QualPhredWriter, StringHandle,
+  FastaTwoLineWriter, FastaWriter, FastqIlluminaWriter, FastqPhredWriter, FastqSolexaWriter, LineStream, PirWriter, SeqXmlWriter, SffWriter, BytesHandle, MauveIterator, QualPhredWriter, StringHandle,
   convert, fastaTwoLineParser, fastqGeneralIterator, pairedFastaQualIterator, parse, read, simpleFastaParser, toDict, write,
 } from "@biolibs/seqio";
 import { dec, enc } from "../../seqrecord/test/golden-runner";
@@ -34,6 +34,7 @@ function source(c: Case): unknown {
 
 /** Run one case; mirrors `run` in gen_seqio_cases.py. */
 export function runCase(c: Case): Outcome {
+  MauveIterator.resetSharedState(); // the id list is shared by all Mauve readers, so every case starts fresh
   const out: Outcome = { warnings: [] };
   const cap = captureWarnings(() => {
     switch (c.kind) {
