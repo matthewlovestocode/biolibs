@@ -20,6 +20,9 @@
  * - `aa-codes.ts`: `isAa`, `isNucleic`, index/name lookups
  * - `polypeptide.ts`: `Polypeptide`, `PPBuilder`, `CaPPBuilder`
  * - `superimposer.ts`: `Superimposer`
+ * - `kdtrees.ts`: `KDTree`, `Point`, `Neighbor`
+ * - `selection.ts`: `unfoldEntities`, `uniqueify`, `getUniqueParents`, `entityLevels`
+ * - `neighbor-search.ts`: `NeighborSearch`
  * - `mmcifio.ts`: `MMCIFIO`
  * - `vectors.ts`: `Vector`
  * - `rotations.ts`: `rotaxis2m`, `rotmat`, `refmat`, `m2rotaxis`, `calcAngle`, `calcDihedral`, `vectorToAxis`
@@ -49,3 +52,6 @@ export * from "./pdb-data.js";
 export * from "./aa-codes.js";
 export * from "./polypeptide.js";
 export * from "./superimposer.js";
+export * from "./kdtrees.js";
+export * from "./selection.js";
+export * from "./neighbor-search.js";

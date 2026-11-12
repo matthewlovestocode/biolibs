@@ -216,6 +216,29 @@ if any(c["kind"] == "pdb" and "written" in c for c in pio):
 if any(c["kind"] == "mmcif" and "written" in c for c in pio) and any(c["kind"] == "dict" and "written" in c for c in pio):
     pio_members("Bio.PDB.mmcifio", "MMCIFIO", ("__init__", "save", "set_dict", "set_structure"))
 
+# ---- Bio.PDB.kdtrees, NeighborSearch and Selection (packages/pdb/test/golden/nsearch.json) ----
+nc = json.load(open(f"{here}/../packages/pdb/test/golden/nsearch.json"))["cases"]
+KD_OPS = {"search": "search", "neighbor": "neighbor_search", "simple": "neighbor_simple_search"}
+NS_OPS = {"search": "search", "search_all": "search_all"}
+for c in nc:
+    if c["kind"] == "kdtree":
+        mark("Bio.PDB.kdtrees.KDTree.__init__")
+        for op, out in zip(c.get("ops", []), c.get("ops_out", [])):
+            if "result" in out: mark(f"Bio.PDB.kdtrees.KDTree.{KD_OPS[op[0]]}")
+    elif c["kind"] == "ns" and "exc" not in c:
+        mark("Bio.PDB.NeighborSearch.NeighborSearch.__init__")
+        for op, out in zip(c["ops"], c["ops_out"]):
+            if "result" in out: mark(f"Bio.PDB.NeighborSearch.NeighborSearch.{NS_OPS[op[0]]}")
+        if any(op[0] == "search_all" and op[2] != "A" for op in c["ops"]): mark("Bio.PDB.NeighborSearch.NeighborSearch._get_unique_parent_pairs")
+    elif c["kind"] == "point": mark("Bio.PDB.kdtrees.Point.__init__")
+    elif c["kind"] == "neighbor": mark("Bio.PDB.kdtrees.Neighbor.__init__")
+    elif c["kind"] == "sel" and ("result" in c or "exc" in c):
+        mark({"unfold": "Bio.PDB.Selection.unfold_entities", "parents": "Bio.PDB.Selection.get_unique_parents", "unique": "Bio.PDB.Selection.uniqueify"}[c["fn"]])
+# repr of Point/Neighbor raises SystemError on this Python build (a %g format CPython no longer accepts), so only the C intent is ported
+for cls in ("Point", "Neighbor"): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "partial")
+for cls in ("KDTree",): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "na")
+mark("Bio.PDB.NeighborSearch.NeighborSearch.__repr__", "na")   # default object repr
+
 # ---- Bio.SVDSuperimposer and Bio.PDB.Superimposer (svd.json, superimposer.json) ----
 svdc = json.load(open(f"{here}/../packages/svdsuperimposer/test/golden/svd.json"))["cases"]
 SVD_OPS = {"set": ("set", "__init__"), "run": ("run",), "transformed": ("get_transformed",), "rotran": ("get_rotran",), "init_rms": ("get_init_rms", "_rms"), "rms": ("get_rms",)}

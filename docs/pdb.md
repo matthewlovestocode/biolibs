@@ -1,6 +1,6 @@
 # @biolibs/pdb
 
-A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers the PDB, PQR and mmCIF writers and the vector/rotation geometry of `Bio.PDB.vectors`. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`) 5,298 geometry cases (`vectors.json`, `gen_vector_cases.py`) 1,400 entity-operation cases (`pdbops.json`, `gen_pdbops_cases.py`) 1,718 polypeptide cases (`polypeptide.json`, `gen_poly_cases.py`) and 388 superimposer cases (`superimposer.json`, `gen_svd_cases.py`).
+A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers the PDB, PQR and mmCIF writers and the vector/rotation geometry of `Bio.PDB.vectors`. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`) 5,298 geometry cases (`vectors.json`, `gen_vector_cases.py`) 1,400 entity-operation cases (`pdbops.json`, `gen_pdbops_cases.py`) 1,718 polypeptide cases (`polypeptide.json`, `gen_poly_cases.py`) 388 superimposer cases (`superimposer.json`, `gen_svd_cases.py`) and 1,713 neighbor-search cases (`nsearch.json`, `gen_nsearch_cases.py`).
 
 ## Parsing
 
@@ -82,6 +82,18 @@ new PPBuilder().buildPeptides(chain, 0);                          // aaOnly = 0 
 
 `PPBuilder` joins residues whose C and N atoms are within 1.8 Å (checking every alternative location and selecting the bonded ones), `CaPPBuilder` uses CA-CA within 4.3 Å. A `Polypeptide` is an array of residues with `getCaList`, `getPhiPsiList`, `getTauList`, `getThetaList` (the angles also land in each residue's `xtra`), `getSequence` and `repr`. `isAa`/`isNucleic` take a residue or a name (residue names are padded to three characters first, which is why `"A  "` is a nucleotide); `indexToOne`, `oneToIndex`, `indexToThree` and `threeToIndex` use the 20 standard amino acids sorted by one-letter code. The residue-name tables (`pdb-data.ts`, generated from `Bio.Data.PDBData`) live in this package; `@biolibs/seqio` imports them from here.
 
+## Neighbor search
+
+```ts
+import { NeighborSearch } from "@biolibs/pdb";
+
+const ns = new NeighborSearch([...structure.getAtoms()], 10);   // atoms, bucket size (> 1)
+ns.search(atom.getCoord(), 5.0, "R");   // residues with an atom within 5 Å; levels A, R, C, M, S
+ns.searchAll(4.0, "A");                  // pairs of atoms within 4 Å of each other
+```
+
+`KDTree` is a port of Biopython's C extension: the same tree (median split by cycling axes, leaf buckets), the same traversal, so `search` and `neighborSearch` return points in the order the C code does. Two things differ in principle from running the C code on your platform. First, the C code sorts with `qsort`, whose treatment of equal coordinates is platform-dependent; here the sort is stable, so results are identical whenever no two points share a coordinate value (the golden cases are chosen that way). Second, above atom level Biopython's `search_all` deduplicates pairs through a Python `set`, so its order changes from run to run; here the pairs come in first-appearance order, and the tests compare them sorted. `unfoldEntities` (going up a level keeps first-appearance order) is deterministic in both. `Point.repr()` and `Neighbor.repr()` follow the C source's `%g` format, but the Python 3.15 build used for the goldens raises `SystemError` on them, so they are not golden-verified.
+
 ## Superimposing
 
 ```ts
@@ -113,4 +125,4 @@ Details kept faithful to Biopython:
 
 ## Not yet ported
 
-`NeighborSearch`, `transform`/`center_of_mass`, internal coordinates, DSSP/SASA, and the SeqIO formats `pdb-atom`, `cif-atom`, `cif-seqres`.
+`transform`/`center_of_mass`, internal coordinates, DSSP/SASA, and the SeqIO formats `pdb-atom`, `cif-atom`, `cif-seqres`.

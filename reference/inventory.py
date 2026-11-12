@@ -15,6 +15,9 @@ PM2D = importlib.import_module('Bio.PDB.MMCIF2Dict')
 PMP = importlib.import_module('Bio.PDB.MMCIFParser')
 PIO = importlib.import_module('Bio.PDB.PDBIO')  # the module, not the shadowing class
 PMIO = importlib.import_module('Bio.PDB.mmcifio')
+PNS = importlib.import_module('Bio.PDB.NeighborSearch')
+PKD = importlib.import_module('Bio.PDB.kdtrees')
+PSel = importlib.import_module('Bio.PDB.Selection')
 PSup = importlib.import_module('Bio.PDB.Superimposer')
 SVDMod = importlib.import_module('Bio.SVDSuperimposer')
 PPoly = importlib.import_module('Bio.PDB.Polypeptide')
@@ -89,6 +92,9 @@ inv = {
   "Bio.PDB.Polypeptide": {"functions": funcs(PPoly), "classes": {c: members(getattr(PPoly, c)) for c in ("Polypeptide", "CaPPBuilder", "PPBuilder")}},
   "Bio.PDB.Superimposer": {"classes": {"Superimposer": members(PSup.Superimposer)}},
   "Bio.SVDSuperimposer": {"classes": {"SVDSuperimposer": members(SVDMod.SVDSuperimposer)}},
+  "Bio.PDB.NeighborSearch": {"classes": {"NeighborSearch": members(PNS.NeighborSearch)}},
+  "Bio.PDB.kdtrees": {"classes": {c: members(getattr(PKD, c)) for c in ("KDTree", "Point", "Neighbor")}},
+  "Bio.PDB.Selection": {"functions": funcs(PSel)},
   "Bio.PDB.vectors": {"functions": funcs(PVec), "classes": {"Vector": members(PVec.Vector)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }

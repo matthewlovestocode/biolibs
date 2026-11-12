@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1075 / 1190 applicable items verified against Biopython.**
+**Progress: 1087 / 1232 applicable items verified against Biopython.**
 
 
 
@@ -1766,6 +1766,71 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `get_transformed(self)`
 - [x] `run(self)`
 - [x] `set(self, reference_coords, coords)`
+
+## Bio.PDB.NeighborSearch
+
+
+### Bio.PDB.NeighborSearch.NeighborSearch
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self, atom_list, bucket_size=10)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [x] `search(self, center, radius, level='A')`
+- [x] `search_all(self, radius, level='A')`
+
+## Bio.PDB.kdtrees
+
+
+### Bio.PDB.kdtrees.KDTree
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [x] `neighbor_search?`
+- [x] `neighbor_simple_search?`
+- [x] `search?`
+
+### Bio.PDB.kdtrees.Point
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [~] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+
+### Bio.PDB.kdtrees.Neighbor
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [~] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+
+## Bio.PDB.Selection
+
+- [x] `get_unique_parents(entity_list)`
+- [x] `unfold_entities(entity_list, target_level)`
+- [x] `uniqueify(items)`
 
 ## Bio.PDB.parse_pdb_header
 
