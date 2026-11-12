@@ -19,6 +19,9 @@
     },
     {
       "path": "../seqrecord"
+    },
+    {
+      "path": "../align"
     }
   ]
 }

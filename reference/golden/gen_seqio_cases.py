@@ -1179,6 +1179,56 @@ def sff_cases():
     for recs in cases[:2]: add({"kind": "format", "format": "sff", "record": recs[0]})
     add({"kind": "write", "format": "sff", "records": good})
 
+
+# ------------------------------------------------------------------ alignment formats (via Bio.AlignIO)
+def rand_alignment(rnd, alphabet="ACGT-", n=None, length=None, idfn=None):
+    n = n or rnd.randint(1, 6); length = length if length is not None else rnd.randint(1, 130)
+    recs = []
+    for i in range(n):
+        rid = idfn(i) if idfn else rnd.choice(["seq%d" % i, "s%d" % i, "Name_%d" % i, "a b%d" % i, "long_identifier_number_%d_x" % i, "x:%d" % i])
+        recs.append(REC(S("".join(rnd.choice(alphabet) for _ in range(length))), rid, rid, rid))
+    return recs
+
+def align_text(recs, fmt):
+    buf = io.StringIO()
+    try: SeqIO.write([dec(r) for r in recs], buf, fmt); return buf.getvalue()
+    except Exception: return None
+
+def align_cases(fmt, hand=(), alphabet="ACGT-", idfn=None, extra_writer=()):
+    rnd2 = random.Random(81 + sum(map(ord, fmt)))
+    base = list(hand)
+    for _ in range(70):
+        t = align_text(rand_alignment(rnd2, alphabet, idfn=idfn), fmt)
+        if t: base.append(t)
+    base.append("".join(base[i] for i in range(min(3, len(base)))))
+    base += ["", "\n", "\n\n", " ", "x", "1 1\n", " 1 1\n", " 2 4\na ACGT\nb ACGT\n"]
+    allt = list(base)
+    for t in base:
+        for _ in range(6): allt.append(mutate_text(t, rnd2, junk=(" 2 5", "CLUSTAL", "# STOCKHOLM 1.0", "//", "#=GF AC x", ".", "-", "\t", "a b", "!!AA_MULTIPLE_ALIGNMENT 1.0", "#NEXUS")))
+    for t in allt: add({"kind": "parse", "format": fmt, "text": t})
+    for t in rnd2.sample(allt, 50): add({"kind": "read", "format": fmt, "text": t})
+    add({"kind": "parse", "format": fmt, "bytes": "x"})
+    # writing
+    sets = [rand_alignment(rnd2, alphabet, idfn=idfn) for _ in range(40)]
+    sets += [rand_alignment(rnd2, alphabet, n=1, length=1), rand_alignment(rnd2, alphabet, n=2, length=50), rand_alignment(rnd2, alphabet, n=2, length=51), rand_alignment(rnd2, alphabet, n=2, length=100), rand_alignment(rnd2, alphabet, n=3, length=10, idfn=lambda i: "dup"),
+             rand_alignment(rnd2, alphabet, n=2, length=10, idfn=lambda i: ["abcdefghijk1", "abcdefghijk2"][i]), rand_alignment(rnd2, alphabet, n=2, length=10, idfn=lambda i: ["a(b)[c],d", "e:f;g"][i]), rand_alignment(rnd2, alphabet, n=2, length=10, idfn=lambda i: [" lead", "trail "][i]),
+             rand_alignment(rnd2, alphabet, n=2, length=10, idfn=lambda i: ["with space", "tab\there"][i]), rand_alignment(rnd2, alphabet, n=1, length=10, idfn=lambda i: ""), [], [REC(S("ACGT"), "a", "a", "a"), REC(S("ACG"), "b", "b", "b")],
+             [REC(S("AC.T"), "dots", "d", "d")], [REC(S(""), "empty", "e", "e")], [REC(U(4), "und", "u", "u")], [REC(None, "none", "n", "n")], [REC(S("ACGT"), "é", "e", "e")], [REC(S("ACGT"), "a\nb", "e", "e")], [REC(S("ACGT"), "x" * 40, "e", "e")]] + list(extra_writer)
+    for recs in sets:
+        add({"kind": "write", "format": fmt, "records": recs})
+        if recs and rnd2.random() < .3: add({"kind": "format", "format": fmt, "record": recs[0]})
+    for t in rnd2.sample(base[:70], 8):
+        for out in ("fasta", fmt): add({"kind": "convert", "format": fmt, "text": t, "out": out, "molecule_type": None})
+    add({"kind": "convert", "format": "fasta", "text": ">a\nACGT\n>b\nAC-T\n", "out": fmt, "molecule_type": None})
+
+def phylip_cases(): align_cases("phylip")
+def phylip_sequential_cases(): align_cases("phylip-sequential")
+def phylip_relaxed_cases(): align_cases("phylip-relaxed")
+def clustal_cases():
+    hand = ["CLUSTAL X (1.81) multiple sequence alignment\n\n\nseq1      ACGT\nseq2      ACGA\n          ***:\n\n", "CLUSTAL W (1.83) multiple sequence alignment\n\n\nseq1 ACGT 4\nseq2 AC-A 3\n\n",
+            "CLUSTAL 2.1 multiple sequence alignment\n\n\nseq1      ACGT\nseq2      ACGT\n\n\n", "MUSCLE (3.8) multiple sequence alignment\n\n\na   AC\nb   AC\n\n", "PROBCONS\n\n\na AC\nb AC\n\n", "Kalign ()\n\na AC\nb AC\n\n", "WRONG header\n\na AC\n", "CLUSTAL\n"]
+    align_cases("clustal", hand)
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1259,6 +1309,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

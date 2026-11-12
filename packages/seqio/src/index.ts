@@ -29,6 +29,7 @@ import "./xdna/index.js";
 import "./abi/index.js";
 import "./snapgene/index.js";
 import "./sff/index.js";
+import "./alignio/index.js";
 
 export * from "./api.js";
 export * from "./errors.js";
@@ -51,5 +52,6 @@ export * from "./xdna/index.js";
 export * from "./abi/index.js";
 export * from "./snapgene/index.js";
 export * from "./sff/index.js";
+export * from "./alignio/index.js";
 export { StructError, pack, unpack, calcsize, intFromBytes } from "./binary/struct.js";
 export { decodeAscii, encodeAscii, readExact } from "./binary/ascii.js";
