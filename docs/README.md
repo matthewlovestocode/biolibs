@@ -10,15 +10,16 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/seq` | `Seq`/`MutableSeq`, all 27 genetic codes, IUPAC data. At parity with Biopython's `Bio.Seq` | [seq.md](seq.md) |
 | `@biolibs/seqfeature` | Positions, locations, `SeqFeature`. At parity with Biopython's `Bio.SeqFeature` | [seqfeature.md](seqfeature.md) |
 | `@biolibs/seqrecord` | `SeqRecord`: sequence + annotations + features. At parity with Biopython's `Bio.SeqRecord` | [seqrecord.md](seqrecord.md) |
-| `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML and the binary formats and the alignment formats (all but nexus) done; more in progress | [seqio.md](seqio.md) |
+| `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML and the binary formats and the alignment formats done; more in progress | [seqio.md](seqio.md) |
 | `@biolibs/align` | `Bio.Align`: `MultipleSeqAlignment` (pairwise aligner not yet ported) | [align.md](align.md) |
+| `@biolibs/nexus` | `Bio.Nexus`: NEXUS reader/writer and editor, `Tree`/`Node`/`Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus`. Powers the `nexus` format in `seqio` | [nexus.md](nexus.md) |
 | `@biolibs/phylo` | Newick phylogenetic trees | [phylo.md](phylo.md) |
 | `@biolibs/seqtools` | Bio.SeqUtils: GC, molecular weight, codon adaptation index, checksums, protein analysis, melting temperature | [seqtools.md](seqtools.md) |
 
 ## Dependency graph
 
 ```
-core  <-- seq  <-- seqio
+core  <-- seq  <-- nexus  <-- seqio
             ^
             '---- seqfeature
   ^         ^

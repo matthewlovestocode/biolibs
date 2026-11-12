@@ -13,6 +13,7 @@
  * - `fasta-m10.ts`: `fasta-m10`
  * - `mauve.ts`: `mauve`
  * - `maf.ts`: `maf`
+ * - `nexus.ts`: `nexus`
  */
 
 import { MultipleSeqAlignment } from "@biolibs/align";
@@ -26,6 +27,7 @@ import { FastaM10Iterator } from "./fasta-m10.js";
 import { MafIterator, MafWriter } from "./maf.js";
 import { MauveIterator, MauveWriter } from "./mauve.js";
 import { MsfIterator } from "./msf.js";
+import { NexusIterator, NexusWriter } from "./nexus.js";
 import { StockholmIterator, StockholmWriter } from "./stockholm.js";
 import { PhylipIterator, PhylipWriter, RelaxedPhylipIterator, RelaxedPhylipWriter, SequentialPhylipIterator, SequentialPhylipWriter } from "./phylip.js";
 
@@ -40,6 +42,7 @@ const READERS: [string, AlignmentIteratorClass][] = [
   ["fasta-m10", FastaM10Iterator],
   ["mauve", MauveIterator],
   ["maf", MafIterator],
+  ["nexus", NexusIterator],
 ];
 const WRITERS: [string, AlignmentWriterClass][] = [
   ["clustal", ClustalWriter as AlignmentWriterClass],
@@ -49,6 +52,7 @@ const WRITERS: [string, AlignmentWriterClass][] = [
   ["stockholm", StockholmWriter as AlignmentWriterClass],
   ["mauve", MauveWriter as AlignmentWriterClass],
   ["maf", MafWriter as AlignmentWriterClass],
+  ["nexus", NexusWriter as AlignmentWriterClass],
 ];
 
 for (const [fmt, cls] of READERS) registerIterator(fmt, alignmentSequenceIterator(fmt, cls));
@@ -71,3 +75,4 @@ export * from "./emboss.js";
 export * from "./fasta-m10.js";
 export * from "./mauve.js";
 export * from "./maf.js";
+export * from "./nexus.js";

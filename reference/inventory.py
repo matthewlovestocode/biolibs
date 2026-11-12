@@ -8,6 +8,7 @@ from Bio.SeqUtils import (gc_fraction, GC123, GC_skew, seq3, seq1, molecular_wei
 import Bio.SeqUtils as SU
 from Bio.SeqUtils import CheckSum, lcc, IsoelectricPoint, ProtParam, MeltingTemp
 from Bio.SeqIO import _FormatToIterator, _FormatToWriter
+from Bio.Nexus import Nexus as NexusMod, Trees as TreesMod, Nodes as NodesMod, StandardData as StandardDataMod
 
 def members(cls):
     out = {}
@@ -48,5 +49,9 @@ inv = {
   "Bio.SeqUtils.IsoelectricPoint": {"classes": {"IsoelectricPoint": members(IsoelectricPoint.IsoelectricPoint)}},
   "Bio.SeqUtils.ProtParam": {"classes": {"ProteinAnalysis": members(ProtParam.ProteinAnalysis)}},
   "Bio.SeqUtils.MeltingTemp": {"functions": funcs(MeltingTemp)},
+  "Bio.Nexus.Nexus": {"functions": funcs(NexusMod), "classes": {"Nexus": members(NexusMod.Nexus)}},
+  "Bio.Nexus.Trees": {"functions": funcs(TreesMod), "classes": {"Tree": members(TreesMod.Tree)}},
+  "Bio.Nexus.Nodes": {"classes": {"Chain": members(NodesMod.Chain), "Node": members(NodesMod.Node)}},
+  "Bio.Nexus.StandardData": {"classes": {"StandardData": members(StandardDataMod.StandardData)}},
 }
 print(json.dumps(inv, indent=1))

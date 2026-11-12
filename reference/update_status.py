@@ -144,5 +144,27 @@ if cai:
         key = f"Bio.SeqUtils.CodonAdaptationIndex.{m}"
         if key not in status: mark(key, "na")        # dict protocol, inherited; the TS class is a Map
 
+# ---- Bio.Nexus (packages/nexus/test/golden/nexus.json; the SeqIO side is in seqio-nexus.json) ----
+nx = json.load(open(f"{here}/../packages/nexus/test/golden/nexus.json"))["cases"]
+nx_funcs = {c["fn"] for c in nx if c["kind"] == "func" and "result" in c} | ({"combine"} if any(c["kind"] == "combine" and "state" in c for c in nx) else set())
+for fn in nx_funcs: mark(f"Bio.Nexus.Nexus.{fn}")
+if any(c["kind"] == "consensus" and "result" in c for c in nx): mark("Bio.Nexus.Trees.consensus")
+NX_DUNDER_NA = ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__", "__repr__")        # object boilerplate
+def nexus_members(mod, cls, used, extra_done=(), na=()):
+    for m in inv[mod]["classes"][cls]:
+        key = f"{mod}.{cls}.{m}"
+        if m in used or m in extra_done: mark(key)
+        elif m in NX_DUNDER_NA or m in na: mark(key, "na")
+nx_ops = {op[0].lstrip("_") for c in nx if c["kind"] == "nexus" for op in c["ops"]}
+nexus_members("Bio.Nexus.Nexus", "Nexus", nx_ops, extra_done=("read", "__init__"), na=("__str__",))    # every case reads through the constructor
+tr_ops = {op[0] for c in nx if c["kind"] == "tree" for op in c["ops"]}
+node_ops = {op[1][1] for c in nx if c["kind"] == "tree" for op in c["ops"] if op[0] == "node_call"}
+nexus_members("Bio.Nexus.Trees", "Tree", tr_ops, extra_done=("__init__", "__str__", "add"))      # add() builds every parsed tree
+nexus_members("Bio.Nexus.Nodes", "Chain", tr_ops, extra_done=("__init__", "add"), na=("__str__",))       # Chain methods are driven through Tree
+# Node: the accessors map to TS properties (id, prev, succ, data); the mutators are called directly
+nexus_members("Bio.Nexus.Nodes", "Node", node_ops, extra_done=("__init__",), na=("__str__", "get_data", "set_data"))
+if any(c["kind"] == "standard" and "raw" in c for c in nx):
+    nexus_members("Bio.Nexus.StandardData", "StandardData", {"raw"}, extra_done=("__init__", "__str__", "__len__", "__getitem__", "__iter__"), na=("__next__",))
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

@@ -24,6 +24,9 @@
     },
     {
       "path": "packages/seqio"
+    },
+    {
+      "path": "packages/nexus"
     }
   ]
 }

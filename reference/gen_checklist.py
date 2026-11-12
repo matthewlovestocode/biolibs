@@ -44,6 +44,8 @@ for f in inv["Bio.SeqIO"]["write_formats"]: item(f"Bio.SeqIO.write:{f}", f"write
 section("Bio.Align", "Bio.Align", inv["Bio.Align"])
 for mod in ("Bio.SeqUtils", "Bio.SeqUtils.CheckSum", "Bio.SeqUtils.lcc", "Bio.SeqUtils.IsoelectricPoint", "Bio.SeqUtils.ProtParam", "Bio.SeqUtils.MeltingTemp"):
     section(mod, mod, inv[mod])
+for mod in ("Bio.Nexus.Nexus", "Bio.Nexus.Trees", "Bio.Nexus.Nodes", "Bio.Nexus.StandardData"):
+    section(mod, mod, inv[mod])
 L[3:3] = ["", f"**Progress: {tot[1]} / {tot[0]} applicable items verified against Biopython.**", ""]
 open(f"{here}/../PARITY.md", "w").write("\n".join(L) + "\n")
 print(tot)

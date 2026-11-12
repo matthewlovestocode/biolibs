@@ -1409,6 +1409,77 @@ def maf_cases():
     extra = [[mfrec(0, 10)], [mfrec(0, 10), mfrec(1, 10)], [REC(S("ACGT"), "x", "n", "", annotations=[["strand", 0], ["size", 3]])], [REC(S("ACGT"), "x", "n", "", annotations=[["start", "s"], ["srcSize", 1.5]])], [REC(S("AC-T"), "a b c", "n", "")]]
     align_cases("maf", base[:55], extra_writer=extra)
 
+NEXUS_HAND = [
+"#NEXUS\nbegin data;\ndimensions ntax=3 nchar=8;\nformat datatype=dna missing=? gap=-;\nmatrix\nA ACGTACGT\nB ACGTAC-T\nC ACGAACGT\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna missing=? gap=- interleave;\nmatrix\nA ACG\nB ACC\n\nA TTT\nB TTA\n;\nend;\n",
+"#NEXUS\n[a comment]\nbegin taxa;\ndimensions ntax=2;\ntaxlabels 'Homo sapiens' Pan_troglodytes;\nend;\nbegin characters;\ndimensions nchar=5;\nformat datatype=protein missing=? gap=-;\nmatrix\n'Homo sapiens' MKV-L\nPan_troglodytes MKVAL\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=3 nchar=6;\nformat datatype=dna missing=? gap=- matchchar=.;\nmatrix\nA ACGTAC\nB ..A...\nC ..G.T.\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna missing=? gap=-;\nmatrix\nA AC(GT)AC\nB ACGT{AC}\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=rna;\nmatrix\nA ACGU\nB ACGA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=nucleotide;\nmatrix\nA ACGT\nB ACGA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=standard symbols=\"01\" missing=? gap=-;\nmatrix\nA 0101\nB 01(01)1\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna;\ncharlabels one two three;\nmatrix\nA ACGTAC\nB ACGTAA\n;\nend;\nbegin sets;\ncharset first = 1-3;\ncharset second = 4-6;\ntaxset t = A B;\ncharpartition p = a: 1-3, b: 4-6;\ntaxpartition tp = x: A, y: B;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna;\ncharstatelabels 1 one/a b, 2 two/c d;\nmatrix\nA ACGTAC\nB ACGTAA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna;\nmatrix\nA ACGTAC\nB ACGTAA\n;\nend;\nbegin trees;\ntranslate 1 A, 2 B;\ntree t1 = (1:0.1,2:0.2);\ntree * t2 = [&R] ((1,2),3);\nutree t3 = (A,B);\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna;\neliminate 2-3;\noptions gapmode=newstate;\nmatrix\nA ACGTAC\nB ACGTAA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna;\ncodonposset cp = N: 1-3 4-6;\nmatrix\nA ACGTAC\nB ACGTAA\n;\nend;\n",
+"#NEXUS\nbegin foo;\nsomething here;\nend;\nbegin data;\ndimensions ntax=1 nchar=3;\nformat datatype=dna;\nmatrix\nA ACG\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna;\nmatrix\nA ACGT\nA ACGA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=3 nchar=4;\nformat datatype=dna;\nmatrix\nA ACGT\nB ACGA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna;\nmatrix\nA ACGT\nB ACG\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna respectcase;\nmatrix\nA acgT\nB ACgA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna;\nmatrix\n'A b' ACGT\n'it''s' ACGA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=0 nchar=0;\nformat datatype=dna;\nend;\n",
+"#NEXUS\nbegin trees;\ntree t = (A,B);\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna;\nmatrix\nA ACGT\nB ACGA\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna;\nmatrix\nA ACGT\nB ACGA\n;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna;\nbogus command;\nmatrix\nA ACGT\nB ACGA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna;\nmatrix\nA ACGT [comment]\nB ACGA\n;\nend;\n",
+"#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna;\nmatrix\nA AC GT\nB AC GA\n;\nend;\n",
+"begin data;\ndimensions ntax=1 nchar=2;\nformat datatype=dna;\nmatrix\nA AC\n;\nend;\n",
+"#NEXUS\n", "", "\n", "#NEXUS", "x",
+]
+
+def nexus_records(rnd, mol="DNA", n=None, length=None, alphabet=None, idfn=None):
+    alphabet = alphabet or {"DNA": "ACGT-?", "RNA": "ACGU-?", "protein": "ACDEFGHIKLMNPQRSTVWY-?"}[mol]
+    n = n or rnd.randint(1, 5); length = length if length is not None else rnd.randint(1, 140)
+    return [REC(S("".join(rnd.choice(alphabet) for _ in range(length))), idfn(i) if idfn else rnd.choice(["s%d" % i, "Name_%d" % i, "taxon%d" % i]), "n", "", annotations=[["molecule_type", mol]]) for i in range(n)]
+
+def nexus_cases():
+    rnd2 = random.Random(131)
+    base = list(NEXUS_HAND)
+    for _ in range(60):
+        mol = rnd2.choice(["DNA", "RNA", "protein"])
+        recs = nexus_records(rnd2, mol, length=rnd2.choice([None, None, 1100]))
+        t = align_text(recs, "nexus")
+        if t: base.append(t)
+    allt = list(base)
+    for t in base:
+        for _ in range(6): allt.append(mutate_text(t, rnd2, junk=("begin data;", "end;", "matrix", ";", "[", "]", "'", "dimensions ntax=2 nchar=4;", "format datatype=dna;", "interleave", "tree t = (A,B);", "#NEXUS")))
+    for t in allt: add({"kind": "parse", "format": "nexus", "text": t})
+    for t in rnd2.sample(allt, 50): add({"kind": "read", "format": "nexus", "text": t})
+    add({"kind": "parse", "format": "nexus", "bytes": "x"})
+    sets = [nexus_records(rnd2, rnd2.choice(["DNA", "RNA", "protein"])) for _ in range(30)]
+    sets += [nexus_records(rnd2, "DNA", n=2, length=1100), nexus_records(rnd2, "DNA", n=3, length=70), nexus_records(rnd2, "DNA", n=3, length=71),
+             nexus_records(rnd2, "DNA", n=3, length=10, idfn=lambda i: "dup"), nexus_records(rnd2, "DNA", n=2, length=10, idfn=lambda i: ["a b", "it's"][i]),
+             nexus_records(rnd2, "DNA", n=2, length=10, idfn=lambda i: ["a(b)", "c;d"][i]), nexus_records(rnd2, "DNA", n=1, length=10, idfn=lambda i: ""),
+             [REC(S("ACGT"), "u", "n", "", annotations=[["molecule_type", "DNA"]]), REC(S("ACGU"), "v", "n", "", annotations=[["molecule_type", "DNA"]])],
+             [REC(S("ACGU"), "t", "n", "", annotations=[["molecule_type", "RNA"]]), REC(S("ACGT"), "v", "n", "", annotations=[["molecule_type", "RNA"]])],
+             [REC(S("ACGT"), "a", "n", "", annotations=[["molecule_type", "DNA"]]), REC(S("ACGT"), "b", "n", "", annotations=[["molecule_type", "protein"]])],
+             [REC(S("ACGT"), "a", "n", "", annotations=[["molecule_type", "mRNA"]]), REC(S("ACGT"), "b", "n", "", annotations=[["molecule_type", "RNA"]])],
+             [REC(S("ACGT"), "a", "n", "", annotations=[["molecule_type", "genomic DNA"]]), REC(S("ACGT"), "b", "n", "", annotations=[["molecule_type", "DNA"]])],
+             [REC(S("ACGT"), "a", "n", "")], [REC(S("ACGT"), "a", "n", "", annotations=[["molecule_type", "DNA"]]), REC(S("ACGT"), "b", "n", "")],
+             [], [REC(S(""), "e", "n", "", annotations=[["molecule_type", "DNA"]])], [REC(S("ACGT"), "a", "n", "", annotations=[["molecule_type", "DNA"]]), REC(S("ACG"), "b", "n", "", annotations=[["molecule_type", "DNA"]])],
+             [REC(None, "none", "n", "", annotations=[["molecule_type", "DNA"]])], [REC(S("ACGT"), "x" * 40, "n", "", annotations=[["molecule_type", "DNA"]])]]
+    for recs in sets:
+        add({"kind": "write", "format": "nexus", "records": recs})
+        if recs and rnd2.random() < .3: add({"kind": "format", "format": "nexus", "record": recs[0]})
+    for t in rnd2.sample(base[:60], 8):
+        for out in ("fasta", "nexus"): add({"kind": "convert", "format": "nexus", "text": t, "out": out, "molecule_type": None})
+    add({"kind": "convert", "format": "fasta", "text": ">a\nACGT\n>b\nAC-T\n", "out": "nexus", "molecule_type": "DNA"})
+    add({"kind": "convert", "format": "fasta", "text": ">a\nACGT\n>b\nAC-T\n", "out": "nexus", "molecule_type": None})
+
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1489,6 +1560,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "mauve": mauve_cases, "maf": maf_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "mauve": mauve_cases, "maf": maf_cases, "nexus": nexus_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

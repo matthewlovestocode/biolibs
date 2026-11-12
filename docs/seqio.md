@@ -1,6 +1,6 @@
 # @biolibs/seqio
 
-A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 31,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, the binary formats and the alignment formats below); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
+A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 31,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, the binary formats and the alignment formats below, nexus included); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
 
 ```ts
 import { parse, read, write, toDict, convert, StringHandle } from "@biolibs/seqio";
@@ -72,6 +72,7 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 | `stockholm` | yes | yes |
 | `msf`, `emboss`, `fasta-m10` | yes | |
 | `mauve`, `maf` | yes | yes |
+| `nexus` | yes | yes |
 
 `fasta` requires the file to begin with `>` (comments are an error with a helpful message); use `fasta-pearson` (`;` comments, text before the first `>` ignored) or `fasta-blast` (`#`, `!`, `;` comments) for those files. `fasta-blast` reproduces a bug in Biopython 1.88: after the first record it does not advance its saved header line, so later records reuse the first header. The output is identical to Biopython's.
 
@@ -117,7 +118,8 @@ All of these take the file's **bytes** (`fs.readFileSync(path)`) and write to a 
 
 Alignment files are read and written through `SeqIO` as streams of records, exactly as Biopython does through `Bio.AlignIO`: `parse(text, "clustal")` yields the records of each alignment in turn, and `write(records, out, "clustal")` writes the records as one alignment (equal lengths required). The underlying readers and writers (`ClustalIterator`, `PhylipWriter`, `StockholmIterator`, ...) are exported too, and produce `MultipleSeqAlignment` objects from `@biolibs/align`; `alignment.format("clustal")` renders one.
 
-- **Not yet:** `nexus` (it needs a port of `Bio.Nexus`, a parser of its own). `MafIndex` (an SQLite index) is not ported.
+- **Not yet:** `MafIndex` (an SQLite index) is not ported.
+- **nexus:** built on `@biolibs/nexus` (a port of `Bio.Nexus`, see [nexus.md](nexus.md)). A file holds one alignment; `NexusWriter.writeAlignment(alignment, interleave)` interleaves by default only above 1000 columns, and every record needs a `molecule_type` annotation (all DNA, all RNA or all protein). `StopIteration` escaping Biopython's reader (a matrix shorter than its `ntax`) surfaces as the `RuntimeError` Python's generator machinery turns it into.
 - **Mauve quirk:** Biopython keeps the list of sequence ids in a class attribute, so ids from one file show up as all-gap rows in the next. `MauveIterator.sharedIds` reproduces that; `MauveIterator.resetSharedState()` clears it.
 - **Clustal:** a file that ends right after its header makes Biopython loop forever; we throw `RuntimeError` instead.
 - **fasta-m10:** the error for query and match of different lengths names `handle.name` in Python, which a text stream does not have, so it surfaces as a `TypeError` here too.
@@ -159,7 +161,7 @@ packages/seqio/src/
   seqxml/  xml-types.ts  xml-chars.ts  xml-names.ts  xml-scanner.ts  xml-sax.ts  content-handler.ts  iterator.ts  xml-generator.ts  writer.ts  index.ts
   binary/  struct.ts  ascii.ts
   nib/ twobit/ gck/ xdna/ abi/ snapgene/ sff/   (one directory per format)
-  alignio/ interfaces.ts  bridge.ts  phylip.ts  clustal.ts  stockholm.ts  msf.ts  emboss.ts  fasta-m10.ts  mauve.ts  maf.ts  index.ts
+  alignio/ interfaces.ts  bridge.ts  phylip.ts  clustal.ts  stockholm.ts  msf.ts  emboss.ts  fasta-m10.ts  mauve.ts  maf.ts  nexus.ts  index.ts
   insdc/   text.ts  cleaner.ts  consumer.ts  scanner.ts  genbank-scanner.ts  embl-scanner.ts  iterators.ts
            location-string.ts  writer-base.ts  genbank-writer.ts  embl-writer.ts  converters.ts  index.ts
 ```

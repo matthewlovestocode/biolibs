@@ -943,5 +943,159 @@
    "make_table": "(oldtable=None, values=None)",
    "salt_correction": "(Na=0, K=0, Tris=0, Mg=0, dNTPs=0, method=1, seq=None)"
   }
+ },
+ "Bio.Nexus.Nexus": {
+  "functions": {
+   "combine": "(matrices)",
+   "get_start_end": "(sequence, skiplist=('-', '?'))",
+   "quotestrip": "(word)",
+   "safename": "(name, mrbayes=False)"
+  },
+  "classes": {
+   "Nexus": {
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self, input=None)",
+    "__le__": "(self, value, /)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self, /)",
+    "__str__": "(self, /)",
+    "add_sequence": "(self, name, sequence)",
+    "append_sets": "(self, exclude=(), delete=(), mrbayes=False, include_codons=True, codons_only=False)",
+    "bootstrap": "(self, matrix=None, delete=(), exclude=())",
+    "constant": "(self, matrix=None, delete=(), exclude=())",
+    "crop_matrix": "(self, matrix=None, delete=(), exclude=())",
+    "cstatus": "(self, site, delete=(), narrow=True)",
+    "export_fasta": "(self, filename=None, width=70)",
+    "export_phylip": "(self, filename=None)",
+    "gaponly": "(self, include_missing=False)",
+    "insert_gap": "(self, pos, n=1, leftgreedy=False)",
+    "invert": "(self, charlist)",
+    "read": "(self, input)",
+    "terminal_gap_to_missing": "(self, missing=None, skip_n=True)",
+    "weighted_stepmatrix": "(self, name='your_name_here', exclude=(), delete=())",
+    "write_nexus_data": "(self, filename=None, matrix=None, exclude=(), delete=(), blocksize=None, interleave=False, interleave_by_partition=False, comment=None, omit_NEXUS=False, append_sets=True, mrbayes=False, codons_block=True)",
+    "write_nexus_data_partitions": "(self, matrix=None, filename=None, blocksize=None, interleave=False, exclude=(), delete=(), charpartition=None, comment='', mrbayes=False)"
+   }
+  }
+ },
+ "Bio.Nexus.Trees": {
+  "functions": {
+   "consensus": "(trees, threshold=0.5, outgroup=None)"
+  },
+  "classes": {
+   "Tree": {
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self, tree=None, weight=1.0, rooted=False, name='', data=<class 'Bio.Nexus.Trees.NodeData'>, values_are_support=False, max_support=1.0)",
+    "__le__": "(self, value, /)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self, /)",
+    "__str__": "(self)",
+    "add": "(self, node: 'Node', prev: int | None = None) -> int",
+    "all_ids": "(self) -> list[int]",
+    "branchlength2support": "(self)",
+    "collapse": "(self, id)",
+    "collapse_genera": "(self, space_equals_underscore=True)",
+    "common_ancestor": "(self, node1, node2)",
+    "convert_absolute_support": "(self, nrep)",
+    "count_terminals": "(self, node=None)",
+    "display": "(self)",
+    "distance": "(self, node1, node2)",
+    "get_taxa": "(self, node_id=None)",
+    "get_terminals": "(self)",
+    "has_support": "(self, node=None)",
+    "is_bifurcating": "(self, node=None)",
+    "is_compatible": "(self, tree2, threshold, strict=True)",
+    "is_identical": "(self, tree2)",
+    "is_internal": "(self, node)",
+    "is_monophyletic": "(self, taxon_list)",
+    "is_parent_of": "(self, parent, grandchild)",
+    "is_preterminal": "(self, node)",
+    "is_terminal": "(self, node)",
+    "kill": "(self, id)",
+    "link": "(self, parent, child)",
+    "merge_with_support": "(self, bstrees=None, constree=None, threshold=0.5, outgroup=None)",
+    "node": "(self, node_id)",
+    "prune": "(self, taxon)",
+    "randomize": "(self, ntax=None, taxon_list=None, branchlength=1.0, branchlength_sd=None, bifurcate=True)",
+    "root_with_outgroup": "(self, outgroup=None)",
+    "search_taxon": "(self, taxon)",
+    "set_subtree": "(self, node)",
+    "split": "(self, parent_id=None, n=2, branchlength=1.0)",
+    "sum_branchlength": "(self, root=None, node=None)",
+    "to_string": "(self, support_as_branchlengths=False, branchlengths_only=False, plain=True, plain_newick=False, ladderize=None, ignore_comments=True)",
+    "trace": "(self, start, finish)",
+    "unlink": "(self, id)",
+    "unroot": "(self)"
+   }
+  }
+ },
+ "Bio.Nexus.Nodes": {
+  "classes": {
+   "Chain": {
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self) -> None",
+    "__le__": "(self, value, /)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self, /)",
+    "__str__": "(self, /)",
+    "add": "(self, node: 'Node', prev: int | None = None) -> int",
+    "all_ids": "(self) -> list[int]",
+    "collapse": "(self, id)",
+    "is_parent_of": "(self, parent, grandchild)",
+    "kill": "(self, id)",
+    "link": "(self, parent, child)",
+    "trace": "(self, start, finish)",
+    "unlink": "(self, id)"
+   },
+   "Node": {
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self, data=None)",
+    "__le__": "(self, value, /)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self, /)",
+    "__str__": "(self, /)",
+    "add_succ": "(self, id)",
+    "get_data": "(self)",
+    "get_id": "(self)",
+    "get_prev": "(self)",
+    "get_succ": "(self)",
+    "remove_succ": "(self, id)",
+    "set_data": "(self, data)",
+    "set_id": "(self, id)",
+    "set_prev": "(self, id)",
+    "set_succ": "(self, new_succ)"
+   }
+  }
+ },
+ "Bio.Nexus.StandardData": {
+  "classes": {
+   "StandardData": {
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__getitem__": "(self, arg)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self, data)",
+    "__iter__": "(self)",
+    "__le__": "(self, value, /)",
+    "__len__": "(self)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self, /)",
+    "__str__": "(self)",
+    "raw": "(self)"
+   }
+  }
  }
 }

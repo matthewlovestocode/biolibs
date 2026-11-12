@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 526 / 542 applicable items verified against Biopython.**
+**Progress: 606 / 626 applicable items verified against Biopython.**
 
 
 
@@ -643,7 +643,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: maf`
 - [x] `parse: mauve`
 - [x] `parse: msf`
-- [ ] `parse: nexus`
+- [x] `parse: nexus`
 - [x] `parse: nib`
 - [ ] `parse: pdb-atom`
 - [ ] `parse: pdb-seqres`
@@ -679,7 +679,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `write: imgt`
 - [x] `write: maf`
 - [x] `write: mauve`
-- [ ] `write: nexus`
+- [x] `write: nexus`
 - [x] `write: nib`
 - [x] `write: phd`
 - [x] `write: phylip`
@@ -825,3 +825,154 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `chem_correction(melting_temp, DMSO=0, fmd=0, DMSOfactor=0.75, fmdfactor=0.65, fmdmethod=1, GC=None)`
 - [x] `make_table(oldtable=None, values=None)`
 - [x] `salt_correction(Na=0, K=0, Tris=0, Mg=0, dNTPs=0, method=1, seq=None)`
+
+## Bio.Nexus.Nexus
+
+- [x] `combine(matrices)`
+- [x] `get_start_end(sequence, skiplist=('-', '?'))`
+- [x] `quotestrip(word)`
+- [x] `safename(name, mrbayes=False)`
+
+### Bio.Nexus.Nexus.Nexus
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, input=None)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__str__(self, /)`
+- [x] `add_sequence(self, name, sequence)`
+- [x] `append_sets(self, exclude=(), delete=(), mrbayes=False, include_codons=True, codons_only=False)`
+- [ ] `bootstrap(self, matrix=None, delete=(), exclude=())`
+- [x] `constant(self, matrix=None, delete=(), exclude=())`
+- [x] `crop_matrix(self, matrix=None, delete=(), exclude=())`
+- [x] `cstatus(self, site, delete=(), narrow=True)`
+- [ ] `export_fasta(self, filename=None, width=70)`
+- [ ] `export_phylip(self, filename=None)`
+- [x] `gaponly(self, include_missing=False)`
+- [x] `insert_gap(self, pos, n=1, leftgreedy=False)`
+- [x] `invert(self, charlist)`
+- [x] `read(self, input)`
+- [x] `terminal_gap_to_missing(self, missing=None, skip_n=True)`
+- [x] `weighted_stepmatrix(self, name='your_name_here', exclude=(), delete=())`
+- [x] `write_nexus_data(self, filename=None, matrix=None, exclude=(), delete=(), blocksize=None, interleave=False, interleave_by_partition=False, comment=None, omit_NEXUS=False, append_sets=True, mrbayes=False, codons_block=True)`
+- [ ] `write_nexus_data_partitions(self, matrix=None, filename=None, blocksize=None, interleave=False, exclude=(), delete=(), charpartition=None, comment='', mrbayes=False)`
+
+## Bio.Nexus.Trees
+
+- [x] `consensus(trees, threshold=0.5, outgroup=None)`
+
+### Bio.Nexus.Trees.Tree
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, tree=None, weight=1.0, rooted=False, name='', data=<class 'Bio.Nexus.Trees.NodeData'>, values_are_support=False, max_support=1.0)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [x] `__str__(self)`
+- [x] `add(self, node: 'Node', prev: int | None = None) -> int`
+- [x] `all_ids(self) -> list[int]`
+- [x] `branchlength2support(self)`
+- [x] `collapse(self, id)`
+- [x] `collapse_genera(self, space_equals_underscore=True)`
+- [x] `common_ancestor(self, node1, node2)`
+- [x] `convert_absolute_support(self, nrep)`
+- [x] `count_terminals(self, node=None)`
+- [ ] `display(self)`
+- [x] `distance(self, node1, node2)`
+- [x] `get_taxa(self, node_id=None)`
+- [x] `get_terminals(self)`
+- [x] `has_support(self, node=None)`
+- [x] `is_bifurcating(self, node=None)`
+- [x] `is_compatible(self, tree2, threshold, strict=True)`
+- [x] `is_identical(self, tree2)`
+- [x] `is_internal(self, node)`
+- [x] `is_monophyletic(self, taxon_list)`
+- [x] `is_parent_of(self, parent, grandchild)`
+- [x] `is_preterminal(self, node)`
+- [x] `is_terminal(self, node)`
+- [x] `kill(self, id)`
+- [x] `link(self, parent, child)`
+- [x] `merge_with_support(self, bstrees=None, constree=None, threshold=0.5, outgroup=None)`
+- [x] `node(self, node_id)`
+- [x] `prune(self, taxon)`
+- [ ] `randomize(self, ntax=None, taxon_list=None, branchlength=1.0, branchlength_sd=None, bifurcate=True)`
+- [x] `root_with_outgroup(self, outgroup=None)`
+- [x] `search_taxon(self, taxon)`
+- [x] `set_subtree(self, node)`
+- [x] `split(self, parent_id=None, n=2, branchlength=1.0)`
+- [x] `sum_branchlength(self, root=None, node=None)`
+- [x] `to_string(self, support_as_branchlengths=False, branchlengths_only=False, plain=True, plain_newick=False, ladderize=None, ignore_comments=True)`
+- [x] `trace(self, start, finish)`
+- [x] `unlink(self, id)`
+- [x] `unroot(self)`
+
+## Bio.Nexus.Nodes
+
+
+### Bio.Nexus.Nodes.Chain
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self) -> None`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__str__(self, /)`
+- [x] `add(self, node: 'Node', prev: int | None = None) -> int`
+- [x] `all_ids(self) -> list[int]`
+- [x] `collapse(self, id)`
+- [x] `is_parent_of(self, parent, grandchild)`
+- [x] `kill(self, id)`
+- [x] `link(self, parent, child)`
+- [x] `trace(self, start, finish)`
+- [x] `unlink(self, id)`
+
+### Bio.Nexus.Nodes.Node
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, data=None)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__str__(self, /)`
+- [x] `add_succ(self, id)`
+- [-] `get_data(self)`
+- [x] `get_id(self)`
+- [x] `get_prev(self)`
+- [x] `get_succ(self)`
+- [x] `remove_succ(self, id)`
+- [-] `set_data(self, data)`
+- [x] `set_id(self, id)`
+- [x] `set_prev(self, id)`
+- [x] `set_succ(self, new_succ)`
+
+## Bio.Nexus.StandardData
+
+
+### Bio.Nexus.StandardData.StandardData
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [x] `__getitem__(self, arg)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, data)`
+- [x] `__iter__(self)`
+- [-] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [x] `__str__(self)`
+- [x] `raw(self)`

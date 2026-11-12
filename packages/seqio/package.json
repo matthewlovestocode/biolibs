@@ -20,6 +20,7 @@
     "@biolibs/seq": "0.1.0",
     "@biolibs/seqfeature": "0.1.0",
     "@biolibs/seqrecord": "0.1.0",
-    "@biolibs/align": "0.1.0"
+    "@biolibs/align": "0.1.0",
+    "@biolibs/nexus": "0.1.0"
   }
 }
