@@ -1,7 +1,6 @@
 /** Adding records and sequences together (`a + b`). */
 
-import { RuntimeError } from "@biolibs/seqfeature";
-import { ValueError, pyEquals, pyTypeName } from "@biolibs/core";
+import { RuntimeError, ValueError, pyEquals, pyTypeName } from "@biolibs/core";
 import { MutableSeq, Seq } from "@biolibs/seq";
 import { concatLetters } from "./letter-values.js";
 import { SeqRecord } from "./seq-record.js";

@@ -10,6 +10,8 @@ import Bio
 from Bio import SeqIO
 from Bio.SeqIO import FastaIO, QualityIO as Q
 from Bio.SeqRecord import SeqRecord
+from Bio.Seq import Seq
+from Bio.SeqFeature import SeqFeature, SimpleLocation, CompoundLocation, Reference, ExactPosition, BeforePosition, AfterPosition, WithinPosition
 from codec import S, M, U, LST
 from codec_feature import enc, dec, REC, FEAT, SL as LOC
 
@@ -227,6 +229,186 @@ def fastq_cases():
     for x in (None, 0, 0.5, 1, 2, 5, 10, 20, 30, 40, 50, 62, 93, 100, 1000, -1, -0.5, 1e-9, 2.5, 7.25): add({"kind": "func", "fn": "solexa_quality_from_phred", "args": [x]})
     for x in (None, -10, -6, -5, -4.5, -3, -1, 0, 1, 5, 10, 20, 30, 40, 62, 100, 0.5, 2.5, 7.25): add({"kind": "func", "fn": "phred_quality_from_solexa", "args": [x]})
 
-{"fasta": family_cases, "fastq": fastq_cases}[FAMILY]()
+def genbank_cases():
+    HAND = [
+"""LOCUS       SCU49845     120 bp    DNA             PLN       21-JUN-1999
+DEFINITION  Saccharomyces cerevisiae TCP1-beta gene, partial cds; and Axl2p
+            (AXL2) and Rev7p (REV7) genes, complete cds.
+ACCESSION   U49845
+VERSION     U49845.1  GI:1293613
+KEYWORDS    .
+SOURCE      Saccharomyces cerevisiae (baker's yeast)
+  ORGANISM  Saccharomyces cerevisiae
+            Eukaryota; Fungi; Ascomycota; Saccharomycotina; Saccharomycetes;
+            Saccharomycetales; Saccharomycetaceae; Saccharomyces.
+REFERENCE   1  (bases 1 to 120)
+  AUTHORS   Torpey,L.E., Gibbs,P.E., Nelson,J. and Lawrence,C.W.
+  TITLE     Cloning and sequence of REV7, a gene whose function is required for
+            DNA damage-induced mutagenesis in Saccharomyces cerevisiae
+  JOURNAL   Yeast 10 (11), 1503-1509 (1994)
+  PUBMED    7871890
+REFERENCE   2  (bases 1 to 120)
+  AUTHORS   Roemer,T., Madden,K., Chang,J. and Snyder,M.
+  TITLE     Selection of axial growth sites in yeast requires Axl2p
+  JOURNAL   Genes Dev. 10 (7), 777-793 (1996)
+   PUBMED   8846915
+COMMENT     Method: conceptual translation supplied by author.
+FEATURES             Location/Qualifiers
+     source          1..120
+                     /organism="Saccharomyces cerevisiae"
+                     /db_xref="taxon:4932"
+                     /chromosome="IX"
+     CDS             <1..>40
+                     /note="N-terminal"
+                     /codon_start=3
+                     /product="TCP1-beta"
+                     /protein_id="AAA98665.1"
+                     /db_xref="GI:1293614"
+                     /translation="SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEA
+                     AEVLLRVDNIIRARPRTANRQHM"
+     gene            join(50..60,80..100)
+                     /gene="AXL2"
+                     /pseudo
+     misc_feature    complement(20..30)
+                     /note="a ""quoted"" word"
+ORIGIN
+        1 gatcctccat atacaacggt atctccacct caggtttaga tctcaacaac ggaaccattg
+       61 ccgacatgag acagttaggt atcgtcgaga gttacaagct aaaacgagca gtagtcagct
+//
+""",
+"""LOCUS       NC_TEST1              60 bp    DNA     circular BCT 01-JAN-2000
+DEFINITION  Test circular record.
+ACCESSION   NC_TEST1
+VERSION     NC_TEST1.2
+DBLINK      BioProject: PRJNA1
+            BioSample: SAMN1
+KEYWORDS    test; example.
+SOURCE      Escherichia coli
+  ORGANISM  Escherichia coli
+            Bacteria; Proteobacteria; Gammaproteobacteria; Enterobacterales;
+            Enterobacteriaceae; Escherichia.
+COMMENT     ##Assembly-Data-START##
+            Assembly Method       :: SPAdes v. 3.1
+            Sequencing Technology :: Illumina
+            ##Assembly-Data-END##
+FEATURES             Location/Qualifiers
+     source          1..60
+                     /mol_type="genomic DNA"
+     CDS             join(55..60,1..10)
+                     /gene="wrap"
+ORIGIN
+        1 acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt
+//
+""",
+"""LOCUS       AAA12345                 20 aa            linear   BCT 01-JAN-2000
+DEFINITION  hypothetical protein.
+ACCESSION   AAA12345
+VERSION     AAA12345.1
+FEATURES             Location/Qualifiers
+     Protein         1..20
+                     /product="hypothetical protein"
+ORIGIN
+        1 mkvlaagivg lgaaaqedtp
+//
+""",
+"""LOCUS       CONTIG1               5000 bp    DNA     linear   CON 01-JAN-2000
+DEFINITION  A contig record.
+ACCESSION   CONTIG1
+VERSION     CONTIG1.1
+FEATURES             Location/Qualifiers
+     source          1..5000
+CONTIG      join(AA000001.1:1..2500,gap(100),AA000002.1:1..2400)
+//
+""",
+"LOCUS       MINIMAL\nDEFINITION  minimal.\nACCESSION   MINIMAL\nORIGIN\n        1 acgt\n//\n",
+"LOCUS       OLDFMT       12 bp    DNA             PLN       21-JUN-1999\nDEFINITION  old.\nACCESSION   OLDFMT\nORIGIN\n        1 acgtacgtac gt\n//\n",
+"LOCUS       WGSREC             10 bp    DNA     linear   BCT 01-JAN-2000\nDEFINITION  wgs.\nACCESSION   WGSREC\nVERSION     WGSREC.1\nWGS         AAAA01000001-AAAA01000100\nWGS_SCAFLD  CM000001-CM000002\nORIGIN\n        1 acgtacgtac\n//\n",
+    ]
+    def rec_text(rnd, i):
+        L = rnd.randint(20, 110)
+        seq = "".join(rnd.choice("ACGT") for _ in range(L))
+        r = SeqRecord(Seq(seq), id=f"ACC{i:05d}.{rnd.randint(1, 3)}", name=f"LOC{i}", description=rnd.choice(["A test sequence.", "Long description " * 6, "x", "Gene for something, complete cds"]))
+        a = r.annotations
+        a["molecule_type"] = rnd.choice(["DNA", "mRNA", "genomic DNA", "RNA"])
+        if rnd.random() < .7: a["topology"] = rnd.choice(["linear", "circular"])
+        a["data_file_division"] = rnd.choice(["BCT", "PLN", "UNK", "PRI"])
+        a["date"] = rnd.choice(["01-JAN-2000", "15-MAR-1999", "31-DEC-2020"])
+        a["accessions"] = [f"ACC{i:05d}"] + ([f"EXTRA{i}"] if rnd.random() < .3 else [])
+        a["sequence_version"] = int(r.id.split(".")[1])
+        if rnd.random() < .7: a["organism"] = rnd.choice(["Homo sapiens", "Escherichia coli K-12", "Mus musculus"])
+        if rnd.random() < .6: a["taxonomy"] = rnd.choice([["Eukaryota", "Metazoa", "Chordata"], ["Bacteria", "Proteobacteria"], ["Viruses"]])
+        if rnd.random() < .5: a["keywords"] = rnd.choice([["alpha", "beta"], ["only"]])
+        if rnd.random() < .5: a["source"] = rnd.choice(["human", "bacterium", "mouse"])
+        if rnd.random() < .5: a["comment"] = rnd.choice(["One line comment.", "Line one.\nLine two.", "A very long comment " * 8])
+        if rnd.random() < .4:
+            ref = Reference(); ref.authors = "Smith,J. and Jones,K."; ref.title = rnd.choice(["A title", "Direct Submission"]); ref.journal = "J. Test 1 (2), 3-4 (2000)"; ref.pubmed_id = rnd.choice(["", "12345"])
+            ref.location = [SimpleLocation(0, L)]
+            a["references"] = [ref]
+        if rnd.random() < .3: r.dbxrefs = ["BioProject:PRJ1", "BioSample:SAMN2"]
+        feats = [SeqFeature(SimpleLocation(0, L, 1), "source", qualifiers={"organism": ["Test org"], "mol_type": ["genomic DNA"]})]
+        for _ in range(rnd.randint(0, 4)):
+            s0 = rnd.randint(0, L - 10); e0 = rnd.randint(s0 + 3, min(L, s0 + 60))
+            kind = rnd.choice(["simple", "minus", "join", "fuzzy", "single", "order"])
+            if kind == "simple": loc = SimpleLocation(s0, e0, 1)
+            elif kind == "minus": loc = SimpleLocation(s0, e0, -1)
+            elif kind == "join" and e0 - s0 > 7: loc = CompoundLocation([SimpleLocation(s0, s0 + 3, 1), SimpleLocation(s0 + 5, e0, 1)])
+            elif kind == "order" and e0 - s0 > 7: loc = CompoundLocation([SimpleLocation(s0, s0 + 3, -1), SimpleLocation(s0 + 5, e0, -1)], "order")
+            elif kind == "fuzzy": loc = SimpleLocation(BeforePosition(s0), AfterPosition(e0), 1)
+            else: loc = SimpleLocation(s0, s0 + 1, 1)
+            q = {}
+            if rnd.random() < .8: q["gene"] = [rnd.choice(["abc", "xyz1", "geneA"])]
+            if rnd.random() < .5: q["note"] = [rnd.choice(["short", "a longer note that must be wrapped across several lines in the output file " * 2, 'with "quotes"'])]
+            if rnd.random() < .3: q["pseudo"] = [None] if False else [""]
+            if rnd.random() < .3: q["db_xref"] = ["GeneID:1", "UniProtKB:P1"]
+            if rnd.random() < .3: q["codon_start"] = ["1"]
+            if rnd.random() < .3: q["translation"] = ["MKV" * rnd.randint(1, 30)]
+            feats.append(SeqFeature(loc, rnd.choice(["gene", "CDS", "misc_feature", "mRNA", "exon"]), qualifiers=q))
+        r.features = feats
+        buf = io.StringIO()
+        try:
+            SeqIO.write(r, buf, "genbank")
+            return buf.getvalue()
+        except Exception:
+            return None
+    texts = list(HAND)
+    for i in range(70):
+        t = rec_text(rnd, i)
+        if t: texts.append(t)
+    texts.append(texts[0] + texts[1] + texts[2])           # several records
+    base = list(texts)
+    def mutate(t, rnd):
+        lines = t.split("\n")
+        k = rnd.choice(["delete", "dup", "trunc", "garble", "swap", "blank", "indent", "noend", "chars", "locus", "insert"])
+        if not lines: return t
+        i = rnd.randrange(len(lines))
+        if k == "delete": del lines[i]
+        elif k == "dup": lines.insert(i, lines[i])
+        elif k == "trunc": return t[:rnd.randrange(len(t) + 1)]
+        elif k == "garble": lines[i] = "".join(rnd.choice("ABC /=\"()<>.,0123456789 ") for _ in range(rnd.randint(0, 40)))
+        elif k == "swap" and len(lines) > 1: j = rnd.randrange(len(lines)); lines[i], lines[j] = lines[j], lines[i]
+        elif k == "blank": lines[i] = ""
+        elif k == "indent": lines[i] = " " + lines[i] if rnd.random() < .5 else lines[i][1:]
+        elif k == "noend": return t.replace("//", "")
+        elif k == "chars":
+            l = list(lines[i]); 
+            if l: l[rnd.randrange(len(l))] = rnd.choice("x /\"-_0"); lines[i] = "".join(l)
+        elif k == "locus": lines[0] = lines[0][:rnd.randint(0, len(lines[0]))] + rnd.choice(["", " ", "  bp", "x"] ) + lines[0][rnd.randint(0, len(lines[0])):]
+        elif k == "insert": lines.insert(i, rnd.choice(["XX", "     /orphan=1", "// ", "ORIGIN", "FEATURES", "REFERENCE   9", "  AUTHORS   nobody"]))
+        return "\n".join(lines)
+    allt = list(base)
+    for t in base:
+        for _ in range(6): allt.append(mutate(t, rnd))
+    for t in allt[:]:
+        if rnd.random() < .15: allt.append(mutate(mutate(t, rnd), rnd))
+    for t in allt:
+        add({"kind": "parse", "format": "genbank", "text": t})
+    for t in rnd.sample(allt, 90):
+        add({"kind": "read", "format": "genbank", "text": t}); add({"kind": "parse", "format": "gb", "text": t})
+    for t in rnd.sample(allt, 120): add({"kind": "parse", "format": "genbank-cds", "text": t})
+    for t in ["", "\n", "LOCUS", "LOCUS       ", "random\ntext\n", "//\n//\n"]:
+        add({"kind": "parse", "format": "genbank", "text": t}); add({"kind": "parse", "format": "genbank-cds", "text": t})
+    add({"kind": "parse", "format": "genbank", "bytes": "LOCUS       A 1 bp\n"})
+
+{"fasta": family_cases, "fastq": fastq_cases, "genbank": genbank_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

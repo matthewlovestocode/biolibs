@@ -1,7 +1,6 @@
 /** `CompoundLocation`: several ranges joined together (exons, for example). */
 
-import { ValueError } from "@biolibs/core";
-import { NotImplementedError } from "../errors.js";
+import { NotImplementedError, ValueError } from "@biolibs/core";
 import { IntPosition, type Position } from "../position/index.js";
 import { pyClassRepr, pyRepr } from "@biolibs/core";
 import { Location, type ParentSequence, type References, type Strand } from "./base.js";

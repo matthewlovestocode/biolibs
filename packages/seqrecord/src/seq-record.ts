@@ -1,8 +1,8 @@
 /** `SeqRecord`: a sequence together with its identifiers, annotations and features. */
 
-import { KeyError, ValueError, pyRepr, pyStr } from "@biolibs/core";
+import { KeyError, NotImplementedError, ValueError, pyRepr, pyStr } from "@biolibs/core";
 import { MutableSeq, Seq, SEQ_RECORD_BRAND, UndefinedSequenceError, type PySlice } from "@biolibs/seq";
-import { NotImplementedError, type SeqFeature } from "@biolibs/seqfeature";
+import type { SeqFeature } from "@biolibs/seqfeature";
 import { addRecordToRight, addToRecord, type Addable } from "./concatenate.js";
 import { letterLength } from "./letter-values.js";
 import { RestrictedDict, type LetterValue } from "./restricted-dict.js";

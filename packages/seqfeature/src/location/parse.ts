@@ -1,7 +1,7 @@
 /** Parsing GenBank/EMBL location strings into `SimpleLocation` / `CompoundLocation`. */
 
-import { ValueError, warn } from "@biolibs/core";
-import { AssertionError, LocationParserError } from "../errors.js";
+import { AssertionError, ValueError, warn } from "@biolibs/core";
+import { LocationParserError } from "../errors.js";
 import { ExactPosition, Position } from "../position/index.js";
 import { pyInt } from "@biolibs/core";
 import { Location } from "./base.js";

@@ -1,6 +1,6 @@
 /** FASTA writers: `fasta` (wrapped at 60 by default) and `fasta-2line`. */
 
-import { ValueError, pyFirstWord } from "@biolibs/core";
+import { AssertionError, ValueError, pyFirstWord } from "@biolibs/core";
 import type { SeqRecord } from "@biolibs/seqrecord";
 import type { WriteHandle } from "../handles.js";
 import { SequenceWriter, clean, getSeqString } from "../interfaces.js";
@@ -17,7 +17,7 @@ function defaultTitle(id: string, description: string): string {
 
 /** Throw if text that must stay on one line contains a line break (Biopython `assert`). */
 function assertSingleLine(text: string): void {
-  if (text.includes("\n") || text.includes("\r")) throw new Error("AssertionError");
+  if (text.includes("\n") || text.includes("\r")) throw new AssertionError();
 }
 
 /**

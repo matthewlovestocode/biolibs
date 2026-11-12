@@ -1,6 +1,6 @@
 /** `WithinPosition` and `BetweenPosition`: positions given as a pair of bounds. */
 
-import { RuntimeError, AssertionError } from "../errors.js";
+import { AssertionError, RuntimeError } from "@biolibs/core";
 import { IntPosition } from "./base.js";
 
 /** Shared behaviour of positions defined by a `left` and `right` bound. */
