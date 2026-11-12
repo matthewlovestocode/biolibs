@@ -60,3 +60,17 @@ export function unpackN<T>(items: T[], n: number): T[] {
   if (items.length > n) throw new ValueError(`too many values to unpack (expected ${n}, got ${items.length})`);
   return items;
 }
+
+/** Python `s.split(None, maxsplit)`: whitespace-separated words, the last one keeping the rest of the line. */
+export function splitMax(s: string, maxsplit: number): string[] {
+  const parts: string[] = [];
+  let rest = s.replace(/^[\s\x1c-\x1f\x85]+/, "");
+  while (rest.length > 0 && parts.length < maxsplit) {
+    const m = /^(\S+)(?:[\s\x1c-\x1f\x85]+|$)/.exec(rest);
+    if (!m) break;
+    parts.push(m[1]!);
+    rest = rest.slice(m[0].length);
+  }
+  if (rest.length > 0) parts.push(rest);
+  return parts;
+}

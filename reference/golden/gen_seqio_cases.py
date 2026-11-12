@@ -1229,6 +1229,32 @@ def clustal_cases():
             "CLUSTAL 2.1 multiple sequence alignment\n\n\nseq1      ACGT\nseq2      ACGT\n\n\n", "MUSCLE (3.8) multiple sequence alignment\n\n\na   AC\nb   AC\n\n", "PROBCONS\n\n\na AC\nb AC\n\n", "Kalign ()\n\na AC\nb AC\n\n", "WRONG header\n\na AC\n", "CLUSTAL\n"]
     align_cases("clustal", hand)
 
+
+def stockholm_cases():
+    rnd2 = random.Random(91)
+    hand = ["# STOCKHOLM 1.0\n#=GF ID test\n#=GF AU me\nseq1/1-5 ACGTA\nseq2 AC.TA\n#=GS seq1/1-5 AC ACC1\n#=GS seq1/1-5 DE description one\n#=GS seq1/1-5 DR PDB; 1ABC;\n#=GS seq1/1-5 OS Homo sapiens\n#=GS seq2 XX other\n#=GS seq2 FLAG\n#=GR seq1/1-5 SS HHHEE\n#=GR seq2 PP 99999\n#=GC RF xxxxx\n#=GC SS_cons HHHHH\n#=GC FOO xxxxx\n//\n",
+            "# STOCKHOLM 1.0\na ACGT\nb AC-T\n//\n# STOCKHOLM 1.0\nc GG\nd GA\n//\n", "# STOCKHOLM 1.0\na ACGT\na AC\n//\n", "# STOCKHOLM 1.0\n//\n", "# STOCKHOLM 1.0\na ACGT\n//\nb ACGT\n", "# STOCKHOLM 1.0\nnospace\n//\n", "# STOCKHOLM 1.1\na AC\n//\n",
+            "# STOCKHOLM 1.0\n#=GC RF xx\na ACGT\n//\n", "# STOCKHOLM 1.0\n#=GS a AC x\n#=GS a AC y\na AC\n//\n", "# STOCKHOLM 1.0\na/3-x AC\nb/1-2-3 AC\nc/5-9 AC\n//\n", "# STOCKHOLM 1.0\n#=GR a SS HH\na AC\n//\n", "# STOCKHOLM 1.0\n#=GF X\na AC\n//\n", "# STOCKHOLM 1.0\n#=GC X\na AC\n//\n", "# STOCKHOLM 1.0\n#=GR a X\na AC\n//\n",
+            "# STOCKHOLM 1.0\n#=GS a DE one\n#=GS a DE two\n#=GS a LO lookup\n#=GS a OC x\n#=GS a OC y\n#=GS a DR d1\n#=GS a DR d2\na/1-2 AC\n//\n"]
+    base = list(hand)
+    for _ in range(50):
+        n = rnd2.randint(1, 4); L = rnd2.randint(3, 40)
+        recs = []
+        for i in range(n):
+            nm = "seq%d" % i; ann = [["accession", rnd2.choice(["ACC%d" % i, nm])], ["organism", "Org %d" % i], ["organism_classification", "Bacteria; Firmicutes"]]
+            if rnd2.random() < .5: ann += [["start", i + 1], ["end", i + L]]
+            letter = [["secondary_structure", "".join(rnd2.choice("HE-") for _ in range(L))]] if rnd2.random() < .5 else None
+            recs.append(REC(S("".join(rnd2.choice("ACGT-") for _ in range(L))), nm, nm if rnd2.random() < .5 else "other", "a description %d" % i, dbxrefs=["PDB; 1ABC;"] if rnd2.random() < .5 else [], annotations=ann, letter=letter))
+        t = align_text(recs, "stockholm")
+        if t: base.append(t)
+    # reuse the shared machinery with these bases
+    def ar(i, ann, letter=None, name="n", desc="d", dbx=()):
+        return REC(S("ACGTA"), "id%d" % i, name, desc, dbxrefs=list(dbx), annotations=ann, letter=letter)
+    extra = [[ar(1, [["accession", "id1"]], name="nm"), ar(2, [["accession", "other"]], name="nm2")], [ar(1, [["start", 3], ["end", 7]]), ar(2, [["start", 1], ["end", 5]])], [ar(1, [["start", 3], ["end", 7]], name="id1/3-7")],
+             [ar(1, [["accession", "A"], ["organism", "Hs"], ["organism_classification", "x; y"], ["look", ""], ["other", "z"]], letter=[["secondary_structure", "HHEE-"], ["posterior_probability", "99999"], ["intron", "123"]], dbx=["PDB; 1", "SW; 2"])],
+             [ar(1, [["accession", "x\ny"]], desc="two\nlines")], [ar(1, [["accession", 5]])], [ar(1, [["start", 1], ["end", 2]]), ar(1, [["start", 1], ["end", 2]])], [REC(S("ACGTA"), "has space", "n", "")], [ar(1, [], name=None)]]
+    align_cases("stockholm", base, extra_writer=extra)
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1309,6 +1335,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")
