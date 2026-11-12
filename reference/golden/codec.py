@@ -13,6 +13,7 @@ from the same JSON, and compare results structurally:
   dict                    -> {"$":"dict","v":[[k,v],...]}
   CodonTable              -> {"$":"table","id":<ncbi id>,"kind":<registry>}
 """
+import datetime
 from Bio.Seq import Seq, MutableSeq, _UndefinedSequenceData, _PartiallyDefinedSequenceData, SequenceDataAbstractBaseClass
 from Bio.Data import CodonTable
 
@@ -31,6 +32,8 @@ def l1(b):
 def enc(x):
     if isinstance(x, float) and (x != x or x in (float("inf"), float("-inf"))):
         return {"$": "float", "v": "nan" if x != x else ("inf" if x > 0 else "-inf")}   # JSON has no NaN/Infinity
+    if isinstance(x, datetime.datetime):
+        return {"$": "datetime", "v": x.isoformat()}
     if x is None or isinstance(x, (bool, int, float, str)):
         return x
     if isinstance(x, (bytes, bytearray)):

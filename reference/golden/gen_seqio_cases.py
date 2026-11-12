@@ -109,7 +109,7 @@ def run(case):
                 out["pairs"] = items
                 for pair in fn(io.StringIO(case["text"])): items.append(list(pair))
         except Exception as e:
-            out["exc"] = {"type": tname(e), "msg": None if tname(e) == "SAXParseException" else emsg(e)}   # expat's wording is not reproduced
+            out["exc"] = {"type": tname(e), "msg": None if tname(e) in ("SAXParseException", "ExpatError") else emsg(e)}   # expat's wording is not reproduced
         finally:
             for h in OPENED: h.close()
             OPENED.clear()
@@ -915,6 +915,7 @@ def seqxml_cases():
 
 # ------------------------------------------------------------------ nib / twobit / gck / xdna
 import binfiles as BF
+import struct
 
 def rand_dna(rnd, lo, hi, alpha="ACGT"): return "".join(rnd.choice(alpha) for _ in range(rnd.randint(lo, hi)))
 
@@ -1064,6 +1065,63 @@ def abi_cases():
     add({"kind": "parse", "format": "abi", "text": "ABIF"})
     for b in rnd2.sample(base[:35], 8): add({"kind": "convert", "format": "abi", "bytes": BF.lat(b), "out": "fastq", "molecule_type": None})
 
+
+# ------------------------------------------------------------------ snapgene
+def snap_packet(t, data): return bytes([t]) + struct.pack(">I", len(data)) + data
+
+def snap_file(seq="ACGTACGTAC", circular=False, notes=None, features=None, primers=None, cookie=True, extra=()):
+    out = b""
+    if cookie: out += snap_packet(9, b"SnapGene" + struct.pack(">HHH", 1, 15, 15))
+    if seq is not None: out += snap_packet(0, bytes([1 if circular else 0]) + seq.encode())
+    for t, xml in ((6, notes), (10, features), (5, primers)):
+        if xml is not None: out += snap_packet(t, xml.encode())
+    for t, d in extra: out += snap_packet(t, d)
+    return out
+
+def snap_xml(rnd, n):
+    notes = ("<Notes><Type>%s</Type><LastModified>%s</LastModified><AccessionNumber>%s</AccessionNumber><Comments>%s</Comments></Notes>" %
+             (rnd.choice(["Synthetic", "Natural", ""]), rnd.choice(["2020.03.15", "2019.1.2", "2018.12.31", "2020.03.15", "2021.07.04", "2020.03.15", "bad", "2020.13.01", ""]), rnd.choice(["ACC123", ""]), rnd.choice(["pUC19 plasmid", "name <b>bold</b> rest", "single", ""])))
+    feats = ["<Features>"]
+    for _ in range(rnd.randint(0, 4)):
+        a = rnd.randint(1, max(1, n)); b = rnd.randint(1, max(1, n))
+        segs = "".join('<Segment range="%d-%d" name="%s" type="%s"/>' % ((lambda x, y: (min(x, y), max(x, y) + 1))(rnd.randint(1, max(1, n)), rnd.randint(1, max(1, n))) + (rnd.choice(["", "s1", "exon"]), rnd.choice(["standard"] * 6 + ["gap"]))) for _ in range(rnd.randint(1, 3)))
+        quals = "".join('<Q name="%s">%s</Q>' % (rnd.choice(["note", "gene", "label", "codon_start"]), "".join(rnd.choice(['<V text="val one"/>', '<V predef="pre"/>', '<V int="%d"/>' % rnd.randint(1, 9), '<V text="multi\r\nline"/>', '<V other="x"/>']) for _ in range(rnd.randint(0, 3)))) for _ in range(rnd.randint(0, 2)))
+        feats.append('<Feature name="%s" type="%s" directionality="%s">%s%s</Feature>' % (rnd.choice(["F1", "", "label"]), rnd.choice(["CDS", "misc_feature", "gene"]), rnd.choice(["0", "1", "2"]), segs, quals))
+    feats.append("</Features>")
+    prim = ['<Primers><HybridizationParams minContinuousMatchLen="%d" minMeltingTemperature="%d"/>' % (rnd.choice([0, 5, 10]), rnd.choice([0, 30, 60]))]
+    for _ in range(rnd.randint(0, 3)):
+        sites = "".join('<BindingSite location="%d-%d" boundStrand="%d" simplified="%d" annealedBases="%s" meltingTemperature="%d"/>' % (rnd.randint(1, max(1, n)), rnd.randint(1, max(1, n)), rnd.randint(0, 1), rnd.randint(0, 1), "A" * rnd.randint(0, 15), rnd.randint(20, 70)) for _ in range(rnd.randint(1, 3)))
+        prim.append('<Primer name="%s">%s</Primer>' % (rnd.choice(["p1", "", "fwd"]), sites))
+    prim.append("</Primers>")
+    return notes, "".join(feats), "".join(prim)
+
+def snapgene_cases():
+    rnd2 = random.Random(76)
+    base = []
+    for _ in range(60):
+        seq = rand_dna(rnd2, 1, 60)
+        notes, feats, prim = snap_xml(rnd2, len(seq))
+        base.append(snap_file(seq, rnd2.random() < .5, notes if rnd2.random() < .8 else None, feats if rnd2.random() < .8 else None, prim if rnd2.random() < .7 else None))
+    base += [b"", snap_file(cookie=False), snap_file(seq=None), snap_file(seq=""), snap_file(extra=[(0, b"\x00ACGT")]), snap_file(extra=[(7, b"junk"), (200, b"")]), snap_file(notes="<Notes><Type>Synthetic</Type>"), snap_file(notes="not xml"),
+             snap_file(features="<Features><Feature><Segment range='1-3'/></Feature></Features>"), snap_file(features="<Features><Feature><Segment/></Feature></Features>"), snap_file(features="<Features><Feature/></Features>"),
+             snap_file(features='<Features><Feature><Segment range="3-3"/></Feature></Features>'), snap_file(features='<Features><Feature><Segment range="1-3"/><Q>x</Q></Feature></Features>'),
+             snap_file(features='<Features><Feature><Segment range="9-2"/></Feature></Features>'), snap_file(features='<Features><Feature directionality="2"><Segment range="1-3" name="a"/><Segment range="5-7" name="b"/></Feature></Features>'),
+             snap_file(notes="<Notes><Type><!-- c -->Synthetic</Type><Comments><![CDATA[cdata text]]></Comments><LastModified>2020.03.15x</LastModified></Notes>"),
+             snap_file(primers='<Primers><Primer name="p"><BindingSite/></Primer></Primers>'), snap_file(primers='<Primers><Primer><BindingSite location="2-5" meltingTemperature="x"/></Primer></Primers>'),
+             b"\x09\x00\x00\x00\x0eSnapGene\x00\x01\x00\x0f\x00\x0f", b"\x09\x00\x00\x00\x0eNotSnapG\x00\x01\x00\x0f\x00\x0f", b"\x09\x00\x00\x00"]
+    allb = list(base)
+    for b in base:
+        for _ in range(5): allb.append(BF.mutate_bytes(b, rnd2))
+    # structured mutations of the XML packets
+    for _ in range(80):
+        seq = rand_dna(rnd2, 5, 50)
+        notes, feats, prim = snap_xml(rnd2, len(seq))
+        allb.append(snap_file(seq, False, mutate_xml(notes, rnd2), mutate_xml(feats, rnd2), mutate_xml(prim, rnd2)))
+    for b in allb: add({"kind": "parse", "format": "snapgene", "bytes": BF.lat(b)})
+    for b in rnd2.sample(allb, 40): add({"kind": "read", "format": "snapgene", "bytes": BF.lat(b)})
+    add({"kind": "parse", "format": "snapgene", "text": "abc"})
+    for b in rnd2.sample(base[:60], 8): add({"kind": "convert", "format": "snapgene", "bytes": BF.lat(b), "out": "genbank", "molecule_type": None})
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1144,6 +1202,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

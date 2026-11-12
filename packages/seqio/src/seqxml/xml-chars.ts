@@ -9,13 +9,13 @@ type Encoding = "utf-8" | "iso-8859-1" | "us-ascii";
  * @returns The text, an offset table (`offsets[i]` is the byte offset of character `i`, with one extra entry for the end),
  *   or `null` text if the bytes are not valid in the document's encoding.
  */
-export function decodeDocument(bytes: Uint8Array): { text: string | null; offsets: Uint32Array } {
+export function decodeDocument(bytes: Uint8Array, ignoreDeclaredEncoding = false): { text: string | null; offsets: Uint32Array } {
   let start = 0;
   if (bytes.length >= 3 && bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf) start = 3;
   // The XML declaration is ASCII, so it can be read before decoding to find the encoding.
   const head = new TextDecoder("latin1").decode(bytes.subarray(start, start + 200));
   const m = /^<\?xml[^>]*?encoding\s*=\s*["']([A-Za-z][A-Za-z0-9._-]*)["']/.exec(head);
-  const name = (m?.[1] ?? "utf-8").toLowerCase();
+  const name = ignoreDeclaredEncoding ? "utf-8" : (m?.[1] ?? "utf-8").toLowerCase();
   let encoding: Encoding;
   if (name === "utf-8" || name === "utf8") encoding = "utf-8";
   else if (name === "iso-8859-1" || name === "latin1" || name === "latin-1") encoding = "iso-8859-1";

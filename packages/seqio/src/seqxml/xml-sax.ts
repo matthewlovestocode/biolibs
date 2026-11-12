@@ -58,7 +58,7 @@ export class SaxFeeder {
       const e = events[this.next++]!;
       if (e.kind === "start") (h.startElementNS ?? notCallable)(e.name, null, e.attrs);
       else if (e.kind === "end") (h.endElementNS ?? notCallable)(e.name, null);
-      else h.characters(e.data);
+      else if (e.kind === "text") h.characters(e.data);
     }
   }
 }

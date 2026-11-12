@@ -12,7 +12,17 @@ export type XmlName = [string | null, string];
 export type XmlEvent =
   | { kind: "start"; name: XmlName; attrs: [XmlName, string][]; end: number }
   | { kind: "end"; name: XmlName; end: number }
-  | { kind: "text"; data: string; end: number };
+  | { kind: "text"; data: string; end: number; cdata?: boolean }
+  | { kind: "comment"; data: string; end: number }
+  | { kind: "pi"; target: string; data: string; end: number };
+
+/** Options for scanning. */
+export interface ScanOptions {
+  /** Resolve namespace prefixes (default true). When false, names are reported as written, with no namespace. */
+  namespaces?: boolean;
+  /** Ignore an encoding named in the XML declaration and read the bytes as UTF-8 (for text that was already decoded). */
+  ignoreDeclaredEncoding?: boolean;
+}
 
 /** A well-formedness problem found while scanning. */
 export interface XmlProblem {
@@ -40,5 +50,14 @@ export class SAXParseException extends BioError {
   constructor(message: string) {
     super(message);
     this.name = "SAXParseException";
+  }
+}
+
+/** Mirrors `xml.parsers.expat.ExpatError`, raised by Python's `minidom.parseString` for malformed XML. */
+export class ExpatError extends BioError {
+  /** @param message - Description including line and column. */
+  constructor(message: string) {
+    super(message);
+    this.name = "ExpatError";
   }
 }

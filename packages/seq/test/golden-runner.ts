@@ -26,6 +26,7 @@ const REG: Record<string, Map<number, unknown>> = {
 export function enc(x: unknown): J {
   if (x === null || x === undefined) return null;
   if (typeof x === "number" && !Number.isFinite(x)) return { $: "float", v: Number.isNaN(x) ? "nan" : x > 0 ? "inf" : "-inf" };
+  if (x instanceof Date) return { $: "datetime", v: x.toISOString().slice(0, 19) };
   if (typeof x === "boolean" || typeof x === "number" || typeof x === "string") return x;
   if (x instanceof Uint8Array) return { $: "bytes", v: l1(x) };
   if (x instanceof BytesData) return { $: "bytes", v: l1(x.toBytes()) }; // Python holds defined content as raw bytes

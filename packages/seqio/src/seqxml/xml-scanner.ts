@@ -6,7 +6,7 @@
 
 import { NamespaceScope } from "./xml-names.js";
 import { ENTITIES, decodeDocument, isNameChar, isNameStart, isSpace, isXmlChar } from "./xml-chars.js";
-import type { XmlEvent, XmlName, XmlProblem, XmlScan } from "./xml-types.js";
+import type { ScanOptions, XmlEvent, XmlName, XmlProblem, XmlScan } from "./xml-types.js";
 
 /** Thrown internally to abandon the scan at the first problem. */
 class Stop extends Error {
@@ -19,7 +19,7 @@ class Scanner {
   private readonly scope = new NamespaceScope();
   private readonly open: string[] = [];
 
-  constructor(private readonly s: string, private readonly off: Uint32Array) {}
+  constructor(private readonly s: string, private readonly off: Uint32Array, private readonly namespaces = true) {}
 
   /** Raise a well-formedness problem at character index `at`. */
   private fail(message: string, at = this.i, atEnd = false): never {
@@ -123,6 +123,15 @@ class Scanner {
       else if (n.startsWith("xmlns:")) bindings.set(n.slice(6), v);
       else plain.push([n, v]);
     }
+    if (!this.namespaces) {
+      // Without namespace processing names are kept as written and `xmlns` attributes are ordinary attributes.
+      const end = this.off[this.i]!;
+      const name: XmlName = [null, qname];
+      this.events.push({ kind: "start", name, attrs: raw.map(([n, v]) => [[null, n] as XmlName, v]), end });
+      if (empty) this.events.push({ kind: "end", name, end });
+      else { this.open.push(qname); this.names.push(name); }
+      return;
+    }
     this.scope.push(bindings);
     const name = this.scope.expand(qname, false);
     if (name === null) return this.fail("unbound prefix", this.i - 1);
@@ -155,20 +164,22 @@ class Scanner {
     this.i++;
     if (this.open.pop() !== qname) return this.fail("mismatched tag", this.i - 1);
     this.events.push({ kind: "end", name: this.names.pop()!, end: this.off[this.i]! });
-    this.scope.pop();
+    if (this.namespaces) this.scope.pop();
   }
 
   /** Skip a comment (positioned after `<!--`). */
   private comment(): void {
     const body = this.skipPast("-->");
     if (body.includes("--") || body.endsWith("-")) this.fail("not well-formed (invalid token)");
+    this.events.push({ kind: "comment", data: body, end: this.off[this.i]! });
   }
 
   /** Skip a processing instruction (positioned after `<?`). */
   private pi(): void {
     const target = this.name();
     if (target.toLowerCase() === "xml") this.fail("XML or text declaration not at start of entity");
-    this.skipPast("?>");
+    const data = this.skipPast("?>");
+    this.events.push({ kind: "pi", target, data: data.replace(/^[ \t\r\n]+/, ""), end: this.off[this.i]! });
   }
 
   /** Skip a DOCTYPE declaration (positioned after `<!DOCTYPE`), including any internal subset. */
@@ -233,7 +244,7 @@ class Scanner {
       else if (this.startsWith("![CDATA[")) {
         this.i += 8;
         const body = this.skipPast("]]>").replace(/\r\n?/g, "\n");
-        if (body) this.events.push({ kind: "text", data: body, end: this.off[this.i]! });
+        if (body) this.events.push({ kind: "text", data: body, end: this.off[this.i]!, cdata: true });
       } else if (this.startsWith("?")) { this.i++; this.pi(); }
       else if (this.startsWith("/")) { this.i++; this.endTag(); }
       else this.startTag();
@@ -253,12 +264,12 @@ class Scanner {
  * scanXml(new TextEncoder().encode("<a x='1'>hi</a>")).events.length;   // 3
  * ```
  */
-export function scanXml(bytes: Uint8Array): XmlScan {
-  const { text, offsets } = decodeDocument(bytes);
+export function scanXml(bytes: Uint8Array, options: ScanOptions = {}): XmlScan {
+  const { text, offsets } = decodeDocument(bytes, options.ignoreDeclaredEncoding ?? false);
   if (text === null) {
     return { events: [], problem: { message: "<unknown>:1:0: not well-formed (invalid token)", at: 1, atEnd: false }, size: bytes.length };
   }
-  const scanner = new Scanner(text, offsets);
+  const scanner = new Scanner(text, offsets, options.namespaces ?? true);
   let problem: XmlProblem | null = null;
   try {
     scanner.run();
