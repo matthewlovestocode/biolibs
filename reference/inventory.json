@@ -1640,6 +1640,27 @@
    }
   }
  },
+ "Bio.PDB.MMCIF2Dict": {
+  "classes": {
+   "MMCIF2Dict": {
+    "__init__": "(self, filename)",
+    "_splitline": "(self, line)",
+    "_tokenize": "(self, handle)"
+   }
+  }
+ },
+ "Bio.PDB.MMCIFParser": {
+  "classes": {
+   "MMCIFParser": {
+    "__init__": "(self, structure_builder=None, auth_chains=True, auth_residues=True, QUIET=False, PERMISSIVE=False)",
+    "get_structure": "(self, structure_id, filename)"
+   },
+   "FastMMCIFParser": {
+    "__init__": "(self, structure_builder=None, auth_chains=True, auth_residues=True, QUIET=False)",
+    "get_structure": "(self, structure_id, filename)"
+   }
+  }
+ },
  "Bio.PDB.parse_pdb_header": {
   "functions": {
    "parse_pdb_header": "(infile)"

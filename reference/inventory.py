@@ -11,6 +11,8 @@ from Bio.SeqIO import _FormatToIterator, _FormatToWriter
 from Bio.Align import substitution_matrices as SMMod
 from Bio.PDB import Atom as PAtom, Residue as PResidue, Chain as PChain, Model as PModel, Structure as PStructure, Entity as PEntity, StructureBuilder as PBuilder, PDBParser as PParser
 import importlib
+PM2D = importlib.import_module('Bio.PDB.MMCIF2Dict')
+PMP = importlib.import_module('Bio.PDB.MMCIFParser')
 PHeader = importlib.import_module('Bio.PDB.parse_pdb_header')  # `import ... as` would give the shadowing function
 from Bio.Nexus import Nexus as NexusMod, Trees as TreesMod, Nodes as NodesMod, StandardData as StandardDataMod
 
@@ -74,6 +76,8 @@ inv = {
   "Bio.PDB.Structure": {"classes": {"Structure": members(PStructure.Structure)}},
   "Bio.PDB.StructureBuilder": {"classes": {"StructureBuilder": members(PBuilder.StructureBuilder)}},
   "Bio.PDB.PDBParser": {"classes": {"PDBParser": members(PParser)}},
+  "Bio.PDB.MMCIF2Dict": {"classes": {"MMCIF2Dict": {n: _sig(getattr(PM2D.MMCIF2Dict, n)) for n in vars(PM2D.MMCIF2Dict) if n == "__init__" or not n.startswith("__")}}},
+  "Bio.PDB.MMCIFParser": {"classes": {c: {n: _sig(getattr(PMP, c).__dict__[n]) for n in vars(getattr(PMP, c)) if (n == "__init__" or not n.startswith("_")) and callable(getattr(PMP, c).__dict__[n])} for c in ("MMCIFParser", "FastMMCIFParser")}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }
 print(json.dumps(inv, indent=1))

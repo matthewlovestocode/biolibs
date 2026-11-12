@@ -195,6 +195,14 @@ if any(c["kind"] != "ops" and "structure" in c for c in pdb):
     pdb_members("Bio.PDB.PDBParser", "PDBParser", ("__init__", "get_header", "get_structure", "get_trailer"))
     mark("Bio.PDB.parse_pdb_header.parse_pdb_header")
 
+# ---- Bio.PDB mmCIF (packages/pdb/test/golden/mmcif.json) ----
+mc = json.load(open(f"{here}/../packages/pdb/test/golden/mmcif.json"))["cases"]
+if any(c["kind"] == "dict" and "dict" in c for c in mc):
+    for m in ("__init__", "_splitline", "_tokenize"): mark(f"Bio.PDB.MMCIF2Dict.MMCIF2Dict.{m}")
+for parser, cls in (("mmcif", "MMCIFParser"), ("fast", "FastMMCIFParser")):
+    if any(c["kind"] == "parse" and c["parser"] == parser and "structure" in c for c in mc):
+        for m in ("__init__", "get_structure"): mark(f"Bio.PDB.MMCIFParser.{cls}.{m}")
+
 # ---- Bio.Align.substitution_matrices (packages/align/test/golden/matrices.json) ----
 sm = json.load(open(f"{here}/../packages/align/test/golden/matrices.json"))["cases"]
 if any(c["kind"] == "load" and "matrix" in c for c in sm): mark("Bio.Align.substitution_matrices.load")

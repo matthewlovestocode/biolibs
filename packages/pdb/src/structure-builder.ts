@@ -113,7 +113,7 @@ export class StructureBuilder {
    * @param isPqr - Create the atom with charge and radius (PQR) instead of B-factor and occupancy.
    */
   initAtom(name: string, coord: ArrayLike<number>, bFactor: number | null, occupancy: number | null, altloc: string, fullname: string,
-    serialNumber: number | null = null, element: string | null = null, pqrCharge: number | null = null, radius: number | null = null, isPqr = false): void {
+    serialNumber: number | string | null = null, element: string | null = null, pqrCharge: number | null = null, radius: number | null = null, isPqr = false): void {
     const residue = this.residue as Residue | null;
     if (residue === null) return;
     if (residue.has(name)) {

@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 919 / 1043 applicable items verified against Biopython.**
+**Progress: 926 / 1050 applicable items verified against Biopython.**
 
 
 
@@ -1520,6 +1520,28 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `get_header(self)`
 - [x] `get_structure(self, id, file)`
 - [x] `get_trailer(self)`
+
+## Bio.PDB.MMCIF2Dict
+
+
+### Bio.PDB.MMCIF2Dict.MMCIF2Dict
+
+- [x] `__init__(self, filename)`
+- [x] `_splitline(self, line)`
+- [x] `_tokenize(self, handle)`
+
+## Bio.PDB.MMCIFParser
+
+
+### Bio.PDB.MMCIFParser.MMCIFParser
+
+- [x] `__init__(self, structure_builder=None, auth_chains=True, auth_residues=True, QUIET=False, PERMISSIVE=False)`
+- [x] `get_structure(self, structure_id, filename)`
+
+### Bio.PDB.MMCIFParser.FastMMCIFParser
+
+- [x] `__init__(self, structure_builder=None, auth_chains=True, auth_residues=True, QUIET=False)`
+- [x] `get_structure(self, structure_id, filename)`
 
 ## Bio.PDB.parse_pdb_header
 

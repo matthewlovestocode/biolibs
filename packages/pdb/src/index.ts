@@ -10,6 +10,8 @@
  * - `structure-builder.ts`: `StructureBuilder`
  * - `header.ts`: `parsePdbHeader`, `parsePdbHeaderList`, `parseRemark465`
  * - `pdb-parser.ts`: `PDBParser`
+ * - `mmcif2dict.ts`: `MMCIF2Dict`, `tokenize`, `splitLine`
+ * - `mmcif-parser.ts`: `MMCIFParser`, `FastMMCIFParser`
  */
 
 export * from "./exceptions.js";
@@ -21,3 +23,5 @@ export * from "./chain.js";
 export * from "./structure-builder.js";
 export * from "./header.js";
 export * from "./pdb-parser.js";
+export * from "./mmcif2dict.js";
+export * from "./mmcif-parser.js";

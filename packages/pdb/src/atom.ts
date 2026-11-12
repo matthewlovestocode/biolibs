@@ -1,6 +1,6 @@
 /** `Atom` and `DisorderedAtom` (Biopython's `Bio.PDB.Atom`). Coordinates are single-precision, like NumPy's `"f"` arrays. */
 
-import { warn } from "@biolibs/core";
+import { pyRepr, warn } from "@biolibs/core";
 import { IUPACData } from "@biolibs/seq";
 import { DisorderedEntityWrapper, type Child, type Entity } from "./entity.js";
 import { PDB_CONSTRUCTION_WARNING } from "./exceptions.js";
@@ -48,7 +48,7 @@ export class Atom implements Child {
   /** Standard deviations of the position. */
   sigatmArray: Float32Array | null = null;
   /** Serial number from the file. */
-  serialNumber: number | null;
+  serialNumber: number | string | null;
   /** Free-form extra data. */
   xtra: Record<string, unknown> = {};
   /** Upper-case element symbol (`"X"` when unknown). */
@@ -74,7 +74,7 @@ export class Atom implements Child {
    * @throws Error (AssertionError) when `element` is not upper case.
    */
   constructor(name: string, coord: ArrayLike<number>, bfactor: number | null, occupancy: number | null, altloc: string, fullname: string,
-    serialNumber: number | null, element: string | null = null, pqrCharge: number | null = null, radius: number | null = null) {
+    serialNumber: number | string | null, element: string | null = null, pqrCharge: number | null = null, radius: number | null = null) {
     this.name = name;
     this.fullname = fullname;
     this.coord = Float32Array.from(coord);
@@ -96,7 +96,7 @@ export class Atom implements Child {
       let putative: string;
       if (isAlpha(this.fullname[0] ?? "") && !isDigit(this.fullname.slice(2))) putative = this.name.trim();
       else putative = /^\p{Nd}$/u.test(this.name[0] ?? "") ? this.name[1]! : this.name[0]!;
-      const shown = (s: string | null): string => (s === null ? "None" : `'${s}'`);
+      const shown = (s: string | null): string => pyRepr(s);
       let message: string;
       if (Object.hasOwn(IUPACData.atomWeights, capitalize(putative))) {
         message = `Used element ${shown(putative)} for Atom (name=${this.name}) with given element ${shown(element)}`;
@@ -161,7 +161,7 @@ export class Atom implements Child {
   }
 
   /** Set the serial number. */
-  setSerialNumber(n: number | null): void { this.serialNumber = n; }
+  setSerialNumber(n: number | string | null): void { this.serialNumber = n; }
   /** Set the B-factor. */
   setBfactor(bfactor: number | null): void { this.bfactor = bfactor; }
   /** Set the coordinates. */
@@ -201,7 +201,7 @@ export class Atom implements Child {
   /** The parent residue. */
   getParent(): Entity<Child> | null { return this.parent; }
   /** The serial number. */
-  getSerialNumber(): number | null { return this.serialNumber; }
+  getSerialNumber(): number | string | null { return this.serialNumber; }
   /** The name. */
   getName(): string { return this.name; }
   /** The id (the name). */

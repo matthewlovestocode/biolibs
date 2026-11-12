@@ -155,7 +155,7 @@ export abstract class Entity<C extends Child = Child> {
    */
   add(entity: C): void {
     const entityId = entity.getId();
-    if (this.has(entityId)) throw new PDBConstructionException(`${String(entityId)} defined twice`);
+    if (this.has(entityId)) throw new PDBConstructionException(`${pyStr(entityId)} defined twice`);
     entity.setParent(this);
     this.childList.push(entity);
     this.childDict.set(idKey(entityId), entity);
@@ -164,7 +164,7 @@ export abstract class Entity<C extends Child = Child> {
   /** Insert a child at a position. @throws {@link PDBConstructionException} when the id exists. */
   insert(pos: number, entity: C): void {
     const entityId = entity.getId();
-    if (this.has(entityId)) throw new PDBConstructionException(`${String(entityId)} defined twice`);
+    if (this.has(entityId)) throw new PDBConstructionException(`${pyStr(entityId)} defined twice`);
     entity.setParent(this);
     this.childList.splice(pos, 0, entity);
     this.childDict.set(idKey(entityId), entity);
