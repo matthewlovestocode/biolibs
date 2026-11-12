@@ -53,3 +53,10 @@ export function rsplitWords(s: string, n: number): string[] {
   }
   return rest || parts.length ? [rest, ...parts] : [];
 }
+
+/** Unpack exactly `n` items, raising Python's `ValueError` otherwise. */
+export function unpackN<T>(items: T[], n: number): T[] {
+  if (items.length < n) throw new ValueError(`not enough values to unpack (expected ${n}, got ${items.length})`);
+  if (items.length > n) throw new ValueError(`too many values to unpack (expected ${n}, got ${items.length})`);
+  return items;
+}

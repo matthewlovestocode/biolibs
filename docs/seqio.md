@@ -1,6 +1,6 @@
 # @biolibs/seqio
 
-A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 14,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR and SwissProt); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
+A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 19,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics and seqXML); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
 
 ```ts
 import { parse, read, write, toDict, convert, StringHandle } from "@biolibs/seqio";
@@ -20,6 +20,7 @@ Unlike Python, nothing here opens files, so the library works in Node and in the
 
 - **Inputs are the file's contents** as a string (a string is *never* a file name), or a `LineStream` over it. In Node: `parse(fs.readFileSync(path, "utf8"), "fasta")`.
 - **Outputs are any object with `write(text)`**, such as `StringHandle` (like `io.StringIO`; call `.getvalue()`). A Node `fs.WriteStream` also works.
+- Binary formats (`seqxml`) take **bytes** (`fs.readFileSync(path)`, a `Uint8Array`) and write to a byte target such as `BytesHandle` (`.getvalue()` returns a `Uint8Array`). Text given to a binary format, or bytes to a text format, throws `StreamModeError`, as in Biopython.
 - Binary data passed to a text format throws `StreamModeError("Fasta files must be opened in text mode.")`, as in Biopython.
 - Lines end at `"\n"` only (like `io.StringIO`); a `"\r"` stays in the text. Python's file objects translate `"\r\n"` for you; do that yourself if needed.
 
@@ -56,6 +57,9 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 | `tab` | yes | yes |
 | `pir` | yes | yes (wraps at 60) |
 | `swiss` | yes | |
+| `phd` | yes | yes |
+| `ig` | yes | |
+| `seqxml` | yes (bytes) | yes (bytes) |
 
 `fasta` requires the file to begin with `>` (comments are an error with a helpful message); use `fasta-pearson` (`;` comments, text before the first `>` ignored) or `fasta-blast` (`#`, `!`, `;` comments) for those files. `fasta-blast` reproduces a bug in Biopython 1.88: after the first record it does not advance its saved header line, so later records reuse the first header. The output is identical to Biopython's.
 
@@ -79,7 +83,13 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 - `pir`: NBRF files (`>P1;ID`, description, sequence ending in `*`). The type code goes to `annotations["PIR-type"]`. `PirWriter(target, wrap = 60, record2title = null, code = null)` picks `D1`/`RL`/`P1`/`XX` from `molecule_type` unless `code` is given.
 - `swiss`: UniProt/SwissProt text entries. The first accession is the `id`; cross-references become `dbxrefs`; `FT` lines become features; references become `Reference` objects. The underlying parser is also exported as `parseSwissProt(text)` / `readSwissProt(text)` (Biopython's `Bio.SwissProt`), producing `SwissProtRecord` objects whose fields are camelCased (`entryName`, `geneName`, `proteinExistence`, ...). Parse failures are `SwissProtParserError` (a `ValueError`, with the bad `line`).
 
-Other formats (pdb, phd, seqxml, ...) are being added; see PARITY.md.
+### PHD, IntelliGenetics and seqXML
+
+- `phd` (PHRED output): the `BEGIN_COMMENT` fields become `annotations` (absent ones are `null`); `phred_quality` and, when every site has one, `peak_location` become per-letter annotations. `PhdWriter` writes them back.
+- `ig`: IntelliGenetics/MASE files; comment lines go to `annotations["comment"]`.
+- `seqxml` (versions 0.1 to 0.4): reads and writes. There is no expat in the browser, so a small XML scanner in `seqxml/` produces the same events, and the reader feeds them 1024 bytes at a time exactly as Biopython does, so an error late in a file appears only after the earlier records. Handler errors (`ValueError`, `RuntimeError`, ...) match Biopython. Malformed XML raises `SAXParseException`, but its message text is our own and does not copy expat's wording.
+
+Other formats (pdb, ace, ...) are being added; see PARITY.md.
 
 ## Readers and writers
 
@@ -111,6 +121,9 @@ packages/seqio/src/
   tab/     iterator.ts  writer.ts  index.ts
   pir/     iterator.ts  writer.ts  index.ts
   swiss/   records.ts  text.ts  fields.ts  features.ts  parser.ts  iterator.ts  index.ts
+  phd/     parser.ts  iterator.ts  writer.ts  index.ts
+  ig/      iterator.ts  index.ts
+  seqxml/  xml-types.ts  xml-chars.ts  xml-names.ts  xml-scanner.ts  xml-sax.ts  content-handler.ts  iterator.ts  xml-generator.ts  writer.ts  index.ts
   insdc/   text.ts  cleaner.ts  consumer.ts  scanner.ts  genbank-scanner.ts  embl-scanner.ts  iterators.ts
            location-string.ts  writer-base.ts  genbank-writer.ts  embl-writer.ts  converters.ts  index.ts
 ```

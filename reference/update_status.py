@@ -103,6 +103,8 @@ if {"parse", "read", "write", "to_dict"} <= kinds:
         for k in list(status):
             pass
         mark(f"Bio.SeqIO.{fn}")
+# seqxml: behaviour (records, timing of errors, handler errors) is verified, but expat's wording for malformed XML is not reproduced
+if "seqxml" in parsed: mark("Bio.SeqIO.parse:seqxml", "partial")
 # convert is complete once every direct fast path (fastq->fastq/fasta/qual..., genbank/embl->fasta) has a verified case
 direct = {("genbank", "fasta"), ("embl", "fasta"), ("fastq", "fasta")}
 mark("Bio.SeqIO.convert", "done" if direct <= conv else "partial")

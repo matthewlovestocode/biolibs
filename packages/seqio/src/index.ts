@@ -19,6 +19,9 @@ import "./insdc/index.js";
 import "./tab/index.js";
 import "./pir/index.js";
 import "./swiss/index.js";
+import "./phd/index.js";
+import "./ig/index.js";
+import "./seqxml/index.js";
 
 export * from "./api.js";
 export * from "./errors.js";
@@ -31,3 +34,6 @@ export * from "./insdc/index.js";
 export * from "./tab/index.js";
 export * from "./pir/index.js";
 export * from "./swiss/index.js";
+export * from "./phd/index.js";
+export * from "./ig/index.js";
+export * from "./seqxml/index.js";

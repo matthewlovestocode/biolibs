@@ -8,7 +8,7 @@ TypeScript libraries replacing common Python bioengineering tooling. The goal is
 | `@biolibs/seq` | Biopython `Bio.Seq`, `Bio.Data.CodonTable`, `Bio.Data.IUPACData` | **At parity**: `Seq`, `MutableSeq`, all 27 genetic codes, IUPAC data (verified against Biopython 1.88) |
 | `@biolibs/seqfeature` | Biopython `Bio.SeqFeature` | **At parity**: positions, `SimpleLocation`, `CompoundLocation`, `Location.fromstring`, `SeqFeature`, `Reference` |
 | `@biolibs/seqrecord` | Biopython `Bio.SeqRecord` | **At parity**: `SeqRecord`, slicing, `+`, `reverseComplement`, `translate`, per-letter annotations |
-| `@biolibs/seqio` | `Bio.SeqIO` | FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR and SwissProt done; the rest in progress |
+| `@biolibs/seqio` | `Bio.SeqIO` | FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics and seqXML done; the rest in progress |
 | `@biolibs/align` | `pairwise2` / `PairwiseAligner` | global/local alignment, edit distance |
 | `@biolibs/phylo` | `Bio.Phylo` | Newick parse/write, patristic distance |
 | `@biolibs/seqtools` | `Bio.SeqUtils`, `Bio.Restriction` | GC, Tm, restriction sites and digests |

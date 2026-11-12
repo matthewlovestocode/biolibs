@@ -8,7 +8,13 @@
 import { Seq, MutableSeq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 import { ValueError } from "@biolibs/core";
-import { StringHandle, openText, type LineStream, type WriteHandle } from "./handles.js";
+import { StringHandle, isBinaryHandle, openBinary, openText, type BinaryStream, type BinaryWriteHandle, type LineStream, type WriteHandle } from "./handles.js";
+import { StreamModeError } from "./errors.js";
+
+/** The `modes` of a reader or writer, read in a base constructor (TypeScript forbids touching the abstract getter directly there). */
+function modesOf(self: object): string {
+  return (self as { modes: string }).modes;
+}
 
 /**
  * Base class of format readers. Iterate it with `for...of`, or call {@link SequenceIterator.next}.
@@ -20,8 +26,10 @@ export abstract class SequenceIterator implements IterableIterator<SeqRecord> {
 
   /** What was passed in. */
   readonly source: unknown;
-  /** The open input, or undefined after {@link SequenceIterator.close}. */
+  /** The open text input (text formats), or undefined after {@link SequenceIterator.close}. */
   protected stream: LineStream | undefined;
+  /** The open byte input (binary formats), or undefined after {@link SequenceIterator.close}. */
+  protected bytes: BinaryStream | undefined;
 
   /**
    * @param source - The file's text contents (or an open `LineStream`).
@@ -33,7 +41,8 @@ export abstract class SequenceIterator implements IterableIterator<SeqRecord> {
   constructor(source: unknown, alphabet: null | undefined = null, fmt = "Sequence") {
     if (alphabet !== null && alphabet !== undefined) throw new ValueError("The alphabet argument is no longer supported");
     this.source = source;
-    this.stream = openText(source, fmt);
+    if (modesOf(this) === "b") this.bytes = openBinary(source, fmt);
+    else this.stream = openText(source, fmt);
   }
 
   /** The next record, or null when there are no more. */
@@ -52,6 +61,7 @@ export abstract class SequenceIterator implements IterableIterator<SeqRecord> {
   /** Release the input (Python's `with ... as records:` exit). */
   close(): void {
     this.stream = undefined;
+    this.bytes = undefined;
   }
 }
 
@@ -95,12 +105,16 @@ export abstract class SequenceWriter {
    * @param target - Anything with a `write(text)` method, such as `StringHandle`.
    * @throws TypeError if `target` cannot be written to.
    */
-  constructor(target: WriteHandle) {
+  constructor(target: WriteHandle | BinaryWriteHandle) {
     if (target === null || typeof target !== "object" || typeof (target as { write?: unknown }).write !== "function") {
       throw new TypeError("The target must be an object with a write(text) method");
     }
-    this.target = target;
-    this.handle = target;
+    // Biopython probes the handle and refuses one whose mode does not match the format.
+    const binary = isBinaryHandle(target);
+    if (binary && !modesOf(this).includes("b")) throw new StreamModeError("File must be opened in text mode.");
+    if (!binary && !modesOf(this).includes("t")) throw new StreamModeError("File must be opened in binary mode.");
+    this.target = target as WriteHandle;
+    this.handle = target as WriteHandle;
   }
 
   /** Replace line breaks with spaces. */

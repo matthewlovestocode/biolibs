@@ -8,7 +8,7 @@ import io, json, os, random, sys, warnings
 sys.path.insert(0, os.path.dirname(__file__))
 import Bio
 from Bio import SeqIO
-from Bio.SeqIO import FastaIO, QualityIO as Q, PirIO
+from Bio.SeqIO import FastaIO, QualityIO as Q, PirIO, SeqXmlIO
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 from Bio.SeqFeature import SeqFeature, SimpleLocation, CompoundLocation, Reference, ExactPosition, BeforePosition, AfterPosition, WithinPosition
@@ -27,7 +27,7 @@ def emsg(e):
 def src(case):
     return io.BytesIO(case["bytes"].encode("latin-1")) if "bytes" in case else io.StringIO(case["text"])
 
-WRITERS = {"FastaWriter": FastaIO.FastaWriter, "FastaTwoLineWriter": FastaIO.FastaTwoLineWriter, "QualPhredWriter": Q.QualPhredWriter,
+WRITERS = {"SeqXmlWriter": SeqXmlIO.SeqXmlWriter, "FastaWriter": FastaIO.FastaWriter, "FastaTwoLineWriter": FastaIO.FastaTwoLineWriter, "QualPhredWriter": Q.QualPhredWriter,
            "PirWriter": PirIO.PirWriter, "FastqPhredWriter": Q.FastqPhredWriter, "FastqSolexaWriter": Q.FastqSolexaWriter, "FastqIlluminaWriter": Q.FastqIlluminaWriter}
 
 def run(case):
@@ -43,7 +43,7 @@ def run(case):
             elif kind == "read":
                 out["result"] = enc(SeqIO.read(src(case), case["format"]))
             elif kind in ("write", "writer"):
-                h = io.StringIO()
+                h = io.BytesIO() if case.get("binary") else io.StringIO()
                 recs = [dec(r) for r in case["records"]]
                 try:
                     if kind == "write":
@@ -54,18 +54,18 @@ def run(case):
                     else:
                         out["count"] = WRITERS[case["cls"]](h, *case.get("args", [])).write_file(recs)
                 finally:
-                    out["text_out"] = h.getvalue()
+                    out["text_out"] = h.getvalue().decode("utf-8") if case.get("binary") else h.getvalue()
             elif kind == "format":
                 out["result"] = dec(case["record"]).format(case["format"])
             elif kind == "to_dict":
                 d = SeqIO.to_dict(dec(r) for r in case["records"])
                 out["keys"] = list(d)
             elif kind == "convert":
-                h = io.StringIO()
+                h = io.BytesIO() if case.get("binary") else io.StringIO()
                 try:
                     out["count"] = SeqIO.convert(src(case), case["format"], h, case["out"], case.get("molecule_type"))
                 finally:
-                    out["text_out"] = h.getvalue()
+                    out["text_out"] = h.getvalue().decode("utf-8") if case.get("binary") else h.getvalue()
             elif kind == "fastq_general":
                 items = []
                 out["pairs"] = items
@@ -82,7 +82,7 @@ def run(case):
                 out["pairs"] = items
                 for pair in fn(io.StringIO(case["text"])): items.append(list(pair))
         except Exception as e:
-            out["exc"] = {"type": tname(e), "msg": emsg(e)}
+            out["exc"] = {"type": tname(e), "msg": None if tname(e) == "SAXParseException" else emsg(e)}   # expat's wording is not reproduced
     out["warnings"] = [str(x.message) for x in w]
     return out
 
@@ -669,6 +669,208 @@ def swiss_cases():
     for t in rnd2.sample(base[:160], 30):
         for out in ("fasta", "genbank"): add({"kind": "convert", "format": "swiss", "text": t, "out": out, "molecule_type": None})
 
+
+# ------------------------------------------------------------------ phd / ig
+def phd_entry(rnd):
+    n = rnd.randint(0, 12)
+    L = ["BEGIN_SEQUENCE " + rnd.choice(["read1.x1", "R2 some description", "clone_7.scf extra words", "a"]), "", "BEGIN_COMMENT", ""]
+    pool = ["CHROMAT_FILE: read1.scf", "ABI_THUMBPRINT: 0", "PHRED_VERSION: 0.980904.e", "CALL_METHOD: phred", "QUALITY_LEVELS: 99", "TIME: Mon Jan  1 10:00:00 2001",
+            "TRACE_ARRAY_MIN_INDEX: 0", "TRACE_ARRAY_MAX_INDEX: 11", "TRIM: 3 8 0.05", "TRACE_PEAK_AREA_RATIO: 0.0123", "CHEM: term", "DYE: big", "BASECALLER_VERSION: 1.2", "TRACE_PROCESSOR_VERSION: 3", "UNKNOWN_KEY: whatever"]
+    L += rnd.sample(pool, rnd.randint(0, len(pool)))
+    L += ["END_COMMENT", "", "BEGIN_DNA"]
+    peaks = rnd.random() < .6
+    for i in range(n):
+        L.append(f"{rnd.choice('acgtn')} {rnd.randint(0, 60)}" + (f" {i*10+rnd.randint(0, 5)}" if peaks else ""))
+    L += ["END_DNA", "", "END_SEQUENCE"]
+    return "\n".join(L) + "\n"
+
+def phd_cases():
+    rnd2 = random.Random(41)
+    base = [phd_entry(rnd2) for _ in range(120)]
+    base.append(base[0] + base[1] + base[2])
+    base += ["", "\n", "BEGIN_SEQUENCE", "BEGIN_SEQUENCE \n", "BEGIN_SEQUENCE a\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\n",
+             "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\nEND_DNA\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\nEND_DNA\nEND_SEQUENCE\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nnocolon\nEND_COMMENT\n",
+             "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nTRIM: 1 2\nEND_COMMENT\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nTRIM: 1 2 x\nEND_COMMENT\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nTRIM: 1 2 3 4\nEND_COMMENT\n",
+             "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nTRACE_PEAK_AREA_RATIO: nan\nEND_COMMENT\nBEGIN_DNA\na 1\nEND_DNA\nEND_SEQUENCE\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nTRACE_PEAK_AREA_RATIO: 1_0.5e1\nQUALITY_LEVELS: x\nEND_COMMENT\nBEGIN_DNA\nEND_DNA\nEND_SEQUENCE\n",
+             "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\na\nEND_DNA\nEND_SEQUENCE\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\na 1 2 3\nEND_DNA\nEND_SEQUENCE\n",
+             "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\na x\nEND_DNA\nEND_SEQUENCE\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\nac 1\nEND_DNA\nEND_SEQUENCE\n",
+             "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\na 1 x\nEND_DNA\nEND_SEQUENCE\n", "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\na 1 5\nc 2\nEND_DNA\nEND_SEQUENCE\n",
+             "BEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\na 1 x\nc 2\nEND_DNA\nEND_SEQUENCE\n", "junk\nBEGIN_SEQUENCE a\nBEGIN_COMMENT\nEND_COMMENT\nBEGIN_DNA\na 1\nEND_DNA\nEND_SEQUENCE\ntrailing\n"]
+    allt = list(base)
+    for t in base[:120]:
+        for _ in range(6): allt.append(mutate_text(t, rnd2, junk=("END_COMMENT", "BEGIN_DNA", "END_DNA", "END_SEQUENCE", "TRIM: 1 2 0.5", "a 1", "x:y")))
+    for t in allt: add({"kind": "parse", "format": "phd", "text": t})
+    for t in rnd2.sample(allt, 60): add({"kind": "read", "format": "phd", "text": t})
+    add({"kind": "parse", "format": "phd", "bytes": "BEGIN_SEQUENCE a\n"})
+    # writer: records built from letter annotations
+    def prec(seq, q, peaks=None, ann=(), id="r1", desc="r1 d"):
+        letter = [["phred_quality", LST(*q)]] if q is not None else []
+        if peaks is not None: letter.append(["peak_location", LST(*peaks)])
+        return REC(S(seq), id, "n", desc, annotations=[list(a) for a in ann], letter=letter)
+    recs = [prec("ACGT", [10, 20, 30, 40]), prec("ACGT", [10, 20, 30, 40], [1, 5, 9, 13]), prec("ACGT", [9.5, 10.5, 11.5, 0.5]), prec("A", [None]), prec("AC", [1, 2, 3]), prec("AC", [1, 2], [1]), prec("AC", [1, 2], [1.7, 2.2]),
+            prec("ACGT", [1, 2, 3, 4], ann=[("chromat_file", "x.scf"), ("abi_thumbprint", 0), ("phred_version", "1"), ("call_method", "phred"), ("quality_levels", 99), ("time", "now"), ("trace_array_min_index", 0), ("trace_array_max_index", 3), ("trace_peak_area_ratio", 0.03125), ("chem", "term"), ("dye", "big")]),
+            prec("ACGT", [1, 2, 3, 4], ann=[("chromat_file", ""), ("abi_thumbprint", None), ("quality_levels", 0), ("trace_peak_area_ratio", 0.0), ("dye", 0), ("time", 3.5)]),
+            prec("ACGT", [1, 2, 3, 4], ann=[("trace_peak_area_ratio", 1), ("chem", LST("x", "y"))]), prec("ACGT", [1, 2, 3, 4], ann=[("trace_peak_area_ratio", "x")]),
+            prec("ACGT", [1, 2, 3, 4], id="id1", desc="id1 already"), prec("ACGT", [1, 2, 3, 4], id="id1", desc="other"), prec("ACGT", [1, 2, 3, 4], id="id1", desc="line\nbreak"),
+            prec("ACGT", None), REC(S("ACGT"), "x", "n", "d", letter=[["solexa_quality", LST(-5, 0, 10, 40)]]), prec("", []), REC(U(3), "u", "n", "d", letter=[["phred_quality", LST(1, 2, 3)]]), REC(None, "z", "n", "d"),
+            prec("ACGT", [0.5, 1.5, 2.5, 3.5]), prec("AC", [-1, 100])]
+    for r in recs:
+        add({"kind": "write", "format": "phd", "records": [r]}); add({"kind": "format", "format": "phd", "record": r})
+    add({"kind": "write", "format": "phd", "records": recs[:3]})
+    for t in rnd2.sample(base[:120], 25):
+        for out in ("phd", "fasta", "fastq"): add({"kind": "convert", "format": "phd", "text": t, "out": out, "molecule_type": None})
+    add({"kind": "convert", "format": "fastq", "text": "@r1 d\nACGT\n+\nIIII\n", "out": "phd", "molecule_type": None})
+
+def ig_entry(rnd):
+    L = []
+    if rnd.random() < .5: L += [";;file header", ";; more header"]
+    for _ in range(rnd.randint(1, 4)):
+        L += rnd.sample(["; comment one", ";comment two", ";  spaced  ", ";"], rnd.randint(1, 3))
+        L.append(rnd.choice(["seq1", "seq 2 title", "Title  "]))
+        n = rnd.randint(0, 30)
+        sq = rand_seq(rnd, "ACGT -", n, n)
+        L += [sq[i:i+10] for i in range(0, len(sq), 10)]
+        if rnd.random() < .85: L[-1:] = [(L[-1] if L[-1] and not L[-1].startswith(";") else "") + "1"] if len(sq) else ["1"]
+    return "\n".join(L) + "\n"
+
+def ig_cases():
+    rnd2 = random.Random(42)
+    base = [ig_entry(rnd2) for _ in range(120)]
+    base += ["", "\n", ";", ";\n", ";;x\n", ";;x\n;\n", "; c\ntitle\nACGT1\n", "; c\ntitle\nAC1GT1\n", "; c\ntitle\nACGT\n", "; c\ntitle\n", "; c\n", "; c\ntitle\nACGT1\n; d\nt2\nGG1\n", "title only\n", "no semicolon\nACGT1\n; c\nt\nAA1\n",
+             "; c\ntitle\n1\n", "; c\ntitle\n\n", ";\n;\ntitle\nAC GT 1\n", "; c\ntitle\nAC\n\nGT1\n", "; c\r\ntitle\r\nACGT1\r\n", "; c\ntitle\nAC1\n; d\n"]
+    allt = list(base)
+    for t in base[:120]:
+        for _ in range(5): allt.append(mutate_text(t, rnd2, junk=(";", ";;", "1", "; c", "title", "AC 1")))
+    for t in allt: add({"kind": "parse", "format": "ig", "text": t})
+    for t in rnd2.sample(allt, 50): add({"kind": "read", "format": "ig", "text": t})
+    add({"kind": "parse", "format": "ig", "bytes": "; c\nt\nAA1\n"})
+    for t in rnd2.sample(base[:120], 15):
+        for out in ("fasta", "tab"): add({"kind": "convert", "format": "ig", "text": t, "out": out, "molecule_type": None})
+
+
+# ------------------------------------------------------------------ seqxml
+def xml_doc(rnd, ver=None):
+    ver = ver or rnd.choice(["0.1", "0.2", "0.3", "0.4"])
+    names = {"DNA": "dnaSeq" if ver == "0.1" else "DNAseq", "RNA": "rnaSeq" if ver == "0.1" else "RNAseq", "protein": "aaSeq" if ver == "0.1" else "AAseq"}
+    dbref = "alternativeID" if ver == "0.1" else "DBRef"
+    root = f'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.seqxml.org/{ver}/seqxml.xsd" seqXMLversion="{ver}"'
+    if rnd.random() < .7: root += ' source="SRC &amp; co"'
+    if rnd.random() < .4: root += ' sourceVersion="1.2"'
+    if ver == "0.4" and rnd.random() < .5: root += ' ncbiTaxID="9606" speciesName="Homo sapiens"'
+    ind = rnd.choice(["", "  ", "\t"]); nl = rnd.choice(["\n", "\r\n", ""])
+    out = ['<?xml version="1.0" encoding="UTF-8"?>' + nl if rnd.random() < .85 else "", f"<seqXML {root}>" + nl]
+    for i in range(rnd.randint(0, 6)):
+        mol = rnd.choice(["DNA", "RNA", "protein"])
+        alpha = {"DNA": "ACGTN", "RNA": "ACGUN", "protein": "ACDEFGHIKLMNPQRSTVWY"}[mol]
+        attrs = f' id="e{i}"'
+        if ver in ("0.3", "0.4") and rnd.random() < .4: attrs += ' source="other"'
+        out.append(f"{ind}<entry{attrs}>{nl}")
+        if rnd.random() < .5: out.append(ind * 2 + rnd.choice([f'<species name="Homo sapiens" ncbiTaxID="9606"/>', '<species name="E. coli" ncbiTaxID="562"></species>']) + nl)
+        if rnd.random() < .7: out.append(ind * 2 + "<description>" + rnd.choice(["A description", "with &lt;entities&gt; &amp; more", "<![CDATA[raw <text>]]>", "unicode é ü 日本", "", "multi\nline"]) + "</description>" + nl)
+        sq = rand_seq(rnd, alpha, 0 if rnd.random() < .05 else 1, 80)
+        out.append(ind * 2 + f"<{names[mol]}>{sq}</{names[mol]}>" + nl)
+        for _ in range(rnd.randint(0, 3)):
+            t = ' type="x"' if ver in ("0.2", "0.3", "0.4") or rnd.random() < .5 else ""
+            out.append(ind * 2 + f'<{dbref} source="DB{rnd.randint(1,3)}" id="ID{rnd.randint(1,9)}"{t}/>' + nl)
+        for _ in range(rnd.randint(0, 3)):
+            out.append(ind * 2 + rnd.choice(['<property name="color" value="red"/>', '<property name="flag"/>', '<property name="color" value="blue"></property>', f'<property name="score" value="{rnd.randint(0, 9)}"/>']) + nl)
+        out.append(f"{ind}</entry>{nl}")
+        if rnd.random() < .1: out.append("<!-- a comment -->" + nl)
+    out.append("</seqXML>" + rnd.choice(["\n", "", "\n\n"]))
+    return "".join(out)
+
+def mutate_xml(t, rnd):
+    import re
+    k = rnd.choice(["version", "dropattr", "rename", "renameopen", "dropline", "extraattr", "dupline", "trunc", "generic", "swapver", "dropseq", "propmol", "ns", "xmlns", "unknownfield"])
+    lines = t.split("\n")
+    if k == "version": return re.sub(r'seqXMLversion="[^"]*"', 'seqXMLversion="%s"' % rnd.choice(["0.5", "1", "", "0.1", "0.2", "0.3"]), t, count=1)
+    if k == "swapver": return t.replace('seqXMLversion="0.4"', 'seqXMLversion="0.%d"' % rnd.randint(1, 3), 1)
+    if k == "dropattr":
+        m = list(re.finditer(r' [A-Za-z:]+="[^"]*"', t)); 
+        if not m: return t
+        x = rnd.choice(m); return t[:x.start()] + t[x.end():]
+    if k == "rename":
+        tags = list(set(re.findall(r"<([A-Za-z]+)[ />]", t)))
+        if not tags: return t
+        a = rnd.choice(tags); b = rnd.choice(["entry", "species", "description", "DNAseq", "property", "foo", "DBRef", "AAseq"])
+        return re.sub(r"<(/?)%s([ />])" % a, r"<\1%s\2" % b, t)
+    if k == "renameopen":
+        tags = list(set(re.findall(r"<([A-Za-z]+)[ />]", t)))
+        if not tags: return t
+        a = rnd.choice(tags); return t.replace("<%s" % a, "<%sX" % a, 1)
+    if k == "dropline" and len(lines) > 1: del lines[rnd.randrange(len(lines))]; return "\n".join(lines)
+    if k == "dupline": i = rnd.randrange(len(lines)); lines.insert(i, lines[i]); return "\n".join(lines)
+    if k == "extraattr":
+        m = list(re.finditer(r"<([A-Za-z]+)", t))
+        if not m: return t
+        x = rnd.choice(m); return t[:x.end()] + rnd.choice([' foo="bar"', ' xmlns="urn:x"', ' xml:lang="en"', ' ncbiTaxID="abc"', ' ncbiTaxID="5"', ' id="dup"', ' source="s"', ' type="t"', ' xmlns:p="urn:p" p:a="1"', ' p:a="1"']) + t[x.end():]
+    if k == "trunc": return t[:rnd.randrange(len(t) + 1)]
+    if k == "dropseq": return re.sub(r"<(DNAseq|RNAseq|AAseq|dnaSeq|rnaSeq|aaSeq)>[^<]*</\1>", "", t, count=1)
+    if k == "propmol": return t.replace("</entry>", '<property name="molecule_type" value="%s"/></entry>' % rnd.choice(["DNA", "mRNA", "protein", "x"]), 1)
+    if k == "ns": return t.replace("<entry", "<x:entry xmlns:x=\"urn:x\"", 1)
+    if k == "xmlns": return t.replace("<seqXML", '<seqXML xmlns="urn:default"', 1)
+    if k == "unknownfield": return t.replace("</entry>", rnd.choice(["<unknown/>", "<species/>", '<description a="b"/>', "<DNAseq a=\"b\">AC</DNAseq>"]) + "</entry>", 1)
+    return mutate_text(t, rnd, junk=("<", ">", "&", "<a>", "</a>", "&amp;", "<![CDATA[", "<!--"))
+
+def seqxml_cases():
+    rnd2 = random.Random(51)
+    base = [xml_doc(rnd2) for _ in range(150)]
+    for v in ("0.1", "0.2", "0.3", "0.4"): base += [xml_doc(rnd2, v) for _ in range(10)]
+    big = xml_doc(rnd2, "0.4").replace("</seqXML>", "") + "".join(f'<entry id="big{i}"><DNAseq>{rand_seq(rnd2, "ACGT", 200, 400)}</DNAseq></entry>' for i in range(12)) + "</seqXML>"
+    base += [big]
+    base += ["", " ", "<", "<a/>", "<seqXML/>", '<seqXML seqXMLversion="0.4"/>', '<seqXML seqXMLversion="0.4"></seqXML>', '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq></entry></seqXML>',
+             '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq></entry>', '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq></entry></seqXML><x/>', '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq></entry></seqXML> <!-- ok --> \n',
+             '<?xml version="1.0"?><seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>AC&#71;T&#x41;</DNAseq></entry></seqXML>', '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>AC&bogus;GT</DNAseq></entry></seqXML>',
+             '<?xml version="1.0" encoding="ISO-8859-1"?><seqXML seqXMLversion="0.4"><entry id="caf\xe9"><DNAseq>ACGT</DNAseq></entry></seqXML>', '<seqXML seqXMLversion="0.4"><entry id="a" id="b"><DNAseq>ACGT</DNAseq></entry></seqXML>',
+             "<seqXML seqXMLversion='0.4'><entry id='a'><DNAseq>ACGT</DNAseq></entry></seqXML>", '<seqXML seqXMLversion="0.4"><entry id="a"><description>x<b/>y</description><DNAseq>ACGT</DNAseq></entry></seqXML>',
+             '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>AC<![CDATA[GT]]></DNAseq><property name="molecule_type" value="DNA"/></entry></seqXML>',
+             '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq><property name="molecule_type"/></entry></seqXML>', '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq><property name="organism" value="x"/></entry></seqXML>',
+             '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq><property value="x"/></entry></seqXML>', '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq><property name="a" foo="x"/></entry></seqXML>',
+             '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq><DBRef source="s" id="i">text</DBRef></entry></seqXML>', '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq><DBRef source="s" id="i" foo="1"/></entry></seqXML>',
+             '<seqXML seqXMLversion="0.4"><entry id="a"><species name="n"/><DNAseq>ACGT</DNAseq></entry></seqXML>', '<seqXML seqXMLversion="0.4"><entry id="a"><species ncbiTaxID="1"/><DNAseq>ACGT</DNAseq></entry></seqXML>', '<seqXML seqXMLversion="0.4"><entry id="a"><species name="n" ncbiTaxID="1" x="2"/><DNAseq>ACGT</DNAseq></entry></seqXML>']
+    allt = list(base)
+    for t in base[:164]:
+        for _ in range(7): allt.append(mutate_xml(t, rnd2))
+    for t in list(allt):
+        if rnd2.random() < .1: allt.append(mutate_xml(t, rnd2))
+    for t in allt: add({"kind": "parse", "format": "seqxml", "bytes": t.encode("utf-8").decode("latin-1")})
+    for t in rnd2.sample(allt, 80): add({"kind": "read", "format": "seqxml", "bytes": t.encode("utf-8").decode("latin-1")})
+    # a text source is refused
+    add({"kind": "parse", "format": "seqxml", "text": '<seqXML seqXMLversion="0.4"/>'})
+    # lone bytes with a BOM, invalid UTF-8, unsupported encoding
+    add({"kind": "parse", "format": "seqxml", "bytes": "\xef\xbb\xbf" + '<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq></entry></seqXML>'.encode("utf-8").decode("latin-1")})
+    add({"kind": "parse", "format": "seqxml", "bytes": '<seqXML seqXMLversion="0.4"><entry id="\xff"><DNAseq>ACGT</DNAseq></entry></seqXML>'})
+    # writer
+    def srec(seq, id="r1", desc="a desc", ann=(), dbx=(), q=None):
+        return REC(S(seq), id, "n", desc, dbxrefs=list(dbx), annotations=[list(a) for a in ann])
+    DNA = ("molecule_type", "DNA")
+    recs = [srec("ACGT", ann=[DNA]), srec("ACGU", ann=[("molecule_type", "mRNA")]), srec("MKV", ann=[("molecule_type", "protein")]), srec("ACGT"), srec("ACGT", ann=[("molecule_type", "weird")]), srec("", ann=[DNA]),
+            srec("ACGT", id="<unknown id>", ann=[DNA]), srec("ACGT", id="", ann=[DNA]), srec("ACGT", desc="<unknown description>", ann=[DNA]), srec("ACGT", desc="", ann=[DNA]), srec("ACGT", desc='q"uote <&> \'s', ann=[DNA]),
+            srec("ACGT", id='a"b', ann=[DNA]), srec("ACGT", id="a'b\"c", ann=[DNA]), srec("ACGT", id="a\nb\tc", ann=[DNA]), srec("ACGT", id="é 日本", desc="é 日本", ann=[DNA]),
+            srec("ACGT", ann=[DNA, ("organism", "Homo"), ("ncbi_taxid", "9606")]), srec("ACGT", ann=[DNA, ("organism", "Homo"), ("ncbi_taxid", 9606)]), srec("ACGT", ann=[DNA, ("organism", "Homo"), ("ncbi_taxid", LST("9606"))]),
+            srec("ACGT", ann=[DNA, ("organism", "Homo"), ("ncbi_taxid", LST("1", "2"))]), srec("ACGT", ann=[DNA, ("organism", "Homo"), ("ncbi_taxid", LST())]), srec("ACGT", ann=[DNA, ("organism", 5), ("ncbi_taxid", "1")]),
+            srec("ACGT", ann=[DNA, ("organism", "Homo"), ("ncbi_taxid", 1.5)]), srec("ACGT", ann=[DNA, ("organism", "Homo")]), srec("ACGT", ann=[DNA, ("ncbi_taxid", "1")]),
+            srec("ACGT", ann=[DNA, ("source", "other")]), srec("ACGT", ann=[DNA, ("source", 5)]), srec("ACGT", ann=[DNA, ("source", "src")]),
+            srec("ACGT", ann=[DNA, ("note", "text"), ("count", 5), ("ratio", 0.5), ("flag", True), ("none", None), ("many", LST("a", None, 3)), ("empty", LST())]),
+            srec("ACGT", ann=[DNA, ("d", {"$": "dict", "v": [["k", "v"]]})]), srec("ACGT", dbx=["EMBL:X1", "UniProt:P1:extra"], ann=[DNA]), srec("ACGT", dbx=["nocolon"], ann=[DNA]), srec("ACGT", dbx=[":x"], ann=[DNA]),
+            REC(U(4), "u", "n", "d", annotations=[[ "molecule_type", "DNA"]]), REC(M("ACGT"), "m", "n", "d", annotations=[["molecule_type", "DNA"]]), REC(None, "nos", "n", "d", annotations=[["molecule_type", "DNA"]]),
+            srec("ACGT", ann=[("molecule_type", LST("DNA"))]), srec("ACGT", ann=[("molecule_type", None)]), srec("ACGT", ann=[("molecule_type", "DNA RNA protein")])]
+    for r in recs:
+        add({"kind": "write", "format": "seqxml", "binary": True, "records": [r]})
+        add({"kind": "write", "format": "seqxml", "records": [r]})
+        add({"kind": "format", "format": "seqxml", "record": r})
+    add({"kind": "write", "format": "seqxml", "binary": True, "records": []})
+    add({"kind": "write", "format": "seqxml", "binary": True, "records": recs[:3]})
+    add({"kind": "write", "format": "seqxml", "binary": True, "records": [recs[0], recs[6], recs[1]]})
+    for args in ([], ["src"], ["src", "1.0"], ["src", "1.0", "Homo", "9606"], [None, None, "Homo", None], [None, None, None, "9606"], [None, None, None, 9606], ["a&b<c", 'q"x', "sp", "5"], [5], [None, None, 5], [None, None, "Homo", [1]], [None, None, None, 1.5], ["other"], [None, None, "Homo", 9606]):
+        add({"kind": "writer", "cls": "SeqXmlWriter", "binary": True, "args": args, "records": [recs[0], recs[15], recs[16], recs[24], recs[25]]})
+    # round trips through the reader
+    for t in rnd2.sample([x for x in base if x.startswith("<?xml")], 25):
+        b = t.encode("utf-8").decode("latin-1")
+        for out in ("seqxml", "fasta", "genbank"): add({"kind": "convert", "format": "seqxml", "bytes": b, "out": out, "binary": out == "seqxml", "molecule_type": None})
+    add({"kind": "convert", "format": "fasta", "text": ">a d\nACGT\n", "out": "seqxml", "binary": True, "molecule_type": "DNA"})
+    add({"kind": "convert", "format": "fasta", "text": ">a d\nACGT\n", "out": "seqxml", "molecule_type": "DNA"})
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -749,6 +951,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases()}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

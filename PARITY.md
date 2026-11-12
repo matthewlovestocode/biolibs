@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 443 / 498 applicable items verified against Biopython.**
+**Progress: 447 / 498 applicable items verified against Biopython.**
 
 
 
@@ -638,7 +638,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: genbank-cds`
 - [ ] `parse: gfa1`
 - [ ] `parse: gfa2`
-- [ ] `parse: ig`
+- [x] `parse: ig`
 - [x] `parse: imgt`
 - [ ] `parse: maf`
 - [ ] `parse: mauve`
@@ -647,13 +647,13 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `parse: nib`
 - [ ] `parse: pdb-atom`
 - [ ] `parse: pdb-seqres`
-- [ ] `parse: phd`
+- [x] `parse: phd`
 - [ ] `parse: phylip`
 - [ ] `parse: phylip-relaxed`
 - [ ] `parse: phylip-sequential`
 - [x] `parse: pir`
 - [x] `parse: qual`
-- [ ] `parse: seqxml`
+- [~] `parse: seqxml`
 - [ ] `parse: sff`
 - [ ] `parse: sff-trim`
 - [ ] `parse: snapgene`
@@ -681,13 +681,13 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `write: mauve`
 - [ ] `write: nexus`
 - [ ] `write: nib`
-- [ ] `write: phd`
+- [x] `write: phd`
 - [ ] `write: phylip`
 - [ ] `write: phylip-relaxed`
 - [ ] `write: phylip-sequential`
 - [x] `write: pir`
 - [x] `write: qual`
-- [ ] `write: seqxml`
+- [x] `write: seqxml`
 - [ ] `write: sff`
 - [ ] `write: stockholm`
 - [x] `write: tab`

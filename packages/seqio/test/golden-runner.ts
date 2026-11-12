@@ -5,7 +5,7 @@
 import { captureWarnings } from "@biolibs/core";
 import * as SeqIO from "@biolibs/seqio";
 import {
-  FastaTwoLineWriter, FastaWriter, FastqIlluminaWriter, FastqPhredWriter, FastqSolexaWriter, LineStream, PirWriter, QualPhredWriter, StringHandle,
+  FastaTwoLineWriter, FastaWriter, FastqIlluminaWriter, FastqPhredWriter, FastqSolexaWriter, LineStream, PirWriter, SeqXmlWriter, BytesHandle, QualPhredWriter, StringHandle,
   convert, fastaTwoLineParser, fastqGeneralIterator, pairedFastaQualIterator, parse, read, simpleFastaParser, toDict, write,
 } from "@biolibs/seqio";
 import { dec, enc } from "../../seqrecord/test/golden-runner";
@@ -14,12 +14,12 @@ type J = null | boolean | number | string | { [k: string]: unknown };
 
 export interface Case {
   kind: string; format?: string | number | null; text?: string; bytes?: string; out?: string; molecule_type?: string | null;
-  records?: unknown[]; record?: unknown; cls?: string; fasta?: string; qual?: string; fn?: string; args?: unknown[]; parser?: string; single?: boolean; bad_handle?: string;
+  binary?: boolean; records?: unknown[]; record?: unknown; cls?: string; fasta?: string; qual?: string; fn?: string; args?: unknown[]; parser?: string; single?: boolean; bad_handle?: string;
   exc?: { type: string; msg: string | null }; warnings: string[];
   result?: J; count?: number; text_out?: string; pairs?: J[]; keys?: string[];
 }
 
-const WRITERS: Record<string, any> = { FastaWriter, FastaTwoLineWriter, QualPhredWriter, FastqPhredWriter, FastqSolexaWriter, FastqIlluminaWriter, PirWriter };
+const WRITERS: Record<string, any> = { FastaWriter, FastaTwoLineWriter, QualPhredWriter, FastqPhredWriter, FastqSolexaWriter, FastqIlluminaWriter, PirWriter, SeqXmlWriter };
 const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
 
 /** Outcome as recorded by Python, so the two can be compared field by field. */
@@ -46,7 +46,7 @@ export function runCase(c: Case): Outcome {
       case "read": out.result = enc(read(source(c), c.format as string)); break;
       case "write":
       case "writer": {
-        const h = new StringHandle();
+        const h = c.binary ? new BytesHandle() : new StringHandle();
         const recs = c.records!.map(dec);
         try {
           if (c.kind === "write") {
@@ -56,18 +56,18 @@ export function runCase(c: Case): Outcome {
             out.count = new WRITERS[c.cls!](h, ...(c.args ?? [])).writeFile(recs);
           }
         } finally {
-          out.text_out = h.getvalue();
+          out.text_out = h instanceof BytesHandle ? new TextDecoder().decode(h.getvalue()) : h.getvalue();
         }
         break;
       }
       case "format": out.result = dec(c.record).format(c.format); break;
       case "to_dict": out.keys = [...toDict(c.records!.map(dec)).keys()]; break;
       case "convert": {
-        const h = new StringHandle();
+        const h = c.binary ? new BytesHandle() : new StringHandle();
         try {
-          out.count = convert(source(c), c.format as string, h, c.out!, c.molecule_type ?? null);
+          out.count = convert(source(c), c.format as string, h as any, c.out!, c.molecule_type ?? null);
         } finally {
-          out.text_out = h.getvalue();
+          out.text_out = h instanceof BytesHandle ? new TextDecoder().decode(h.getvalue()) : h.getvalue();
         }
         break;
       }

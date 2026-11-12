@@ -1,6 +1,8 @@
 /** Python numeric and character builtins whose behaviour differs from JavaScript's. */
 
 import { ValueError } from "../errors.js";
+import { pyRepr } from "./repr.js";
+import { pyStrip } from "./str.js";
 
 /**
  * Python's `round(x)` for floats: ties go to the nearest *even* integer
@@ -22,4 +24,48 @@ export function pyRound(x: number): number {
 export function pyChr(n: number): string {
   if (!Number.isInteger(n) || n < 0 || n > 0x10ffff) throw new ValueError("chr() arg not in range(0x110000)");
   return String.fromCodePoint(n);
+}
+
+/**
+ * Python's `float(text)` for strings: accepts surrounding whitespace, a sign, digits with single underscores
+ * between them, a decimal point, an exponent, and `inf`/`infinity`/`nan` in any case.
+ *
+ * @example
+ * ```ts
+ * pyFloat(" 1_0.5e1 ");   // 105
+ * ```
+ * @throws {@link ValueError} ("could not convert string to float: 'x'") for anything else.
+ */
+export function pyFloat(text: string): number {
+  const t = pyStrip(text);
+  const digits = "\\d(?:_?\\d)*";
+  const m = new RegExp(`^([+-]?)(?:(inf(?:inity)?)|(nan)|((?:${digits})?(?:\\.(?:${digits})?)?)(?:[eE]([+-]?${digits}))?)$`, "i").exec(t);
+  const mantissaOk = m && (m[2] || m[3] || /\d/.test(m[4] ?? ""));
+  if (!m || !mantissaOk) throw new ValueError(`could not convert string to float: ${pyRepr(text)}`);
+  if (m[2]) return m[1] === "-" ? -Infinity : Infinity;
+  if (m[3]) return NaN;
+  const value = Number(`${m[4]!.replaceAll("_", "")}e${(m[5] ?? "0").replaceAll("_", "")}`);
+  return m[1] === "-" ? -value : value;
+}
+
+/**
+ * Python's `"%.{digits}f" % x`: fixed-point text where exact ties round to the even digit
+ * (`toFixed` rounds them away from zero).
+ *
+ * @example
+ * ```ts
+ * pyFormatFixed(0.03125, 4);   // "0.0312"
+ * ```
+ */
+export function pyFormatFixed(x: number, digits: number): string {
+  if (!Number.isFinite(x)) return Number.isNaN(x) ? "nan" : x < 0 ? "-inf" : "inf";
+  const exact = Math.abs(x).toFixed(Math.min(100, digits + 60));
+  const dot = exact.indexOf(".");
+  const rest = exact.slice(dot + 1 + digits);
+  if (/^50*$/.test(rest)) {
+    const kept = exact.slice(0, digits === 0 ? dot : dot + 1 + digits);
+    const lastDigit = Number(kept[kept.length - 1]);
+    if (lastDigit % 2 === 0) return (x < 0 || Object.is(x, -0) ? "-" : "") + kept;
+  }
+  return x.toFixed(digits);
 }

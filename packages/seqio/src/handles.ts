@@ -92,3 +92,78 @@ export function openText(source: unknown, fmt: string): LineStream {
   if (source instanceof Uint8Array) throw new StreamModeError(`${fmt} files must be opened in text mode.`);
   throw new TypeError("Expected the text contents of a file, or a LineStream");
 }
+
+/**
+ * A readable stream of bytes, for binary formats (Python's `io.BytesIO` opened for reading).
+ *
+ * @example
+ * ```ts
+ * const s = new BinaryStream(new Uint8Array([1, 2, 3]));
+ * s.read(2);   // Uint8Array [1, 2]
+ * s.read(2);   // Uint8Array [3]
+ * s.read(2);   // Uint8Array []
+ * ```
+ */
+export class BinaryStream {
+  private pos = 0;
+
+  /** @param data - The full contents. */
+  constructor(private readonly data: Uint8Array) {}
+
+  /** Read up to `size` bytes, or everything left if `size` is omitted or negative; empty at the end. */
+  read(size = -1): Uint8Array {
+    const end = size < 0 ? this.data.length : Math.min(this.data.length, this.pos + size);
+    const chunk = this.data.subarray(this.pos, end);
+    this.pos = end;
+    return chunk;
+  }
+}
+
+/**
+ * Open a binary source for a parser.
+ *
+ * Only bytes (`Uint8Array`, so also a Node `Buffer`) are accepted. A string or a `LineStream` is text, which Biopython rejects for binary formats.
+ *
+ * @param source - The input.
+ * @param fmt - Format name for error messages, e.g. `"SeqXML"`.
+ * @throws {@link StreamModeError} for text input.
+ */
+export function openBinary(source: unknown, fmt: string): BinaryStream {
+  if (source instanceof BinaryStream) return source;
+  if (source instanceof Uint8Array) return new BinaryStream(source);
+  if (typeof source === "string" || source instanceof LineStream) throw new StreamModeError(`${fmt} files must be opened in binary mode.`);
+  throw new TypeError("Expected the bytes of a file, or a BinaryStream");
+}
+
+/** A writable byte target (anything with `binary: true` and a `write(bytes)` method, such as {@link BytesHandle}). */
+export interface BinaryWriteHandle {
+  /** Marks the target as binary, so text writers reject it and binary writers accept it. */
+  readonly binary: true;
+  /** Append bytes. */
+  write(data: Uint8Array): unknown;
+}
+
+/** An in-memory byte target, like Python's `io.BytesIO`. */
+export class BytesHandle implements BinaryWriteHandle {
+  readonly binary = true as const;
+  private parts: Uint8Array[] = [];
+
+  /** Append bytes. */
+  write(data: Uint8Array): number {
+    this.parts.push(data.slice());
+    return data.length;
+  }
+
+  /** Everything written so far. */
+  getvalue(): Uint8Array {
+    const out = new Uint8Array(this.parts.reduce((n, p) => n + p.length, 0));
+    let at = 0;
+    for (const p of this.parts) { out.set(p, at); at += p.length; }
+    return out;
+  }
+}
+
+/** Whether a write target takes bytes rather than text. */
+export function isBinaryHandle(target: unknown): target is BinaryWriteHandle {
+  return typeof target === "object" && target !== null && (target as { binary?: unknown }).binary === true;
+}

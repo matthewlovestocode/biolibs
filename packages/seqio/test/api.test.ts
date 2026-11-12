@@ -4,7 +4,7 @@ import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 import {
   FORMAT_TO_ITERATOR, FORMAT_TO_WRITER, FastaWriter, LineStream, QualPhredWriter, SequenceIterator, SequenceWriter, StreamModeError, StringHandle,
-  parse, parseSwissProt, read, readSwissProt, SwissProtParserError, registerIterator, registerWriter, toDict, write,
+  BytesHandle, SAXParseException, SeqXmlWriter, parse, parseSwissProt, read, readSwissProt, SwissProtParserError, registerIterator, registerWriter, toDict, write,
 } from "@biolibs/seqio";
 
 const rec = (id: string, seq: string, quals?: number[]) => new SeqRecord(new Seq(seq), id, "n", `${id} d`, null, null, null, quals ? { phred_quality: quals } : null);
@@ -129,5 +129,28 @@ describe("SwissProt parser", () => {
       expect(e).toBeInstanceOf(SwissProtParserError);
       expect((e as SwissProtParserError).line).toBe("XX\n");
     }
+  });
+});
+
+describe("binary formats", () => {
+  const xml = new TextEncoder().encode('<seqXML seqXMLversion="0.4"><entry id="a"><DNAseq>ACGT</DNAseq></entry></seqXML>');
+
+  it("seqxml reads bytes and refuses text", () => {
+    expect([...parse(xml, "seqxml")].map((r) => r.id)).toEqual(["a"]);
+    expect(() => parse('<seqXML seqXMLversion="0.4"/>', "seqxml")).toThrow(StreamModeError);
+    expect(() => parse(xml, "fasta")).toThrow(StreamModeError);
+  });
+
+  it("seqxml writes to a byte target and refuses a text target", () => {
+    const out = new BytesHandle();
+    write([...parse(xml, "seqxml")], out, "seqxml");
+    expect(new TextDecoder().decode(out.getvalue())).toContain('<DNAseq>ACGT</DNAseq>');
+    expect(() => write([...parse(xml, "seqxml")], new StringHandle(), "seqxml")).toThrow("File must be opened in binary mode.");
+    expect(() => write([...parse(xml, "seqxml")], new BytesHandle(), "fasta")).toThrow("File must be opened in text mode.");
+    void SeqXmlWriter;
+  });
+
+  it("malformed XML raises SAXParseException", () => {
+    expect(() => [...parse(new TextEncoder().encode('<seqXML seqXMLversion="0.4"><entry id="a"></seqXML>'), "seqxml")]).toThrow(SAXParseException);
   });
 });

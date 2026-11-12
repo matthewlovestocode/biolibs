@@ -25,6 +25,7 @@ const REG: Record<string, Map<number, unknown>> = {
 /** Encode a value exactly like codec.enc in Python. */
 export function enc(x: unknown): J {
   if (x === null || x === undefined) return null;
+  if (typeof x === "number" && !Number.isFinite(x)) return { $: "float", v: Number.isNaN(x) ? "nan" : x > 0 ? "inf" : "-inf" };
   if (typeof x === "boolean" || typeof x === "number" || typeof x === "string") return x;
   if (x instanceof Uint8Array) return { $: "bytes", v: l1(x) };
   if (x instanceof BytesData) return { $: "bytes", v: l1(x.toBytes()) }; // Python holds defined content as raw bytes
@@ -47,6 +48,7 @@ export function dec(x: unknown): unknown {
   const o = x as Record<string, unknown>;
   switch (o["$"]) {
     case "bytes": return b1(o["v"] as string);
+    case "float": return Number(o["v"] === "nan" ? NaN : o["v"] === "inf" ? Infinity : -Infinity);
     case "Seq":
     case "MutableSeq": {
       if ("undef" in o) return new Seq(null, o["undef"] as number);

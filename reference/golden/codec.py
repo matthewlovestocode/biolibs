@@ -29,6 +29,8 @@ def l1(b):
     return bytes(b).decode("latin-1")
 
 def enc(x):
+    if isinstance(x, float) and (x != x or x in (float("inf"), float("-inf"))):
+        return {"$": "float", "v": "nan" if x != x else ("inf" if x > 0 else "-inf")}   # JSON has no NaN/Infinity
     if x is None or isinstance(x, (bool, int, float, str)):
         return x
     if isinstance(x, (bytes, bytearray)):
