@@ -26,6 +26,7 @@ import "./nib/index.js";
 import "./twobit/index.js";
 import "./gck/index.js";
 import "./xdna/index.js";
+import "./abi/index.js";
 
 export * from "./api.js";
 export * from "./errors.js";
@@ -45,5 +46,6 @@ export * from "./nib/index.js";
 export * from "./twobit/index.js";
 export * from "./gck/index.js";
 export * from "./xdna/index.js";
+export * from "./abi/index.js";
 export { StructError, pack, unpack, calcsize, intFromBytes } from "./binary/struct.js";
 export { decodeAscii, encodeAscii, readExact } from "./binary/ascii.js";

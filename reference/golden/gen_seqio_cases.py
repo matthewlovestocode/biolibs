@@ -1030,6 +1030,40 @@ def xdna_cases():
 def SL_fuzzy():
     return LOC_({"$": "pos", "cls": "BeforePosition", "v": 1}, 3, 1)
 
+
+# ------------------------------------------------------------------ abi
+def abi_cases():
+    rnd2 = random.Random(75)
+    def tags_for(n, fsa=False, rnd=rnd2):
+        seq = rand_dna(rnd, n, n, "ACGTN")
+        quals = bytes(rnd.randint(2, 60) for _ in range(n))
+        t = [("SMPL", 1, 18, rnd.choice(["sample1", "S 2", "x"])), ("TUBE", 1, 18, rnd.choice(["A1", "H12"])), ("DySN", 1, 18, "Z-BigDyeV3"), ("GTyp", 1, 18, "POP7"), ("MODL", 1, 18, rnd.choice(["3130", "3730"])),
+             ("RUND", 1, 10, (2020, rnd.randint(1, 12), rnd.randint(1, 28))), ("RUND", 2, 10, (2020, 5, 6)), ("RUNT", 1, 11, (rnd.randint(0, 23), rnd.randint(0, 59), rnd.randint(0, 59), 0)), ("RUNT", 2, 11, (1, 2, 3, 4)),
+             ("PLOC", 2, 4, [rnd.randint(0, 3000) for _ in range(n)]), ("DATA", 1, 4, [1, 2, 3]), ("Scal", 1, 7, 1.5), ("EPVt", 1, 5, 15000), ("CpEP", 1, 13, 1), ("CMNT", 1, 19, "a comment"), ("Tmpr", 1, 8, 50.0)]
+        if fsa: t += [("LIMS", 1, 18, "lims id"), ("CTID", 1, 18, "container")]
+        else: t += [("PBAS", 1, 2, seq.encode()), ("PBAS", 2, 2, seq.encode()), ("PCON", 2, 2, quals)]
+        rnd.shuffle(t)
+        return t
+    base = []
+    for n in [0, 1, 5, 10, 20, 21, 22, 30, 60, 100]:
+        base.append(BF.abi_file(tags_for(n)))
+    for _ in range(25): base.append(BF.abi_file(tags_for(rnd2.randint(0, 80), fsa=rnd2.random() < .3)))
+    base.append(BF.abi_file(tags_for(5, fsa=True)))
+    base.append(BF.abi_file([("PBAS", 2, 2, b"ACGT")]))                     # sequence without qualities
+    base.append(BF.abi_file([("PBAS", 2, 2, b"ACGT"), ("PCON", 2, 2, bytes([30, 30]))]))   # mismatched lengths
+    base.append(BF.abi_file([("PBAS", 1, 2, b"ACGT")]))                     # PBAS1 only
+    base.append(BF.abi_file([("RUND", 1, 10, (2020, 13, 1))])); base.append(BF.abi_file([("RUND", 1, 10, (0, 1, 1))])); base.append(BF.abi_file([("RUNT", 1, 11, (25, 0, 0, 0))]))
+    base.append(BF.abi_file([("DATA", 1, 99, b"\x01\x02")])); base.append(BF.abi_file([("SMPL", 1, 2, b"\xff\xfe")])); base.append(BF.abi_file([("PBAS", 2, 2, b"\xff")]))
+    base += [b"", b"AB", b"ABIF", b"ABIX" + b"\x00" * 100, b"ABIF" + b"\x00" * 10, b"ABIF" + b"\x00" * 26, BF.abi_file([], )]
+    allb = list(base)
+    for b in base:
+        for _ in range(8): allb.append(BF.mutate_bytes(b, rnd2))
+    for fmt in ("abi", "abi-trim"):
+        for b in allb: add({"kind": "parse", "format": fmt, "bytes": BF.lat(b)})
+    for b in rnd2.sample(allb, 40): add({"kind": "read", "format": "abi", "bytes": BF.lat(b)})
+    add({"kind": "parse", "format": "abi", "text": "ABIF"})
+    for b in rnd2.sample(base[:35], 8): add({"kind": "convert", "format": "abi", "bytes": BF.lat(b), "out": "fastq", "molecule_type": None})
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1110,6 +1144,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

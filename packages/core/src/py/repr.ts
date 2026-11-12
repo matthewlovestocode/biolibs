@@ -128,3 +128,32 @@ export function* pyIter(x: unknown): Generator<unknown> {
   else if (x instanceof Set) yield* x;
   else throw new TypeError(`'${pyTypeName(x)}' object is not iterable`);
 }
+
+/**
+ * Python's `repr(bytes)`, for example `b'ABIF'` or `b"it's"`.
+ *
+ * @example
+ * ```ts
+ * pyBytesRepr(Uint8Array.of(65, 0, 255));   // "b'A\\x00\\xff'"
+ * ```
+ */
+export function pyBytesRepr(bytes: Uint8Array): string {
+  let hasSingle = false;
+  let hasDouble = false;
+  for (const b of bytes) {
+    if (b === 0x27) hasSingle = true;
+    if (b === 0x22) hasDouble = true;
+  }
+  const q = hasSingle && !hasDouble ? '"' : "'";
+  let out = "";
+  for (const b of bytes) {
+    if (b === 0x5c) out += "\\\\";
+    else if (b === q.charCodeAt(0)) out += "\\" + q;
+    else if (b === 0x0a) out += "\\n";
+    else if (b === 0x0d) out += "\\r";
+    else if (b === 0x09) out += "\\t";
+    else if (b < 0x20 || b >= 0x7f) out += "\\x" + b.toString(16).padStart(2, "0");
+    else out += String.fromCharCode(b);
+  }
+  return `b${q}${out}${q}`;
+}

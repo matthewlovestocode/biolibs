@@ -123,6 +123,11 @@ export class BinaryStream {
     this.pos = Math.max(0, offset);
   }
 
+  /** Move to the end of the data (Python `seek(0, io.SEEK_END)`). */
+  seekEnd(): void {
+    this.pos = this.data.length;
+  }
+
   /** The current position (Python `tell()`). */
   tell(): number {
     return this.pos;

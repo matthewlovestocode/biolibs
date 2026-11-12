@@ -80,3 +80,33 @@ def mutate_bytes(b, rnd):
     return bytes(b)
 
 def lat(b): return b.decode("latin-1")
+
+def abi_file(tags, version=101, data_offset=None, extra_header=0):
+    """Build an ABIF file. tags: (name, number, elem_code, value) where value matches the code
+    (bytes for 2; str for 18/19; list for numeric arrays; (y, m, d) for 10; (h, m, s, hs) for 11)."""
+    fmts = {1: "b", 3: "H", 4: "h", 5: "i", 7: "f", 8: "d", 13: "B"}
+    entries, blobs = [], []
+    base = 4 + 26 + 100 + extra_header           # header (ABIF + 26 + padding) comes first; the directory follows it
+    dir_size = 28 * len(tags)
+    data_pos = base + dir_size
+    for name, number, code, value in tags:
+        if code == 2: raw, num, size = bytes(value), len(value), 1
+        elif code == 18: raw = bytes([len(value)]) + value.encode(); num, size = len(raw), 1
+        elif code == 19: raw = value.encode() + b"\x00"; num, size = len(raw), 1
+        elif code == 10: raw, num, size = struct.pack(">h2B", *value), 1, 4
+        elif code == 11: raw, num, size = struct.pack(">4B", *value), 1, 4
+        elif code in fmts:
+            vals = value if isinstance(value, (list, tuple)) else [value]
+            raw = struct.pack(">%d%s" % (len(vals), fmts[code]), *vals); num = len(vals); size = struct.calcsize(fmts[code])
+        else: raw, num, size = bytes(value), 1, 1
+        if len(raw) <= 4:
+            off = raw.ljust(4, b"\x00"); blob = b""
+            offfield = off
+        else:
+            offfield = struct.pack(">I", data_pos + sum(len(b) for b in blobs)); blob = raw
+        blobs.append(blob)
+        entries.append(struct.pack(">4sI2H2I", name.encode(), number, code, size, num, len(raw)) + offfield + b"\x00\x00\x00\x00")
+    # the 8-byte-per-tag layout above puts the data field at offset 20, as the reader expects
+    head = b"ABIF" + struct.pack(">H4sI2H3I", version, b"tdir", 1, 1023, 28, len(tags), dir_size, base if data_offset is None else data_offset)
+    head = head.ljust(base, b"\x00")
+    return head + b"".join(entries) + b"".join(blobs)
