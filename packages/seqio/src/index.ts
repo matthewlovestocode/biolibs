@@ -28,6 +28,7 @@ import "./gck/index.js";
 import "./xdna/index.js";
 import "./abi/index.js";
 import "./snapgene/index.js";
+import "./sff/index.js";
 
 export * from "./api.js";
 export * from "./errors.js";
@@ -49,5 +50,6 @@ export * from "./gck/index.js";
 export * from "./xdna/index.js";
 export * from "./abi/index.js";
 export * from "./snapgene/index.js";
+export * from "./sff/index.js";
 export { StructError, pack, unpack, calcsize, intFromBytes } from "./binary/struct.js";
 export { decodeAscii, encodeAscii, readExact } from "./binary/ascii.js";

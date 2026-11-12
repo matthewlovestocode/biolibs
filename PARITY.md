@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 486 / 528 applicable items verified against Biopython.**
+**Progress: 497 / 528 applicable items verified against Biopython.**
 
 
 
@@ -614,8 +614,8 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 ### Parse formats
 
-- [ ] `parse: abi`
-- [ ] `parse: abi-trim`
+- [x] `parse: abi`
+- [x] `parse: abi-trim`
 - [ ] `parse: ace`
 - [ ] `parse: cif-atom`
 - [ ] `parse: cif-seqres`
@@ -633,7 +633,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: fastq-sanger`
 - [x] `parse: fastq-solexa`
 - [x] `parse: gb`
-- [ ] `parse: gck`
+- [x] `parse: gck`
 - [x] `parse: genbank`
 - [x] `parse: genbank-cds`
 - [ ] `parse: gfa1`
@@ -644,7 +644,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `parse: mauve`
 - [ ] `parse: msf`
 - [ ] `parse: nexus`
-- [ ] `parse: nib`
+- [x] `parse: nib`
 - [ ] `parse: pdb-atom`
 - [ ] `parse: pdb-seqres`
 - [x] `parse: phd`
@@ -654,15 +654,15 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: pir`
 - [x] `parse: qual`
 - [~] `parse: seqxml`
-- [ ] `parse: sff`
-- [ ] `parse: sff-trim`
-- [ ] `parse: snapgene`
+- [x] `parse: sff`
+- [x] `parse: sff-trim`
+- [~] `parse: snapgene`
 - [ ] `parse: stockholm`
 - [x] `parse: swiss`
 - [x] `parse: tab`
-- [ ] `parse: twobit`
+- [x] `parse: twobit`
 - [ ] `parse: uniprot-xml`
-- [ ] `parse: xdna`
+- [x] `parse: xdna`
 
 ### Write formats
 
@@ -680,7 +680,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `write: maf`
 - [ ] `write: mauve`
 - [ ] `write: nexus`
-- [ ] `write: nib`
+- [x] `write: nib`
 - [x] `write: phd`
 - [ ] `write: phylip`
 - [ ] `write: phylip-relaxed`
@@ -688,10 +688,10 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `write: pir`
 - [x] `write: qual`
 - [x] `write: seqxml`
-- [ ] `write: sff`
+- [x] `write: sff`
 - [ ] `write: stockholm`
 - [x] `write: tab`
-- [ ] `write: xdna`
+- [x] `write: xdna`
 
 ## Bio.SeqUtils
 

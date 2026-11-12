@@ -106,28 +106,42 @@ export function pack(fmt: string, ...values: (number | bigint | boolean | Uint8A
   const view = new DataView(out.buffer);
   let at = 0;
   let v = 0;
-  const range = (code: string, x: number, lo: number, hi: number): number => {
-    if (!Number.isInteger(x)) throw new StructError("required argument is not an integer");
-    if (x < lo || x > hi) throw new StructError(code === "B" ? "ubyte format requires 0 <= number <= 255" : code === "I" ? "'I' format requires 0 <= number <= 4294967295" : "argument out of range");
+  const LIMITS: Record<string, [number, number]> = {
+    b: [-128, 127], B: [0, 255], h: [-32768, 32767], H: [0, 65535], i: [-2147483648, 2147483647], l: [-2147483648, 2147483647], I: [0, 4294967295], L: [0, 4294967295],
+  };
+  const range = (code: string, x: unknown): number => {
+    if (typeof x === "boolean") x = Number(x);
+    if (typeof x !== "number" || !Number.isInteger(x)) throw new StructError("required argument is not an integer");
+    const [lo, hi] = LIMITS[code]!;
+    if (x < lo || x > hi) throw new StructError(`'${code}' format requires ${lo} <= number <= ${hi}`);
     return x;
   };
   for (const { code, count } of items) {
     if (code === "x") { at += count; continue; }
     if (code === "s") {
-      const b = values[v++] as Uint8Array;
+      const b = values[v++];
+      if (!(b instanceof Uint8Array)) throw new StructError("argument for 's' must be a bytes object");
       out.set(b.subarray(0, count), at);
       at += count;
       continue;
     }
     for (let i = 0; i < count; i++) {
-      const x = values[v++] as number;
+      const x = values[v++];
       switch (code) {
-        case "B": view.setUint8(at, range("B", x, 0, 255)); break;
-        case "b": view.setInt8(at, range("b", x, -128, 127)); break;
-        case "H": view.setUint16(at, range("H", x, 0, 65535), little); break;
-        case "h": view.setInt16(at, range("h", x, -32768, 32767), little); break;
-        case "I": case "L": view.setUint32(at, range("I", x, 0, 4294967295), little); break;
-        case "i": case "l": view.setInt32(at, range("i", x, -2147483648, 2147483647), little); break;
+        case "B": view.setUint8(at, range("B", x)); break;
+        case "b": view.setInt8(at, range("b", x)); break;
+        case "H": view.setUint16(at, range("H", x), little); break;
+        case "h": view.setInt16(at, range("h", x), little); break;
+        case "I": case "L": view.setUint32(at, range(code, x), little); break;
+        case "i": case "l": view.setInt32(at, range(code, x), little); break;
+        case "Q": case "q": {
+          if (typeof x !== "bigint" && !(typeof x === "number" && Number.isInteger(x)) && typeof x !== "boolean") throw new StructError("required argument is not an integer");
+          const big = BigInt(x as number | bigint | boolean);
+          const [lo, hi] = code === "Q" ? [0n, 18446744073709551615n] : [-9223372036854775808n, 9223372036854775807n];
+          if (big < lo || big > hi) throw new StructError(`'${code}' format requires ${lo} <= number <= ${hi}`);
+          if (code === "Q") view.setBigUint64(at, big, little); else view.setBigInt64(at, big, little);
+          break;
+        }
         default: throw new StructError(`unsupported format ${code}`);
       }
       at += SIZES[code]!;

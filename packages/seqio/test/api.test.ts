@@ -154,3 +154,22 @@ describe("binary formats", () => {
     expect(() => [...parse(new TextEncoder().encode('<seqXML seqXMLversion="0.4"><entry id="a"></seqXML>'), "seqxml")]).toThrow(SAXParseException);
   });
 });
+
+import { NibIterator, StructError, pack, unpack } from "@biolibs/seqio";
+
+describe("binary helpers", () => {
+  it("struct pack and unpack round-trip", () => {
+    expect(unpack(">BHI", pack(">BHI", 1, 513, 70000))).toEqual([1, 513, 70000]);
+    expect(() => pack(">B", 300)).toThrow("'B' format requires 0 <= number <= 255");
+    expect(() => unpack(">I", Uint8Array.of(1, 2))).toThrow(StructError);
+  });
+  it("nib round trip", () => {
+    const out = new BytesHandle();
+    write(new SeqRecord(new Seq("ACGTNacg")), out, "nib");
+    const [rec] = [...new NibIterator(out.getvalue())];
+    expect(rec!.seq!.toString()).toBe("ACGTNacg");
+  });
+  it("refuses text for a binary format", () => {
+    expect(() => parse("abc", "nib")).toThrow(StreamModeError);
+  });
+});

@@ -1,6 +1,6 @@
 # @biolibs/seqio
 
-A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 19,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics and seqXML); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
+A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 25,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, nib, twoBit, GCK, xdna, ABIF, SnapGene and SFF); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
 
 ```ts
 import { parse, read, write, toDict, convert, StringHandle } from "@biolibs/seqio";
@@ -60,6 +60,13 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 | `phd` | yes | yes |
 | `ig` | yes | |
 | `seqxml` | yes (bytes) | yes (bytes) |
+| `nib` | yes (bytes) | yes (bytes) |
+| `twobit` | yes (bytes) | |
+| `gck` | yes (bytes) | |
+| `xdna` | yes (bytes) | yes (bytes) |
+| `abi`, `abi-trim` | yes (bytes) | |
+| `snapgene` | yes (bytes) | |
+| `sff`, `sff-trim` | yes (bytes) | yes (bytes) |
 
 `fasta` requires the file to begin with `>` (comments are an error with a helpful message); use `fasta-pearson` (`;` comments, text before the first `>` ignored) or `fasta-blast` (`#`, `!`, `;` comments) for those files. `fasta-blast` reproduces a bug in Biopython 1.88: after the first record it does not advance its saved header line, so later records reuse the first header. The output is identical to Biopython's.
 
@@ -88,6 +95,18 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 - `phd` (PHRED output): the `BEGIN_COMMENT` fields become `annotations` (absent ones are `null`); `phred_quality` and, when every site has one, `peak_location` become per-letter annotations. `PhdWriter` writes them back.
 - `ig`: IntelliGenetics/MASE files; comment lines go to `annotations["comment"]`.
 - `seqxml` (versions 0.1 to 0.4): reads and writes. There is no expat in the browser, so a small XML scanner in `seqxml/` produces the same events, and the reader feeds them 1024 bytes at a time exactly as Biopython does, so an error late in a file appears only after the earlier records. Handler errors (`ValueError`, `RuntimeError`, ...) match Biopython. Malformed XML raises `SAXParseException`, but its message text is our own and does not copy expat's wording.
+
+### Binary formats
+
+All of these take the file's **bytes** (`fs.readFileSync(path)`) and write to a `BytesHandle`.
+
+- `nib`: one sequence per file; the writer is little-endian. `twobit`: names and offsets are read up front and each sequence's bases are decoded on demand (N blocks and soft-masked lower case included); the `Seq` keeps a reference to the bytes, so slicing with a step works like Biopython's, including its `trunc((end - start) / step)` length for steps above one.
+- `gck`, `xdna`: sequence, features and topology; `xdna` writes one record, dropping fuzzy features and truncating long text with warnings.
+- `abi`: ABIF traces; `annotations["abif_raw"]` holds every tag (a `Map`). The record `name` stays empty, because Python takes it from the file name and we only see bytes. `abi-trim` removes low-quality ends.
+- `snapgene`: packets for sequence, notes, features and primers; the XML ones are read with a small DOM. `annotations["date"]` is a JavaScript `Date`.
+- `sff`: flowgram reads with optional clipping (`sff-trim` removes clipped regions). The writer builds the Roche-style index and goes back to rewrite the header, so it needs a `BytesHandle`. `readRocheXmlManifest(stream)` returns the XML manifest of an indexed file.
+- Corrupt files raise the same `ValueError`, `RuntimeError`, `AssertionError` and `struct.error` (class name `error`, exported as `StructError`) as Biopython. The numpy broadcasting errors from corrupt twoBit headers carry numpy's wording.
+- As with seqXML, the text of malformed-XML errors in `snapgene` (`ExpatError`) is not copied from expat.
 
 Other formats (pdb, ace, ...) are being added; see PARITY.md.
 
@@ -124,6 +143,8 @@ packages/seqio/src/
   phd/     parser.ts  iterator.ts  writer.ts  index.ts
   ig/      iterator.ts  index.ts
   seqxml/  xml-types.ts  xml-chars.ts  xml-names.ts  xml-scanner.ts  xml-sax.ts  content-handler.ts  iterator.ts  xml-generator.ts  writer.ts  index.ts
+  binary/  struct.ts  ascii.ts
+  nib/ twobit/ gck/ xdna/ abi/ snapgene/ sff/   (one directory per format)
   insdc/   text.ts  cleaner.ts  consumer.ts  scanner.ts  genbank-scanner.ts  embl-scanner.ts  iterators.ts
            location-string.ts  writer-base.ts  genbank-writer.ts  embl-writer.ts  converters.ts  index.ts
 ```

@@ -5,7 +5,7 @@
 import { captureWarnings } from "@biolibs/core";
 import * as SeqIO from "@biolibs/seqio";
 import {
-  FastaTwoLineWriter, FastaWriter, FastqIlluminaWriter, FastqPhredWriter, FastqSolexaWriter, LineStream, PirWriter, SeqXmlWriter, BytesHandle, QualPhredWriter, StringHandle,
+  FastaTwoLineWriter, FastaWriter, FastqIlluminaWriter, FastqPhredWriter, FastqSolexaWriter, LineStream, PirWriter, SeqXmlWriter, SffWriter, BytesHandle, QualPhredWriter, StringHandle,
   convert, fastaTwoLineParser, fastqGeneralIterator, pairedFastaQualIterator, parse, read, simpleFastaParser, toDict, write,
 } from "@biolibs/seqio";
 import { dec, enc } from "../../seqrecord/test/golden-runner";
@@ -19,7 +19,7 @@ export interface Case {
   result?: J; count?: number; text_out?: string; pairs?: J[]; keys?: string[];
 }
 
-const WRITERS: Record<string, any> = { FastaWriter, FastaTwoLineWriter, QualPhredWriter, FastqPhredWriter, FastqSolexaWriter, FastqIlluminaWriter, PirWriter, SeqXmlWriter };
+const WRITERS: Record<string, any> = { FastaWriter, FastaTwoLineWriter, QualPhredWriter, FastqPhredWriter, FastqSolexaWriter, FastqIlluminaWriter, PirWriter, SeqXmlWriter, SffWriter };
 const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
 
 /** Outcome as recorded by Python, so the two can be compared field by field. */

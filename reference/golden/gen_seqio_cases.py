@@ -8,7 +8,7 @@ import io, json, os, random, sys, warnings
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import Bio
 from Bio import SeqIO
-from Bio.SeqIO import FastaIO, QualityIO as Q, PirIO, SeqXmlIO
+from Bio.SeqIO import FastaIO, QualityIO as Q, PirIO, SeqXmlIO, SffIO
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 from Bio.SeqFeature import SeqFeature, SimpleLocation, CompoundLocation, Reference, ExactPosition, BeforePosition, AfterPosition, WithinPosition
@@ -41,7 +41,7 @@ def out_text(h, case):
     if not case.get("binary"): return v
     return v.decode("latin-1") if case["binary"] == "bytes" else v.decode("utf-8")
 
-WRITERS = {"SeqXmlWriter": SeqXmlIO.SeqXmlWriter, "FastaWriter": FastaIO.FastaWriter, "FastaTwoLineWriter": FastaIO.FastaTwoLineWriter, "QualPhredWriter": Q.QualPhredWriter,
+WRITERS = {"SffWriter": SffIO.SffWriter, "SeqXmlWriter": SeqXmlIO.SeqXmlWriter, "FastaWriter": FastaIO.FastaWriter, "FastaTwoLineWriter": FastaIO.FastaTwoLineWriter, "QualPhredWriter": Q.QualPhredWriter,
            "PirWriter": PirIO.PirWriter, "FastqPhredWriter": Q.FastqPhredWriter, "FastqSolexaWriter": Q.FastqSolexaWriter, "FastqIlluminaWriter": Q.FastqIlluminaWriter}
 
 def run(case):
@@ -1122,6 +1122,63 @@ def snapgene_cases():
     add({"kind": "parse", "format": "snapgene", "text": "abc"})
     for b in rnd2.sample(base[:60], 8): add({"kind": "convert", "format": "snapgene", "bytes": BF.lat(b), "out": "genbank", "molecule_type": None})
 
+
+# ------------------------------------------------------------------ sff
+def sff_record(rnd, i, nflows=8, uan=False):
+    n = rnd.randint(1, 30)
+    seq = "".join(rnd.choice("ACGTacgt") for _ in range(n))
+    name = "".join(rnd.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") for _ in range(14)) if uan else rnd.choice(["read%d" % i, "r_%d" % i, "x"])
+    clips = [rnd.randint(0, n) for _ in range(4)]
+    ann = [["flow_values", LST(*[rnd.randint(0, 400) for _ in range(nflows)])], ["flow_index", LST(*[rnd.randint(0, 5) for _ in range(n)])], ["flow_chars", "TACG" * (nflows // 4)], ["flow_key", "TCAG"],
+           ["clip_qual_left", clips[0]], ["clip_qual_right", clips[1]], ["clip_adapter_left", clips[2]], ["clip_adapter_right", clips[3]]]
+    return REC(S(seq), name, name, "", annotations=ann + [["molecule_type", "DNA"]], letter=[["phred_quality", LST(*[rnd.randint(0, 60) for _ in range(n)])]])
+
+def sff_bytes(records, index=True, xml=None):
+    buf = io.BytesIO()
+    w = SffIO.SffWriter(buf, index=index, xml=xml)
+    w.write_file([dec(r) for r in records])
+    return buf.getvalue()
+
+def sff_cases():
+    rnd2 = random.Random(77)
+    base = []
+    for k in range(40):
+        recs = [sff_record(rnd2, i, nflows=rnd2.choice([4, 8, 12]), uan=rnd2.random() < .3) for i in range(rnd2.randint(1, 5))]
+        nf = len(recs[0]["annotations"][0][1]["v"]); 
+        recs = [dict(r, annotations=[a if a[0] != "flow_values" else ["flow_values", LST(*[rnd2.randint(0, 400) for _ in range(nf)])] for a in r["annotations"]]) for r in recs]
+        for r in recs:      # same flow layout in every record of one file
+            r["annotations"] = [a if a[0] not in ("flow_chars",) else ["flow_chars", recs[0]["annotations"][2][1]] for a in r["annotations"]]
+        try: base.append(sff_bytes(recs, index=rnd2.random() < .6, xml=rnd2.choice([None, None, "<manifest/>"])))
+        except Exception as e: pass
+    base += [b"", b".sff", b".sff" + b"\x00" * 27, b".hsh" + b"\x00" * 27, b".srt" + b"\x00" * 27, b"xxxx" + b"\x00" * 27, b".sff\x00\x00\x00\x02" + b"\x00" * 23]
+    allb = list(base)
+    for b in base:
+        for _ in range(7): allb.append(BF.mutate_bytes(b, rnd2))
+    for fmt in ("sff", "sff-trim"):
+        for b in allb: add({"kind": "parse", "format": fmt, "bytes": BF.lat(b)})
+    for b in rnd2.sample(allb, 40): add({"kind": "read", "format": "sff", "bytes": BF.lat(b)})
+    add({"kind": "parse", "format": "sff", "text": ".sff"})
+    for b in rnd2.sample(base[:40], 10):
+        for out in ("fasta", "fastq", "sff"): add({"kind": "convert", "format": "sff", "bytes": BF.lat(b), "out": out, "binary": "bytes" if out == "sff" else False, "molecule_type": None})
+    # writer
+    good = [sff_record(rnd2, i) for i in range(3)]
+    def without(rec, key, where="annotations"):
+        r = dict(rec); r[where] = [a for a in rec[where] if a[0] != key]; return r
+    def setann(rec, key, value):
+        r = dict(rec); r["annotations"] = [[k, value] if k == key else [k, v] for k, v in rec["annotations"]]; return r
+    cases = [good, good[:1], [], [good[0], setann(good[1], "flow_key", "AAAA")], [good[0], setann(good[1], "flow_chars", "CCCCCCCC")], [good[0], without(good[1], "flow_key")], [good[0], without(good[1], "flow_values")]]
+    for key in ("flow_key", "flow_chars", "flow_values", "flow_index", "clip_qual_left", "clip_qual_right", "clip_adapter_left", "clip_adapter_right"):
+        cases.append([without(good[0], key)])
+    for key in ("clip_qual_left", "clip_qual_right", "clip_adapter_left", "clip_adapter_right"): cases.append([setann(good[0], key, -1)]); cases.append([setann(good[0], key, 70000)])
+    cases += [[dict(good[0], letter=[])], [dict(good[0], seq=U(5))], [dict(good[0], id="")], [dict(good[0], id="é")], [setann(good[0], "flow_values", LST(1, 2, 3))], [setann(good[0], "flow_values", LST(*[70000] * 8))], [setann(good[0], "flow_index", LST(300, *[1] * (len(good[0]["seq"]["v"]) - 1)))],
+              [setann(good[0], "flow_key", 5)], [setann(good[0], "flow_chars", "é" * 8)], [dict(good[0], seq=S("ACGT"), letter=[["phred_quality", LST(1, 2, 3, 400)]])], [setann(good[0], "flow_key", "TCAGé")], [dict(good[0], id="x" * 300)]]
+    for recs in cases:
+        add({"kind": "write", "format": "sff", "binary": "bytes", "records": recs})
+        add({"kind": "writer", "cls": "SffWriter", "binary": "bytes", "args": [False], "records": recs})
+        add({"kind": "writer", "cls": "SffWriter", "binary": "bytes", "args": [True, "<custom xml/>"], "records": recs})
+    for recs in cases[:2]: add({"kind": "format", "format": "sff", "record": recs[0]})
+    add({"kind": "write", "format": "sff", "records": good})
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1202,6 +1259,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

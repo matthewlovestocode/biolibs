@@ -158,23 +158,46 @@ export interface BinaryWriteHandle {
   write(data: Uint8Array): unknown;
 }
 
-/** An in-memory byte target, like Python's `io.BytesIO`. */
+/**
+ * An in-memory byte target, like Python's `io.BytesIO`: bytes are written at the current position, which
+ * `seek` and `tell` read and change, so a writer can go back and fill in a header.
+ */
 export class BytesHandle implements BinaryWriteHandle {
   readonly binary = true as const;
-  private parts: Uint8Array[] = [];
+  private buffer = new Uint8Array(256);
+  private size = 0;
+  private pos = 0;
 
-  /** Append bytes. */
+  /** Write bytes at the current position, overwriting what is there and growing the buffer as needed. */
   write(data: Uint8Array): number {
-    this.parts.push(data.slice());
+    const end = this.pos + data.length;
+    if (end > this.buffer.length) {
+      const bigger = new Uint8Array(Math.max(end, this.buffer.length * 2));
+      bigger.set(this.buffer.subarray(0, this.size));
+      this.buffer = bigger;
+    }
+    // Seeking past the end and writing leaves zeros in the gap, as a file would.
+    if (this.pos > this.size) this.buffer.fill(0, this.size, this.pos);
+    this.buffer.set(data, this.pos);
+    this.pos = end;
+    this.size = Math.max(this.size, end);
     return data.length;
+  }
+
+  /** Move to an absolute position. */
+  seek(offset: number): number {
+    this.pos = Math.max(0, offset);
+    return this.pos;
+  }
+
+  /** The current position. */
+  tell(): number {
+    return this.pos;
   }
 
   /** Everything written so far. */
   getvalue(): Uint8Array {
-    const out = new Uint8Array(this.parts.reduce((n, p) => n + p.length, 0));
-    let at = 0;
-    for (const p of this.parts) { out.set(p, at); at += p.length; }
-    return out;
+    return this.buffer.slice(0, this.size);
   }
 }
 
