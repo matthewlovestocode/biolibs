@@ -71,6 +71,19 @@ def run(case):
                         out["count"] = WRITERS[case["cls"]](h, *case.get("args", [])).write_file(recs)
                 finally:
                     out["text_out"] = out_text(h, case)
+            elif kind == "ace_parse":
+                from Bio.Sequencing import Ace
+                recs = []
+                out["parsed"] = recs
+                for c in Ace.parse(src(case)): recs.append(ace_enc(c))
+            elif kind == "ace_read":
+                from Bio.Sequencing import Ace
+                out["result"] = ace_enc(Ace.read(src(case)))
+            elif kind == "uniprot_raw":
+                from Bio.SeqIO import UniprotIO
+                recs = []
+                out["parsed"] = recs
+                for r in UniprotIO.UniprotIterator(src(case), return_raw_comments=True): recs.append(enc(r))
             elif kind == "twobit_ops":
                 res = []
                 out["ops_out"] = res
@@ -111,7 +124,7 @@ def run(case):
                 out["pairs"] = items
                 for pair in fn(io.StringIO(case["text"])): items.append(list(pair))
         except Exception as e:
-            out["exc"] = {"type": tname(e), "msg": None if tname(e) in ("SAXParseException", "ExpatError") else emsg(e)}   # expat's wording is not reproduced
+            out["exc"] = {"type": tname(e), "msg": None if tname(e) in ("SAXParseException", "ExpatError", "ParseError") else emsg(e)}   # expat's wording is not reproduced
         finally:
             for h in OPENED: h.close()
             OPENED.clear()
@@ -1556,10 +1569,222 @@ SQ   Sequence 40 BP;
 //
 """,
 ]
+# ------------------------------------------------------------------ pdb-seqres
+RES3 = ["ALA", "ARG", "ASN", "ASP", "CYS", "GLN", "GLU", "GLY", "HIS", "ILE", "LEU", "LYS", "MET", "PHE", "PRO", "SER", "THR", "TRP", "TYR", "VAL", "MSE", "SEP", "UNK", "HOH", "  A", "DA", "ala", "XYZ", "PCA", "CSO"]
+def pdb_entry(rnd):
+    pid = "".join(rnd.choice("123456789ABCDEFGHIJ") for _ in range(4))
+    out = [f"HEADER    TEST PROTEIN                            01-JAN-00   {pid}              \n"]
+    chains = rnd.sample("ABCDEFGHab 1", rnd.randint(1, 4))
+    for ch in chains:
+        if rnd.random() < .7:
+            out.append(f"DBREF  {pid} {ch}    1   {rnd.randint(10,99):3d} UNP    P{rnd.randint(10000,99999)}   {rnd.choice(['POL_HV1N5', 'ABC_HUMAN', ''])[:12]:<12}  {rnd.randint(1,999):4d}  {rnd.randint(1,999):4d}\n")
+        elif rnd.random() < .3:
+            out.append(f"DBREF1 {pid} {ch}    1   {rnd.randint(10,99):3d}  GB                  {rnd.choice(['XYZ_ECOLI', 'ABC123'])}\n")
+            out.append(f"DBREF2 {pid} {ch}     {rnd.choice(['AB123456', 'Q9XXXX'])}   {rnd.randint(1,99):4d}  {rnd.randint(1,99):4d}\n")
+    for ch in chains:
+        n = rnd.randint(1, 30); res = [rnd.choice(RES3) for _ in range(n)]
+        for i in range(0, n, 13):
+            out.append(f"SEQRES{i // 13 + 1:4d} {ch} {n:4d}  " + " ".join(f"{r:>3}" for r in res[i:i + 13]) + "\n")
+    out.append("ATOM      1  N   ALA A   1      11.104   6.134  -6.504  1.00  0.00           N  \n")
+    out.append("END\n")
+    return "".join(out)
+
+def pdb_cases():
+    r2 = random.Random(7)
+    base = [pdb_entry(r2) for _ in range(120)]
+    base += ["", "\n", "HEADER\n", "SEQRES\n", "SEQRES   1 A\n", "SEQRES   1 A   3  ALA GLY\n", "SEQRES   1 A   3  ALA GLY\nSEQRES   2 A   3  VAL\n", "SEQRES   1 B   2  ALA GLY\nSEQRES   1 A   2  VAL LEU\n",
+             "DBREF  1ABC A    1    10 UNP    P12345   NAME_HUMAN      1    10\n", "DBREF1 1ABC A    1    10  GB                  XYZ\nDBREF2 1ABC A     AB123   1  10\n", "DBREF2 1ABC A     AB123   1  10\n",
+             "DBREF1 1ABC A    1    10  GB                  XYZ\nDBREF2 1ABD A     AB123   1  10\n", "DBREF1 1ABC A    1    10  GB                  XYZ\nDBREF2 1ABC B     AB123   1  10\n", "DBREF2 1ABC", "DBREF  1ABC", "SEQRES   1 ", "no record\n",
+             "SEQRES   1 A   3  ALA GLY\r\n", "seqres   1 A   3  ALA GLY\n", "SEQRES   1 A   3  ALA   GLY  VAL\n", "SEQRES   1 A   3\n", "SEQRES   1   3  ALA\n"]
+    allt = list(base)
+    for t in base[:120]:
+        for _ in range(5): allt.append(mutate_text(t, r2, junk=("SEQRES", "DBREF", "DBREF1", "DBREF2", "SEQRES   1 A", "ALA GLY")))
+    for t in allt: add({"kind": "parse", "format": "pdb-seqres", "text": t})
+    for t in r2.sample(allt, 50): add({"kind": "read", "format": "pdb-seqres", "text": t})
+    add({"kind": "parse", "format": "pdb-seqres", "bytes": "SEQRES   1 A   1  ALA\n"})
+    for t in r2.sample(base[:120], 15):
+        for out in ("fasta", "tab"): add({"kind": "convert", "format": "pdb-seqres", "text": t, "out": out, "molecule_type": None})
+
+# ------------------------------------------------------------------ gfa1 / gfa2
+import hashlib
+def gfa_tags(rnd, seq):
+    pool = ["VN:Z:1.0", "xx:Z:hello", "RC:i:10", "KC:i:5", "dp:f:1.5", "ab:A:c", "jj:J:{\"a\":1}", "hh:H:1AFF", "bb:B:i,1,2,3", f"LN:i:{len(seq)}", f"LN:i:{len(seq) + 1}", "LN:i:5",
+            "SH:H:" + hashlib.sha256(seq.encode()).hexdigest().upper(), "SH:H:ABCDEF", "SH:H:" + hashlib.sha256(seq.encode()).hexdigest(),
+            # malformed on purpose
+            "xx", "xx:Z", "x:Z:a", "xx:Q:a", "RC:i:abc", "dp:f:x", "ab:A:cc", "hh:H:xyz", "bb:B:q,1", "jj:J:", "xx:Z:a:b:c", "xx::a", "LN:i:abc"]
+    return [rnd.choice(pool) for _ in range(rnd.choice([0, 0, 1, 1, 2, 3]))]
+
+def gfa_doc(rnd, v2):
+    out = ["H\tVN:Z:%s\n" % ("2.0" if v2 else "1.0")]
+    for i in range(rnd.randint(0, 6)):
+        seq = rnd.choice(["*", "".join(rnd.choice("ACGTN") for _ in range(rnd.randint(1, 30)))])
+        tags = gfa_tags(rnd, seq if seq != "*" else "")
+        if v2: out.append("\t".join(["S", f"s{i}", str(len(seq) if seq != "*" else rnd.randint(1, 50)), seq] + tags) + "\n")
+        else: out.append("\t".join(["S", f"s{i}", seq] + tags) + "\n")
+        if rnd.random() < .3: out.append("L\ts0\t+\ts1\t-\t4M\n" if not v2 else "E\t*\ts0+\ts1-\t0\t4\t0\t4\t4M\n")
+        if rnd.random() < .1: out.append(rnd.choice(["\n", "\n\n"]))
+    return "".join(out)
+
+def gfa_cases(v2):
+    fmt = "gfa2" if v2 else "gfa1"
+    r2 = random.Random(11 if v2 else 12)
+    base = [gfa_doc(r2, v2) for _ in range(120)]
+    base += ["", "\n", "S\n", "S\ta\n", "S\ta\tACGT\n", "S\ta\t4\tACGT\n", "S\ta\tx\tACGT\n", "S\ta\t4\n", "S\ta\t*\n", "S\ta\t4\t*\tLN:i:4\n", "S\ta\t*\tLN:i:4\n", "S\ta\t*\tLN:i:0\n",
+             "S\ta\tACGT\tLN:i:4\n", "S\ta\t4\tACGT\tLN:i:4\n", "S\ta\t4\tACGT\tSH:H:" + hashlib.sha256(b"ACGT").hexdigest().upper() + "\n", "S a ACGT\n", "S a 4 ACGT\n", "s\ta\tACGT\n",
+             "H\tVN:Z:1.0\n", "S\ta\tACGT", "S\ta\t4\tACGT", "\nS\ta\tACGT\n", "S\ta\tACGT\r\n", "S\ta\tACGT\tLN:i:4\tLN:i:5\n", "S\ta\tACGT\tRC:i:1\tRC:i:2\n"]
+    allt = list(base)
+    for t in base[:120]:
+        for _ in range(5): allt.append(mutate_text(t, r2, junk=("S\t", "\t", "LN:i:3", "*", "SH:H:00")))
+    for t in allt: add({"kind": "parse", "format": fmt, "text": t})
+    for t in r2.sample(allt, 50): add({"kind": "read", "format": fmt, "text": t})
+    add({"kind": "parse", "format": fmt, "bytes": "S\ta\tAC\n"})
+    for t in r2.sample(base[:120], 15):
+        for out in ("fasta", "tab"): add({"kind": "convert", "format": fmt, "text": t, "out": out, "molecule_type": None})
+
+# ------------------------------------------------------------------ uniprot-xml
+UP_NS = 'xmlns="http://uniprot.org/uniprot" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://uniprot.org/uniprot http://www.uniprot.org/support/docs/uniprot.xsd"'
+def pick(rnd, good, bad=(), p=0.06):
+    """Mostly a well-formed variant, occasionally a deliberately broken one."""
+    return rnd.choice(list(bad)) if bad and rnd.random() < p else rnd.choice(list(good))
+def up_comment(rnd):
+    t = pick(rnd, ["function", "subunit", "similarity", "PTM", "cofactor", "subcellular location", "interaction", "alternative products", "mass spectrometry", "online information", "sequence caution", "disease", "RNA editing"], ["bogus"], .03)
+    txt = f'<text evidence="1">{rnd.choice(["A function.", "x &amp; y", "", "multi word text"])}</text>'
+    if t == "subcellular location": body = '<subcellularLocation><location evidence="1">Cytoplasm</location><topology>Single-pass</topology></subcellularLocation>' + rnd.choice(["", "<subcellularLocation><location>Nucleus</location></subcellularLocation>"])
+    elif t == "interaction": body = '<interactant intactId="EBI-1"/><interactant intactId="EBI-2"><id>P1</id></interactant>' + pick(rnd, [""], ["<interactant/>"], .1)
+    elif t == "alternative products": body = '<event type="alternative splicing"/><isoform><id>P12345-1</id><name>1</name></isoform><isoform><id>P12345-2</id></isoform>'
+    elif t == "mass spectrometry":
+        loc = pick(rnd, ['<location><begin position="2"/><end position="10"/></location>', '<location><position position="5"/></location>', ''], ['<location><begin status="unknown"/><end position="3"/></location>', '<location><begin position="x"/><end position="3"/></location>', '<location><begin position="1"/></location>'], .15)
+        return f'<comment type="{t}"{pick(rnd, [" mass=\"1000.5\" method=\"MALDI\""], [" mass=\"5\"", ""], .05)}>{loc}</comment>'
+    elif t == "online information": body = '<link uri="http://example.org/a"/><link uri="http://example.org/b"/>'
+    else: body = txt
+    return f'<comment type="{t}"{rnd.choice(["", " name=\"Nm\""])}>{body}</comment>'
+def up_feature(rnd):
+    loc = pick(rnd, ['<location><begin position="1"/><end position="10"/></location>', '<location><position position="5"/></location>', '<location><begin status="less than" position="1"/><end status="greater than" position="9"/></location>',
+                     '<location><begin status="unknown"/><end status="uncertain" position="9"/></location>', '<location><position status="unknown"/></location>', ''],
+               ['<location><position status="weird" position="3"/></location>', '<location><begin position="10"/><end position="2"/></location>', '<location><begin position="a"/><end position="2"/></location>', '<location><position/></location>', '<location/>'], .12)
+    extra = pick(rnd, ["", "<original>A</original><variation>V</variation>", '<ligand><name>ZN(2+)</name><dbReference type="ChEBI" id="CHEBI:29105"/></ligand>', '<ligand><name> </name></ligand>', '<ligand/>', "<note>x</note>"])
+    return f'<feature type="{rnd.choice(["domain", "chain", "site", "variant", "binding site"])}" description="d" {rnd.choice(["", "id=\"f1\" ", "evidence=\"1\" "])}>{extra}{loc}</feature>'
+def up_ref(rnd):
+    cit_t = pick(rnd, ["journal article", "submission", "book", "patent"])
+    attrs = f'type="{cit_t}"' + (' db="EMBL"' if cit_t == "submission" or rnd.random() < .2 else "") + rnd.choice(["", ' name="Nature" volume="12" first="1" last="9" date="2001"', ' name="Cell"', ' date="2001"'])
+    inner = rnd.choice(["", "<title>A title</title>"]) + rnd.choice(["", '<authorList><person name="Smith J"/><person name="Doe A"/></authorList>']) + rnd.choice(["", '<dbReference type="PubMed" id="123"/>', '<dbReference type="DOI" id="10.1/x"/>', '<dbReference type="MEDLINE" id="9"/>'])
+    bad = rnd.random() < .04
+    return f'<reference key="1"><citation {attrs}>{inner}{"<title/>" if bad else ""}</citation>{rnd.choice(["", "<scope>NUCLEOTIDE SEQUENCE</scope><scope>X</scope>"])}{rnd.choice(["", "<source><tissue>Liver</tissue></source>"])}</reference>'
+def up_entry(rnd):
+    acc = rnd.choice("OPQ") + "".join(rnd.choice("0123456789") for _ in range(5))
+    parts = []
+    if rnd.random() < .97: parts.extend(f"<accession>{acc}{i}</accession>" for i in range(rnd.randint(1, 3)))
+    parts.append(f"<name>{rnd.choice(['ABC_HUMAN', 'XYZ_ECOLI'])}</name>" if rnd.random() < .97 else "<name/>")
+    if rnd.random() < .8: parts.append("<protein>" + rnd.choice(['<recommendedName><fullName>Full name</fullName><shortName>SN</shortName></recommendedName>', '<submittedName><fullName>Sub</fullName></submittedName>', '']) + rnd.choice(['', '<alternativeName><fullName>Alt</fullName></alternativeName><alternativeName><fullName>Alt</fullName></alternativeName>', '<domain/>']) + "</protein>")
+    if rnd.random() < .7: parts.append("<gene>" + pick(rnd, ['<name type="primary">ABC</name>', '<name type="synonym">S1</name><name type="synonym">S2</name>', '<name>nt</name>'], ['<name type="primary"/>']) + "</gene>")
+    if rnd.random() < .8: parts.append("<organism>" + pick(rnd, ['<name type="scientific">Homo sapiens</name><name type="common">Human</name>', '<name type="scientific">E. coli</name>', '<name type="common">c</name>', '<name type="other">o</name>'], ['<name>notype</name>', '<name type="scientific"/>']) + pick(rnd, ['', '<dbReference type="NCBI Taxonomy" id="9606"/>'], ['<dbReference type="NCBI Taxonomy"/>']) + rnd.choice(['', '<lineage><taxon>Eukaryota</taxon><taxon>Metazoa</taxon></lineage>']) + "</organism>")
+    if rnd.random() < .2: parts.append("<organismHost><name>Host</name></organismHost>")
+    if rnd.random() < .2: parts.append(pick(rnd, ['<geneLocation type="plasmid"/>'], ['<geneLocation/>']))
+    for _ in range(rnd.randint(0, 2)): parts.append(up_ref(rnd))
+    for _ in range(rnd.randint(0, 3)): parts.append(up_comment(rnd))
+    for _ in range(rnd.randint(0, 3)): parts.append(pick(rnd, ['<dbReference type="EMBL" id="AB1"/>', '<dbReference type="PDB" id="1ABC"><property type="method" value="X-ray"/><property type="resolution" value="2.0"/><property type="chains" value="A/B=1-100, C=5-10"/></dbReference>',
+                                                              '<dbReference type="PDB" id="2XYZ"><property type="chains" value="A=-"/></dbReference>'],
+                                                             ['<dbReference type="PDB" id="3"><property type="chains" value="A"/></dbReference>', '<dbReference type="PDB" id="4"><property type="chains" value="A=9-2"/></dbReference>',
+                                                              '<dbReference type="PDB" id="5"><property type="chains" value="A=1"/></dbReference>', '<dbReference type="PDB" id="6"><property value="x"/></dbReference>', '<dbReference type="PDB" id="7"><property type="method"/></dbReference>', '<dbReference type="X"/>', '<dbReference id="9"/>'], .1))
+    if rnd.random() < .6: parts.append(pick(rnd, ['<proteinExistence type="evidence at protein level"/>'], ['<proteinExistence/>']))
+    for _ in range(rnd.randint(0, 3)): parts.append(pick(rnd, ['<keyword id="KW-1" evidence="1">Kinase</keyword>', '<keyword>Kinase</keyword>'], ['<keyword/>']))
+    for _ in range(rnd.randint(0, 3)): parts.append(up_feature(rnd))
+    for _ in range(rnd.randint(0, 2)): parts.append(pick(rnd, ['<evidence type="ECO:0000269" key="1"/>', '<evidence type="ECO:1" key="2" attribute="a"/>', '<evidence key="4"/>'], ['<evidence version="3" key="4"/>', '<evidence organism="o"/>'], .1))
+    if rnd.random() < .93:
+        sq = rand_seq(rnd, "ACDEFGHIKLMNPQRSTVWY", 0, 60)
+        parts.append(pick(rnd, [f'<sequence length="{len(sq)}" mass="1234" checksum="ABC" modified="2001-01-01" version="{rnd.randint(1, 3)}">{sq}</sequence>', f'<sequence length="{len(sq)}">{sq[:20]}\n{sq[20:]}</sequence>', f'<sequence>{sq}</sequence>'],
+                          [f'<sequence length="{len(sq)}" mass="x">{sq}</sequence>', '<sequence/>'], .05))
+    if rnd.random() < .15: rnd.shuffle(parts)
+    attrs = pick(rnd, ['dataset="Swiss-Prot" created="2000-01-01" modified="2010-01-01" version="5"', 'dataset="TrEMBL" version="1"', '', 'dataset="Swiss-Prot"', 'dataset="S" version=" 7 "'], ['version="x"'], .03)
+    return f"<entry {attrs}>" + "".join(parts) + "</entry>"
+def up_doc(rnd):
+    ns = pick(rnd, [UP_NS, UP_NS, UP_NS, 'xmlns="http://uniprot.org/uniprot"', 'xmlns="http://uniprot.org/uniprot" xmlns:a="http://www.w3.org/1999/xhtml"'], ['xmlns="http://example.org/other"', '', 'xmlns="http://uniprot.org/uniprot" xmlns:a="http://example.org/a"', 'xmlns=""'], .06)
+    entries = "".join(up_entry(rnd) for _ in range(rnd.randint(0, 4)))
+    tail = rnd.choice(["", '<copyright>Copyright (c) UniProt</copyright>', "<!-- c -->"])
+    return rnd.choice(['<?xml version="1.0" encoding="UTF-8"?>\n', '', '<?xml version="1.0"?>']) + f"<uniprot {ns}>" + entries + tail + "</uniprot>\n"
+
+def uniprot_cases():
+    r2 = random.Random(99)
+    base = [up_doc(r2) for _ in range(260)]
+    big = up_doc(r2).replace("</uniprot>", "") + "".join(up_entry(r2) for _ in range(250)) + "</uniprot>"
+    bad_tail = big.replace("</uniprot>", "<broken></uniprot>")
+    base += [big, bad_tail, big.replace("</uniprot>", ""), big[:30000]]
+    base += ["", " ", "\n", "<", "<a/>", "<uniprot/>", f"<uniprot {UP_NS}/>", f"<uniprot {UP_NS}></uniprot>", f"<uniprot {UP_NS}><entry/></uniprot>", f"<uniprot {UP_NS}><entry><accession>P1</accession></entry></uniprot>",
+             f"<uniprot {UP_NS}><entry><accession>P1</accession></entry>", f"<uniprot {UP_NS}><entry><accession>P1</accession></entry></uniprot><x/>", '<?xml version="1.0"?>', '<?xml version="1.0"?>\n', "<!-- c -->",
+             f"<uniprot {UP_NS}><entry><accession/></entry></uniprot>", f"<uniprot {UP_NS}><entry><name>N</name></entry></uniprot>", f"<uniprot {UP_NS}><entry><accession>P1</accession><accession>P1</accession><accession>P2</accession></entry></uniprot>",
+             f'<uniprot {UP_NS}><entry><accession>P1</accession><comment type="mass spectrometry" mass="1" method="m"><location><begin position="1"/></location></comment></entry></uniprot>',
+             f'<uniprot {UP_NS}><entry><accession>P1</accession><comment type="mass spectrometry" mass="1" method="m"><location><begin position="1"/></location></comment></entry><entry><accession>P2</accession></entry></uniprot>',
+             f'<uniprot {UP_NS}><entry><accession>P1</accession><evidence version="1"/><evidence version="1"/></entry></uniprot>', f'<uniprot {UP_NS}><entry dataset="D" version="2"><accession>P1</accession><evidence dataset="x"/></entry></uniprot>',
+             f'<uniprot {UP_NS}><entry><accession>P1</accession><organism><name type="scientific">A</name></organism><evidence organism="x"/></entry></uniprot>', f'<uniprot {UP_NS}><entry><accession>P1</accession><sequence length="3">A&#67;<![CDATA[D ]]> E</sequence></entry></uniprot>',
+             f'<uniprot {UP_NS}><entry><accession>P1</accession><sequence length="3">AC<!-- x -->D</sequence></entry></uniprot>', f'<uniprot {UP_NS}><entry><accession>P\u00e9</accession></entry></uniprot>', f'<uniprot {UP_NS}><entry><accession>P&#128512;</accession></entry></uniprot>']
+    allt = list(base)
+    for t in base[:260]:
+        for _ in range(4): allt.append(mutate_xml(t, r2))
+    for t in allt: add({"kind": "parse", "format": "uniprot-xml", "bytes": t.encode("utf-8").decode("latin-1")})
+    for t in r2.sample(allt, 60): add({"kind": "read", "format": "uniprot-xml", "bytes": t.encode("utf-8").decode("latin-1")})
+    for t in allt[:300] + r2.sample(allt, 100): add({"kind": "uniprot_raw", "bytes": t.encode("utf-8").decode("latin-1")})
+    add({"kind": "parse", "format": "uniprot-xml", "text": f"<uniprot {UP_NS}/>"})
+    for t in r2.sample(base[:260], 12):
+        for out in ("fasta", "tab"): add({"kind": "convert", "format": "uniprot-xml", "bytes": t.encode("utf-8").decode("latin-1"), "out": out, "molecule_type": None})
+
+# ------------------------------------------------------------------ ace
+def ace_enc(x):
+    """Encode Bio.Sequencing.Ace objects by class name and attributes (in definition order)."""
+    if isinstance(x, list): return [ace_enc(i) for i in x]
+    if hasattr(x, "__dict__"): return {"$": type(x).__name__, **{k: ace_enc(v) for k, v in vars(x).items()}}
+    return x
+def ace_doc(rnd):
+    out = []
+    nco = rnd.randint(0, 3)
+    out.append(f"AS {nco} {rnd.randint(0, 9)}\n\n")
+    for c in range(nco):
+        seq = "".join(rnd.choice("ACGTN*") for _ in range(rnd.randint(1, 40)))
+        gaps = seq.count("*")
+        nr = rnd.randint(1, 3)
+        out.append(f"CO Contig{c + 1} {len(seq)} {nr} 1 {rnd.choice('UC')}\n" + "\n".join(seq[i:i + 20] for i in range(0, len(seq), 20)) + "\n\n")
+        qs = [rnd.randint(0, 90) for _ in range(len(seq) - gaps)]
+        out.append("BQ\n" + " ".join(map(str, qs)) + " \n\n" if qs else "BQ\n\n")
+        for r in range(nr): out.append(f"AF Contig{c + 1}_read{r} {rnd.choice('UC')} {rnd.randint(-5, 30)}\n")
+        out.append("\n")
+        out.append(f"BS 1 {len(seq)} Contig{c + 1}_read0\n\n")
+        for r in range(nr):
+            rs = "".join(rnd.choice("ACGT*") for _ in range(rnd.randint(1, 50)))
+            out.append(f"RD Contig{c + 1}_read{r} {len(rs)} 0 0\n" + "\n".join(rs[i:i + 25] for i in range(0, len(rs), 25)) + "\n\n")
+            out.append(f"QA 1 {len(rs)} 1 {len(rs)}\n")
+            if rnd.random() < .8: out.append(rnd.choice(["DS CHROMAT_FILE: a.scf PHD_FILE: a.phd TIME: Mon Jan 1 CHEM: term DYE: big DIRECTION: fwd TEMPLATE: t1\n", "DS CHROMAT_FILE: x TIME: y\n", "DS\n", "DS TEMPLATE: t DIRECTION: rev\n"]))
+            if rnd.random() < .3: out.append("\n")
+            if rnd.random() < .4: out.append(f"RT{{\nContig{c + 1}_read{r} tag crossmatch 1 5 060101:120000\nCOMMENT{{\nsome comment\nC}}\n}}\n")
+            if rnd.random() < .3: out.append(f"WR{{\nContig{c + 1}_read{r} svn phrap 20060101:120000\n}}\n")
+            out.append("\n")
+        if rnd.random() < .3: out.append(f"CT{{\nContig{c + 1} repeat consed 1 5 060101:120000 NoTrans\ninfo line\nCOMMENT{{\nct comment\nC}}\n}}\n\n")
+        if rnd.random() < .3: out.append("WA{\nphrap_params phrap 060101:120000\nphrap 1\n}\n\n")
+    if rnd.random() < .3: out.append(f"CT{{\nContig1 repeat consed 1 5 060101:120000\ninfo\n}}\n")
+    if rnd.random() < .3: out.append("RT{\nContig1_read0 tag crossmatch 1 5 060101:120000\n}\n")
+    return "".join(out)
+
+def ace_cases():
+    r2 = random.Random(31)
+    base = [ace_doc(r2) for _ in range(150)]
+    base += ["", "\n", "AS 0 0\n", "AS 1 1\n", "AS 1\n", "AS x y\n", "XX 1 1\n", "CO C 1 1 1 U\nA\n\nBQ\n10\n\nAF r U 1\n\nBS 1 1 r\n\nRD r 1 0 0\nA\n\nQA 1 1 1 1\n",
+             "CO C 1 1 1 U\nA\n\nBQ\n10\n\nAF r U 1\n\nBS 1 1 r\n\nRD r 1 0 0\nA\n\nQA 1 1 1 1\nDS CHROMAT_FILE: a\n", "CO C 1 1 1 U\nA\n", "CO C 1 1 1 U\nA\n\nXX\n", "CO C 1 1 1 U\nA\n\nBQ\n", "CO C 1 1 1 U\nA\n\nBQ\n10\n\nAF r U 1",
+             "CO C 1 1 1 U\nA\n\nBQ\n10\n\nAF r U 1\n\n", "CO C 1 1 1 U\nA\n\nBQ\n10\n\nAF r U 1\n\nBS 1 1 r", "CO C 1 1 1 U\nA\n\nBQ\n10\n\nAF r U 1\n\nBS 1 1 r\n\nXX\n",
+             "CO C 1 1 1 U\nA*\n\nBQ\n10\n\nAF r U 1\n\nBS 1 1 r\n\nRD r 1 0 0\nA\n\nXX\n", "CO C 2 1 1 U\nA-*\n\nBQ\n10\n\nAF r U 1\n\nBS 1 1 r\n\nRD r 1 0 0\nA\n\nQA 1 1 1 1\n",
+             "CO C 3 1 1 U\nACG\n\nBQ\n10\n\nAF r U 1\n\nBS 1 1 r\n\nRD r 1 0 0\nA\n\nQA 1 1 1 1\n", "CO C 1 1 1 U\nA\n\nBQ\n10 20\n\nAF r U 1\n\nBS 1 1 r\n\nRD r 1 0 0\nA\n\nQA 1 1 1 1\n"]
+    allt = list(base)
+    for t in base[:150]:
+        for _ in range(5): allt.append(mutate_text(t, r2, junk=("CO ", "BQ", "AF ", "BS ", "RD ", "QA ", "DS ", "RT{", "WR{", "WA{", "CT{", "}", "C}", "COMMENT{", "10 20")))
+    for t in allt: add({"kind": "parse", "format": "ace", "text": t})
+    for t in r2.sample(allt, 60): add({"kind": "read", "format": "ace", "text": t})
+    for t in allt: add({"kind": "ace_parse", "text": t})
+    for t in allt[:220]: add({"kind": "ace_read", "text": t})
+    add({"kind": "parse", "format": "ace", "bytes": "CO C 1 1 1 U\nA\n"})
+    for t in r2.sample(base[:150], 15):
+        for out in ("fasta", "tab", "fastq"): add({"kind": "convert", "format": "ace", "text": t, "out": out, "molecule_type": None})
+
 {"fasta": family_cases, "fastq": fastq_cases,
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "mauve": mauve_cases, "maf": maf_cases, "nexus": nexus_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "mauve": mauve_cases, "maf": maf_cases, "nexus": nexus_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases, "pdb-seqres": pdb_cases, "gfa1": lambda: gfa_cases(False), "gfa2": lambda: gfa_cases(True), "uniprot-xml": uniprot_cases, "ace": ace_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

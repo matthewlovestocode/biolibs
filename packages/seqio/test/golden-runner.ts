@@ -5,7 +5,7 @@
 import { captureWarnings } from "@biolibs/core";
 import * as SeqIO from "@biolibs/seqio";
 import {
-  FastaTwoLineWriter, FastaWriter, FastqIlluminaWriter, FastqPhredWriter, FastqSolexaWriter, LineStream, PirWriter, SeqXmlWriter, SffWriter, BytesHandle, MauveIterator, QualPhredWriter, StringHandle,
+  FastaTwoLineWriter, FastaWriter, FastqIlluminaWriter, FastqPhredWriter, FastqSolexaWriter, LineStream, PirWriter, SeqXmlWriter, SffWriter, BytesHandle, MauveIterator, QualPhredWriter, StringHandle, UniprotIterator, parseAce, readAce,
   convert, fastaTwoLineParser, fastqGeneralIterator, pairedFastaQualIterator, parse, read, simpleFastaParser, toDict, write,
 } from "@biolibs/seqio";
 import { dec, enc } from "../../seqrecord/test/golden-runner";
@@ -21,6 +21,20 @@ export interface Case {
 
 const WRITERS: Record<string, any> = { FastaWriter, FastaTwoLineWriter, QualPhredWriter, FastqPhredWriter, FastqSolexaWriter, FastqIlluminaWriter, PirWriter, SeqXmlWriter, SffWriter };
 const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
+
+/** The Python class names of the Bio.Sequencing.Ace records that are lower-case there. */
+const ACE_LOWER = new Set(["Rd", "Qa", "Ds", "Af", "Bs", "Rt", "Ct", "Wa", "Wr"]);
+const snake = (s: string) => s.replace(/[A-Z]/g, (m) => "_" + m.toLowerCase());
+
+/** Encode an ACE record like the generator's `ace_enc`: class name plus attributes in definition order. */
+function encAce(x: unknown): J {
+  if (Array.isArray(x)) return x.map(encAce) as unknown as J;
+  if (x !== null && typeof x === "object") {
+    const name = x.constructor.name;
+    return { $: ACE_LOWER.has(name) ? name.toLowerCase() : name, ...Object.fromEntries(Object.entries(x).map(([k, v]) => [snake(k), encAce(v)])) };
+  }
+  return x as J;
+}
 
 /** Outcome as recorded by Python, so the two can be compared field by field. */
 export interface Outcome {
@@ -42,6 +56,19 @@ export function runCase(c: Case): Outcome {
         const recs: J[] = [];
         out.parsed = recs;
         for (const r of parse(source(c), c.format as string)) recs.push(enc(r));
+        break;
+      }
+      case "ace_parse": {
+        const recs: J[] = [];
+        out.parsed = recs;
+        for (const c2 of parseAce(source(c))) recs.push(encAce(c2));
+        break;
+      }
+      case "ace_read": out.result = encAce(readAce(source(c))); break;
+      case "uniprot_raw": {
+        const recs: J[] = [];
+        out.parsed = recs;
+        for (const r of new UniprotIterator(source(c), null, true)) recs.push(enc(r));
         break;
       }
       case "read": out.result = enc(read(source(c), c.format as string)); break;

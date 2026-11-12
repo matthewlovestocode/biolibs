@@ -143,7 +143,8 @@ class Scanner {
       attrs.push([expanded, v]);
     }
     const end = this.off[this.i]!;
-    this.events.push({ kind: "start", name, attrs, end });
+    // Declarations in written order (what ElementTree's "start-ns" events report), default namespace as prefix "".
+    this.events.push({ kind: "start", name, attrs, end, nsDecls: [...bindings] });
     if (empty) {
       this.events.push({ kind: "end", name, end });
       this.scope.pop();

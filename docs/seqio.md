@@ -64,6 +64,10 @@ Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names
 | `twobit` | yes (bytes) | |
 | `gck` | yes (bytes) | |
 | `xdna` | yes (bytes) | yes (bytes) |
+| `pdb-seqres` | yes | |
+| `gfa1`, `gfa2` | yes | |
+| `uniprot-xml` | yes (bytes) | |
+| `ace` | yes | |
 | `abi`, `abi-trim` | yes (bytes) | |
 | `snapgene` | yes (bytes) | |
 | `sff`, `sff-trim` | yes (bytes) | yes (bytes) |
@@ -124,7 +128,12 @@ Alignment files are read and written through `SeqIO` as streams of records, exac
 - **Clustal:** a file that ends right after its header makes Biopython loop forever; we throw `RuntimeError` instead.
 - **fasta-m10:** the error for query and match of different lengths names `handle.name` in Python, which a text stream does not have, so it surfaces as a `TypeError` here too.
 
-Other formats (pdb, ace, ...) are being added; see PARITY.md.
+- **pdb-seqres:** chain sequences from the `SEQRES` header; `DBREF`, `DBREF1`/`DBREF2` give the id, description and `dbxrefs`. Residue names map through `Bio.Data.PDBData` (generated into `pdb/pdb-data.ts`); unknown residues become `X`. `pdb-atom`, `cif-atom` and `cif-seqres` need a structure parser (`Bio.PDB`) and are not ported.
+- **gfa1, gfa2:** segment (`S`) lines only. `*` sequences become undefined sequences when an `LN` tag gives a length. The `SH` checksum uses a built-in SHA-256, so no `crypto` is needed. Malformed or mistyped optional fields warn as in Biopython.
+- **uniprot-xml:** reads bytes through an `ElementTree`-style pull parser (`uniprot/etree.ts`) that mimics `iterparse` (16 KiB chunks, so a late error is raised only after the earlier entries are returned). `new UniprotIterator(bytes, null, true)` keeps each comment's XML under `comment_<type>_xml` (bytes, as `ElementTree.tostring` writes them). Expat's wording for malformed XML (`ParseError` messages) is not reproduced, so this format is marked partial in PARITY.md.
+- **ace:** contig consensus and `phred_quality` (0 at gaps). `parseAce` and `readAce` expose the whole of `Bio.Sequencing.Ace` (reads, tags, footer sorting); `Bio.Sequencing.Phd` is not ported.
+
+Still to come: `pdb-atom`, `cif-atom`, `cif-seqres` and `SeqIO.index`/`index_db`; see PARITY.md.
 
 ## Readers and writers
 
@@ -160,7 +169,8 @@ packages/seqio/src/
   ig/      iterator.ts  index.ts
   seqxml/  xml-types.ts  xml-chars.ts  xml-names.ts  xml-scanner.ts  xml-sax.ts  content-handler.ts  iterator.ts  xml-generator.ts  writer.ts  index.ts
   binary/  struct.ts  ascii.ts
-  nib/ twobit/ gck/ xdna/ abi/ snapgene/ sff/   (one directory per format)
+  nib/ twobit/ gck/ xdna/ abi/ snapgene/ sff/ pdb/ gfa/ ace/   (one directory per format)
+  uniprot/ etree.ts  tostring.ts  util.ts  errors.ts  comments.ts  references.ts  features.ts  entry.ts  iterator.ts  index.ts
   alignio/ interfaces.ts  bridge.ts  phylip.ts  clustal.ts  stockholm.ts  msf.ts  emboss.ts  fasta-m10.ts  mauve.ts  maf.ts  nexus.ts  index.ts
   insdc/   text.ts  cleaner.ts  consumer.ts  scanner.ts  genbank-scanner.ts  embl-scanner.ts  iterators.ts
            location-string.ts  writer-base.ts  genbank-writer.ts  embl-writer.ts  converters.ts  index.ts

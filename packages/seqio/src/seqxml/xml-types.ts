@@ -10,7 +10,7 @@ export type XmlName = [string | null, string];
  * which an incremental parser fed that many bytes would have reported it.
  */
 export type XmlEvent =
-  | { kind: "start"; name: XmlName; attrs: [XmlName, string][]; end: number }
+  | { kind: "start"; name: XmlName; attrs: [XmlName, string][]; end: number; nsDecls?: [string, string][] }
   | { kind: "end"; name: XmlName; end: number }
   | { kind: "text"; data: string; end: number; cdata?: boolean }
   | { kind: "comment"; data: string; end: number }
