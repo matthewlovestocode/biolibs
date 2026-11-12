@@ -13,7 +13,7 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/seqio` | Sequence file formats. FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, the binary formats, the alignment formats, PDB and mmCIF sequences (SEQRES and atoms), GFA, UniProt XML and ACE done; indexing remains | [seqio.md](seqio.md) |
 | `@biolibs/align` | `Bio.Align`: `MultipleSeqAlignment`, the 30 substitution matrices and `PairwiseAligner` with scoring and alignment and `Alignment` (printing, indexing, counts, mapping and more; file formats not yet ported) | [align.md](align.md) |
 | `@biolibs/nexus` | `Bio.Nexus`: NEXUS reader/writer and editor, `Tree`/`Node`/`Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus`. Powers the `nexus` format in `seqio` | [nexus.md](nexus.md) |
-| `@biolibs/pdb` | `Bio.PDB` first slice: `Structure`/`Model`/`Chain`/`Residue`/`Atom` (with disorder), `StructureBuilder`, PDB and mmCIF parsers (`PDBParser`, `MMCIFParser`, `MMCIF2Dict`), PDB header parsing and the `PDBIO`/`MMCIFIO` writers | [pdb.md](pdb.md) |
+| `@biolibs/pdb` | `Bio.PDB` first slice: `Structure`/`Model`/`Chain`/`Residue`/`Atom` (with disorder), `StructureBuilder`, PDB and mmCIF parsers (`PDBParser`, `MMCIFParser`, `MMCIF2Dict`), PDB header parsing the `PDBIO`/`MMCIFIO` writers and `Vector`/rotation geometry | [pdb.md](pdb.md) |
 | `@biolibs/phylo` | Newick phylogenetic trees | [phylo.md](phylo.md) |
 | `@biolibs/seqtools` | Bio.SeqUtils: GC, molecular weight, codon adaptation index, checksums, protein analysis, melting temperature | [seqtools.md](seqtools.md) |
 

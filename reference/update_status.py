@@ -216,6 +216,17 @@ if any(c["kind"] == "pdb" and "written" in c for c in pio):
 if any(c["kind"] == "mmcif" and "written" in c for c in pio) and any(c["kind"] == "dict" and "written" in c for c in pio):
     pio_members("Bio.PDB.mmcifio", "MMCIFIO", ("__init__", "save", "set_dict", "set_structure"))
 
+# ---- Bio.PDB.vectors (packages/pdb/test/golden/vectors.json) ----
+vc = json.load(open(f"{here}/../packages/pdb/test/golden/vectors.json"))["cases"]
+vec_ops = {c["op"] for c in vc if "result" in c}
+VEC_METHODS = {"new": "__init__", "repr": "__repr__", "neg": "__neg__", "add": "__add__", "sub": "__sub__", "dot": "__mul__", "div": "__truediv__", "cross": "__pow__",
+               "get": "__getitem__", "set": "__setitem__", "has": "__contains__", "norm": "norm", "normsq": "normsq", "normalize": "normalize", "normalized": "normalized",
+               "angle": "angle", "array": "get_array", "lmul": "left_multiply", "rmul": "right_multiply", "copy": "copy"}
+for op, m in VEC_METHODS.items():
+    if op in vec_ops: mark(f"Bio.PDB.vectors.Vector.{m}")
+for f in inv["Bio.PDB.vectors"]["functions"]:
+    if f in vec_ops or (f == "rotaxis" and "rotaxis2m" in vec_ops): mark(f"Bio.PDB.vectors.{f}")   # rotaxis is an alias of rotaxis2m
+
 # ---- Bio.Align.substitution_matrices (packages/align/test/golden/matrices.json) ----
 sm = json.load(open(f"{here}/../packages/align/test/golden/matrices.json"))["cases"]
 if any(c["kind"] == "load" and "matrix" in c for c in sm): mark("Bio.Align.substitution_matrices.load")

@@ -1723,6 +1723,57 @@
    }
   }
  },
+ "Bio.PDB.vectors": {
+  "functions": {
+   "calc_angle": "(v1, v2, v3)",
+   "calc_dihedral": "(v1, v2, v3, v4)",
+   "coord_space": "(a0: numpy.ndarray, a1: numpy.ndarray, a2: numpy.ndarray, rev: bool = False) -> tuple[numpy.ndarray, numpy.ndarray | None]",
+   "get_spherical_coordinates": "(xyz: numpy.ndarray) -> tuple[float, float, float]",
+   "homog_rot_mtx": "(angle_rads: float, axis: str) -> numpy.ndarray",
+   "homog_scale_mtx": "(scale: float) -> numpy.ndarray",
+   "homog_trans_mtx": "(x: float, y: float, z: float) -> numpy.ndarray",
+   "m2rotaxis": "(m)",
+   "multi_coord_space": "(a3: numpy.ndarray, dLen: int, rev: bool = False) -> numpy.ndarray",
+   "multi_rot_Y": "(angle_rads: numpy.ndarray) -> numpy.ndarray",
+   "multi_rot_Z": "(angle_rads: numpy.ndarray) -> numpy.ndarray",
+   "refmat": "(p, q)",
+   "rotaxis": "(theta, vector)",
+   "rotaxis2m": "(theta, vector)",
+   "rotmat": "(p, q)",
+   "set_X_homog_rot_mtx": "(angle_rads: float, mtx: numpy.ndarray)",
+   "set_Y_homog_rot_mtx": "(angle_rads: float, mtx: numpy.ndarray)",
+   "set_Z_homog_rot_mtx": "(angle_rads: float, mtx: numpy.ndarray)",
+   "set_homog_trans_mtx": "(x: float, y: float, z: float, mtx: numpy.ndarray)",
+   "vector_to_axis": "(line, point)"
+  },
+  "classes": {
+   "Vector": {
+    "__add__": "(self, other)",
+    "__contains__": "(self, i)",
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__getitem__": "(self, i)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self, x, y=None, z=None)",
+    "__le__": "(self, value, /)",
+    "__lt__": "(self, value, /)",
+    "__mul__": "(self, other)",
+    "__repr__": "(self)",
+    "__setitem__": "(self, i, value)",
+    "__str__": "(self, /)",
+    "angle": "(self, other)",
+    "copy": "(self)",
+    "get_array": "(self)",
+    "left_multiply": "(self, matrix)",
+    "norm": "(self)",
+    "normalize": "(self)",
+    "normalized": "(self)",
+    "normsq": "(self)",
+    "right_multiply": "(self, matrix)"
+   }
+  }
+ },
  "Bio.PDB.parse_pdb_header": {
   "functions": {
    "parse_pdb_header": "(infile)"

@@ -16,6 +16,9 @@
  * - `structure-io.ts`: `Select`, `StructureIO`
  * - `pdbio.ts`: `PDBIO`, `formatBFactor`
  * - `mmcifio.ts`: `MMCIFIO`
+ * - `vectors.ts`: `Vector`
+ * - `rotations.ts`: `rotaxis2m`, `rotmat`, `refmat`, `m2rotaxis`, `calcAngle`, `calcDihedral`, `vectorToAxis`
+ * - `homog.ts`: homogeneous 4x4 matrices, `coordSpace`, `multiCoordSpace`
  */
 
 export * from "./exceptions.js";
@@ -33,3 +36,6 @@ export * from "./pyformat.js";
 export * from "./structure-io.js";
 export * from "./pdbio.js";
 export * from "./mmcifio.js";
+export * from "./vectors.js";
+export * from "./rotations.js";
+export * from "./homog.js";

@@ -1,6 +1,6 @@
 # @biolibs/pdb
 
-A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers and the PDB, PQR and mmCIF writers. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) and 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`).
+A TypeScript port of the first slice of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and mmCIF parsers the PDB, PQR and mmCIF writers and the vector/rotation geometry of `Bio.PDB.vectors`. Verified against Biopython 1.88 on 1,804 PDB cases (`packages/pdb/test/golden/pdb.json`, built by `reference/golden/gen_pdb_cases.py`), 1,430 mmCIF cases (`mmcif.json`, `gen_mmcif_cases.py`) 3,100 writer cases (`pdbio.json`, `gen_pdbio_cases.py`) and 5,298 geometry cases (`vectors.json`, `gen_vector_cases.py`).
 
 ## Parsing
 
@@ -54,6 +54,21 @@ Kept faithful to Biopython:
 - `MMCIFIO` orders `_atom_site` columns as Biopython does, sorts unknown columns alphabetically, quotes values the way CIF needs (`'...'`, `"..."` or a semicolon text field), and raises `ValueError` for keys that are not `category.item` or lists of unequal length, `IndexError` for an empty value, and `UnboundLocalError` when the `data_` key is missing.
 - JavaScript numbers do not distinguish `1` from `1.0`, so occupancy and B-factor are written as Python floats (`1.0`).
 
+## Vectors and rotations
+
+```ts
+import { Vector, calcDihedral, rotaxis2m, rotmat } from "@biolibs/pdb";
+
+const v = new Vector(1, 2, 3);
+v.add(new Vector(1, 1, 1)).repr();        // "<Vector 2.00, 3.00, 4.00>"
+v.dot(v);  v.cross(w);  v.angle(w);        // Python's v * w, v ** w
+v.leftMultiply(rotaxis2m(Math.PI, new Vector(1, 0, 0)));
+```
+
+Python operators become methods: `+` `add`, `-` `sub`, `*` `dot`, `**` `cross` (or component-wise product with a scalar or list), `/` `div`, `v[i]` `get`/`set`, `in` `has`. Matrices are `number[][]` (a NumPy array's rows); homogeneous 4x4 helpers (`homogRotMtx`, `coordSpace`, `multiCoordSpace`, ...) live in `homog.ts`.
+
+Numerical notes: the cross product reproduces NumPy's `det` (LU factorisation then `exp(sum(log))`), and NumPy's `RuntimeWarning`s (division by zero, invalid value, sqrt of a negative) are emitted through `warn` with category `RuntimeWarning`. NumPy's SIMD `sin`/`cos`/`exp` can differ from JavaScript's in the last bit, so the golden test compares floats to 1e-9 (1e-6 after an `arccos`, which amplifies such differences near 0 and π; a dihedral of ±π counts as equal either way). Cases the golden set avoids because NumPy's own output is undefined: `multiCoordSpace` where the second and third points coincide (uninitialised memory), and `coordSpace` with the first point equal to the second (the result is rounding noise).
+
 ## Hierarchy
 
 `Structure` > `Model` > `Chain` > `Residue` > `Atom`, all built on `Entity` (`get`, `has`, `delete`, `add`, `insert`, `detachChild`, `fullId`, `equals`/`compare`, `copy`, `strictlyEquals`). Alternative locations are `DisorderedAtom` (altlocs) and `DisorderedResidue` (point mutations); both forward unknown properties to the selected child, as Python's `__getattr__` does.
@@ -68,4 +83,4 @@ Details kept faithful to Biopython:
 
 ## Not yet ported
 
-`Polypeptide`, vectors and `Superimposer`, `NeighborSearch`, `transform`/`center_of_mass`, internal coordinates, DSSP/SASA, and the SeqIO formats `pdb-atom`, `cif-atom`, `cif-seqres`.
+`Polypeptide`, `Superimposer` (needs `SVDSuperimposer`), `NeighborSearch`, `transform`/`center_of_mass`, internal coordinates, DSSP/SASA, and the SeqIO formats `pdb-atom`, `cif-atom`, `cif-seqres`.
