@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1089 / 1241 applicable items verified against Biopython.**
+**Progress: 1089 / 1240 applicable items verified against Biopython.**
 
 
 
@@ -605,8 +605,8 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 ## Bio.SeqIO
 
 - [x] `convert(in_file, in_format, out_file, out_format, molecule_type=None)`
-- [ ] `index(filename, format, alphabet=None, key_function=None)`
-- [ ] `index_db(index_filename, filenames=None, format=None, alphabet=None, key_function=None)`
+- [~] `index(filename, format, alphabet=None, key_function=None)`
+- [-] `index_db(index_filename, filenames=None, format=None, alphabet=None, key_function=None)`
 - [x] `parse(handle, format, alphabet=None)`
 - [x] `read(handle, format, alphabet=None)`
 - [x] `to_dict(sequences, key_function=None)`

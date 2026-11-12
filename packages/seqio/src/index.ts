@@ -11,6 +11,7 @@
  * - `fasta/`: the FASTA family
  * - `fastq/`: FASTQ (three flavours) and QUAL
  * - `insdc/`: GenBank (more INSDC formats follow)
+ * - `indexing/`: `index`, the dictionary-like access to the records of a file
  */
 
 import "./fasta/index.js"; // registers the formats
@@ -61,5 +62,6 @@ export * from "./abi/index.js";
 export * from "./snapgene/index.js";
 export * from "./sff/index.js";
 export * from "./alignio/index.js";
+export * from "./indexing/index.js";
 export { StructError, pack, unpack, calcsize, intFromBytes } from "./binary/struct.js";
 export { decodeAscii, encodeAscii, readExact } from "./binary/ascii.js";

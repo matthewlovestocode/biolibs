@@ -216,6 +216,12 @@ if any(c["kind"] == "pdb" and "written" in c for c in pio):
 if any(c["kind"] == "mmcif" and "written" in c for c in pio) and any(c["kind"] == "dict" and "written" in c for c in pio):
     pio_members("Bio.PDB.mmcifio", "MMCIFIO", ("__init__", "save", "set_dict", "set_structure"))
 
+# ---- SeqIO.index (packages/seqio/test/golden-index/seqio-index.json) ----
+ix = json.load(open(f"{here}/../packages/seqio/test/golden-index/seqio-index.json"))["cases"]
+if any("keys" in c for c in ix):
+    mark("Bio.SeqIO.index", "partial")      # SFF files are not indexed
+    mark("Bio.SeqIO.index_db", "na")        # stores the index in a SQLite file; there is no file system here
+
 # ---- Bio.PDB.kdtrees, NeighborSearch and Selection (packages/pdb/test/golden/nsearch.json) ----
 nc = json.load(open(f"{here}/../packages/pdb/test/golden/nsearch.json"))["cases"]
 KD_OPS = {"search": "search", "neighbor": "neighbor_search", "simple": "neighbor_simple_search"}

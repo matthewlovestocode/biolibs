@@ -33,9 +33,23 @@ Unlike Python, nothing here opens files, so the library works in Node and in the
 | `SeqIO.write(records, handle, format)` | `write(records, target, format)` | returns the record count |
 | `SeqIO.to_dict(records, key_function)` | `toDict(records, keyFunction?)` | returns a `Map`; duplicates raise `ValueError` |
 | `SeqIO.convert(in, fmt, out, fmt, molecule_type)` | `convert(source, inFormat, target, outFormat, moleculeType?)` | uses Biopython's direct paths (FASTQ to anything, GenBank/EMBL to FASTA) and the general path otherwise |
-| `SeqIO.index`, `SeqIO.index_db` | not yet | need file access |
+| `SeqIO.index(filename, format, key_function)` | `index(source, format, { keyFunction?, name? })` | see "Indexing" below |
+| `SeqIO.index_db` | not ported | stores its index in an SQLite file |
 
 Format names must be lower case (`"fasta"`, not `"FASTA"`); errors for bad names match Biopython's.
+
+## Indexing
+
+```ts
+import { index } from "@biolibs/seqio";
+
+const records = index(fastaText, "fasta");     // also fastq (all variants), genbank/gb, embl, imgt, swiss, uniprot-xml, tab, ig, pir, phd, ace, qual
+[...records.keys()];  records.size;  records.has("b");
+records.get("b");              // parsed on demand; the same object comes back if asked twice in a row
+records.getRaw("b");           // the record's bytes exactly as in the file
+```
+
+`index` keeps only keys and byte offsets and parses a record when asked, like Biopython. The source is the file's contents, as everywhere here (a string is encoded as UTF-8, so offsets are byte offsets; pass a `Uint8Array` for other encodings). Everything else follows Biopython: keys come from the first word after the record marker, except GenBank (LOCUS, replaced by ACCESSION, then by `VERSION` when it is `acc.n`), EMBL/IMGT (ID, replaced by AC or by `ID.version` from SV), Swiss-Prot (first accession), UniProt XML (first `<accession>`), IntelliGenetics and FASTQ (including line-wrapped records). A repeated key raises `ValueError("Duplicate key 'x'")`, a record whose parsed id differs from the indexed key raises `Key did not match`, and `has(key)` parses the record (as Python's `in` does), so it throws if that record is damaged. `size`, iteration and `getRaw` never parse. Indexing damaged files may succeed, with the error surfacing at `get`; the golden cases include such files. **Not ported:** SFF files (`"sff"` and `"sff-trim"` raise `Unsupported format`), and `index_db`, which keeps its index in an SQLite file.
 
 ## Formats
 
@@ -162,6 +176,7 @@ Register your own format with `registerIterator(name, Class)` and `registerWrite
 ```
 packages/seqio/src/
   api.ts  handles.ts  errors.ts  interfaces.ts  registry.ts  index.ts
+  indexing/ bytes.ts  proxies.ts  formats.ts  flat.ts  dict.ts  index.ts
   fasta/   parsers.ts  iterators.ts  writers.ts  index.ts
   fastq/   scores.ts  general-iterator.ts  iterators.ts  qual-iterator.ts  paired.ts  writers.ts  qual-writer.ts  converters.ts  errors.ts  index.ts
   tab/     iterator.ts  writer.ts  index.ts
