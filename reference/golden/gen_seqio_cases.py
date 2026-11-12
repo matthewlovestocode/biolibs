@@ -1386,6 +1386,29 @@ def mauve_cases():
         for out in ("fasta", "mauve"): add({"kind": "convert", "format": "mauve", "text": t, "out": out, "molecule_type": None})
     align_cases("mauve", base[:5])
 
+
+def maf_cases():
+    rnd2 = random.Random(97)
+    def mfrec(i, L, anno=True):
+        ann = [["start", rnd2.randint(0, 1000)], ["size", L], ["strand", rnd2.choice([1, -1])], ["srcSize", rnd2.randint(L, 5000)]] if anno else []
+        return REC(S("".join(rnd2.choice("ACGT-") for _ in range(L))), rnd2.choice(["hg38.chr%d" % i, "mm10.chr1", "species with space"]), "n", "", annotations=ann)
+    base = []
+    for _ in range(50):
+        L = rnd2.randint(3, 100); n = rnd2.randint(1, 4)
+        t = align_text([mfrec(i, L, rnd2.random() < .8) for i in range(n)], "maf")
+        if t: base.append(t)
+    hand = ["##maf version=1 scoring=tba.v8\n# tba.v8 (((human chimp) baboon) (mouse rat))\n\na score=23262.0 pass=2\ns hg18.chr7    27578828 38 + 158545518 AAA-GGGAATGTTAACCAAATGA---ATTGTCTCTTACGGTG\ns panTro1.chr6 28741140 38 + 161576975 AAA-GGGAATGTTAACCAAATGA---ATTGTCTCTTACGGTG\ni panTro1.chr6 N 0 C 0\ns baboon         116834 38 +   4622798 AAA-GGGAATGTTAACCAAATGA---GTTGTCTCTTATGGTG\nq baboon                                  99999999999999999999999---9999999999999999\ne mm4.chr6 53310102 13 + 151104725 C\n\na score=5062.0\ns hg18.chr7    27699739 6 + 158545518 TAAAGA\ns panTro1.chr6 28862317 6 + 161576975 TAAAGA\n\n",
+            "a score=1\ns a 0 4 + 10 ACGT\ns b 0 4 + 10 A.G.\n\n", "a score=1\ns a 0 4 + 10 A.GT\n\n", "a x\ns a 0 4 + 10 ACGT\n\n", "a x=1=2\ns a 0 4 + 10 ACGT\n\n", "a\ns a 0 4 + 10 ACGT", "s a 0 4 + 10 ACGT\n", "a\ns a 0 4 ACGT\n\n", "a\nzzz unexpected\n\n", "# only\n", "", "\n\n", "a score\ns a 0 4 + 10 ACGT\n\n", "a\ns a x 4 + 10 ACGT\n\n", "a\ns a 0 4 ? 10 ACGT\ns b 0 4 + 10 ACGT\n\n"]
+    base += hand
+    allt = list(base)
+    for t in base:
+        for _ in range(6): allt.append(mutate_text(t, rnd2, junk=("a score=1", "s a 0 4 + 10 ACGT", "i a N 0 C 0", "e a 0 1 + 2 C", "q a 999", "#", "s a 0")))
+    for t in allt: add({"kind": "parse", "format": "maf", "text": t})
+    for t in rnd2.sample(allt, 40): add({"kind": "read", "format": "maf", "text": t})
+    add({"kind": "parse", "format": "maf", "bytes": "x"})
+    extra = [[mfrec(0, 10)], [mfrec(0, 10), mfrec(1, 10)], [REC(S("ACGT"), "x", "n", "", annotations=[["strand", 0], ["size", 3]])], [REC(S("ACGT"), "x", "n", "", annotations=[["start", "s"], ["srcSize", 1.5]])], [REC(S("AC-T"), "a b c", "n", "")]]
+    align_cases("maf", base[:55], extra_writer=extra)
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1466,6 +1489,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "mauve": mauve_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "mauve": mauve_cases, "maf": maf_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")
