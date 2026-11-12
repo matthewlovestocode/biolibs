@@ -9,6 +9,11 @@
  * - `weight.ts`: `molecularWeight`
  * - `six-frame.ts`: `sixFrameTranslations`
  * - `cai.ts`: `CodonAdaptationIndex`
+ * - `checksum.ts`, `sha1.ts`: `crc32`, `crc64`, `gcg`, `seguid`
+ * - `lcc.ts`: `lccSimp`, `lccMult`
+ * - `amino-counts.ts`, `isoelectric.ts`, `protparam.ts`: `IsoelectricPoint`, `ProteinAnalysis`
+ * - `stderr.ts`: where `proteinScale` warnings go
+ * - `data/prot-param-data.ts` (generated): amino acid scales
  *
  * `xGC_skew` (a Tkinter window) has no counterpart; `gcSkew` provides the data it plots.
  */
@@ -20,3 +25,10 @@ export * from "./names.js";
 export * from "./weight.js";
 export * from "./six-frame.js";
 export * from "./cai.js";
+export * from "./checksum.js";
+export * from "./lcc.js";
+export * from "./amino-counts.js";
+export * from "./isoelectric.js";
+export * from "./protparam.js";
+export * from "./stderr.js";
+export * as ProtParamData from "./data/prot-param-data.js";

@@ -108,3 +108,55 @@ export interface NcbiTableDef {
 export const NCBI_TABLES: NcbiTableDef[] = """ + json.dumps(tables, indent=1) + ";\n"
 open(os.path.join(OUT, "ncbi-tables.ts"), "w").write(body)
 print("ncbi tables:", len(tables))
+
+# ---------------------------------------------------------------------------------------------
+# Bio.SeqUtils.ProtParamData -> packages/seqtools/src/data/prot-param-data.ts
+from Bio.SeqUtils import ProtParamData as PPD
+SU_OUT = os.path.join(os.path.dirname(__file__), "..", "packages", "seqtools", "src", "data")
+os.makedirs(SU_OUT, exist_ok=True)
+PPD_DESCRIPTIONS = {
+  "kd": "Kyte-Doolittle hydropathicity of each amino acid (positive is hydrophobic).",
+  "ab": "Aboderin relative hydrophobicity scale.",
+  "al": "Abraham and Leo hydrophobicity scale.",
+  "ag": "Argos hydrophobicity scale.",
+  "bm": "Black and Mould hydrophobicity scale.",
+  "bb": "Bull and Breese hydrophobicity scale.",
+  "cs": "Casari and Sippl hydrophobic scale.",
+  "ci": "Cid hydrophobicity scale.",
+  "cw": "Cowan hydrophobicity scales, keyed by pH (`\"3.4\"` and `\"7.5\"`).",
+  "es": "Eisenberg consensus hydrophobicity scale.",
+  "eg": "Engelman GES hydrophobicity scale.",
+  "fs": "Fasman hydrophobicity scale.",
+  "fc": "Fauchere and Pliska hydrophobicity scale.",
+  "gd": "Goldsack and Chalifoux hydrophobicity scale.",
+  "gy": "Guy hydrophobicity scale.",
+  "jo": "Jones hydrophobicity scale.",
+  "ju": "Juretic hydrophobicity scale.",
+  "ki": "Kidera hydrophobicity scale.",
+  "mi": "Miyazawa hydrophobicity scale.",
+  "pa": "Parker hydrophilicity scale.",
+  "po": "Ponnuswamy hydrophobicity scale.",
+  "ro": "Rose hydrophobicity scale.",
+  "rm": "Roseman hydrophobicity scale.",
+  "sw": "Sweet and Eisenberg OMH hydrophobicity scale.",
+  "ta": "Tanford hydrophobicity scale.",
+  "wi": "Wilson hydrophobicity scale.",
+  "zi": "Zimmerman hydrophobicity scale.",
+  "gravy_scales": "Every hydrophobicity scale usable with `ProteinAnalysis.gravy`, by name (`KyteDoolitle`, `Aboderin`, ..., `Cowan3.4`, `Cowan7.5`, ...).",
+  "Flex": "Normalised flexibility parameters (B-values) of each amino acid, from Vihinen et al. 1994 (used by `ProteinAnalysis.flexibility`).",
+  "hw": "Hopp and Woods hydrophilicity scale.",
+  "em": "Emini surface accessibility scale.",
+  "ja": "Janin interior-to-surface transfer free energy scale.",
+  "DIWV": "Dipeptide instability weight values from Guruprasad et al. 1990: `DIWV[first][second]` (used by `ProteinAnalysis.instabilityIndex`).",
+}
+RENAMES = {"Flex": "flex", "DIWV": "diwv"}
+lines = [HDR, "/**\n * Constants from Biopython's `Bio.SeqUtils.ProtParamData`: amino acid scales for protein analysis.\n */\n\n"]
+for n in [x for x in dir(PPD) if not x.startswith("_")]:
+    v = getattr(PPD, n)
+    if callable(v) or type(v).__name__ == "module": continue
+    if n not in PPD_DESCRIPTIONS:
+        raise SystemExit(f"ProtParamData.{n} has no entry in PPD_DESCRIPTIONS (gen_data.py); describe it before regenerating")
+    if n == "cw": v = {str(k): x for k, x in v.items()}
+    lines.append(f"/** {PPD_DESCRIPTIONS[n]} */\nexport const {RENAMES.get(n, camel(n))}: {ts_type(v)} = {js(v)};\n\n")
+open(os.path.join(SU_OUT, "prot-param-data.ts"), "w").write("".join(lines))
+print("protparam constants written")

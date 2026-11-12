@@ -12,7 +12,7 @@ export type SeqLike = string | Seq | MutableSeq;
  * @param use - The operation Python applies first, which decides the error message.
  * @throws TypeError for anything that is not text or a sequence object.
  */
-export function asText(seq: unknown, use: "count" | "len" | "subscript" | "iter" | "lower" = "count"): string {
+export function asText(seq: unknown, use: "count" | "len" | "subscript" | "iter" | "lower" | "upper" = "count"): string {
   if (typeof seq === "string") return seq;
   if (seq instanceof Seq || seq instanceof MutableSeq) return seq.toString();
   // Python's message depends on the first operation applied to the argument.

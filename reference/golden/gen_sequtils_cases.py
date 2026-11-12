@@ -7,6 +7,8 @@ or {"kind": "cai", ...} for CodonAdaptationIndex.
 import json, os, random, sys, warnings
 sys.path.insert(0, os.path.dirname(__file__))
 from Bio import SeqUtils as SU
+from Bio.SeqUtils import CheckSum, lcc, ProtParam, ProtParamData, IsoelectricPoint
+import contextlib, io
 from Bio.Data import CodonTable
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
@@ -27,7 +29,26 @@ def run(c):
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         try:
-            if c.get("kind") == "cai":
+            if c.get("kind") in ("pa", "ip"):
+                err = io.StringIO()
+                with contextlib.redirect_stderr(err):
+                    try:
+                        if c["kind"] == "pa": obj = ProtParam.ProteinAnalysis(dec(c["seq"]), *c.get("args", []))
+                        else: obj = IsoelectricPoint.IsoelectricPoint(dec(c["seq"]), *[dec(a) for a in c.get("args", [])])
+                        out["ctor"] = "ok"
+                    except Exception as e:
+                        obj = None; out["ctor"] = {"type": tname(e), "msg": emsg(e)}
+                    out["ops_out"] = []
+                    for op in c.get("ops", []) if obj is not None else []:
+                        before = err.tell()
+                        try:
+                            args = [getattr(ProtParamData, a["$scale"]) if isinstance(a, dict) and "$scale" in a else dec(a) for a in op[1:]]
+                            if op[0] == "amino_acids_percent": r = obj.amino_acids_percent
+                            else: r = getattr(obj, op[0])(*args)
+                            out["ops_out"].append({"result": enc(r), "stderr": err.getvalue()[before:]})
+                        except Exception as e:
+                            out["ops_out"].append({"exc": {"type": tname(e), "msg": emsg(e)}, "stderr": err.getvalue()[before:]})
+            elif c.get("kind") == "cai":
                 seqs = [dec(x) for x in c["seqs"]]
                 table = CodonTable.unambiguous_dna_by_id[c["table"]] if c.get("table") else None
                 cai = SU.CodonAdaptationIndex(seqs, table) if table else SU.CodonAdaptationIndex(seqs)
@@ -42,7 +63,7 @@ def run(c):
                     except Exception as e:
                         out["ops_out"].append({"exc": {"type": tname(e), "msg": emsg(e)}})
             else:
-                out["result"] = enc(getattr(SU, c["fn"])(*[dec(a) for a in c["args"]], **c.get("kw", {})))
+                out["result"] = enc(next(getattr(m, c["fn"]) for m in (SU, CheckSum, lcc) if hasattr(m, c["fn"]))(*[dec(a) for a in c["args"]], **c.get("kw", {})))
         except Exception as e:
             out["exc"] = {"type": tname(e), "msg": emsg(e)}
     out["warnings"] = [str(x.message) for x in w]
@@ -124,6 +145,56 @@ for _ in range(60):
     if rnd.random() < .2: add({"fn": "six_frame_translations", "args": [S(t)]})
 for code in ("Standard", "Vertebrate Mitochondrial", 99, "bogus", None, 0): add({"fn": "six_frame_translations", "args": ["ATGGCCATTGTAATGGGCCGC", code]})
 add({"fn": "six_frame_translations", "args": [5]}); add({"fn": "six_frame_translations", "args": ["ATGXYZ"]}); add({"fn": "six_frame_translations", "args": ["AUGGCCAUU"]}); add({"fn": "six_frame_translations", "args": ["ATGU"]})
+# ---- CheckSum
+from codec import B
+for _ in range(60):
+    t = dna(rnd.randint(0, 150), rnd.choice(["ACGT", "acgt", "ACGTN-*", "ACGTacgtéß日"]))
+    for fn in ("crc32", "crc64", "gcg", "seguid"):
+        add({"fn": fn, "args": [t]})
+        if not t.isascii(): continue      # Seq objects hold ASCII only
+        add({"fn": fn, "args": [S(t)]})
+        if rnd.random() < .3: add({"fn": fn, "args": [M(t)]})
+        if rnd.random() < .3: add({"fn": fn, "args": [B(t)]})
+for fn in ("crc32", "crc64", "gcg", "seguid"):
+    for a in ("", "A", "ACGT" * 15, "a" * 57, "a" * 58, "a" * 114, "ß", "ǆ", 5, 0, -1, None, 1.5, LST(65, 66), LST(300), LST("a")):
+        add({"fn": fn, "args": [a]})
+    add({"fn": fn, "args": [B("")]}); add({"fn": fn, "args": [B("ACGT")]}); add({"fn": fn, "args": [{"$": "Seq", "undef": 3}]})
+# ---- lcc
+for _ in range(60):
+    t = dna(rnd.randint(0, 120), rnd.choice(["ACGT", "acgt", "ACGTN", "AC", "A"]))
+    add({"fn": "lcc_simp", "args": [t]}); add({"fn": "lcc_simp", "args": [S(t)]})
+    for w in (1, 2, 3, 5, 10, 25):
+        add({"fn": "lcc_mult", "args": [t, w]})
+    if rnd.random() < .2: add({"fn": "lcc_mult", "args": [S(t), 4]})
+for a in ([ "", 4], ["ACGT", 0], ["ACGT", -1], ["ACGT", 4], ["ACGT", 5], ["ACGT", 1.5], ["ACGT", None], ["ACGT", "3"], ["ACGTN", 2], ["NNNN", 2], ["ANAN", 2], ["AAAAC", 3], ["ACGTACGTAC", 3], [5, 2], [None, 2]):
+    add({"fn": "lcc_mult", "args": a})
+for t in ("", "A", "AAAA", "ACGT", "acgt", "NNNN", "ACGTN"): add({"fn": "lcc_simp", "args": [t]})
+add({"fn": "lcc_simp", "args": [5]}); add({"fn": "lcc_simp", "args": [None]})
+# ---- ProteinAnalysis / IsoelectricPoint
+PROT = "ACDEFGHIKLMNPQRSTVWY"
+PALL = PROT + "BXZUO*-"
+def pops():
+    return [["count_amino_acids"], ["amino_acids_percent"], ["molecular_weight"], ["aromaticity"], ["instability_index"], ["flexibility"], ["gravy"], ["gravy", "Jones"], ["gravy", "Bogus"],
+            ["protein_scale", {"$scale": "kd"}, 9], ["protein_scale", {"$scale": "kd"}, 5, 0.4], ["protein_scale", {"$scale": "hw"}, 7, 0.25], ["protein_scale", {"$scale": "kd"}, 1], ["protein_scale", {"$scale": "kd"}, 0],
+            ["protein_scale", {"$scale": "kd"}, 2.5], ["protein_scale", {"$scale": "kd"}, 4], ["isoelectric_point"], ["charge_at_pH", 7.0], ["charge_at_pH", 2], ["charge_at_pH", 14.5], ["charge_at_pH", 400], ["charge_at_pH", -400],
+            ["secondary_structure_fraction"], ["molar_extinction_coefficient"]]
+for _ in range(70):
+    t = dna(rnd.randint(0, 120), rnd.choice([PROT, PROT, PROT.lower(), PALL]))
+    add({"kind": "pa", "seq": t, "ops": pops()})
+    if rnd.random() < .3: add({"kind": "pa", "seq": S(t), "args": [True], "ops": pops()})
+for t in ("", "A", "AC", "MKVL", "ACDEFGHIKLMNPQRSTVWY" * 3, "MAEGEITTFTALTEKFNLPPGNYKKPKLLYCSNGGHFLRILPDGTVDGTRDRSDQHIQLQLSAESVGEVYIKSTETGQYLAMDTDGLLYGSQTPNEECLFLERLEENHYNTYISKKHAEKNWFVGLKKNGSCKRGPRTHYGQKAILFLPLPVSSD", "KKKKKKKK", "DDDDEEEE", "CCCCYYYY"):
+    add({"kind": "pa", "seq": t, "ops": pops()}); add({"kind": "pa", "seq": t, "args": [True], "ops": pops()})
+add({"kind": "pa", "seq": 5, "ops": []}); add({"kind": "pa", "seq": None, "ops": []})
+add({"kind": "pa", "seq": "MKVLAAGIVGLLAGKKDE", "ops": [["protein_scale", {"$": "dict", "v": [["M", 1.0], ["K", 2.0]]}, 3], ["protein_scale", {"$": "dict", "v": []}, 3, 0.5]]})
+for _ in range(60):
+    t = dna(rnd.randint(0, 80), rnd.choice([PROT, PROT.lower(), PALL]))
+    ops = [["charge_at_pH", 7.0], ["charge_at_pH", 1], ["charge_at_pH", 13], ["charge_at_pH", 400], ["pi"], ["pi", 5.0], ["pi", 7.775, 3.0, 9.0], ["pi", 7.775, 4.05, 4.06], ["pi", 8, 4, 12]]
+    add({"kind": "ip", "seq": t, "ops": ops})
+    if rnd.random() < .3: add({"kind": "ip", "seq": S(t), "ops": ops[:5]})
+    cont = {"$": "dict", "v": [[aa, rnd.randint(0, 5)] for aa in PROT]}
+    add({"kind": "ip", "seq": t, "args": [cont], "ops": ops[:5]})
+add({"kind": "ip", "seq": "ACDK", "args": [{"$": "dict", "v": [["K", 1]]}], "ops": []}); add({"kind": "ip", "seq": "", "ops": []}); add({"kind": "ip", "seq": "ACD", "args": [{"$": "dict", "v": []}], "ops": [["pi"]]})
+add({"kind": "ip", "seq": "MKVLAAGIVG", "args": [None], "ops": [["pi"]]}); add({"kind": "ip", "seq": 5, "ops": []})
 # ---- CodonAdaptationIndex
 CODONS = [a + b + c for a in "ACGT" for b in "ACGT" for c in "ACGT"]
 SENSE = [c for c in CODONS if c not in ("TAA", "TAG", "TGA")]

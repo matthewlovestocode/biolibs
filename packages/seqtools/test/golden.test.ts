@@ -4,6 +4,7 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { CodonTable } from "@biolibs/seq";
+import { ProteinAnalysis, IsoelectricPoint, ProtParamData, setStderrWriter } from "@biolibs/seqtools";
 import { captureWarnings } from "@biolibs/core";
 import * as U from "@biolibs/seqtools";
 import { dec, enc } from "../../seqrecord/test/golden-runner";
@@ -18,7 +19,40 @@ interface Case {
 const NAMES: Record<string, (...a: any[]) => unknown> = {
   gc_fraction: U.gcFraction, GC123: U.gc123, GC_skew: U.gcSkew, nt_search: U.ntSearch, seq1: U.seq1, seq3: U.seq3,
   molecular_weight: U.molecularWeight, six_frame_translations: U.sixFrameTranslations,
+  crc32: U.crc32, crc64: U.crc64, gcg: U.gcg, seguid: U.seguid, lcc_simp: U.lccSimp, lcc_mult: U.lccMult,
 };
+const PA_METHODS: Record<string, string> = {
+  count_amino_acids: "countAminoAcids", amino_acids_percent: "aminoAcidsPercent", molecular_weight: "molecularWeight", aromaticity: "aromaticity", instability_index: "instabilityIndex",
+  flexibility: "flexibility", gravy: "gravy", protein_scale: "proteinScale", isoelectric_point: "isoelectricPoint", charge_at_pH: "chargeAtPH", secondary_structure_fraction: "secondaryStructureFraction",
+  molar_extinction_coefficient: "molarExtinctionCoefficient", pi: "pi",
+};
+
+/** Run the method calls of a `pa` or `ip` case, capturing what is written to standard error. */
+function runObject(c: Case & Record<string, any>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  let obj: any = null;
+  try {
+    obj = c.kind === "pa" ? new ProteinAnalysis(dec(c.seq), ...(c.args ?? [])) : new IsoelectricPoint(dec(c.seq), ...((c.args ?? []).map(dec) as []));
+    out["ctor"] = "ok";
+  } catch (e) {
+    out["ctor"] = { type: (e as Error).name, msg: (e as Error).message };
+  }
+  out["ops_out"] = (obj === null ? [] : c.ops!).map((op: any[]) => {
+    let stderr = "";
+    const old = setStderrWriter((t) => { stderr += t; });
+    try {
+      const args = op.slice(1).map((a: any) => (a && typeof a === "object" && "$scale" in a ? (ProtParamData as any)[a.$scale] : dec(a)));
+      const r = op[0] === "amino_acids_percent" ? obj.aminoAcidsPercent : obj[PA_METHODS[op[0]]!](...args);
+      return { result: enc(r), stderr };
+    } catch (e) {
+      return { exc: { type: (e as Error).name, msg: (e as Error).message }, stderr };
+    } finally {
+      setStderrWriter(old);
+    }
+  });
+  return out;
+}
+
 const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
 
 /** Python keyword names become the trailing positional arguments in this port. */
@@ -59,10 +93,30 @@ const file = JSON.parse(readFileSync(new URL("./golden/sequtils.json", import.me
 function compare(c: Case & Record<string, any>): string | null {
   const cap = captureWarnings(() => {
     if (c.kind === "cai") Object.assign(box, runCai(c));
+    else if (c.kind === "pa" || c.kind === "ip") Object.assign(box, runObject(c));
     else box["result"] = call(c);
   });
   const got = { ...box };
   for (const k of Object.keys(box)) delete box[k];
+  if (c.kind === "pa" || c.kind === "ip") {
+    if (JSON.stringify(c["ctor"]) !== JSON.stringify(got["ctor"])) {
+      const w = c["ctor"], g = got["ctor"] as any;
+      if (!(typeof w === "object" && typeof g === "object" && w.type === g.type && (w.msg === null || w.msg === g.msg))) return `ctor: expected ${JSON.stringify(w)}, got ${JSON.stringify(g)}`;
+    }
+    const want = c["ops_out"] as any[];
+    const have = got["ops_out"] as any[];
+    if (want.length !== have.length) return `ops: expected ${want.length}, got ${have.length}`;
+    for (let i = 0; i < want.length; i++) {
+      const w = want[i], g = have[i];
+      if (w.stderr !== g.stderr) return `op ${JSON.stringify(c.ops[i]).slice(0, 80)} stderr: expected ${JSON.stringify(w.stderr)}, got ${JSON.stringify(g.stderr)}`;
+      if (w.exc) {
+        if (!g.exc || g.exc.type !== (w.exc.type === "AttributeError" ? "TypeError" : w.exc.type) || (w.exc.msg !== null && w.exc.msg !== g.exc.msg)) return `op ${JSON.stringify(c.ops[i]).slice(0, 80)}: expected ${JSON.stringify(w.exc)}, got ${JSON.stringify(g.exc ?? g.result)}`;
+      } else if (g.exc || !close(w.result, g.result)) {
+        return `op ${JSON.stringify(c.ops[i]).slice(0, 80)}: expected ${JSON.stringify(w.result).slice(0, 200)}, got ${JSON.stringify(g.exc ?? g.result).slice(0, 200)}`;
+      }
+    }
+    return null;
+  }
   const wantExc = c.exc?.type === "AttributeError" ? { type: "TypeError", msg: null } : c.exc;
   if (wantExc) {
     if (cap.error === undefined) return `expected ${wantExc.type}: ${wantExc.msg}, got no error`;
@@ -73,21 +127,37 @@ function compare(c: Case & Record<string, any>): string | null {
     return `expected success, got ${(cap.error as Error).name}: ${(cap.error as Error).message}`;
   } else if (c.kind === "cai") {
     // `calculate` uses log and exp, which the C library behind Python and V8's own implementation round differently in the last bit.
-    const norm = (v: unknown): string => JSON.stringify(v, (_, x) => (typeof x === "number" && !Number.isInteger(x) && k_ === "ops_out" ? Number(x.toPrecision(14)) : x));
-    let k_ = "";
-    for (const k of ["items", "str", "ops_out"]) if ((k_ = k, norm(c[k])) !== norm(got[k])) return `${k}: expected ${JSON.stringify(c[k]).slice(0, 300)}, got ${JSON.stringify(got[k]).slice(0, 300)}`;
-  } else if (JSON.stringify(c["result"]) !== JSON.stringify(got["result"])) {
+    for (const k of ["items", "str"]) if (JSON.stringify(c[k]) !== JSON.stringify(got[k])) return `${k}: expected ${JSON.stringify(c[k]).slice(0, 300)}, got ${JSON.stringify(got[k]).slice(0, 300)}`;
+    for (const k of ["ops_out"]) if (!close(c[k], got[k])) return `${k}: expected ${JSON.stringify(c[k]).slice(0, 300)}, got ${JSON.stringify(got[k]).slice(0, 300)}`;
+  } else if (LIBM.has(c.fn ?? "") ? !close(c["result"], got["result"]) : JSON.stringify(c["result"]) !== JSON.stringify(got["result"])) {
     return `result: expected ${JSON.stringify(c["result"])}, got ${JSON.stringify(got["result"])}`;
   }
   if (JSON.stringify(c.warnings) !== JSON.stringify(cap.warnings.map((w) => w.message))) return `warnings: expected ${JSON.stringify(c.warnings)}, got ${JSON.stringify(cap.warnings.map((w) => w.message))}`;
   return null;
 }
+/** Functions built on log, exp or pow, whose last bit depends on the C library behind Python. */
+const LIBM = new Set(["lcc_simp", "lcc_mult"]);
+const round = (c: Case, v: unknown): string =>
+  JSON.stringify(v, (_, x) => (typeof x === "number" && !Number.isInteger(x) && LIBM.has(c.fn ?? "") ? Number(x.toPrecision(14)) : x));
+/** Structural equality where numbers may differ by a relative 1e-12 (log, exp and pow differ in the last bits between C libraries). */
+function close(a: unknown, b: unknown): boolean {
+  if (typeof a === "number" && typeof b === "number") return a === b || Math.abs(a - b) <= 1e-12 * Math.max(Math.abs(a), Math.abs(b)) || (Number.isNaN(a) && Number.isNaN(b));
+  if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((x, i) => close(x, b[i]));
+  if (a && b && typeof a === "object" && typeof b === "object") {
+    const ka = Object.keys(a), kb = Object.keys(b);
+    return ka.length === kb.length && ka.every((k) => close((a as any)[k], (b as any)[k]));
+  }
+  return a === b;
+}
+
+/** JSON with floats rounded to 13 significant digits (pow and log differ in the last bits between C libraries). */
+const approx = (v: unknown): string => JSON.stringify(v, (_, x) => (typeof x === "number" && !Number.isInteger(x) ? Number(x.toPrecision(13)) : x));
 const box: Record<string, unknown> = {};
 
 describe(`Bio.SeqUtils: parity with Biopython ${file.biopython}`, () => {
   const groups = new Map<string, (Case & Record<string, any>)[]>();
   for (const c of file.cases) {
-    const key = c.kind === "cai" ? "CodonAdaptationIndex" : camel(c.fn!);
+    const key = c.kind === "cai" ? "CodonAdaptationIndex" : c.kind === "pa" ? "ProteinAnalysis" : c.kind === "ip" ? "IsoelectricPoint" : camel(c.fn!);
     groups.set(key, [...(groups.get(key) ?? []), c]);
   }
   for (const [name, cases] of groups) {
@@ -95,7 +165,7 @@ describe(`Bio.SeqUtils: parity with Biopython ${file.biopython}`, () => {
       const bad: string[] = [];
       for (const c of cases) {
         const d = compare(c);
-        if (d) bad.push(`${JSON.stringify(c.kind === "cai" ? { seqs: c.seqs!.length, table: c.table } : { args: c.args, kw: c.kw }).slice(0, 200)}\n    ${d}`);
+        if (d) bad.push(`${JSON.stringify(c.kind === "cai" ? { seqs: c.seqs!.length, table: c.table } : c.kind === "pa" || c.kind === "ip" ? { seq: c.seq, args: c.args } : { args: c.args, kw: c.kw }).slice(0, 200)}\n    ${d}`);
       }
       expect(bad.length, `${bad.length} mismatches:\n${bad.slice(0, 6).join("\n")}`).toBe(0);
     });
