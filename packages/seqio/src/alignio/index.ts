@@ -10,6 +10,7 @@
  * - `stockholm.ts`: `stockholm`
  * - `msf.ts`: `msf`
  * - `emboss.ts`: `emboss`
+ * - `fasta-m10.ts`: `fasta-m10`
  */
 
 import { MultipleSeqAlignment } from "@biolibs/align";
@@ -19,6 +20,7 @@ import { alignmentSequenceIterator, alignmentSequenceWriter } from "./bridge.js"
 import { ClustalIterator, ClustalWriter } from "./clustal.js";
 import type { AlignmentIteratorClass, AlignmentWriterClass } from "./interfaces.js";
 import { EmbossIterator } from "./emboss.js";
+import { FastaM10Iterator } from "./fasta-m10.js";
 import { MsfIterator } from "./msf.js";
 import { StockholmIterator, StockholmWriter } from "./stockholm.js";
 import { PhylipIterator, PhylipWriter, RelaxedPhylipIterator, RelaxedPhylipWriter, SequentialPhylipIterator, SequentialPhylipWriter } from "./phylip.js";
@@ -31,6 +33,7 @@ const READERS: [string, AlignmentIteratorClass][] = [
   ["stockholm", StockholmIterator],
   ["msf", MsfIterator],
   ["emboss", EmbossIterator],
+  ["fasta-m10", FastaM10Iterator],
 ];
 const WRITERS: [string, AlignmentWriterClass][] = [
   ["clustal", ClustalWriter as AlignmentWriterClass],
@@ -57,3 +60,4 @@ export * from "./clustal.js";
 export * from "./stockholm.js";
 export * from "./msf.js";
 export * from "./emboss.js";
+export * from "./fasta-m10.js";

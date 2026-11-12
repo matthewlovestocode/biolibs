@@ -1325,6 +1325,37 @@ def emboss_cases():
     for t in rnd2.sample(base[:60], 8):
         for out in ("fasta", "clustal"): add({"kind": "convert", "format": "emboss", "text": t, "out": out, "molecule_type": None})
 
+
+def m10_text(rnd, nhits=None, tool="fasta36", protein=True):
+    nhits = nhits if nhits is not None else rnd.randint(0, 3)
+    alpha = "ACDEFGHIKLMNPQRSTVWY" if protein else "ACGT"
+    out = ["# %s -m 10 query.fa db.fa" % tool, "%s compares a %s sequence to a %s sequence database" % (tool.upper(), "protein" if protein else "DNA", "protein" if protein else "DNA"), " version 36.3.8h May, 2020", "Query: query.fa", "  1>>>sp|P1|QRY query description here - 100 aa", "Library: db.fa", "  2000 residues in 10 sequences", ""]
+    out += [">>>sp|P1|QRY, 100 aa vs db.fa library", "; pg_name: %s" % tool, "; pg_ver: 36.3.8h", "; pg_matrix: BL50 (15:-5)", "; pg_gap-pen: -10 -2", "; pg_ktup: 2"]
+    for h in range(nhits):
+        qlen = rnd.randint(5, 40)
+        q = "".join(rnd.choice(alpha) for _ in range(qlen))
+        m = "".join(c if rnd.random() < .8 else rnd.choice(alpha + "-") for c in q)
+        qs = rnd.randint(1, 20); ms = rnd.randint(1, 30)
+        qstop = qs + len(q.replace("-", "")) - 1; mstop = ms + len(m.replace("-", "")) - 1
+        out += [">>sp|P%d|HIT%d some hit description  (%d aa)" % (h + 2, h, 150), "; fa_frame: f", "; fa_initn: %d" % rnd.randint(50, 500), "; fa_opt: %d" % rnd.randint(50, 500), "; fa_expect: %s" % rnd.choice(["1e-20", "0.0034", "3.2e-05"]), "; sw_score: 280", "; sw_ident: 0.800", "; sw_overlap: %d" % qlen]
+        out += [">sp|P1|QRY ..", "; sq_len: 100", "; sq_offset: 1", "; sq_type: %s" % ("p" if protein else "D"), "; al_start: %d" % qs, "; al_stop: %d" % qstop, "; al_display_start: %d" % qs, "XX" + q if False else q, ">sp|P%d|HIT%d ..." % (h + 2, h), "; sq_len: 150", "; sq_offset: 1", "; sq_type: %s" % ("p" if protein else "D"), "; al_start: %d" % ms, "; al_stop: %d" % mstop, "; al_display_start: %d" % ms, m]
+        out += ["; al_cons:", "".join("." if x == y else ":" for x, y in zip(q, m)), ">--"] if rnd.random() < .3 else ["; al_cons:", " " * len(q)]
+    out += [">>><<<", ""]
+    return "\n".join(out) + "\n"
+
+def fasta_m10_cases():
+    rnd2 = random.Random(95)
+    base = [m10_text(rnd2, tool=rnd2.choice(["fasta36", "tfastx36", "ssearch36"]), protein=rnd2.random() < .7) for _ in range(60)]
+    base += ["", "\n", "# fasta36\n", "  1>>>q desc\n>>>q, 5 aa vs db\n>>>///\n", "  1>>>q desc\n!! No library sequences with E() < 10\n", "  1>>>q desc\n>>>q, 5 aa vs db\n; pg_name: x\n>>h desc\n; fa_expect: 1\n>q\n; sq_len: 5\n; al_start: 1\n; al_stop: 5\n; al_display_start: 1\nACGTA\n>h\n; sq_len: 5\n; al_start: 1\n; al_stop: 5\n; al_display_start: 1\nACGTA\n>>>///\n",
+             "  1>>>q desc\n>>>q, 5 aa vs db\n>>h desc\n>>>///\n", "  1>>>\n", "; bad\n", "  1>>>q d\n>>>q, 1\n; nocolon\n"]
+    allt = list(base)
+    for t in base:
+        for _ in range(6): allt.append(mutate_text(t, rnd2, junk=(">>><<<", ">--", ">>x y", "; al_cons:", "; sq_len: 5", "; al_start: 1", "!! No hits", ">>>///", "ACGT")))
+    for t in allt: add({"kind": "parse", "format": "fasta-m10", "text": t})
+    for t in rnd2.sample(allt, 40): add({"kind": "read", "format": "fasta-m10", "text": t})
+    add({"kind": "parse", "format": "fasta-m10", "bytes": "x"})
+    for t in rnd2.sample(base[:60], 6): add({"kind": "convert", "format": "fasta-m10", "text": t, "out": "fasta", "molecule_type": None})
+
 EMBL_HAND = [
 """ID   AB000001; SV 1; linear; genomic DNA; STD; PLN; 60 BP.
 XX
@@ -1405,6 +1436,6 @@ SQ   Sequence 40 BP;
  "genbank": lambda: insdc_cases("genbank", GENBANK_HAND, "genbank-cds", "gb"),
  "embl": lambda: insdc_cases("embl", EMBL_HAND, "embl-cds", "embl"),
  "imgt": lambda: insdc_cases("imgt", IMGT_HAND, "embl-cds", "imgt", extra=EMBL_HAND),
- "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
+ "insdcwrite": insdc_write_cases, "tab": tab_cases, "pir": pir_cases, "swiss": lambda: swiss_cases(), "phd": phd_cases, "seqxml": seqxml_cases, "nib": nib_cases, "abi": abi_cases, "phylip": phylip_cases, "phylip-sequential": phylip_sequential_cases, "phylip-relaxed": phylip_relaxed_cases, "clustal": clustal_cases, "stockholm": stockholm_cases, "msf": msf_cases, "fasta-m10": fasta_m10_cases, "emboss": emboss_cases, "sff": sff_cases, "snapgene": snapgene_cases, "twobit": twobit_cases, "gck": gck_cases, "xdna": xdna_cases, "ig": ig_cases}[FAMILY]()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")
