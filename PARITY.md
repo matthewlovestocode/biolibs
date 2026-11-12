@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 606 / 626 applicable items verified against Biopython.**
+**Progress: 703 / 722 applicable items verified against Biopython.**
 
 
 
@@ -616,7 +616,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 - [x] `parse: abi`
 - [x] `parse: abi-trim`
-- [ ] `parse: ace`
+- [x] `parse: ace`
 - [ ] `parse: cif-atom`
 - [ ] `parse: cif-seqres`
 - [x] `parse: clustal`
@@ -636,8 +636,8 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: gck`
 - [x] `parse: genbank`
 - [x] `parse: genbank-cds`
-- [ ] `parse: gfa1`
-- [ ] `parse: gfa2`
+- [x] `parse: gfa1`
+- [x] `parse: gfa2`
 - [x] `parse: ig`
 - [x] `parse: imgt`
 - [x] `parse: maf`
@@ -646,7 +646,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: nexus`
 - [x] `parse: nib`
 - [ ] `parse: pdb-atom`
-- [ ] `parse: pdb-seqres`
+- [x] `parse: pdb-seqres`
 - [x] `parse: phd`
 - [x] `parse: phylip`
 - [x] `parse: phylip-relaxed`
@@ -661,7 +661,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: swiss`
 - [x] `parse: tab`
 - [x] `parse: twobit`
-- [ ] `parse: uniprot-xml`
+- [~] `parse: uniprot-xml`
 - [x] `parse: xdna`
 
 ### Write formats
@@ -719,6 +719,151 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `get_alignment_length(self)`
 - [x] `sort(self, key=None, reverse=False)`
 - [ ] `substitutions`
+
+## Bio.Align.AlignmentCounts
+
+
+### Bio.Align.AlignmentCounts.AlignmentCounts
+
+- [x] `aligned`
+- [x] `deletions`
+- [x] `extend_deletions`
+- [x] `extend_gaps`
+- [x] `extend_insertions`
+- [x] `extend_internal_deletions`
+- [x] `extend_internal_gaps`
+- [x] `extend_internal_insertions`
+- [x] `extend_left_deletions`
+- [x] `extend_left_gaps`
+- [x] `extend_left_insertions`
+- [x] `extend_right_deletions`
+- [x] `extend_right_gaps`
+- [x] `extend_right_insertions`
+- [x] `gap_score`
+- [x] `gaps`
+- [x] `identities`
+- [x] `insertions`
+- [x] `internal_deletions`
+- [x] `internal_gaps`
+- [x] `internal_insertions`
+- [x] `left_deletions`
+- [x] `left_gaps`
+- [x] `left_insertions`
+- [x] `mismatches`
+- [x] `open_deletions`
+- [x] `open_gaps`
+- [x] `open_insertions`
+- [x] `open_internal_deletions`
+- [x] `open_internal_gaps`
+- [x] `open_internal_insertions`
+- [x] `open_left_deletions`
+- [x] `open_left_gaps`
+- [x] `open_left_insertions`
+- [x] `open_right_deletions`
+- [x] `open_right_gaps`
+- [x] `open_right_insertions`
+- [x] `positives`
+- [x] `right_deletions`
+- [x] `right_gaps`
+- [x] `right_insertions`
+- [x] `score`
+- [x] `substitution_score`
+
+## Bio.Align.Alignment
+
+
+### Bio.Align.Alignment.Alignment
+
+- [x] `__add__(self, other)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, key)`
+- [x] `__gt__(self, other)`
+- [x] `__init__(self, sequences, coordinates=None)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
+- [-] `__repr__(self)`
+- [x] `__str__(self)`
+- [x] `aligned`
+- [x] `counts(self, scoring=None)`
+- [~] `format(self, fmt='', *args, **kwargs)`
+- [x] `frequencies`
+- [x] `from_alignments_with_same_reference(alignments: list['Alignment'] | tuple['Alignment']) -> 'Alignment'`
+- [x] `indices`
+- [x] `inverse_indices`
+- [x] `length`
+- [x] `map(self, alignment)`
+- [x] `mapall(self, alignments)`
+- [x] `parse_printed_alignment(lines)`
+- [x] `query`
+- [x] `reverse_complement(self)`
+- [x] `shape`
+- [x] `sort(self, key=None, reverse=False)`
+- [x] `substitutions`
+- [x] `target`
+
+## Bio.Align.PairwiseAligner
+
+
+### Bio.Align.PairwiseAligner.PairwiseAligner
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, scoring=None, **kwargs)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [x] `__str__(self, /)`
+- [x] `align(self, seqA, seqB, strand='+')`
+- [x] `score(self, seqA, seqB, strand='+')`
+- [ ] `warn_defaults_changed(self, /)`
+
+### Bio.Align.PairwiseAligner.PairwiseAlignments
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [x] `__getitem__(self, index)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, seqA, seqB, score, paths)`
+- [x] `__iter__(self)`
+- [-] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self)`
+- [-] `__str__(self, /)`
+- [x] `rewind(self)`
+
+## Bio.Align.substitution_matrices
+
+- [x] `load(name=None)`
+- [x] `read(handle, dtype=<class 'float'>)`
+
+### Bio.Align.substitution_matrices.Array
+
+- [x] `__new__(cls, alphabet=None, dims=None, data=None, dtype=<class 'float'>)`
+- [-] `__array_finalize__(self, obj)`
+- [x] `__getitem__(self, key)`
+- [x] `__setitem__(self, key, value)`
+- [x] `__contains__(self, key)`
+- [-] `__array_prepare__(self, out_arr, context=None)`
+- [-] `__array_wrap__(self, out_arr, context=None)`
+- [ ] `__array_ufunc__(self, ufunc, method, *inputs, **kwargs)`
+- [-] `__reduce__(self)`
+- [-] `__setstate__(self, state)`
+- [x] `get(self, key, value=None)`
+- [x] `items(self)`
+- [x] `keys(self)`
+- [x] `values(self)`
+- [x] `update(self, E=None, **F)`
+- [x] `select(self, alphabet)`
+- [x] `__format__(self, fmt)`
+- [x] `format(self, fmt='')`
+- [x] `__str__(self)`
+- [-] `__repr__(self)`
 
 ## Bio.SeqUtils
 

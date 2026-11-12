@@ -8,6 +8,7 @@ from Bio.SeqUtils import (gc_fraction, GC123, GC_skew, seq3, seq1, molecular_wei
 import Bio.SeqUtils as SU
 from Bio.SeqUtils import CheckSum, lcc, IsoelectricPoint, ProtParam, MeltingTemp
 from Bio.SeqIO import _FormatToIterator, _FormatToWriter
+from Bio.Align import substitution_matrices as SMMod
 from Bio.Nexus import Nexus as NexusMod, Trees as TreesMod, Nodes as NodesMod, StandardData as StandardDataMod
 
 def members(cls):
@@ -20,6 +21,10 @@ def members(cls):
             except (TypeError, ValueError): sig = "?"
             out[n] = sig
     return out
+
+def _sig(m):
+    try: return str(inspect.signature(m))
+    except (TypeError, ValueError): return "?"
 
 def funcs(mod, names=None):
     out = {}
@@ -43,6 +48,11 @@ inv = {
                           "table_ids": sorted(CodonTable.generic_by_id)},
   "Bio.Data.IUPACData": sorted(n for n in dir(IUPACData) if not n.startswith("_")),
   "Bio.Align": {"classes": {"MultipleSeqAlignment": members(Align.MultipleSeqAlignment)}},
+  "Bio.Align.AlignmentCounts": {"classes": {"AlignmentCounts": {n: "property" for n in dir(Align._alignmentcounts.AlignmentCounts) if not n.startswith("_")}}},
+  "Bio.Align.Alignment": {"classes": {"Alignment": members(Align.Alignment)}},
+  "Bio.Align.PairwiseAligner": {"classes": {"PairwiseAligner": members(Align.PairwiseAligner), "PairwiseAlignments": members(Align.PairwiseAlignments)}},
+  # Array subclasses numpy.ndarray: list only what Biopython itself defines, not the inherited ndarray API
+  "Bio.Align.substitution_matrices": {"functions": funcs(SMMod), "classes": {"Array": {n: _sig(getattr(SMMod.Array, n)) for n in vars(SMMod.Array) if not n.startswith("_") or n in ("__new__", "__getitem__", "__setitem__", "__contains__", "__str__", "__format__", "__array_ufunc__", "__array_finalize__", "__array_prepare__", "__array_wrap__", "__reduce__", "__setstate__", "__repr__")}}},
   "Bio.SeqUtils": {"functions": funcs(SU), "classes": {"CodonAdaptationIndex": members(SU.CodonAdaptationIndex)}},
   "Bio.SeqUtils.CheckSum": {"functions": funcs(CheckSum)},
   "Bio.SeqUtils.lcc": {"functions": funcs(lcc)},

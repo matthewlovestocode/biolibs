@@ -833,6 +833,152 @@
    }
   }
  },
+ "Bio.Align.AlignmentCounts": {
+  "classes": {
+   "AlignmentCounts": {
+    "aligned": "property",
+    "deletions": "property",
+    "extend_deletions": "property",
+    "extend_gaps": "property",
+    "extend_insertions": "property",
+    "extend_internal_deletions": "property",
+    "extend_internal_gaps": "property",
+    "extend_internal_insertions": "property",
+    "extend_left_deletions": "property",
+    "extend_left_gaps": "property",
+    "extend_left_insertions": "property",
+    "extend_right_deletions": "property",
+    "extend_right_gaps": "property",
+    "extend_right_insertions": "property",
+    "gap_score": "property",
+    "gaps": "property",
+    "identities": "property",
+    "insertions": "property",
+    "internal_deletions": "property",
+    "internal_gaps": "property",
+    "internal_insertions": "property",
+    "left_deletions": "property",
+    "left_gaps": "property",
+    "left_insertions": "property",
+    "mismatches": "property",
+    "open_deletions": "property",
+    "open_gaps": "property",
+    "open_insertions": "property",
+    "open_internal_deletions": "property",
+    "open_internal_gaps": "property",
+    "open_internal_insertions": "property",
+    "open_left_deletions": "property",
+    "open_left_gaps": "property",
+    "open_left_insertions": "property",
+    "open_right_deletions": "property",
+    "open_right_gaps": "property",
+    "open_right_insertions": "property",
+    "positives": "property",
+    "right_deletions": "property",
+    "right_gaps": "property",
+    "right_insertions": "property",
+    "score": "property",
+    "substitution_score": "property"
+   }
+  }
+ },
+ "Bio.Align.Alignment": {
+  "classes": {
+   "Alignment": {
+    "__add__": "(self, other)",
+    "__eq__": "(self, other)",
+    "__ge__": "(self, other)",
+    "__getitem__": "(self, key)",
+    "__gt__": "(self, other)",
+    "__init__": "(self, sequences, coordinates=None)",
+    "__le__": "(self, other)",
+    "__len__": "(self)",
+    "__lt__": "(self, other)",
+    "__repr__": "(self)",
+    "__str__": "(self)",
+    "aligned": "property",
+    "counts": "(self, scoring=None)",
+    "format": "(self, fmt='', *args, **kwargs)",
+    "frequencies": "property",
+    "from_alignments_with_same_reference": "(alignments: list['Alignment'] | tuple['Alignment']) -> 'Alignment'",
+    "indices": "property",
+    "inverse_indices": "property",
+    "length": "property",
+    "map": "(self, alignment)",
+    "mapall": "(self, alignments)",
+    "parse_printed_alignment": "(lines)",
+    "query": "property",
+    "reverse_complement": "(self)",
+    "shape": "property",
+    "sort": "(self, key=None, reverse=False)",
+    "substitutions": "property",
+    "target": "property"
+   }
+  }
+ },
+ "Bio.Align.PairwiseAligner": {
+  "classes": {
+   "PairwiseAligner": {
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self, scoring=None, **kwargs)",
+    "__le__": "(self, value, /)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self, /)",
+    "__str__": "(self, /)",
+    "align": "(self, seqA, seqB, strand='+')",
+    "score": "(self, seqA, seqB, strand='+')",
+    "warn_defaults_changed": "(self, /)"
+   },
+   "PairwiseAlignments": {
+    "__eq__": "(self, value, /)",
+    "__ge__": "(self, value, /)",
+    "__getitem__": "(self, index)",
+    "__gt__": "(self, value, /)",
+    "__hash__": "(self, /)",
+    "__init__": "(self, seqA, seqB, score, paths)",
+    "__iter__": "(self)",
+    "__le__": "(self, value, /)",
+    "__len__": "(self)",
+    "__lt__": "(self, value, /)",
+    "__repr__": "(self)",
+    "__str__": "(self, /)",
+    "rewind": "(self)"
+   }
+  }
+ },
+ "Bio.Align.substitution_matrices": {
+  "functions": {
+   "load": "(name=None)",
+   "read": "(handle, dtype=<class 'float'>)"
+  },
+  "classes": {
+   "Array": {
+    "__new__": "(cls, alphabet=None, dims=None, data=None, dtype=<class 'float'>)",
+    "__array_finalize__": "(self, obj)",
+    "__getitem__": "(self, key)",
+    "__setitem__": "(self, key, value)",
+    "__contains__": "(self, key)",
+    "__array_prepare__": "(self, out_arr, context=None)",
+    "__array_wrap__": "(self, out_arr, context=None)",
+    "__array_ufunc__": "(self, ufunc, method, *inputs, **kwargs)",
+    "__reduce__": "(self)",
+    "__setstate__": "(self, state)",
+    "get": "(self, key, value=None)",
+    "items": "(self)",
+    "keys": "(self)",
+    "values": "(self)",
+    "update": "(self, E=None, **F)",
+    "select": "(self, alphabet)",
+    "__format__": "(self, fmt)",
+    "format": "(self, fmt='')",
+    "__str__": "(self)",
+    "__repr__": "(self)"
+   }
+  }
+ },
  "Bio.SeqUtils": {
   "functions": {
    "GC123": "(seq)",

@@ -188,3 +188,34 @@ for n in [x for x in dir(MT) if not x.startswith("_")]:
     lines.append(f"/** {MT_DESCRIPTIONS[n]} */\nexport const {camel(n.lower())}: {ts} = {js(v)};\n\n")
 open(os.path.join(SU_OUT, "melting-temp-data.ts"), "w").write("".join(lines))
 print("melting temp tables written")
+
+# ---------------------------------------------------------------------------------------------
+# Bio.Data.PDBData residue-name tables -> packages/seqio/src/pdb/pdb-data.ts (used by pdb-seqres)
+from Bio.Data import PDBData
+PDB_OUT = os.path.join(os.path.dirname(__file__), "..", "packages", "seqio", "src", "pdb")
+os.makedirs(PDB_OUT, exist_ok=True)
+PDB_DESCRIPTIONS = {
+  "protein_letters_3to1": "Upper-case three-letter residue names of the 20 standard amino acids mapped to one-letter codes, e.g. `ALA` to `A`.",
+  "protein_letters_3to1_extended": "Residue names of modified and non-standard amino acids (as found in PDB files) mapped to the one-letter code of the parent residue, e.g. `MSE` to `M`.",
+}
+lines = [HDR, "/**\n * Residue-name tables from Biopython's `Bio.Data.PDBData`, used to turn PDB residue names into one-letter codes.\n */\n\n"]
+for n, d in PDB_DESCRIPTIONS.items():
+    lines.append(f"/** {d} */\nexport const {camel(n)}: {ts_type(getattr(PDBData, n))} = {js(getattr(PDBData, n))};\n\n")
+open(os.path.join(PDB_OUT, "pdb-data.ts"), "w").write("".join(lines))
+print("pdb data written")
+
+# ---------------------------------------------------------------------------------------------
+# Bio.Align.substitution_matrices data files -> packages/align/src/substitution-matrices/matrix-files.ts
+import Bio.Align.substitution_matrices as _SM
+SM_OUT = os.path.join(os.path.dirname(__file__), "..", "packages", "align", "src", "substitution-matrices")
+os.makedirs(SM_OUT, exist_ok=True)
+sm_dir = os.path.join(os.path.dirname(_SM.__file__), "data")
+sm_names = _SM.load()
+body = HDR + "/**\n * The substitution matrix files shipped with Biopython (`Bio/Align/substitution_matrices/data`), verbatim.\n */\n\n"
+body += "/** Names of all bundled substitution matrices, sorted (what `load()` with no argument returns). */\nexport const MATRIX_NAMES: string[] = " + json.dumps(sm_names) + ";\n\n"
+body += "/** The text of each bundled substitution matrix file, by name, exactly as Biopython stores it (including the `#` header lines). */\nexport const MATRIX_FILES: Record<string, string> = {\n"
+for n in sm_names:
+    body += f"  {json.dumps(n)}: {json.dumps(open(os.path.join(sm_dir, n), newline='').read())},\n"
+body += "};\n"
+open(os.path.join(SM_OUT, "matrix-files.ts"), "w").write(body)
+print("substitution matrices:", len(sm_names))

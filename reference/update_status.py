@@ -105,6 +105,8 @@ if {"parse", "read", "write", "to_dict"} <= kinds:
         mark(f"Bio.SeqIO.{fn}")
 # seqxml: behaviour (records, timing of errors, handler errors) is verified, but expat's wording for malformed XML is not reproduced
 if "seqxml" in parsed: mark("Bio.SeqIO.parse:seqxml", "partial")
+# uniprot-xml: records and error timing are verified, but expat's wording for malformed XML (ParseError) is not reproduced
+if "uniprot-xml" in parsed: mark("Bio.SeqIO.parse:uniprot-xml", "partial")
 # snapgene reads XML packets with a minimal DOM; expat's wording for malformed XML is likewise not reproduced
 if "snapgene" in parsed: mark("Bio.SeqIO.parse:snapgene", "partial")
 # convert is complete once every direct fast path (fastq->fastq/fasta/qual..., genbank/embl->fasta) has a verified case
@@ -165,6 +167,60 @@ nexus_members("Bio.Nexus.Nodes", "Chain", tr_ops, extra_done=("__init__", "add")
 nexus_members("Bio.Nexus.Nodes", "Node", node_ops, extra_done=("__init__",), na=("__str__", "get_data", "set_data"))
 if any(c["kind"] == "standard" and "raw" in c for c in nx):
     nexus_members("Bio.Nexus.StandardData", "StandardData", {"raw"}, extra_done=("__init__", "__str__", "__len__", "__getitem__", "__iter__"), na=("__next__",))
+
+# ---- Bio.Align.substitution_matrices (packages/align/test/golden/matrices.json) ----
+sm = json.load(open(f"{here}/../packages/align/test/golden/matrices.json"))["cases"]
+if any(c["kind"] == "load" and "matrix" in c for c in sm): mark("Bio.Align.substitution_matrices.load")
+if any(c["kind"] == "read" and "matrix" in c for c in sm): mark("Bio.Align.substitution_matrices.read")
+sm_ops = {op[0] for c in sm if c["kind"] == "array" for op in c["ops"]}
+SM_USED = {"get": ("__getitem__",), "set": ("__setitem__",), "has": ("__contains__",), "keys": ("keys",), "values": ("values",), "items": ("items",), "update": ("update",), "select": ("select",), "format": ("format", "__format__"), "str": ("__str__",), "getor": ("get",)}
+for op in sm_ops:
+    for m in SM_USED.get(op, ()): mark(f"Bio.Align.substitution_matrices.Array.{m}")
+if any(c["kind"] == "array" and "array" in c for c in sm): mark("Bio.Align.substitution_matrices.Array.__new__")
+for m in ("__array_finalize__", "__array_prepare__", "__array_wrap__", "__reduce__", "__setstate__", "__repr__"):
+    mark(f"Bio.Align.substitution_matrices.Array.{m}", "na")      # numpy / pickle protocol hooks; arithmetic (__array_ufunc__) is not ported yet
+
+# ---- Bio.Align.PairwiseAligner (packages/align/test/golden/aligner.json) ----
+al = json.load(open(f"{here}/../packages/align/test/golden/aligner.json"))["cases"]
+al_names = set()                                 # properties exercised: set in a config, or read/written by an operation
+for c in al:
+    if "exc" in c and c["kind"] == "settings": continue
+    for name, _ in c.get("props", []): al_names.add(name)
+    for op in c.get("ops", []):
+        if op[0] in ("get", "set"): al_names.add(op[1])
+for m in inv["Bio.Align.PairwiseAligner"]["classes"]["PairwiseAligner"]:
+    key = f"Bio.Align.PairwiseAligner.PairwiseAligner.{m}"
+    if m in al_names: mark(key)
+    elif m in ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__"): mark(key, "na")   # object boilerplate
+if any(c["kind"] == "score" and "score" in c for c in al): mark("Bio.Align.PairwiseAligner.PairwiseAligner.score")
+if any(c["kind"] == "settings" for c in al): mark("Bio.Align.PairwiseAligner.PairwiseAligner.__init__"); mark("Bio.Align.PairwiseAligner.PairwiseAligner.__str__"); mark("Bio.Align.PairwiseAligner.PairwiseAligner.algorithm")
+if any(c["kind"] == "align" and "first" in c for c in al): mark("Bio.Align.PairwiseAligner.PairwiseAligner.align")
+if any(c["kind"] == "align" and "first" in c for c in al):
+    for m in ("__getitem__", "__iter__", "__len__", "__next__", "rewind"): mark(f"Bio.Align.PairwiseAligner.PairwiseAlignments.{m}")
+    for m in ("__repr__", "__init__"): mark(f"Bio.Align.PairwiseAligner.PairwiseAlignments.{m}", "na" if m == "__repr__" else "done")   # repr shows a memory address
+for m in ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__", "__str__"): mark(f"Bio.Align.PairwiseAligner.PairwiseAlignments.{m}", "na")   # object boilerplate
+fog = any(c["kind"] in ("score", "align") and "exc" not in c and any(p[0] == "mode" and p[1] == "fogsaa" for p in c.get("props", [])) for c in al)
+mark("Bio.Align.PairwiseAligner.PairwiseAligner.mode", "done" if fog else "partial")
+for m in ("__getstate__", "__setstate__", "__getattr__", "__setattr__", "__repr__", "__reduce__", "__reduce_ex__"): mark(f"Bio.Align.PairwiseAligner.PairwiseAligner.{m}", "na")   # pickling and attribute plumbing
+
+# ---- Bio.Align.Alignment (packages/align/test/golden/alignment.json) ----
+ag = json.load(open(f"{here}/../packages/align/test/golden/alignment.json"))["cases"]
+ag_ops = {op[0] for c in ag for op in c.get("ops", [])}
+AG = "Bio.Align.Alignment.Alignment"
+for m in ("__init__", "target", "query"): mark(f"{AG}.{m}")
+for m in ("length", "shape", "aligned", "indices", "inverse_indices", "sort", "__str__"):
+    if m in ag_ops or m == "__init__" or m == "__str__" and "str" in ag_ops: mark(f"{AG}.{m}")
+if "len" in ag_ops: mark(f"{AG}.__len__")
+if "counts" in ag_ops:
+    for m in inv["Bio.Align.AlignmentCounts"]["classes"]["AlignmentCounts"]: mark(f"Bio.Align.AlignmentCounts.AlignmentCounts.{m}")
+    mark("Bio.Align.AlignmentCounts.AlignmentCounts.__str__")
+    mark("Bio.Align.AlignmentCounts.AlignmentCounts.__repr__", "na")     # repr shows a memory address
+for op, m in (("counts", "counts"), ("map", "map"), ("mapall", "mapall"), ("same_ref", "from_alignments_with_same_reference"), ("get", "__getitem__"), ("add", "__add__"), ("reverse_complement", "reverse_complement"), ("frequencies", "frequencies"), ("substitutions", "substitutions"), ("parse_printed", "parse_printed_alignment")):
+    if op in ag_ops: mark(f"{AG}.{m}")
+if "cmp" in ag_ops:
+    for m in ("__eq__", "__ne__", "__lt__", "__le__", "__gt__", "__ge__"): mark(f"{AG}.{m}")
+if "format_matrix" in ag_ops: mark(f"{AG}.format", "partial"); mark(f"{AG}.__format__", "partial")      # only the printed layout; file formats need the writers
+for m in ("__repr__", "__hash__"): mark(f"{AG}.{m}", "na")        # repr shows a memory address
 
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

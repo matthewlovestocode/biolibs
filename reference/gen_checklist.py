@@ -42,6 +42,10 @@ for f in inv["Bio.SeqIO"]["parse_formats"]: item(f"Bio.SeqIO.parse:{f}", f"parse
 L.extend(["", "### Write formats", ""])
 for f in inv["Bio.SeqIO"]["write_formats"]: item(f"Bio.SeqIO.write:{f}", f"write: {f}")
 section("Bio.Align", "Bio.Align", inv["Bio.Align"])
+section("Bio.Align.AlignmentCounts", "Bio.Align.AlignmentCounts", inv["Bio.Align.AlignmentCounts"])
+section("Bio.Align.Alignment", "Bio.Align.Alignment", inv["Bio.Align.Alignment"])
+section("Bio.Align.PairwiseAligner", "Bio.Align.PairwiseAligner", inv["Bio.Align.PairwiseAligner"])
+section("Bio.Align.substitution_matrices", "Bio.Align.substitution_matrices", inv["Bio.Align.substitution_matrices"])
 for mod in ("Bio.SeqUtils", "Bio.SeqUtils.CheckSum", "Bio.SeqUtils.lcc", "Bio.SeqUtils.IsoelectricPoint", "Bio.SeqUtils.ProtParam", "Bio.SeqUtils.MeltingTemp"):
     section(mod, mod, inv[mod])
 for mod in ("Bio.Nexus.Nexus", "Bio.Nexus.Trees", "Bio.Nexus.Nodes", "Bio.Nexus.StandardData"):

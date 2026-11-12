@@ -1,6 +1,6 @@
 # @biolibs/align
 
-A TypeScript port of Biopython's `Bio.Align`. So far it holds `MultipleSeqAlignment`; the pairwise aligner and the newer `Alignment` class are not yet ported (the earlier string-only scaffold was removed). Verified against Biopython 1.88 with about 1,900 recorded operations. See [PARITY.md](../PARITY.md).
+A TypeScript port of Biopython's `Bio.Align`. So far it holds `MultipleSeqAlignment`, the substitution matrices, and `PairwiseAligner` with scoring and alignment (the alignment file formats are not yet ported) (the earlier string-only scaffold was removed). Verified against Biopython 1.88 with about 1,900 recorded operations. See [PARITY.md](../PARITY.md).
 
 ```ts
 import { MultipleSeqAlignment } from "@biolibs/align";
@@ -27,3 +27,85 @@ aln.format("clustal");         // needs @biolibs/seqio to be imported
 | `aln.substitutions`, `aln.alignment` | not yet (need substitution matrices and the `Alignment` class) |
 
 Records must all have the same length (`ValueError` otherwise); a record without a sequence raises `TypeError` when the alignment length is needed, as `len(None)` does in Python.
+
+## Substitution matrices
+
+`substitutionMatrices` is `Bio.Align.substitution_matrices`: the 30 bundled scoring matrices (BLOSUM, PAM, nucleotide matrices, ...) as letter-indexed arrays. The matrix text is generated from Biopython's data files (`matrix-files.ts`), so the values cannot drift.
+
+```ts
+import { substitutionMatrices as SM } from "@biolibs/align";
+
+const blosum62 = SM.loadMatrix("BLOSUM62");     // Python: substitution_matrices.load("BLOSUM62")
+blosum62.get(["A", "R"]);                       // -1   (Python m["A", "R"])
+blosum62.get("A");                              // the row for A, a SubstitutionArray (a view)
+blosum62.set(["A", "A"], 5);
+SM.loadNames();                                 // sorted names, like load()
+```
+
+| Python | TypeScript |
+|---|---|
+| `load()`, `load(name)` | `loadNames()`, `loadMatrix(name)` |
+| `read(handle, dtype)` | `readMatrix(text, "float" \| "int")` |
+| `Array(alphabet, dims, data, dtype)` | `new SubstitutionArray({ alphabet, dims, data, dtype })`; from a dict: `SubstitutionArray.fromEntries(pairs)` |
+| `m[key]`, `m[k1, k2]`, `m[:, k]` | `m.get(key)`, `m.get([k1, k2])`, `m.get([null, k])` (`null` is `:`; a column is a copy) |
+| `m[key] = v` | `m.set(key, v)` |
+| `m.get(key, default)`, `key in m` | `m.getOr(key, default)`, `m.has(key)` |
+| `keys()`, `values()`, `items()`, `update()`, `select()` | the same names |
+| `m.format("%.2f")`, `str(m)` | `m.format("%.2f")`, `m.toString()` (a Python `%` format string) |
+
+Differences: `load` of an unknown name throws `FileNotFoundError`-named errors with a name instead of a path. Biopython's `Array` subclasses a numpy array; the numpy operator overloads (`m + 1`, `m * 2`, ufuncs, `repr`, pickling) are not ported, so `__array_ufunc__` stays unchecked in `PARITY.md`. Like Biopython, a one-dimensional dict makes the constructor fail (`UnboundLocalError`), a string alphabet is searched as a substring (`m["AB"]` finds `A`), and an integer array truncates on assignment.
+
+## PairwiseAligner
+
+`PairwiseAligner` holds the scoring settings and computes alignment scores, with the same algorithm choice as Biopython: Needleman-Wunsch or Smith-Waterman for linear gaps, Gotoh for affine gaps, Waterman-Smith-Beyer when a gap function is set. `align()` returns every optimal alignment for the four dynamic-programming algorithms, global and local. The `"fogsaa"` mode (the Fast Optimal Global Sequence Alignment Algorithm, a best-first search) finds one optimal global alignment; like Biopython it warns when the match score is below the mismatch score or a gap score exceeds the mismatch score, because it may then return incorrect results. In that regime Biopython's `align` sometimes crashes the Python interpreter, and the golden tests leave those inputs out, so this port's behaviour there is not verified.
+
+```ts
+import { PairwiseAligner, substitutionMatrices as SM } from "@biolibs/align";
+
+const aligner = new PairwiseAligner({ mode: "global", matchScore: 2, mismatchScore: -1, openGapScore: -0.5, extendGapScore: -0.1 });
+aligner.score("TACCG", "ACG");                    // like Python aligner.score("TACCG", "ACG")
+aligner.score("KEVLA", "EVL", "+");               // the strand argument is "+" or "-" (aligns the reverse complement of the query)
+
+const protein = new PairwiseAligner({ substitutionMatrix: SM.loadMatrix("BLOSUM62") });
+new PairwiseAligner({ scoring: "blastn" });       // also "megablast" and "blastp"
+```
+
+Properties are the Python names in camelCase: `mode`, `matchScore`, `mismatchScore`, `substitutionMatrix`, `epsilon`, `wildcard`, `algorithm`, and every gap-score property (`gapScore`, `openGapScore`, `extendInternalGapScore`, `endInsertionScore`, ... 45 of them). They are generated from Biopython's C source (`reference/gen_aligner_props.py`), including the rules for which properties read and write which of the twelve base gap scores, the `gap scores are different` and `using a gap score function` errors, and the deprecated names (`targetGapScore`, ...), which warn with `BiopythonDeprecationWarning`. A gap function is `(position, length) => score`.
+
+Sequences may be strings, `Seq`, `MutableSeq`, `SeqRecord`, bytes, an `Int32Array` of indices, or an array of items (mapped through the substitution matrix's alphabet, or an alphabet built from the items). Differences from Python: a Python `bytearray` is rejected by Biopython but a `Uint8Array` here is treated as `bytes`; `toString()` shows `<Array object>` for the substitution matrix instead of a memory address; and `warn_defaults_changed` is not ported.
+
+### Alignments
+
+`aligner.align(a, b, strand)` returns a `PairwiseAlignments`: the optimal `score`, the number of alignments (`length`, a `bigint`, computed without generating them; very large counts throw `RangeError` where Python raises `OverflowError`), indexing (`get(i)`, negative from the end, fast for increasing indices) and iteration in Biopython's order.
+
+```ts
+const alignments = new PairwiseAligner({ mode: "local", matchScore: 2, mismatchScore: -1 }).align("TACCG", "ACG");
+alignments.length;                  // 2n
+for (const alignment of alignments) console.log(alignment.coordinates, alignment.score);
+alignments.get(-1).coordinates;    // [[1, 2, 3, 5], [0, 1, 1, 3]]
+```
+
+### Alignment
+
+`Alignment` holds `sequences`, `coordinates` (a `number[][]`, one row per sequence) and `score`. Ported so far, and verified against Biopython on about 6,500 alignments (aligner output on both strands, multiple alignments, reverse-strand rows, Unicode and non-text sequences, and deliberately invalid coordinates):
+
+| Python | TypeScript |
+|---|---|
+| `Alignment(sequences, coordinates)` | `new Alignment(sequences, coordinates)` |
+| `str(alignment)`, `alignment.format()` | `alignment.toString()`, `alignment.format()`; `format("", matrix)` marks similar letters with `:` (the matrix can be a `SubstitutionArray` or an aligner) |
+| `len(alignment)` | `alignment.size` (the number of sequences) |
+| `.length`, `.shape` | `.length`, `.shape` |
+| `.aligned`, `.indices`, `.inverse_indices` | `.aligned` (`number[][][]`), `.indices`, `.inverseIndices` |
+| `.target`, `.query` | the same (settable) |
+| `==`, `!=`, `<`, `<=`, `>`, `>=` | `equals`, `lt`, `le`, `gt`, `ge` |
+| `.sort(key, reverse)` | `.sort(key, reverse)` |
+| `alignment[row]`, `alignment[rows]`, `alignment[row, col]`, ... | `alignment.get(key)`: an integer row gives text with `-` gaps (a list with `null` for non-text sequences), a slice `{ start, stop, step }` gives an alignment of those rows, a pair `[row, col]` takes an integer, a slice or (for `col`) a list of integers; a column slice of several rows gives a sub-alignment (carrying `score` and `columnAnnotations`) |
+| `a + b` | `a.add(b)` |
+| `.counts(scoring)` | `.counts(scoring)`: an `AlignmentCounts` (`aligned`, `identities`, `mismatches`, `positives`, `gaps`, `openGaps`, `leftInsertions`, ..., `score`, `gapScore`, `substitutionScore`; `toString()` prints the full table). `scoring` is a `PairwiseAligner` (gap and substitution scores are computed), a substitution matrix, a one-letter wildcard, or null |
+| `.map(alignment)`, `.mapall(alignments)` | `.map(alignment)`, `.mapall(alignments)` |
+| `Alignment.from_alignments_with_same_reference(alignments)` | `Alignment.fromAlignmentsWithSameReference(alignments)` |
+| `.reverse_complement()` | `.reverseComplement()` |
+| `.frequencies`, `.substitutions` | `.frequencies` (a `Map` of letter to per-column weights), `.substitutions` (a `SubstitutionArray`) |
+| `Alignment.parse_printed_alignment(lines)` | `Alignment.parsePrintedAlignment(lines)` (lines are `Uint8Array`s) |
+
+`format()` with a file format name (`"clustal"`, `"psl"`, ...) throws `NotImplementedError`: the alignment file writers are not ported. Not ported yet: formatting as a file format. In a pair key an array is a Python tuple, so a top-level list key (a `TypeError` in Python) behaves like a 1-element tuple here (`ValueError`). Biopython reads uninitialised memory when a zero-width column selection of three or more rows is re-parsed; that case is not reproduced. On the minus strand the query coordinates run backwards, as in Biopython. On the minus strand the query coordinates run backwards, as in Biopython. The traceback follows the C implementation cell by cell (including the way it prunes and extends paths in place), so alignments come out in the same order.
