@@ -50,5 +50,27 @@ for cls, members in inv["Bio.Data.CodonTable"]["classes"].items():
 for i in inv["Bio.Data.CodonTable"]["table_ids"]: mark(f"CodonTable.id.{i}")
 for n in inv["Bio.Data.IUPACData"]: mark(f"IUPACData.{n}")
 
+# ---- Bio.SeqFeature (packages/seqfeature/test/golden/seqfeature.json) ----
+feat = json.load(open(f"{here}/../packages/seqfeature/test/golden/seqfeature.json"))["cases"]
+f_ops = {c["op"] for c in feat if "op" in c}
+f_ctors = {c["ctor"] for c in feat if "ctor" in c}
+f_static = {c["static"].split(".")[0] for c in feat if "static" in c}
+# Positions are int subclasses in Python and inherit all of int's methods; in TypeScript use Number(position).
+INT_BUILTINS = {"__mod__", "__mul__", "__rmul__", "as_integer_ratio", "bit_count", "bit_length", "conjugate", "from_bytes", "is_integer", "to_bytes"}
+POSITIONS = {"ExactPosition", "UncertainPosition", "UnknownPosition", "WithinPosition", "BetweenPosition", "BeforePosition", "AfterPosition", "OneOfPosition"}
+for cls, members in inv["Bio.SeqFeature"]["classes"].items():
+    for m in members:
+        key = f"Bio.SeqFeature.{cls}.{m}"
+        if cls in POSITIONS and m in INT_BUILTINS: mark(key, "na")
+        elif m == "__hash__": mark(key, "na")          # hashing is not part of the TypeScript API
+        elif m == "__bool__": mark(key, "na")          # no truthiness protocol in TypeScript (Biopython returns True)
+        elif m == "__nonzero__": mark(key, "na")       # Python 2 relic
+        elif m == "__init__" and cls in ("Location", "Position"): mark(key, "na")   # abstract classes
+        elif m == "__init__" and cls in f_ctors: mark(key)
+        elif m == "fromstring" and (cls in f_static or cls in POSITIONS | {"Location", "Position", "SimpleLocation", "CompoundLocation"}): mark(key)  # statics are inherited
+        elif m in f_ops: mark(key)
+        elif m == "__getnewargs__": mark(key, "na")    # pickling support
+for fn in inv["Bio.SeqFeature"].get("functions", {}): pass
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

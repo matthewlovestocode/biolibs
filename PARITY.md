@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 219 / 580 applicable items verified against Biopython.**
+**Progress: 382 / 498 applicable items verified against Biopython.**
 
 
 
@@ -221,290 +221,290 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 ### Bio.SeqFeature.SeqFeature
 
-- [ ] `__contains__(self, value)`
-- [ ] `__eq__(self, other)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__init__(self, location=None, type='', id='<unknown id>', qualifiers=None, sub_features=None)`
-- [ ] `__iter__(self)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__len__(self)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__str__(self)`
-- [ ] `extract(self, parent_sequence, references=None)`
-- [ ] `translate(self, parent_sequence, table='Standard', start_offset=None, stop_symbol='*', to_stop=False, cds=None, gap=None)`
+- [x] `__contains__(self, value)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [x] `__init__(self, location=None, type='', id='<unknown id>', qualifiers=None, sub_features=None)`
+- [x] `__iter__(self)`
+- [x] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, value, /)`
+- [x] `__repr__(self)`
+- [x] `__str__(self)`
+- [x] `extract(self, parent_sequence, references=None)`
+- [x] `translate(self, parent_sequence, table='Standard', start_offset=None, stop_symbol='*', to_stop=False, cds=None, gap=None)`
 
 ### Bio.SeqFeature.Location
 
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__str__(self, /)`
-- [ ] `fromstring(text, length=None, circular=False, stranded=True)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [-] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [x] `__repr__(self)`
+- [x] `__str__(self, /)`
+- [x] `fromstring(text, length=None, circular=False, stranded=True)`
 
 ### Bio.SeqFeature.SimpleLocation
 
-- [ ] `__add__(self, other)`
-- [ ] `__contains__(self, value)`
-- [ ] `__eq__(self, other)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__init__(self, start, end, strand=None, ref=None, ref_db=None)`
-- [ ] `__iter__(self)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__len__(self)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__radd__(self, other)`
-- [ ] `__repr__(self)`
-- [ ] `__str__(self)`
-- [ ] `end`
-- [ ] `extract(self, parent_sequence, references=None)`
-- [ ] `fromstring(text, length=None, circular=False)`
-- [ ] `parts`
-- [ ] `start`
-- [ ] `strand`
+- [x] `__add__(self, other)`
+- [x] `__contains__(self, value)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [x] `__init__(self, start, end, strand=None, ref=None, ref_db=None)`
+- [x] `__iter__(self)`
+- [x] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, value, /)`
+- [x] `__radd__(self, other)`
+- [x] `__repr__(self)`
+- [x] `__str__(self)`
+- [x] `end`
+- [x] `extract(self, parent_sequence, references=None)`
+- [x] `fromstring(text, length=None, circular=False)`
+- [x] `parts`
+- [x] `start`
+- [x] `strand`
 
 ### Bio.SeqFeature.CompoundLocation
 
-- [ ] `__add__(self, other)`
-- [ ] `__contains__(self, value)`
-- [ ] `__eq__(self, other)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__init__(self, parts, operator='join')`
-- [ ] `__iter__(self)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__len__(self)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__radd__(self, other)`
-- [ ] `__repr__(self)`
-- [ ] `__str__(self)`
-- [ ] `end`
-- [ ] `extract(self, parent_sequence, references=None)`
-- [ ] `fromstring(text, length=None, circular=False, stranded=True)`
-- [ ] `ref`
-- [ ] `ref_db`
-- [ ] `start`
-- [ ] `strand`
+- [x] `__add__(self, other)`
+- [x] `__contains__(self, value)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [x] `__init__(self, parts, operator='join')`
+- [x] `__iter__(self)`
+- [x] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, value, /)`
+- [x] `__radd__(self, other)`
+- [x] `__repr__(self)`
+- [x] `__str__(self)`
+- [x] `end`
+- [x] `extract(self, parent_sequence, references=None)`
+- [x] `fromstring(text, length=None, circular=False, stranded=True)`
+- [x] `ref`
+- [x] `ref_db`
+- [x] `start`
+- [x] `strand`
 
 ### Bio.SeqFeature.Position
 
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__str__(self, /)`
-- [ ] `fromstring(text, offset=0)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [-] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [x] `__repr__(self)`
+- [x] `__str__(self, /)`
+- [x] `fromstring(text, offset=0)`
 
 ### Bio.SeqFeature.ExactPosition
 
-- [ ] `__add__(self, offset)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__mod__(self, value, /)`
-- [ ] `__mul__(self, value, /)`
-- [ ] `__radd__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__rmul__(self, value, /)`
-- [ ] `__str__(self)`
-- [ ] `as_integer_ratio(self, /)`
-- [ ] `bit_count(self, /)`
-- [ ] `bit_length(self, /)`
-- [ ] `conjugate(self, /)`
-- [ ] `from_bytes(bytes, byteorder='big', *, signed=False)`
-- [ ] `fromstring(text, offset=0)`
-- [ ] `is_integer(self, /)`
-- [ ] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
+- [x] `__add__(self, offset)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [-] `__mod__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [x] `__radd__(self, value, /)`
+- [x] `__repr__(self)`
+- [-] `__rmul__(self, value, /)`
+- [x] `__str__(self)`
+- [-] `as_integer_ratio(self, /)`
+- [-] `bit_count(self, /)`
+- [-] `bit_length(self, /)`
+- [-] `conjugate(self, /)`
+- [-] `from_bytes(bytes, byteorder='big', *, signed=False)`
+- [x] `fromstring(text, offset=0)`
+- [-] `is_integer(self, /)`
+- [-] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
 
 ### Bio.SeqFeature.BeforePosition
 
-- [ ] `__add__(self, offset)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__mod__(self, value, /)`
-- [ ] `__mul__(self, value, /)`
-- [ ] `__radd__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__rmul__(self, value, /)`
-- [ ] `__str__(self)`
-- [ ] `as_integer_ratio(self, /)`
-- [ ] `bit_count(self, /)`
-- [ ] `bit_length(self, /)`
-- [ ] `conjugate(self, /)`
-- [ ] `from_bytes(bytes, byteorder='big', *, signed=False)`
-- [ ] `fromstring(text, offset=0)`
-- [ ] `is_integer(self, /)`
-- [ ] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
+- [x] `__add__(self, offset)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [-] `__mod__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [x] `__radd__(self, value, /)`
+- [x] `__repr__(self)`
+- [-] `__rmul__(self, value, /)`
+- [x] `__str__(self)`
+- [-] `as_integer_ratio(self, /)`
+- [-] `bit_count(self, /)`
+- [-] `bit_length(self, /)`
+- [-] `conjugate(self, /)`
+- [-] `from_bytes(bytes, byteorder='big', *, signed=False)`
+- [x] `fromstring(text, offset=0)`
+- [-] `is_integer(self, /)`
+- [-] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
 
 ### Bio.SeqFeature.AfterPosition
 
-- [ ] `__add__(self, offset)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__mod__(self, value, /)`
-- [ ] `__mul__(self, value, /)`
-- [ ] `__radd__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__rmul__(self, value, /)`
-- [ ] `__str__(self)`
-- [ ] `as_integer_ratio(self, /)`
-- [ ] `bit_count(self, /)`
-- [ ] `bit_length(self, /)`
-- [ ] `conjugate(self, /)`
-- [ ] `from_bytes(bytes, byteorder='big', *, signed=False)`
-- [ ] `fromstring(text, offset=0)`
-- [ ] `is_integer(self, /)`
-- [ ] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
+- [x] `__add__(self, offset)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [-] `__mod__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [x] `__radd__(self, value, /)`
+- [x] `__repr__(self)`
+- [-] `__rmul__(self, value, /)`
+- [x] `__str__(self)`
+- [-] `as_integer_ratio(self, /)`
+- [-] `bit_count(self, /)`
+- [-] `bit_length(self, /)`
+- [-] `conjugate(self, /)`
+- [-] `from_bytes(bytes, byteorder='big', *, signed=False)`
+- [x] `fromstring(text, offset=0)`
+- [-] `is_integer(self, /)`
+- [-] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
 
 ### Bio.SeqFeature.UncertainPosition
 
-- [ ] `__add__(self, offset)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__mod__(self, value, /)`
-- [ ] `__mul__(self, value, /)`
-- [ ] `__radd__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__rmul__(self, value, /)`
-- [ ] `__str__(self)`
-- [ ] `as_integer_ratio(self, /)`
-- [ ] `bit_count(self, /)`
-- [ ] `bit_length(self, /)`
-- [ ] `conjugate(self, /)`
-- [ ] `from_bytes(bytes, byteorder='big', *, signed=False)`
-- [ ] `fromstring(text, offset=0)`
-- [ ] `is_integer(self, /)`
-- [ ] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
+- [x] `__add__(self, offset)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [-] `__mod__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [x] `__radd__(self, value, /)`
+- [x] `__repr__(self)`
+- [-] `__rmul__(self, value, /)`
+- [x] `__str__(self)`
+- [-] `as_integer_ratio(self, /)`
+- [-] `bit_count(self, /)`
+- [-] `bit_length(self, /)`
+- [-] `conjugate(self, /)`
+- [-] `from_bytes(bytes, byteorder='big', *, signed=False)`
+- [x] `fromstring(text, offset=0)`
+- [-] `is_integer(self, /)`
+- [-] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
 
 ### Bio.SeqFeature.WithinPosition
 
-- [ ] `__add__(self, offset)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__mod__(self, value, /)`
-- [ ] `__mul__(self, value, /)`
-- [ ] `__radd__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__rmul__(self, value, /)`
-- [ ] `__str__(self)`
-- [ ] `as_integer_ratio(self, /)`
-- [ ] `bit_count(self, /)`
-- [ ] `bit_length(self, /)`
-- [ ] `conjugate(self, /)`
-- [ ] `from_bytes(bytes, byteorder='big', *, signed=False)`
-- [ ] `fromstring(text, offset=0)`
-- [ ] `is_integer(self, /)`
-- [ ] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
+- [x] `__add__(self, offset)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [-] `__mod__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [x] `__radd__(self, value, /)`
+- [x] `__repr__(self)`
+- [-] `__rmul__(self, value, /)`
+- [x] `__str__(self)`
+- [-] `as_integer_ratio(self, /)`
+- [-] `bit_count(self, /)`
+- [-] `bit_length(self, /)`
+- [-] `conjugate(self, /)`
+- [-] `from_bytes(bytes, byteorder='big', *, signed=False)`
+- [x] `fromstring(text, offset=0)`
+- [-] `is_integer(self, /)`
+- [-] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
 
 ### Bio.SeqFeature.BetweenPosition
 
-- [ ] `__add__(self, offset)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__mod__(self, value, /)`
-- [ ] `__mul__(self, value, /)`
-- [ ] `__radd__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__rmul__(self, value, /)`
-- [ ] `__str__(self)`
-- [ ] `as_integer_ratio(self, /)`
-- [ ] `bit_count(self, /)`
-- [ ] `bit_length(self, /)`
-- [ ] `conjugate(self, /)`
-- [ ] `from_bytes(bytes, byteorder='big', *, signed=False)`
-- [ ] `fromstring(text, offset=0)`
-- [ ] `is_integer(self, /)`
-- [ ] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
+- [x] `__add__(self, offset)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [-] `__mod__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [x] `__radd__(self, value, /)`
+- [x] `__repr__(self)`
+- [-] `__rmul__(self, value, /)`
+- [x] `__str__(self)`
+- [-] `as_integer_ratio(self, /)`
+- [-] `bit_count(self, /)`
+- [-] `bit_length(self, /)`
+- [-] `conjugate(self, /)`
+- [-] `from_bytes(bytes, byteorder='big', *, signed=False)`
+- [x] `fromstring(text, offset=0)`
+- [-] `is_integer(self, /)`
+- [-] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
 
 ### Bio.SeqFeature.OneOfPosition
 
-- [ ] `__add__(self, offset)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__mod__(self, value, /)`
-- [ ] `__mul__(self, value, /)`
-- [ ] `__radd__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__rmul__(self, value, /)`
-- [ ] `__str__(self)`
-- [ ] `as_integer_ratio(self, /)`
-- [ ] `bit_count(self, /)`
-- [ ] `bit_length(self, /)`
-- [ ] `conjugate(self, /)`
-- [ ] `from_bytes(bytes, byteorder='big', *, signed=False)`
-- [ ] `fromstring(text, offset=0)`
-- [ ] `is_integer(self, /)`
-- [ ] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
+- [x] `__add__(self, offset)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [-] `__mod__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [x] `__radd__(self, value, /)`
+- [x] `__repr__(self)`
+- [-] `__rmul__(self, value, /)`
+- [x] `__str__(self)`
+- [-] `as_integer_ratio(self, /)`
+- [-] `bit_count(self, /)`
+- [-] `bit_length(self, /)`
+- [-] `conjugate(self, /)`
+- [-] `from_bytes(bytes, byteorder='big', *, signed=False)`
+- [x] `fromstring(text, offset=0)`
+- [-] `is_integer(self, /)`
+- [-] `to_bytes(self, /, length=1, byteorder='big', *, signed=False)`
 
 ### Bio.SeqFeature.UnknownPosition
 
-- [ ] `__add__(self, offset)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self)`
-- [ ] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__str__(self, /)`
-- [ ] `fromstring(text, offset=0)`
+- [x] `__add__(self, offset)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [x] `__repr__(self)`
+- [x] `__str__(self, /)`
+- [x] `fromstring(text, offset=0)`
 
 ### Bio.SeqFeature.Reference
 
-- [ ] `__eq__(self, other)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__init__(self)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__repr__(self)`
-- [ ] `__str__(self)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, value, /)`
+- [x] `__gt__(self, value, /)`
+- [x] `__init__(self)`
+- [x] `__le__(self, value, /)`
+- [x] `__lt__(self, value, /)`
+- [x] `__repr__(self)`
+- [x] `__str__(self)`
 
 ## Bio.Data.CodonTable
 

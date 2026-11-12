@@ -6,6 +6,7 @@ TypeScript libraries replacing common Python bioengineering tooling. The goal is
 |---|---|---|
 | `@biolibs/core` | – | `SeqRecord`, `BioError` |
 | `@biolibs/seq` | Biopython `Bio.Seq`, `Bio.Data.CodonTable`, `Bio.Data.IUPACData` | **At parity**: `Seq`, `MutableSeq`, all 27 genetic codes, IUPAC data (verified against Biopython 1.88) |
+| `@biolibs/seqfeature` | Biopython `Bio.SeqFeature` | **At parity**: positions, `SimpleLocation`, `CompoundLocation`, `Location.fromstring`, `SeqFeature`, `Reference` |
 | `@biolibs/seqio` | `Bio.SeqIO` | FASTA, FASTQ, minimal GenBank |
 | `@biolibs/align` | `pairwise2` / `PairwiseAligner` | global/local alignment, edit distance |
 | `@biolibs/phylo` | `Bio.Phylo` | Newick parse/write, patristic distance |
