@@ -505,7 +505,15 @@ for c in afm:
 for f in ("emboss", "hhr", "msf", "tabular"): mark(f"Bio.Align.write:{f}", "na")   # Biopython has no writer for these formats
 for fn, kind in (("parse", "parse"), ("read", "read"), ("write", "write")):
     if any(c["kind"] == kind and _ok(c) for c in afm): mark(f"Bio.Align.{fn}")
-if any(c["kind"] == "format" and _ok(c) for c in afm): mark(f"{AG}.format", "partial"); mark(f"{AG}.__format__", "partial")   # fasta, a2m, clustal, phylip so far
+# `format` is done once every format name has a case that matched: the text writers, the binary ones it refuses
+# ("X is a binary file format"), the ones Biopython has no writer for, and an unknown name.
+# Either outcome counts: a case that raises had its type and message compared just as a case that produced text
+# had its text compared, and for the binary formats refusing *is* the behaviour.
+fmt_covered = {c["fmt"].lower() for c in afm if c["kind"] == "format" and c.get("fmt")}
+if all(f in fmt_covered for f in inv["Bio.Align.formats"]["formats"]):
+    mark(f"{AG}.format"); mark(f"{AG}.__format__")
+elif any(c["kind"] == "format" and _ok(c) for c in afm):
+    mark(f"{AG}.format", "partial"); mark(f"{AG}.__format__", "partial")
 
 if any(c["kind"] == "alninfo" and _ok(c) for c in afm):
     for m in inv["Bio.Align.AlignInfo"]["classes"]["SummaryInfo"]:

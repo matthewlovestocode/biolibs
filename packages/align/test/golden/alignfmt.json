@@ -4601,6 +4601,536 @@ null
 },
 {
 "kind": "format",
+"fmt": "bigmaf",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigmaf is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigmaf",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "bigmaf",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigmaf is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigmaf",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "bigmaf",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigmaf is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigmaf",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "bigmaf",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigmaf is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigmaf",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "bigmaf",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigmaf is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigmaf",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigmaf",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigmaf",
+"alns": [],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "bigpsl",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigpsl is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigpsl",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "bigpsl",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigpsl is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigpsl",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "bigpsl",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigpsl is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigpsl",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "bigpsl",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigpsl is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigpsl",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "bigpsl",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigpsl is a binary file format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigpsl",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigpsl",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "bigpsl",
+"alns": [],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+},
+"wtext": []
+},
+{
+"kind": "format",
 "fmt": "nosuch",
 "aln": {
 "ids": [
@@ -5126,6 +5656,536 @@ null
 "exc": {
 "type": "ValueError",
 "msg": "File writing has not yet been implemented for the emboss format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "hhr",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "hhr",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "hhr",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "hhr",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "hhr",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "hhr",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "hhr",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "hhr",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "hhr",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "hhr",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "hhr",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "hhr",
+"alns": [],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the hhr format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "tabular",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "tabular",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "tabular",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "tabular",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "tabular",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "tabular",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "tabular",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "tabular",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "tabular",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "tabular",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "tabular",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the tabular format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "tabular",
+"alns": [],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the tabular format"
 },
 "wtext": []
 },

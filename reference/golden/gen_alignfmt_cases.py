@@ -233,7 +233,9 @@ ALNS = [
     {"ids": ["a", "b"], "rows": ["ACGT", "A-GT"], "colann": {"clustal_consensus": "* **", "state": "UULL"}},
     {"ids": ["a:b;(c)", "[d],e"], "rows": ["ACGT", "ACGT"]},
 ]
-for fmt in ["fasta", "a2m", "clustal", "phylip", "FASTA", "bigbed", "nosuch", "emboss"]:
+# `bigbed`, `bigmaf` and `bigpsl` are binary, so `format` refuses them rather than writing them to a string; the
+# other names cover the text writers, an unknown name and a format Biopython has no writer for.
+for fmt in ["fasta", "a2m", "clustal", "phylip", "FASTA", "bigbed", "bigmaf", "bigpsl", "nosuch", "emboss", "hhr", "tabular"]:
     for a in ALNS:
         add({"kind": "format", "fmt": fmt, "aln": a})
         add({"kind": "write", "fmt": fmt, "alns": [a]})

@@ -1,6 +1,6 @@
 # @biolibs/align
 
-A TypeScript port of Biopython's `Bio.Align`. So far it holds `MultipleSeqAlignment`, the substitution matrices, and `PairwiseAligner` with scoring and alignment (the alignment file formats are not yet ported) (the earlier string-only scaffold was removed). Verified against Biopython 1.88 with about 1,900 recorded operations. See [PARITY.md](../PARITY.md).
+A TypeScript port of Biopython's `Bio.Align`: `MultipleSeqAlignment`, the `Alignment` class, the substitution matrices, `PairwiseAligner` with scoring and alignment, and the alignment file formats (every one Biopython reads, and every writer it has apart from the three binary `big*` containers). Verified against Biopython 1.88 with about 1,900 recorded operations plus 7,836 file-format cases (`packages/align/test/golden/alignfmt.json`). See [PARITY.md](../PARITY.md).
 
 ```ts
 import { MultipleSeqAlignment } from "@biolibs/align";
@@ -23,7 +23,7 @@ aln.format("clustal");         // needs @biolibs/seqio to be imported
 | `aln.append(r)`, `aln.extend(rs)`, `aln + other` | `append`, `extend`, `add` |
 | `del aln[i]`, `aln.sort(key, reverse)` | `aln.delete(i)`, `aln.sort(key, reverse)` |
 | `aln.column_annotations` | `aln.columnAnnotations` (a `RestrictedDict`) |
-| `format(aln, "fmt")` | `aln.format("fmt")` |
+| `format(aln, "fmt")` | `aln.format("fmt")` — every format name Biopython knows: the text writers produce text, the binary `bigbed`/`bigmaf`/`bigpsl` are refused as it refuses them, and a format with no writer says so |
 | `aln.substitutions`, `aln.alignment` | `aln.substitutions`, `aln.alignment` |
 
 Records must all have the same length (`ValueError` otherwise); a record without a sequence raises `TypeError` when the alignment length is needed, as `len(None)` does in Python.

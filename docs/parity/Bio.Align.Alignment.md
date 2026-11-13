@@ -16,7 +16,7 @@
 - [x] `__str__(self)`
 - [x] `aligned`
 - [x] `counts(self, scoring=None)`
-- [~] `format(self, fmt='', *args, **kwargs)`
+- [x] `format(self, fmt='', *args, **kwargs)`
 - [x] `frequencies`
 - [x] `from_alignments_with_same_reference(alignments: list['Alignment'] | tuple['Alignment']) -> 'Alignment'`
 - [x] `indices`
