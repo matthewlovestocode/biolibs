@@ -2,16 +2,24 @@
 
 Kinds: `enzyme` (every enzyme's attributes and classification methods), `digest` (search and catalyse on sequences
 built to contain sites), `pair` (comparison operators between two enzymes), `lists` (isoschizomers and compatible ends),
-`batch` (RestrictionBatch operations) and `analysis` (Analysis filters and text layouts).
+`batch` (RestrictionBatch operations), `analysis` (Analysis filters and text layouts), `abatch` (the batch API of an
+Analysis, which inherits it), `suppliers` (the supplier tables, which are printed rather than returned) and `printfmt`
+(PrintFormat.print_that).
 Enzymes are named by strings in the cases; mappings are recorded sorted by enzyme name.
+
+What a method prints is part of its behaviour, so `prints` captures stdout and the captured text is recorded as the
+result. `all_suppliers` is a classmethod on `AbstractCut` that every enzyme class inherits, so one case per class
+records the same text; the port satisfies them all with one static method, which is what Biopython does too.
 """
-import json, math, os, random, re, warnings
+import contextlib, io, json, math, os, random, re, warnings
 from Bio import Restriction as R
 from Bio.Restriction import RestrictionBatch, Analysis, FormattedSeq, AllEnzymes
+from Bio.Restriction.PrintFormat import PrintFormat
 from Bio.Restriction.Restriction import RestrictionType
 import Bio.Restriction.Restriction as RR   # the mixin classes (Palindromic, Blunt, ...) are not exported by Bio.Restriction
 from Bio.Restriction.Restriction_Dictionary import rest_dict, suppliers as SUPP
 from Bio.Seq import Seq, MutableSeq
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "restriction", "test", "golden", "restriction.json")
 rnd = random.Random(121)
@@ -30,6 +38,9 @@ def num(x):
     return x
 
 def E(n): return getattr(R, n)
+def ename(x):
+    """How a batch member is named. `add_nocheck` adds whatever it is given, so a member need not be an enzyme."""
+    return x.__name__ if isinstance(x, RestrictionType) else str(x)
 def enc(x):
     """Encode a result: enzymes by name, batches, sequences, mappings sorted by enzyme name."""
     if x is None or isinstance(x, (bool, int, str)): return x
@@ -42,22 +53,6 @@ def enc(x):
     if isinstance(x, (list, tuple)): return [enc(v) for v in x]
     raise TypeError(type(x))
 
-def run_isolated(fn, case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(fn(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    return None if status != 0 or not chunks else json.loads(b"".join(chunks))
 
 def add(fn, c):
     res = run_isolated(fn, c)
@@ -66,6 +61,12 @@ def add(fn, c):
 def attempt(f):
     try: return {"result": enc(f())}
     except Exception as e: return {"exc": {"type": tname(e), "msg": emsg(e)}}
+
+def prints(f):
+    """Run `f` and return what it wrote to stdout, which is where these methods put their answer."""
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf): f()
+    return buf.getvalue()
 
 # ---------------- enzyme ----------------
 METHODS = ["is_blunt", "is_5overhang", "is_3overhang", "overhang", "is_palindromic", "is_defined", "is_ambiguous", "is_unknown", "is_methylable", "is_comm", "cut_once",
@@ -199,8 +200,8 @@ def run_batch(case):
                 elif k == "iadd": b += tok(op[1]); r = None
                 elif k == "add_nocheck": b.add_nocheck(tok(op[1])); r = None
                 elif k == "remove": b.remove(tok(op[1])); r = None
-                elif k == "split": r = b.split(*[getattr(RR, c) for c in op[1]], **op[2]); r = [len(r), sorted(x.__name__ for x in r._data)]
-                elif k == "lambdasplit": r = b.lambdasplit(lambda e: e.size >= op[1]); r = [len(r), sorted(x.__name__ for x in r._data)]
+                elif k == "split": r = b.split(*[getattr(RR, c) for c in op[1]], **op[2]); r = [len(r), sorted(ename(x) for x in r._data)]
+                elif k == "lambdasplit": r = b.lambdasplit(lambda e: e.size >= op[1]); r = [len(r), sorted(ename(x) for x in r._data)]
                 elif k == "add_supplier": b.add_supplier(op[1]); r = None
                 elif k == "current_suppliers": r = b.current_suppliers()
                 elif k == "suppliers": r = list(b.suppliers)
@@ -211,7 +212,8 @@ def run_batch(case):
                 out["ops_out"].append({"result": enc(r)})
             except Exception as ex:
                 out["ops_out"].append({"exc": {"type": tname(ex), "msg": emsg(ex)}})
-        out["final"] = sorted(e.__name__ for e in b) if b is not None else None
+        # `add_nocheck` adds whatever it is given, so the set can hold a string or a number as well as an enzyme.
+        out["final"] = sorted(ename(e) for e in b) if b is not None else None
         out["warnings"] = [str(x.message) for x in w]
     return out
 
@@ -339,5 +341,122 @@ for _ in range(500):
         else: ops.append([k])
     add(run_analysis, {"kind": "analysis", "batch": names, "seq": seq, "linear": rnd.random() < 0.6, "ops": ops})
 
+# ---------------- suppliers ----------------
+# Every enzyme class inherits `all_suppliers` from AbstractCut; `suppliers` is a classmethod on
+# Commercially_available that prints the enzyme's own sellers, and a staticmethod on Not_available that prints nothing.
+MIXINS = ["AbstractCut", "NoCut", "OneCut", "TwoCuts", "Meth_Dep", "Meth_Undep", "Palindromic", "NonPalindromic",
+          "Unknown", "Blunt", "Ov5", "Ov3", "Defined", "Ambiguous", "NotDefined", "Commercially_available", "Not_available"]
+
+def run_suppliers(case):
+    cls = getattr(RR, case["cls"])
+    out = {"all_suppliers": attempt(lambda: prints(lambda: cls.all_suppliers()))}
+    if case["enzyme"] is not None:
+        e = E(case["enzyme"])
+        out["suppliers"] = attempt(lambda: prints(lambda: e.suppliers()))
+        out["supplier_list"] = attempt(lambda: e.supplier_list())
+        out["is_comm"] = attempt(lambda: e.is_comm())
+    out["warnings"] = []
+    return out
+
+for cls in MIXINS:
+    # Commercially_available and Not_available get the enzyme-level `suppliers` too, on an enzyme of that kind.
+    enzyme = {"Commercially_available": "EcoRI", "Not_available": "AbaCIII"}.get(cls)
+    add(run_suppliers, {"kind": "suppliers", "cls": cls, "enzyme": enzyme, "name": cls})
+
+def run_codes(case):
+    cls = {"RestrictionBatch": RestrictionBatch, "Analysis": Analysis}[case["cls"]]
+    return {"suppl_codes": attempt(lambda: cls.suppl_codes()),
+            "show_codes": attempt(lambda: prints(lambda: cls.show_codes())), "warnings": []}
+
+for cls in ("RestrictionBatch", "Analysis"):
+    add(run_codes, {"kind": "codes", "cls": cls, "name": cls})
+
+# ---------------- abatch: the RestrictionBatch API on an Analysis ----------------
+# Analysis subclasses RestrictionBatch, so it inherits the whole batch API. `__add__` builds `self.__class__(self)`,
+# which makes an Analysis rather than a plain batch, so the class of the result is recorded as well as its contents.
+def run_abatch(case):
+    out = {"ops_out": []}
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        try:
+            a = Analysis(RestrictionBatch(case["batch"]), Seq(case["seq"]), case["linear"])
+        except Exception as ex:
+            out["exc"] = {"type": tname(ex), "msg": emsg(ex)}; out["warnings"] = []; return out
+        for op in case["ops"]:
+            try:
+                k, arg = op[0], op[1] if len(op) > 1 else None
+                if k == "str": r = str(a)
+                elif k == "repr": r = repr(a)
+                elif k == "elements": r = a.elements()
+                elif k == "as_string": r = sorted(a.as_string())
+                elif k == "len": r = len(a)
+                elif k == "has": r = arg in a
+                elif k == "has_enz": r = E(arg) in a
+                elif k == "get": r = a.get(arg, op[2])
+                elif k == "format": r = a.format(arg)
+                elif k == "is_restriction": r = a.is_restriction(arg)
+                elif k == "add": a.add(arg); r = a.elements()
+                elif k == "add_nocheck": a.add_nocheck(E(arg)); r = a.elements()
+                elif k == "remove": a.remove(arg); r = a.elements()
+                elif k == "plus": n = a + E(arg); r = [type(n).__name__, n.elements()]
+                elif k == "iadd": a += E(arg); r = [type(a).__name__, a.elements()]
+                elif k == "split": n = a.split(*[getattr(RR, c) for c in arg]); r = [type(n).__name__, len(n), sorted(x.__name__ for x in n._data)]
+                elif k == "lambdasplit": n = a.lambdasplit(lambda x: x.size >= arg); r = [type(n).__name__, len(n), sorted(x.__name__ for x in n._data)]
+                elif k == "add_supplier": a.add_supplier(arg); r = [len(a), a.current_suppliers()]
+                elif k == "current_suppliers": r = a.current_suppliers()
+                elif k == "search": r = a.search(Seq(arg), op[2])
+                elif k == "print_that": r = prints(lambda: a.print_that(None, op[1], op[2]))
+                else: raise ValueError(k)
+                out["ops_out"].append({"result": enc(r)})
+            except Exception as ex:
+                out["ops_out"].append({"exc": {"type": tname(ex), "msg": emsg(ex)}})
+        out["warnings"] = [str(x.message) for x in w]
+    return out
+
+ABATCH_OPS = ["str", "repr", "elements", "as_string", "len", "has", "has_enz", "get", "format", "is_restriction",
+              "add", "add_nocheck", "remove", "plus", "iadd", "split", "lambdasplit", "add_supplier",
+              "current_suppliers", "search", "print_that"]
+for _ in range(120):
+    names = rnd.sample(COMMON, rnd.randint(1, 5))
+    seq = make_seq(names, rnd.choice([40, 120, 300]))
+    ops = []
+    for _ in range(rnd.randint(3, 8)):
+        k = rnd.choice(ABATCH_OPS)
+        if k in ("has", "is_restriction", "format"): ops.append([k, rnd.choice(names + ["HindIII", "NotAnEnzyme", "3"])])
+        elif k == "has_enz": ops.append([k, rnd.choice(names)])
+        elif k == "get": ops.append([k, rnd.choice(names + ["XhoI", "Foo"]), rnd.random() < 0.5])
+        elif k in ("add", "remove"): ops.append([k, rnd.choice(names + ["HindIII", "NotAnEnzyme"])])
+        elif k in ("add_nocheck", "plus", "iadd"): ops.append([k, rnd.choice(["HindIII", "NotI", "SmaI"])])
+        elif k == "split": ops.append([k, rnd.sample(["Palindromic", "Blunt", "OneCut", "Ov5", "Defined"], rnd.randint(1, 2))])
+        elif k == "lambdasplit": ops.append([k, rnd.choice([4, 6, 8])])
+        elif k == "add_supplier": ops.append([k, rnd.choice(["C", "B", "N", "Z"])])
+        elif k == "search": ops.append([k, make_seq(names, 80), rnd.random() < 0.5])
+        elif k == "print_that": ops.append([k, rnd.choice(["", "TITLE\n"]), rnd.choice(["", "NOCUT\n"])])
+        else: ops.append([k])
+    add(run_abatch, {"kind": "abatch", "batch": names, "seq": seq, "linear": rnd.random() < 0.6, "ops": ops})
+
+# ---------------- printfmt ----------------
+# PrintFormat.print_that is the obsolete printing entry point Analysis overrides; `dct` is required here.
+def run_printfmt(case):
+    out = {"ops_out": []}
+    a = Analysis(RestrictionBatch(case["batch"]), Seq(case["seq"]), case["linear"])
+    pos = [p for v in a.mapping.values() for p in v]
+    for op in case["ops"]:
+        pf = PrintFormat()
+        pf.sequence = Seq(case["seq"])
+        pf.print_as(op[0])
+        if op[0] == "map" and len(pos) != len(set(pos)):
+            out["ops_out"].append({"skip": True}); continue      # enzymes sharing a cut: set order is arbitrary
+        out["ops_out"].append(attempt(lambda: prints(lambda: pf.print_that(a.mapping, op[1], op[2]))))
+    out["warnings"] = []
+    return out
+
+for _ in range(60):
+    names = rnd.sample(COMMON, rnd.randint(1, 4))
+    seq = make_seq(names, rnd.choice([40, 120, 300]))
+    ops = [[rnd.choice(["list", "number", "map"]), rnd.choice(["", "TITLE\n"]), rnd.choice(["", "NOCUT\n"])] for _ in range(rnd.randint(1, 3))]
+    add(run_printfmt, {"kind": "printfmt", "batch": names, "seq": seq, "linear": rnd.random() < 0.6, "ops": ops})
+
+report_skipped()
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases ->", OUT)

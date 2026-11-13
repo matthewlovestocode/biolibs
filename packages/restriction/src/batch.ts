@@ -105,6 +105,9 @@ export class RestrictionBatch extends Set<RestrictionType> {
     const test = (e: RestrictionType): boolean => {
       for (const k of classes) {
         const b = Object.hasOwn(flags, k) ? flags[k]! : true;
+        // Biopython asks `issubclass(member, kind)`, which refuses a member that is not a class at all — which
+        // `addNocheck` allows into the set.
+        if (!(e instanceof RestrictionType)) throw new TypeError("issubclass() arg 1 must be a class");
         if (e.isA(k)) { if (b) continue; return false; }
         if (b) return false;
       }
@@ -128,8 +131,19 @@ export class RestrictionBatch extends Set<RestrictionType> {
 
   /** Python `batch += other`. */
   iadd(other: RestrictionType | string): this { this.add(other); return this; }
-  /** Python `batch + other`: a copy with `other` added. */
-  plus(other: RestrictionType | string): RestrictionBatch { const n = new RestrictionBatch(this); n.add(other); return n; }
+  /**
+   * Python `batch + other`: a copy with `other` added.
+   *
+   * Biopython builds the copy as `self.__class__(self)`, so the result keeps the receiver's class: adding to an
+   * {@link Analysis} gives an `Analysis`, not a plain batch. Every subclass therefore has to accept a batch as its
+   * first argument, which `Analysis` does.
+   */
+  plus(other: RestrictionType | string): RestrictionBatch {
+    const Ctor = this.constructor as new (first: Iterable<RestrictionType | string>) => RestrictionBatch;
+    const n = new Ctor(this);
+    n.add(other);
+    return n;
+  }
 
   /** Remove an enzyme. @throws KeyError if it is not in the batch; ValueError if it is not an enzyme. */
   remove(other: RestrictionType | string): void {
@@ -146,10 +160,13 @@ export class RestrictionBatch extends Set<RestrictionType> {
   /** Add an enzyme without checking it. */
   addNocheck(other: RestrictionType): this { super.add(other); return this; }
 
-  /** @returns The enzyme names, sorted. */
-  elements(): string[] { return [...this].map((e) => e.name).sort(); }
-  /** @returns The enzyme names in batch order. */
-  asString(): string[] { return [...this].map((e) => e.name); }
+  /**
+   * @returns The enzyme names, sorted. Biopython takes `str()` of each member, and {@link RestrictionBatch.addNocheck}
+   *   will put anything in the set, so a member that is not an enzyme is named by its own string form.
+   */
+  elements(): string[] { return [...this].map(String).sort(); }
+  /** @returns The member names in batch order, `str()` of each as in {@link RestrictionBatch.elements}. */
+  asString(): string[] { return [...this].map(String); }
 
   /** @returns The supplier codes mapped to company names. */
   static supplCodes(): Record<string, string> { return Object.fromEntries(Object.entries(suppliersDict).map(([k, v]) => [k, v[0]])); }
@@ -180,7 +197,12 @@ export class RestrictionBatch extends Set<RestrictionType> {
       fseq = dna;
     } else throw new TypeError(`Expected Seq or MutableSeq instance, got ${pyClassRepr(dna)} instead`);
     this.alreadyMapped = key;
-    this.mapping = new Map([...this].map((x) => [x, x.search(fseq)]));
+    this.mapping = new Map([...this].map((x) => {
+      // Biopython calls `enzyme.search(...)` on each member, which fails on a member that is not an enzyme — and
+      // `addNocheck` allows one in. Without this a string member would reach `String.prototype.search` and return -1.
+      if (!(x instanceof RestrictionType)) throw new TypeError(`'${typeof x}' object has no attribute 'search'`);
+      return [x, x.search(fseq)];
+    }));
     return this.mapping;
   }
 }

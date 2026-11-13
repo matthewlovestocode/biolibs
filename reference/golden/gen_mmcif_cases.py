@@ -7,6 +7,7 @@ import io, json, os, random, warnings
 from Bio.PDB.MMCIF2Dict import MMCIF2Dict
 from Bio.PDB.MMCIFParser import MMCIFParser, FastMMCIFParser
 from pdb_encode import tname, emsg, enc_structure
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "pdb", "test", "golden", "mmcif.json")
 rnd = random.Random(33)
@@ -34,25 +35,9 @@ def run(case):
     out["warnings"] = [str(x.message) for x in w]
     return out
 
-def run_isolated(case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(run(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    return None if status != 0 or not chunks else json.loads(b"".join(chunks))
 
 def add(c):
-    res = run_isolated(c)
+    res = run_isolated(run, c)
     if res is None: return
     c.update(res); cases.append(c)
 
@@ -192,5 +177,6 @@ for _ in range(900):
     opts = {"auth_chains": rnd.random() < 0.7, "auth_residues": rnd.random() < 0.7, "quiet": rnd.random() < 0.2, "permissive": rnd.random() < 0.5}
     add({"kind": "parse", "text": t, "parser": parser, "opts": opts})
 
+report_skipped()
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases,", sum(1 for c in cases if "exc" in c), "raise ->", OUT)

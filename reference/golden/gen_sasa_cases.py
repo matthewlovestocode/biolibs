@@ -8,6 +8,7 @@ from Bio.PDB import PDBParser
 from Bio.PDB.SASA import ShrakeRupley
 from pdb_encode import tname, emsg
 from pdb_text import gen_pdb
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "pdb", "test", "golden", "sasa.json")
 rnd = random.Random(111)
@@ -59,22 +60,6 @@ def run(case):
         out["warnings"] = [str(x.message) for x in w]
     return out
 
-def run_isolated(case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(run(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    return None if status != 0 or not chunks else json.loads(b"".join(chunks))
 
 def all_paths(s):
     out, stack = [[]], [([], s)]
@@ -100,13 +85,14 @@ for _ in range(500):
         p = rnd.choice(paths) if rnd.random() < 0.05 else rnd.choice(ents)
         ops.append([p, rnd.choice(["A", "R", "C", "M", "S", "A", "R", "X"])])
     case = {"text": text, "kwargs": kwargs, "ops": ops}
-    res = run_isolated(case)
+    res = run_isolated(run, case)
     if res is not None: case.update(res); cases.append(case)
 # invalid constructor arguments (non-integer floats, so Python's repr matches)
 for kw in ({"probe_radius": -1.5}, {"probe_radius": -0.25}, {"n_points": 0}, {"n_points": -4}, {"probe_radius": -2.5, "n_points": 0}):
     case = {"text": gen_pdb(rnd, False, box=10), "kwargs": kw, "ops": [[[0], "A"]]}
-    res = run_isolated(case)
+    res = run_isolated(run, case)
     if res is not None: case.update(res); cases.append(case)
 
+report_skipped()
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases,", sum(1 for c in cases if "exc" in c), "constructor errors ->", OUT)

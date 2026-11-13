@@ -10,6 +10,7 @@ from Bio.PDB import PDBParser
 from Bio.PDB import Polypeptide as PP
 from Bio.PDB.Polypeptide import PPBuilder, CaPPBuilder
 from pdb_encode import tname, emsg
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "pdb", "test", "golden", "polypeptide.json")
 rnd = random.Random(77)
@@ -67,25 +68,9 @@ def run(case):
     out["warnings"] = [str(x.message) for x in w]
     return out
 
-def run_isolated(case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(run(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    return None if status != 0 or not chunks else json.loads(b"".join(chunks))
 
 def add(c):
-    res = run_isolated(c)
+    res = run_isolated(run, c)
     if res is None: return
     c.update(res); cases.append(c)
 
@@ -163,5 +148,6 @@ for n in NAMES:
     for std in (False, True):
         add({"kind": "func", "func": "is_aa", "args": [n, std]}); add({"kind": "func", "func": "is_nucleic", "args": [n, std]})
 
+report_skipped()
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases,", sum(1 for c in cases if "exc" in c), "raise ->", OUT)

@@ -46,8 +46,21 @@ PVec = importlib.import_module('Bio.PDB.vectors')
 PHeader = importlib.import_module('Bio.PDB.parse_pdb_header')  # `import ... as` would give the shadowing function
 from Bio.Nexus import Nexus as NexusMod, Trees as TreesMod, Nodes as NodesMod, StandardData as StandardDataMod
 
+# Dunders that carry no Biopython meaning unless a class overrides them. `inspect.getmembers`
+# reports them on every class, so without this they look like unported API; when no class in the
+# MRO but `object` defines one, the "member" is Python's own default and the checklist marks it
+# not-applicable instead of counting it as outstanding work.
+BOILERPLATE = ("__eq__", "__ne__", "__lt__", "__le__", "__gt__", "__ge__", "__hash__", "__str__", "__repr__")
+
+# Which class each member dict came from, keyed by the dict's identity. Recorded here, where the
+# class object is in hand, because resolving a checklist key back to a class is unreliable: several
+# Biopython modules are shadowed by a class of the same name (`Bio.PDB.PDBIO`, `Bio.Restriction.PrintFormat`).
+# The dict is kept alive in the value so its id cannot be reused by a later object.
+OWNERS = {}
+
 def members(cls):
     out = {}
+    OWNERS[id(out)] = (cls, out)
     for n, m in inspect.getmembers(cls):
         if n.startswith("_") and n not in ("__add__","__radd__","__mul__","__rmul__","__getitem__","__len__","__contains__","__eq__","__lt__","__le__","__gt__","__ge__","__hash__","__iter__","__mod__","__setitem__","__delitem__","__iadd__","__imul__","__str__","__bytes__","__repr__","__init__"):
             continue
@@ -143,4 +156,29 @@ inv = {
   "Bio.PDB.vectors": {"functions": funcs(PVec), "classes": {"Vector": members(PVec.Vector)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }
+
+def object_defaults(label, cls_name, ms):
+    """Checklist keys for the BOILERPLATE members of one class that no class but `object` defines.
+
+    `label` and `cls_name` are the inventory's names for the module and class, which is how a
+    checklist key is spelled; `ms` is the member dict `members` built, used to find the class behind
+    it. A class built without `members` has nothing to introspect, so nothing is claimed for it.
+    """
+    owner = OWNERS.get(id(ms))
+    if owner is None:
+        return []
+    cls = owner[0]
+    return [f"{label}.{cls_name}.{n}" for n in ms
+            if n in BOILERPLATE and not any(n in k.__dict__ for k in cls.__mro__ if k is not object)]
+
+inherited = []
+for label, d in inv.items():
+    if not isinstance(d, dict):
+        continue
+    for cls_name, ms in d.get("classes", {}).items():
+        if cls_name.startswith("_"):      # the checklist leaves private classes out
+            continue
+        inherited.extend(object_defaults(label, cls_name, ms))
+inv["inherited"] = sorted(inherited)
+
 print(json.dumps(inv, indent=1))

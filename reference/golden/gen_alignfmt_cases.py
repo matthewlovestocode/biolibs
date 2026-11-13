@@ -13,6 +13,7 @@ from Bio import Align
 from Bio.Align import Alignment
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "align", "test", "golden", "alignfmt.json")
 
@@ -149,28 +150,12 @@ def run(case):
         out["wtext"] = [str(x.message) for x in w if type(x.message).__name__ == "BiopythonParserWarning"]
     return out
 
-def run_isolated(case):
-    r, wfd = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(wfd, json.dumps(run(case)).encode())
-        finally: os._exit(0)
-    os.close(wfd)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, st = os.waitpid(pid, 0)
-    return json.loads(b"".join(chunks)) if st == 0 and chunks else None
 
 cases = []
 def add(c):
-    res = run_isolated(c)
+    res = run_isolated(run, c)
     if res is None: return
-    if run_isolated(c) != res: return        # a case whose result changes between runs depends on uninitialised memory
+    if run_isolated(run, c) != res: return        # a case whose result changes between runs depends on uninitialised memory
     # Rows of unequal length make Biopython's printed-alignment parser return coordinates that depend on uninitialised memory
     for a in res.get("result", {}).get("alns", []) if isinstance(res.get("result"), dict) else []:
         if len({len(r) for r in a["rows"] if isinstance(r, str)}) > 1: return
@@ -1015,5 +1000,6 @@ for t in EXO_TEXTS[:3] + EXO_TEXTS[24:27]:
     add({"kind": "rewrite", "fmt": "exonerate", "text": t, "args": ["cigar"]})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
+report_skipped()
 json.dump(cases, open(OUT, "w"), indent=0)
 print(len(cases), "cases")

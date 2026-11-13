@@ -9,6 +9,7 @@ from Bio import motifs
 from Bio.motifs import jaspar, transfac, matrix as M
 from Bio.motifs.thresholds import ScoreDistribution
 from Bio.Seq import Seq
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "motifs", "test", "golden", "motifs.json")
 rnd = random.Random(202)
@@ -48,26 +49,11 @@ def enc_motif(m):
         out["references"] = getattr(m, "references", None)
     return out
 
-def run_isolated(fn, case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(fn(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    return None if status != 0 or not chunks else json.loads(b"".join(chunks))
 
 def add(fn, c):
     res = run_isolated(fn, c)
-    if res is not None: c.update(res); cases.append(c)
+    if res is None: return          # the case could not be run at all; `isolate` has said so
+    c.update(res); cases.append(c)
 
 def attempt(f):
     try: return {"result": enc(f())}
@@ -473,5 +459,80 @@ for i in ("MA0001.1", "MA0001", "a.b.c", "", ".1", "x.", "A.B"):
 add(run_io, {"kind": "io", "op": "parse", "fmt": "bogus", "text": ""})
 for f in ("meme", "alignace", "minimal"): pass
 
+# A mask assignment that fails part-way through leaves the mask shorter than the motif, and printing the mask then
+# raises instead of padding. The random ops reach this only by chance, so it is pinned down here.
+add(run_motif, {"kind": "motif", "spec": {"how": "instances", "alphabet": "ACGT", "instances": ["GCTGTG", "CGTCTT"], "counts": []},
+                "ops": [["str_masked"], ["mask", "*x****"], ["str_masked"], ["mask", "*  ***"], ["str_masked"], ["mask", None], ["str_masked"]]})
+
+# ---------------- matrixcmp ----------------
+# The matrices subclass `dict`, so `==` compares the stored rows (the alphabet plays no part) while the ordering
+# operators raise, and the message names both operands' classes. The row container is part of equality, because
+# `[1.0] == (1.0,)` is false in Python: a weight matrix stores tuples, every other matrix lists.
+def operand(spec, what, left):
+    """Build the right-hand operand of a comparison. `left` is the matrix itself, for the identity case."""
+    if what == "same": return left
+    if what in ("copy", "other"): return build_matrix(spec)   # "copy" is given the left spec, "other" the right one
+    if what == "generic": return M.GenericPositionMatrix(spec["alphabet"], {k: [dec(x) for x in v] for k, v in spec["rows"]})
+    if what == "dict_list": return {k: [dec(x) for x in v] for k, v in spec["rows"]}
+    if what == "str": return "x"
+    if what == "int": return 3
+    if what == "none": return None
+    if what == "list": return [1, 2]
+    raise ValueError(what)
+
+CMP_OPS = ["eq", "lt", "le", "gt", "ge"]
+def run_matrixcmp(case):
+    out = {"ops_out": []}
+    with warnings.catch_warnings(record=True) as w:
+        warnings.simplefilter("always")
+        try: m = build_matrix(case["left"])
+        except Exception as e:
+            out["exc"] = {"type": tname(e), "msg": emsg(e)}; out["warnings"] = []; return out
+        for op in case["ops"]:
+            k, what = op
+            spec = case["left"] if what in ("same", "copy", "generic", "dict_list") else case["right"]
+            def f():
+                o = operand(spec, what, m)
+                if k == "eq": return m == o
+                if k == "lt": return m < o
+                if k == "le": return m <= o
+                if k == "gt": return m > o
+                if k == "ge": return m >= o
+                raise ValueError(k)
+            out["ops_out"].append(attempt(f))
+        out["warnings"] = [str(x.message) for x in w]
+    return out
+
+WHATS = ["same", "copy", "generic", "dict_list", "other", "str", "int", "none", "list"]
+for _ in range(90):
+    alphabet = rnd.choice(["ACGT"] * 5 + ["ACGU", "ABC"])
+    length = rnd.choice([1, 2, 4, 7])
+    cls = rnd.choice(["freq", "pwm", "pssm"])
+    def spec_for(cls, rows):
+        return {"cls": cls, "alphabet": alphabet,
+                "rows": [[k, [("nan" if (isinstance(x, float) and math.isnan(x)) else "inf" if x == math.inf else "-inf" if x == -math.inf else x) for x in v]] for k, v in rows.items()]}
+    rows = rand_counts(alphabet, length, rnd.choice(["int", "dense", "float"]))
+    if cls == "pssm":
+        try: rows = {k: list(v) for k, v in M.FrequencyPositionMatrix(alphabet, rows).normalize(0.5).log_odds().items()}
+        except Exception: pass
+    elif cls == "pwm":
+        rows = {k: [v / 10 for v in vals] for k, vals in rows.items()}
+    left = spec_for(cls, rows)
+    # the "other" operand: another class over the same letters, so a difference in rows or in row container shows
+    other_cls = rnd.choice([c for c in ("freq", "pwm", "pssm") if c != cls] + [cls])
+    other_rows = rand_counts(alphabet, rnd.choice([length, length, max(1, length - 1)]), "dense")
+    if other_cls == "pwm": other_rows = {k: [v / 10 for v in vals] for k, vals in other_rows.items()}
+    right = spec_for(other_cls, other_rows)
+    ops = [[k, w] for k in CMP_OPS for w in rnd.sample(WHATS, 4)]
+    add(run_matrixcmp, {"kind": "matrixcmp", "left": left, "right": right, "ops": ops})
+
+# every operand against every operator at least once, on one matrix of each class
+for cls in ("freq", "pwm", "pssm"):
+    rows = {l: [1.0, 2.0, 3.0] for l in "ACGT"}
+    left = {"cls": cls, "alphabet": "ACGT", "rows": [[k, v] for k, v in rows.items()]}
+    right = {"cls": "freq", "alphabet": "ACGT", "rows": [[k, [9.0, 9.0, 9.0]] for k in "ACGT"]}
+    add(run_matrixcmp, {"kind": "matrixcmp", "left": left, "right": right, "ops": [[k, w] for k in CMP_OPS for w in WHATS]})
+
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases ->", OUT)
+report_skipped()

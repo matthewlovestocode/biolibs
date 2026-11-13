@@ -1,6 +1,6 @@
 /** Position matrices of Biopython's `Bio.motifs.matrix`: counts, frequencies (weights) and log-odds scores per position. */
 
-import { IndexError, KeyError, ValueError, pySum } from "@biolibs/core";
+import { IndexError, KeyError, ValueError, pySum, pyTypeName } from "@biolibs/core";
 import { MutableSeq, Seq } from "@biolibs/seq";
 import { PythonException, UnboundLocalError, pow2, pyDiv, pySqrt } from "./errors.js";
 import { fixedWidth, intWidth } from "./format.js";
@@ -22,6 +22,27 @@ function valuesOf(source: LetterValues, letter: string): ArrayLike<number> {
   if (source instanceof Map) { const v = source.get(letter); if (v === undefined) throw new KeyError(letter); return v; }
   if (!Object.hasOwn(source, letter)) throw new KeyError(letter);
   return source[letter]!;
+}
+
+/**
+ * The rows of whatever a matrix is being compared with, or `null` when it is not a dict at all.
+ *
+ * Biopython's matrices are `dict`s, so `==` accepts another matrix, a plain dict, or anything dict-like, and is
+ * simply false for everything else.
+ */
+function rowsOf(other: unknown): Map<string, ArrayLike<number>> | null {
+  if (other instanceof GenericPositionMatrix) return other.values;
+  if (other instanceof Map) return other as Map<string, ArrayLike<number>>;
+  if (other !== null && typeof other === "object" && !Array.isArray(other) && Object.getPrototypeOf(other) === Object.prototype) {
+    return new Map(Object.entries(other as Record<string, ArrayLike<number>>));
+  }
+  return null;
+}
+
+/** Python's `type(x).__name__`, with a plain object read as the `dict` it stands for. */
+function typeNameOf(x: unknown): string {
+  if (x !== null && typeof x === "object" && !Array.isArray(x) && Object.getPrototypeOf(x) === Object.prototype) return "dict";
+  return pyTypeName(x);
 }
 
 /** The sorted alphabet letters, so letters of a string alphabet can be compared like Python's `sorted(alphabet)`. */
@@ -68,6 +89,60 @@ export class GenericPositionMatrix {
 
   /** @returns `[letter, row]` pairs in alphabet order. */
   items(): [string, number[]][] { return [...this.values]; }
+
+  /**
+   * Python's `==`. The matrices are `dict`s in Biopython, so equality compares the stored rows and nothing else:
+   * the alphabet plays no part (two matrices spelling it in a different order are equal), and a plain dict with the
+   * same rows is equal to a matrix.
+   *
+   * The row container does count, because Python's `[1.0] == (1.0,)` is false. A weight matrix stores tuples where
+   * every other matrix stores lists, so a weight matrix is never equal to a counts matrix, a log-odds matrix or a
+   * `GenericPositionMatrix`, however close the numbers. A JavaScript array stands for a Python list, so comparing a
+   * weight matrix with a plain `Map` or object is false for the same reason.
+   *
+   * @param other - Anything.
+   * @returns Whether Python would call them equal.
+   * @example
+   * ```ts
+   * counts.equals(new Map(counts.items()));   // true
+   * counts.normalize().equals(counts);        // false: tuples against lists, and different numbers
+   * ```
+   */
+  equals(other: unknown): boolean {
+    if (other === this) return true;                    // Python compares dict values by identity first
+    const theirs = rowsOf(other);
+    if (theirs === null) return false;
+    const theirType = other instanceof GenericPositionMatrix ? other.rowType : "list";
+    if (theirType !== this.rowType || theirs.size !== this.values.size) return false;
+    for (const [letter, row] of this.values) {
+      const r = theirs.get(letter);
+      if (r === undefined) return false;
+      if (r === row) continue;                          // the same array: equal without looking, NaN included
+      if (r.length !== row.length) return false;
+      for (let i = 0; i < row.length; i++) if (row[i] !== r[i]) return false;
+    }
+    return true;
+  }
+
+  /**
+   * Python's ordering operators, which `dict` does not support: every one of them raises.
+   *
+   * @param op - The operator as Python spells it in the message.
+   * @param other - The right-hand operand, named by its Python type.
+   * @throws TypeError always, with Biopython's wording.
+   */
+  private refuseOrder(op: string, other: unknown): never {
+    throw new TypeError(`'${op}' not supported between instances of '${this.constructor.name}' and '${typeNameOf(other)}'`);
+  }
+
+  /** Python `matrix < other`. @throws TypeError always: `dict` has no ordering. */
+  lt(other: unknown): never { return this.refuseOrder("<", other); }
+  /** Python `matrix <= other`. @throws TypeError always: `dict` has no ordering. */
+  le(other: unknown): never { return this.refuseOrder("<=", other); }
+  /** Python `matrix > other`. @throws TypeError always: `dict` has no ordering. */
+  gt(other: unknown): never { return this.refuseOrder(">", other); }
+  /** Python `matrix >= other`. @throws TypeError always: `dict` has no ordering. */
+  ge(other: unknown): never { return this.refuseOrder(">=", other); }
 
   /** @returns Python's `str`: a header of position numbers and one `%6.2f` row per letter. */
   toString(): string {

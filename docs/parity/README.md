@@ -1,8 +1,8 @@
 # Biopython parity checklist
 
-Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
+Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Comparison, hash and string members that no class but `object` defines are marked `[-]` automatically, from `inventory.py`'s reading of Biopython; a golden case that pins such a member down wins over that and makes it `[x]`. Edit `reference/status.json`, then re-run the script.
 
-**Progress: 2235 / 2483 applicable items verified against Biopython.**
+**Progress: 2299 / 2345 applicable items verified against Biopython.**
 
 | Section | Verified | Applicable |
 |---|---|---|
@@ -40,30 +40,30 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 | [Bio.Nexus.Trees](Bio.Nexus.Trees.md) | 37 | 39 |
 | [Bio.Nexus.Nodes](Bio.Nexus.Nodes.md) | 18 | 18 |
 | [Bio.Nexus.StandardData](Bio.Nexus.StandardData.md) | 6 | 6 |
-| [Bio.PDB.Entity](Bio.PDB.Entity.md) | 50 | 55 |
-| [Bio.PDB.Atom](Bio.PDB.Atom.md) | 61 | 69 |
-| [Bio.PDB.Residue](Bio.PDB.Residue.md) | 58 | 63 |
+| [Bio.PDB.Entity](Bio.PDB.Entity.md) | 50 | 54 |
+| [Bio.PDB.Atom](Bio.PDB.Atom.md) | 61 | 68 |
+| [Bio.PDB.Residue](Bio.PDB.Residue.md) | 58 | 62 |
 | [Bio.PDB.Chain](Bio.PDB.Chain.md) | 32 | 34 |
 | [Bio.PDB.Model](Bio.PDB.Model.md) | 32 | 34 |
 | [Bio.PDB.Structure](Bio.PDB.Structure.md) | 33 | 35 |
-| [Bio.PDB.StructureBuilder](Bio.PDB.StructureBuilder.md) | 14 | 20 |
-| [Bio.PDB.PDBParser](Bio.PDB.PDBParser.md) | 4 | 10 |
+| [Bio.PDB.StructureBuilder](Bio.PDB.StructureBuilder.md) | 14 | 14 |
+| [Bio.PDB.PDBParser](Bio.PDB.PDBParser.md) | 4 | 4 |
 | [Bio.PDB.MMCIF2Dict](Bio.PDB.MMCIF2Dict.md) | 3 | 3 |
 | [Bio.PDB.MMCIFParser](Bio.PDB.MMCIFParser.md) | 4 | 4 |
-| [Bio.PDB.PDBIO](Bio.PDB.PDBIO.md) | 11 | 32 |
-| [Bio.PDB.mmcifio](Bio.PDB.mmcifio.md) | 4 | 11 |
-| [Bio.PDB.vectors](Bio.PDB.vectors.md) | 36 | 43 |
-| [Bio.PDB.Polypeptide](Bio.PDB.Polypeptide.md) | 16 | 30 |
-| [Bio.PDB.Superimposer](Bio.PDB.Superimposer.md) | 3 | 10 |
-| [Bio.SVDSuperimposer](Bio.SVDSuperimposer.md) | 7 | 14 |
-| [Bio.PDB.NeighborSearch](Bio.PDB.NeighborSearch.md) | 3 | 10 |
-| [Bio.PDB.kdtrees](Bio.PDB.kdtrees.md) | 6 | 29 |
+| [Bio.PDB.PDBIO](Bio.PDB.PDBIO.md) | 11 | 11 |
+| [Bio.PDB.mmcifio](Bio.PDB.mmcifio.md) | 4 | 4 |
+| [Bio.PDB.vectors](Bio.PDB.vectors.md) | 36 | 36 |
+| [Bio.PDB.Polypeptide](Bio.PDB.Polypeptide.md) | 16 | 16 |
+| [Bio.PDB.Superimposer](Bio.PDB.Superimposer.md) | 3 | 3 |
+| [Bio.SVDSuperimposer](Bio.SVDSuperimposer.md) | 7 | 7 |
+| [Bio.PDB.NeighborSearch](Bio.PDB.NeighborSearch.md) | 3 | 3 |
+| [Bio.PDB.kdtrees](Bio.PDB.kdtrees.md) | 6 | 8 |
 | [Bio.PDB.Selection](Bio.PDB.Selection.md) | 3 | 3 |
-| [Bio.PDB.SASA](Bio.PDB.SASA.md) | 2 | 9 |
-| [Bio.Restriction](Bio.Restriction.md) | 447 | 503 |
-| [Bio.motifs](Bio.motifs.md) | 19 | 25 |
-| [Bio.motifs.matrix](Bio.motifs.matrix.md) | 47 | 67 |
-| [Bio.motifs.thresholds](Bio.motifs.thresholds.md) | 5 | 12 |
+| [Bio.PDB.SASA](Bio.PDB.SASA.md) | 2 | 2 |
+| [Bio.Restriction](Bio.Restriction.md) | 491 | 491 |
+| [Bio.motifs](Bio.motifs.md) | 19 | 19 |
+| [Bio.motifs.matrix](Bio.motifs.matrix.md) | 67 | 67 |
+| [Bio.motifs.thresholds](Bio.motifs.thresholds.md) | 5 | 5 |
 | [Bio.motifs.jaspar](Bio.motifs.jaspar.md) | 22 | 22 |
 | [Bio.motifs.transfac](Bio.motifs.transfac.md) | 18 | 18 |
 | [Bio.motifs.clusterbuster](Bio.motifs.clusterbuster.md) | 2 | 2 |

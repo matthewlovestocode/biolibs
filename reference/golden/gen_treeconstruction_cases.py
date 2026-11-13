@@ -12,6 +12,7 @@ from Bio.Phylo import TreeConstruction as TC
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from phylo_codec import enc_tree, tname, emsg
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "phylo", "test", "golden", "treeconstruction.json")
 rnd = random.Random(515)
@@ -119,24 +120,8 @@ def run(case):
     except BaseException as e:
         return {"exc": {"type": tname(e), "msg": emsg(e)}}
 
-def run_isolated(case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(run(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, st = os.waitpid(pid, 0)
-    return json.loads(b"".join(chunks)) if st == 0 and chunks else None
 def add(c):
-    res = run_isolated(c)
+    res = run_isolated(run, c)
     if res is not None: cases.append(dict(c, **res))
 
 def T(i): return ["i", i]
@@ -247,5 +232,6 @@ add({"kind": "score", "newick": "((S0:1,S1:1):1,(S2:1,S3:1):1);", "aln": {"ids":
 add({"kind": "score", "newick": "((S0:1,S1:1):1,(S2:1,S3:1):1);", "aln": {"ids": ["S0", "S1", "S2", "S3"], "rows": ["AAAA", "AAAC", "CCCC", "CCCA"]}, "akind": "msa", "names": ["A"], "matrix": [[T(0)]]})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
+report_skipped()
 json.dump(cases, open(OUT, "w"), indent=0)
 print(len(cases), "cases")

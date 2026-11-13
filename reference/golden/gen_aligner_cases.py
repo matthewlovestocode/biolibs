@@ -12,6 +12,7 @@ from Bio import Align
 from Bio.Align import substitution_matrices as SM
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "align", "test", "golden", "aligner.json")
 rnd = random.Random(5)
@@ -103,32 +104,10 @@ def quiet_crashes():
     exit_ptr = ctypes.cast(libc._exit, ctypes.c_void_p).value
     for sig in (4, 5, 6, 10, 11): libc.signal(sig, exit_ptr)      # SIGILL, SIGTRAP, SIGABRT, SIGBUS, SIGSEGV
 
-def run_isolated(case):
-    """Run a case in a forked child: Biopython's FOGSAA can crash the interpreter (a segmentation fault in its C code)
-    on some inputs, and one such case must not lose the rest. Returns None if the child died."""
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        quiet_crashes()
-        try:
-            os.write(w, json.dumps(run(case)).encode())
-        finally:
-            os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    if status != 0 or not chunks: return None
-    return json.loads(b"".join(chunks))
 
 crashed = []
 def add(c):
-    res = run_isolated(c)
+    res = run_isolated(run, c, in_child=quiet_crashes)
     if res is None:
         crashed.append(c)
         return
@@ -283,5 +262,6 @@ for a, b in [("A", "A"), ("A", "C"), ("AC", "A"), ("A", "ACGT"), ("", "A"), ("A"
         add({"kind": "score", "scoring": None, "props": props, "a": a, "b": b})
 for a, b in [({"t": "int", "v": 5}, "A"), ({"t": "tuple", "v": ["A", "C"]}, {"t": "tuple", "v": ["A", "C"]}), ({"t": "list", "v": [1, 2, 3]}, {"t": "list", "v": [1, 2]}), ("ACG", {"t": "int", "v": 5})]:
     add({"kind": "score", "scoring": None, "props": [], "a": a, "b": b})
+report_skipped()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(len(crashed), "cases dropped because Biopython crashed;", len(cases), "cases,", sum("exc" in c for c in cases), "raise ->", os.path.relpath(OUT))

@@ -25,18 +25,18 @@
 
 - [x] `__add__(self, other)`
 - [x] `__contains__(self, i)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
 - [x] `__getitem__(self, i)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
 - [x] `__init__(self, x, y=None, z=None)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
 - [x] `__mul__(self, other)`
 - [x] `__repr__(self)`
 - [x] `__setitem__(self, i, value)`
-- [ ] `__str__(self, /)`
+- [-] `__str__(self, /)`
 - [x] `angle(self, other)`
 - [x] `copy(self)`
 - [x] `get_array(self)`

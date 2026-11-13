@@ -4,15 +4,15 @@
 ### Bio.Restriction.FormattedSeq
 
 - [x] `__eq__(self, other)`
-- [ ] `__ge__(self, value, /)`
+- [-] `__ge__(self, value, /)`
 - [x] `__getitem__(self, i)`
-- [ ] `__gt__(self, value, /)`
+- [-] `__gt__(self, value, /)`
 - [x] `__init__(self, seq, linear=True)`
-- [ ] `__le__(self, value, /)`
+- [-] `__le__(self, value, /)`
 - [x] `__len__(self)`
-- [ ] `__lt__(self, value, /)`
+- [-] `__lt__(self, value, /)`
 - [x] `__repr__(self)`
-- [ ] `__str__(self, /)`
+- [-] `__str__(self, /)`
 - [x] `circularise(self)`
 - [x] `finditer(self, pattern, size)`
 - [x] `is_linear(self)`
@@ -50,7 +50,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
 - [x] `is_equischizomer(other)`
@@ -75,7 +75,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `characteristic()`
 - [x] `cut_once()`
 - [x] `cut_twice()`
@@ -103,7 +103,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `characteristic()`
 - [x] `cut_once()`
 - [x] `cut_twice()`
@@ -131,7 +131,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `characteristic()`
 - [x] `cut_once()`
 - [x] `cut_twice()`
@@ -159,7 +159,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
 - [x] `is_equischizomer(other)`
@@ -185,7 +185,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
 - [x] `is_equischizomer(other)`
@@ -211,7 +211,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
 - [x] `is_equischizomer(other)`
@@ -237,7 +237,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
 - [x] `is_equischizomer(other)`
@@ -263,7 +263,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `catalyse(dna, linear=True)`
 - [x] `catalyze(dna, linear=True)`
 - [x] `compatible_end()`
@@ -295,7 +295,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `catalyse(dna, linear=True)`
 - [x] `catalyze(dna, linear=True)`
 - [x] `compatible_end(batch=None)`
@@ -327,7 +327,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `catalyse(dna, linear=True)`
 - [x] `catalyze(dna, linear=True)`
 - [x] `compatible_end(batch=None)`
@@ -359,7 +359,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `catalyse(dna, linear=True)`
 - [x] `catalyze(dna, linear=True)`
 - [x] `compatible_end(batch=None)`
@@ -391,7 +391,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `elucidate()`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
@@ -420,7 +420,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `elucidate()`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
@@ -449,7 +449,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `elucidate()`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
@@ -478,7 +478,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `buffers(supplier)`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
@@ -491,7 +491,7 @@
 - [x] `neoschizomers(batch=None)`
 - [x] `search(dna, linear=True)`
 - [x] `supplier_list()`
-- [~] `suppliers()`
+- [x] `suppliers()`
 
 ### Bio.Restriction.Not_available
 
@@ -507,7 +507,7 @@
 - [x] `__mod__(cls, other)`
 - [x] `__repr__(cls)`
 - [x] `__str__(cls)`
-- [~] `all_suppliers()`
+- [x] `all_suppliers()`
 - [x] `buffers(supplier)`
 - [x] `equischizomers(batch=None)`
 - [x] `frequency()`
@@ -520,7 +520,7 @@
 - [x] `neoschizomers(batch=None)`
 - [x] `search(dna, linear=True)`
 - [x] `supplier_list()`
-- [~] `suppliers()`
+- [x] `suppliers()`
 
 ### Bio.Restriction.RestrictionBatch
 
@@ -560,9 +560,9 @@
 - [-] `pop(self, /)`
 - [x] `remove(self, other)`
 - [x] `search(self, dna, linear=True)`
-- [~] `show_codes()`
+- [x] `show_codes()`
 - [x] `split(self, *classes, **bool)`
-- [~] `suppl_codes()`
+- [x] `suppl_codes()`
 - [-] `symmetric_difference(self, other, /)`
 - [-] `symmetric_difference_update(self, other, /)`
 - [-] `union(self, /, *others)`
@@ -570,46 +570,46 @@
 
 ### Bio.Restriction.Analysis
 
-- [~] `__add__(self, other)`
-- [~] `__contains__(self, other)`
+- [x] `__add__(self, other)`
+- [x] `__contains__(self, other)`
 - [-] `__eq__(self, value, /)`
 - [-] `__ge__(self, value, /)`
 - [-] `__gt__(self, value, /)`
-- [~] `__iadd__(self, other)`
-- [~] `__init__(self, restrictionbatch=RestrictionBatch([]), sequence=Seq(''), linear=True)`
+- [x] `__iadd__(self, other)`
+- [x] `__init__(self, restrictionbatch=RestrictionBatch([]), sequence=Seq(''), linear=True)`
 - [-] `__iter__(self, /)`
 - [-] `__le__(self, value, /)`
 - [-] `__len__(self, /)`
 - [-] `__lt__(self, value, /)`
-- [~] `__repr__(self)`
-- [~] `__str__(self)`
-- [~] `add(self, other)`
-- [~] `add_nocheck(self, other)`
-- [~] `add_supplier(self, letter)`
-- [~] `as_string(self)`
+- [x] `__repr__(self)`
+- [x] `__str__(self)`
+- [x] `add(self, other)`
+- [x] `add_nocheck(self, other)`
+- [x] `add_supplier(self, letter)`
+- [x] `as_string(self)`
 - [x] `between(self, start, end, dct=None)`
 - [x] `blunt(self, dct=None)`
 - [x] `change(self, **what)`
 - [-] `clear(self, /)`
 - [-] `copy(self, /)`
-- [~] `current_suppliers(self)`
+- [x] `current_suppliers(self)`
 - [x] `defined(self, dct=None)`
 - [-] `difference(self, /, *others)`
 - [-] `difference_update(self, /, *others)`
 - [-] `discard(self, object, /)`
 - [x] `do_not_cut(self, start, end, dct=None)`
-- [~] `elements(self)`
-- [~] `format(self, y)`
+- [x] `elements(self)`
+- [x] `format(self, y)`
 - [x] `format_output(self, dct=None, title='', s1='')`
 - [x] `full(self, linear=True)`
-- [~] `get(self, enzyme, add=False)`
+- [x] `get(self, enzyme, add=False)`
 - [-] `intersection(self, /, *others)`
 - [-] `intersection_update(self, /, *others)`
-- [~] `is_restriction(self, y)`
+- [x] `is_restriction(self, y)`
 - [-] `isdisjoint(self, other, /)`
 - [-] `issubset(self, other, /)`
 - [-] `issuperset(self, other, /)`
-- [~] `lambdasplit(self, func)`
+- [x] `lambdasplit(self, func)`
 - [x] `make_format(self, cut=(), title='', nc=(), s1='')`
 - [x] `only_between(self, start, end, dct=None)`
 - [x] `only_outside(self, start, end, dct=None)`
@@ -618,13 +618,13 @@
 - [x] `overhang5(self, dct=None)`
 - [-] `pop(self, /)`
 - [x] `print_as(self, what='list')`
-- [~] `print_that(self, dct=None, title='', s1='')`
-- [~] `remove(self, other)`
-- [~] `search(self, dna, linear=True)`
-- [~] `show_codes()`
+- [x] `print_that(self, dct=None, title='', s1='')`
+- [x] `remove(self, other)`
+- [x] `search(self, dna, linear=True)`
+- [x] `show_codes()`
 - [x] `show_only_between(self, start, end, dct=None)`
-- [~] `split(self, *classes, **bool)`
-- [~] `suppl_codes()`
+- [x] `split(self, *classes, **bool)`
+- [x] `suppl_codes()`
 - [-] `symmetric_difference(self, other, /)`
 - [-] `symmetric_difference_update(self, other, /)`
 - [-] `union(self, /, *others)`
@@ -638,16 +638,16 @@
 
 ### Bio.Restriction.PrintFormat
 
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
 - [-] `__init__(self, /, *args, **kwargs)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
 - [-] `__repr__(self, /)`
-- [ ] `__str__(self, /)`
+- [-] `__str__(self, /)`
 - [x] `format_output(self, dct, title='', s1='')`
 - [x] `make_format(self, cut=(), title='', nc=(), s1='')`
 - [x] `print_as(self, what='list')`
-- [~] `print_that(self, dct, title='', s1='')`
+- [x] `print_that(self, dct, title='', s1='')`

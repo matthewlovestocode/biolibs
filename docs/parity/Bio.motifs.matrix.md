@@ -5,15 +5,15 @@
 
 - [-] `__contains__(self, key, /)`
 - [-] `__delitem__(self, key, /)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
 - [x] `__getitem__(self, key)`
-- [ ] `__gt__(self, value, /)`
+- [x] `__gt__(self, value, /)`
 - [x] `__init__(self, alphabet, values)`
 - [-] `__iter__(self, /)`
-- [ ] `__le__(self, value, /)`
+- [x] `__le__(self, value, /)`
 - [-] `__len__(self, /)`
-- [ ] `__lt__(self, value, /)`
+- [x] `__lt__(self, value, /)`
 - [-] `__repr__(self, /)`
 - [-] `__setitem__(self, key, value, /)`
 - [x] `__str__(self)`
@@ -39,15 +39,15 @@
 
 - [-] `__contains__(self, key, /)`
 - [-] `__delitem__(self, key, /)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
 - [x] `__getitem__(self, key)`
-- [ ] `__gt__(self, value, /)`
+- [x] `__gt__(self, value, /)`
 - [x] `__init__(self, alphabet, values)`
 - [-] `__iter__(self, /)`
-- [ ] `__le__(self, value, /)`
+- [x] `__le__(self, value, /)`
 - [-] `__len__(self, /)`
-- [ ] `__lt__(self, value, /)`
+- [x] `__lt__(self, value, /)`
 - [-] `__repr__(self, /)`
 - [-] `__setitem__(self, key, value, /)`
 - [x] `__str__(self)`
@@ -74,15 +74,15 @@
 
 - [-] `__contains__(self, key, /)`
 - [-] `__delitem__(self, key, /)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
 - [x] `__getitem__(self, key)`
-- [ ] `__gt__(self, value, /)`
+- [x] `__gt__(self, value, /)`
 - [x] `__init__(self, alphabet, counts)`
 - [-] `__iter__(self, /)`
-- [ ] `__le__(self, value, /)`
+- [x] `__le__(self, value, /)`
 - [-] `__len__(self, /)`
-- [ ] `__lt__(self, value, /)`
+- [x] `__lt__(self, value, /)`
 - [-] `__repr__(self, /)`
 - [-] `__setitem__(self, key, value, /)`
 - [x] `__str__(self)`
@@ -109,15 +109,15 @@
 
 - [-] `__contains__(self, key, /)`
 - [-] `__delitem__(self, key, /)`
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
+- [x] `__eq__(self, value, /)`
+- [x] `__ge__(self, value, /)`
 - [x] `__getitem__(self, key)`
-- [ ] `__gt__(self, value, /)`
+- [x] `__gt__(self, value, /)`
 - [x] `__init__(self, alphabet, values)`
 - [-] `__iter__(self, /)`
-- [ ] `__le__(self, value, /)`
+- [x] `__le__(self, value, /)`
 - [-] `__len__(self, /)`
-- [ ] `__lt__(self, value, /)`
+- [x] `__lt__(self, value, /)`
 - [-] `__repr__(self, /)`
 - [-] `__setitem__(self, key, value, /)`
 - [x] `__str__(self)`

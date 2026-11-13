@@ -38,7 +38,7 @@
 ### Bio.PDB.Entity.DisorderedEntityWrapper
 
 - [x] `__contains__(self, id)`
-- [ ] `__eq__(self, value, /)`
+- [-] `__eq__(self, value, /)`
 - [ ] `__ge__(self, other)`
 - [x] `__getitem__(self, id)`
 - [ ] `__gt__(self, other)`

@@ -18,6 +18,14 @@ ctors = {c["ctor"] for c in seq if "ctor" in c}
 
 def mark(k, v="done"): status[k] = v
 
+# Python's own defaults first, so anything verified later in this file wins: a few of these dunders
+# do have behaviour a port must match (`SeqFeature.__lt__` raises TypeError rather than comparing),
+# and an explicit golden case is better evidence than this rule. `inventory.py` decides what counts,
+# by asking Biopython whether any class but `object` defines the member.
+if "inherited" not in inv:
+    raise SystemExit("inventory.json predates the `inherited` list: re-run reference/inventory.py first")
+for k in inv["inherited"]: mark(k, "na")
+
 # Bio.Seq module functions
 for f in inv["Bio.Seq"]["functions"]:
     if f in funcs: mark(f"Bio.Seq.{f}")
@@ -250,6 +258,9 @@ mc = json.load(open(f"{here}/../packages/motifs/test/golden/motifs.json"))["case
 if mc:
     MAT = {"__init__", "__str__", "__getitem__", "consensus", "anticonsensus", "degenerate_consensus", "calculate_consensus", "gc_content", "reverse_complement", "normalize", "log_odds", "calculate",
            "search", "max", "min", "mean", "std", "dist_pearson", "dist_pearson_at", "distribution"}
+    # The matrices subclass `dict`, so `==` compares the stored rows and `<`, `<=`, `>`, `>=` raise. The `matrixcmp`
+    # cases run all five against a matrix, an equal copy, a plain dict, a matrix of another class and some non-dicts.
+    if any(c["kind"] == "matrixcmp" for c in mc): MAT = MAT | {"__eq__", "__lt__", "__le__", "__gt__", "__ge__"}
     for cls in inv["Bio.motifs.matrix"]["classes"]:
         for m in inv["Bio.motifs.matrix"]["classes"][cls]:
             if m in MAT: mark(f"Bio.motifs.matrix.{cls}.{m}")
@@ -309,7 +320,7 @@ if {"enzyme", "digest", "pair", "lists"} <= kinds_done:
                 "NotDefined", "Commercially_available", "Not_available"):
         for m in inv["Bio.Restriction"]["classes"][cls]:
             if m in ENZ: mark(f"Bio.Restriction.{cls}.{m}")
-            elif m in ("suppliers", "all_suppliers"): mark(f"Bio.Restriction.{cls}.{m}", "partial")   # they print; the output is not recorded
+            elif m in ("suppliers", "all_suppliers"): mark(f"Bio.Restriction.{cls}.{m}", "done" if "suppliers" in kinds_done else "partial")   # the `suppliers` cases record what they print
             elif m in ("__hash__", "__rtruediv__", "__rfloordiv__"): mark(f"Bio.Restriction.{cls}.{m}", "na")   # identity hash; reflected operators have no TypeScript spelling
     FS = {"__init__", "__len__", "__repr__", "__eq__", "circularise", "linearise", "to_linear", "to_circular", "is_linear", "finditer", "__getitem__"}
     for m in inv["Bio.Restriction"]["classes"]["FormattedSeq"]:
@@ -318,27 +329,29 @@ if {"enzyme", "digest", "pair", "lists"} <= kinds_done:
           "split", "elements", "as_string", "search", "__truediv__"}
     for m in inv["Bio.Restriction"]["classes"]["RestrictionBatch"]:
         if m in RB and m != "__truediv__" and any(c["kind"] == "batch" for c in rc): mark(f"Bio.Restriction.RestrictionBatch.{m}")
-        if m in ("suppl_codes", "show_codes"): mark(f"Bio.Restriction.RestrictionBatch.{m}", "partial")
+        if m in ("suppl_codes", "show_codes"): mark(f"Bio.Restriction.RestrictionBatch.{m}", "done" if "codes" in kinds_done else "partial")
     AN = {"__init__", "__repr__", "change", "full", "blunt", "overhang5", "overhang3", "defined", "with_sites", "without_site", "with_N_sites", "with_number_list", "with_name", "with_site_size",
           "only_between", "between", "show_only_between", "only_outside", "outside", "do_not_cut", "format_output"}
     for m in inv["Bio.Restriction"]["classes"]["Analysis"]:
         if m in AN: mark(f"Bio.Restriction.Analysis.{m}")
-        elif m == "print_that": mark("Bio.Restriction.Analysis.print_that", "partial")
+        elif m == "print_that": mark("Bio.Restriction.Analysis.print_that", "done" if "abatch" in kinds_done else "partial")
     # Python's set built-ins and the metaclass `mro` have JavaScript equivalents (Set, Object.getPrototypeOf)
     for cls in ("RestrictionBatch", "Analysis"):
         for m in inv["Bio.Restriction"]["classes"][cls]:
             if hasattr(set, m) and m not in ("__contains__", "remove", "add", "__init__", "__repr__", "__str__", "__add__", "__iadd__"): mark(f"Bio.Restriction.{cls}.{m}", "na")
     for cls in ("RestrictionType", "AbstractCut", "NoCut", "OneCut", "TwoCuts", "Meth_Dep", "Meth_Undep", "Palindromic", "NonPalindromic", "Unknown", "Blunt", "Ov5", "Ov3", "Defined", "Ambiguous",
                 "NotDefined", "Commercially_available", "Not_available"): mark(f"Bio.Restriction.{cls}.mro", "na")
-    # Analysis inherits the batch methods; they are verified on RestrictionBatch itself
+    # Analysis inherits the batch methods. Verifying them on RestrictionBatch is not enough: `__add__` builds
+    # `self.__class__(self)`, so the result's class depends on the receiver. The `abatch` cases run the whole batch
+    # API on an Analysis and record the class of every batch that comes back.
     for m in inv["Bio.Restriction"]["classes"]["Analysis"]:
-        if m in RB and m != "__truediv__": mark(f"Bio.Restriction.Analysis.{m}", "partial")
+        if m in RB and m != "__truediv__": mark(f"Bio.Restriction.Analysis.{m}", "done" if "abatch" in kinds_done else "partial")
         if m in ("print_as", "make_format"): mark(f"Bio.Restriction.Analysis.{m}")
-        if m in ("suppl_codes", "show_codes"): mark(f"Bio.Restriction.Analysis.{m}", "partial")
+        if m in ("suppl_codes", "show_codes"): mark(f"Bio.Restriction.Analysis.{m}", "done" if "codes" in kinds_done else "partial")
     mark("Bio.Restriction.PrintFormat.make_format"); mark("Bio.Restriction.PrintFormat.__repr__", "na"); mark("Bio.Restriction.PrintFormat.__init__", "na")
     for m in inv["Bio.Restriction"]["classes"]["PrintFormat"]:
         if m in ("print_as", "format_output"): mark(f"Bio.Restriction.PrintFormat.{m}")
-        elif m == "print_that": mark("Bio.Restriction.PrintFormat.print_that", "partial")
+        elif m == "print_that": mark("Bio.Restriction.PrintFormat.print_that", "done" if "printfmt" in kinds_done else "partial")
 
 # ---- Bio.PDB.SASA (packages/pdb/test/golden/sasa.json) ----
 sc = json.load(open(f"{here}/../packages/pdb/test/golden/sasa.json"))["cases"]

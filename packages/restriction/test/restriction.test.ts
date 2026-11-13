@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { captureWarnings } from "@biolibs/core";
 import { MutableSeq, Seq } from "@biolibs/seq";
-import { Analysis, FormattedSeq, RestrictionBatch, RestrictionType, enzymes, restDict } from "@biolibs/restriction";
+import { Analysis, FormattedSeq, PrintFormat, RestrictionBatch, RestrictionType, enzymes, restDict } from "@biolibs/restriction";
 
 type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc; skip?: boolean };
@@ -22,6 +22,8 @@ function enc(x: any): unknown {
   if (x instanceof RestrictionBatch) return { batch: [...x].map((e) => e.name).sort() };
   if (x instanceof Map) return { map: [...x].map(([k, v]) => [k.name, enc(v)]).sort((a: any, b: any) => (a[0] < b[0] ? -1 : 1)) };
   if (Array.isArray(x)) return x.map(enc);
+  // A plain object is Python's `dict` with string keys (the supplier codes), encoded like a Map.
+  if (typeof x === "object") return { map: Object.entries(x).map(([k, v]) => [k, enc(v)]).sort((a, b) => (a[0] < b[0] ? -1 : 1)) };
   throw new Error("cannot encode");
 }
 
@@ -33,6 +35,18 @@ const excOk = (want: Exc | undefined, got: Exc | undefined): boolean => {
 };
 const err = (e: unknown): Exc => ({ type: (e as Error).name, msg: (e as Error).message });
 const attempt = (f: () => unknown): Out => { try { return { result: enc(f()) }; } catch (e) { return { exc: err(e) }; } };
+
+/**
+ * What `f` writes with `console.log`, which is where the supplier tables and `printThat` put their answer.
+ * Joined the way Python's `print` builds it: arguments separated by a space, a newline after each call.
+ */
+function captureLog(f: () => void): string {
+  const lines: string[] = [];
+  const original = console.log;
+  console.log = (...args: unknown[]): void => { lines.push(`${args.map(String).join(" ")}\n`); };
+  try { f(); } finally { console.log = original; }
+  return lines.join("");
+}
 const same = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON.stringify(b);
 const outOk = (w: Out, g: Out): boolean => (w.exc ? excOk(w.exc, g.exc) : g.exc === undefined && same(w.result, g.result));
 
@@ -109,8 +123,9 @@ function runBatch(c: Case): Record<string, unknown> {
         case "iadd": b!.iadd(tok(op[1])); return null;
         case "add_nocheck": { const x = tok(op[1]); if (!(x instanceof RestrictionType)) { /* Python adds anything unchecked; a string or number lands in the set */ (b as any).addNocheck(x); } else b!.addNocheck(x); return null; }
         case "remove": b!.remove(tok(op[1])); return null;
-        case "split": { const r = b!.split(op[1], op[2]); return [r.size, [...r._data!.keys()].map((e) => e.name).sort()]; }
-        case "lambdasplit": { const r = b!.lambdasplit((e) => e.size >= op[1]); return [r.size, [...r._data!.keys()].map((e) => e.name).sort()]; }
+        case "split": { const r = b!.split(op[1], op[2]); return [r.size, [...r._data!.keys()].map(String).sort()]; }
+        // Python's predicate is `lambda x: x.size >= n`, so a member that is not an enzyme raises on the attribute.
+        case "lambdasplit": { const r = b!.lambdasplit((e) => { if (!(e instanceof RestrictionType)) throw new TypeError(`'${typeof e}' object has no attribute 'size'`); return e.size >= op[1]; }); return [r.size, [...r._data!.keys()].map(String).sort()]; }
         case "add_supplier": b!.addSupplier(op[1]); return null;
         case "current_suppliers": return b!.currentSuppliers();
         case "suppliers": return [...b!.suppliers];
@@ -122,7 +137,8 @@ function runBatch(c: Case): Record<string, unknown> {
     }));
   }
   const bb = b as RestrictionBatch | null;
-  return { ops_out, final: bb ? [...bb].map((e) => e.name).sort() : null };
+  // `addNocheck` adds whatever it is given, so the set can hold a string or a number as well as an enzyme.
+  return { ops_out, final: bb ? [...bb].map((e) => (e instanceof RestrictionType ? e.name : String(e))).sort() : null };
 }
 
 function runFseq(c: Case): Record<string, unknown> {
@@ -194,6 +210,71 @@ function runAnalysis(c: Case): Record<string, unknown> {
   return { mapping: initial, ops_out };
 }
 
+/** `all_suppliers` and `suppliers`: one static and one instance method in this port, printed in Biopython. */
+function runSuppliers(c: Case): Record<string, unknown> {
+  const out: Record<string, unknown> = { all_suppliers: attempt(() => captureLog(() => RestrictionType.allSuppliers())) };
+  if (c["enzyme"] !== null) {
+    const e = E(c["enzyme"]);
+    out["suppliers"] = attempt(() => captureLog(() => e.suppliers()));
+    out["supplier_list"] = attempt(() => e.supplierList());
+    out["is_comm"] = attempt(() => e.isComm());
+  }
+  return out;
+}
+
+/** The supplier-code table, on `RestrictionBatch` and on `Analysis`, which inherits the statics. */
+function runCodes(c: Case): Record<string, unknown> {
+  const cls = c["cls"] === "Analysis" ? Analysis : RestrictionBatch;
+  return { suppl_codes: attempt(() => cls.supplCodes()), show_codes: attempt(() => captureLog(() => cls.showCodes())) };
+}
+
+/** The batch API on an `Analysis`, which inherits all of it. */
+function runAbatch(c: Case): Record<string, unknown> {
+  let a: Analysis;
+  try { a = new Analysis(new RestrictionBatch(c.batch!), new Seq(c.seq), c.linear); } catch (x) { return { exc: err(x) }; }
+  const names = (b: RestrictionBatch): string[] => [...(b._data ?? new Map()).keys()].map((e) => e.name).sort();
+  const ops_out = c.ops.map((op) => attempt(() => {
+    const k = op[0], arg = op[1];
+    switch (k) {
+      case "str": return a.toString();
+      case "repr": return a.repr();
+      case "elements": return a.elements();
+      case "as_string": return a.asString().sort();
+      case "len": return a.size;
+      case "has": return a.has(arg);
+      case "has_enz": return a.has(E(arg));
+      case "get": return a.get(arg, op[2]);
+      case "format": return a.format(arg);
+      case "is_restriction": return a.isRestriction(arg);
+      case "add": a.add(arg); return a.elements();
+      case "add_nocheck": a.addNocheck(E(arg)); return a.elements();
+      case "remove": a.remove(arg); return a.elements();
+      case "plus": { const n = a.plus(E(arg)); return [n.constructor.name, n.elements()]; }
+      case "iadd": a.iadd(E(arg)); return [a.constructor.name, a.elements()];
+      case "split": { const n = a.split(arg); return [n.constructor.name, n.size, names(n)]; }
+      case "lambdasplit": { const n = a.lambdasplit((e) => e.size >= arg); return [n.constructor.name, n.size, names(n)]; }
+      case "add_supplier": a.addSupplier(arg); return [a.size, a.currentSuppliers()];
+      case "current_suppliers": return a.currentSuppliers();
+      case "search": return a.search(new Seq(arg), op[2]);
+      case "print_that": return captureLog(() => a.printThat(null, op[1], op[2]));
+    }
+    throw new Error(k);
+  }));
+  return { ops_out };
+}
+
+/** `PrintFormat.printThat`, the printing entry point `Analysis` overrides. */
+function runPrintfmt(c: Case): Record<string, unknown> {
+  const a = new Analysis(new RestrictionBatch(c.batch!), new Seq(c.seq), c.linear);
+  const ops_out = c.ops.map((op) => {
+    const pf = new PrintFormat();
+    pf.sequence = new Seq(c.seq) as never;
+    pf.printAs(op[0]);
+    return attempt(() => captureLog(() => pf.printThat(a.mapping, op[1], op[2])));
+  });
+  return { ops_out };
+}
+
 function check(c: Case, got: Record<string, any>): string {
   switch (c.kind) {
     case "enzyme": {
@@ -208,6 +289,8 @@ function check(c: Case, got: Record<string, any>): string {
     }
     case "pair": { for (const k of Object.keys(c["ops"])) if (!outOk(c["ops"][k], got["ops"][k])) return `${k}: want ${JSON.stringify(c["ops"][k])} got ${JSON.stringify(got["ops"][k])}`; return ""; }
     case "lists": { for (const k of Object.keys(got)) if (!outOk(c[k], got[k])) return `${k}: want ${JSON.stringify(c[k]).slice(0, 300)} got ${JSON.stringify(got[k]).slice(0, 300)}`; return ""; }
+    case "suppliers":
+    case "codes": { for (const k of Object.keys(got)) if (!outOk(c[k], got[k])) return `${k}: want ${JSON.stringify(c[k]).slice(0, 400)} got ${JSON.stringify(got[k]).slice(0, 400)}`; return ""; }
     default: {
       if (c["exc"] || got["exc"]) return excOk(c["exc"], got["exc"]) ? "" : `ctor: want ${JSON.stringify(c["exc"])} got ${JSON.stringify(got["exc"])}`;
       if (c.kind === "analysis" && !same(c["mapping"], got["mapping"])) return "mapping differs";
@@ -226,7 +309,8 @@ describe("Bio.Restriction: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/restriction.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
   it(`enzymes, digests, batches, analysis (${cases.length} cases, Biopython ${biopython})`, () => {
     const bad: string[] = [];
-    const runners: Record<string, (c: Case) => Record<string, unknown>> = { enzyme: runEnzyme, digest: runDigest, pair: runPair, fseq: runFseq, lists: runLists, batch: runBatch, analysis: runAnalysis };
+    const runners: Record<string, (c: Case) => Record<string, unknown>> = { enzyme: runEnzyme, digest: runDigest, pair: runPair, fseq: runFseq, lists: runLists, batch: runBatch, analysis: runAnalysis,
+      suppliers: runSuppliers, codes: runCodes, abatch: runAbatch, printfmt: runPrintfmt };
     for (const c of cases) {
       const cap = captureWarnings(() => runners[c.kind]!(c));
       if (cap.error !== undefined) { bad.push(`${c.kind} ${c.name ?? ""}: threw ${(cap.error as Error).message}`); continue; }

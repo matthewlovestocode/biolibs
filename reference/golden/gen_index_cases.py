@@ -6,6 +6,7 @@ file may well succeed). For each, the file is written to disk, indexed, and ever
 import json, os, random, tempfile, warnings
 from Bio import SeqIO
 from codec_feature import enc
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 GOLD = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "seqio", "test", "golden")
 OUT = os.path.join(GOLD, "..", "golden-index", "seqio-index.json")   # not in golden/, which the format runner replays wholesale
@@ -45,7 +46,11 @@ def run(case):
         probes = []
         for k in ("__missing__", ""):
             for fn in (lambda: d[k], lambda: d.get_raw(k), lambda: k in d):
-                try: probes.append({"result": fn() if not isinstance(fn(), (bytes,)) else "bytes"})
+                try:
+                    # Called once, not twice: `d[k]` is a lookup. An empty key can exist (a `tab` line with no id),
+                    # so a probe may come back with a record, which is recorded as such rather than serialised.
+                    value = fn()
+                    probes.append({"result": "bytes" if isinstance(value, bytes) else value if isinstance(value, bool) else "record"})
                 except Exception as e: probes.append({"exc": {"type": tname(e), "msg": emsg(e)}})
         out["probes"] = probes
         out["str"] = str(d)
@@ -54,22 +59,6 @@ def run(case):
     os.unlink(path)
     return out
 
-def run_isolated(case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(run(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    return None if status != 0 or not chunks else json.loads(b"".join(chunks))
 
 SOURCES = {"fasta": ["fasta"], "fastq": ["fastq", "fastq-sanger", "fastq-solexa", "fastq-illumina"], "genbank": ["genbank", "gb"], "embl": ["embl"], "imgt": ["imgt"], "swiss": ["swiss"],
            "tab": ["tab"], "ig": ["ig"], "pir": ["pir"], "phd": ["phd"], "ace": ["ace"], "uniprot-xml": ["uniprot-xml"]}
@@ -81,18 +70,19 @@ for fname, formats in SOURCES.items():
         try: text.encode("utf-8")
         except UnicodeEncodeError: continue
         case = {"format": fmt, "text": text, "keyfunc": rnd.choice(["none", "none", "none", "upper", "first4", "const"])}
-        res = run_isolated(case)
+        res = run_isolated(run, case)
         if res is not None: case.update(res); cases.append(case)
     if fname == "fasta":   # QUAL files share the FASTA layout
         for fmt, text in texts[:40]:
             case = {"format": "qual", "text": text, "keyfunc": "none"}
-            res = run_isolated(case)
+            res = run_isolated(run, case)
             if res is not None: case.update(res); cases.append(case)
 # argument errors
 for fmt in ("", "FASTA", "clustal", "fastq-x"):
     case = {"format": fmt, "text": ">a\nAC\n", "keyfunc": "none"}
-    res = run_isolated(case)
+    res = run_isolated(run, case)
     if res is not None: case.update(res); cases.append(case)
 
+report_skipped()
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases,", sum(1 for c in cases if "exc" in c), "fail to index ->", OUT)

@@ -1,6 +1,6 @@
 /** `Motif`: a sequence motif defined by aligned instances or by counts, with its mask, pseudocounts and background. */
 
-import { ValueError, pySum } from "@biolibs/core";
+import { IndexError, ValueError, pySum } from "@biolibs/core";
 import { Alignment } from "@biolibs/align";
 import { Seq } from "@biolibs/seq";
 import { PythonException } from "./errors.js";
@@ -163,7 +163,12 @@ export class Motif {
     if (this.alignment !== null) text += Array.from({ length: this.alignment.size }, (_, i) => this.alignment!.get(i) as string).join("\n");
     if (masked) {
       if (this.length === null) throw new TypeError("'NoneType' object cannot be interpreted as an integer");
-      for (let i = 0; i < this.length; i++) text += this.maskValue[i] ? "*" : " ";
+      // Biopython indexes the mask position by position. A mask assignment that failed part-way through leaves a
+      // mask shorter than the motif (see the setter), and printing it then raises rather than padding.
+      for (let i = 0; i < this.length; i++) {
+        if (i >= this.maskValue.length) throw new IndexError("list index out of range");
+        text += this.maskValue[i] ? "*" : " ";
+      }
       text += "\n";
     }
     return text;

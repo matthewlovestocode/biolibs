@@ -10,6 +10,7 @@ from Bio.Align import CodonAligner
 from Bio.Data import CodonTable
 from Bio.Seq import Seq, MutableSeq, translate
 from Bio.SeqRecord import SeqRecord
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "align", "test", "golden", "codonaligner.json")
 rnd = random.Random(31)
@@ -55,31 +56,14 @@ def run(case):
         out["exc"] = {"type": tname(e), "msg": emsg(e)}
     return out
 
-def run_isolated(case):
-    """Run a case in a forked child: the C core can crash the interpreter on degenerate input (empty sequences), and one such case must not lose the rest."""
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(run(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, st = os.waitpid(pid, 0)
-    return json.loads(b"".join(chunks)) if st == 0 and chunks else None
 
-crashed = []
+unrunnable, undefined = [], []
 def add(c):
-    res = run_isolated(c)
-    if res is None: crashed.append(c); return
+    res = run_isolated(run, c)
+    if res is None: unrunnable.append(c); return          # the child died every time; `isolate` has named it
     r = res.get("result")
     # In rare cases Biopython's path generator keeps producing (undefined) paths beyond the number it counted: leave those out.
-    if c["kind"] == "align" and isinstance(r, dict) and r["n"] < 60 and len(r["paths"]) != r["n"]: crashed.append(c); return
+    if c["kind"] == "align" and isinstance(r, dict) and r["n"] < 60 and len(r["paths"]) != r["n"]: undefined.append(c); return
     cases.append(dict(c, **res))
 
 AA = "ACDEFGHIKLMNPQRSTVWY"
@@ -135,5 +119,6 @@ for g in ("match", "mismatch", "frameshift_one_score", "frameshift_two_score", "
     add({"kind": "get", "names": [g]})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
+report_skipped()
 json.dump(cases, open(OUT, "w"), indent=0)
-print(len(cases), "cases;", len(crashed), "crashed Python and were left out")
+print(len(cases), "cases;", len(unrunnable), "crashed Python and", len(undefined), "returned undefined paths; both were left out")

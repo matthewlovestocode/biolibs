@@ -1,6 +1,6 @@
 # @biolibs/motifs
 
-A TypeScript port of `Bio.motifs`: motifs made from aligned instances or counts, position matrices (counts, weights, log-odds scores), scanning sequences, score distributions and thresholds, and the formats JASPAR (`pfm`, `sites`, `jaspar`), TRANSFAC, Cluster-Buster, AlignACE, MEME (XML and minimal text), MAST, XMS and `pfm-four-columns`/`pfm-four-rows`. Verified against Biopython 1.88 on 3,059 cases (`packages/motifs/test/golden/motifs.json`, built by `reference/golden/gen_motif_cases.py`).
+A TypeScript port of `Bio.motifs`: motifs made from aligned instances or counts, position matrices (counts, weights, log-odds scores), scanning sequences, score distributions and thresholds, and the formats JASPAR (`pfm`, `sites`, `jaspar`), TRANSFAC, Cluster-Buster, AlignACE, MEME (XML and minimal text), MAST, XMS and `pfm-four-columns`/`pfm-four-rows`. Verified against Biopython 1.88 on 3,154 cases (`packages/motifs/test/golden/motifs.json`, built by `reference/golden/gen_motif_cases.py`).
 
 ```ts
 import { Seq } from "@biolibs/seq";
@@ -32,7 +32,8 @@ Details kept as in Biopython, including the unexpected ones:
 
 - A weight matrix stores its rows as Python tuples, which shows in index error messages (`tuple index out of range`). `sum()` of floats uses compensated summation in Python 3.12+, so totals are computed with `pySum`.
 - `calculate` returns a single number (not an array) when there is exactly one window, so `search` over a sequence exactly as long as the motif raises NumPy's `nonzero` error, as Biopython does. Scores are single precision. `search` orders hits with NumPy's `argsort`, which is not stable; `argsortQuick` reproduces its quicksort so equal positions on the two strands come out in the same order.
-- Assignments that fail leave their partial effect: a bad `pseudocounts` dictionary leaves the pseudocounts *empty*, and a bad `mask` string keeps the characters before the bad one.
+- Assignments that fail leave their partial effect: a bad `pseudocounts` dictionary leaves the pseudocounts *empty*, and a bad `mask` string keeps the characters before the bad one. The mask is then shorter than the motif, so `toString(true)` throws `IndexError("list index out of range")` rather than padding — Biopython indexes the mask position by position. Assigning a valid mask recovers.
+- The matrices are `dict` subclasses in Biopython, so `equals` compares the stored rows and nothing else: the alphabet plays no part, and a plain `Map` of the same rows is equal. The row container counts, because `[1.0] == (1.0,)` is false in Python — a weight matrix stores tuples where every other matrix stores lists, so `pwm.equals(counts)` is false however close the numbers, and so is comparing a weight matrix with a `Map`. `lt`, `le`, `gt` and `ge` always throw `TypeError`, naming both operands as Python does, since `dict` has no ordering.
 - `calculateConsensus` keeps the previous position's letter when a position has no counts (Python's variable survives the loop).
 - `ScoreDistribution` fails with `ValueError` for matrices that contain `-Infinity` scores (zero probabilities), because Python converts `nan` to `int`.
 - A TRANSFAC `VV` line is stored as the record's version *and* as an annotation; a line with only a key reuses the previous value; reading stops matrices at the first non-numeric line and processes that line as an ordinary field.

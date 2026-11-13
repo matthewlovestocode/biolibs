@@ -58,6 +58,43 @@ function buildMatrix(spec: any): M.GenericPositionMatrix {
 }
 const bgOf = (b: any): Map<string, number> | null => (b === null ? null : new Map(b));
 
+/**
+ * The right-hand operand of a comparison, matching the generator's `operand`. A plain `Map` stands for Python's dict
+ * of lists, which is why a weight matrix (tuple rows there) is never equal to one.
+ */
+function cmpOperand(spec: any, what: string, left: M.GenericPositionMatrix): unknown {
+  switch (what) {
+    case "same": return left;
+    case "copy": case "other": return buildMatrix(spec);
+    case "generic": return new M.GenericPositionMatrix(spec.alphabet, new Map<string, number[]>(spec.rows.map(([k, v]: [string, any[]]) => [k, v.map(dec)])));
+    case "dict_list": return new Map<string, number[]>(spec.rows.map(([k, v]: [string, any[]]) => [k, v.map(dec)]));
+    case "str": return "x";
+    case "int": return 3;
+    case "none": return null;
+    case "list": return [1, 2];
+  }
+  throw new Error(what);
+}
+
+/** `==` and the ordering operators, which `dict` refuses. */
+function runMatrixcmp(c: Case): Record<string, any> {
+  let m: M.GenericPositionMatrix;
+  try { m = buildMatrix(c.matrix ?? c["left"]); } catch (e) { return { exc: err(e) }; }
+  const ops_out = c.ops.map(([k, what]: [string, string]) => attempt(() => {
+    const spec = ["same", "copy", "generic", "dict_list"].includes(what) ? c["left"] : c["right"];
+    const o = cmpOperand(spec, what, m);
+    switch (k) {
+      case "eq": return m.equals(o);
+      case "lt": return m.lt(o);
+      case "le": return m.le(o);
+      case "gt": return m.gt(o);
+      case "ge": return m.ge(o);
+    }
+    throw new Error(k);
+  }));
+  return { ops_out };
+}
+
 function runMatrix(c: Case): Record<string, any> {
   let m: any;
   try { m = buildMatrix(c.matrix); } catch (e) { return { exc: err(e) }; }
@@ -209,7 +246,7 @@ describe("Bio.motifs: parity with Biopython", () => {
     const bad: string[] = [];
     for (const c of cases) {
       if (c.kind === "split_id") { if (!same(c.result, M.jaspar.splitJasparId(c.id!))) bad.push(`split_id ${c.id}`); continue; }
-      const cap = captureWarnings(() => (c.kind === "matrix" ? runMatrix(c) : c.kind === "motif" ? runMotif(c) : runIo(c)));
+      const cap = captureWarnings(() => (c.kind === "matrix" ? runMatrix(c) : c.kind === "matrixcmp" ? runMatrixcmp(c) : c.kind === "motif" ? runMotif(c) : runIo(c)));
       if (cap.error !== undefined) { bad.push(`${c.kind}: threw ${(cap.error as Error).message}`); continue; }
       const got = cap.result as Record<string, any>;
       let why = "";
@@ -223,7 +260,7 @@ describe("Bio.motifs: parity with Biopython", () => {
       } else {
         if (c.exc || got["exc"]) why = excOk(c.exc, got["exc"]) ? "" : `ctor: want ${JSON.stringify(c.exc)} got ${JSON.stringify(got["exc"])}`;
         else {
-          if (!same(c.kind === "matrix" ? c.matrix_enc : c.motif, c.kind === "matrix" ? got["matrix_enc"] : got["motif"])) why = "built object differs";
+          if (c.kind !== "matrixcmp" && !same(c.kind === "matrix" ? c.matrix_enc : c.motif, c.kind === "matrix" ? got["matrix_enc"] : got["motif"])) why = "built object differs";
           for (let i = 0; i < c.ops.length && !why; i++) if (!outOk(c.ops_out[i]!, got["ops_out"][i])) why = `op ${JSON.stringify(c.ops[i]).slice(0, 120)}: want ${JSON.stringify(c.ops_out[i]).slice(0, 400)} got ${JSON.stringify(got["ops_out"][i]).slice(0, 400)}`;
         }
       }

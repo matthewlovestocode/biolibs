@@ -3,14 +3,14 @@
 
 ### Bio.PDB.StructureBuilder.StructureBuilder
 
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
 - [-] `__hash__(self, /)`
 - [x] `__init__(self)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
-- [ ] `__repr__(self, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
 - [-] `__str__(self, /)`
 - [x] `get_structure(self)`
 - [x] `init_atom(self, name: str, coord: numpy.ndarray, b_factor: float | None, occupancy: float | None, altloc: str, fullname: str, serial_number=None, element: str | None = None, pqr_charge: float | None = None, radius: float | None = None, is_pqr: bool = False)`

@@ -19,6 +19,7 @@ def emsg(e):
 
 # ---- encoding of trees and results ----
 import math
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 def fx(x):
     """JSON cannot hold inf or nan: they become {"f": "inf"}."""
     if isinstance(x, float) and not math.isfinite(x): return {"f": repr(x)}
@@ -159,25 +160,9 @@ def run_io(case):
     except Exception as e:
         return {"exc": {"type": tname(e), "msg": emsg(e)}}
 
-def run_isolated(case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps((run_ops if case["kind"] == "ops" else run_io)(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, st = os.waitpid(pid, 0)
-    return json.loads(b"".join(chunks)) if st == 0 and chunks else None
 
 def add(c):
-    res = run_isolated(c)
+    res = run_isolated(lambda k: (run_ops if k["kind"] == "ops" else run_io)(k), c)
     if res is not None: cases.append(dict(c, **res))
 
 # ---- tree text generation ----
@@ -313,5 +298,6 @@ add({"kind": "io", "op": "parse", "text": "(A,B);", "fmt": "bogus"})
 add({"kind": "io", "op": "read", "text": "(A,B);", "fmt": "bogus"})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
+report_skipped()
 json.dump(cases, open(OUT, "w"), indent=0)
 print(len(cases), "cases")

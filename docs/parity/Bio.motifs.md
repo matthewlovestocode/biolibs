@@ -7,15 +7,15 @@
 
 ### Bio.motifs.Motif
 
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
 - [x] `__getitem__(self, key)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
 - [x] `__init__(self, alphabet='ACGT', alignment=None, counts=None)`
-- [ ] `__le__(self, value, /)`
+- [-] `__le__(self, value, /)`
 - [x] `__len__(self)`
-- [ ] `__lt__(self, value, /)`
+- [-] `__lt__(self, value, /)`
 - [-] `__repr__(self, /)`
 - [x] `__str__(self, masked=False)`
 - [x] `anticonsensus`

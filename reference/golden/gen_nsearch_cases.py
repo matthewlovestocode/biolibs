@@ -12,6 +12,7 @@ NS = importlib.import_module("Bio.PDB.NeighborSearch").NeighborSearch
 from Bio.PDB.Selection import unfold_entities, get_unique_parents, uniqueify
 from pdb_encode import tname, emsg
 from pdb_text import gen_pdb
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "pdb", "test", "golden", "nsearch.json")
 rnd = random.Random(99)
@@ -102,22 +103,6 @@ def run_sel(case):
         out["warnings"] = [str(x.message) for x in w]
     return out
 
-def run_isolated(fn, case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(fn(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    return None if status != 0 or not chunks else json.loads(b"".join(chunks))
 
 def add(fn, c):
     res = run_isolated(fn, c)
@@ -191,5 +176,6 @@ for _ in range(400):
     add(run_sel, {"kind": "sel", "text": text, "fn": fn, "paths": paths, "single": len(paths) == 1 and rnd.random() < 0.5, "level": rnd.choice(["A", "R", "C", "M", "S", "X", "", "a"])})
 add(run_sel, {"kind": "sel", "text": gen_pdb(rnd, False), "fn": "unfold", "paths": [], "single": False, "level": "A"})
 
+report_skipped()
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases ->", OUT)

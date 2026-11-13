@@ -10,6 +10,7 @@ from Bio import Align
 from Bio.Align import Alignment, PairwiseAligner, substitution_matrices as SM
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "align", "test", "golden", "alignment.json")
 rnd = random.Random(11)
@@ -155,43 +156,20 @@ def quiet_crashes():
     exit_ptr = ctypes.cast(libc._exit, ctypes.c_void_p).value
     for sig in (4, 5, 6, 10, 11): libc.signal(sig, exit_ptr)      # SIGILL, SIGTRAP, SIGABRT, SIGBUS, SIGSEGV
 
-def run_isolated(case):
-    """Run a case in a forked child: Biopython can crash the interpreter on a few degenerate keys (a SIGTRAP inside
-    its C helpers), and one such case must not lose the rest. Returns None if the child died."""
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        quiet_crashes()
-        try:
-            data = json.dumps(run(case)).encode()
-            os.write(w, data)
-        finally:
-            os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    if status != 0 or not chunks: return None
-    return json.loads(b"".join(chunks))
 
 crashed = []
 def add(c):
-    res = run_isolated(c)
+    res = run_isolated(run, c)
     if res is None:
         # retry op by op to keep the cases that do not crash
         ops = c["ops"]; kept = []
         for i, op in enumerate(ops):
             single = dict(c, ops=[op])
-            r1 = run_isolated(single)
+            r1 = run_isolated(run, single)
             if r1 is not None: kept.append(op)
             else: crashed.append(op)
         c = dict(c, ops=kept)
-        res = run_isolated(c)
+        res = run_isolated(run, c)
         if res is None: return
     # A zero-width selection of three or more rows makes Biopython's printed-alignment parser read uninitialised
     # memory (its coordinate array comes back empty); that behaviour is undefined, so those operations are not recorded.
@@ -434,5 +412,6 @@ for _ in range(200):
     n = rnd.choice([1, 2, 3, 4]); w = rnd.randint(0, 12)
     lines = ["".join(rnd.choice("ACGT--" if rnd.random() < .7 else "ACGT") for _ in range(w)) for _ in range(n)]
     add({"kind": "alignment", "sequences": ["A"], "coordinates": None, "printed": [l for l in lines], "ops": [["parse_printed", lines]]})
+report_skipped()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(len(crashed), "crashing ops dropped;", len(cases), "cases,", sum("exc" in c for c in cases), "raise ->", os.path.relpath(OUT))

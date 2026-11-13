@@ -47,26 +47,26 @@
 
 ### Bio.PDB.Polypeptide.CaPPBuilder
 
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
 - [x] `__init__(self, radius=4.3)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
 - [-] `__repr__(self, /)`
-- [ ] `__str__(self, /)`
+- [-] `__str__(self, /)`
 - [x] `build_peptides(self, entity, aa_only=1)`
 
 ### Bio.PDB.Polypeptide.PPBuilder
 
-- [ ] `__eq__(self, value, /)`
-- [ ] `__ge__(self, value, /)`
-- [ ] `__gt__(self, value, /)`
-- [ ] `__hash__(self, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
 - [x] `__init__(self, radius=1.8)`
-- [ ] `__le__(self, value, /)`
-- [ ] `__lt__(self, value, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
 - [-] `__repr__(self, /)`
-- [ ] `__str__(self, /)`
+- [-] `__str__(self, /)`
 - [x] `build_peptides(self, entity, aa_only=1)`

@@ -9,6 +9,7 @@ import numpy as np
 from Bio.PDB import PDBParser
 from pdb_encode import tname, emsg
 from pdb_text import gen_pdb
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "pdb", "test", "golden", "pdbops.json")
 rnd = random.Random(66)
@@ -104,22 +105,6 @@ def run(case):
     out["warnings"] = [str(x.message) for x in w]
     return out
 
-def run_isolated(case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(run(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    return None if status != 0 or not chunks else json.loads(b"".join(chunks))
 
 def all_paths(s):
     """Every path in child_list order, wrappers included."""
@@ -210,9 +195,10 @@ for _ in range(1400):
             s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(text))
     except Exception: continue
     c = {"text": text, "ops": gen_ops(s)}
-    res = run_isolated(c)
+    res = run_isolated(run, c)
     if res is None: continue
     c.update(res); cases.append(c)
 
+report_skipped()
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases ->", OUT)

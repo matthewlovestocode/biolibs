@@ -15,7 +15,9 @@ mark = lambda k: {"done": "[x]", "partial": "[~]", "na": "[-]"}.get(status.get(k
 L = ["# Biopython parity checklist", "",
      f"Generated from Biopython {inv['version']} by `reference/gen_checklist.py`. "
      "`[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). "
-     "Edit `reference/status.json`, then re-run the script.", ""]
+     "Comparison, hash and string members that no class but `object` defines are marked `[-]` automatically, "
+     "from `inventory.py`'s reading of Biopython; a golden case that pins such a member down wins over that and "
+     "makes it `[x]`. Edit `reference/status.json`, then re-run the script.", ""]
 tot = [0, 0]
 def item(key, text):
     tot[0] += status.get(key) != "na"; tot[1] += status.get(key) == "done"

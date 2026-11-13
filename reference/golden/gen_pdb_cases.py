@@ -14,6 +14,7 @@ rnd = random.Random(21)
 cases = []
 
 from pdb_encode import tname, emsg, num, arr, enc_atom, enc_child_atom, enc_res, enc_child_res, enc_structure
+from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 def run(case):
     out = {}
@@ -76,27 +77,11 @@ def run_ops(case):
     out["warnings"] = [str(x.message) for x in w]
     return out
 
-def run_isolated(case):
-    r, w = os.pipe()
-    pid = os.fork()
-    if pid == 0:
-        os.close(r)
-        try: os.write(w, json.dumps(run(case)).encode())
-        finally: os._exit(0)
-    os.close(w)
-    chunks = []
-    while True:
-        b = os.read(r, 1 << 20)
-        if not b: break
-        chunks.append(b)
-    os.close(r)
-    _, status = os.waitpid(pid, 0)
-    return None if status != 0 or not chunks else json.loads(b"".join(chunks))
 
 def add(c):
     if c["kind"] == "ops":
         c.update(run_ops(c)); cases.append(c); return
-    res = run_isolated(c)
+    res = run_isolated(run, c)
     if res is None: return
     c.update(res); cases.append(c)
 
@@ -222,5 +207,6 @@ for t, pqr in base[:220]:
         elif k == "insert": ops.append([k, path, rnd.randint(0, 2), rand_path()])
         else: ops.append([k, path])
     add({"kind": "ops", "text": t, "ops": ops})
+report_skipped()
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(len(cases), "cases,", sum("exc" in c for c in cases), "raise ->", os.path.relpath(OUT))
