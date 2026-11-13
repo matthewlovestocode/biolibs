@@ -470,13 +470,18 @@ for m in ("__repr__", "__hash__"): mark(f"{AG}.{m}", "na")        # repr shows a
 afm = json.load(open(f"{here}/../packages/align/test/golden/alignfmt.json"))
 def _ok(c): return "result" in c
 for c in afm:
-    f = c["fmt"].lower()
+    f = c.get("fmt", "").lower()
     if f not in inv["Bio.Align.formats"]["formats"]: continue
     if c["kind"] in ("parse", "read") and _ok(c): mark(f"Bio.Align.parse:{f}")
     if c["kind"] in ("format", "write") and _ok(c): mark(f"Bio.Align.write:{f}")
+for f in ("emboss", "hhr", "msf", "tabular"): mark(f"Bio.Align.write:{f}", "na")   # Biopython has no writer for these formats
 for fn, kind in (("parse", "parse"), ("read", "read"), ("write", "write")):
     if any(c["kind"] == kind and _ok(c) for c in afm): mark(f"Bio.Align.{fn}")
 if any(c["kind"] == "format" and _ok(c) for c in afm): mark(f"{AG}.format", "partial"); mark(f"{AG}.__format__", "partial")   # fasta, a2m, clustal, phylip so far
+
+if any(c["kind"] == "alninfo" and _ok(c) for c in afm):
+    for m in inv["Bio.Align.AlignInfo"]["classes"]["SummaryInfo"]:
+        mark(f"Bio.Align.AlignInfo.SummaryInfo.{m}", "na" if m in ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__", "__repr__") else "done")
 
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

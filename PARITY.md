@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1700 / 1972 applicable items verified against Biopython.**
+**Progress: 1704 / 1971 applicable items verified against Biopython.**
 
 
 
@@ -740,19 +740,19 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `parse: clustal`
 - [x] `write: clustal`
 - [ ] `parse: emboss`
-- [ ] `write: emboss`
+- [-] `write: emboss`
 - [ ] `parse: exonerate`
 - [ ] `write: exonerate`
 - [x] `parse: fasta`
 - [x] `write: fasta`
 - [ ] `parse: hhr`
-- [ ] `write: hhr`
+- [-] `write: hhr`
 - [ ] `parse: maf`
 - [ ] `write: maf`
 - [ ] `parse: mauve`
 - [ ] `write: mauve`
-- [ ] `parse: msf`
-- [ ] `write: msf`
+- [x] `parse: msf`
+- [-] `write: msf`
 - [ ] `parse: nexus`
 - [ ] `write: nexus`
 - [x] `parse: phylip`
@@ -764,7 +764,23 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `parse: stockholm`
 - [ ] `write: stockholm`
 - [ ] `parse: tabular`
-- [ ] `write: tabular`
+- [-] `write: tabular`
+
+## Bio.Align.AlignInfo
+
+
+### Bio.Align.AlignInfo.SummaryInfo
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, alignment)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [x] `__str__(self, /)`
+- [x] `get_column(self, col)`
 
 ## Bio.Align.AlignmentCounts
 

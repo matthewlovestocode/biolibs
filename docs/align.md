@@ -113,7 +113,7 @@ alignments.get(-1).coordinates;    // [[1, 2, 3, 5], [0, 1, 1, 3]]
 
 ### Alignment file formats (`formats/`)
 
-`parse`, `read` and `write` work over text instead of file handles, and `Alignment.format(fmt)` returns file text. Ported and verified against Biopython on about 140 cases (valid files, malformed files, odd identifiers, long alignments): `fasta`, `a2m`, `clustal` and `phylip`. The other 16 formats of Biopython's table (`bed`, `bigbed`, `bigmaf`, `bigpsl`, `chain`, `emboss`, `exonerate`, `hhr`, `maf`, `mauve`, `msf`, `nexus`, `psl`, `sam`, `stockholm`, `tabular`) throw `NotImplementedError` when used; the error for an unknown name, a binary format written to text (`StreamModeError`) and a format without a writer (`ValueError`) match Biopython's.
+`parse`, `read` and `write` work over text instead of file handles, and `Alignment.format(fmt)` returns file text. Ported and verified against Biopython on about 140 cases (valid files, malformed files, odd identifiers, long alignments): `fasta`, `a2m`, `clustal` and `phylip` (read and write) and `msf` (read only, as in Biopython). The other 15 formats of Biopython's table (`bed`, `bigbed`, `bigmaf`, `bigpsl`, `chain`, `emboss`, `exonerate`, `hhr`, `maf`, `mauve`, `nexus`, `psl`, `sam`, `stockholm`, `tabular`) throw `NotImplementedError` when used; the error for an unknown name, a binary format written to text (`StreamModeError`) and a format without a writer (`ValueError`) match Biopython's.
 
 | Python | TypeScript |
 |---|---|
@@ -124,3 +124,7 @@ alignments.get(-1).coordinates;    // [[1, 2, 3, 5], [0, 1, 1, 3]]
 | `Align.formats` | `FORMATS` |
 
 `AlignmentWriter` in this package is the older function type used by `MultipleSeqAlignment`; the base class of the file writers is exported as `AlignmentFileWriter`.
+
+### AlignInfo
+
+`SummaryInfo(msa)` (deprecated in Biopython) emits a `BiopythonDeprecationWarning` with the same text; `getColumn(col)` returns that column of a `MultipleSeqAlignment` as text; `icVector` is always empty.

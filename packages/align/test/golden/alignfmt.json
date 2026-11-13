@@ -32,11 +32,24 @@
 "seqs": [
 "ACGT",
 "ACGGT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"desc",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ],
 "metadata": null
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -71,10 +84,23 @@
 "seqs": [
 "ACGT",
 "ACGGT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"desc",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -84,7 +110,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Empty file."
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -94,7 +121,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Empty file."
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -117,11 +145,21 @@
 ],
 "seqs": [
 ""
+],
+"names": [
+"<unknown name>"
+],
+"descs": [
+""
+],
+"weights": [
+null
 ]
 }
 ],
 "metadata": null
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -144,10 +182,20 @@
 ],
 "seqs": [
 ""
+],
+"names": [
+"<unknown name>"
+],
+"descs": [
+""
+],
+"weights": [
+null
 ]
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -157,7 +205,8 @@
 "exc": {
 "type": "IndexError",
 "msg": "list index out of range"
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -167,7 +216,8 @@
 "exc": {
 "type": "IndexError",
 "msg": "list index out of range"
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -198,11 +248,24 @@
 "seqs": [
 "AC",
 "ACG"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ],
 "metadata": null
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -233,10 +296,23 @@
 "seqs": [
 "AC",
 "ACG"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -246,7 +322,8 @@
 "exc": {
 "type": "AssertionError",
 "msg": ""
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -256,7 +333,8 @@
 "exc": {
 "type": "AssertionError",
 "msg": ""
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -266,7 +344,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Empty file."
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -276,7 +355,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Empty file."
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -307,6 +387,18 @@
 "seqs": [
 "AC",
 "ACG"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ],
 "colann": {
 "state": "DD"
@@ -314,7 +406,8 @@
 }
 ],
 "metadata": null
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -346,12 +439,25 @@
 "AC",
 "ACG"
 ],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
+],
 "colann": {
 "state": "DD"
 }
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -390,6 +496,18 @@
 "seqs": [
 "ACGTACGTAA",
 "ACGTTACTAA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ],
 "colann": {
 "clustal_consensus": "**** ** ***"
@@ -400,7 +518,8 @@
 "Program": "CLUSTAL",
 "Version": "1.83"
 }
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -440,12 +559,25 @@
 "ACGTACGTAA",
 "ACGTTACTAA"
 ],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
+],
 "colann": {
 "clustal_consensus": "**** ** ***"
 }
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -484,6 +616,18 @@
 "seqs": [
 "ACGTACGT",
 "ACGTTACT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ],
@@ -491,7 +635,8 @@
 "Program": "CLUSTAL",
 "Version": "2.1"
 }
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -530,10 +675,23 @@
 "seqs": [
 "ACGTACGT",
 "ACGTTACT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -543,7 +701,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Could not parse line, incorrect sequence count:\nalpha         ACGT-ACGT 9\n"
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -553,7 +712,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Could not parse line, incorrect sequence count:\nalpha         ACGT-ACGT 9\n"
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -563,7 +723,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Empty file."
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -573,7 +734,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Empty file."
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -583,7 +745,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "FOO is not known to generate CLUSTAL files: CLUSTAL, PROBCONS, MUSCLE, MSAPROBS, Kalign, Biopython"
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -593,7 +756,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "FOO is not known to generate CLUSTAL files: CLUSTAL, PROBCONS, MUSCLE, MSAPROBS, Kalign, Biopython"
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -624,6 +788,18 @@
 "seqs": [
 "ACGT",
 "ACGT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ],
@@ -631,7 +807,8 @@
 "Program": "MUSCLE",
 "Version": "3.8"
 }
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -662,10 +839,23 @@
 "seqs": [
 "ACGT",
 "ACGT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -696,11 +886,24 @@
 "seqs": [
 "ACGTACGTACGT",
 "ACGAACGAACGT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ],
 "metadata": null
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -731,10 +934,23 @@
 "seqs": [
 "ACGTACGTACGT",
 "ACGAACGAACGT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -765,11 +981,24 @@
 "seqs": [
 "ACGTACGT",
 "TTTTTTTT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ],
 "metadata": null
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -800,10 +1029,23 @@
 "seqs": [
 "ACGTACGT",
 "TTTTTTTT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -838,11 +1080,24 @@
 "seqs": [
 "ACGTAC",
 "ACGAC"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ],
 "metadata": null
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -877,10 +1132,23 @@
 "seqs": [
 "ACGTAC",
 "ACGAC"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ]
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -890,7 +1158,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Empty file."
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -900,7 +1169,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Empty file."
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -910,7 +1180,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Expected two integers in the first line, received 'x y\n'"
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -920,7 +1191,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Expected two integers in the first line, received 'x y\n'"
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -930,7 +1202,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "PHYLIP format no longer allows dots in sequence"
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -940,7 +1213,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "PHYLIP format no longer allows dots in sequence"
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -950,7 +1224,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Expected all sequences to have length 4; found 0"
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -960,7 +1235,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Expected all sequences to have length 4; found 0"
-}
+},
+"wtext": []
 },
 {
 "kind": "parse",
@@ -995,11 +1271,24 @@
 "seqs": [
 "ACGT",
 "ACGGT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"desc",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ],
 "metadata": null
-}
+},
+"wtext": []
 },
 {
 "kind": "read",
@@ -1034,10 +1323,1159 @@
 "seqs": [
 "ACGT",
 "ACGGT"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"desc",
+""
+],
+"weights": [
+null,
+null
 ]
 }
 ]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
 }
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF\nseqB        ACD.F\n\nseqA        GHIKL\nseqB        GHI~~\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF\nseqB        ACD.F\n\nseqA        GHIKL\nseqB        GHI~~\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "PileUp\n\n\n\n   MSF:   4  Type: N    Check:     0   ..\n\n Name: a oo  Len:  4  Check: 1  Weight: 1.0\n Name: b oo  Len: 4  Check: 2  Weight: 1.0\n\n//\n\na ACGT\nb AC-T\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "End of file where expecting sequence data."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "PileUp\n\n\n\n   MSF:   4  Type: N    Check:     0   ..\n\n Name: a oo  Len:  4  Check: 1  Weight: 1.0\n Name: b oo  Len: 4  Check: 2  Weight: 1.0\n\n//\n\na ACGT\nb AC-T\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "End of file where expecting sequence data."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "FOO\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "FOO is not a known GCG MSF header: !!NA_MULTIPLE_ALIGNMENT, !!AA_MULTIPLE_ALIGNMENT, PileUp"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "FOO\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "FOO is not a known GCG MSF header: !!NA_MULTIPLE_ALIGNMENT, !!AA_MULTIPLE_ALIGNMENT, PileUp"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "PileUp\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Reached end of file without MSF/Type/Check header line"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "PileUp\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Reached end of file without MSF/Type/Check header line"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "PileUp\n MSF: x Type: P Check: 1 ..\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "GCG MSF header line should have MSF: <int> for column count, not 'x'"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "PileUp\n MSF: x Type: P Check: 1 ..\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "GCG MSF header line should have MSF: <int> for column count, not 'x'"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 12  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [
+"BiopythonParserWarning"
+],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+],
+"metadata": null
+},
+"wtext": [
+"GCG MSF headers said alignment length 12, but found 10"
+]
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 12  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [
+"BiopythonParserWarning"
+],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+]
+},
+"wtext": [
+"GCG MSF headers said alignment length 12, but found 10"
+]
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 7  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [
+"BiopythonParserWarning"
+],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+],
+"metadata": null
+},
+"wtext": [
+"GCG MSF headers said alignment length 7, but found 10"
+]
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 7  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [
+"BiopythonParserWarning"
+],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+]
+},
+"wtext": [
+"GCG MSF headers said alignment length 7, but found 10"
+]
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:   6  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        AC--F GHI--\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"AC--FGHI--"
+],
+"coords": [
+[
+0,
+2,
+4,
+8,
+10
+],
+[
+0,
+2,
+2,
+6,
+6
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:   6  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        AC--F GHI--\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"AC--FGHI--"
+],
+"coords": [
+[
+0,
+2,
+4,
+8,
+10
+],
+[
+0,
+2,
+2,
+6,
+6
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: X 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "GCG MSF header line should have 'Type: P' (protein) or 'Type: N' (nucleotide), not 'Type: X'"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: X 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "GCG MSF header line should have 'Type: P' (protein) or 'Type: N' (nucleotide), not 'Type: X'"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Typo: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "GCG MSF header line should be '<optional text> MSF: <int> Type: <letter> <optional date> Check: <int> ..',  not: '  stdout MSF: 10  Typo: P 01/08/19 Check: 8543 ..'"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Typo: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "GCG MSF header line should be '<optional text> MSF: <int> Type: <letter> <optional date> Check: <int> ..',  not: '  stdout MSF: 10  Typo: P 01/08/19 Check: 8543 ..'"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqA     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Duplicated ID of 'seqA'"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqA     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Duplicated ID of 'seqA'"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA oo Len: 10 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Malformed GCG MSF name line: 'Name: seqA oo Len: 10 Weight: 1.00'"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA oo Len: 10 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Malformed GCG MSF name line: 'Name: seqA oo Len: 10 Weight: 1.00'"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n/\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "End of file while looking for end of header // line."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n/\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "End of file while looking for end of header // line."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "After // line, expected blank line before sequences."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "After // line, expected blank line before sequences."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\nx\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "After // line, expected blank line before sequences."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\nx\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "After // line, expected blank line before sequences."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~ACGT\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Received longer sequence than expected for seqB"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~ACGT\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Received longer sequence than expected for seqB"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nzzz ACD.F\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unexpected line 'zzz ACD.F\n' in input"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nzzz ACD.F\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unexpected line 'zzz ACD.F\n' in input"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "End of file where expecting sequence data."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "End of file where expecting sequence data."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\ntrailing\n",
+"warnings": [],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\ntrailing\n",
+"warnings": [],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seqA",
+"seqB"
+],
+"rows": [
+"ACDEFGHIKL",
+"ACD-FGHI--"
+],
+"coords": [
+[
+0,
+3,
+4,
+8,
+10
+],
+[
+0,
+3,
+3,
+7,
+7
+]
+],
+"seqs": [
+"ACDEFGHIKL",
+"ACDFGHI"
+],
+"names": [
+"seqA",
+"seqB"
+],
+"descs": [
+"seqA",
+"seqB"
+],
+"weights": [
+1.0,
+0.5
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "msf",
+"text": "!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n!!AA_MULTIPLE_ALIGNMENT 1.0\n\n  stdout MSF: 10  Type: P 01/08/19 Check: 8543 ..\n\n  Name: seqA     oo  Len:  10  Check: 4334 Weight: 1.00\n  Name: seqB     oo  Len:  10  Check: 3818 Weight: 0.50\n\n//\n\n            1                                                   10\nseqA        ACDEF GHIKL\nseqB        ACD.F GHI~~\n\n",
+"warnings": [],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "msf",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC",
+"AC"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the msf format"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "msf",
+"alns": [],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the msf format"
+},
+"wtext": []
+},
+{
+"kind": "alninfo",
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"ACGT",
+"AC-T",
+"TTTT"
+],
+"cols": [
+0,
+1,
+3,
+4,
+-1,
+-5
+],
+"warnings": [
+"BiopythonDeprecationWarning"
+],
+"result": {
+"ic": [],
+"cols": [
+{
+"v": "AAT"
+},
+{
+"v": "CCT"
+},
+{
+"v": "TTT"
+},
+{
+"exc": [
+"IndexError",
+"index out of range"
+]
+},
+{
+"v": "TTT"
+},
+{
+"exc": [
+"IndexError",
+"index out of range"
+]
+}
+]
+},
+"wmsg": [
+"The class SummaryInfo has been deprecated. Instead of\n\n>>> align_info = AlignInfo.SummaryInfo(msa)\n>>> sequence = align_info.get_column(1)\n\nplease use\n\n>>> alignment = msa.alignment  # to get a new-style Alignment object\n>>> sequence = alignment[:, 1]\n\nHere, `msa` is a MultipleSeqAlignment object and `alignment` is an\n`Alignment` object."
+],
+"wtext": []
+},
+{
+"kind": "alninfo",
+"ids": [
+"a"
+],
+"rows": [
+"AC"
+],
+"cols": [
+1
+],
+"warnings": [
+"BiopythonDeprecationWarning"
+],
+"result": {
+"ic": [],
+"cols": [
+{
+"v": "C"
+}
+]
+},
+"wmsg": [
+"The class SummaryInfo has been deprecated. Instead of\n\n>>> align_info = AlignInfo.SummaryInfo(msa)\n>>> sequence = align_info.get_column(1)\n\nplease use\n\n>>> alignment = msa.alignment  # to get a new-style Alignment object\n>>> sequence = alignment[:, 1]\n\nHere, `msa` is a MultipleSeqAlignment object and `alignment` is an\n`Alignment` object."
+],
+"wtext": []
 },
 {
 "kind": "parse",
@@ -1047,7 +2485,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1063,7 +2502,8 @@
 ]
 },
 "warnings": [],
-"result": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n"
+"result": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1084,7 +2524,8 @@
 "result": {
 "text": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1100,7 +2541,8 @@
 ]
 },
 "warnings": [],
-"result": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n"
+"result": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1121,7 +2563,8 @@
 "result": {
 "text": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1139,7 +2582,8 @@
 ]
 },
 "warnings": [],
-"result": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n"
+"result": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1162,7 +2606,8 @@
 "result": {
 "text": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1182,7 +2627,8 @@
 }
 },
 "warnings": [],
-"result": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n"
+"result": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1207,7 +2653,8 @@
 "result": {
 "text": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1223,7 +2670,8 @@
 ]
 },
 "warnings": [],
-"result": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n"
+"result": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1244,7 +2692,8 @@
 "result": {
 "text": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1275,7 +2724,8 @@
 "result": {
 "text": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n>first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
 "n": 2
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1285,7 +2735,8 @@
 "result": {
 "text": "",
 "n": 0
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1304,7 +2755,8 @@
 "exc": {
 "type": "TypeError",
 "msg": null
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1325,7 +2777,8 @@
 "exc": {
 "type": "TypeError",
 "msg": null
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1344,7 +2797,8 @@
 "exc": {
 "type": "TypeError",
 "msg": null
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1365,7 +2819,8 @@
 "exc": {
 "type": "TypeError",
 "msg": null
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1386,7 +2841,8 @@
 "exc": {
 "type": "TypeError",
 "msg": null
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1409,7 +2865,8 @@
 "exc": {
 "type": "TypeError",
 "msg": null
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1429,7 +2886,8 @@
 }
 },
 "warnings": [],
-"result": ">a <unknown description>\n\n>b <unknown description>\n\n"
+"result": ">a <unknown description>\n\n>b <unknown description>\n\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1454,7 +2912,8 @@
 "result": {
 "text": ">a <unknown description>\n\n>b <unknown description>\n\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1473,7 +2932,8 @@
 "exc": {
 "type": "TypeError",
 "msg": null
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1494,7 +2954,8 @@
 "exc": {
 "type": "TypeError",
 "msg": null
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1525,7 +2986,8 @@
 "exc": {
 "type": "TypeError",
 "msg": null
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1535,7 +2997,8 @@
 "result": {
 "text": "",
 "n": 0
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1551,7 +3014,8 @@
 ]
 },
 "warnings": [],
-"result": "a                                   AC-GT\nb                                   ACGGT\n\n\n"
+"result": "a                                   AC-GT\nb                                   ACGGT\n\n\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1572,7 +3036,8 @@
 "result": {
 "text": "Biopython 1.88 multiple sequence alignment\n\n\na                                   AC-GT\nb                                   ACGGT\n\n\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1588,7 +3053,8 @@
 ]
 },
 "warnings": [],
-"result": "first_name_with_spaces              ACGTACGTAC\nb                                   AC--ACGTAC\n\n\n"
+"result": "first_name_with_spaces              ACGTACGTAC\nb                                   AC--ACGTAC\n\n\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1609,7 +3075,8 @@
 "result": {
 "text": "Biopython 1.88 multiple sequence alignment\n\n\nfirst_name_with_spaces              ACGTACGTAC\nb                                   AC--ACGTAC\n\n\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1627,7 +3094,8 @@
 ]
 },
 "warnings": [],
-"result": "a                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nc                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\na                                   AAAAAAAAAAC-\nb                                   AAAAAAAAAACG\nc                                   AAAAAAAAAAC-\n\n\n"
+"result": "a                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nc                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\na                                   AAAAAAAAAAC-\nb                                   AAAAAAAAAACG\nc                                   AAAAAAAAAAC-\n\n\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1650,7 +3118,8 @@
 "result": {
 "text": "Biopython 1.88 multiple sequence alignment\n\n\na                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nc                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\na                                   AAAAAAAAAAC-\nb                                   AAAAAAAAAACG\nc                                   AAAAAAAAAAC-\n\n\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1670,7 +3139,8 @@
 }
 },
 "warnings": [],
-"result": "a                                   ACGT\nb                                   A-GT\n                                    * **\n\n\n"
+"result": "a                                   ACGT\nb                                   A-GT\n                                    * **\n\n\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1695,7 +3165,8 @@
 "result": {
 "text": "Biopython 1.88 multiple sequence alignment\n\n\na                                   ACGT\nb                                   A-GT\n                                    * **\n\n\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1711,7 +3182,8 @@
 ]
 },
 "warnings": [],
-"result": "a:b;(c)                             ACGT\n[d],e                               ACGT\n\n\n"
+"result": "a:b;(c)                             ACGT\n[d],e                               ACGT\n\n\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1732,7 +3204,8 @@
 "result": {
 "text": "Biopython 1.88 multiple sequence alignment\n\n\na:b;(c)                             ACGT\n[d],e                               ACGT\n\n\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1763,7 +3236,8 @@
 "result": {
 "text": "Biopython 1.88 multiple sequence alignment\n\n\na                                   AC-GT\nb                                   ACGGT\n\n\nfirst_name_with_spaces              ACGTACGTAC\nb                                   AC--ACGTAC\n\n\n",
 "n": 2
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -1773,7 +3247,8 @@
 "result": {
 "text": "Biopython 1.88 multiple sequence alignment\n\n\n",
 "n": 0
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1789,7 +3264,8 @@
 ]
 },
 "warnings": [],
-"result": "2 5\na         AC-GT\nb         ACGGT\n"
+"result": "2 5\na         AC-GT\nb         ACGGT\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1810,7 +3286,8 @@
 "result": {
 "text": "2 5\na         AC-GT\nb         ACGGT\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1826,7 +3303,8 @@
 ]
 },
 "warnings": [],
-"result": "2 10\nfirst nameACGTACGTAC\nb         AC--ACGTAC\n"
+"result": "2 10\nfirst nameACGTACGTAC\nb         AC--ACGTAC\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1847,7 +3325,8 @@
 "result": {
 "text": "2 10\nfirst nameACGTACGTAC\nb         AC--ACGTAC\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1865,7 +3344,8 @@
 ]
 },
 "warnings": [],
-"result": "3 62\na         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\nb         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\nc         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n"
+"result": "3 62\na         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\nb         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\nc         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1888,7 +3368,8 @@
 "result": {
 "text": "3 62\na         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\nb         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\nc         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1908,7 +3389,8 @@
 }
 },
 "warnings": [],
-"result": "2 4\na         ACGT\nb         A-GT\n"
+"result": "2 4\na         ACGT\nb         A-GT\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1933,7 +3415,8 @@
 "result": {
 "text": "2 4\na         ACGT\nb         A-GT\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -1949,7 +3432,8 @@
 ]
 },
 "warnings": [],
-"result": "2 4\na|b|c     ACGT\nde        ACGT\n"
+"result": "2 4\na|b|c     ACGT\nde        ACGT\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -1970,7 +3454,8 @@
 "result": {
 "text": "2 4\na|b|c     ACGT\nde        ACGT\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2001,7 +3486,8 @@
 "result": {
 "text": "2 5\na         AC-GT\nb         ACGGT\n2 10\nfirst nameACGTACGTAC\nb         AC--ACGTAC\n",
 "n": 2
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2011,7 +3497,8 @@
 "result": {
 "text": "",
 "n": 0
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2027,7 +3514,8 @@
 ]
 },
 "warnings": [],
-"result": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n"
+"result": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -2048,7 +3536,8 @@
 "result": {
 "text": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2064,7 +3553,8 @@
 ]
 },
 "warnings": [],
-"result": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n"
+"result": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -2085,7 +3575,8 @@
 "result": {
 "text": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2103,7 +3594,8 @@
 ]
 },
 "warnings": [],
-"result": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n"
+"result": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -2126,7 +3618,8 @@
 "result": {
 "text": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2146,7 +3639,8 @@
 }
 },
 "warnings": [],
-"result": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n"
+"result": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -2171,7 +3665,8 @@
 "result": {
 "text": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2187,7 +3682,8 @@
 ]
 },
 "warnings": [],
-"result": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n"
+"result": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n",
+"wtext": []
 },
 {
 "kind": "write",
@@ -2208,7 +3704,8 @@
 "result": {
 "text": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n",
 "n": 1
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2239,7 +3736,8 @@
 "result": {
 "text": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n>first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
 "n": 2
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2249,7 +3747,8 @@
 "result": {
 "text": "",
 "n": 0
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2268,7 +3767,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "bigbed is a binary file format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2289,7 +3789,8 @@
 "exc": {
 "type": "StreamModeError",
 "msg": "File must be opened in binary mode."
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2308,7 +3809,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "bigbed is a binary file format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2329,7 +3831,8 @@
 "exc": {
 "type": "StreamModeError",
 "msg": "File must be opened in binary mode."
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2350,7 +3853,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "bigbed is a binary file format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2373,7 +3877,8 @@
 "exc": {
 "type": "StreamModeError",
 "msg": "File must be opened in binary mode."
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2396,7 +3901,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "bigbed is a binary file format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2421,7 +3927,8 @@
 "exc": {
 "type": "StreamModeError",
 "msg": "File must be opened in binary mode."
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2440,7 +3947,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "bigbed is a binary file format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2461,7 +3969,8 @@
 "exc": {
 "type": "StreamModeError",
 "msg": "File must be opened in binary mode."
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2492,7 +4001,8 @@
 "exc": {
 "type": "StreamModeError",
 "msg": "File must be opened in binary mode."
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2502,7 +4012,8 @@
 "exc": {
 "type": "StreamModeError",
 "msg": "File must be opened in binary mode."
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2521,7 +4032,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2542,7 +4054,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2561,7 +4074,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2582,7 +4096,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2603,7 +4118,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2626,7 +4142,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2649,7 +4166,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2674,7 +4192,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2693,7 +4212,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2714,7 +4234,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2745,7 +4266,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2755,7 +4277,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unknown file format nosuch"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2774,7 +4297,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Formatting alignments has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2795,7 +4319,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "File writing has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2814,7 +4339,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Formatting alignments has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2835,7 +4361,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "File writing has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2856,7 +4383,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Formatting alignments has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2879,7 +4407,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "File writing has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2902,7 +4431,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Formatting alignments has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2927,7 +4457,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "File writing has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "format",
@@ -2946,7 +4477,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "Formatting alignments has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2967,7 +4499,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "File writing has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -2998,7 +4531,8 @@
 "exc": {
 "type": "ValueError",
 "msg": "File writing has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 },
 {
 "kind": "write",
@@ -3008,6 +4542,7 @@
 "exc": {
 "type": "ValueError",
 "msg": "File writing has not yet been implemented for the emboss format"
-}
+},
+"wtext": []
 }
 ]
