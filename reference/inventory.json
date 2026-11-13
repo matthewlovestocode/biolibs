@@ -833,6 +833,35 @@
    }
   }
  },
+ "Bio.Align.formats": {
+  "functions": {
+   "parse": "(source, fmt)",
+   "read": "(handle, fmt)",
+   "write": "(alignments, target, fmt, *args, **kwargs)"
+  },
+  "formats": [
+   "a2m",
+   "bed",
+   "bigbed",
+   "bigmaf",
+   "bigpsl",
+   "chain",
+   "clustal",
+   "emboss",
+   "exonerate",
+   "fasta",
+   "hhr",
+   "maf",
+   "mauve",
+   "msf",
+   "nexus",
+   "phylip",
+   "psl",
+   "sam",
+   "stockholm",
+   "tabular"
+  ]
+ },
  "Bio.Align.AlignmentCounts": {
   "classes": {
    "AlignmentCounts": {

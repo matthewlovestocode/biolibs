@@ -42,6 +42,11 @@ for f in inv["Bio.SeqIO"]["parse_formats"]: item(f"Bio.SeqIO.parse:{f}", f"parse
 L.extend(["", "### Write formats", ""])
 for f in inv["Bio.SeqIO"]["write_formats"]: item(f"Bio.SeqIO.write:{f}", f"write: {f}")
 section("Bio.Align", "Bio.Align", inv["Bio.Align"])
+L.extend(["", "## Bio.Align file formats", ""])
+for fn, sig in inv["Bio.Align.formats"]["functions"].items(): item(f"Bio.Align.{fn}", f"{fn}{sig}")
+for f in inv["Bio.Align.formats"]["formats"]:
+    item(f"Bio.Align.parse:{f}", f"parse: {f}")
+    item(f"Bio.Align.write:{f}", f"write: {f}")
 section("Bio.Align.AlignmentCounts", "Bio.Align.AlignmentCounts", inv["Bio.Align.AlignmentCounts"])
 section("Bio.Align.Alignment", "Bio.Align.Alignment", inv["Bio.Align.Alignment"])
 section("Bio.Align.PairwiseAligner", "Bio.Align.PairwiseAligner", inv["Bio.Align.PairwiseAligner"])

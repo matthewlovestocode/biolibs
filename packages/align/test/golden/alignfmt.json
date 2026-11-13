@@ -1,0 +1,3013 @@
+[
+{
+"kind": "parse",
+"fmt": "fasta",
+"text": ">a desc\nAC-GT\n>b\nACGGT\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+],
+"coords": [
+[
+0,
+2,
+2,
+4
+],
+[
+0,
+2,
+3,
+5
+]
+],
+"seqs": [
+"ACGT",
+"ACGGT"
+]
+}
+],
+"metadata": null
+}
+},
+{
+"kind": "read",
+"fmt": "fasta",
+"text": ">a desc\nAC-GT\n>b\nACGGT\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+],
+"coords": [
+[
+0,
+2,
+2,
+4
+],
+[
+0,
+2,
+3,
+5
+]
+],
+"seqs": [
+"ACGT",
+"ACGGT"
+]
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "fasta",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+}
+},
+{
+"kind": "read",
+"fmt": "fasta",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+}
+},
+{
+"kind": "parse",
+"fmt": "fasta",
+"text": ">a\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a"
+],
+"rows": [
+""
+],
+"coords": [
+[
+0
+]
+],
+"seqs": [
+""
+]
+}
+],
+"metadata": null
+}
+},
+{
+"kind": "read",
+"fmt": "fasta",
+"text": ">a\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a"
+],
+"rows": [
+""
+],
+"coords": [
+[
+0
+]
+],
+"seqs": [
+""
+]
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "fasta",
+"text": "ACGT\n",
+"warnings": [],
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+{
+"kind": "read",
+"fmt": "fasta",
+"text": "ACGT\n",
+"warnings": [],
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+{
+"kind": "parse",
+"fmt": "fasta",
+"text": ">a\nAC\n>b\nACG\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC",
+"AC"
+],
+"coords": [
+[
+0,
+2
+],
+[
+0,
+2
+]
+],
+"seqs": [
+"AC",
+"ACG"
+]
+}
+],
+"metadata": null
+}
+},
+{
+"kind": "read",
+"fmt": "fasta",
+"text": ">a\nAC\n>b\nACG\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC",
+"AC"
+],
+"coords": [
+[
+0,
+2
+],
+[
+0,
+2
+]
+],
+"seqs": [
+"AC",
+"ACG"
+]
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "a2m",
+"text": ">a\nACgt-A\n>b\nAC-tGA\n",
+"warnings": [],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+{
+"kind": "read",
+"fmt": "a2m",
+"text": ">a\nACgt-A\n>b\nAC-tGA\n",
+"warnings": [],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+{
+"kind": "parse",
+"fmt": "a2m",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+}
+},
+{
+"kind": "read",
+"fmt": "a2m",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+}
+},
+{
+"kind": "parse",
+"fmt": "a2m",
+"text": ">a\nAC\n>b\nACG\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC",
+"AC"
+],
+"coords": [
+[
+0,
+2
+],
+[
+0,
+2
+]
+],
+"seqs": [
+"AC",
+"ACG"
+],
+"colann": {
+"state": "DD"
+}
+}
+],
+"metadata": null
+}
+},
+{
+"kind": "read",
+"fmt": "a2m",
+"text": ">a\nAC\n>b\nACG\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC",
+"AC"
+],
+"coords": [
+[
+0,
+2
+],
+[
+0,
+2
+]
+],
+"seqs": [
+"AC",
+"ACG"
+],
+"colann": {
+"state": "DD"
+}
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "clustal",
+"text": "CLUSTAL W (1.83) multiple sequence alignment\n\n\nalpha         ACGT-ACGT\nbeta          ACGTTAC-T\n              **** ** *\n\nalpha         AA\nbeta          AA\n              **\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"alpha",
+"beta"
+],
+"rows": [
+"ACGT-ACGTAA",
+"ACGTTAC-TAA"
+],
+"coords": [
+[
+0,
+4,
+4,
+6,
+7,
+10
+],
+[
+0,
+4,
+5,
+7,
+7,
+10
+]
+],
+"seqs": [
+"ACGTACGTAA",
+"ACGTTACTAA"
+],
+"colann": {
+"clustal_consensus": "**** ** ***"
+}
+}
+],
+"metadata": {
+"Program": "CLUSTAL",
+"Version": "1.83"
+}
+}
+},
+{
+"kind": "read",
+"fmt": "clustal",
+"text": "CLUSTAL W (1.83) multiple sequence alignment\n\n\nalpha         ACGT-ACGT\nbeta          ACGTTAC-T\n              **** ** *\n\nalpha         AA\nbeta          AA\n              **\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"alpha",
+"beta"
+],
+"rows": [
+"ACGT-ACGTAA",
+"ACGTTAC-TAA"
+],
+"coords": [
+[
+0,
+4,
+4,
+6,
+7,
+10
+],
+[
+0,
+4,
+5,
+7,
+7,
+10
+]
+],
+"seqs": [
+"ACGTACGTAA",
+"ACGTTACTAA"
+],
+"colann": {
+"clustal_consensus": "**** ** ***"
+}
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "clustal",
+"text": "CLUSTAL 2.1 multiple sequence alignment\n\n\nalpha         ACGT-ACGT 8\nbeta          ACGTTAC-T 8\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"alpha",
+"beta"
+],
+"rows": [
+"ACGT-ACGT",
+"ACGTTAC-T"
+],
+"coords": [
+[
+0,
+4,
+4,
+6,
+7,
+8
+],
+[
+0,
+4,
+5,
+7,
+7,
+8
+]
+],
+"seqs": [
+"ACGTACGT",
+"ACGTTACT"
+]
+}
+],
+"metadata": {
+"Program": "CLUSTAL",
+"Version": "2.1"
+}
+}
+},
+{
+"kind": "read",
+"fmt": "clustal",
+"text": "CLUSTAL 2.1 multiple sequence alignment\n\n\nalpha         ACGT-ACGT 8\nbeta          ACGTTAC-T 8\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"alpha",
+"beta"
+],
+"rows": [
+"ACGT-ACGT",
+"ACGTTAC-T"
+],
+"coords": [
+[
+0,
+4,
+4,
+6,
+7,
+8
+],
+[
+0,
+4,
+5,
+7,
+7,
+8
+]
+],
+"seqs": [
+"ACGTACGT",
+"ACGTTACT"
+]
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "clustal",
+"text": "CLUSTAL 2.1 multiple sequence alignment\n\n\nalpha         ACGT-ACGT 9\nbeta          ACGTTAC-T 8\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Could not parse line, incorrect sequence count:\nalpha         ACGT-ACGT 9\n"
+}
+},
+{
+"kind": "read",
+"fmt": "clustal",
+"text": "CLUSTAL 2.1 multiple sequence alignment\n\n\nalpha         ACGT-ACGT 9\nbeta          ACGTTAC-T 8\n\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Could not parse line, incorrect sequence count:\nalpha         ACGT-ACGT 9\n"
+}
+},
+{
+"kind": "parse",
+"fmt": "clustal",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+}
+},
+{
+"kind": "read",
+"fmt": "clustal",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+}
+},
+{
+"kind": "parse",
+"fmt": "clustal",
+"text": "FOO 1.0\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "FOO is not known to generate CLUSTAL files: CLUSTAL, PROBCONS, MUSCLE, MSAPROBS, Kalign, Biopython"
+}
+},
+{
+"kind": "read",
+"fmt": "clustal",
+"text": "FOO 1.0\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "FOO is not known to generate CLUSTAL files: CLUSTAL, PROBCONS, MUSCLE, MSAPROBS, Kalign, Biopython"
+}
+},
+{
+"kind": "parse",
+"fmt": "clustal",
+"text": "MUSCLE (3.8) multiple sequence alignment\n\n\na ACGT\nb ACGT\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"metadata": {
+"Program": "MUSCLE",
+"Version": "3.8"
+}
+}
+},
+{
+"kind": "read",
+"fmt": "clustal",
+"text": "MUSCLE (3.8) multiple sequence alignment\n\n\na ACGT\nb ACGT\n\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGT"
+]
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "phylip",
+"text": " 2 12\nseq1       ACGTAC\nseq2       ACGAAC\n\nGTACGT\nGAACGT\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seq1",
+"seq2"
+],
+"rows": [
+"ACGTACGTACGT",
+"ACGAACGAACGT"
+],
+"coords": [
+[
+0,
+12
+],
+[
+0,
+12
+]
+],
+"seqs": [
+"ACGTACGTACGT",
+"ACGAACGAACGT"
+]
+}
+],
+"metadata": null
+}
+},
+{
+"kind": "read",
+"fmt": "phylip",
+"text": " 2 12\nseq1       ACGTAC\nseq2       ACGAAC\n\nGTACGT\nGAACGT\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seq1",
+"seq2"
+],
+"rows": [
+"ACGTACGTACGT",
+"ACGAACGAACGT"
+],
+"coords": [
+[
+0,
+12
+],
+[
+0,
+12
+]
+],
+"seqs": [
+"ACGTACGTACGT",
+"ACGAACGAACGT"
+]
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "phylip",
+"text": " 2 8\nseq1      ACGT\nACGT\nseq2      TTTT\nTTTT\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seq1",
+"seq2"
+],
+"rows": [
+"ACGTACGT",
+"TTTTTTTT"
+],
+"coords": [
+[
+0,
+8
+],
+[
+0,
+8
+]
+],
+"seqs": [
+"ACGTACGT",
+"TTTTTTTT"
+]
+}
+],
+"metadata": null
+}
+},
+{
+"kind": "read",
+"fmt": "phylip",
+"text": " 2 8\nseq1      ACGT\nACGT\nseq2      TTTT\nTTTT\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seq1",
+"seq2"
+],
+"rows": [
+"ACGTACGT",
+"TTTTTTTT"
+],
+"coords": [
+[
+0,
+8
+],
+[
+0,
+8
+]
+],
+"seqs": [
+"ACGTACGT",
+"TTTTTTTT"
+]
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "phylip",
+"text": " 2 6\nseq1      ACGTAC\nseq2      ACG-AC\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seq1",
+"seq2"
+],
+"rows": [
+"ACGTAC",
+"ACG-AC"
+],
+"coords": [
+[
+0,
+3,
+4,
+6
+],
+[
+0,
+3,
+3,
+5
+]
+],
+"seqs": [
+"ACGTAC",
+"ACGAC"
+]
+}
+],
+"metadata": null
+}
+},
+{
+"kind": "read",
+"fmt": "phylip",
+"text": " 2 6\nseq1      ACGTAC\nseq2      ACG-AC\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"seq1",
+"seq2"
+],
+"rows": [
+"ACGTAC",
+"ACG-AC"
+],
+"coords": [
+[
+0,
+3,
+4,
+6
+],
+[
+0,
+3,
+3,
+5
+]
+],
+"seqs": [
+"ACGTAC",
+"ACGAC"
+]
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "phylip",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+}
+},
+{
+"kind": "read",
+"fmt": "phylip",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+}
+},
+{
+"kind": "parse",
+"fmt": "phylip",
+"text": "x y\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected two integers in the first line, received 'x y\n'"
+}
+},
+{
+"kind": "read",
+"fmt": "phylip",
+"text": "x y\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected two integers in the first line, received 'x y\n'"
+}
+},
+{
+"kind": "parse",
+"fmt": "phylip",
+"text": " 2 4\nseq1      AC.T\nseq2      ACGT\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "PHYLIP format no longer allows dots in sequence"
+}
+},
+{
+"kind": "read",
+"fmt": "phylip",
+"text": " 2 4\nseq1      AC.T\nseq2      ACGT\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "PHYLIP format no longer allows dots in sequence"
+}
+},
+{
+"kind": "parse",
+"fmt": "phylip",
+"text": " 3 4\nseq1      ACGT\nseq2      ACGT\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected all sequences to have length 4; found 0"
+}
+},
+{
+"kind": "read",
+"fmt": "phylip",
+"text": " 3 4\nseq1      ACGT\nseq2      ACGT\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected all sequences to have length 4; found 0"
+}
+},
+{
+"kind": "parse",
+"fmt": "FASTA",
+"text": ">a desc\nAC-GT\n>b\nACGGT\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+],
+"coords": [
+[
+0,
+2,
+2,
+4
+],
+[
+0,
+2,
+3,
+5
+]
+],
+"seqs": [
+"ACGT",
+"ACGGT"
+]
+}
+],
+"metadata": null
+}
+},
+{
+"kind": "read",
+"fmt": "FASTA",
+"text": ">a desc\nAC-GT\n>b\nACGGT\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+],
+"coords": [
+[
+0,
+2,
+2,
+4
+],
+[
+0,
+2,
+3,
+5
+]
+],
+"seqs": [
+"ACGT",
+"ACGGT"
+]
+}
+]
+}
+},
+{
+"kind": "parse",
+"fmt": "nosuch",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "format",
+"fmt": "fasta",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"result": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n"
+},
+{
+"kind": "write",
+"fmt": "fasta",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "fasta",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"result": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n"
+},
+{
+"kind": "write",
+"fmt": "fasta",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "fasta",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"result": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n"
+},
+{
+"kind": "write",
+"fmt": "fasta",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "fasta",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"result": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n"
+},
+{
+"kind": "write",
+"fmt": "fasta",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"result": {
+"text": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "fasta",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"result": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n"
+},
+{
+"kind": "write",
+"fmt": "fasta",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n",
+"n": 1
+}
+},
+{
+"kind": "write",
+"fmt": "fasta",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n>first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
+"n": 2
+}
+},
+{
+"kind": "write",
+"fmt": "fasta",
+"alns": [],
+"warnings": [],
+"result": {
+"text": "",
+"n": 0
+}
+},
+{
+"kind": "format",
+"fmt": "a2m",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "write",
+"fmt": "a2m",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "format",
+"fmt": "a2m",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "write",
+"fmt": "a2m",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "format",
+"fmt": "a2m",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "write",
+"fmt": "a2m",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "format",
+"fmt": "a2m",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"result": ">a <unknown description>\n\n>b <unknown description>\n\n"
+},
+{
+"kind": "write",
+"fmt": "a2m",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"result": {
+"text": ">a <unknown description>\n\n>b <unknown description>\n\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "a2m",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "write",
+"fmt": "a2m",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "write",
+"fmt": "a2m",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "write",
+"fmt": "a2m",
+"alns": [],
+"warnings": [],
+"result": {
+"text": "",
+"n": 0
+}
+},
+{
+"kind": "format",
+"fmt": "clustal",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"result": "a                                   AC-GT\nb                                   ACGGT\n\n\n"
+},
+{
+"kind": "write",
+"fmt": "clustal",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "Biopython 1.88 multiple sequence alignment\n\n\na                                   AC-GT\nb                                   ACGGT\n\n\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "clustal",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"result": "first_name_with_spaces              ACGTACGTAC\nb                                   AC--ACGTAC\n\n\n"
+},
+{
+"kind": "write",
+"fmt": "clustal",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "Biopython 1.88 multiple sequence alignment\n\n\nfirst_name_with_spaces              ACGTACGTAC\nb                                   AC--ACGTAC\n\n\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "clustal",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"result": "a                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nc                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\na                                   AAAAAAAAAAC-\nb                                   AAAAAAAAAACG\nc                                   AAAAAAAAAAC-\n\n\n"
+},
+{
+"kind": "write",
+"fmt": "clustal",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "Biopython 1.88 multiple sequence alignment\n\n\na                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nc                                   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n\na                                   AAAAAAAAAAC-\nb                                   AAAAAAAAAACG\nc                                   AAAAAAAAAAC-\n\n\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "clustal",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"result": "a                                   ACGT\nb                                   A-GT\n                                    * **\n\n\n"
+},
+{
+"kind": "write",
+"fmt": "clustal",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"result": {
+"text": "Biopython 1.88 multiple sequence alignment\n\n\na                                   ACGT\nb                                   A-GT\n                                    * **\n\n\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "clustal",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"result": "a:b;(c)                             ACGT\n[d],e                               ACGT\n\n\n"
+},
+{
+"kind": "write",
+"fmt": "clustal",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "Biopython 1.88 multiple sequence alignment\n\n\na:b;(c)                             ACGT\n[d],e                               ACGT\n\n\n",
+"n": 1
+}
+},
+{
+"kind": "write",
+"fmt": "clustal",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "Biopython 1.88 multiple sequence alignment\n\n\na                                   AC-GT\nb                                   ACGGT\n\n\nfirst_name_with_spaces              ACGTACGTAC\nb                                   AC--ACGTAC\n\n\n",
+"n": 2
+}
+},
+{
+"kind": "write",
+"fmt": "clustal",
+"alns": [],
+"warnings": [],
+"result": {
+"text": "Biopython 1.88 multiple sequence alignment\n\n\n",
+"n": 0
+}
+},
+{
+"kind": "format",
+"fmt": "phylip",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"result": "2 5\na         AC-GT\nb         ACGGT\n"
+},
+{
+"kind": "write",
+"fmt": "phylip",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "2 5\na         AC-GT\nb         ACGGT\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "phylip",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"result": "2 10\nfirst nameACGTACGTAC\nb         AC--ACGTAC\n"
+},
+{
+"kind": "write",
+"fmt": "phylip",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "2 10\nfirst nameACGTACGTAC\nb         AC--ACGTAC\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "phylip",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"result": "3 62\na         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\nb         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\nc         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n"
+},
+{
+"kind": "write",
+"fmt": "phylip",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "3 62\na         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\nb         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\nc         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "phylip",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"result": "2 4\na         ACGT\nb         A-GT\n"
+},
+{
+"kind": "write",
+"fmt": "phylip",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"result": {
+"text": "2 4\na         ACGT\nb         A-GT\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "phylip",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"result": "2 4\na|b|c     ACGT\nde        ACGT\n"
+},
+{
+"kind": "write",
+"fmt": "phylip",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "2 4\na|b|c     ACGT\nde        ACGT\n",
+"n": 1
+}
+},
+{
+"kind": "write",
+"fmt": "phylip",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "2 5\na         AC-GT\nb         ACGGT\n2 10\nfirst nameACGTACGTAC\nb         AC--ACGTAC\n",
+"n": 2
+}
+},
+{
+"kind": "write",
+"fmt": "phylip",
+"alns": [],
+"warnings": [],
+"result": {
+"text": "",
+"n": 0
+}
+},
+{
+"kind": "format",
+"fmt": "FASTA",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"result": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n"
+},
+{
+"kind": "write",
+"fmt": "FASTA",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "FASTA",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"result": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n"
+},
+{
+"kind": "write",
+"fmt": "FASTA",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "FASTA",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"result": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n"
+},
+{
+"kind": "write",
+"fmt": "FASTA",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">a <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n>b <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG\n>c <unknown description>\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "FASTA",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"result": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n"
+},
+{
+"kind": "write",
+"fmt": "FASTA",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"result": {
+"text": ">a <unknown description>\nACGT\n>b <unknown description>\nA-GT\n",
+"n": 1
+}
+},
+{
+"kind": "format",
+"fmt": "FASTA",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"result": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n"
+},
+{
+"kind": "write",
+"fmt": "FASTA",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">a:b;(c) <unknown description>\nACGT\n>[d],e <unknown description>\nACGT\n",
+"n": 1
+}
+},
+{
+"kind": "write",
+"fmt": "FASTA",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": ">a <unknown description>\nAC-GT\n>b <unknown description>\nACGGT\n>first name with spaces <unknown description>\nACGTACGTAC\n>b <unknown description>\nAC--ACGTAC\n",
+"n": 2
+}
+},
+{
+"kind": "write",
+"fmt": "FASTA",
+"alns": [],
+"warnings": [],
+"result": {
+"text": "",
+"n": 0
+}
+},
+{
+"kind": "format",
+"fmt": "bigbed",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigbed is a binary file format"
+}
+},
+{
+"kind": "write",
+"fmt": "bigbed",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+}
+},
+{
+"kind": "format",
+"fmt": "bigbed",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigbed is a binary file format"
+}
+},
+{
+"kind": "write",
+"fmt": "bigbed",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+}
+},
+{
+"kind": "format",
+"fmt": "bigbed",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigbed is a binary file format"
+}
+},
+{
+"kind": "write",
+"fmt": "bigbed",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+}
+},
+{
+"kind": "format",
+"fmt": "bigbed",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigbed is a binary file format"
+}
+},
+{
+"kind": "write",
+"fmt": "bigbed",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+}
+},
+{
+"kind": "format",
+"fmt": "bigbed",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "bigbed is a binary file format"
+}
+},
+{
+"kind": "write",
+"fmt": "bigbed",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+}
+},
+{
+"kind": "write",
+"fmt": "bigbed",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+}
+},
+{
+"kind": "write",
+"fmt": "bigbed",
+"alns": [],
+"warnings": [],
+"exc": {
+"type": "StreamModeError",
+"msg": "File must be opened in binary mode."
+}
+},
+{
+"kind": "format",
+"fmt": "nosuch",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "write",
+"fmt": "nosuch",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "format",
+"fmt": "nosuch",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "write",
+"fmt": "nosuch",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "format",
+"fmt": "nosuch",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "write",
+"fmt": "nosuch",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "format",
+"fmt": "nosuch",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "write",
+"fmt": "nosuch",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "format",
+"fmt": "nosuch",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "write",
+"fmt": "nosuch",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "write",
+"fmt": "nosuch",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "write",
+"fmt": "nosuch",
+"alns": [],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Unknown file format nosuch"
+}
+},
+{
+"kind": "format",
+"fmt": "emboss",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "write",
+"fmt": "emboss",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "format",
+"fmt": "emboss",
+"aln": {
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "write",
+"fmt": "emboss",
+"alns": [
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "format",
+"fmt": "emboss",
+"aln": {
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "write",
+"fmt": "emboss",
+"alns": [
+{
+"ids": [
+"a",
+"b",
+"c"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACG",
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC-"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "format",
+"fmt": "emboss",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "write",
+"fmt": "emboss",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"A-GT"
+],
+"colann": {
+"clustal_consensus": "* **",
+"state": "UULL"
+}
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "format",
+"fmt": "emboss",
+"aln": {
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Formatting alignments has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "write",
+"fmt": "emboss",
+"alns": [
+{
+"ids": [
+"a:b;(c)",
+"[d],e"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "write",
+"fmt": "emboss",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AC-GT",
+"ACGGT"
+]
+},
+{
+"ids": [
+"first name with spaces",
+"b"
+],
+"rows": [
+"ACGTACGTAC",
+"AC--ACGTAC"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the emboss format"
+}
+},
+{
+"kind": "write",
+"fmt": "emboss",
+"alns": [],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File writing has not yet been implemented for the emboss format"
+}
+}
+]

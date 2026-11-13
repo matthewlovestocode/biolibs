@@ -108,4 +108,19 @@ alignments.get(-1).coordinates;    // [[1, 2, 3, 5], [0, 1, 1, 3]]
 | `.frequencies`, `.substitutions` | `.frequencies` (a `Map` of letter to per-column weights), `.substitutions` (a `SubstitutionArray`) |
 | `Alignment.parse_printed_alignment(lines)` | `Alignment.parsePrintedAlignment(lines)` (lines are `Uint8Array`s) |
 
-`format()` with a file format name (`"clustal"`, `"psl"`, ...) throws `NotImplementedError`: the alignment file writers are not ported. Not ported yet: formatting as a file format. In a pair key an array is a Python tuple, so a top-level list key (a `TypeError` in Python) behaves like a 1-element tuple here (`ValueError`). Biopython reads uninitialised memory when a zero-width column selection of three or more rows is re-parsed; that case is not reproduced. On the minus strand the query coordinates run backwards, as in Biopython. On the minus strand the query coordinates run backwards, as in Biopython. The traceback follows the C implementation cell by cell (including the way it prunes and extends paths in place), so alignments come out in the same order.
+`format("fasta")`, `"a2m"`, `"clustal"` and `"phylip"` give file text (see below); any other Biopython format throws `NotImplementedError` until it is ported. In a pair key an array is a Python tuple, so a top-level list key (a `TypeError` in Python) behaves like a 1-element tuple here (`ValueError`). Biopython reads uninitialised memory when a zero-width column selection of three or more rows is re-parsed; that case is not reproduced. On the minus strand the query coordinates run backwards, as in Biopython. On the minus strand the query coordinates run backwards, as in Biopython. The traceback follows the C implementation cell by cell (including the way it prunes and extends paths in place), so alignments come out in the same order.
+
+
+### Alignment file formats (`formats/`)
+
+`parse`, `read` and `write` work over text instead of file handles, and `Alignment.format(fmt)` returns file text. Ported and verified against Biopython on about 140 cases (valid files, malformed files, odd identifiers, long alignments): `fasta`, `a2m`, `clustal` and `phylip`. The other 16 formats of Biopython's table (`bed`, `bigbed`, `bigmaf`, `bigpsl`, `chain`, `emboss`, `exonerate`, `hhr`, `maf`, `mauve`, `msf`, `nexus`, `psl`, `sam`, `stockholm`, `tabular`) throw `NotImplementedError` when used; the error for an unknown name, a binary format written to text (`StreamModeError`) and a format without a writer (`ValueError`) match Biopython's.
+
+| Python | TypeScript |
+|---|---|
+| `Align.parse(handle, fmt)` | `parse(text, fmt)`: a lazy, rewindable `AlignmentIterator`; `metadata` (Clustal's program and version) is set on it |
+| `Align.read(handle, fmt)` | `read(text, fmt)` (`ValueError` for none or several alignments) |
+| `Align.write(alignments, handle, fmt)` | `write(alignments, target, fmt)` where `target` is anything with `write(text)`; returns the count |
+| `Alignment.format(fmt)` | `alignment.format(fmt)` |
+| `Align.formats` | `FORMATS` |
+
+`AlignmentWriter` in this package is the older function type used by `MultipleSeqAlignment`; the base class of the file writers is exported as `AlignmentFileWriter`.

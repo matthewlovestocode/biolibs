@@ -17,6 +17,7 @@ import { mapAlignment, mapAll } from "./map.js";
 import { countAlignment, type CountScoring } from "./counts.js";
 import type { AlignmentCounts } from "./alignment-counts.js";
 import { frequencies, substitutions } from "./stats.js";
+import { formatAs } from "../formats/registry.js";
 
 /** The sequence a record-like carries (`left.seq`), or the value itself. */
 function plain(x: unknown): unknown {
@@ -338,7 +339,7 @@ export class Alignment {
    * @throws {@link NotImplementedError} for a non-empty format.
    */
   format(fmt = "", matrix: SubstitutionArray | { substitutionMatrix: SubstitutionArray | null } | null = null): string {
-    if (fmt !== "") throw new NotImplementedError(`Formatting alignments as ${fmt} is not ported yet`);
+    if (fmt !== "") return formatAs(this, fmt);
     const m = matrix !== null && "substitutionMatrix" in matrix ? matrix.substitutionMatrix : (matrix as SubstitutionArray | null);
     return formatPretty(this.sequences, this.coords, m);
   }

@@ -72,6 +72,7 @@ inv = {
                           "table_ids": sorted(CodonTable.generic_by_id)},
   "Bio.Data.IUPACData": sorted(n for n in dir(IUPACData) if not n.startswith("_")),
   "Bio.Align": {"classes": {"MultipleSeqAlignment": members(Align.MultipleSeqAlignment)}},
+  "Bio.Align.formats": {"functions": {n: str(inspect.signature(getattr(Align, n))) for n in ("parse", "read", "write")}, "formats": sorted(Align.formats) if hasattr(Align, "formats") else sorted(__import__("Bio.Align", fromlist=["x"]).__dict__.get("formats", []))},
   "Bio.Align.AlignmentCounts": {"classes": {"AlignmentCounts": {n: "property" for n in dir(Align._alignmentcounts.AlignmentCounts) if not n.startswith("_")}}},
   "Bio.Align.Alignment": {"classes": {"Alignment": members(Align.Alignment)}},
   "Bio.Align.PairwiseAligner": {"classes": {"PairwiseAligner": members(Align.PairwiseAligner), "PairwiseAlignments": members(Align.PairwiseAlignments)}},

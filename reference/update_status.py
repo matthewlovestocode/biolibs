@@ -466,5 +466,17 @@ if "cmp" in ag_ops:
 if "format_matrix" in ag_ops: mark(f"{AG}.format", "partial"); mark(f"{AG}.__format__", "partial")      # only the printed layout; file formats need the writers
 for m in ("__repr__", "__hash__"): mark(f"{AG}.{m}", "na")        # repr shows a memory address
 
+# ---- Bio.Align file formats (packages/align/test/golden/alignfmt.json) ----
+afm = json.load(open(f"{here}/../packages/align/test/golden/alignfmt.json"))
+def _ok(c): return "result" in c
+for c in afm:
+    f = c["fmt"].lower()
+    if f not in inv["Bio.Align.formats"]["formats"]: continue
+    if c["kind"] in ("parse", "read") and _ok(c): mark(f"Bio.Align.parse:{f}")
+    if c["kind"] in ("format", "write") and _ok(c): mark(f"Bio.Align.write:{f}")
+for fn, kind in (("parse", "parse"), ("read", "read"), ("write", "write")):
+    if any(c["kind"] == kind and _ok(c) for c in afm): mark(f"Bio.Align.{fn}")
+if any(c["kind"] == "format" and _ok(c) for c in afm): mark(f"{AG}.format", "partial"); mark(f"{AG}.__format__", "partial")   # fasta, a2m, clustal, phylip so far
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

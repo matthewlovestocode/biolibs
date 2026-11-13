@@ -13,4 +13,8 @@
 export * from "./multiple-seq-alignment.js";
 export * from "./alignment/index.js";
 export * from "./pairwise/index.js";
+export * from "./formats/index.js";
+export type { AlignmentWriter } from "./multiple-seq-alignment.js";
 export * as substitutionMatrices from "./substitution-matrices/index.js";
+/** The base class of the alignment file writers in `formats/` (the name `AlignmentWriter` is taken by the older function type). */
+export { AlignmentWriter as AlignmentFileWriter } from "./formats/interfaces.js";

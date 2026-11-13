@@ -12,7 +12,7 @@ TypeScript libraries replacing common Python bioengineering tooling. The goal is
 | `@biolibs/nexus` | `Bio.Nexus` | NEXUS `Nexus` class (read, edit, write), `Tree`, `Node`, `Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus` done; `bootstrap`, `randomize`, `display`, file-name based `export_*` not ported |
 | `@biolibs/svdsuperimposer` | `Bio.SVDSuperimposer` | `SVDSuperimposer` (least-squares superposition by SVD) done |
 | `@biolibs/pdb` | `Bio.PDB` (first slice) | Structure hierarchy with disorder, `StructureBuilder`, `PDBParser`, header parsing, `MMCIF2Dict`, `MMCIFParser`, `PDBIO`, `MMCIFIO`, `Vector` and the rotation helpers, `Polypeptide`/`PPBuilder`, `Superimposer`, `NeighborSearch`/`KDTree`, `ShrakeRupley` (SASA) done; internal coordinates, DSSP not ported |
-| `@biolibs/align` | `Bio.Align` | `MultipleSeqAlignment`, the substitution matrices and `PairwiseAligner` scoring and alignment done; the `Alignment` file formats are not yet ported |
+| `@biolibs/align` | `Bio.Align` | `MultipleSeqAlignment`, the substitution matrices and `PairwiseAligner` scoring and alignment done; the `Alignment` file formats `fasta`, `a2m`, `clustal` and `phylip` done, the rest not yet ported |
 | `@biolibs/motifs` | `Bio.motifs` | `Motif`, position matrices, scoring, thresholds, JASPAR/TRANSFAC/Cluster-Buster and the MEME, MAST, AlignACE, XMS and PFM readers done |
 | `@biolibs/restriction` | `Bio.Restriction` | 1,088 enzymes: `search`, `catalyse`, `RestrictionBatch`, `Analysis` and its text layouts done |
 | `@biolibs/phylo` | `Bio.Phylo` | Newick parse/write, patristic distance |
