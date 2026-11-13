@@ -21,15 +21,17 @@ import { AtomKey, FIELDS } from "./atom-key.js";
  * What a hedron reads from the chain that holds it.
  *
  * Biopython stores every hedron's two lengths and angle in three arrays on `IC_Chain` and gives each hedron an
- * index into them, so that the whole chain can be recomputed with array arithmetic.
+ * index into them, so that the whole chain can be recomputed with array arithmetic. Every field is optional because
+ * a chain that has not built them yet is a real state: Biopython reads them through `self.cic.hedraAngle` and
+ * catches the `AttributeError`, which is the same thing.
  */
 export interface EdronArrays {
   /** Angle of each hedron, in degrees, by hedron index. */
-  hedraAngle: ArrayLike<number>;
+  hedraAngle?: ArrayLike<number>;
   /** Length between the first and second atoms of each hedron. */
-  hedraL12: ArrayLike<number>;
+  hedraL12?: ArrayLike<number>;
   /** Length between the second and third atoms of each hedron. */
-  hedraL23: ArrayLike<number>;
+  hedraL23?: ArrayLike<number>;
   /** Angle of each dihedron, in degrees, by dihedron index. */
   dihedraAngle?: ArrayLike<number>;
 }
@@ -203,11 +205,11 @@ export class Hedron extends Edron {
   }
 
   /** The angle in degrees, from the chain that holds it; 0 while there is none. */
-  get angle(): number { return this.cic === undefined ? 0 : this.cic.hedraAngle[this.ndx]!; }
+  get angle(): number { return this.cic?.hedraAngle === undefined ? 0 : this.cic.hedraAngle[this.ndx]!; }
   /** The length between the first and second atoms; 0 while no chain holds it. */
-  get len12(): number { return this.cic === undefined ? 0 : this.cic.hedraL12[this.ndx]!; }
+  get len12(): number { return this.cic?.hedraL12 === undefined ? 0 : this.cic.hedraL12[this.ndx]!; }
   /** The length between the second and third atoms; 0 while no chain holds it. */
-  get len23(): number { return this.cic === undefined ? 0 : this.cic.hedraL23[this.ndx]!; }
+  get len23(): number { return this.cic?.hedraL23 === undefined ? 0 : this.cic.hedraL23[this.ndx]!; }
 
   /** @returns Python's `repr`: `3-` then the id, the classification and the three values. */
   override repr(): string {

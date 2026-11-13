@@ -181,6 +181,14 @@ export class AtomKey {
     this.akl = akl;
   }
 
+  /**
+   * A string standing for all six fields, for keying a `Map` or `Set` the way Python keys a dict by `hash(akl)`.
+   *
+   * {@link AtomKey.id} will not do: it leaves the absent fields out, so two keys whose fields differ could share
+   * one. Python hashes the whole tuple, and so does this.
+   */
+  get hashKey(): string { return JSON.stringify(this.akl); }
+
   /** @returns The key's string form, as Python's `repr`. */
   repr(): string { return this.id; }
   /** @returns The key's string form. */

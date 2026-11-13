@@ -1,7 +1,7 @@
 /** Replays the Bio.PDB.internal_coords.AtomKey golden cases (reference/golden/gen_ickey_cases.py). */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { AtomKey, Dihedron, Edron, Hedron, IC_Residue, PDBParser } from "@biolibs/pdb";
+import { AtomKey, Dihedron, Edron, Hedron, IC_Chain, IC_Residue, PDBParser } from "@biolibs/pdb";
 
 type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc };
@@ -153,10 +153,69 @@ function runResidue(c: Case): Out {
   });
 }
 
+/** The residues of the first chains, accepted and wired to their neighbours, as the generator wires them. */
+function wiredResidues(text: string, chainLimit: number, resLimit: number): { cic: IC_Chain; rics: IC_Residue[] }[] {
+  const s = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", text);
+  return [...s.getChains()].slice(0, chainLimit).map((chain) => {
+    const cic = new IC_Chain();
+    const rics: IC_Residue[] = [];
+    for (const res of [...chain.getResidues()].slice(0, resLimit)) {
+      const ric = new IC_Residue(res);
+      if (!ric.isAccept) continue;
+      ric.cic = cic;
+      rics.push(ric);
+    }
+    rics.forEach((ric, i) => {
+      ric.rprev = i > 0 ? [rics[i - 1]!] : [];
+      ric.rnext = i + 1 < rics.length ? [rics[i + 1]!] : [];
+    });
+    return { cic, rics };
+  });
+}
+
+const sortedIds = (m: Map<string, { id: string }>): string[] => [...m.values()].map((e) => e.id).sort();
+
+function runEdraBuild(c: Case): Out {
+  return attempt(() =>
+    wiredResidues(c.text!, 2, 8).map(({ cic, rics }) => ({
+      built: rics.map((ric) => attempt(() => { ric.createEdra(); return null; })),
+      chain_hedra: sortedIds(cic.hedra),
+      chain_dihedra: sortedIds(cic.dihedra),
+      residues: rics.map((ric) => ({
+        pretty: ric.prettyStr(),
+        hedra: sortedIds(ric.hedra),
+        dihedra: sortedIds(ric.dihedra),
+        primary: [...ric.dihedra.values()].filter((d) => d.primary).map((d) => d.id).sort(),
+        NCaCKey: attempt(() => ric.NCaCKey.map((t) => t.map((k) => k.id)).sort()),
+        ak_set: [...ric.akSet].map((k) => k.id).sort(),
+      })),
+    })));
+}
+
+function runSplit(c: Case): Out {
+  return attempt(() => {
+    const out: unknown[] = [];
+    const s = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", c.text!);
+    for (const res of [...s.getResidues()].slice(0, 8)) {
+      const ric = new IC_Residue(res);
+      if (!ric.isAccept) continue;
+      for (const names of [["N", "CA", "C"], ["N", "CA", "CB"], ["CA", "C", "O"], ["N", "CA", "C", "O"], ["ZZ", "CA", "C"]]) {
+        const keys = names.map((n) => ric.rak(n));
+        for (const missingOK of [false, true]) {
+          out.push({ res: ric.prettyStr(), ask: names, missingOK,
+            // sorted on both sides: Biopython returns these in the arbitrary order of a set
+            got: attempt(() => ric.splitAkl(keys, missingOK).map((t) => t.map((k) => k.id)).sort()) });
+        }
+      }
+    }
+    return out;
+  });
+}
+
 describe("Bio.PDB.internal_coords: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/ickey.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue };
-  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue"]) {
+  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit };
+  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build"]) {
     const list = cases.filter((c) => c.kind === kind);
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
       const bad: string[] = [];

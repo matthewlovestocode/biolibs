@@ -8,6 +8,8 @@ Case kinds:
   edron - build an Edron, Hedron or Dihedron and record its identity, classification and fields.
   epair - two di/hedra: the ordering operators and the pair of keys `_cmp` reports.
   residue - IC_Residue over the residues of a parsed PDB file: what it keeps and under which keys.
+  split   - split_akl: a generic list of atom keys made specific to a residue and expanded over its altlocs.
+  edra_build - _create_edra: the hedra and dihedra a residue builds from the tables and its neighbours.
 
 `_cmp` returns a pair of ranks rather than a sign, and for two atom names in none of its tables it falls through to
 `int()` of the names and raises; both are recorded as they come.
@@ -234,8 +236,122 @@ TEXTS.append("".join([
 for text in TEXTS:
     cases.append({"kind": "residue", "text": text})
 
+# ---------------- building a residue's angles ----------------
+# `_create_edra` walks the ic_data tables and the residue's neighbours to build its hedra and dihedra. The residues
+# are wired to their neighbours here, in both languages, rather than by IC_Chain, which is not ported yet: this
+# measures the table walking, not the chain's choice of which residues are peptide-bonded.
+def run_edra_build(case):
+    import io, warnings as w2
+    from Bio.PDB import PDBParser
+    from Bio.PDB.internal_coords import IC_Chain, IC_Residue
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+        out = []
+        for chain in list(s.get_chains())[:2]:
+            # a bare IC_Chain: _create_edra only needs its hedra/dihedra registries
+            cic = IC_Chain.__new__(IC_Chain)
+            cic.hedra, cic.dihedra, cic.akset = {}, {}, set()
+            rics = []
+            for res in list(chain.get_residues())[:8]:
+                ric = IC_Residue(res)
+                if not ric.isAccept: continue
+                ric.cic = cic
+                rics.append(ric)
+            for i, ric in enumerate(rics):
+                ric.rprev = [rics[i - 1]] if i > 0 else []
+                ric.rnext = [rics[i + 1]] if i + 1 < len(rics) else []
+            per_res = []
+            for ric in rics:
+                per_res.append(attempt(lambda ric=ric: ric._create_edra()))
+            out.append({
+                "built": per_res,
+                "chain_hedra": sorted(h.id for h in cic.hedra.values()),
+                "chain_dihedra": sorted(d.id for d in cic.dihedra.values()),
+                "residues": [{
+                    "pretty": ric.pretty_str(),
+                    "hedra": sorted(h.id for h in ric.hedra.values()),
+                    "dihedra": sorted(d.id for d in ric.dihedra.values()),
+                    "primary": sorted(d.id for d in ric.dihedra.values() if d.primary),
+                    # a residue whose atoms were all rejected never reaches _link_dihedra, so this attribute is unset
+                    "NCaCKey": attempt(lambda ric=ric: sorted([k.id for k in t] for t in ric.NCaCKey)),
+                    "ak_set": sorted(k.id for k in ric.ak_set),
+                } for ric in rics],
+            })
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+def run_split(case):
+    import io, warnings as w2
+    from Bio.PDB import PDBParser
+    from Bio.PDB.internal_coords import IC_Residue
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+        out = []
+        for res in list(s.get_residues())[:8]:
+            ric = IC_Residue(res)
+            if not ric.isAccept: continue
+            for names in (("N", "CA", "C"), ("N", "CA", "CB"), ("CA", "C", "O"), ("N", "CA", "C", "O"), ("ZZ", "CA", "C")):
+                keys = tuple(ric.rak(n) for n in names)
+                for missingOK in (False, True):
+                    # sorted: the order of the lists follows a Python set and is not reproducible between runs
+                    out.append({"res": ric.pretty_str(), "ask": list(names), "missingOK": missingOK,
+                                "got": attempt(lambda ric=ric, keys=keys, m=missingOK: sorted([k.id for k in t] for t in ric.split_akl(keys, m)))})
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+def protein_pdb(seq, altloc_at=None, drop=()):
+    """A small protein with every standard atom of each residue, so the tables have something to walk.
+
+    The coordinates are made up and spread out: this slice builds the hedra and dihedra but computes no values, so
+    only which atoms exist matters. `altloc_at` gives one residue's CA two locations; `drop` leaves atoms out.
+    """
+    from Bio.Data.PDBData import protein_letters_1to3
+    import Bio.PDB.ic_data as icd
+    lines, serial = [], 1
+    for i, lc in enumerate(seq, start=1):
+        name3 = protein_letters_1to3[lc].upper()
+        atoms = ["N", "CA", "C", "O"]
+        for edra in icd.ic_data_sidechains.get(lc, []):
+            for atm in edra[:4]:
+                if atm.startswith("chi") or atm.startswith("H") or atm in atoms: continue
+                atoms.append(atm)
+        for atm in atoms:
+            if (i, atm) in drop: continue
+            altlocs = ["A", "B"] if altloc_at == (i, atm) else [" "]
+            for alt in altlocs:
+                occ = 0.5 if alt != " " else 1.0
+                x, y, z = 10.0 + serial, 20.0 + (serial % 7), 30.0 + (serial % 5)
+                element = atm[0]
+                lines.append(f"ATOM  {serial:5d} {atm:<4s}{alt}{name3} A{i:4d}    {x:8.3f}{y:8.3f}{z:8.3f}{occ:6.2f}  0.00          {element:>2s}\n")
+                serial += 1
+    lines.append("END\n")
+    return "".join(lines)
+
+PROTEINS = [
+    protein_pdb("AG"),                                  # alanine and glycine, which has no C-beta
+    protein_pdb("AGSV"),
+    protein_pdb("LIKFW"),                               # long side chains, including the aromatics
+    protein_pdb("CMPTY"),
+    protein_pdb("AG", altloc_at=(1, "CA")),             # a disordered alpha carbon, which splits the angles
+    protein_pdb("AGS", altloc_at=(2, "N")),
+    protein_pdb("AGS", drop=((2, "O"),)),               # no O, which sends C-beta down its alternative path
+    protein_pdb("AGS", drop=((2, "CA"),)),              # a hole in the backbone
+    protein_pdb("A"),                                   # one residue: no neighbours either side
+]
+for text in TEXTS + PROTEINS:
+    cases.append({"kind": "edra_build", "text": text})
+    cases.append({"kind": "split", "text": text})
+
 RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair,
-           "residue": run_residue}
+           "residue": run_residue, "edra_build": run_edra_build, "split": run_split}
 kept = []
 for c in cases:
     res = run_isolated(RUNNERS[c["kind"]], c)

@@ -74,9 +74,10 @@ A protein described by bond lengths, bond angles and dihedral angles rather than
 `atom-key.ts` holds `AtomKey` — the type that names an atom across a chain (residue position, insertion code,
 residue name, atom name, altloc, occupancy) and whose ordering puts a residue's atoms into a canonical sequence —
 `edron.ts` holds `Edron`, `Hedron` and `Dihedron`, the angles themselves — three bonded atoms with two lengths
-and an angle, or four with the angle between two planes — and `ic-residue.ts` holds the first slice of
-`IC_Residue`: which atoms a residue keeps, the keys it keeps them under, and the identity it takes from the
-`Residue` it extends. Verified against Biopython on 875 cases
+and an angle, or four with the angle between two planes — `ic-residue.ts` holds `IC_Residue` — which atoms a residue keeps, the keys it
+keeps them under, and the hedra and dihedra it builds from the tables and from its neighbours — and `ic-chain.ts`
+the first slice of `IC_Chain`: the registries those angles are kept in, one copy of each shared by the residues on
+either side of it. Verified against Biopython on 875 cases
 (`packages/pdb/test/golden/ickey.json`, built by `reference/golden/gen_ickey_cases.py`). The geometry the rest of
 the port will rest on is already here, in `homog.ts`, ported with `Bio.PDB.vectors`.
 
@@ -106,8 +107,19 @@ nor named in `acceptResnames` keeps nothing. `icSettings` holds the switches Bio
 `IC_Residue` (`noAltloc`, `glyCbeta`), in a module of their own so that `AtomKey` and `IC_Residue` can both consult
 them without importing one another.
 
-Still to come: the rest of `IC_Residue` (building the hedra and dihedra from the tables, and linking each dihedron
-to its two hedra), `IC_Chain` and the `atom_to_internal_coordinates` /
+`splitAkl` makes a generic list of atoms specific to a residue and expands it over alternative locations, which is
+what gives a disordered residue one set of angles per altloc. Biopython iterates a `set` of altlocs there, so the
+**order** of the lists it returns depends on the interpreter's hash seed and changes between runs; this port sorts
+them, and the golden cases compare them sorted — with the generated file proven byte-identical across runs under
+`PYTHONHASHSEED=random`.
+
+An attribute Biopython only ever assigns in one place is unset until that place runs, and reading it raises. The
+port models two of those rather than returning a default: `NCaCKey`, which `linkDihedra` sets and a residue whose
+atoms were all rejected therefore never gets, and `Dihedron.ric`. `icSettings.glyCbeta` is refused for now, since
+adding a C-beta to a glycine needs `Dihedron._set_hedra`, which comes with the rest of the chain.
+
+Still to come: the rest of `IC_Chain` (the coordinate arrays, `build_atomArray`, `init_edra` and the assembly) and
+the `atom_to_internal_coordinates` /
 `internal_to_atom_coordinates` entry points on Chain, Model and Structure, which are the six parity items this
 module exists for.
 
