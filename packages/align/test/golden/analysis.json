@@ -1,0 +1,12057 @@
+[
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCATACCC",
+"CGCATACCC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCATACCC",
+"CGCATACCC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCATACCC",
+"CGCATACCC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCATACCC",
+"CGCATACCC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCATACCC",
+"CGCATACCC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAGCGAGT",
+"AGAGCGATGAGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAGCGAGT",
+"AGAGCGATGAGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAGCGAGT",
+"AGAGCGATGAGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAGCGAGT",
+"AGAGCGATGAGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAGCGAGT",
+"AGAGCGATGAGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTTTCAAA",
+"AGTTTTAAA"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"result": [
+0.0,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTTTCAAA",
+"AGTTTTAAA"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTTTCAAA",
+"AGTTTTAAA"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+1.2070784343255752
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTTTCAAA",
+"AGTTTTAAA"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTTTCAAA",
+"AGTTTTAAA"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACTTAGC",
+"ACACTCCGTAGC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"result": [
+0.0,
+0.6354733952904027
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACTTAGC",
+"ACACTCCGTAGC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACTTAGC",
+"ACACTCCGTAGC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.5531992073480844
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACTTAGC",
+"ACACTCCGTAGC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.6354733952904027
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACTTAGC",
+"ACACTCCGTAGC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCTGAAAAC",
+"CCTGAAAAC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCTGAAAAC",
+"CCTGAAAAC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCTGAAAAC",
+"CCTGAAAAC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCTGAAAAC",
+"CCTGAAAAC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCTGAAAAC",
+"CCTGAAAAC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCACCCCGG",
+"TCACCCGATGGG"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"result": [
+0.1946333966138134,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCACCCCGG",
+"TCACCCGATGGG"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -1.0"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCACCCCGG",
+"TCACCCGATGGG"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"k": 2.5,
+"result": [
+0.19253988513586046,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCACCCCGG",
+"TCACCCGATGGG"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"table": 2,
+"result": [
+0.18848582121067953,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCACCCCGG",
+"TCACCCGATGGG"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -1.0"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AATGTTCAT",
+"GACGTTTCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"result": [
+0.6354733952904027,
+0.8239592165010825
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AATGTTCAT",
+"GACGTTTCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -3.000000000000001"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AATGTTCAT",
+"GACGTTTCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"k": 2.5,
+"result": [
+0.6872180489056161,
+0.6354733952904027
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AATGTTCAT",
+"GACGTTTCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"result": [
+0.6354733952904027,
+0.8239592165010825
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AATGTTCAT",
+"GACGTTTCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -3.000000000000001"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATTTACTG",
+"CCCGACGTTTTAAGT"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"result": [
+1.400809032154482,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATTTACTG",
+"CCCGACGTTTTAAGT"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATTTACTG",
+"CCCGACGTTTTAAGT"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"k": 2.5,
+"result": [
+2.311432477346278,
+1.0540069170679383
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATTTACTG",
+"CCCGACGTTTTAAGT"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"table": 2,
+"result": [
+1.578100615702655,
+1.9237120180961529
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATTTACTG",
+"CCCGACGTTTTAAGT"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCGCAGTA",
+"CAGGCGTTT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"result": [
+0.6872180489056166,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCGCAGTA",
+"CAGGCGTTT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -1.0"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCGCAGTA",
+"CAGGCGTTT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"k": 2.5,
+"result": [
+0.7270504178910775,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCGCAGTA",
+"CAGGCGTTT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"result": [
+0.6872180489056166,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCGCAGTA",
+"CAGGCGTTT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -1.0"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGGCATATA",
+"CGTCGCGGTCATAGC"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"result": [
+0.4546018526777367,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGGCATATA",
+"CGTCGCGGTCATAGC"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGGCATATA",
+"CGTCGCGGTCATAGC"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"k": 2.5,
+"result": [
+0.479620850300719,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGGCATATA",
+"CGTCGCGGTCATAGC"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGGCATATA",
+"CGTCGCGGTCATAGC"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CATATCTTC",
+"CCCCCACCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"result": [
+2.7851790500282303,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CATATCTTC",
+"CCCCCACCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -3.0"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CATATCTTC",
+"CCCCCACCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"k": 2.5,
+"result": [
+-1,
+-1
+],
+"types": [
+"int",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CATATCTTC",
+"CCCCCACCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"result": [
+-1,
+-1
+],
+"types": [
+"int",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CATATCTTC",
+"CCCCCACCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -3.0"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATTTCAT",
+"CTTTCACTAGTTACC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+12,
+15
+]
+]
+},
+"result": [
+2.283391828292566,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATTTCAT",
+"CTTTCACTAGTTACC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+12,
+15
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATTTCAT",
+"CTTTCACTAGTTACC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+12,
+15
+]
+]
+},
+"k": 2.5,
+"result": [
+-1,
+-1
+],
+"types": [
+"int",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATTTCAT",
+"CTTTCACTAGTTACC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+12,
+15
+]
+]
+},
+"table": 2,
+"result": [
+2.283391828292566,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATTTCAT",
+"CTTTCACTAGTTACC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+12,
+15
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCAGTGGGTCTATAT",
+"TCAGTGGGTCTATAT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCAGTGGGTCTATAT",
+"TCAGTGGGTCTATAT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCAGTGGGTCTATAT",
+"TCAGTGGGTCTATAT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCAGTGGGTCTATAT",
+"TCAGTGGGTCTATAT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCAGTGGGTCTATAT",
+"TCAGTGGGTCTATAT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGCGCCACATACC",
+"ATCGCGCCACATCCAACC"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGCGCCACATACC",
+"ATCGCGCCACATCCAACC"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGCGCCACATACC",
+"ATCGCGCCACATCCAACC"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGCGCCACATACC",
+"ATCGCGCCACATCCAACC"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGCGCCACATACC",
+"ATCGCGCCACATCCAACC"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAACCTCCCCATGCG",
+"AAACCTCCCCATGCG"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAACCTCCCCATGCG",
+"AAACCTCCCCATGCG"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAACCTCCCCATGCG",
+"AAACCTCCCCATGCG"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAACCTCCCCATGCG",
+"AAACCTCCCCATGCG"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAACCTCCCCATGCG",
+"AAACCTCCCCATGCG"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGCGAGATAGAAGA",
+"AAGCGAGATGCCAGAAGA"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+12,
+18
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGCGAGATAGAAGA",
+"AAGCGAGATGCCAGAAGA"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+12,
+18
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGCGAGATAGAAGA",
+"AAGCGAGATGCCAGAAGA"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+12,
+18
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGCGAGATAGAAGA",
+"AAGCGAGATGCCAGAAGA"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+12,
+18
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGCGAGATAGAAGA",
+"AAGCGAGATGCCAGAAGA"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+12,
+18
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCACCAGGCCCGGT",
+"ATCACCAGGCCCGGT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCACCAGGCCCGGT",
+"ATCACCAGGCCCGGT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCACCAGGCCCGGT",
+"ATCACCAGGCCCGGT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCACCAGGCCCGGT",
+"ATCACCAGGCCCGGT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCACCAGGCCCGGT",
+"ATCACCAGGCCCGGT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCTTTCTGAATTGT",
+"TTCTTTCTCAATGTTCTGTGT"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+18,
+21
+]
+]
+},
+"result": [
+0.08580776338330816,
+0.5198603854199589
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCTTTCTGAATTGT",
+"TTCTTTCTCAATGTTCTGTGT"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+18,
+21
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCTTTCTGAATTGT",
+"TTCTTTCTCAATGTTCTGTGT"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+18,
+21
+]
+]
+},
+"k": 2.5,
+"result": [
+0.09338471090443681,
+0.345611402393497
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCTTTCTGAATTGT",
+"TTCTTTCTCAATGTTCTGTGT"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+18,
+21
+]
+]
+},
+"table": 2,
+"result": [
+0.0845966206090083,
+0.5716050390351726
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCTTTCTGAATTGT",
+"TTCTTTCTCAATGTTCTGTGT"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+18,
+21
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCGGCTGGCCCCAAC",
+"TCGGCTGGTTCCGAC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+0.21576155433883568,
+0.27579358509398805
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCGGCTGGCCCCAAC",
+"TCGGCTGGTTCCGAC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+0.23944951114030813,
+0.31991408333535937
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCGGCTGGCCCCAAC",
+"TCGGCTGGTTCCGAC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"k": 2.5,
+"result": [
+0.2210996551654836,
+0.25970717753837536
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCGGCTGGCCCCAAC",
+"TCGGCTGGTTCCGAC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"result": [
+0.21576155433883568,
+0.27579358509398805
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCGGCTGGCCCCAAC",
+"TCGGCTGGTTCCGAC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 11,
+"result": [
+0.23944951114030813,
+0.31991408333535937
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCCAACTTCATAAG",
+"GTTCCACTTCAATCCCATCAG"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"result": [
+0.19463339661381354,
+0.3831192178244929
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCCAACTTCATAAG",
+"GTTCCACTTCAATCCCATCAG"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"result": [
+0.20509558422737362,
+0.6035392171627876
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCCAACTTCATAAG",
+"GTTCCACTTCAATCCCATCAG"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"k": 2.5,
+"result": [
+0.20582763427632023,
+0.314890384170198
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCCAACTTCATAAG",
+"GTTCCACTTCAATCCCATCAG"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"table": 2,
+"result": [
+0.19463339661381354,
+0.3831192178244929
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCCAACTTCATAAG",
+"GTTCCACTTCAATCCCATCAG"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"table": 11,
+"result": [
+0.20509558422737362,
+0.6035392171627876
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AACATGTCTCTAAAC",
+"ACCCAGCTTCTAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+0.8921880501553775,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AACATGTCTCTAAAC",
+"ACCCAGCTTCTAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+1.4223992280482187,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AACATGTCTCTAAAC",
+"ACCCAGCTTCTAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"k": 2.5,
+"result": [
+1.0058804443795653,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AACATGTCTCTAAAC",
+"ACCCAGCTTCTAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"result": [
+0.9178315737165865,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AACATGTCTCTAAAC",
+"ACCCAGCTTCTAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 11,
+"result": [
+1.4223992280482187,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTCTGAACCTCGAG",
+"AGTGTGCACCCTGGTGAA"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"result": [
+0.3093992064984426,
+1.384370017873748
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTCTGAACCTCGAG",
+"AGTGTGCACCCTGGTGAA"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTCTGAACCTCGAG",
+"AGTGTGCACCCTGGTGAA"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"k": 2.5,
+"result": [
+0.3368383036994257,
+0.8453892458341243
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTCTGAACCTCGAG",
+"AGTGTGCACCCTGGTGAA"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"table": 2,
+"result": [
+0.3093992064984426,
+1.384370017873748
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTCTGAACCTCGAG",
+"AGTGTGCACCCTGGTGAA"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGCGTTCGCGCGTG",
+"AGTATGACTGGAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+2.2392614532753656,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGCGTTCGCGCGTG",
+"AGTATGACTGGAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGCGTTCGCGCGTG",
+"AGTATGACTGGAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"k": 2.5,
+"result": [
+2.4953170571313206,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGCGTTCGCGCGTG",
+"AGTATGACTGGAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"result": [
+-1,
+-1
+],
+"types": [
+"int",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGCGTTCGCGCGTG",
+"AGTATGACTGGAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGCGGAAGGATGGCC",
+"CTACCCTTGGAGGATAACTGC"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"result": [
+-1,
+0.9744622380976953
+],
+"types": [
+"int",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGCGGAAGGATGGCC",
+"CTACCCTTGGAGGATAACTGC"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGCGGAAGGATGGCC",
+"CTACCCTTGGAGGATAACTGC"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"k": 2.5,
+"result": [
+-1,
+0.7323821939004072
+],
+"types": [
+"int",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGCGGAAGGATGGCC",
+"CTACCCTTGGAGGATAACTGC"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGCGGAAGGATGGCC",
+"CTACCCTTGGAGGATAACTGC"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATGTCAGTACGCCAAACGGTGG",
+"CAATGTCAGTACGCCAAACGGTGG"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATGTCAGTACGCCAAACGGTGG",
+"CAATGTCAGTACGCCAAACGGTGG"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATGTCAGTACGCCAAACGGTGG",
+"CAATGTCAGTACGCCAAACGGTGG"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATGTCAGTACGCCAAACGGTGG",
+"CAATGTCAGTACGCCAAACGGTGG"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATGTCAGTACGCCAAACGGTGG",
+"CAATGTCAGTACGCCAAACGGTGG"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCTTCGGTCTGGACAAGCTTATAC",
+"GCTTCGGACGTCTGGACAAGCTTATAC"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCTTCGGTCTGGACAAGCTTATAC",
+"GCTTCGGACGTCTGGACAAGCTTATAC"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCTTCGGTCTGGACAAGCTTATAC",
+"GCTTCGGACGTCTGGACAAGCTTATAC"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCTTCGGTCTGGACAAGCTTATAC",
+"GCTTCGGACGTCTGGACAAGCTTATAC"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCTTCGGTCTGGACAAGCTTATAC",
+"GCTTCGGACGTCTGGACAAGCTTATAC"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTAAGAGGGCTCACTCCGCACAC",
+"TCTAAGATGGCTCACTCCGCACAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.05558097911529139,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTAAGAGGGCTCACTCCGCACAC",
+"TCTAAGATGGCTCACTCCGCACAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.05627323604992819,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTAAGAGGGCTCACTCCGCACAC",
+"TCTAAGATGGCTCACTCCGCACAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"k": 2.5,
+"result": [
+0.057906562373977566,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTAAGAGGGCTCACTCCGCACAC",
+"TCTAAGATGGCTCACTCCGCACAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTAAGAGGGCTCACTCCGCACAC",
+"TCTAAGATGGCTCACTCCGCACAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 11,
+"result": [
+0.05627323604992819,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTAGACTAGATCGACTGGGAGAT",
+"CTTAGACTAGATCGACTGGGACAAACGGAT"
+],
+"coords": [
+[
+0,
+21,
+21,
+24
+],
+[
+0,
+21,
+27,
+30
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTAGACTAGATCGACTGGGAGAT",
+"CTTAGACTAGATCGACTGGGACAAACGGAT"
+],
+"coords": [
+[
+0,
+21,
+21,
+24
+],
+[
+0,
+21,
+27,
+30
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTAGACTAGATCGACTGGGAGAT",
+"CTTAGACTAGATCGACTGGGACAAACGGAT"
+],
+"coords": [
+[
+0,
+21,
+21,
+24
+],
+[
+0,
+21,
+27,
+30
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTAGACTAGATCGACTGGGAGAT",
+"CTTAGACTAGATCGACTGGGACAAACGGAT"
+],
+"coords": [
+[
+0,
+21,
+21,
+24
+],
+[
+0,
+21,
+27,
+30
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTAGACTAGATCGACTGGGAGAT",
+"CTTAGACTAGATCGACTGGGACAAACGGAT"
+],
+"coords": [
+[
+0,
+21,
+21,
+24
+],
+[
+0,
+21,
+27,
+30
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGGGGCGGGATTTCTACCAATGC",
+"TTGGGGCGAGTTTTCTTCCCATAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.25235417746590966,
+0.21576155433883568
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGGGGCGGGATTTCTACCAATGC",
+"TTGGGGCGAGTTTTCTTCCCATAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.27061524234253137,
+0.3089847061879058
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGGGGCGGGATTTCTACCAATGC",
+"TTGGGGCGAGTTTTCTTCCCATAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"k": 2.5,
+"result": [
+0.2736734423393733,
+0.17054238164674568
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGGGGCGGGATTTCTACCAATGC",
+"TTGGGGCGAGTTTTCTTCCCATAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"result": [
+0.24710940084768174,
+0.2326161962278796
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGGGGCGGGATTTCTACCAATGC",
+"TTGGGGCGAGTTTTCTTCCCATAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 11,
+"result": [
+0.27061524234253137,
+0.3089847061879058
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCGACGTTTTATGTTGGCCGTTA",
+"AGCGACGTTCCCTGTTGTTATCCGTTA"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"result": [
+0.17385121054299324,
+0.25235417746590955
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCGACGTTTTATGTTGGCCGTTA",
+"AGCGACGTTCCCTGTTGTTATCCGTTA"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"result": [
+0.13809624691374542,
+0.11656521919916914
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCGACGTTTTATGTTGGCCGTTA",
+"AGCGACGTTCCCTGTTGTTATCCGTTA"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"k": 2.5,
+"result": [
+0.18981797076162138,
+0.18459980215418134
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCGACGTTTTATGTTGGCCGTTA",
+"AGCGACGTTCCCTGTTGTTATCCGTTA"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"table": 2,
+"result": [
+0.17555446638480005,
+0.24208004419728812
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCGACGTTTTATGTTGGCCGTTA",
+"AGCGACGTTCCCTGTTGTTATCCGTTA"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"table": 11,
+"result": [
+0.13809624691374542,
+0.11656521919916914
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTCTCCCCCTGGATTGCATAAGG",
+"TCTCTACCCGTAGAATTGAGAAGA"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.35967981019641465,
+0.7166335837705773
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTCTCCCCCTGGATTGCATAAGG",
+"TCTCTACCCGTAGAATTGAGAAGA"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.34940249342425395,
+0.6355818459055498
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTCTCCCCCTGGATTGCATAAGG",
+"TCTCTACCCGTAGAATTGAGAAGA"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"k": 2.5,
+"result": [
+0.38311921782449304,
+0.5913430202732027
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTCTCCCCCTGGATTGCATAAGG",
+"TCTCTACCCGTAGAATTGAGAAGA"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTCTCCCCCTGGATTGCATAAGG",
+"TCTCTACCCGTAGAATTGAGAAGA"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 11,
+"result": [
+0.34940249342425395,
+0.6355818459055498
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCCAGGACGTGGGCGTATGTCTAT",
+"TGCAGGACTTGGGCTAATATTGTCTGT"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"result": [
+0.24710940084768174,
+0.5716050390351726
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCCAGGACGTGGGCGTATGTCTAT",
+"TGCAGGACTTGGGCTAATATTGTCTGT"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -7.0000000000000036"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCCAGGACGTGGGCGTATGTCTAT",
+"TGCAGGACTTGGGCTAATATTGTCTGT"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"k": 2.5,
+"result": [
+0.2578286543271182,
+0.47699157503999756
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCCAGGACGTGGGCGTATGTCTAT",
+"TGCAGGACTTGGGCTAATATTGTCTGT"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCCAGGACGTGGGCGTATGTCTAT",
+"TGCAGGACTTGGGCTAATATTGTCTGT"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -7.0000000000000036"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGAAACATCTCTTCTTTACGTGT",
+"GTGCGATCTGTTTTCTTGACCTGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.5996456880888876,
+1.2070784343255752
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGAAACATCTCTTCTTTACGTGT",
+"GTGCGATCTGTTTTCTTGACCTGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.6233440655212412,
+0.8168603806165692
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGAAACATCTCTTCTTTACGTGT",
+"GTGCGATCTGTTTTCTTGACCTGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"k": 2.5,
+"result": [
+0.6484466917335618,
+0.8886544747143876
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGAAACATCTCTTCTTTACGTGT",
+"GTGCGATCTGTTTTCTTGACCTGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"result": [
+0.6445369497017067,
+0.9744622380976953
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGAAACATCTCTTCTTTACGTGT",
+"GTGCGATCTGTTTTCTTGACCTGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 11,
+"result": [
+0.6233440655212412,
+0.8168603806165692
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCCTTACGAAAAAGCCCAGTGCCA",
+"TCCTTACCACTGAGAAGCCCATGGCCA"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"result": [
+0.269530500680923,
+0.1772915835481728
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCCTTACGAAAAAGCCCAGTGCCA",
+"TCCTTACCACTGAGAAGCCCATGGCCA"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"result": [
+0.28593308624871244,
+0.20881894674154222
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCCTTACGAAAAAGCCCAGTGCCA",
+"TCCTTACCACTGAGAAGCCCATGGCCA"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"k": 2.5,
+"result": [
+0.2869131364389664,
+0.15307151725763646
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCCTTACGAAAAAGCCCAGTGCCA",
+"TCCTTACCACTGAGAAGCCCATGGCCA"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCCTTACGAAAAAGCCCAGTGCCA",
+"TCCTTACCACTGAGAAGCCCATGGCCA"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"table": 11,
+"result": [
+0.28593308624871244,
+0.20881894674154222
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCAACCTGTACGATGGCCAAAAGT",
+"CCCTTCTTTCCCCACGCGATTCGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.8239592165010822,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCAACCTGTACGATGGCCAAAAGT",
+"CCCTTCTTTCCCCACGCGATTCGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -2.0"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCAACCTGTACGATGGCCAAAAGT",
+"CCCTTCTTTCCCCACGCGATTCGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"k": 2.5,
+"result": [
+0.8868993548160495,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCAACCTGTACGATGGCCAAAAGT",
+"CCCTTCTTTCCCCACGCGATTCGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"result": [
+0.9089557304813345,
+-1
+],
+"types": [
+"float",
+"int"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCAACCTGTACGATGGCCAAAAGT",
+"CCCTTCTTTCCCCACGCGATTCGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -2.0"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCACCACATGCCAGATCTCTCCGG",
+"AATCTCACCCGGCCCATTCCTAATGGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+24
+],
+[
+0,
+9,
+12,
+27
+]
+]
+},
+"result": [
+2.0166141293807436,
+2.7851790500282303
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCACCACATGCCAGATCTCTCCGG",
+"AATCTCACCCGGCCCATTCCTAATGGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+24
+],
+[
+0,
+9,
+12,
+27
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -7.0000000000000036"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCACCACATGCCAGATCTCTCCGG",
+"AATCTCACCCGGCCCATTCCTAATGGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+24
+],
+[
+0,
+9,
+12,
+27
+]
+]
+},
+"k": 2.5,
+"result": [
+2.3035272658197083,
+1.9237120180961529
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCACCACATGCCAGATCTCTCCGG",
+"AATCTCACCCGGCCCATTCCTAATGGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+24
+],
+[
+0,
+9,
+12,
+27
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCACCACATGCCAGATCTCTCCGG",
+"AATCTCACCCGGCCCATTCCTAATGGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+24
+],
+[
+0,
+9,
+12,
+27
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -7.0000000000000036"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG",
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG",
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG",
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG",
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG",
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTAAC",
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTTGGAAC"
+],
+"coords": [
+[
+0,
+33,
+33,
+36
+],
+[
+0,
+33,
+36,
+39
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTAAC",
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTTGGAAC"
+],
+"coords": [
+[
+0,
+33,
+33,
+36
+],
+[
+0,
+33,
+36,
+39
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTAAC",
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTTGGAAC"
+],
+"coords": [
+[
+0,
+33,
+33,
+36
+],
+[
+0,
+33,
+36,
+39
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTAAC",
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTTGGAAC"
+],
+"coords": [
+[
+0,
+33,
+33,
+36
+],
+[
+0,
+33,
+36,
+39
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTAAC",
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTTGGAAC"
+],
+"coords": [
+[
+0,
+33,
+33,
+36
+],
+[
+0,
+33,
+36,
+39
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGAGGAGAAGACGGCGACGAATTATGTCGAATCGGT",
+"CGAGGAGAAGACGTCGACGGATTATGTCGAATCGGT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+0.07799228514303573,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGAGGAGAAGACGGCGACGAATTATGTCGAATCGGT",
+"CGAGGAGAAGACGTCGACGGATTATGTCGAATCGGT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+0.07843976691257445,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGAGGAGAAGACGGCGACGAATTATGTCGAATCGGT",
+"CGAGGAGAAGACGTCGACGGATTATGTCGAATCGGT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"k": 2.5,
+"result": [
+0.08227418794231837,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGAGGAGAAGACGGCGACGAATTATGTCGAATCGGT",
+"CGAGGAGAAGACGTCGACGGATTATGTCGAATCGGT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"result": [
+0.0750625939177369,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGAGGAGAAGACGGCGACGAATTATGTCGAATCGGT",
+"CGAGGAGAAGACGTCGACGGATTATGTCGAATCGGT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 11,
+"result": [
+0.07843976691257445,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATCCCACTACCGTGATCCAGCTCAGTCGAGGCCTA",
+"TGTCCCACTACCGTGATCCAGAGTCTCAGTCGAGGCCTA"
+],
+"coords": [
+[
+0,
+21,
+21,
+36
+],
+[
+0,
+21,
+24,
+39
+]
+]
+},
+"result": [
+0.04000948552896955,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATCCCACTACCGTGATCCAGCTCAGTCGAGGCCTA",
+"TGTCCCACTACCGTGATCCAGAGTCTCAGTCGAGGCCTA"
+],
+"coords": [
+[
+0,
+21,
+21,
+36
+],
+[
+0,
+21,
+24,
+39
+]
+]
+},
+"result": [
+0.040323537609522085,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATCCCACTACCGTGATCCAGCTCAGTCGAGGCCTA",
+"TGTCCCACTACCGTGATCCAGAGTCTCAGTCGAGGCCTA"
+],
+"coords": [
+[
+0,
+21,
+21,
+36
+],
+[
+0,
+21,
+24,
+39
+]
+]
+},
+"k": 2.5,
+"result": [
+0.04148522848803923,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATCCCACTACCGTGATCCAGCTCAGTCGAGGCCTA",
+"TGTCCCACTACCGTGATCCAGAGTCTCAGTCGAGGCCTA"
+],
+"coords": [
+[
+0,
+21,
+21,
+36
+],
+[
+0,
+21,
+24,
+39
+]
+]
+},
+"table": 2,
+"result": [
+0.03896980419803333,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATCCCACTACCGTGATCCAGCTCAGTCGAGGCCTA",
+"TGTCCCACTACCGTGATCCAGAGTCTCAGTCGAGGCCTA"
+],
+"coords": [
+[
+0,
+21,
+21,
+36
+],
+[
+0,
+21,
+24,
+39
+]
+]
+},
+"table": 11,
+"result": [
+0.040323537609522085,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCATCACTTCAACCCGGAAGTTTCTCGTTTAGAGGA",
+"GCATCACATCAACCCGGAAGTTTCCCGTTTAGAGGA"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+0.11866800391117062,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCATCACTTCAACCCGGAAGTTTCTCGTTTAGAGGA",
+"GCATCACATCAACCCGGAAGTTTCCCGTTTAGAGGA"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+0.12057449393256335,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCATCACTTCAACCCGGAAGTTTCTCGTTTAGAGGA",
+"GCATCACATCAACCCGGAAGTTTCCCGTTTAGAGGA"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"k": 2.5,
+"result": [
+0.12413582885818009,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCATCACTTCAACCCGGAAGTTTCTCGTTTAGAGGA",
+"GCATCACATCAACCCGGAAGTTTCCCGTTTAGAGGA"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCATCACTTCAACCCGGAAGTTTCTCGTTTAGAGGA",
+"GCATCACATCAACCCGGAAGTTTCCCGTTTAGAGGA"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 11,
+"result": [
+0.12057449393256335,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACCTACATAGTATGCGGGCCGTTTTTGGGCTTTCG",
+"GACCTACATAGTATGCGGGCCGTTTTTTTCGGGTTTTCG"
+],
+"coords": [
+[
+0,
+27,
+27,
+36
+],
+[
+0,
+27,
+30,
+39
+]
+]
+},
+"result": [
+0.037507815430996065,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACCTACATAGTATGCGGGCCGTTTTTGGGCTTTCG",
+"GACCTACATAGTATGCGGGCCGTTTTTTTCGGGTTTTCG"
+],
+"coords": [
+[
+0,
+27,
+27,
+36
+],
+[
+0,
+27,
+30,
+39
+]
+]
+},
+"result": [
+0.038274711562165456,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACCTACATAGTATGCGGGCCGTTTTTGGGCTTTCG",
+"GACCTACATAGTATGCGGGCCGTTTTTTTCGGGTTTTCG"
+],
+"coords": [
+[
+0,
+27,
+27,
+36
+],
+[
+0,
+27,
+30,
+39
+]
+]
+},
+"k": 2.5,
+"result": [
+0.03913931487792764,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACCTACATAGTATGCGGGCCGTTTTTGGGCTTTCG",
+"GACCTACATAGTATGCGGGCCGTTTTTTTCGGGTTTTCG"
+],
+"coords": [
+[
+0,
+27,
+27,
+36
+],
+[
+0,
+27,
+30,
+39
+]
+]
+},
+"table": 2,
+"result": [
+0.037507815430996065,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACCTACATAGTATGCGGGCCGTTTTTGGGCTTTCG",
+"GACCTACATAGTATGCGGGCCGTTTTTTTCGGGTTTTCG"
+],
+"coords": [
+[
+0,
+27,
+27,
+36
+],
+[
+0,
+27,
+30,
+39
+]
+]
+},
+"table": 11,
+"result": [
+0.038274711562165456,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGGCCAATTACTCAACATGGTGTCGGCAGATTAGAG",
+"TGGCCAATTACACCCTTTGGTGTCGGGGGCCTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+0.21117438407575867,
+0.6943271068715239
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGGCCAATTACTCAACATGGTGTCGGCAGATTAGAG",
+"TGGCCAATTACACCCTTTGGTGTCGGGGGCCTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+0.2494206329191316,
+14.424693747383717
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGGCCAATTACTCAACATGGTGTCGGCAGATTAGAG",
+"TGGCCAATTACACCCTTTGGTGTCGGGGGCCTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"k": 2.5,
+"result": [
+0.22109965516548374,
+0.581298227270874
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGGCCAATTACTCAACATGGTGTCGGCAGATTAGAG",
+"TGGCCAATTACACCCTTTGGTGTCGGGGGCCTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGGCCAATTACTCAACATGGTGTCGGCAGATTAGAG",
+"TGGCCAATTACACCCTTTGGTGTCGGGGGCCTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 11,
+"result": [
+0.2494206329191316,
+14.424693747383717
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTTGATTATGTGGGCATTCGCTCGGAAACCTCGT",
+"GGTTTGCTACTTATGTGGGCGTTCGATCGGAAACCGCGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+36
+],
+[
+0,
+6,
+9,
+39
+]
+]
+},
+"result": [
+0.07553548170137306,
+0.2964845524831098
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTTGATTATGTGGGCATTCGCTCGGAAACCTCGT",
+"GGTTTGCTACTTATGTGGGCGTTCGATCGGAAACCGCGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+36
+],
+[
+0,
+6,
+9,
+39
+]
+]
+},
+"result": [
+0.07635949516568881,
+0.3359549004802602
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTTGATTATGTGGGCATTCGCTCGGAAACCTCGT",
+"GGTTTGCTACTTATGTGGGCGTTCGATCGGAAACCGCGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+36
+],
+[
+0,
+6,
+9,
+39
+]
+]
+},
+"k": 2.5,
+"result": [
+0.07833199752569804,
+0.25970717753837536
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTTGATTATGTGGGCATTCGCTCGGAAACCTCGT",
+"GGTTTGCTACTTATGTGGGCGTTCGATCGGAAACCGCGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+36
+],
+[
+0,
+6,
+9,
+39
+]
+]
+},
+"table": 2,
+"result": [
+0.07601437069521559,
+0.2892468606089886
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTTGATTATGTGGGCATTCGCTCGGAAACCTCGT",
+"GGTTTGCTACTTATGTGGGCGTTCGATCGGAAACCGCGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+36
+],
+[
+0,
+6,
+9,
+39
+]
+]
+},
+"table": 11,
+"result": [
+0.07635949516568881,
+0.3359549004802602
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGGAATTAAAATATGAAAGGGCCGTTCAAGGCATT",
+"TTTCCAGATAAACAGTTAGGCCCCATTCCCGGCATT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+1.0124450377117613,
+0.17433445798239244
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGGAATTAAAATATGAAAGGGCCGTTCAAGGCATT",
+"TTTCCAGATAAACAGTTAGGCCCCATTCCCGGCATT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -8.999999999999996"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGGAATTAAAATATGAAAGGGCCGTTCAAGGCATT",
+"TTTCCAGATAAACAGTTAGGCCCCATTCCCGGCATT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"k": 2.5,
+"result": [
+1.1589657490672018,
+0.13947341105434174
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGGAATTAAAATATGAAAGGGCCGTTCAAGGCATT",
+"TTTCCAGATAAACAGTTAGGCCCCATTCCCGGCATT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGGAATTAAAATATGAAAGGGCCGTTCAAGGCATT",
+"TTTCCAGATAAACAGTTAGGCCCCATTCCCGGCATT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -8.999999999999996"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCAAATGAGCACCAATTAAGCGATCGGAGCAGTTCG",
+"GCAATTGTGACCGAACAGGATCGCGAGAGAAGCAGTTGG"
+],
+"coords": [
+[
+0,
+12,
+12,
+36
+],
+[
+0,
+12,
+15,
+39
+]
+]
+},
+"result": [
+0.4477286808593936,
+0.7215275652467694
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCAAATGAGCACCAATTAAGCGATCGGAGCAGTTCG",
+"GCAATTGTGACCGAACAGGATCGCGAGAGAAGCAGTTGG"
+],
+"coords": [
+[
+0,
+12,
+12,
+36
+],
+[
+0,
+12,
+15,
+39
+]
+]
+},
+"result": [
+0.4363179650355397,
+0.24226475312790585
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCAAATGAGCACCAATTAAGCGATCGGAGCAGTTCG",
+"GCAATTGTGACCGAACAGGATCGCGAGAGAAGCAGTTGG"
+],
+"coords": [
+[
+0,
+12,
+12,
+36
+],
+[
+0,
+12,
+15,
+39
+]
+]
+},
+"k": 2.5,
+"result": [
+0.4871819491997287,
+0.5101828317930281
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCAAATGAGCACCAATTAAGCGATCGGAGCAGTTCG",
+"GCAATTGTGACCGAACAGGATCGCGAGAGAAGCAGTTGG"
+],
+"coords": [
+[
+0,
+12,
+12,
+36
+],
+[
+0,
+12,
+15,
+39
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCAAATGAGCACCAATTAAGCGATCGGAGCAGTTCG",
+"GCAATTGTGACCGAACAGGATCGCGAGAGAAGCAGTTGG"
+],
+"coords": [
+[
+0,
+12,
+12,
+36
+],
+[
+0,
+12,
+15,
+39
+]
+]
+},
+"table": 11,
+"result": [
+0.4363179650355397,
+0.24226475312790585
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATTGCCCATCGCTTGAACCCCTCATGCATCATCGGG",
+"ATTACCGGCCCGGGCGCGCATAAAAGTTGCTTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+1.3904184377512956,
+1.590197652150069
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATTGCCCATCGCTTGAACCCCTCATGCATCATCGGG",
+"ATTACCGGCCCGGGCGCGCATAAAAGTTGCTTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATTGCCCATCGCTTGAACCCCTCATGCATCATCGGG",
+"ATTACCGGCCCGGGCGCGCATAAAAGTTGCTTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"k": 2.5,
+"result": [
+1.6805322669569684,
+1.0148566153522427
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATTGCCCATCGCTTGAACCCCTCATGCATCATCGGG",
+"ATTACCGGCCCGGGCGCGCATAAAAGTTGCTTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"result": [
+1.4082764242715842,
+1.5276614454457804
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATTGCCCATCGCTTGAACCCCTCATGCATCATCGGG",
+"ATTACCGGCCCGGGCGCGCATAAAAGTTGCTTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTCCAGACTGGGCAAGTGGGGTTTTCACGCTGGT",
+"CCTGCATCATTTCTTTACAACAGCGCCGCAAAATTAATT"
+],
+"coords": [
+[
+0,
+18,
+18,
+36
+],
+[
+0,
+18,
+21,
+39
+]
+]
+},
+"result": [
+-1,
+1.226187748301315
+],
+"types": [
+"int",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTCCAGACTGGGCAAGTGGGGTTTTCACGCTGGT",
+"CCTGCATCATTTCTTTACAACAGCGCCGCAAAATTAATT"
+],
+"coords": [
+[
+0,
+18,
+18,
+36
+],
+[
+0,
+18,
+21,
+39
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -4.599999999999999"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTCCAGACTGGGCAAGTGGGGTTTTCACGCTGGT",
+"CCTGCATCATTTCTTTACAACAGCGCCGCAAAATTAATT"
+],
+"coords": [
+[
+0,
+18,
+18,
+36
+],
+[
+0,
+18,
+21,
+39
+]
+]
+},
+"k": 2.5,
+"result": [
+-1,
+0.9211538382852781
+],
+"types": [
+"int",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTCCAGACTGGGCAAGTGGGGTTTTCACGCTGGT",
+"CCTGCATCATTTCTTTACAACAGCGCCGCAAAATTAATT"
+],
+"coords": [
+[
+0,
+18,
+18,
+36
+],
+[
+0,
+18,
+21,
+39
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTCCAGACTGGGCAAGTGGGGTTTTCACGCTGGT",
+"CCTGCATCATTTCTTTACAACAGCGCCGCAAAATTAATT"
+],
+"coords": [
+[
+0,
+18,
+18,
+36
+],
+[
+0,
+18,
+21,
+39
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -4.599999999999999"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA",
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA",
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA",
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA",
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA",
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCACCCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT",
+"GTCACCGAGCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT"
+],
+"coords": [
+[
+0,
+6,
+6,
+60
+],
+[
+0,
+6,
+9,
+63
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCACCCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT",
+"GTCACCGAGCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT"
+],
+"coords": [
+[
+0,
+6,
+6,
+60
+],
+[
+0,
+6,
+9,
+63
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCACCCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT",
+"GTCACCGAGCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT"
+],
+"coords": [
+[
+0,
+6,
+6,
+60
+],
+[
+0,
+6,
+9,
+63
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCACCCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT",
+"GTCACCGAGCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT"
+],
+"coords": [
+[
+0,
+6,
+6,
+60
+],
+[
+0,
+6,
+9,
+63
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCACCCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT",
+"GTCACCGAGCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT"
+],
+"coords": [
+[
+0,
+6,
+6,
+60
+],
+[
+0,
+6,
+9,
+63
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAGGGTTGAAAACCCCAAGGGGACTTTTCTAGTCTGCCAAAAATGCAAGACCAACCCA",
+"AAAAGGGTTGAAAACCCCAAGGGCACTTTTCTAGTCTGCCAAAAATGCAAAACCAACCCA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+0.0,
+0.1772915835481728
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAGGGTTGAAAACCCCAAGGGGACTTTTCTAGTCTGCCAAAAATGCAAGACCAACCCA",
+"AAAAGGGTTGAAAACCCCAAGGGCACTTTTCTAGTCTGCCAAAAATGCAAAACCAACCCA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+0.0,
+0.13627045537189617
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAGGGTTGAAAACCCCAAGGGGACTTTTCTAGTCTGCCAAAAATGCAAGACCAACCCA",
+"AAAAGGGTTGAAAACCCCAAGGGCACTTTTCTAGTCTGCCAAAAATGCAAAACCAACCCA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.1421563535755813
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAGGGTTGAAAACCCCAAGGGGACTTTTCTAGTCTGCCAAAAATGCAAGACCAACCCA",
+"AAAAGGGTTGAAAACCCCAAGGGCACTTTTCTAGTCTGCCAAAAATGCAAAACCAACCCA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAGGGTTGAAAACCCCAAGGGGACTTTTCTAGTCTGCCAAAAATGCAAGACCAACCCA",
+"AAAAGGGTTGAAAACCCCAAGGGCACTTTTCTAGTCTGCCAAAAATGCAAAACCAACCCA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.13627045537189617
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGGACGTG",
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGCCAGTAGACGTG"
+],
+"coords": [
+[
+0,
+54,
+54,
+60
+],
+[
+0,
+54,
+60,
+66
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGGACGTG",
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGCCAGTAGACGTG"
+],
+"coords": [
+[
+0,
+54,
+54,
+60
+],
+[
+0,
+54,
+60,
+66
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGGACGTG",
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGCCAGTAGACGTG"
+],
+"coords": [
+[
+0,
+54,
+54,
+60
+],
+[
+0,
+54,
+60,
+66
+]
+]
+},
+"k": 2.5,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGGACGTG",
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGCCAGTAGACGTG"
+],
+"coords": [
+[
+0,
+54,
+54,
+60
+],
+[
+0,
+54,
+60,
+66
+]
+]
+},
+"table": 2,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGGACGTG",
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGCCAGTAGACGTG"
+],
+"coords": [
+[
+0,
+54,
+54,
+60
+],
+[
+0,
+54,
+60,
+66
+]
+]
+},
+"table": 11,
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTAACTTTGGGACTCCATTCAACATTCAGATTAACACTCGTAATTTAATATCTGACAAT",
+"ACTCACTGTGGGACTCCATACAATATTCAGACCAACGATCGTAATTTAATATCTCACATT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+0.19151001885663343,
+0.1772915835481728
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTAACTTTGGGACTCCATTCAACATTCAGATTAACACTCGTAATTTAATATCTGACAAT",
+"ACTCACTGTGGGACTCCATACAATATTCAGACCAACGATCGTAATTTAATATCTCACATT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+0.19370689698649046,
+0.10094167098636388
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTAACTTTGGGACTCCATTCAACATTCAGATTAACACTCGTAATTTAATATCTGACAAT",
+"ACTCACTGTGGGACTCCATACAATATTCAGACCAACGATCGTAATTTAATATCTCACATT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"k": 2.5,
+"result": [
+0.20348632124068172,
+0.14561701083071812
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTAACTTTGGGACTCCATTCAACATTCAGATTAACACTCGTAATTTAATATCTGACAAT",
+"ACTCACTGTGGGACTCCATACAATATTCAGACCAACGATCGTAATTTAATATCTCACATT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"result": [
+0.18700944278117537,
+0.1946333966138134
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTAACTTTGGGACTCCATTCAACATTCAGATTAACACTCGTAATTTAATATCTGACAAT",
+"ACTCACTGTGGGACTCCATACAATATTCAGACCAACGATCGTAATTTAATATCTCACATT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 11,
+"result": [
+0.19370689698649046,
+0.10094167098636388
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGTGCCCATTGCTACTTCACCAAATAACAAGACACCCCGACTTACGCTTGAACCCTTTG",
+"AAGTGCCCATTGCTGCGTCACCGAATAATAAGACACCCCGACTTAAGCTTGAAACCTGGATTG"
+],
+"coords": [
+[
+0,
+57,
+57,
+60
+],
+[
+0,
+57,
+60,
+63
+]
+]
+},
+"result": [
+0.11651283001437178,
+0.07699061554506251
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGTGCCCATTGCTACTTCACCAAATAACAAGACACCCCGACTTACGCTTGAACCCTTTG",
+"AAGTGCCCATTGCTGCGTCACCGAATAATAAGACACCCCGACTTAAGCTTGAAACCTGGATTG"
+],
+"coords": [
+[
+0,
+57,
+57,
+60
+],
+[
+0,
+57,
+60,
+63
+]
+]
+},
+"result": [
+0.1006359457522776,
+0.09042515728274829
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGTGCCCATTGCTACTTCACCAAATAACAAGACACCCCGACTTACGCTTGAACCCTTTG",
+"AAGTGCCCATTGCTGCGTCACCGAATAATAAGACACCCCGACTTAAGCTTGAAACCTGGATTG"
+],
+"coords": [
+[
+0,
+57,
+57,
+60
+],
+[
+0,
+57,
+60,
+63
+]
+]
+},
+"k": 2.5,
+"result": [
+0.12617084528857136,
+0.06146783045524941
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGTGCCCATTGCTACTTCACCAAATAACAAGACACCCCGACTTACGCTTGAACCCTTTG",
+"AAGTGCCCATTGCTGCGTCACCGAATAATAAGACACCCCGACTTAAGCTTGAAACCTGGATTG"
+],
+"coords": [
+[
+0,
+57,
+57,
+60
+],
+[
+0,
+57,
+60,
+63
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGTGCCCATTGCTACTTCACCAAATAACAAGACACCCCGACTTACGCTTGAACCCTTTG",
+"AAGTGCCCATTGCTGCGTCACCGAATAATAAGACACCCCGACTTAAGCTTGAAACCTGGATTG"
+],
+"coords": [
+[
+0,
+57,
+57,
+60
+],
+[
+0,
+57,
+60,
+63
+]
+]
+},
+"table": 11,
+"result": [
+0.1006359457522776,
+0.09042515728274829
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGAGGCCACTCTACCGTCGCCTCGGGACGTTTCTAAAATTACACTCCTAGCTGCCCGT",
+"ATGGAGACGAATCTACCGTCGACTCTGGAGGTCTCTCAAATTACACTCGTAGCTGCCCGT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+0.2167425878338472,
+0.12399298531903766
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGAGGCCACTCTACCGTCGCCTCGGGACGTTTCTAAAATTACACTCCTAGCTGCCCGT",
+"ATGGAGACGAATCTACCGTCGACTCTGGAGGTCTCTCAAATTACACTCGTAGCTGCCCGT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+0.3995179799619522,
+0.005168091776421256
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGAGGCCACTCTACCGTCGCCTCGGGACGTTTCTAAAATTACACTCCTAGCTGCCCGT",
+"ATGGAGACGAATCTACCGTCGACTCTGGAGGTCTCTCAAATTACACTCGTAGCTGCCCGT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"k": 2.5,
+"result": [
+0.22492663783991718,
+0.1145076301567183
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGAGGCCACTCTACCGTCGCCTCGGGACGTTTCTAAAATTACACTCCTAGCTGCCCGT",
+"ATGGAGACGAATCTACCGTCGACTCTGGAGGTCTCTCAAATTACACTCGTAGCTGCCCGT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"result": [
+0.21382606939371696,
+0.1279691377730725
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGAGGCCACTCTACCGTCGCCTCGGGACGTTTCTAAAATTACACTCCTAGCTGCCCGT",
+"ATGGAGACGAATCTACCGTCGACTCTGGAGGTCTCTCAAATTACACTCGTAGCTGCCCGT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 11,
+"result": [
+0.3995179799619522,
+0.005168091776421256
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTCACTCCAAGGCTGATGTCTCAAACAATTGACGCCGATCCTCGGATGGCAACGTTATGC",
+"TTCAATCCTCCGTGCCTGATTTCTCAGGCCATTGACGCCGATCGTCGGATCGCGAGGTTATGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+12,
+63
+]
+]
+},
+"result": [
+0.19951543175295108,
+0.4692794248233094
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTCACTCCAAGGCTGATGTCTCAAACAATTGACGCCGATCCTCGGATGGCAACGTTATGC",
+"TTCAATCCTCCGTGCCTGATTTCTCAGGCCATTGACGCCGATCGTCGGATCGCGAGGTTATGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+12,
+63
+]
+]
+},
+"result": [
+0.17931916336797346,
+0.4191781830293397
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTCACTCCAAGGCTGATGTCTCAAACAATTGACGCCGATCCTCGGATGGCAACGTTATGC",
+"TTCAATCCTCCGTGCCTGATTTCTCAGGCCATTGACGCCGATCGTCGGATCGCGAGGTTATGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+12,
+63
+]
+]
+},
+"k": 2.5,
+"result": [
+0.21129915273415947,
+0.38648245215998933
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTCACTCCAAGGCTGATGTCTCAAACAATTGACGCCGATCCTCGGATGGCAACGTTATGC",
+"TTCAATCCTCCGTGCCTGATTTCTCAGGCCATTGACGCCGATCGTCGGATCGCGAGGTTATGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+12,
+63
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTCACTCCAAGGCTGATGTCTCAAACAATTGACGCCGATCCTCGGATGGCAACGTTATGC",
+"TTCAATCCTCCGTGCCTGATTTCTCAGGCCATTGACGCCGATCGTCGGATCGCGAGGTTATGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+12,
+63
+]
+]
+},
+"table": 11,
+"result": [
+0.17931916336797346,
+0.4191781830293397
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGGCGCTCTACACGCTCTCGATCAGCTACGAAAAACGGGTCTGGTAGTGTCTCGGAGATT",
+"CCCCCCCCCACTTGCTGCCTATCGGCGACGATAAACTGGCGACGAAGGCCACCACACGAT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+0.7267008490196828,
+1.158674543472396
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGGCGCTCTACACGCTCTCGATCAGCTACGAAAAACGGGTCTGGTAGTGTCTCGGAGATT",
+"CCCCCCCCCACTTGCTGCCTATCGGCGACGATAAACTGGCGACGAAGGCCACCACACGAT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -27.000000000000043"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGGCGCTCTACACGCTCTCGATCAGCTACGAAAAACGGGTCTGGTAGTGTCTCGGAGATT",
+"CCCCCCCCCACTTGCTGCCTATCGGCGACGATAAACTGGCGACGAAGGCCACCACACGAT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"k": 2.5,
+"result": [
+0.7545346870973184,
+1.0233394644036309
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGGCGCTCTACACGCTCTCGATCAGCTACGAAAAACGGGTCTGGTAGTGTCTCGGAGATT",
+"CCCCCCCCCACTTGCTGCCTATCGGCGACGATAAACTGGCGACGAAGGCCACCACACGAT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGGCGCTCTACACGCTCTCGATCAGCTACGAAAAACGGGTCTGGTAGTGTCTCGGAGATT",
+"CCCCCCCCCACTTGCTGCCTATCGGCGACGATAAACTGGCGACGAAGGCCACCACACGAT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -27.000000000000043"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTGTACGACGTCATGGCCTCACATTACTGTGGCGCAAAAGACGCTCAGCGACTTACAGCC",
+"GCAGCTTTTACTTTCCTTTGTGACCCACACTACATACGTGCAACCCCCCTTCATGAGCTACCTCCC"
+],
+"coords": [
+[
+0,
+15,
+15,
+60
+],
+[
+0,
+15,
+21,
+66
+]
+]
+},
+"result": [
+1.0108710602190711,
+1.6828084447283325
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTGTACGACGTCATGGCCTCACATTACTGTGGCGCAAAAGACGCTCAGCGACTTACAGCC",
+"GCAGCTTTTACTTTCCTTTGTGACCCACACTACATACGTGCAACCCCCCTTCATGAGCTACCTCCC"
+],
+"coords": [
+[
+0,
+15,
+15,
+60
+],
+[
+0,
+15,
+21,
+66
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -9.000000000000005"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTGTACGACGTCATGGCCTCACATTACTGTGGCGCAAAAGACGCTCAGCGACTTACAGCC",
+"GCAGCTTTTACTTTCCTTTGTGACCCACACTACATACGTGCAACCCCCCTTCATGAGCTACCTCCC"
+],
+"coords": [
+[
+0,
+15,
+15,
+60
+],
+[
+0,
+15,
+21,
+66
+]
+]
+},
+"k": 2.5,
+"result": [
+1.0940565716819868,
+1.2278410058868878
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTGTACGACGTCATGGCCTCACATTACTGTGGCGCAAAAGACGCTCAGCGACTTACAGCC",
+"GCAGCTTTTACTTTCCTTTGTGACCCACACTACATACGTGCAACCCCCCTTCATGAGCTACCTCCC"
+],
+"coords": [
+[
+0,
+15,
+15,
+60
+],
+[
+0,
+15,
+21,
+66
+]
+]
+},
+"table": 2,
+"result": [
+1.0315239679407753,
+1.5510096343921593
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTGTACGACGTCATGGCCTCACATTACTGTGGCGCAAAAGACGCTCAGCGACTTACAGCC",
+"GCAGCTTTTACTTTCCTTTGTGACCCACACTACATACGTGCAACCCCCCTTCATGAGCTACCTCCC"
+],
+"coords": [
+[
+0,
+15,
+15,
+60
+],
+[
+0,
+15,
+21,
+66
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -9.000000000000005"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACAATCTGGCTTGCATCATTGAGACCGTTAATGAACCGGCATCGTCCGTGCATATGTTA",
+"ATGCCCAGTCGATGTATCGTTTATGCAGATCCCCTCACTCGATGGCCCAATCAACCGGTA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"result": [
+1.5853822262978756,
+0.982441036751487
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACAATCTGGCTTGCATCATTGAGACCGTTAATGAACCGGCATCGTCCGTGCATATGTTA",
+"ATGCCCAGTCGATGTATCGTTTATGCAGATCCCCTCACTCGATGGCCCAATCAACCGGTA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -7.0000000000000036"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACAATCTGGCTTGCATCATTGAGACCGTTAATGAACCGGCATCGTCCGTGCATATGTTA",
+"ATGCCCAGTCGATGTATCGTTTATGCAGATCCCCTCACTCGATGGCCCAATCAACCGGTA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"k": 2.5,
+"result": [
+1.8552371214475243,
+0.7780264975705433
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACAATCTGGCTTGCATCATTGAGACCGTTAATGAACCGGCATCGTCCGTGCATATGTTA",
+"ATGCCCAGTCGATGTATCGTTTATGCAGATCCCCTCACTCGATGGCCCAATCAACCGGTA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"result": [
+1.5759454418058565,
+0.9867575954294526
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACAATCTGGCTTGCATCATTGAGACCGTTAATGAACCGGCATCGTCCGTGCATATGTTA",
+"ATGCCCAGTCGATGTATCGTTTATGCAGATCCCCTCACTCGATGGCCCAATCAACCGGTA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -7.0000000000000036"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACGTGTTCCCGGAAGAATCTCACCACACGAGCTTAGATCTGTCTGCGTTGACGCTGGC",
+"CTCGTGAATAATCTCGGCATATGCACTGTCCGGGGGGGCTATGGATTGAATCGTTTTGATCGTCTC"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+15,
+66
+]
+]
+},
+"result": [
+3.4463398876009297,
+1.1280580475822053
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACGTGTTCCCGGAAGAATCTCACCACACGAGCTTAGATCTGTCTGCGTTGACGCTGGC",
+"CTCGTGAATAATCTCGGCATATGCACTGTCCGGGGGGGCTATGGATTGAATCGTTTTGATCGTCTC"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+15,
+66
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -37.999999999999964"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACGTGTTCCCGGAAGAATCTCACCACACGAGCTTAGATCTGTCTGCGTTGACGCTGGC",
+"CTCGTGAATAATCTCGGCATATGCACTGTCCGGGGGGGCTATGGATTGAATCGTTTTGATCGTCTC"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+15,
+66
+]
+]
+},
+"k": 2.5,
+"result": [
+-1,
+0.9492497799984564
+],
+"types": [
+"int",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACGTGTTCCCGGAAGAATCTCACCACACGAGCTTAGATCTGTCTGCGTTGACGCTGGC",
+"CTCGTGAATAATCTCGGCATATGCACTGTCCGGGGGGGCTATGGATTGAATCGTTTTGATCGTCTC"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+15,
+66
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACGTGTTCCCGGAAGAATCTCACCACACGAGCTTAGATCTGTCTGCGTTGACGCTGGC",
+"CTCGTGAATAATCTCGGCATATGCACTGTCCGGGGGGGCTATGGATTGAATCGTTTTGATCGTCTC"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+15,
+66
+]
+]
+},
+"table": 11,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -37.999999999999964"
+}
+},
+{
+"kind": "dnds",
+"method": "bogus",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CACGGCCGTACTAGGCGC",
+"CACGGCCGTACTAGGCGC"
+],
+"coords": [
+[
+0,
+18
+],
+[
+0,
+18
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "Unknown method 'bogus'"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CACGGCCGTACTAGGCGC",
+"CACGGCCGTACTAGGCGC"
+],
+"coords": [
+[
+0,
+18
+],
+[
+0,
+18
+]
+]
+},
+"cfreq": "F1x4",
+"exc": {
+"type": "ValueError",
+"msg": "cfreq can only be specified when you are using ML method"
+}
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CACGGCCGTACTAGGCGC",
+"CACGGCCGTACTAGGCGC"
+],
+"coords": [
+[
+0,
+18
+],
+[
+0,
+18
+]
+]
+},
+"cfreq": "F2x",
+"exc": {
+"type": "ValueError",
+"msg": "cfreq must be 'F1x4', 'F3x4', or 'F61'"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGNAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "Unrecognized character in NAA in the target sequence (Codons consist of A, T, C or G)"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGTAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "KeyError",
+"msg": "TAA"
+}
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGTAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "KeyError",
+"msg": "TAA"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGAAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"result": [
+0.0,
+0.0
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGAAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAAA",
+"TTTTTT"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"result": [
+-1,
+0.8239592165010822
+],
+"types": [
+"int",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAAA",
+"TTTTTT"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AUGAAA",
+"AUGAAG"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "Unrecognized character in AUG in the target sequence (Codons consist of A, T, C or G)"
+}
+},
+{
+"kind": "dnds",
+"method": "NG86",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGAAAGG",
+"ATGAAAGG"
+],
+"coords": [
+[
+0,
+8
+],
+[
+0,
+8
+]
+]
+},
+"exc": {
+"type": "KeyError",
+"msg": "GG"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3"
+],
+"seqs": [
+"TACTGTTCGCCGCCCGACAATCAGCTAGAC",
+"TACTGTTCGCCGCCCGACAATCAGCTAGAT",
+"TACTATTCGCCGCCCGACCTTCAGCTAGAC",
+"TACTGTTCGCCGCCCGACCTTCAGCTAGAC"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp1",
+"sp1"
+],
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got 0.0"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3"
+],
+"seqs": [
+"TACTGTTCGCCGCCCGACAATCAGCTAGAC",
+"TACTGTTCGCCGCCCGACAATCAGCTAGAT",
+"TACTATTCGCCGCCCGACCTTCAGCTAGAC",
+"TACTGTTCGCCGCCCGACCTTCAGCTAGAC"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp1",
+"sp1"
+],
+"table": 2,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got 0.0"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3"
+],
+"seqs": [
+"TACTGTTCGCCGCCCGACAATCAGCTAGAC",
+"TACTGTTCGCCGCCCGACAATCAGCTAGAT",
+"TACTATTCGCCGCCCGACCTTCAGCTAGAC",
+"TACTGTTCGCCGCCCGACCTTCAGCTAGAC"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3"
+],
+"seqs": [
+"GCTAAAGACCGGGGCAACGTGTATTATGTG",
+"GCTAAAAACCGGGGCAACGTCTATTATGTG",
+"TTTCCCAACCCGGATAAAGGCTATTATCAG",
+"TTTCCCAACCCGGATAAAGGCTATTATCAG"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3"
+],
+"seqs": [
+"CATCCCAGACCTAAAGTCAATTACCTAGAT",
+"CATCCCAGACCTAAAGTCAATTACCTTGAT",
+"CGTAGCATATCTAGTCGCCCACCCCCGGCG",
+"CGTAGCATATCTAGTCTCGCACCCCCGGCG"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"ATGGGTGCGGCGCACGGTCGCTATGGTGTG",
+"ATGGGTACGGCGCACGGTCGCTATGGTGTG",
+"ATGGGTGCGGCGCACGGTCGATATGGTGTG",
+"ATCGGTGCGGTGCAGGGTCGCTATGGTGTG",
+"ATCGGTGCGGTGCAGGGTCGCTATGCTGTG",
+"AGCGGTGCGGTGCAGGGTCGCTATGGTGTG"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp1"
+],
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got 0.0"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"ATGGGTGCGGCGCACGGTCGCTATGGTGTG",
+"ATGGGTACGGCGCACGGTCGCTATGGTGTG",
+"ATGGGTGCGGCGCACGGTCGATATGGTGTG",
+"ATCGGTGCGGTGCAGGGTCGCTATGGTGTG",
+"ATCGGTGCGGTGCAGGGTCGCTATGCTGTG",
+"AGCGGTGCGGTGCAGGGTCGCTATGGTGTG"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp1"
+],
+"table": 2,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got 0.0"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"ATGGGTGCGGCGCACGGTCGCTATGGTGTG",
+"ATGGGTACGGCGCACGGTCGCTATGGTGTG",
+"ATGGGTGCGGCGCACGGTCGATATGGTGTG",
+"ATCGGTGCGGTGCAGGGTCGCTATGGTGTG",
+"ATCGGTGCGGTGCAGGGTCGCTATGCTGTG",
+"AGCGGTGCGGTGCAGGGTCGCTATGGTGTG"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"CCTCACCCACGTCGAGATATTACGTTATTA",
+"CCTCACCCACGTCGAGATATAACGTTATTA",
+"CCTCACTCACGTCGAGATATAACGATATTA",
+"CGTCACCCACGTCGAGGTATAACGGATTTA",
+"CGTAACCCACGTCGAGGTATAACGTATTTA",
+"CGTAACCCACGTCGAGGTATAACGTATATA"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp1"
+],
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got 0.0"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"CCTCACCCACGTCGAGATATTACGTTATTA",
+"CCTCACCCACGTCGAGATATAACGTTATTA",
+"CCTCACTCACGTCGAGATATAACGATATTA",
+"CGTCACCCACGTCGAGGTATAACGGATTTA",
+"CGTAACCCACGTCGAGGTATAACGTATTTA",
+"CGTAACCCACGTCGAGGTATAACGTATATA"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp1"
+],
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"CCTCACCCACGTCGAGATATTACGTTATTA",
+"CCTCACCCACGTCGAGATATAACGTTATTA",
+"CCTCACTCACGTCGAGATATAACGATATTA",
+"CGTCACCCACGTCGAGGTATAACGGATTTA",
+"CGTAACCCACGTCGAGGTATAACGTATTTA",
+"CGTAACCCACGTCGAGGTATAACGTATATA"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"TATGCAAGACTCACGCAGTTGCCCCGCACT",
+"TATGCAAGACTCACGCAGTTGCCCCGCACT",
+"TATGCAAGACTCACGCAGTTGCCCCGCACT",
+"TTTGGCGGACACCCACTCACGATCGGCACG",
+"TTTGGCGGACACCCACTCACGATCGGCACG",
+"TTTGGCGGACACCCACTCACGATCGGCACG"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp1"
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"TATGCAAGACTCACGCAGTTGCCCCGCACT",
+"TATGCAAGACTCACGCAGTTGCCCCGCACT",
+"TATGCAAGACTCACGCAGTTGCCCCGCACT",
+"TTTGGCGGACACCCACTCACGATCGGCACG",
+"TTTGGCGGACACCCACTCACGATCGGCACG",
+"TTTGGCGGACACCCACTCACGATCGGCACG"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp1"
+],
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"TATGCAAGACTCACGCAGTTGCCCCGCACT",
+"TATGCAAGACTCACGCAGTTGCCCCGCACT",
+"TATGCAAGACTCACGCAGTTGCCCCGCACT",
+"TTTGGCGGACACCCACTCACGATCGGCACG",
+"TTTGGCGGACACCCACTCACGATCGGCACG",
+"TTTGGCGGACACCCACTCACGATCGGCACG"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
+"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
+"ATATTTTTCAGGACGTTCCTACGGTCAGTC",
+"CTATTTTCCAGTACGTTCCTACGCTCAGTC",
+"AGATTTTCCAGTACGTTCATACGGTCAGTC",
+"AGCTTTTCCAGTACGTTCCTACGGTCAGTC"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp2",
+"sp2"
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
+"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
+"ATATTTTTCAGGACGTTCCTACGGTCAGTC",
+"CTATTTTCCAGTACGTTCCTACGCTCAGTC",
+"AGATTTTCCAGTACGTTCATACGGTCAGTC",
+"AGCTTTTCCAGTACGTTCCTACGGTCAGTC"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp2",
+"sp2"
+],
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
+"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
+"ATATTTTTCAGGACGTTCCTACGGTCAGTC",
+"CTATTTTCCAGTACGTTCCTACGCTCAGTC",
+"AGATTTTCCAGTACGTTCATACGGTCAGTC",
+"AGCTTTTCCAGTACGTTCCTACGGTCAGTC"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"GCAACTGCCTGCCGCGCCGCACCGCGGGAC",
+"GCAACTGCCTGCCGCGGCGCACCGCGGGAC",
+"GCATGTGCCTCCAGCGCCGCGCAGTGGCAC",
+"GCATGTGCATCCAGCGCCGCGCAGTGGGAC",
+"GCATCAGCCTCCCCCGCGGGATCGTGCGAC",
+"GCATCAGCCTCCCCCGCGGGATCTTGGGAC"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"TCTAGAGGGAAGCAAGCGGAACTTGGATTG",
+"TCTAGAGGGAAGCAAGCGGAACTTGGATTA",
+"TCAACAGGGAAGGAATCGGTTCCTGCATTA",
+"TCAACAGGGAAGGAATCGGTTCCTGCATCA",
+"TCGAGAGTAATAGGAGCTGTACATGGATTA",
+"TCGAGAGCAATAGGAGCTGTATATGGATTA"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5",
+"x6",
+"x7",
+"x8"
+],
+"seqs": [
+"ATCATACAAGTTTACGTTTCTATCAGCTTT",
+"ATCATACAAGTTTACGTTTCTGTCAGCTTT",
+"ATCATAAAAGTTTACGTTTCTATCATCTTT",
+"ATCATACAAGTTCACTTTTCGACCAGCATT",
+"ATCAGACAAGTTCACTTTTCGATCAGCATT",
+"ATCATACAAGTTCACTTTTCGATCAGCATT",
+"ATCATACAAGGTCACTTTTCGATCAGCTTT",
+"ATCATACAAGTTCACTTTTCGATCAGCTTT",
+"ATCATACAAGTTCACTTTTCGATCAGCTTT"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp1",
+"sp2",
+"sp2",
+"sp2"
+],
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got 0.0"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5",
+"x6",
+"x7",
+"x8"
+],
+"seqs": [
+"ATCATACAAGTTTACGTTTCTATCAGCTTT",
+"ATCATACAAGTTTACGTTTCTGTCAGCTTT",
+"ATCATAAAAGTTTACGTTTCTATCATCTTT",
+"ATCATACAAGTTCACTTTTCGACCAGCATT",
+"ATCAGACAAGTTCACTTTTCGATCAGCATT",
+"ATCATACAAGTTCACTTTTCGATCAGCATT",
+"ATCATACAAGGTCACTTTTCGATCAGCTTT",
+"ATCATACAAGTTCACTTTTCGATCAGCTTT",
+"ATCATACAAGTTCACTTTTCGATCAGCTTT"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+"sp0",
+"sp0",
+"sp0",
+"sp1",
+"sp1",
+"sp1",
+"sp2",
+"sp2",
+"sp2"
+],
+"table": 2,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got 0.0"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5",
+"x6",
+"x7",
+"x8"
+],
+"seqs": [
+"ATCATACAAGTTTACGTTTCTATCAGCTTT",
+"ATCATACAAGTTTACGTTTCTGTCAGCTTT",
+"ATCATAAAAGTTTACGTTTCTATCATCTTT",
+"ATCATACAAGTTCACTTTTCGACCAGCATT",
+"ATCAGACAAGTTCACTTTTCGATCAGCATT",
+"ATCATACAAGTTCACTTTTCGATCAGCATT",
+"ATCATACAAGGTCACTTTTCGATCAGCTTT",
+"ATCATACAAGTTCACTTTTCGATCAGCTTT",
+"ATCATACAAGTTCACTTTTCGATCAGCTTT"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1,
+0,
+1,
+0
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5",
+"x6",
+"x7",
+"x8"
+],
+"seqs": [
+"CTCTTGTTAGGAGTCTATGACCACGTCTTT",
+"CTCTTGTTTGGAGTCTTTGACCAGGTCTTT",
+"CTCTTGTTTGGAGTCTTTGACCACATCTTT",
+"CAGTTGCCCGGTAACCCCGAACACGTGTTT",
+"CATTTGCCCGGTAACCCCGAACACGTGTTT",
+"CATTTGCCCGGTAACCCCGAACACGTGTTT",
+"CATTTACCCAGTGGCGTAGAACTCGTCTTT",
+"CATTTGCCCAGTGGCGTAGAACTCGTCTTT",
+"CATTTGCCCAGTGGCGTAGAACTCGTCTTT"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1,
+0,
+1,
+0
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5",
+"x6",
+"x7",
+"x8"
+],
+"seqs": [
+"CGGTCTCATATTTTAAGTCGGTCTGGTTCC",
+"CGGTCTCATATTTTAAGTCGTTCGGGTTCC",
+"CGGTCTCATATTTTAAGTCGTTCGGGTTCC",
+"AGGTCTCCGAGTGTGTCTTGTTCGGTTCGT",
+"AGGTCTCCGAGTGTTCCTTGTTCGGTTCGT",
+"AGGTCTCCGAGTGTTTCTTGTTCGGTTGGT",
+"CGTAATCAGATTGGATCGCGCCCCACTCCC",
+"CGTAATCAGATTGGATCGCGCCCCACTCCC",
+"CGTAATCAGATTGGATCGCGCCCCCCTCCC"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1,
+0,
+1,
+0
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"seqs": [
+"ATGAAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"species": [
+"x",
+"y"
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"seqs": [
+"ATGAAA",
+"ATGAAG"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"species": [
+"x",
+"y"
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"seqs": [
+"ATGAAA",
+"ATGAAG"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"species": null,
+"exc": {
+"type": "TypeError",
+"msg": "'NoneType' object is not iterable"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"seqs": [
+"ATGAAA",
+"ATGTAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"species": [
+"x",
+"y"
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"seqs": [
+"ATGAAA",
+"ATGANA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"species": [
+"x",
+"y"
+],
+"exc": {
+"type": "KeyError",
+"msg": "ANA"
+}
+}
+]

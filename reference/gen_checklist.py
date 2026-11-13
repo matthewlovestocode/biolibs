@@ -48,6 +48,7 @@ for f in inv["Bio.Align.formats"]["formats"]:
     item(f"Bio.Align.parse:{f}", f"parse: {f}")
     item(f"Bio.Align.write:{f}", f"write: {f}")
 section("Bio.Align.CodonAligner", "Bio.Align.CodonAligner", inv["Bio.Align.CodonAligner"])
+section("Bio.Align.analysis", "Bio.Align.analysis", inv["Bio.Align.analysis"])
 section("Bio.Align.AlignInfo", "Bio.Align.AlignInfo", inv["Bio.Align.AlignInfo"])
 section("Bio.Align.AlignmentCounts", "Bio.Align.AlignmentCounts", inv["Bio.Align.AlignmentCounts"])
 section("Bio.Align.Alignment", "Bio.Align.Alignment", inv["Bio.Align.Alignment"])

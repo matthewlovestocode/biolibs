@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1966 / 2214 applicable items verified against Biopython.**
+**Progress: 1967 / 2217 applicable items verified against Biopython.**
 
 
 
@@ -791,6 +791,12 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `mismatch_score`
 - [x] `score`
 - [x] `wildcard`
+
+## Bio.Align.analysis
+
+- [~] `calculate_dn_ds(alignment, method='NG86', codon_table=None, k=1, cfreq=None)`
+- [~] `calculate_dn_ds_matrix(alignment, method='NG86', codon_table=None)`
+- [x] `mktest(alignment, species=None, codon_table=None)`
 
 ## Bio.Align.AlignInfo
 

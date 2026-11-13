@@ -6,6 +6,7 @@
  * - `matrix.ts`: `Matrix` (Biopython's `_Matrix`) and `DistanceMatrix`
  * - `distance.ts`: `DistanceCalculator`
  * - `constructors.ts`: `TreeConstructor`, `DistanceTreeConstructor`
+ * - `dnds-matrix.ts`: `calculateDnDsMatrix` (Biopython's `Bio.Align.analysis.calculate_dn_ds_matrix`)
  * - `parsimony.ts`: `Scorer`, `TreeSearcher`, `ParsimonyScorer`, `NNITreeSearcher`, `ParsimonyTreeConstructor`
  */
 
@@ -14,3 +15,4 @@ export * from "./matrix.js";
 export * from "./distance.js";
 export * from "./constructors.js";
 export * from "./parsimony.js";
+export * from "./dnds-matrix.js";
