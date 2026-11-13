@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1718 / 1971 applicable items verified against Biopython.**
+**Progress: 1722 / 1971 applicable items verified against Biopython.**
 
 
 
@@ -747,10 +747,10 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `write: fasta`
 - [ ] `parse: hhr`
 - [-] `write: hhr`
-- [ ] `parse: maf`
-- [ ] `write: maf`
-- [ ] `parse: mauve`
-- [ ] `write: mauve`
+- [x] `parse: maf`
+- [x] `write: maf`
+- [x] `parse: mauve`
+- [x] `write: mauve`
 - [x] `parse: msf`
 - [-] `write: msf`
 - [x] `parse: nexus`

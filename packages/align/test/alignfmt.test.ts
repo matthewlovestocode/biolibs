@@ -6,10 +6,10 @@ import { captureWarnings, pyStr } from "@biolibs/core";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
-type Spec = { qann?: Record<string, number>; tann?: Record<string, unknown>; qletter?: number[]; seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number | string>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
+type Spec = { recann?: (Record<string, unknown> | null)[]; qann?: Record<string, number>; tann?: Record<string, unknown>; qletter?: number[]; seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number | string>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
 interface Case { kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
 /** Python keyword arguments to the positional arguments of each writer. */
-const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]], bed: [["bedN", 12]], sam: [["md", false]] };
+const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]], bed: [["bedN", 12]], sam: [["md", false]], mauve: [["metadata", null], ["identifiers", null]] };
 const kwargArgs = (c: Case): unknown[] => {
   if (!c.kwargs) return [];
   const params = WRITER_PARAMS[c.fmt.toLowerCase()] ?? [];
@@ -50,7 +50,7 @@ const enc = (a: Alignment) => {
     descs: a.sequences.map((s) => (s instanceof SeqRecord ? s.description : null)),
     weights: a.sequences.map((s) => (s instanceof SeqRecord && s.annotations.has("weight") ? s.annotations.get("weight") : null)),
   };
-  if (a.annotations !== undefined && a.annotations.size > 0) d.ann = Object.fromEntries([...a.annotations].map(([k, v]) => [k, v instanceof PyFloatValue ? v.value : v instanceof NumpyArray || v instanceof Uint8Array ? [...v] : v]));
+  if (a.annotations !== undefined && a.annotations.size > 0) d.ann = Object.fromEntries([...a.annotations].map(([k, v]) => [k, k === "empty" ? (v as [SeqRecord, number[], string][]).map((e) => [e[0].id, e[0].seq!.length, e[1], e[2]]) : v instanceof PyFloatValue ? v.value : v instanceof NumpyArray || v instanceof Uint8Array ? [...v] : v]));
   if (a.columnAnnotations !== undefined) d.colann = Object.fromEntries(a.columnAnnotations);
   return d;
 };
@@ -62,7 +62,8 @@ const build = (spec: Spec): Alignment => {
     });
     const aln = new Alignment(recs, spec.coords!);
     Object.assign(aln, spec.extra ?? {});
-    if (spec.ann !== undefined) aln.annotations = new Map(Object.entries(spec.ann).map(([k, v]) => [k, v !== null && typeof v === "object" && "float" in (v as object) ? new PyFloatValue((v as { float: number }).float) : v]));
+    (spec.recann ?? []).forEach((info, i) => { const r = recs[i]; if (r instanceof SeqRecord) for (const [k, v] of Object.entries(info ?? {})) r.annotations.set(k, v); });
+    if (spec.ann !== undefined) aln.annotations = new Map(Object.entries(spec.ann).map(([k, v]) => k === "empty" ? [k, (v as { id: string; len: number; segment: [number, number]; status: string }[]).map((e) => [new SeqRecord(new Seq(null, e.len), e.id), e.segment, e.status])] : [k, v !== null && typeof v === "object" && "float" in (v as object) ? new PyFloatValue((v as { float: number }).float) : v]));
     const [t, q] = recs;
     if (t instanceof SeqRecord) for (const [k, v] of Object.entries(spec.tann ?? {})) t.annotations.set(k, v);
     if (q instanceof SeqRecord) {
@@ -98,7 +99,8 @@ describe("Bio.Align file formats", () => {
           const it = parse(c.text!, c.fmt);
           const alns = Array.from(it).map(enc);
           const tg = (it as { targets?: SeqRecord[] }).targets;
-          return { ...(tg !== undefined ? { targets: tg.map((t) => [t.id, t.seq!.length, t.description, Object.fromEntries(t.annotations)]) } : {}), alns, metadata: (it as { metadata?: Record<string, unknown> }).metadata === undefined ? null : Object.fromEntries(Object.entries((it as any).metadata).map(([k, v]) => [k, pyStr(v)])) };
+          const ids = (it as { identifiers?: string[] }).identifiers;
+          return { ...(ids !== undefined ? { identifiers: ids } : {}), ...(tg !== undefined ? { targets: tg.map((t) => [t.id, t.seq!.length, t.description, Object.fromEntries(t.annotations)]) } : {}), alns, metadata: (it as { metadata?: Record<string, unknown> }).metadata === undefined ? null : Object.fromEntries(Object.entries((it as any).metadata).map(([k, v]) => [k, pyStr(v)])) };
         }
         if (c.kind === "rewrite") {
           let text = "";

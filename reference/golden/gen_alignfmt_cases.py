@@ -35,7 +35,7 @@ def enc_aln(a):
         except Exception as e: rows.append({"err": [tname(e), emsg(e)]})
     d = {"ids": [getattr(s, "id", None) for s in a.sequences], "rows": rows, "coords": a.coordinates.tolist(),
          "seqs": [seq_text(s) for s in a.sequences]}
-    if getattr(a, "annotations", None): d["ann"] = {k: (v.tolist() if isinstance(v, np.ndarray) else list(v) if isinstance(v, bytes) else v) for k, v in a.annotations.items()}
+    if getattr(a, "annotations", None): d["ann"] = {k: ([[e[0].id, len(e[0].seq), list(e[1]), e[2]] for e in v] if k == "empty" else v.tolist() if isinstance(v, np.ndarray) else list(v) if isinstance(v, bytes) else v) for k, v in a.annotations.items()}
     d["dbx"] = [list(getattr(s, "dbxrefs", [])) for s in a.sequences]
     d["rann"] = [dict(getattr(s, "annotations", {})) for s in a.sequences]
     d["lann"] = [dict(getattr(s, "letter_annotations", {})) for s in a.sequences]
@@ -71,7 +71,13 @@ def build(spec):
         a = Alignment(recs, np.array(spec["coords"], dtype=np.intp))
         for k, v in (spec.get("extra") or {}).items(): setattr(a, k, v)
         mark = lambda v: float(v["float"]) if isinstance(v, dict) and "float" in v else v
-        if spec.get("ann") is not None: a.annotations = {k: mark(v) for k, v in spec["ann"].items()}
+        def conv(k, v):
+            if k == "empty": return [(SeqRecord(Seq(None, length=e["len"]), id=e["id"]), tuple(e["segment"]), e["status"]) for e in v]
+            return mark(v)
+        if spec.get("ann") is not None: a.annotations = {k: conv(k, v) for k, v in spec["ann"].items()}
+        for r, info in zip(recs, spec.get("recann") or []):
+            if isinstance(r, SeqRecord):
+                for k, v in (info or {}).items(): r.annotations[k] = v
         for key, r in (("tann", recs[0]), ("qann", recs[1])):
             if isinstance(r, SeqRecord):
                 for k, v in (spec.get(key) or {}).items(): r.annotations[k] = v
@@ -109,6 +115,7 @@ def run(case):
                 alns = Align.parse(io.StringIO(case["text"]), case["fmt"])
                 res = [enc_aln(a) for a in alns]
                 out["result"] = {"alns": res, "metadata": meta(alns)}
+                if hasattr(alns, "identifiers"): out["result"]["identifiers"] = list(alns.identifiers)
                 tg = getattr(alns, "targets", None)
                 if tg is not None: out["result"]["targets"] = [[t.id, len(t.seq), t.description, {k: v for k, v in t.annotations.items()}] for t in tg]
             elif k == "read":
@@ -163,9 +170,12 @@ cases = []
 def add(c):
     res = run_isolated(c)
     if res is None: return
+    if run_isolated(c) != res: return        # a case whose result changes between runs depends on uninitialised memory
     # Rows of unequal length make Biopython's printed-alignment parser return coordinates that depend on uninitialised memory
     for a in res.get("result", {}).get("alns", []) if isinstance(res.get("result"), dict) else []:
         if len({len(r) for r in a["rows"] if isinstance(r, str)}) > 1: return
+        # uninitialised memory shows up as enormous coordinates or absurd lengths
+        if any(abs(x) > 10 ** 12 for row in a["coords"] for x in row if x != 9223372036854775807) or (a["coords"] and len(a["coords"][0]) > 5000): return
     cases.append(dict(c, **res))
 
 FASTA = ">a desc\nAC-GT\n>b\nACGGT\n"
@@ -735,6 +745,144 @@ add({"kind": "format", "fmt": "sam", "aln": {"ids": ["a", "b"], "seqs": ["ACGT",
 add({"kind": "format", "fmt": "sam", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGT"], "coords": [[], []]}})
 add({"kind": "format", "fmt": "sam", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGTA"], "coords": [[0, 2, 4], [0, 2, 5]]}})
 add({"kind": "format", "fmt": "sam", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGT"], "coords": [[0, 4], [0, 4]], "extra": {"score": "x"}}})
+
+# ---- MAF ----
+def rand_msa_spec(r, nseq, ncols, strands=None):
+    rows = []
+    for k in range(nseq):
+        rows.append([r.choice("ACGT") if r.random() > 0.2 else "-" for _ in range(ncols)])
+    for c in range(ncols):
+        if all(row[c] == "-" for row in rows): rows[r.randrange(nseq)][c] = r.choice("ACGT")
+    rows = ["".join(x) for x in rows]
+    sp = {"ids": ["seq%d.chr%d" % (i, r.randint(1, 3)) for i in range(nseq)], "rows": rows}
+    a = build(sp)
+    seqs = [str(s.seq) for s in a.sequences]
+    # grow each sequence with flanking letters so that starts and sizes are not trivial
+    coords = a.coordinates.tolist()
+    out_seqs, out_coords = [], []
+    for k, (q, c) in enumerate(zip(seqs, coords)):
+        pre, post = r.randint(0, 4), r.randint(0, 4)
+        q2 = "".join(r.choice("ACGT") for _ in range(pre)) + q + "".join(r.choice("ACGT") for _ in range(post))
+        c2 = [x + pre for x in c]
+        if (strands[k] if strands else r.random() < 0.3):
+            c2 = [len(q2) - x for x in c2]
+        out_seqs.append(q2); out_coords.append(c2)
+    return {"ids": sp["ids"], "seqs": out_seqs, "coords": out_coords}
+
+MAF_SPECS = [rand_msa_spec(prng, prng.randint(2, 4), prng.randint(4, 14)) for _ in range(14)]
+for i, sp in enumerate(MAF_SPECS):
+    if i % 2: sp["extra"] = {"score": prng.choice([0, 1234.5, 12])}
+    if i % 3 == 0: sp["ann"] = {"pass": prng.randint(1, 9)}
+    if i % 4 == 0:
+        sp["recann"] = [{"quality": "9" * abs(sp["coords"][0][-1] - sp["coords"][0][0]), "leftStatus": "C", "leftCount": 0, "rightStatus": "I", "rightCount": 5}] + [None] * (len(sp["ids"]) - 1)
+    if i % 5 == 0:
+        sp.setdefault("ann", {})["empty"] = [{"id": "other.chr1", "len": 100, "segment": [10, 20], "status": "C"}, {"id": "x.chr2", "len": 50, "segment": [30, 20], "status": "n"}]
+MAF_TEXTS = []
+for sp in MAF_SPECS:
+    try:
+        sp2 = dict(sp)
+        a = build(sp2)
+        buf = io.StringIO(); Align.write([a], buf, "maf"); MAF_TEXTS.append(buf.getvalue())
+    except Exception: pass
+JOINED = ""
+for sp in MAF_SPECS[:6]:
+    try: JOINED += build(sp).format("maf")
+    except Exception: pass
+MAF_TEXTS += ["##maf version=1\n\n" + JOINED, "##maf version=1 scoring=blastz program=lastz\n# comment one\n# comment two\n\n" + JOINED,
+              'track name="my maf" description=desc mafDot=on visibility=full speciesOrder="a b c"\n##maf version=1\n\n' + JOINED,
+              "##maf version=1\n\na score=23262.0 pass=2\ns hg16.chr7    27578828 38 + 158545518 AAA-GGGAATGTTAACCAAATGA---ATTGTCTCTTACGGTG\ns panTro1.chr6 28741140 38 + 161576975 AAA-GGGAATGTTAACCAAATGA---ATTGTCTCTTACGGTG\ns baboon         116834 38 +   4622798 AAA-GGGAATGTTAACCAAATGA---GTTGTCTCTTATGGTG\ns mm4.chr6     53215344 38 + 151104725 -AATGGGAATGTTAAGCAAACGA---ATTGTCTCTCAGTGTG\nq panTro1.chr6                                 99999999999999999999999---99999999999999999\ni panTro1.chr6 N 0 C 0\n\n",
+              "##maf version=1\n\na score=5\ns a 0 3 + 10 ACG\ns b 2 3 - 10 A-CG\n\n", "##maf version=2\n", "##maf version=1\n", "##maf version=1\n# c\n", "##maf\n", "", "maf\n", "##maf version=1\n\nb score=1\n",
+              "##maf version=1\n\na bogus=1\ns a 0 3 + 10 ACG\n", "##maf version=1\n\na score=x\n", "##maf version=1\n\na pass=0\n", "##maf version=1\n\na score\n", "##maf version=1\n\na\ns a 0 3 + 10\n",
+              "##maf version=1\n\na\ns a 0 3 + 10 ACG\ni a N 0 C\n", "##maf version=1\n\na\ni a N 0 C 0\n", "##maf version=1\n\na\ns a 0 3 + 10 ACG\ni b N 0 C 0\n", "##maf version=1\n\na\ns a 0 3 + 10 ACG\ni a X 0 C 0\n",
+              "##maf version=1\n\na\ns a 0 3 + 10 ACG\nq a 999\nq a 99\n", "##maf version=1\n\na\ns a 0 3 + 10 ACG\ne b 5 4 + 20 C\ne c 5 4 - 20 n\ne d 5 4 + 20 X\n", "##maf version=1\n\na\ns a 0 3 + 10 ACG\ne b 5 4 + 20\n",
+              "##maf version=1\n\na\ns a 0 4 + 10 ACG\n", "##maf version=1\n\na\ns a 0 3 + 10 ACG\nzzz\n", "##maf version=1\n\na\n", "##maf version=1\n\na\ns a 0 0 + 10 -\n", "##maf version=1\n\na\ns a 0 3 + 10 A.G\ns b 0 3 + 10 A=G\n",
+              "track name=x bogus=1\n##maf version=1\n\na\ns a 0 3 + 10 ACG\n", "track mafDot=maybe\n##maf version=1\n", "track visibility=x\n##maf version=1\n", "track name\n##maf version=1\n", "track name=\"unclosed\n##maf version=1\n", "track speciesOrder=\"a b\"\n##maf version=1\n\na\ns a 0 3 + 10 ACG\n",
+              "##maf version=1 foo=bar\n", "##maf version=1 scoring\n", "##maf version=1\n\nxx\n"]
+for t in MAF_TEXTS:
+    add({"kind": "parse", "fmt": "maf", "text": t})
+    add({"kind": "read", "fmt": "maf", "text": t})
+    add({"kind": "rewrite", "fmt": "maf", "text": t})
+for t in MAF_TEXTS[:16]:
+    lines = t.split("\n")
+    for _ in range(6):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if r < 0.3: del m[i]
+        elif r < 0.6 and m[i]:
+            f = m[i].split(" "); k = rnd.randrange(len(f)); f[k] = rnd.choice(["", "x", "-1", "0", "5", f[k] + "9", "+", "-"]); m[i] = " ".join(f)
+        elif r < 0.8: m.insert(i, rnd.choice(["", "#", "s a 0 1 + 5 A", "q a 9", "e a 0 1 + 5 C", "a score=1"]))
+        else: m = m[:i]
+        t2 = "\n".join(m)
+        # Rows of unequal length make Biopython's printed-alignment parser depend on uninitialised memory: skip such texts.
+        blocks, cur = [], None
+        for ln in t2.split("\n"):
+            if ln.startswith("a"): cur = []; blocks.append(cur)
+            elif ln.startswith("s "):
+                if cur is None: cur = []; blocks.append(cur)
+                if len(ln.split()) == 7: cur.append(len(ln.split()[6]))
+        if all(len(set(b)) <= 1 for b in blocks): add({"kind": "parse", "fmt": "maf", "text": t2})
+for sp in MAF_SPECS:
+    add({"kind": "format", "fmt": "maf", "aln": sp})
+    add({"kind": "write", "fmt": "maf", "alns": [sp]})
+    add({"kind": "format", "fmt": "maf", "aln": dict(sp, plain=[True] * len(sp["ids"]))})
+add({"kind": "write", "fmt": "maf", "alns": MAF_SPECS[:5]})
+add({"kind": "write", "fmt": "maf", "alns": []})
+
+# ---- Mauve ----
+def mauve_spec(r, n, files):
+    sp = rand_msa_spec(r, n, r.randint(4, 12))
+    sp["ids"] = [("%d" % i) if not files else ("seq%d.fa" % (i + 1)) for i in range(n)]
+    return sp
+MAUVE_SPECS = [mauve_spec(prng, prng.randint(2, 4), files) for files in (False, True) for _ in range(6)]
+MAUVE_TEXTS = []
+for k, sp in enumerate(MAUVE_SPECS):
+    files = k >= 6
+    mmeta = {"File": "all.fa"} if not files else {}
+    if k % 3 == 0: mmeta["BackboneFile"] = "out.backbone"
+    if k % 4 == 0: mmeta["FormatVersion"] = "Mauve2"
+    try:
+        buf = io.StringIO(); Align.write([build(sp), build(sp)], buf, "mauve", metadata=mmeta, identifiers=sp["ids"]); MAUVE_TEXTS.append(buf.getvalue())
+    except Exception: pass
+MAUVE_TEXTS += ["#FormatVersion Mauve1\n#Sequence1File\ta.fa\n#Sequence1Format\tFastA\n#Sequence2File\tb.fa\n#Sequence2Format\tFastA\n> 1:1-6 + a.fa\nACGT-A\n> 2:1-6 - b.fa\nACGTTA\n=\n",
+                "#FormatVersion Mauve1\n#Sequence1File\tall.fa\n#Sequence1Entry\t1\n#Sequence1Format\tFastA\n#Sequence2File\tall.fa\n#Sequence2Entry\t2\n#Sequence2Format\tFastA\n> 1:3-7 + all.fa\nACGT-A\n> 2:1-6 + all.fa\nACGTTA\n=\n> 1:0-0 + all.fa\n\n=\n",
+                "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n#Sequence1Format\tFastA\n", "#Sequence1File\ta.fa\n", "", "#\n", "#a b c\n", "#Sequence1Bogus\tx\n", "#SequenceXFile\tx\n", "#Sequence2File\tx\n",
+                "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n#Sequence2File\ta.fa\n> 1:1-2 + a.fa\nAC\n> 2:1-2 + a.fa\nAC\n=\n",
+                "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n#Sequence2File\ta.fa\n#Sequence1Entry\t1\n#Sequence2Entry\t2\n> 1:1-2 + a.fa\nAC\n> 2:1-2 + a.fa\nAC\n=\n",
+                "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n#Sequence2File\ta.fa\n#Sequence1Entry\tx\n", "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 1:1-2 + a.fa\nAC\n",
+                "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 5:1-2 + a.fa\nAC\n=\n", "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 0:1-2 + a.fa\nAC\n=\n", "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 1:1-3 + a.fa\nAC\n=\n",
+                "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 1:1-2 x a.fa\nAC\n=\n", "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 1:1-2 +- a.fa\nAC\n=\n", "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 1:1-2 +\nAC\n=\n",
+                "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 1:0-2 + a.fa\nAC\n=\n", "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 1-1-2 + a.fa\nAC\n=\n", "#FormatVersion Mauve1\n#Sequence1File\ta.fa\nAC\n> 1:1-2 + a.fa\nAC\n=\n",
+                "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n#Sequence2File\tb.fa\n> 1:1-2 + a.fa\nAC\n> 2:1-2 + b.fa\nAC\n=\n> 1:3-4 - a.fa\nAC\n> 2:5-6 + b.fa\nAC\n=\n",
+                "#FormatVersion Mauve1\n#Sequence1File\ta.fa\n> 1:1-2 + a.fa description with spaces\nA\nC\n=\n"]
+for t in MAUVE_TEXTS:
+    add({"kind": "parse", "fmt": "mauve", "text": t})
+    add({"kind": "read", "fmt": "mauve", "text": t})
+    add({"kind": "rewrite", "fmt": "mauve", "text": t})
+for t in MAUVE_TEXTS[:14]:
+    lines = t.split("\n")
+    for _ in range(8):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if r < 0.3: del m[i]
+        elif r < 0.6 and m[i]:
+            f = m[i].split(" "); k = rnd.randrange(len(f)); f[k] = rnd.choice(["", "x", "-1", "0", "5", f[k] + "9", "+", "-"]); m[i] = " ".join(f)
+        elif r < 0.8: m.insert(i, rnd.choice(["", "#", "=", "> 1:1-2 + a.fa", "AC"]))
+        else: m = m[:i]
+        t2 = "\n".join(m)
+        rows_ok = True
+        blocks, cur = [], []
+        for ln in t2.split("\n"):
+            if ln.startswith(">"): cur.append("")
+            elif ln.startswith("="): blocks.append(cur); cur = []
+            elif cur and not ln.startswith("#"): cur[-1] += ln.strip()
+        if all(len({len(x) for x in b}) <= 1 for b in blocks): add({"kind": "parse", "fmt": "mauve", "text": t2})
+for k, sp in enumerate(MAUVE_SPECS):
+    files = k >= 6
+    mmeta = {"File": "all.fa"} if not files else {}
+    add({"kind": "format", "fmt": "mauve", "aln": sp})
+    add({"kind": "write", "fmt": "mauve", "alns": [sp, sp], "kwargs": {"metadata": mmeta, "identifiers": sp["ids"]}})
+    add({"kind": "write", "fmt": "mauve", "alns": [sp], "kwargs": {"metadata": mmeta}})
+    add({"kind": "write", "fmt": "mauve", "alns": [sp], "kwargs": {"metadata": mmeta, "identifiers": sp["ids"][:1]}})
+    add({"kind": "write", "fmt": "mauve", "alns": [sp], "kwargs": {"metadata": {"File": "x", "BackboneFile": "bb"}, "identifiers": ["0", "x"]}})
+add({"kind": "write", "fmt": "mauve", "alns": []})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)
