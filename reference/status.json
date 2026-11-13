@@ -456,6 +456,7 @@
  "Bio.PDB.Chain.Chain.has_id": "done",
  "Bio.PDB.Chain.Chain.id": "done",
  "Bio.PDB.Chain.Chain.insert": "done",
+ "Bio.PDB.Chain.Chain.internal_to_atom_coordinates": "done",
  "Bio.PDB.Chain.Chain.set_parent": "done",
  "Bio.PDB.Chain.Chain.strictly_equals": "done",
  "Bio.PDB.Chain.Chain.transform": "done",

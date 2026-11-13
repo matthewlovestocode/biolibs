@@ -17,7 +17,7 @@ export const icSettings = {
   glyCbeta: false,
   /**
    * Assemble a chain's atoms with the vectorised algorithm rather than residue by residue. Biopython's
-   * `IC_Chain.ParallelAssembleResidues`; the serial assembly is not ported, so turning this off raises.
+   * `IC_Chain.ParallelAssembleResidues`; turning it off selects `ic-serial.ts`, as a start/fin range does.
    */
   parallelAssembleResidues: true,
   /** The format Biopython writes internal-coordinate values with in a `.pic` file. */

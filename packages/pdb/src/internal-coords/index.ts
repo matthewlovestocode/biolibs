@@ -15,6 +15,7 @@
  *   arrays, and the measurement that fills them
  * - `ic-measure.ts`: the measurement itself — the value arrays, the index maps and the angles
  * - `ic-assemble.ts`: the other direction — placing a chain's atoms from the angle values
+ * - `ic-serial.ts`: the same, residue by residue, which a `start`/`fin` subregion needs
  * - `ic-residue.ts`: `IC_Residue` — which atoms a residue keeps and the keys it keeps them under
  * - `edron.ts`: `Edron`, `Hedron` and `Dihedron` — the angles themselves. Their lengths and angle values live on
  *   the chain, so a di/hedron with no chain reads 0 for them (360 for a dihedral angle).
@@ -27,4 +28,5 @@ export * from "./settings.js";
 export * from "./ic-chain.js";
 export * from "./ic-measure.js";
 export * from "./ic-assemble.js";
+export * from "./ic-serial.js";
 export * from "./ic-residue.js";

@@ -16,6 +16,7 @@
 import { pyFloatRepr } from "@biolibs/core";
 import { primaryAngles } from "./ic-data.js";
 import { AtomKey, FIELDS } from "./atom-key.js";
+import type { Matrix } from "../vectors.js";
 
 /**
  * What a hedron reads from the chain that holds it.
@@ -254,6 +255,18 @@ export class Dihedron extends Edron {
   hedron1?: Hedron;
   /** The second hedron. */
   hedron2?: Hedron;
+  /**
+   * The transform into the coordinate space of this dihedron's first three atoms, once something has set it.
+   *
+   * Biopython binds this to a row of {@link IC_Chain.dCoordSpace} when the chain's arrays are built, so writing
+   * that array updates this too; the serial assembly then *rebinds* it to a pair of its own, leaving the chain's
+   * array stale. The port assigns in both places to the same effect.
+   */
+  cst?: Matrix;
+  /** The transform out of that space, the companion of {@link Dihedron.cst}. */
+  rcst?: Matrix;
+  /** This dihedron's four atoms in its own coordinate space, as the assembly last computed them. */
+  initialCoords?: number[][];
   /** An angle set on the dihedron itself, before a chain holds it. */
   private dihedralValue?: number;
 

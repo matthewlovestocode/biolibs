@@ -31,7 +31,7 @@ type AnyAtom = Atom | DisorderedAtom;
  * const ric = new IC_Residue(residue);
  * ric.lc;                  // "G" for a glycine, or the three-letter name when it is not one of the twenty
  * ric.rak("CA").id;        // "52_G_CA"
- * [...ric.akSet].length;   // how many atoms were kept
+ * [...ric.akSet!].length;   // how many atoms were kept
  * ```
  */
 export class IC_Residue {
@@ -57,9 +57,14 @@ export class IC_Residue {
     return this.ncacKey;
   }
   /** Cache of {@link IC_Residue.rak} results, by atom name or atom. */
-  readonly akc = new Map<string | AnyAtom, AtomKey>();
-  /** The keys of the atoms this residue kept. */
-  readonly akSet = new Set<AtomKey>();
+  akc: Map<string | AnyAtom, AtomKey> | null = new Map<string | AnyAtom, AtomKey>();
+  /**
+   * The keys of the atoms this residue kept.
+   *
+   * Null once the serial assembly has dropped this residue, which is how Biopython marks one left outside a
+   * `start`/`fin` range: reading it then raises there, and the `!` at this class's own uses says the same.
+   */
+  akSet: Set<AtomKey> | null = new Set<AtomKey>();
   /** The residues before this one in the chain. */
   rprev: IC_Residue[] = [];
   /** The residues after it. */
@@ -106,7 +111,7 @@ export class IC_Residue {
         }
       }
       // Only for coordinate input: the cache is primed so that an altloc cannot hide the selected atom.
-      if (this.akSet.size > 0) this.buildRakCache();
+      if (this.akSet!.size > 0) this.buildRakCache();
     }
   }
 
@@ -124,7 +129,7 @@ export class IC_Residue {
       else if (atm.name === "O''") atm.name = "OXT";
     }
     if (!acceptAtoms.includes(atm.name)) return;
-    this.akSet.add(this.rak(atm));
+    this.akSet!.add(this.rak(atm));
   }
 
   /**
@@ -134,10 +139,10 @@ export class IC_Residue {
    * @returns The key. One built from a name is marked `missing`, since nothing has confirmed the atom is there.
    */
   rak(atm: string | AnyAtom): AtomKey {
-    let ak = this.akc.get(atm);
+    let ak = this.akc!.get(atm);
     if (ak === undefined) {
       ak = new AtomKey([this, atm]);
-      this.akc.set(atm, ak);
+      this.akc!.set(atm, ak);
       if (typeof atm === "string") ak.missing = true;
     }
     return ak;
@@ -148,10 +153,10 @@ export class IC_Residue {
    * without one.
    */
   buildRakCache(): void {
-    const sorted = [...this.akSet].sort((a, b) => { const [p, q] = a.compare(b); return p - q; });
+    const sorted = [...this.akSet!].sort((a, b) => { const [p, q] = a.compare(b); return p - q; });
     for (const ak of sorted) {
       const name = ak.akl[3] as string;
-      if (this.akc.get(name) === undefined) this.akc.set(name, ak);
+      if (this.akc!.get(name) === undefined) this.akc!.set(name, ak);
     }
   }
 
@@ -170,7 +175,7 @@ export class IC_Residue {
    */
   splitAkl(lst: readonly AtomKey[], missingOK = false): AtomKey[][] {
     const mine = new Map<string, AtomKey>();
-    for (const k of this.akSet) mine.set(k.hashKey, k);
+    for (const k of this.akSet!) mine.set(k.hashKey, k);
 
     // Step one: for each key, the keys of this residue it could stand for.
     const edraLst: AtomKey[][] = [];
@@ -184,7 +189,7 @@ export class IC_Residue {
         continue;
       }
       const matches: AtomKey[] = [];
-      for (const ak2 of this.akSet) {
+      for (const ak2 of this.akSet!) {
         if (!ak.altlocMatch(ak2)) continue;
         matches.push(ak2);
         akMap.set(ak2.hashKey, ak);
@@ -262,17 +267,17 @@ export class IC_Residue {
    *   of the chain.
    */
   createEdra(allBonds = false): void {
-    if (this.akSet.size === 0) return;
+    if (this.akSet!.size === 0) return;
     const sN = this.rak("N"), sCA = this.rak("CA"), sC = this.rak("C");
     if (this.lc !== "G") this.rak("CB");
 
-    if (this.rnext.length > 0 && this.rnext.some((r) => r.akSet.size > 0)) {
+    if (this.rnext.length > 0 && this.rnext.some((r) => r.akSet!.size > 0)) {
       for (const rn of this.rnext) {
         const nN = rn.rak("N"), nCA = rn.rak("CA"), nC = rn.rak("C");
         for (const tpl of rn.splitAkl([nN, nCA, nC], true)) {
           for (const ak of tpl) {
-            if ([...rn.akSet].some((k) => k.equals(ak))) this.akSet.add(ak);
-            else for (const rnAk of rn.akSet) if (rnAk.altlocMatch(ak)) this.akSet.add(rnAk);
+            if ([...rn.akSet!].some((k) => k.equals(ak))) this.akSet!.add(ak);
+            else for (const rnAk of rn.akSet!) if (rnAk.altlocMatch(ak)) this.akSet!.add(rnAk);
           }
         }
         this.genEdra([sN, sCA, sC, nN]);     // psi
@@ -282,10 +287,10 @@ export class IC_Residue {
         this.genEdra([sC, nN, nCA]);
         this.genEdra([nN, nCA, nC]);         // tau of the next residue
         // Without the next residue's O there is no side chain, so C-beta gets an alternative locator.
-        if (rn.akc.get("O") === undefined) {
-          const nCB = rn.akc.get("CB");
-          if (nCB !== undefined && [...rn.akSet].some((k) => k.equals(nCB))) {
-            this.akSet.add(nCB);
+        if (rn.akc!.get("O") === undefined) {
+          const nCB = rn.akc!.get("CB");
+          if (nCB !== undefined && [...rn.akSet!].some((k) => k.equals(nCB))) {
+            this.akSet!.add(nCB);
             this.genEdra([nN, nCA, nCB]);
             this.genEdra([sC, nN, nCA, nCB]);
           }
@@ -298,16 +303,16 @@ export class IC_Residue {
     for (const edra of icDataBackbone) {
       // Only worth building when this residue has every atom the table entry names.
       const atoms = edra.slice(0, 4).filter((a) => !["phi", "psi", "omg", "tau"].includes(a));
-      if (atoms.every((atm) => this.akc.has(atm))) this.genEdra(atoms.map((atm) => this.rak(atm)));
+      if (atoms.every((atm) => this.akc!.has(atm))) this.genEdra(atoms.map((atm) => this.rak(atm)));
     }
     if (this.lc !== null) {
       for (const edraLong of icDataSidechains[this.lc] ?? []) {
         const edra = edraLong.slice(0, 4).filter((a) => !a.startsWith("chi"));
-        if (edra.every((atm) => this.akc.has(atm))) this.genEdra(edra.map((atm) => this.rak(atm)));
+        if (edra.every((atm) => this.akc!.has(atm))) this.genEdra(edra.map((atm) => this.rak(atm)));
       }
       if (allBonds) {
         for (const edra of icDataSidechainExtras[this.lc] ?? []) {
-          if (edra.every((atm) => this.akc.has(atm))) this.genEdra(edra.map((atm) => this.rak(atm)));
+          if (edra.every((atm) => this.akc!.has(atm))) this.genEdra(edra.map((atm) => this.rak(atm)));
         }
       }
     }
@@ -325,14 +330,14 @@ export class IC_Residue {
     for (const dh of this.dihedra.values()) {
       dh.ric = this;
       dh.cic = this.cic;
-      for (const ak of dh.atomkeys) this.akSet.add(ak);
+      for (const ak of dh.atomkeys) this.akSet!.add(ak);
     }
     for (const h of this.hedra.values()) {
       // Atoms of an orphan hedron count too: the alternative C-beta path has one with no dihedron.
-      for (const ak of h.atomkeys) this.akSet.add(ak);
+      for (const ak of h.atomkeys) this.akSet!.add(ak);
       h.cic = this.cic;
     }
-    if (this.akc.size === 0) this.buildRakCache();
+    if (this.akc!.size === 0) this.buildRakCache();
     this.ncacKey = this.splitAkl([new AtomKey([this, "N"]), new AtomKey([this, "CA"]), new AtomKey([this, "C"])]);
   }
 
@@ -341,7 +346,7 @@ export class IC_Residue {
    * @returns Whether this residue kept that atom *and* the key names this residue.
    */
   contains(ak: AtomKey): boolean {
-    if (![...this.akSet].some((k) => k.equals(ak))) return false;
+    if (![...this.akSet!].some((k) => k.equals(ak))) return false;
     const akl = ak.akl;
     return Number(akl[0]) === Number(this.rbase[0]) && akl[1] === this.rbase[1] && akl[2] === this.rbase[2];
   }

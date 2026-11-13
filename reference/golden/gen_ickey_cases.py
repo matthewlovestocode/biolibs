@@ -12,6 +12,8 @@ Case kinds:
   edra_build - _create_edra: the hedra and dihedra a residue builds from the tables and its neighbours.
   i2a   - internal_to_atom_coordinates: the atoms rebuilt from the angle values, with part of the chain
           invalidated first so that there is something to rebuild.
+  i2a_ser - the serial assembly: internal_to_atom_coordinates over a start/fin subregion, or with
+          ParallelAssembleResidues turned off, which drops the residues outside the range.
   a2ic  - atom_to_internal_coordinates: the index maps init_edra and build_edraArrays lay down, and the bond
           lengths, bond angles and dihedral angles measured from the atom coordinates.
 
@@ -548,8 +550,108 @@ for i, text in enumerate(GEOM):
 for text in GEOM[:2] + TEXTS[:2]:
     cases.append({"kind": "i2a_unset", "text": text})
 
+# ---------------- the serial assembly ----------------
+# A start or fin sequence position (or ParallelAssembleResidues = False) sends the rebuild through
+# `assemble_residues_ser` and `IC_Residue.assemble`, which walks each residue's hedra from its N-CA-C outwards.
+# The residues outside the range lose their atom keys *and* their atoms.
+def run_i2a_ser(case):
+    """Rebuild through the serial path and record the atoms, the keys each residue kept and the transforms."""
+    import io, warnings as w2
+    from Bio.PDB import PDBParser
+    from Bio.PDB.internal_coords import IC_Chain
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+            for c in s.get_chains(): c.atom_to_internal_coordinates()
+        if case.get("serial_flag"): IC_Chain.ParallelAssembleResidues = False
+        out = []
+        for chain in list(s.get_chains())[:2]:
+            cic = chain.internal_coord
+            if cic is None or not hasattr(cic, "dAtoms_needs_update"):
+                out.append({"empty": True})
+                continue
+            if case["how"] == "all": cic.atomArrayValid[:] = False
+            with w2.catch_warnings(record=True) as rec:
+                w2.simplefilter("always")
+                exc = attempt(lambda chain=chain: chain.internal_to_atom_coordinates(
+                    False, case.get("start"), case.get("fin")))
+            r6 = lambda a: [enc6(x) for x in a]
+            out.append({
+                "call": exc,
+                "coords": [r6(row) for row in cic.atomArray],
+                "valid": [bool(v) for v in cic.atomArrayValid],
+                "dcsValid": [bool(v) for v in cic.dcsValid],
+                "residues": [{
+                    "pretty": ric.pretty_str(),
+                    "ak_set": None if ric.ak_set is None else sorted(k.id for k in ric.ak_set),
+                    "akc": None if ric.akc is None else sorted(
+                        f"{k if isinstance(k, str) else k.name}={v.id}" for k, v in ric.akc.items()),
+                    "atoms": [a.get_name() for a in ric.residue.get_unpacked_list()],
+                    "nchild": len(ric.residue.child_list),
+                } for ric in cic.ordered_aa_ic_list],
+                # each dihedron keeps its own pair of transforms here, and the chain's array is left stale
+                "transforms": sorted([d.id, [r6(row) for row in d.cst], [r6(row) for row in d.rcst]]
+                                     for d in cic.dihedra.values()),
+                "dCoordSpace0": [[r6(row) for row in m] for m in cic.dCoordSpace[0]],
+                "structure_atoms": sorted(a.get_full_id()[3][0] + ":" + a.get_name() for a in s.get_atoms()),
+                "warnings_seen": [f"{w.category.__name__}: {w.message}" for w in rec],
+            })
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+# `IC_Residue.assemble` on its own, including resetLocation, which builds in the dihedron's own frame.
+def run_assemble(case):
+    import io, warnings as w2
+    from Bio.PDB import PDBParser
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+            for c in s.get_chains(): c.atom_to_internal_coordinates()
+        out = []
+        for chain in list(s.get_chains())[:1]:
+            cic = chain.internal_coord
+            if cic is None or not hasattr(cic, "dAtoms_needs_update"): continue
+            if case["how"] == "all": cic.atomArrayValid[:] = False
+            elif case["how"] == "ncac2":
+                # Only the second residue's backbone, so that residue has no valid N-CA-C of its own to build
+                # from while the chain start still has: the fallback to the dihedra's own coordinates.
+                for ric in cic.ordered_aa_ic_list[1:2]:
+                    for nm in ("N", "CA", "C"):
+                        ak = ric.akc.get(nm)
+                        if ak is not None: cic.atomArrayValid[cic.atomArrayIndex[ak]] = False
+            # `assemble` reads the di/hedra's local coordinates, which `init_atom_coords` is what fills in;
+            # before that they are `np.empty`'s uninitialised memory, so there would be nothing to compare.
+            cic.init_atom_coords()
+            # `init_atom_coords` seeds the chain start, so invalidating after it is what leaves the first
+            # residue with no valid N-CA-C and sends `_get_startpos` to the dihedra's own coordinates.
+            if case["how"] == "all_after": cic.atomArrayValid[:] = False
+            for ric in cic.ordered_aa_ic_list:
+                got = attempt(lambda ric=ric: sorted(
+                    [k.id, [enc6(x) for x in v]] for k, v in (ric.assemble(case["reset"]) or {}).items()))
+                out.append({"res": ric.pretty_str(), "got": got,
+                            "start": attempt(lambda ric=ric: sorted(k.id for k in ric._get_startpos())),
+                            "default": attempt(lambda ric=ric: sorted(k.id for k in ric._default_startpos()))})
+            out.append({"coords": [[enc6(x) for x in row] for row in cic.atomArray],
+                        "valid": [bool(v) for v in cic.atomArrayValid]})
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+for i, text in enumerate(GEOM):
+    for how, kw in (("none", {}), ("all", {}), ("all", {"start": 2}), ("all", {"fin": 2}),
+                    ("all", {"start": 2, "fin": 3}), ("all", {"start": 0}), ("all", {"serial_flag": True})):
+        cases.append({"kind": "i2a_ser", "text": text, "how": how, **kw})
+    for how in ("none", "all", "ncac2", "all_after"):
+        for reset in (False, True):
+            cases.append({"kind": "assemble", "text": text, "how": how, "reset": reset})
+
 RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair,
-           "residue": run_residue, "edra_build": run_edra_build, "split": run_split, "a2ic": run_a2ic, "i2a": run_i2a, "i2a_unset": run_i2a_unset}
+           "residue": run_residue, "edra_build": run_edra_build, "split": run_split, "a2ic": run_a2ic, "i2a": run_i2a, "i2a_unset": run_i2a_unset, "i2a_ser": run_i2a_ser, "assemble": run_assemble}
 kept = []
 for c in cases:
     res = run_isolated(RUNNERS[c["kind"]], c)

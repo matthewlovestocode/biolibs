@@ -3,12 +3,13 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { AtomKey, Dihedron, Edron, FIELDS, Hedron, IC_Chain, IC_Residue, PDBParser } from "@biolibs/pdb";
 import { captureWarnings } from "@biolibs/core";
+import { assembleResidue, defaultStartpos, getStartpos, icSettings } from "@biolibs/pdb";
 
 type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc };
 interface Spec { how: string; value: unknown }
 interface Spec2 { cls: string; how: string; keys: string[] }
-interface Case { kind: string; text?: string; entry?: string; how?: string; twice?: boolean; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
+interface Case { kind: string; text?: string; entry?: string; how?: string; twice?: boolean; start?: number; fin?: number; serial_flag?: boolean; reset?: boolean; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
 
 /** AttributeError is a TypeError here, with no message to compare. */
 const excOk = (want?: Exc, got?: Exc): boolean => {
@@ -373,6 +374,104 @@ function runI2aUnset(c: Case): Out {
   });
 }
 
+/** Sort rows whose first element is an id, the way Python's `sorted` orders those lists. */
+const sortById = (rows: unknown[][]): unknown[][] =>
+  [...rows].sort((a, b) => (String(a[0]) < String(b[0]) ? -1 : String(a[0]) > String(b[0]) ? 1 : 0));
+
+/**
+ * Replay the serial rebuild: a `start`/`fin` subregion, or the parallel assembly turned off.
+ *
+ * The residues outside the range lose their atom keys and their atoms, so the structure itself is recorded too.
+ */
+function runI2aSer(c: Case): Out {
+  const parsed = captureWarnings(() => {
+    const st = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", c.text!);
+    for (const ch of st.getChains()) ch.atomToInternalCoordinates();
+    return st;
+  });
+  if (parsed.error !== undefined) return { exc: err(parsed.error) };
+  const s = parsed.result!;
+  const restore = icSettings.parallelAssembleResidues;
+  try {
+    if (c.serial_flag === true) icSettings.parallelAssembleResidues = false;
+    return attempt(() => [...s.getChains()].slice(0, 2).map((chain) => {
+      const cic = chain.internalCoord;
+      if (cic === null || cic.dAtomsNeedsUpdate === undefined) return { empty: true };
+      if (c.how === "all") cic.atomArrayValid.fill(0);
+      const r6 = (a: ArrayLike<number>): unknown[] => Array.from(a).map(enc6);
+      const cap = captureWarnings(() => chain.internalToAtomCoordinates(false, c.start ?? null, c.fin ?? null));
+      return {
+        call: cap.error === undefined ? { result: null } : { exc: err(cap.error) },
+        coords: Array.from({ length: cic.AAsiz }, (_, i) => r6(cic.atomArray.subarray(i * 4, i * 4 + 4))),
+        valid: [...cic.atomArrayValid].map((v) => v === 1),
+        dcsValid: [...cic.dcsValid!].map((v) => v === 1),
+        residues: cic.orderedAaIcList.map((ric) => ({
+          pretty: ric.prettyStr(),
+          ak_set: ric.akSet === null ? null : [...ric.akSet].map((k) => k.id).sort(),
+          akc: ric.akc === null ? null
+            : [...ric.akc].map(([k, v]) => `${typeof k === "string" ? k : k.name}=${v.id}`).sort(),
+          atoms: ric.residue.getUnpackedList().map((a) => a.getName()),
+          nchild: ric.residue.childList.length,
+        })),
+        // each dihedron keeps its own pair of transforms here, and the chain's array is left stale
+        transforms: sortById([...cic.dihedra.values()].map((d) =>
+          [d.id, d.cst!.map((row) => r6(row)), d.rcst!.map((row) => r6(row))])),
+        dCoordSpace0: cic.dCoordSpace![0]!.map((m) => m.map((row) => r6(row))),
+        structure_atoms: [...s.getAtoms()].map((a) => `${String((a.getFullId() as unknown[])[3] !== undefined ? (((a.getFullId() as unknown[])[3] as unknown[])[0]) : "")}:${a.getName()}`).sort(),
+        warnings_seen: cap.warnings.map((w) => `${w.category}: ${w.message}`),
+      };
+    }));
+  } finally {
+    icSettings.parallelAssembleResidues = restore;
+  }
+}
+
+/** Replay `IC_Residue.assemble` on its own, including the reset that builds in the dihedron's own frame. */
+function runAssemble(c: Case): Out {
+  const parsed = captureWarnings(() => {
+    const st = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", c.text!);
+    for (const ch of st.getChains()) ch.atomToInternalCoordinates();
+    return st;
+  });
+  if (parsed.error !== undefined) return { exc: err(parsed.error) };
+  const s = parsed.result!;
+  return attempt(() => {
+    const out: unknown[] = [];
+    for (const chain of [...s.getChains()].slice(0, 1)) {
+      const cic = chain.internalCoord;
+      if (cic === null || cic.dAtomsNeedsUpdate === undefined) continue;
+      if (c.how === "all") cic.atomArrayValid.fill(0);
+      else if (c.how === "ncac2") {
+        // Only the second residue's backbone, so it has no valid N-CA-C of its own to build from.
+        for (const ric of cic.orderedAaIcList.slice(1, 2)) {
+          for (const nm of ["N", "CA", "C"]) {
+            const ak = ric.akc!.get(nm);
+            if (ak !== undefined) cic.atomArrayValid[cic.atomArrayIndex.get(ak.hashKey)!] = 0;
+          }
+        }
+      }
+      // `assemble` reads the di/hedra's local coordinates, which `initAtomCoords` is what fills in.
+      cic.initAtomCoords();
+      // Seeding happens in there, so invalidating after it leaves the first residue with no valid N-CA-C.
+      if (c.how === "all_after") cic.atomArrayValid.fill(0);
+      for (const ric of cic.orderedAaIcList) {
+        out.push({
+          res: ric.prettyStr(),
+          got: attempt(() => sortById([...(assembleResidue(ric, c.reset) ?? new Map()).values()]
+            .map((p) => [p.key.id, p.coord.map(enc6)]))),
+          start: attempt(() => [...getStartpos(ric).values()].map((p) => p.key.id).sort()),
+          default: attempt(() => [...defaultStartpos(ric).values()].map((p) => p.key.id).sort()),
+        });
+      }
+      out.push({
+        coords: Array.from({ length: cic.AAsiz }, (_, i) => [...cic.atomArray.subarray(i * 4, i * 4 + 4)].map(enc6)),
+        valid: [...cic.atomArrayValid].map((v) => v === 1),
+      });
+    }
+    return out;
+  });
+}
+
 /**
  * The path to the first place two recorded results differ, which is what a mismatch report needs.
  *
@@ -394,8 +493,8 @@ function firstDiff(a: unknown, b: unknown, path = ""): string {
 
 describe("Bio.PDB.internal_coords: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/ickey.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic, i2a: runI2a, i2a_unset: runI2aUnset };
-  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic", "i2a", "i2a_unset"]) {
+  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic, i2a: runI2a, i2a_unset: runI2aUnset, i2a_ser: runI2aSer, assemble: runAssemble };
+  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic", "i2a", "i2a_unset", "i2a_ser", "assemble"]) {
     const list = cases.filter((c) => c.kind === kind);
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
       const bad: string[] = [];

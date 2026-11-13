@@ -225,6 +225,14 @@ rebuilt = {c["entry"] for c in ick if c["kind"] == "i2a"
 for entry, cls in (("model", "Model"), ("structure", "Structure")):
     if entry in rebuilt: mark(f"Bio.PDB.{cls}.{cls}.internal_to_atom_coordinates")
 
+# Chain's own method takes start/fin, which select the serial assembly; it is marked only when a case passed one
+# and the subregion was really applied -- a residue outside the range loses its atom keys.
+if any(c["kind"] == "i2a_ser" and (c.get("start") or c.get("fin"))
+       and any(not ch.get("empty") and "exc" not in ch.get("call", {})
+               and any(r["ak_set"] is None for r in ch["residues"]) for ch in c.get("result", []))
+       for c in ick):
+    mark("Bio.PDB.Chain.Chain.internal_to_atom_coordinates")
+
 # ---- Bio.PDB mmCIF (packages/pdb/test/golden/mmcif.json) ----
 mc = json.load(open(f"{here}/../packages/pdb/test/golden/mmcif.json"))["cases"]
 if any(c["kind"] == "dict" and "dict" in c for c in mc):

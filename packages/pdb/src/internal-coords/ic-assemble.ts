@@ -16,6 +16,7 @@ import { FIELDS } from "./atom-key.js";
 import { Edron } from "./edron.js";
 import type { IC_Chain } from "./ic-chain.js";
 import { icSettings } from "./settings.js";
+import { buildChainAtomsSer } from "./ic-serial.js";
 
 /** A dihedron is ready to place its fourth atom when its first three are known and the fourth is not. */
 const DIHEDRA_SELECT = [true, true, true, false];
@@ -225,14 +226,15 @@ export function updateDCoordSpace(cic: IC_Chain, workSelector?: boolean[]): void
  * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
  * @param start - First sequence position to build, which selects Biopython's serial assembly.
  * @param fin - Last sequence position to build, likewise.
- * @throws Error for `start` or `fin`, or with {@link icSettings.parallelAssembleResidues} turned off: the serial
- *   assembly (`assemble_residues_ser`, `IC_Residue.assemble`) is not ported yet.
+ * @see buildChainAtomsSer, which `start`, `fin` or {@link icSettings.parallelAssembleResidues} turned off
+ *   selects instead.
  */
 export function buildChainAtoms(cic: IC_Chain, verbose = false, start: number | null = null, fin: number | null = null): void {
-  void verbose;
   if (cic.dAtomsNeedsUpdate === undefined) return;        // nothing has been measured, so nothing to build
-  if (!icSettings.parallelAssembleResidues || start !== null || fin !== null) {
-    throw new Error("internal_to_atom_coordinates: serial assembly (start/fin) is not ported yet");
+  // A start or fin position selects the serial assembly, as does turning the parallel one off.
+  if (!icSettings.parallelAssembleResidues || (start !== null && start !== 0) || (fin !== null && fin !== 0)) {
+    buildChainAtomsSer(cic, verbose, start, fin);
+    return;
   }
   propagateChanges(cic);
   initAtomCoords(cic);

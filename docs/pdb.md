@@ -76,7 +76,7 @@ residue name, atom name, altloc, occupancy) and whose ordering puts a residue's 
 `edron.ts` holds `Edron`, `Hedron` and `Dihedron`, the angles themselves — three bonded atoms with two lengths
 and an angle, or four with the angle between two planes — `ic-residue.ts` holds `IC_Residue` — which atoms a residue keeps, the keys it
 keeps them under, and the hedra and dihedra it builds from the tables and from its neighbours — and `ic-chain.ts` holds `IC_Chain`, which
-decides which of a chain's residues can be built, owns the coordinate array, measures the angles and rebuilds the atoms from them. Verified against Biopython on 1011 cases
+decides which of a chain's residues can be built, owns the coordinate array, measures the angles and rebuilds the atoms from them. Verified against Biopython on 1146 cases
 (`packages/pdb/test/golden/ickey.json`, built by `reference/golden/gen_ickey_cases.py`). The geometry the rest of
 the port will rest on is already here, in `homog.ts`, ported with `Bio.PDB.vectors`.
 
@@ -161,11 +161,22 @@ because the masks are what make that code hard to read: a *full-size* mask index
 Biopython too, since a dihedron selected for work has just had its transforms marked stale; it is kept for
 fidelity, and no case can cover it.
 
-Still to come: Biopython's *serial* assembly (`assemble_residues_ser`, `IC_Residue.assemble`), which
-`internal_to_atom_coordinates` selects when given a `start` or `fin` sequence position. `Chain`'s entry point
-takes those arguments, so that one parity item stays open until the serial path lands; `start`/`fin` and
-`icSettings.parallelAssembleResidues = false` raise meanwhile. `Model` and `Structure` only ever call the
-parallel path, and are done.
+A `start` or `fin` sequence position — or `icSettings.parallelAssembleResidues = false` — selects Biopython's
+*serial* assembly instead, in `ic-serial.ts`. `assembleResidue` walks one residue at a time: it queues the hedra
+around N-CA-C (and the ones reaching C-beta and the carbonyl), then takes a hedron key off the queue, places the
+fourth atom of every dihedron that starts with it, and pushes those dihedra's second hedra on to be followed in
+turn — only while they stay in this residue, which is what keeps one residue's walk from running away down the
+chain. A hedron key that starts no dihedron simply drains away, which is what ends it. A residue with no valid
+N-CA-C of its own starts from its dihedra's own coordinates instead, which puts its alpha carbon at the origin.
+Residues outside a `start`/`fin` range lose their atom keys **and their atoms**: Biopython clears the residue's
+children, so the structure comes out holding only the subregion asked for.
+
+The two paths differ in one visible way. The serial one *rebinds* each dihedron's `cst`/`rcst` rather than
+writing through Biopython's views into `IC_Chain.dCoordSpace`, so the chain's own array is left as the
+measurement set it while the dihedra hold the new transforms; `updateDCoordSpace` is what brings the array back
+into step. The port assigns in both places to the same effect.
+
+With that, every `Bio.PDB` section but `kdtrees` is complete.
 
 Numerical notes: the cross product reproduces NumPy's `det` (LU factorisation then `exp(sum(log))`), and NumPy's `RuntimeWarning`s (division by zero, invalid value, sqrt of a negative) are emitted through `warn` with category `RuntimeWarning`. NumPy's SIMD `sin`/`cos`/`exp` can differ from JavaScript's in the last bit, so the golden test compares floats to 1e-9 (1e-6 after an `arccos`, which amplifies such differences near 0 and π; a dihedral of ±π counts as equal either way). Cases the golden set avoids because NumPy's own output is undefined: `multiCoordSpace` where the second and third points coincide (uninitialised memory), and `coordSpace` with the first point equal to the second (the result is rounding noise).
 

@@ -172,6 +172,12 @@ export function measureChain(cic: IC_Chain, verbose = false): void {
   const [fwd, rev] = multiCoordSpace(dha, cic.dihedraLen, true) as [Matrix[], Matrix[]];
   cic.dCoordSpace = [fwd, rev];
   cic.dcsValid = new Uint8Array(cic.dihedraLen).fill(1);
+  // Biopython's dihedra hold views into these rows, so writing the array gives each dihedron its pair.
+  for (const [dk, d] of cic.dihedraNdx!) {
+    const dh = cic.dihedra.get(dk)!;
+    dh.cst = fwd[d]!;
+    dh.rcst = rev[d]!;
+  }
 
   const rads = cic.dihedraAngleRads as Float64Array;
   const degs = cic.dihedraAngle as Float64Array;

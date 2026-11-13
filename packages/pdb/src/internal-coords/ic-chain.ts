@@ -13,6 +13,7 @@
 import { AtomKey } from "./atom-key.js";
 import { buildEdraArrays, initEdra, measureChain } from "./ic-measure.js";
 import { assembleResidues, buildChainAtoms, initAtomCoords, propagateChanges, updateDCoordSpace } from "./ic-assemble.js";
+import { assembleResiduesSer } from "./ic-serial.js";
 import type { Matrix } from "../vectors.js";
 import type { Dihedron, EdronArrays, Hedron } from "./edron.js";
 import { IC_Residue } from "./ic-residue.js";
@@ -176,7 +177,7 @@ export class IC_Chain implements EdronArrays {
         if (!this.addResidue(r, lastRes, lastOrdRes, verbose)) continue;
         const ric = (r as unknown as { internalCoord: IC_Residue }).internalCoord;
         thisRes.push(ric);
-        for (const ak of ric.akSet) akset.set(ak.hashKey, ak);
+        for (const ak of ric.akSet!) akset.set(ak.hashKey, ak);
       }
       if (thisRes.length > 0) {
         this.orderedAaIcList.push(...thisRes);
@@ -299,7 +300,7 @@ export class IC_Chain implements EdronArrays {
         const each = isDisordered(atm) && !icSettings.noAltloc ? locations(atm) : [selected(atm)];
         for (const a of each) this.setAtom(ric, a);
       }
-      if (ric.akc.size === 0) ric.buildRakCache();
+      if (ric.akc!.size === 0) ric.buildRakCache();
     }
   }
 
@@ -345,6 +346,17 @@ export class IC_Chain implements EdronArrays {
    * @param workSelector - Which dihedra to refresh; by default, every one whose transforms went stale.
    */
   updateDCoordSpace(workSelector?: boolean[]): void { updateDCoordSpace(this, workSelector); }
+
+  /**
+   * Build every residue of this chain in turn, dropping the residues outside a `start`/`fin` range.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   * @param start - First sequence position to build, or null for no lower bound.
+   * @param fin - Last sequence position to build, or null for no upper bound.
+   */
+  assembleResiduesSer(verbose = false, start: number | null = null, fin: number | null = null): void {
+    assembleResiduesSer(this, verbose, start, fin);
+  }
 
   /**
    * Compute atom coordinates for this chain from its internal coordinates.
