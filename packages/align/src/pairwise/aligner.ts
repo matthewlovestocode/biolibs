@@ -32,6 +32,37 @@ export type AlignerOptions = { scoring?: string | null } & Partial<GapScoreAcces
   wildcard?: string | null;
 };
 
+/** What {@link PairwiseAligner.warnDefaultsChanged} says, word for word as Biopython says it. */
+const DEFAULTS_CHANGED = "\nNote that the default value for the gap score parameter of a\n"
+  + "PairwiseAligner object has changed.\n\n"
+  + "In older versions of Biopython, the pairwise aligner was initialized\n"
+  + "by default with a match score of +1, a mismatch score of 0, and a gap\n"
+  + "score of 0.  This choice was made to be consistent with the pairwise\n"
+  + "alignment code in Bio.pairwise2.\n\n"
+  + "However, this scoring scheme tends to produce a large number of alignments\n"
+  + "with only trivial difference between them.  In particular, a mismatch\n"
+  + "between two letters, a single insertion followed by a deletion, and a\n"
+  + "deletion followed by an insertion are all assigned the same score. For long\n"
+  + "sequences, the number of alignments with such trivial differences can be\n"
+  + "astronomical.\n\n"
+  + "In Biopython 1.86, the default gap score was therefore changed to -1,\n"
+  + "while the default match score remained +1 and the default mismatch score\n"
+  + "remained 0.\n";
+
+/**
+ * Whether the gap-score warning has already been given.
+ *
+ * Biopython keeps this in its C module, not on the aligner, so the warning is given at most once in the lifetime of
+ * the process however many aligners ask for it. {@link resetDefaultsWarning} puts it back for the parity tests,
+ * which replay many cases in one process.
+ */
+let defaultsWarningGiven = false;
+
+/** Forget that the gap-score warning was given, so that the next call warns again. For tests. */
+export function resetDefaultsWarning(): void {
+  defaultsWarningGiven = false;
+}
+
 /** Python `PyFloat_AsDouble`: numbers and booleans convert, anything else is a TypeError. */
 function asDouble(value: unknown): number {
   if (typeof value === "number") return value;
@@ -74,6 +105,31 @@ export class PairwiseAligner {
   private alphabetAssigned = false;
   /** @internal Attributes assigned through a renamed name that has no real counterpart. */
   extras = new Map<string, unknown>();
+  /** @internal Which of the twelve base gap scores have been assigned, for {@link PairwiseAligner.warnDefaultsChanged}. */
+  assignedGaps = new Set<string>();
+
+  /**
+   * Warn that the default gap score changed in Biopython 1.86, unless every gap score was set explicitly.
+   *
+   * The twelve base gap scores must all have been assigned for the warning to be skipped, which one setting can do
+   * (`gapScore`) or two together (`openGapScore` and `extendGapScore`, or `internalGapScore` and `endGapScore`).
+   * Biopython keeps the "already warned" flag in its C module rather than on the aligner, so the warning is given
+   * at most once per process no matter how many aligners ask; {@link resetDefaultsWarning} clears it.
+   *
+   * @returns Nothing. Biopython's docstring claims a boolean, but the function returns `None`.
+   * @example
+   * ```ts
+   * new PairwiseAligner().warnDefaultsChanged();          // warns
+   * const a = new PairwiseAligner({ gapScore: -1 });
+   * a.warnDefaultsChanged();                              // says nothing
+   * ```
+   */
+  warnDefaultsChanged(): void {
+    if (this.assignedGaps.size >= GAP_SCORE_NAMES.length) return;
+    if (defaultsWarningGiven) return;
+    defaultsWarningGiven = true;
+    warn(DEFAULTS_CHANGED, "UserWarning");
+  }
 
   /**
    * @param options - `scoring` (`"blastn"`, `"megablast"`, `"blastp"` or null) and any property by name.
@@ -384,6 +440,9 @@ function makeSetter(spec: GapPropertySpec): (this: PairwiseAligner, value: unkno
     }
     if (spec.side !== "deletion") gaps.insertionScoreFunction = null;
     if (spec.side !== "insertion") gaps.deletionScoreFunction = null;
-    for (const f of spec.fields) (gaps as unknown as Record<string, number>)[f] = score;
+    for (const f of spec.fields) {
+      (gaps as unknown as Record<string, number>)[f] = score;
+      this.assignedGaps.add(f);
+    }
   };
 }

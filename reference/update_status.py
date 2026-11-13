@@ -461,6 +461,8 @@ for m in inv["Bio.Align.PairwiseAligner"]["classes"]["PairwiseAligner"]:
 if any(c["kind"] == "score" and "score" in c for c in al): mark("Bio.Align.PairwiseAligner.PairwiseAligner.score")
 if any(c["kind"] == "settings" for c in al): mark("Bio.Align.PairwiseAligner.PairwiseAligner.__init__"); mark("Bio.Align.PairwiseAligner.PairwiseAligner.__str__"); mark("Bio.Align.PairwiseAligner.PairwiseAligner.algorithm")
 if any(c["kind"] == "align" and "first" in c for c in al): mark("Bio.Align.PairwiseAligner.PairwiseAligner.align")
+# the `defaults_warning` case replays the whole once-per-process story, gap scores set and unset
+if any(c["kind"] == "defaults_warning" and "step_warnings" in c for c in al): mark("Bio.Align.PairwiseAligner.PairwiseAligner.warn_defaults_changed")
 if any(c["kind"] == "align" and "first" in c for c in al):
     for m in ("__getitem__", "__iter__", "__len__", "__next__", "rewind"): mark(f"Bio.Align.PairwiseAligner.PairwiseAlignments.{m}")
     for m in ("__repr__", "__init__"): mark(f"Bio.Align.PairwiseAligner.PairwiseAlignments.{m}", "na" if m == "__repr__" else "done")   # repr shows a memory address

@@ -2,12 +2,12 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { captureWarnings } from "@biolibs/core";
-import { PairwiseAligner, substitutionMatrices as SM } from "@biolibs/align";
+import { PairwiseAligner, resetDefaultsWarning, substitutionMatrices as SM } from "@biolibs/align";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
 type Exc = { type: string; msg: string | null };
-interface Case { kind: string; len?: number; len_exc?: Exc; first?: { coordinates: number[][]; score: number }[]; idx?: { result?: number[][]; exc?: Exc }[]; indices?: number[]; scoring: string | null; props: [string, unknown][]; ops?: unknown[][]; a?: unknown; b?: unknown; strand?: string; exc?: Exc; score?: number; ops_out?: { result?: unknown; exc?: Exc }[]; algorithm?: string; warnings: string[] }
+interface Case { kind: string; len?: number; len_exc?: Exc; first?: { coordinates: number[][]; score: number }[]; idx?: { result?: number[][]; exc?: Exc }[]; indices?: number[]; scoring: string | null; props: [string, unknown][]; ops?: unknown[][]; a?: unknown; b?: unknown; strand?: string; exc?: Exc; score?: number; ops_out?: { result?: unknown; exc?: Exc }[]; algorithm?: string; warnings: string[]; steps?: [string, unknown][][]; step_warnings?: string[][] }
 
 const camel = (s: string) => s.replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
 const FUNCS: Record<string, (a: number, b: number) => (i: number, j: number) => unknown> = {
@@ -49,6 +49,22 @@ function build(c: Case): PairwiseAligner {
 
 function run(c: Case): Record<string, any> {
   const out: Record<string, any> = {};
+  if (c.kind === "defaults_warning") {
+    // The flag is per process in Biopython too, so the case replays the whole sequence after clearing it; each
+    // step's warnings are captured on their own.
+    resetDefaultsWarning();
+    out["step_warnings"] = (c.steps ?? []).map((step) => {
+      const inner = captureWarnings(() => {
+        const a = new PairwiseAligner();
+        for (const [name, v] of step) (a as any)[camel(name)] = val(v);
+        a.warnDefaultsChanged();
+      });
+      if (inner.error !== undefined) throw inner.error;
+      return inner.warnings.map((w) => w.message);
+    });
+    out["warnings"] = [];
+    return out;
+  }
   const cap = captureWarnings(() => {
     const a = build(c);
     if (c.kind === "settings") {
@@ -88,7 +104,7 @@ const same = (a: unknown, b: unknown) => JSON.stringify(a ?? null) === JSON.stri
 
 describe("PairwiseAligner: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/aligner.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  for (const kind of ["settings", "score", "align"]) {
+  for (const kind of ["settings", "score", "align", "defaults_warning"]) {
     // align is ported for the linear-gap algorithms so far
     const list = cases.filter((c) => c.kind === kind && (kind !== "align" || ["Needleman-Wunsch", "Smith-Waterman", "Gotoh global alignment algorithm", "Gotoh local alignment algorithm", "Waterman-Smith-Beyer global alignment algorithm", "Waterman-Smith-Beyer local alignment algorithm", "Fast Optimal Global Sequence Alignment Algorithm"].includes((c as any).algorithm) || c.exc));
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
@@ -101,6 +117,10 @@ describe("PairwiseAligner: parity with Biopython", () => {
         else if (kind === "align" && !c.exc) {
           for (const k of ["score", "len", "first"] as const) if (!why && !same(c[k], got[k])) why = `${k}: want ${JSON.stringify(c[k])?.slice(0, 300)} got ${JSON.stringify(got[k])?.slice(0, 300)}`;
           c.idx!.forEach((w, i) => { const g = got["idx"][i]; if (!why && (w.exc || g.exc ? !excOk(w.exc, g.exc) : !same(w.result, g.result))) why = `index ${c.indices![i]}: want ${JSON.stringify(w)} got ${JSON.stringify(g)}`; });
+        } else if (kind === "defaults_warning") {
+          if (!same(c.step_warnings, got["step_warnings"])) {
+            why = `step warnings: want ${JSON.stringify(c.step_warnings)?.slice(0, 200)} got ${JSON.stringify(got["step_warnings"])?.slice(0, 200)}`;
+          }
         } else if (kind === "settings" && !c.exc) {
           if (c.algorithm !== got["algorithm"]) why = `algorithm: want ${c.algorithm} got ${got["algorithm"]}`;
           c.ops_out!.forEach((w, i) => {

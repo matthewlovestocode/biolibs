@@ -60,6 +60,20 @@ def run(case):
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         try:
+            if case["kind"] == "defaults_warning":
+                # One case, one process: Biopython keeps the "already warned" flag in its C module, so only the
+                # first eligible call says anything however many aligners ask. Each step records its own warnings.
+                steps = []
+                out["step_warnings"] = steps      # a name of its own: `out` is merged into the case, and `steps` is its input
+                for step in case["steps"]:
+                    with warnings.catch_warnings(record=True) as inner:
+                        warnings.simplefilter("always")
+                        a = Align.PairwiseAligner()
+                        for name, value in step: setattr(a, name, val(value))
+                        a.warn_defaults_changed()
+                        steps.append([str(x.message) for x in inner])
+                out["warnings"] = []
+                return out
             a = build(case)
             if case["kind"] == "settings":
                 res = []
@@ -173,6 +187,12 @@ for _ in range(500):
     add({"kind": "settings", "scoring": cfg["scoring"], "props": cfg["props"], "ops": ops})
 for sc in ("blastn", "megablast", "blastp", "other", ""): add({"kind": "settings", "scoring": sc, "props": [], "ops": [["get", "gap_score"], ["get", "match_score"], ["get", "open_gap_score"], ["get", "substitution_matrix"], ["str"]]})
 add({"kind": "settings", "scoring": None, "props": [["bogus", 1]], "ops": []})
+# `warn_defaults_changed`: eligible unless all twelve base gap scores were assigned, and heard at most once per process
+# The order matters: an aligner with every gap score set comes first, while the once-per-process flag is still
+# clear, so that the silence is the gap scores' doing and not the flag's. Only then does a fresh aligner warn.
+add({"kind": "defaults_warning", "scoring": None, "props": [], "ops": [],
+     "steps": [[["gap_score", -1]], [["open_gap_score", -2], ["extend_gap_score", -1]], [["internal_gap_score", -1], ["end_gap_score", -1]],
+               [["open_gap_score", -2]], [], []]})
 add({"kind": "settings", "scoring": None, "props": [["alphabet", "ACGT"]], "ops": [["get", "alphabet"]]})
 
 # score: random configurations and sequences

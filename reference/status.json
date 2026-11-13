@@ -145,6 +145,7 @@
  "Bio.Align.PairwiseAligner.PairwiseAligner.align": "done",
  "Bio.Align.PairwiseAligner.PairwiseAligner.mode": "done",
  "Bio.Align.PairwiseAligner.PairwiseAligner.score": "done",
+ "Bio.Align.PairwiseAligner.PairwiseAligner.warn_defaults_changed": "done",
  "Bio.Align.PairwiseAligner.PairwiseAlignments.__eq__": "na",
  "Bio.Align.PairwiseAligner.PairwiseAlignments.__ge__": "na",
  "Bio.Align.PairwiseAligner.PairwiseAlignments.__getitem__": "done",

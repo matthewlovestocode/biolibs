@@ -14,7 +14,7 @@
 - [x] `__str__(self, /)`
 - [x] `align(self, seqA, seqB, strand='+')`
 - [x] `score(self, seqA, seqB, strand='+')`
-- [ ] `warn_defaults_changed(self, /)`
+- [x] `warn_defaults_changed(self, /)`
 
 ### Bio.Align.PairwiseAligner.PairwiseAlignments
 
