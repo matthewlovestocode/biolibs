@@ -23,7 +23,8 @@ KEYFUNCS = {"none": None, "upper": lambda k: k.upper(), "first4": lambda k: k[:4
 def run(case):
     out = {}
     with tempfile.NamedTemporaryFile(delete=False, suffix=".dat") as f:
-        f.write(case["text"].encode("utf-8")); path = f.name
+        # SFF is binary, so its cases carry latin-1-encoded bytes rather than text
+        f.write(case["text"].encode("utf-8") if "text" in case else case["bytes"].encode("latin-1")); path = f.name
     with warnings.catch_warnings(record=True) as w:
         warnings.simplefilter("always")
         try:
@@ -77,6 +78,20 @@ for fname, formats in SOURCES.items():
             case = {"format": "qual", "text": text, "keyfunc": "none"}
             res = run_isolated(run, case)
             if res is not None: case.update(res); cases.append(case)
+# SFF: binary, and the only format with an index block of its own, which `index` reads when the file has one and
+# falls back to scanning the reads when it does not.
+sff = json.load(open(os.path.join(GOLD, "seqio-sff.json")))["cases"]
+# Only files that parse cleanly: indexing a file whose Roche index block is damaged goes through Biopython's
+# warn-then-fall-back path, which this port does not reproduce yet (see docs/seqio.md), so those are left out
+# and `Bio.SeqIO.index` stays partial.
+sff_bytes = [(c["format"], c["bytes"]) for c in sff
+             if c["kind"] == "parse" and "bytes" in c and "exc" not in c and not c.get("warnings")]
+rnd.shuffle(sff_bytes)
+for fmt, data in sff_bytes[:120]:
+    case = {"format": fmt, "bytes": data, "keyfunc": rnd.choice(["none", "none", "none", "upper", "first4", "const"])}
+    res = run_isolated(run, case)
+    if res is not None: case.update(res); cases.append(case)
+
 # argument errors
 for fmt in ("", "FASTA", "clustal", "fastq-x"):
     case = {"format": fmt, "text": ">a\nAC\n", "keyfunc": "none"}

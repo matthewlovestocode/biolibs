@@ -7,6 +7,7 @@
  * - `formats.ts`: GenBank, EMBL/IMGT, Swiss-Prot and UniProt XML indexers
  * - `flat.ts`: IntelliGenetics and FASTQ indexers
  * - `dict.ts`: `IndexedSeqFileDict`
+ * - the SFF indexers live with the rest of that format, in `../sff/random-access.ts`
  */
 
 import { ValueError, pyIsLower } from "@biolibs/core";
@@ -14,21 +15,23 @@ import { IndexedSeqFileDict, type KeyFunction } from "./dict.js";
 import { EmblRandomAccess, GenBankRandomAccess, SwissRandomAccess, UniprotRandomAccess } from "./formats.js";
 import { FastqRandomAccess, IntelliGeneticsRandomAccess } from "./flat.js";
 import { SequentialSeqFileRandomAccess, TabRandomAccess, type SeqFileRandomAccess } from "./proxies.js";
+import { SffRandomAccess, SffTrimmedRandomAccess } from "../sff/random-access.js";
 
 export { IndexedSeqFileDict, type KeyFunction } from "./dict.js";
 export { SeqFileRandomAccess, SequentialSeqFileRandomAccess, TabRandomAccess, type Entry } from "./proxies.js";
 export { EmblRandomAccess, GenBankRandomAccess, SwissRandomAccess, UniprotRandomAccess } from "./formats.js";
 export { FastqRandomAccess, IntelliGeneticsRandomAccess } from "./flat.js";
+export { SffRandomAccess, SffTrimmedRandomAccess, readRawRecord, readRocheIndex, slowIndex } from "../sff/random-access.js";
 
 type ProxyClass = new (bytes: Uint8Array, format: string) => SeqFileRandomAccess;
 
-/** The indexer class for each format that can be indexed. (SFF is not ported.) */
+/** The indexer class for each format that can be indexed. */
 export const FORMAT_TO_RANDOM_ACCESS: ReadonlyMap<string, ProxyClass> = new Map<string, ProxyClass>([
   ["ace", SequentialSeqFileRandomAccess], ["embl", EmblRandomAccess], ["fasta", SequentialSeqFileRandomAccess], ["fastq", FastqRandomAccess],
   ["fastq-sanger", FastqRandomAccess], ["fastq-solexa", FastqRandomAccess], ["fastq-illumina", FastqRandomAccess], ["genbank", GenBankRandomAccess],
   ["gb", GenBankRandomAccess], ["ig", IntelliGeneticsRandomAccess], ["imgt", EmblRandomAccess], ["phd", SequentialSeqFileRandomAccess],
   ["pir", SequentialSeqFileRandomAccess], ["swiss", SwissRandomAccess], ["tab", TabRandomAccess], ["qual", SequentialSeqFileRandomAccess],
-  ["uniprot-xml", UniprotRandomAccess],
+  ["uniprot-xml", UniprotRandomAccess], ["sff", SffRandomAccess], ["sff-trim", SffTrimmedRandomAccess],
 ]);
 
 /** Options of {@link index}. */

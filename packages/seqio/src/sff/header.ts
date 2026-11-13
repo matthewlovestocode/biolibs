@@ -10,6 +10,13 @@ export const MAGIC = { sff: ".sff", hsh: ".hsh", srt: ".srt", mft: ".mft" } as c
 const PARSER = "BiopythonParserWarning";
 
 /** The common-header fields of an SFF file. */
+/** Python's `">2HI4H"`: a read header's two lengths, its sequence length and its four clip values. */
+export const READ_HEADER_FMT = ">2HI4H";
+
+/** Bytes in a read header before the name. */
+export const READ_HEADER_SIZE = calcsize(READ_HEADER_FMT);
+
+/** The fields of an SFF file header that the reads' layout depends on. */
 export interface SffHeader {
   headerLength: number;
   indexOffset: number;
@@ -127,4 +134,52 @@ export function readRocheXmlManifest(handle: BinaryStream): string {
   } catch {
     throw new ValueError("'utf-8' codec can't decode bytes: invalid data");
   }
+}
+
+/**
+ * After the last read: step over the index block and the terminal padding, and insist that nothing else follows.
+ *
+ * Shared by the iterator and the indexer, which both have to make this check once they have reached the end of the
+ * reads — the indexer does it whether it used the file's own index or scanned.
+ *
+ * @param stream - The file, positioned at the end of the last read.
+ * @param from - That position, as the caller has been tracking it.
+ * @param indexOffset - The index block's offset from the file header, or 0.
+ * @param indexLength - The index block's length.
+ * @returns The offset reached, which the caller keeps as its own.
+ * @throws {@link ValueError} for a gap before the index, a misplaced index, padding that is not a multiple of
+ *   eight, or anything at all after the padding — a concatenated file being the likely cause.
+ */
+export function checkEof(stream: BinaryStream, from: number, indexOffset: number, indexLength: number): number {
+  let offset = from;
+  let reached = from;
+  let extra: Uint8Array = new Uint8Array(0);
+  let padding = 0;
+  if (indexOffset && offset <= indexOffset) {
+    if (offset < indexOffset) throw new ValueError(`Gap of ${indexOffset - offset} bytes after final record end ${offset}, before ${indexOffset} where index starts?`);
+    stream.read(indexLength);
+    reached += indexLength;
+    offset = indexOffset + indexLength;
+    if (offset !== reached) throw new ValueError(`Wanted ${offset}, got ${stream.tell()}, index is ${indexOffset} to ${indexOffset + indexLength}`);
+  }
+  if (offset % 8) {
+    padding = 8 - (offset % 8);
+    extra = stream.read(padding);
+    reached += padding;
+  }
+  if (padding >= 4 && String.fromCharCode(...extra.slice(-4)) === ".sff") {
+    throw new ValueError(`Your SFF file is invalid, post index ${padding} byte null padding region ended '.sff' which could be the start of a concatenated SFF file? See offset ${offset}`);
+  }
+  if (padding && extra.length === 0) {
+    warn(`Your SFF file is technically invalid as it is missing a terminal ${padding} byte null padding region.`, PARSER);
+    return reached;
+  }
+  if (nullCount(extra) !== padding) warn(`Your SFF file is invalid, post index ${padding} byte null padding region contained data: ${pyBytesRepr(extra)}`, PARSER);
+  offset = reached;
+  if (offset % 8 !== 0) throw new ValueError(`Wanted offset ${offset} % 8 = ${offset % 8} to be zero`);
+  const tail = stream.read(4);
+  reached += 4;
+  if (String.fromCharCode(...tail) === ".sff") throw new ValueError(`Additional data at end of SFF file, perhaps multiple SFF files concatenated? See offset ${offset}`);
+  if (tail.length > 0) throw new ValueError(`Additional data at end of SFF file, see offset ${offset}`);
+  return reached;
 }

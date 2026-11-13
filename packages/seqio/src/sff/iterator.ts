@@ -6,12 +6,11 @@ import { SeqRecord } from "@biolibs/seqrecord";
 import { calcsize, unpack } from "../binary/struct.js";
 import type { BinaryStream } from "../handles.js";
 import { SequenceIterator } from "../interfaces.js";
-import { readFileHeader, nullCount } from "./header.js";
+import { READ_HEADER_FMT, READ_HEADER_SIZE, checkEof, nullCount, readFileHeader } from "./header.js";
 import { isUanName, readTime, readXY } from "./names.js";
 
 const PARSER = "BiopythonParserWarning";
-const READ_HEADER_FMT = ">2HI4H";
-const READ_HEADER_SIZE = calcsize(READ_HEADER_FMT);
+
 
 /** Python's strict UTF-8 `decode()`. */
 function utf8(bytes: Uint8Array): string {
@@ -85,6 +84,22 @@ export class SffIterator extends SequenceIterator {
     return record;
   }
 
+  /**
+   * Read the one read that starts at an offset, for random access.
+   *
+   * Biopython's indexer reuses the iterator's own reader this way: a single read is not a valid SFF file on its own,
+   * so there is nothing to hand a fresh parser.
+   *
+   * @param offset - Where the read starts, as the index recorded it.
+   * @returns The record, trimmed if this iterator was built to trim.
+   */
+  readAt(offset: number): SeqRecord {
+    const stream = this.bytes!;
+    stream.seek(offset);
+    this.offset = offset;
+    return this.readSeqRecord(stream);
+  }
+
   /** Read one read (header, flowgram, bases, qualities and padding) as a record. */
   private readSeqRecord(stream: BinaryStream): SeqRecord {
     let [readHeaderLength, nameLength, seqLen, clipQualLeft, clipQualRight, clipAdapterLeft, clipAdapterRight] =
@@ -153,36 +168,7 @@ export class SffIterator extends SequenceIterator {
 
   /** After the last read: skip the index and padding, then insist that nothing else follows. */
   private checkEof(stream: BinaryStream): void {
-    let offset = this.offset;
-    let extra: Uint8Array = new Uint8Array(0);
-    let padding = 0;
-    const { indexOffset, indexLength } = this;
-    if (indexOffset && offset <= indexOffset) {
-      if (offset < indexOffset) throw new ValueError(`Gap of ${indexOffset - offset} bytes after final record end ${offset}, before ${indexOffset} where index starts?`);
-      stream.read(indexLength);
-      this.offset += indexLength;
-      offset = indexOffset + indexLength;
-      if (offset !== this.offset) throw new ValueError(`Wanted ${offset}, got ${stream.tell()}, index is ${indexOffset} to ${indexOffset + indexLength}`);
-    }
-    if (offset % 8) {
-      padding = 8 - (offset % 8);
-      extra = stream.read(padding);
-      this.offset += padding;
-    }
-    if (padding >= 4 && String.fromCharCode(...extra.slice(-4)) === ".sff") {
-      throw new ValueError(`Your SFF file is invalid, post index ${padding} byte null padding region ended '.sff' which could be the start of a concatenated SFF file? See offset ${offset}`);
-    }
-    if (padding && extra.length === 0) {
-      warn(`Your SFF file is technically invalid as it is missing a terminal ${padding} byte null padding region.`, PARSER);
-      return;
-    }
-    if (nullCount(extra) !== padding) warn(`Your SFF file is invalid, post index ${padding} byte null padding region contained data: ${pyBytesRepr(extra)}`, PARSER);
-    offset = this.offset;
-    if (offset % 8 !== 0) throw new ValueError(`Wanted offset ${offset} % 8 = ${offset % 8} to be zero`);
-    const tail = stream.read(4);
-    this.offset += 4;
-    if (String.fromCharCode(...tail) === ".sff") throw new ValueError(`Additional data at end of SFF file, perhaps multiple SFF files concatenated? See offset ${offset}`);
-    if (tail.length > 0) throw new ValueError(`Additional data at end of SFF file, see offset ${offset}`);
+    this.offset = checkEof(stream, this.offset, this.indexOffset, this.indexLength);
   }
 }
 

@@ -231,7 +231,10 @@ if any(c["kind"] == "mmcif" and "written" in c for c in pio) and any(c["kind"] =
 # ---- SeqIO.index (packages/seqio/test/golden-index/seqio-index.json) ----
 ix = json.load(open(f"{here}/../packages/seqio/test/golden-index/seqio-index.json"))["cases"]
 if any("keys" in c for c in ix):
-    mark("Bio.SeqIO.index", "partial")      # SFF files are not indexed
+    # SFF is indexed now, through its Roche index block or by scanning the reads, but only for well-formed files:
+    # Biopython's path for a *damaged* index block (warn, then fall back to scanning, with the entries already read
+    # left in place) is not reproduced, so the cases are limited to files that parse cleanly.
+    mark("Bio.SeqIO.index", "partial")
     mark("Bio.SeqIO.index_db", "na")        # stores the index in a SQLite file; there is no file system here
 
 # ---- Bio.PDB.kdtrees, NeighborSearch and Selection (packages/pdb/test/golden/nsearch.json) ----

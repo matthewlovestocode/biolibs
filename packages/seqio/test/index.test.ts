@@ -7,7 +7,7 @@ import { enc } from "../../seqrecord/test/golden-runner";
 
 type Exc = { type: string; msg: string | null };
 interface Item { key: string; raw?: string; raw_exc?: Exc; record?: unknown; same?: boolean; exc?: Exc }
-interface Case { format: string; text: string; keyfunc: string; exc?: Exc; keys?: string[]; len?: number; items?: Item[]; probes?: { result?: unknown; exc?: Exc }[]; str?: string; warnings: string[] }
+interface Case { format: string; text?: string; bytes?: string; keyfunc: string; exc?: Exc; keys?: string[]; len?: number; items?: Item[]; probes?: { result?: unknown; exc?: Exc }[]; str?: string; warnings: string[] }
 
 const KEYFUNCS: Record<string, ((k: string) => string) | null> = { none: null, upper: (k) => k.toUpperCase(), first4: (k) => k.slice(0, 4), const: () => "x" };
 /** Python's AttributeError is a TypeError here, with no message to compare. */
@@ -23,7 +23,9 @@ function run(c: Case): Record<string, any> {
   const out: Record<string, any> = {};
   const cap = captureWarnings(() => {
     let d: IndexedSeqFileDict;
-    try { d = index(c.text, c.format, { keyFunction: KEYFUNCS[c.keyfunc] }); } catch (e) { out["exc"] = err(e); return; }
+    // A binary format's case carries latin-1 bytes; a text one carries the text.
+    const source = c.text !== undefined ? c.text : Uint8Array.from(c.bytes!, (ch) => ch.charCodeAt(0) & 0xff);
+    try { d = index(source, c.format, { keyFunction: KEYFUNCS[c.keyfunc] }); } catch (e) { out["exc"] = err(e); return; }
     const keys = [...d.keys()];
     out["keys"] = keys; out["len"] = d.size;
     out["items"] = keys.slice(0, 8).map((k) => {
@@ -70,7 +72,7 @@ describe("SeqIO.index: parity with Biopython", () => {
         }
       }
       if (!why && JSON.stringify(c.warnings) !== JSON.stringify(got["warnings"])) why = `warnings: want ${JSON.stringify(c.warnings)} got ${JSON.stringify(got["warnings"])}`;
-      if (why) bad.push(`${c.format}/${c.keyfunc} ${JSON.stringify(c.text.slice(0, 80))}\n    ${why}`);
+      if (why) bad.push(`${c.format}/${c.keyfunc} ${JSON.stringify((c.text ?? c.bytes ?? "").slice(0, 80))}\n    ${why}`);
     }
     expect(bad.length, `${bad.length} mismatches:\n${bad.slice(0, 5).join("\n")}`).toBe(0);
   });
