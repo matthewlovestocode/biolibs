@@ -33,15 +33,12 @@ export function reverseComplementOf(sequence: unknown): unknown {
 
 /** Placeholder for positions of a partially defined sequence that have no content; reading one raises `UndefinedSequenceError`. */
 const UNDEFINED = "\u0000";
-/** Placeholder used when the whole sequence has no content (Biopython's message differs for that case). */
-const ALL_UNDEFINED = "\u0001";
 
 /**
  * The text of a partially defined `Seq` with {@link UNDEFINED} where there is no content, so that the position-based
  * slicing the alignment code does only fails (as Biopython's does) when it touches an undefined position.
  */
 function partialText(seq: Seq): string {
-  if (seq.definedRanges.length === 0) return ALL_UNDEFINED.repeat(seq.length);
   const parts: string[] = [];
   let at = 0;
   for (const [a, b] of seq.definedRanges) {
@@ -52,10 +49,15 @@ function partialText(seq: Seq): string {
   return parts.join("");
 }
 
-/** Raise Biopython's error if text read from a partially defined sequence includes undefined positions. */
+/**
+ * Raise Biopython's error if text read from a partially defined sequence includes undefined positions: "undefined" when the
+ * whole piece read has no content, "only partially defined" when some of it has.
+ */
 function checkDefined(text: string): string {
-  if (text.includes(ALL_UNDEFINED)) throw new UndefinedSequenceError("Sequence content is undefined");
-  if (text.includes(UNDEFINED)) throw new UndefinedSequenceError("Sequence content is only partially defined");
+  if (text.includes(UNDEFINED)) {
+    const all = !/[^\u0000]/.test(text);
+    throw new UndefinedSequenceError(all ? "Sequence content is undefined" : "Sequence content is only partially defined");
+  }
   return text;
 }
 

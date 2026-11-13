@@ -6,8 +6,16 @@ import { captureWarnings } from "@biolibs/core";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
-type Spec = { ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
-interface Case { kwargs?: { interleave?: boolean }; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
+type Spec = { seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
+interface Case { kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
+/** Python keyword arguments to the positional arguments of each writer. */
+const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]] };
+const kwargArgs = (c: Case): unknown[] => {
+  if (!c.kwargs) return [];
+  const params = WRITER_PARAMS[c.fmt.toLowerCase()] ?? [];
+  const last = params.reduce((m, [k], i) => (k in c.kwargs! ? i : m), -1);
+  return params.slice(0, last + 1).map(([k, d]) => (k in c.kwargs! ? c.kwargs![k] : d));
+};
 const cases: Case[] = JSON.parse(readFileSync(new URL("./golden/alignfmt.json", import.meta.url), "utf8"));
 
 const seqText = (q: any): unknown => {
@@ -25,6 +33,8 @@ const enc = (a: Alignment) => {
     rann: a.sequences.map((s) => (s instanceof SeqRecord ? Object.fromEntries(s.annotations) : {})),
     lann: a.sequences.map((s) => (s instanceof SeqRecord ? Object.fromEntries(s.letterAnnotations) : {})),
     ...(a.operations !== undefined ? { ops: new TextDecoder().decode(a.operations) } : {}),
+    feat: a.sequences.map((s) => (s instanceof SeqRecord ? s.features.map((f) => [f.type, String(f.location), Object.fromEntries(f.qualifiers)]) : [])),
+    ...(a.matches !== undefined || a.misMatches !== undefined ? { extra: Object.fromEntries((["matches", "misMatches", "repMatches", "nCount"] as const).filter((k) => a[k] !== undefined).map((k) => [k, a[k]])) } : {}),
     names: a.sequences.map((s) => (s instanceof SeqRecord ? s.name : null)),
     descs: a.sequences.map((s) => (s instanceof SeqRecord ? s.description : null)),
     weights: a.sequences.map((s) => (s instanceof SeqRecord && s.annotations.has("weight") ? s.annotations.get("weight") : null)),
@@ -34,6 +44,15 @@ const enc = (a: Alignment) => {
   return d;
 };
 const build = (spec: Spec): Alignment => {
+  if (spec.seqs !== undefined) {
+    const recs = spec.seqs.map((q, i) => {
+      const seq = spec.undef?.[i] ? new Seq(null, q.length) : new Seq(q);
+      return spec.plain?.[i] ? seq : new SeqRecord(seq, spec.ids[i]!);
+    });
+    const aln = new Alignment(recs, spec.coords!);
+    Object.assign(aln, spec.extra ?? {});
+    return aln;
+  }
   const parsed = Alignment.parsePrintedAlignment(spec.rows.map((r) => new TextEncoder().encode(r)));
   const recs = parsed.sequences.map((s, i) => new SeqRecord(new Seq(new TextDecoder().decode(s)), spec.ids[i]!));
   const a = new Alignment(recs, parsed.coordinates);
@@ -61,6 +80,11 @@ describe("Bio.Align file formats", () => {
           const alns = Array.from(it).map(enc);
           return { alns, metadata: (it as { metadata?: Record<string, unknown> }).metadata === undefined ? null : Object.fromEntries(Object.entries((it as any).metadata).map(([k, v]) => [k, String(v)])) };
         }
+        if (c.kind === "rewrite") {
+          let text = "";
+          const nw = write(parse(c.text!, c.fmt), { write: (t: string) => { text += t; } }, c.fmt, ...kwargArgs(c));
+          return { text, n: nw };
+        }
         if (c.kind === "roundtrip") return Array.from(parse(c.text!, c.fmt)).map((a) => a.format(c.fmt));
         if (c.kind === "read") return { alns: [enc(read(c.text!, c.fmt))] };
         if (c.kind === "alninfo") {
@@ -69,7 +93,7 @@ describe("Bio.Align file formats", () => {
         }
         if (c.kind === "format") return build(c.aln!).format(c.fmt);
         let text = "";
-        const nw = write(c.alns!.map(build), { write: (t: string) => { text += t; } }, c.fmt, ...(c.kwargs && "interleave" in c.kwargs ? [c.kwargs.interleave] : []));
+        const nw = write(c.alns!.map(build), { write: (t: string) => { text += t; } }, c.fmt, ...kwargArgs(c));
         return { text, n: nw };
       };
       let captured: { warnings: { category: string; message: string }[] } = { warnings: [] };

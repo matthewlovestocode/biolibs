@@ -79,6 +79,14 @@ export class Alignment {
   score?: number;
   /** Annotations describing the alignment (optional). */
   annotations?: Map<string, unknown>;
+  /** Number of matching letters, as read from or written to PSL files. */
+  matches?: number;
+  /** Number of mismatching letters (PSL). */
+  misMatches?: number;
+  /** Number of matching letters inside repeat-masked target regions (PSL). */
+  repMatches?: number;
+  /** Number of aligned wildcard letters (PSL). */
+  nCount?: number;
   /** The per-column operation (`M` match, `D` deletion, `I` insertion) kept by the Stockholm reader; Stockholm files use it to tell `-` from `.`. */
   operations?: Uint8Array;
   /** Annotations describing each column: a string or a list per key (optional). */

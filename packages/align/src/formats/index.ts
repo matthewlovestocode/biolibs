@@ -5,7 +5,7 @@
  * - `stream.ts`: `TextStream`
  * - `interfaces.ts`: `AlignmentIterator`, `AlignmentWriter`, `Alignments`
  * - `registry.ts`: the format table, `parse`, `read`, `write`, `formatAs`
- * - `fasta.ts`, `a2m.ts`, `clustal.ts`, `phylip.ts`, `msf.ts`, `emboss.ts`, `nexus.ts`, `tabular.ts`, `stockholm*.ts` (reader, writer and keyword tables): the formats
+ * - `fasta.ts`, `a2m.ts`, `clustal.ts`, `phylip.ts`, `msf.ts`, `emboss.ts`, `nexus.ts`, `tabular.ts`, `stockholm*.ts` (reader, writer and keyword tables), `psl*.ts`: the formats
  */
 
 import "./fasta.js";
@@ -17,6 +17,7 @@ import "./emboss.js";
 import "./nexus.js";
 import "./tabular.js";
 import "./stockholm.js";
+import "./psl.js";
 
 export * from "./stream.js";
 export * from "./interfaces.js";
@@ -30,4 +31,5 @@ export * from "./emboss.js";
 export * from "./nexus.js";
 export * from "./tabular.js";
 export * from "./stockholm.js";
+export * from "./psl.js";
 export { PythonException, AssertionError } from "./rows.js";

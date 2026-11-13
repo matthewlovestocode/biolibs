@@ -26,7 +26,7 @@ def seq_text(s):
     q = getattr(s, "seq", s)
     if q is None: return None
     if getattr(q, "defined", True): return str(q)
-    return {"len": len(q), "defined": [[a, b, str(q[a:b])] for a, b in q.defined_ranges]}
+    return {"len": len(q), "defined": [[int(a), int(b), str(q[a:b])] for a, b in q.defined_ranges]}
 
 def enc_aln(a):
     rows = []
@@ -40,6 +40,9 @@ def enc_aln(a):
     d["rann"] = [dict(getattr(s, "annotations", {})) for s in a.sequences]
     d["lann"] = [dict(getattr(s, "letter_annotations", {})) for s in a.sequences]
     if hasattr(a, "operations"): d["ops"] = bytes(a.operations).decode()
+    d["feat"] = [[[f.type, str(f.location), {k: v for k, v in f.qualifiers.items()}] for f in getattr(s, "features", [])] for s in a.sequences]
+    ex = {k: getattr(a, k) for k in ("matches", "misMatches", "repMatches", "nCount") if hasattr(a, k)}
+    if ex: d["extra"] = ex
     d["names"] = [getattr(s, "name", None) for s in a.sequences]
     d["descs"] = [getattr(s, "description", None) for s in a.sequences]
     d["weights"] = [getattr(s, "annotations", {}).get("weight") for s in a.sequences]
@@ -51,6 +54,13 @@ def meta(alns):
     return None if m is None else {k: str(v) for k, v in m.items()}
 
 def build(spec):
+    if "seqs" in spec:
+        undef = spec.get("undef") or [False] * len(spec["seqs"])
+        recs = [SeqRecord(Seq(None, length=len(q)) if u else Seq(q), id=i) for q, i, u in zip(spec["seqs"], spec["ids"], undef)]
+        if spec.get("plain"): recs = [r.seq if p else r for r, p in zip(recs, spec["plain"])]
+        a = Alignment(recs, np.array(spec["coords"], dtype=np.intp))
+        for k, v in (spec.get("extra") or {}).items(): setattr(a, k, v)
+        return a
     seqs = []
     gapped = spec["rows"]
     # aligned rows -> Alignment via the printed-alignment parser, as the readers do
@@ -98,6 +108,11 @@ def run(case):
             elif k == "roundtrip":
                 alns = list(Align.parse(io.StringIO(case["text"]), case["fmt"]))
                 out["result"] = [a.format(case["fmt"]) for a in alns]
+            elif k == "rewrite":
+                alns = Align.parse(io.StringIO(case["text"]), case["fmt"])
+                buf = io.StringIO()
+                n = Align.write(alns, buf, case["fmt"], **case.get("kwargs", {}))
+                out["result"] = {"text": buf.getvalue(), "n": n}
             elif k == "write":
                 buf = io.StringIO()
                 n = Align.write([build(s) for s in case["alns"]], buf, case["fmt"], **case.get("kwargs", {}))
@@ -460,6 +475,82 @@ add({"kind": "write", "fmt": "stockholm", "alns": []})
 # round trips of what the reader produced
 for t in (HAT, SIMPLE):
     add({"kind": "roundtrip", "fmt": "stockholm", "text": t})
+
+# ---- PSL ----
+def rand_psl_spec(r, dnax=False, rev=False):
+    t, q = r.randint(0, 5), r.randint(0, 5)
+    pts = [(t, q)]
+    for b in range(r.randint(1, 4)):
+        if b:
+            gap = r.randint(1, 4)
+            if r.random() < 0.5: t += gap * (3 if dnax else 1)
+            else: q += gap
+            pts.append((t, q))
+        size = r.randint(1, 6)
+        t += size * (3 if dnax else 1); q += size
+        pts.append((t, q))
+    tlen, qlen = t + r.randint(0, 5), q + r.randint(0, 5)
+    tc, qc = [p[0] for p in pts], [p[1] for p in pts]
+    if rev and dnax: tc = [tlen - x for x in tc]
+    elif rev: qc = [qlen - x for x in qc]
+    alpha = "ACDEFGHIKLMNPQRSTVWY" if dnax else "ACGTNacgtn"
+    tseq = "".join(r.choice("ACGTNacgtn") for _ in range(tlen))
+    qseq = "".join(r.choice(alpha) for _ in range(qlen))
+    return {"ids": ["chr1", "read1"], "seqs": [tseq, qseq], "coords": [tc, qc]}
+
+prng = random.Random(21)
+PSL_SPECS = [rand_psl_spec(prng, dnax=d, rev=v) for d in (False, True) for v in (False, True) for _ in range(6)]
+PSL_LINES = []
+for sp in PSL_SPECS:
+    try: PSL_LINES.append(build(sp).format("psl").rstrip("\n"))
+    except Exception: pass
+HDR = "psLayout version 3\n\nmatch\tmis- \trep. \tN's\tQ gap\tQ gap\tT gap\tT gap\tstrand\tQ        \tQ   \tQ    \tQ  \tT        \tT   \tT    \tT  \tblock\tblockSizes \tqStarts\t tStarts\n     \tmatch\tmatch\t   \tcount\tbases\tcount\tbases\t      \tname     \tsize\tstart\tend\tname     \tsize\tstart\tend\tcount\n" + "-" * 159 + "\n"
+def pslx(line, sp):
+    w = line.split("\t"); bs = [int(x) for x in w[18].rstrip(",").split(",")]; qs = [int(x) for x in w[19].rstrip(",").split(",")]; ts = [int(x) for x in w[20].rstrip(",").split(",")]
+    tseq, qseq = sp["seqs"]
+    strand = w[8]
+    if strand in ("++", "+-"):
+        return line + "\t" + ",".join(qseq[a:a + b] for a, b in zip(qs, bs)) + ",\t" + ",".join(qseq[a:a + b] for a, b in zip(qs, bs)) + ","
+    qq = qseq if strand == "+" else "".join({"A": "T", "C": "G", "G": "C", "T": "A"}.get(c.upper(), "N") for c in reversed(qseq)).lower()
+    return line + "\t" + ",".join(qq[a:a + b] for a, b in zip(qs, bs)) + ",\t" + ",".join(tseq[a:a + b] for a, b in zip(ts, bs)) + ","
+PSL_TEXTS = ["\n".join(PSL_LINES) + "\n", HDR + "\n".join(PSL_LINES) + "\n", PSL_LINES[0] + "\n", HDR, "", "\n", "psLayout version 4\n" + HDR.split("\n", 1)[1] + PSL_LINES[0] + "\n",
+             "psLayout versio 3\n", "psLayout version 3\n\n\n\n\nxx\n", HDR + "\n"]
+for ln, sp in zip(PSL_LINES, PSL_SPECS):
+    PSL_TEXTS.append(ln + "\n")
+    x = pslx(ln, sp)
+    if x: PSL_TEXTS.append(x + "\n")
+for t in PSL_TEXTS:
+    add({"kind": "parse", "fmt": "psl", "text": t})
+    add({"kind": "read", "fmt": "psl", "text": t})
+for t in PSL_TEXTS[:2] + PSL_TEXTS[10:30]:
+    lines = t.split("\n")
+    for _ in range(15):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if r < 0.15: del m[i]
+        elif r < 0.75 and m[i].count("\t") > 15:
+            f = m[i].split("\t"); k = rnd.randrange(len(f)); f[k] = rnd.choice(["", "x", "-1", "0", "5", "3,", f[k] + "9", "+", "-", "++", "+-"]); m[i] = "\t".join(f)
+        elif r < 0.85 and m[i].count("\t") > 15:
+            f = m[i].split("\t"); del f[rnd.randrange(len(f))]; m[i] = "\t".join(f)
+        elif r < 0.95: m.insert(i, rnd.choice(["", "x", "1\t2"]))
+        else: m = m[:i]
+        add({"kind": "parse", "fmt": "psl", "text": "\n".join(m)})
+for sp in PSL_SPECS:
+    add({"kind": "format", "fmt": "psl", "aln": sp})
+    add({"kind": "write", "fmt": "psl", "alns": [sp]})
+    for kw in ({"header": False}, {"mask": "lower"}, {"mask": "upper"}, {"mask": "lower", "wildcard": "A"}, {"wildcard": None}, {"mask": "upper", "wildcard": "g"}, {"wildcard": "NN"}):
+        add({"kind": "write", "fmt": "psl", "alns": [sp], "kwargs": kw})
+    add({"kind": "format", "fmt": "psl", "aln": dict(sp, plain=[True, False])})
+    add({"kind": "format", "fmt": "psl", "aln": dict(sp, undef=[True, False])})
+    add({"kind": "format", "fmt": "psl", "aln": dict(sp, extra={"matches": 7, "misMatches": 1, "repMatches": 2, "nCount": 3})})
+add({"kind": "write", "fmt": "psl", "alns": PSL_SPECS[:5]})
+add({"kind": "write", "fmt": "psl", "alns": []})
+add({"kind": "format", "fmt": "psl", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGT"], "coords": [[0, 4], [0, 4]]}})
+add({"kind": "format", "fmt": "psl", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "TTTT"], "coords": [[0, 2, 4], [0, 0, 4]]}})
+add({"kind": "format", "fmt": "psl", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGT"], "coords": [[0, 4], [0, 2]]}})
+add({"kind": "format", "fmt": "psl", "aln": {"ids": ["a", "b", "c"], "seqs": ["ACGT", "ACGT", "ACGT"], "coords": [[0, 4], [0, 4], [0, 4]]}})
+for t in PSL_TEXTS[:3]:
+    add({"kind": "rewrite", "fmt": "psl", "text": t})
+    add({"kind": "rewrite", "fmt": "psl", "text": t, "kwargs": {"header": False}})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)
