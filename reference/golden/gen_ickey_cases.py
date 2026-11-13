@@ -241,43 +241,44 @@ for text in TEXTS:
 # are wired to their neighbours here, in both languages, rather than by IC_Chain, which is not ported yet: this
 # measures the table walking, not the chain's choice of which residues are peptide-bonded.
 def run_edra_build(case):
+    """Build a real IC_Chain: it picks the residues, links them and notes the chain breaks itself."""
     import io, warnings as w2
     from Bio.PDB import PDBParser
-    from Bio.PDB.internal_coords import IC_Chain, IC_Residue
+    from Bio.PDB.internal_coords import IC_Chain
     def one():
         with w2.catch_warnings():
             w2.simplefilter("ignore")
             s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
         out = []
         for chain in list(s.get_chains())[:2]:
-            # a bare IC_Chain: _create_edra only needs its hedra/dihedra registries
-            cic = IC_Chain.__new__(IC_Chain)
-            cic.hedra, cic.dihedra, cic.akset = {}, {}, set()
-            rics = []
-            for res in list(chain.get_residues())[:8]:
-                ric = IC_Residue(res)
-                if not ric.isAccept: continue
-                ric.cic = cic
-                rics.append(ric)
-            for i, ric in enumerate(rics):
-                ric.rprev = [rics[i - 1]] if i > 0 else []
-                ric.rnext = [rics[i + 1]] if i + 1 < len(rics) else []
-            per_res = []
-            for ric in rics:
-                per_res.append(attempt(lambda ric=ric: ric._create_edra()))
+            cic = IC_Chain(chain)
+            built = [attempt(lambda ric=ric: ric._create_edra()) for ric in cic.ordered_aa_ic_list]
+            arr = attempt(lambda: cic.build_atomArray())
             out.append({
-                "built": per_res,
+                "residues": [ric.pretty_str() for ric in cic.ordered_aa_ic_list],
+                "initNCaCs": sorted([k.id for k in t] for t in cic.initNCaCs),
+                "akset": sorted(k.id for k in cic.akset),
+                "built": built,
                 "chain_hedra": sorted(h.id for h in cic.hedra.values()),
                 "chain_dihedra": sorted(d.id for d in cic.dihedra.values()),
-                "residues": [{
+                "per_residue": [{
                     "pretty": ric.pretty_str(),
                     "hedra": sorted(h.id for h in ric.hedra.values()),
                     "dihedra": sorted(d.id for d in ric.dihedra.values()),
                     "primary": sorted(d.id for d in ric.dihedra.values() if d.primary),
-                    # a residue whose atoms were all rejected never reaches _link_dihedra, so this attribute is unset
                     "NCaCKey": attempt(lambda ric=ric: sorted([k.id for k in t] for t in ric.NCaCKey)),
-                    "ak_set": sorted(k.id for k in ric.ak_set),
-                } for ric in rics],
+                    "rprev": [r.pretty_str() for r in ric.rprev],
+                    "rnext": [r.pretty_str() for r in ric.rnext],
+                } for ric in cic.ordered_aa_ic_list],
+                "atom_array": arr,
+                "AAsiz": cic.AAsiz,
+                "aktuple": [k.id for k in cic.aktuple],
+                "atomArrayIndex": sorted(f"{k.id}={v}" for k, v in cic.atomArrayIndex.items()),
+                "atomArrayValid": [bool(v) for v in cic.atomArrayValid],
+                "coords": [[round(float(x), 6) for x in row] for row in cic.atomArray],
+                # the atoms now look into the array: writing a row moves the atom
+                "atom_views": [None if a is None else [round(float(x), 6) for x in a.coord] for a in cic.bpAtomArray],
+                "dtypes": sorted({str(a.coord.dtype) for a in cic.bpAtomArray if a is not None}),
             })
         return out
     out = attempt(one)

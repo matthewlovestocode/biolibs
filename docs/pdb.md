@@ -75,9 +75,8 @@ A protein described by bond lengths, bond angles and dihedral angles rather than
 residue name, atom name, altloc, occupancy) and whose ordering puts a residue's atoms into a canonical sequence —
 `edron.ts` holds `Edron`, `Hedron` and `Dihedron`, the angles themselves — three bonded atoms with two lengths
 and an angle, or four with the angle between two planes — `ic-residue.ts` holds `IC_Residue` — which atoms a residue keeps, the keys it
-keeps them under, and the hedra and dihedra it builds from the tables and from its neighbours — and `ic-chain.ts`
-the first slice of `IC_Chain`: the registries those angles are kept in, one copy of each shared by the residues on
-either side of it. Verified against Biopython on 875 cases
+keeps them under, and the hedra and dihedra it builds from the tables and from its neighbours — and `ic-chain.ts` holds `IC_Chain`, which
+decides which of a chain's residues can be built and owns the coordinate array. Verified against Biopython on 875 cases
 (`packages/pdb/test/golden/ickey.json`, built by `reference/golden/gen_ickey_cases.py`). The geometry the rest of
 the port will rest on is already here, in `homog.ts`, ported with `Bio.PDB.vectors`.
 
@@ -118,8 +117,18 @@ port models two of those rather than returning a default: `NCaCKey`, which `link
 atoms were all rejected therefore never gets, and `Dihedron.ric`. `icSettings.glyCbeta` is refused for now, since
 adding a C-beta to a glycine needs `Dihedron._set_hedra`, which comes with the rest of the chain.
 
-Still to come: the rest of `IC_Chain` (the coordinate arrays, `build_atomArray`, `init_edra` and the assembly) and
-the `atom_to_internal_coordinates` /
+`new IC_Chain(chain)` picks the residues: a residue counts when it is not a hetero residue or is named in
+`acceptResnames`, and two consecutive ones are linked when the distance from the previous C to this N is under 1.4 Å
+— the chain breaks otherwise, and a residue with N, CA and C becomes somewhere to restart from, which is what
+`initNCaCs` holds. A disordered atom at either end makes any close pair of locations enough.
+
+`buildAtomArray` then lays the atoms out, four numbers to a row (`x, y, z, 1`) in atom-key order, and **the
+structure's own coordinates become views into it**: `atom.coord` is a window onto its row, so writing the row moves
+the atom, and an atom whose coordinates were 32-bit widens to the array's 64. That is Biopython's behaviour and the
+point of the array — a whole chain is recomputed by writing rows.
+
+Still to come: the arrays of angle values (`init_edra`, `build_edraArrays`), the assembly that places atoms from
+them (`init_atom_coords`, `assemble_residues`) and the `atom_to_internal_coordinates` /
 `internal_to_atom_coordinates` entry points on Chain, Model and Structure, which are the six parity items this
 module exists for.
 

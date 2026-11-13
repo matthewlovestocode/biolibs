@@ -18,7 +18,12 @@ export class Residue extends Entity<Atom | DisorderedAtom> implements Child {
   /** The segment identifier. */
   segid: string;
   /** Internal coordinates (not ported); always null. */
-  internalCoord: null = null;
+  /**
+   * The residue's internal coordinates once they are built: an `IC_Residue`, which
+   * {@link IC_Chain} attaches. Typed loosely because `IC_Residue` describes a residue, so naming it here would
+   * make the two modules import one another.
+   */
+  internalCoord: object | null = null;
 
   /** @param id - `[hetero flag, sequence number, insertion code]`. @param resname - Residue name. @param segid - Segment id. */
   constructor(id: ResidueId, resname: string, segid: string) {

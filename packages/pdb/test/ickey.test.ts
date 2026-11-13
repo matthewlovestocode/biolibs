@@ -153,43 +153,51 @@ function runResidue(c: Case): Out {
   });
 }
 
-/** The residues of the first chains, accepted and wired to their neighbours, as the generator wires them. */
-function wiredResidues(text: string, chainLimit: number, resLimit: number): { cic: IC_Chain; rics: IC_Residue[] }[] {
-  const s = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", text);
-  return [...s.getChains()].slice(0, chainLimit).map((chain) => {
-    const cic = new IC_Chain();
-    const rics: IC_Residue[] = [];
-    for (const res of [...chain.getResidues()].slice(0, resLimit)) {
-      const ric = new IC_Residue(res);
-      if (!ric.isAccept) continue;
-      ric.cic = cic;
-      rics.push(ric);
-    }
-    rics.forEach((ric, i) => {
-      ric.rprev = i > 0 ? [rics[i - 1]!] : [];
-      ric.rnext = i + 1 < rics.length ? [rics[i + 1]!] : [];
-    });
-    return { cic, rics };
-  });
-}
+/** Round as the generator rounds, so that the last bits of a float cannot fail a comparison. */
+const round6 = (x: number): number => Math.round(x * 1e6) / 1e6;
 
 const sortedIds = (m: Map<string, { id: string }>): string[] => [...m.values()].map((e) => e.id).sort();
 
+/** Sort lists of key ids the way Python's `sorted` orders lists of lists. */
+const sortKeyLists = (lists: string[][]): string[][] => [...lists].sort((a, b) => (JSON.stringify(a) < JSON.stringify(b) ? -1 : 1));
+
 function runEdraBuild(c: Case): Out {
-  return attempt(() =>
-    wiredResidues(c.text!, 2, 8).map(({ cic, rics }) => ({
-      built: rics.map((ric) => attempt(() => { ric.createEdra(); return null; })),
-      chain_hedra: sortedIds(cic.hedra),
-      chain_dihedra: sortedIds(cic.dihedra),
-      residues: rics.map((ric) => ({
-        pretty: ric.prettyStr(),
-        hedra: sortedIds(ric.hedra),
-        dihedra: sortedIds(ric.dihedra),
-        primary: [...ric.dihedra.values()].filter((d) => d.primary).map((d) => d.id).sort(),
-        NCaCKey: attempt(() => ric.NCaCKey.map((t) => t.map((k) => k.id)).sort()),
-        ak_set: [...ric.akSet].map((k) => k.id).sort(),
-      })),
-    })));
+  return attempt(() => {
+    const s = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", c.text!);
+    return [...s.getChains()].slice(0, 2).map((chain) => {
+      const cic = new IC_Chain(chain);
+      const built = cic.orderedAaIcList.map((ric) => attempt(() => { ric.createEdra(); return null; }));
+      const arr = attempt(() => { cic.buildAtomArray(); return null; });
+      const rows: number[][] = [];
+      for (let i = 0; i < cic.AAsiz; i++) rows.push([...cic.atomArray.subarray(i * 4, i * 4 + 4)].map((x) => round6(x)));
+      return {
+        residues: cic.orderedAaIcList.map((ric) => ric.prettyStr()),
+        initNCaCs: sortKeyLists(cic.initNCaCs.map((t) => t.map((k) => k.id))),
+        akset: [...cic.akset.values()].map((k) => k.id).sort(),
+        built,
+        chain_hedra: sortedIds(cic.hedra),
+        chain_dihedra: sortedIds(cic.dihedra),
+        per_residue: cic.orderedAaIcList.map((ric) => ({
+          pretty: ric.prettyStr(),
+          hedra: sortedIds(ric.hedra),
+          dihedra: sortedIds(ric.dihedra),
+          primary: [...ric.dihedra.values()].filter((d) => d.primary).map((d) => d.id).sort(),
+          NCaCKey: attempt(() => sortKeyLists(ric.NCaCKey.map((t) => t.map((k) => k.id)))),
+          rprev: ric.rprev.map((r) => r.prettyStr()),
+          rnext: ric.rnext.map((r) => r.prettyStr()),
+        })),
+        atom_array: arr,
+        AAsiz: cic.AAsiz,
+        aktuple: cic.aktuple.map((k) => k.id),
+        atomArrayIndex: [...cic.atomArrayIndex].map(([k, v]) => `${cic.aktuple[v]!.id}=${v}`).sort(),
+        atomArrayValid: [...cic.atomArrayValid].map((v) => v === 1),
+        coords: rows,
+        // the atoms now look into the array: writing a row moves the atom
+        atom_views: cic.bpAtomArray.map((a) => (a === null ? null : [...a.coord].map((x) => round6(x)))),
+        dtypes: [...new Set(cic.bpAtomArray.filter((a) => a !== null).map((a) => (a!.coord instanceof Float64Array ? "float64" : "float32")))].sort(),
+      };
+    });
+  });
 }
 
 function runSplit(c: Case): Out {
