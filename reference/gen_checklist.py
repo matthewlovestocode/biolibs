@@ -54,12 +54,30 @@ section("Bio.Align.AlignmentCounts", "Bio.Align.AlignmentCounts", inv["Bio.Align
 section("Bio.Align.Alignment", "Bio.Align.Alignment", inv["Bio.Align.Alignment"])
 section("Bio.Align.PairwiseAligner", "Bio.Align.PairwiseAligner", inv["Bio.Align.PairwiseAligner"])
 section("Bio.Align.substitution_matrices", "Bio.Align.substitution_matrices", inv["Bio.Align.substitution_matrices"])
-for mod in ("Bio.Phylo.BaseTree", "Bio.Phylo.Newick", "Bio.Phylo.NewickIO", "Bio.Phylo._io", "Bio.Phylo.NexusIO", "Bio.Phylo.Consensus", "Bio.Phylo.TreeConstruction"):
+for mod in ("Bio.Phylo.BaseTree", "Bio.Phylo.Newick", "Bio.Phylo.NewickIO", "Bio.Phylo._io", "Bio.Phylo.NexusIO", "Bio.Phylo.Consensus", "Bio.Phylo.TreeConstruction", "Bio.Phylo.PhyloXML", "Bio.Phylo.PhyloXMLIO"):
     section(mod, mod, inv[mod])
 for mod in ("Bio.SeqUtils", "Bio.SeqUtils.CheckSum", "Bio.SeqUtils.lcc", "Bio.SeqUtils.IsoelectricPoint", "Bio.SeqUtils.ProtParam", "Bio.SeqUtils.MeltingTemp"):
     section(mod, mod, inv[mod])
 for mod in ("Bio.Nexus.Nexus", "Bio.Nexus.Trees", "Bio.Nexus.Nodes", "Bio.Nexus.StandardData", "Bio.PDB.Entity", "Bio.PDB.Atom", "Bio.PDB.Residue", "Bio.PDB.Chain", "Bio.PDB.Model", "Bio.PDB.Structure", "Bio.PDB.StructureBuilder", "Bio.PDB.PDBParser", "Bio.PDB.MMCIF2Dict", "Bio.PDB.MMCIFParser", "Bio.PDB.PDBIO", "Bio.PDB.mmcifio", "Bio.PDB.vectors", "Bio.PDB.Polypeptide", "Bio.PDB.Superimposer", "Bio.SVDSuperimposer", "Bio.PDB.NeighborSearch", "Bio.PDB.kdtrees", "Bio.PDB.Selection", "Bio.PDB.SASA", "Bio.Restriction", "Bio.motifs", "Bio.motifs.matrix", "Bio.motifs.thresholds", "Bio.motifs.jaspar", "Bio.motifs.transfac", "Bio.motifs.clusterbuster", "Bio.motifs.alignace", "Bio.motifs.meme", "Bio.motifs.minimal", "Bio.motifs.mast", "Bio.motifs.xms", "Bio.motifs.pfm", "Bio.PDB.parse_pdb_header"):
     section(mod, mod, inv[mod])
 L[3:3] = ["", f"**Progress: {tot[1]} / {tot[0]} applicable items verified against Biopython.**", ""]
-open(f"{here}/../PARITY.md", "w").write("\n".join(L) + "\n")
+# Split into docs/parity/: one file per "## " section plus an index with per-section counts.
+import re, shutil
+out = f"{here}/../docs/parity"
+shutil.rmtree(out, ignore_errors=True); os.makedirs(out)
+legend = L[2]
+secs, cur = [], None
+for line in L[3:]:
+    if line.startswith("## "): cur = [line[3:], []]; secs.append(cur)
+    if cur is not None: cur[1].append(line)
+index = ["# Biopython parity checklist", "", legend, "", f"**Progress: {tot[1]} / {tot[0]} applicable items verified against Biopython.**", "",
+         "| Section | Verified | Applicable |", "|---|---|---|"]
+for title, body in secs:
+    slug = re.sub(r"[^A-Za-z0-9._]+", "-", title).strip("-")
+    items = [l for l in body if l.startswith("- [")]
+    done = sum(l.startswith("- [x]") for l in items); app = sum(not l.startswith("- [-]") for l in items)
+    open(f"{out}/{slug}.md", "w").write("\n".join(body).strip("\n") + "\n")
+    index.append(f"| [{title}]({slug}.md) | {done} | {app} |")
+open(f"{out}/README.md", "w").write("\n".join(index) + "\n")
+open(f"{here}/../PARITY.md", "w").write("# Biopython parity checklist\n\nThe checklist is generated and split by module in [docs/parity/](docs/parity/README.md) (start with its index).\n")
 print(tot)

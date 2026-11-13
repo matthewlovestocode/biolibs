@@ -3,7 +3,7 @@
 import { AssertionError, UnboundLocalError, ValueError, pyStr } from "@biolibs/core";
 import { Clade } from "./clade.js";
 import { TreeElement } from "./tree-element.js";
-import { TreeMixin, lengthOf } from "./tree-mixin.js";
+import { TreeMixin, isTreeLike, lengthOf } from "./tree-mixin.js";
 
 /** The constructor arguments of a {@link Tree}. */
 export interface TreeOptions {
@@ -12,7 +12,7 @@ export interface TreeOptions {
   /** Whether the tree is rooted (default true). */
   rooted?: boolean;
   /** The identifier of the tree. */
-  id?: string | null;
+  id?: string | TreeElement | null;
   /** The name of the tree. */
   name?: string | null;
 }
@@ -22,6 +22,11 @@ let formatter: ((tree: Tree, fmt: string) => string) | null = null;
 /** Connect `Tree.format` to the tree writers (called by `io.ts`, which depends on this file). */
 export function registerFormatter(f: (tree: Tree, fmt: string) => string): void { formatter = f; }
 
+let phyloxmlFactory: ((tree: Tree, kwargs: Record<string, unknown>) => Tree) | null = null;
+
+/** Connect `Tree.asPhyloxml` to the phyloXML classes (called by `phyloxml/`, which depends on this file). */
+export function registerPhyloxmlFactory(f: (tree: Tree, kwargs: Record<string, unknown>) => Tree): void { phyloxmlFactory = f; }
+
 const orZero = (x: number | null): number => (x === null || x === 0 ? 0 : x);
 
 /** A phylogenetic tree: a root clade plus `rooted`, `id` and `name`. */
@@ -30,8 +35,8 @@ export class Tree extends TreeMixin {
   rootClade: Clade;
   /** Whether the tree is rooted. */
   rooted: boolean;
-  /** The identifier, or null. */
-  id: string | null;
+  /** The identifier (a string; a phyloXML `Id` in a phyloXML tree), or null. */
+  id: string | TreeElement | null;
   /** The name, or null. */
   name: string | null;
 
@@ -42,6 +47,12 @@ export class Tree extends TreeMixin {
     this.rooted = o.rooted ?? true;
     this.id = o.id ?? null;
     this.name = o.name ?? null;
+  }
+
+  /** This tree as a phyloXML `Phylogeny`, which can hold the extra annotations phyloXML defines. @param kwargs - Attributes to set on it. */
+  asPhyloxml(kwargs: Record<string, unknown> = {}): Tree {
+    if (phyloxmlFactory === null) throw new Error("phyloXML support is not loaded");
+    return phyloxmlFactory(this, kwargs);
   }
 
   /** A new empty clade of the kind this tree uses (subclasses override it). */
@@ -174,8 +185,8 @@ export class Tree extends TreeMixin {
     const print = (obj: TreeElement, indent: number): void => {
       lines.push("    ".repeat(indent) + (obj instanceof Tree || obj instanceof Clade ? obj.repr() : obj.toString()));
       for (const [, child] of obj.pyDict()) {
-        if (child instanceof TreeElement) print(child, indent + 1);
-        else if (Array.isArray(child)) for (const e of child) if (e instanceof TreeElement) print(e, indent + 1);
+        if (child instanceof TreeElement || isTreeLike(child)) print(child as TreeElement, indent + 1);
+        else if (Array.isArray(child)) for (const e of child) if (e instanceof TreeElement || isTreeLike(e)) print(e as TreeElement, indent + 1);
       }
     };
     print(this, 0);

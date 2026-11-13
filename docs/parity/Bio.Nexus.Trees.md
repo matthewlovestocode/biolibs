@@ -1,0 +1,51 @@
+## Bio.Nexus.Trees
+
+- [x] `consensus(trees, threshold=0.5, outgroup=None)`
+
+### Bio.Nexus.Trees.Tree
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, tree=None, weight=1.0, rooted=False, name='', data=<class 'Bio.Nexus.Trees.NodeData'>, values_are_support=False, max_support=1.0)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [x] `__str__(self)`
+- [x] `add(self, node: 'Node', prev: int | None = None) -> int`
+- [x] `all_ids(self) -> list[int]`
+- [x] `branchlength2support(self)`
+- [x] `collapse(self, id)`
+- [x] `collapse_genera(self, space_equals_underscore=True)`
+- [x] `common_ancestor(self, node1, node2)`
+- [x] `convert_absolute_support(self, nrep)`
+- [x] `count_terminals(self, node=None)`
+- [ ] `display(self)`
+- [x] `distance(self, node1, node2)`
+- [x] `get_taxa(self, node_id=None)`
+- [x] `get_terminals(self)`
+- [x] `has_support(self, node=None)`
+- [x] `is_bifurcating(self, node=None)`
+- [x] `is_compatible(self, tree2, threshold, strict=True)`
+- [x] `is_identical(self, tree2)`
+- [x] `is_internal(self, node)`
+- [x] `is_monophyletic(self, taxon_list)`
+- [x] `is_parent_of(self, parent, grandchild)`
+- [x] `is_preterminal(self, node)`
+- [x] `is_terminal(self, node)`
+- [x] `kill(self, id)`
+- [x] `link(self, parent, child)`
+- [x] `merge_with_support(self, bstrees=None, constree=None, threshold=0.5, outgroup=None)`
+- [x] `node(self, node_id)`
+- [x] `prune(self, taxon)`
+- [ ] `randomize(self, ntax=None, taxon_list=None, branchlength=1.0, branchlength_sd=None, bifurcate=True)`
+- [x] `root_with_outgroup(self, outgroup=None)`
+- [x] `search_taxon(self, taxon)`
+- [x] `set_subtree(self, node)`
+- [x] `split(self, parent_id=None, n=2, branchlength=1.0)`
+- [x] `sum_branchlength(self, root=None, node=None)`
+- [x] `to_string(self, support_as_branchlengths=False, branchlengths_only=False, plain=True, plain_newick=False, ladderize=None, ignore_comments=True)`
+- [x] `trace(self, start, finish)`
+- [x] `unlink(self, id)`
+- [x] `unroot(self)`

@@ -51,3 +51,33 @@ def enc_result(tree, r):
     if r is None or isinstance(r, (bool, int, float, str)): return fx(r)
     return {"repr": repr(r)}
 
+
+
+# ---- generic encoding of phyloXML object graphs ----
+def enc_px(o):
+    """Encode any phyloXML object (or primitive) by walking __dict__ sorted by key (searches move `clades` to the end, so order is not stable); floats keep their repr, so int/float differences show."""
+    from Bio.Phylo import PhyloXML as PX
+    if o is None or isinstance(o, (bool, str)): return o
+    if isinstance(o, PX.Confidence):
+        return {"c": "Confidence", "f": repr(float(o)), "a": [[k, enc_px(v)] for k, v in sorted(o.__dict__.items(), key=lambda kv: kv[0])], "r": repr(o), "s": str(o)}
+    from Bio.SeqRecord import SeqRecord
+    from Bio.SeqFeature import SeqFeature
+    from Bio.Seq import Seq
+    from Bio.Align import Alignment, MultipleSeqAlignment
+    if isinstance(o, SeqRecord):
+        return {"rec": {"id": o.id, "name": o.name, "description": o.description, "dbxrefs": o.dbxrefs, "seq": None if o.seq is None else str(o.seq),
+                        "annotations": enc_px(o.annotations), "features": [enc_px(f) for f in o.features], "letter": enc_px(dict(o.letter_annotations))}}
+    if isinstance(o, SeqFeature):
+        return {"feat": {"type": o.type, "id": o.id, "loc": repr(o.location), "qualifiers": enc_px(o.qualifiers)}}
+    if isinstance(o, Seq): return str(o)
+    if isinstance(o, MultipleSeqAlignment): return {"msa": [[r.id, str(r.seq)] for r in o]}
+    if isinstance(o, Alignment):
+        return {"aln": {"seqs": [enc_px(r) for r in o.sequences], "coords": None if o.coordinates is None else o.coordinates.tolist()}}
+    if isinstance(o, int): return o
+    if isinstance(o, float): return {"f": repr(o)}
+    if isinstance(o, (list, tuple)): return [enc_px(x) for x in o]
+    if isinstance(o, dict): return {"d": [[k, enc_px(v)] for k, v in o.items()]}
+    if hasattr(o, "__next__"): return [enc_px(x) for x in o]
+    if hasattr(o, "__dict__"):
+        return {"c": type(o).__name__, "a": [[k, enc_px(v)] for k, v in sorted(o.__dict__.items(), key=lambda kv: kv[0])], "r": repr(o), "s": str(o)}
+    return {"repr": repr(o)}

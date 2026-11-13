@@ -1,4 +1,4 @@
-"""Mark PARITY.md items as done based on what the golden tests actually exercise.
+"""Mark docs/parity items as done based on what the golden tests actually exercise.
 
 An item is "done" only if its name appears in a golden case file that the TS test-suite
 replays against Biopython output, or is covered by the codon-table golden suite.
@@ -489,8 +489,10 @@ if any(c["kind"] == "score" and "result" in c for c in ca) and any(c["kind"] == 
     for m in inv["Bio.Align.CodonAligner"]["classes"]["CodonAligner"]:
         mark(f"Bio.Align.CodonAligner.CodonAligner.{m}", "na" if m in ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__") else "done")
 
+# ---- Bio.Phylo.PhyloXML and PhyloXMLIO (packages/phylo/test/golden/phyloxml.json) ----
+pxl = json.load(open(f"{here}/../packages/phylo/test/golden/phyloxml.json"))
 # ---- Bio.Phylo (packages/phylo/test/golden/phylo.json) ----
-for _k in [k for k in status if k.startswith("Bio.Phylo.") and not k.startswith(("Bio.Phylo.Consensus", "Bio.Phylo.TreeConstruction"))]: del status[_k]
+for _k in [k for k in status if k.startswith("Bio.Phylo.") and not k.startswith(("Bio.Phylo.Consensus", "Bio.Phylo.TreeConstruction", "Bio.Phylo.PhyloXML"))]: del status[_k]
 ph = json.load(open(f"{here}/../packages/phylo/test/golden/phylo.json"))
 ph_ops = {op["m"] for c in ph if c["kind"] == "ops" for op in c["ops"]}
 ph_io = {(c["op"], c.get("fmt", "newick")) for c in ph if c["kind"] == "io" and "result" in c}
@@ -506,7 +508,7 @@ for sect, classes in (("Bio.Phylo.BaseTree", inv["Bio.Phylo.BaseTree"]["classes"
         for m in mem:
             key = f"{sect}.{cls}.{m}"
             if m == "randomized": mark(key, "na")        # uses Python's random module
-            elif m == "as_phyloxml": pass               # needs Bio.Phylo.PhyloXML
+            elif m == "as_phyloxml": mark(key) if any(c["fn"] == "as_phyloxml" and "result" in c["expect"] for c in pxl) else None
             elif m in BOILER and m != "__init__": mark(key, "na")
             elif m in covered or m in ("__init__", "__str__", "__repr__", "to_hex", "to_rgb", "from_hex", "from_name", "color_names"): mark(key)
 for sect, fns in (("Bio.Phylo.NewickIO", inv["Bio.Phylo.NewickIO"]["functions"]), ("Bio.Phylo._io", inv["Bio.Phylo._io"]["functions"]), ("Bio.Phylo.NexusIO", inv["Bio.Phylo.NexusIO"]["functions"])):
@@ -526,6 +528,27 @@ tc_kinds = {c["kind"] for c in tcs if "exc" not in c or c["kind"] == "matrix"}
 for cls, mem in inv["Bio.Phylo.TreeConstruction"]["classes"].items():
     for m in mem:
         mark(f"Bio.Phylo.TreeConstruction.{cls}.{m}", "na" if m in BOILER and m != "__init__" else "done")
+
+# PhyloXML: the generated documents exercise every element class, the reader and writer; members the classes inherit from BaseTree are
+# marked when the BaseTree goldens cover them.
+PX_BOILER = BOILER + ("__weakref__", "__dict__", "__module__")
+PX_OWN = {"Phylogeny": {"__init__", "from_tree", "from_clade", "as_phyloxml", "to_phyloxml_container", "to_alignment", "alignment", "confidence"},
+          "Clade": {"__init__", "from_clade", "to_phylogeny", "confidence", "taxonomy"},
+          "Events": {"__init__", "items", "keys", "values", "__len__", "__getitem__", "__setitem__", "__delitem__", "__iter__", "__contains__"},
+          "Phyloxml": {"__init__", "__getitem__", "__iter__", "__len__", "__str__"}, "Other": {"__init__", "__iter__"},
+          "Sequence": {"__init__", "from_seqrecord", "to_seqrecord"}, "ProteinDomain": {"__init__", "from_seqfeature", "to_seqfeature"}}
+for cls, mem in inv["Bio.Phylo.PhyloXML"]["classes"].items():
+    for m in mem:
+        key = f"Bio.Phylo.PhyloXML.{cls}.{m}"
+        if m == "randomized": mark(key, "na")                      # uses Python's random module
+        elif m in PX_BOILER and m not in PX_OWN.get(cls, ()) and m != "__init__": mark(key, "na")
+        elif cls in PX_OWN and m in PX_OWN[cls]: mark(key)
+        elif cls in ("Phylogeny", "Clade", "BranchColor") and m not in PX_OWN.get(cls, ()):
+            if m in covered or m in ("__str__", "__repr__", "__getitem__", "__len__", "__iter__", "__bool__", "to_hex", "to_rgb", "from_hex", "from_name", "color_names"): mark(key)
+        else: mark(key)
+for fn in inv["Bio.Phylo.PhyloXMLIO"]["functions"]: mark(f"Bio.Phylo.PhyloXMLIO.{fn}")
+for cls, mem in inv["Bio.Phylo.PhyloXMLIO"]["classes"].items():
+    for m in mem: mark(f"Bio.Phylo.PhyloXMLIO.{cls}.{m}", "na" if m in PX_BOILER and m != "__init__" else "done")
 
 # ---- Bio.Align.analysis (packages/align/test/golden/analysis.json, packages/phylo/test/golden/dnds-matrix.json) ----
 an = json.load(open(f"{here}/../packages/align/test/golden/analysis.json"))

@@ -37,6 +37,17 @@ function getComment(clade: BaseClade): string {
   return comment ? formatComment(pyStr(comment)) : "";
 }
 
+/**
+ * `hasattr(clade, "confidence") and clade.confidence is not None`: a phyloXML clade with several confidences raises
+ * `AttributeError` from the property, which `hasattr` reports as False (it is a `TypeError` here).
+ */
+function hasConfidence(clade: { confidence: unknown }): boolean {
+  try { return clade.confidence !== null && clade.confidence !== undefined; } catch (e) { if (e instanceof TypeError) return false; throw e; }
+}
+
+/** A phyloXML `Confidence` is a Python `float`: give it to `%` formatting as one. */
+const asNumber = (c: unknown): unknown => (typeof c === "object" && c !== null && !(c instanceof PyFloat) && typeof (c as { value?: unknown }).value === "number" ? new PyFloat((c as { value: number }).value) : c);
+
 /** Writes trees as Newick text. */
 export class Writer {
   /** @param trees - The trees to write. */
@@ -80,11 +91,11 @@ export class Writer {
 
   private infoFactory(plain: boolean, confAsLength: boolean, lengthOnly: boolean, maxConfidence: number, formatConfidence: string, formatBranchLength: string): (clade: BaseClade, terminal: boolean) => string {
     if (plain) return (clade) => getComment(clade);
-    if (confAsLength) return (clade, terminal) => ":" + (terminal ? pyPercent(formatConfidence, new PyFloat(maxConfidence)) : pyPercent(formatConfidence, clade.confidence)) + getComment(clade);
+    if (confAsLength) return (clade, terminal) => ":" + (terminal ? pyPercent(formatConfidence, new PyFloat(maxConfidence)) : pyPercent(formatConfidence, asNumber(clade.confidence))) + getComment(clade);
     if (lengthOnly) return (clade) => ":" + pyPercent(formatBranchLength, new PyFloat(clade.branchLength || 0.0)) + getComment(clade);
     return (clade, terminal) => {
-      if (terminal || clade.confidence === null || clade.confidence === undefined) return ":" + pyPercent(formatBranchLength, new PyFloat(clade.branchLength || 0.0)) + getComment(clade);
-      return pyPercent(formatConfidence + ":" + formatBranchLength, clade.confidence, new PyFloat(clade.branchLength || 0.0)) + getComment(clade);
+      if (terminal || !hasConfidence(clade)) return ":" + pyPercent(formatBranchLength, new PyFloat(clade.branchLength || 0.0)) + getComment(clade);
+      return pyPercent(formatConfidence + ":" + formatBranchLength, asNumber(clade.confidence), new PyFloat(clade.branchLength || 0.0)) + getComment(clade);
     };
   }
 }

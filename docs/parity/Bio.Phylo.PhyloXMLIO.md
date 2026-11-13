@@ -1,0 +1,118 @@
+## Bio.Phylo.PhyloXMLIO
+
+- [x] `parse(file)`
+- [x] `read(file)`
+- [x] `write(obj, file, encoding='unicode', indent=True)`
+
+### Bio.Phylo.PhyloXMLIO.Parser
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, file)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self, /)`
+- [x] `__str__(self, /)`
+- [x] `accession(self, elem)`
+- [x] `annotation(self, elem)`
+- [x] `binary_characters(self, elem)`
+- [x] `clade_relation(self, elem)`
+- [x] `color(self, elem)`
+- [x] `confidence(self, elem)`
+- [x] `date(self, elem)`
+- [x] `distribution(self, elem)`
+- [x] `domain(self, elem)`
+- [x] `domain_architecture(self, elem)`
+- [x] `events(self, elem)`
+- [x] `id(self, elem)`
+- [x] `mol_seq(self, elem)`
+- [x] `other(self, elem, namespace, localtag)`
+- [x] `parse(self)`
+- [x] `point(self, elem)`
+- [x] `polygon(self, elem)`
+- [x] `property(self, elem)`
+- [x] `read(self)`
+- [x] `reference(self, elem)`
+- [x] `sequence_relation(self, elem)`
+- [x] `uri(self, elem)`
+
+### Bio.Phylo.PhyloXMLIO.Writer
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, phyloxml)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self, /)`
+- [x] `__str__(self, /)`
+- [x] `accession(self, obj)`
+- [x] `alt(self, obj)`
+- [x] `annotation(self, obj)`
+- [x] `bc(self, obj)`
+- [x] `binary_characters(self, obj)`
+- [x] `blue(self, obj)`
+- [x] `branch_length(self, obj)`
+- [x] `clade(self, obj)`
+- [x] `clade_relation(self, obj)`
+- [x] `code(self, obj)`
+- [x] `color(self, obj)`
+- [x] `common_name(self, obj)`
+- [x] `confidence(self, obj)`
+- [x] `date(self, obj)`
+- [x] `desc(self, obj)`
+- [x] `description(self, obj)`
+- [x] `distribution(self, obj)`
+- [x] `domain(self, obj)`
+- [x] `domain_architecture(self, obj)`
+- [x] `duplications(self, obj)`
+- [x] `events(self, obj)`
+- [x] `green(self, obj)`
+- [x] `id(self, obj)`
+- [x] `lat(self, obj)`
+- [x] `location(self, obj)`
+- [x] `long(self, obj)`
+- [x] `losses(self, obj)`
+- [x] `maximum(self, obj)`
+- [x] `minimum(self, obj)`
+- [x] `mol_seq(self, obj)`
+- [x] `name(self, obj)`
+- [x] `node_id(self, obj)`
+- [x] `other(self, obj)`
+- [x] `phylogeny(self, obj)`
+- [x] `phyloxml(self, obj)`
+- [x] `point(self, obj)`
+- [x] `polygon(self, obj)`
+- [x] `property(self, obj)`
+- [x] `rank(self, obj)`
+- [x] `red(self, obj)`
+- [x] `reference(self, obj)`
+- [x] `scientific_name(self, obj)`
+- [x] `sequence(self, obj)`
+- [x] `sequence_relation(self, obj)`
+- [x] `speciations(self, obj)`
+- [x] `symbol(self, obj)`
+- [x] `synonym(self, obj)`
+- [x] `taxonomy(self, obj)`
+- [x] `type(self, obj)`
+- [x] `uri(self, obj)`
+- [x] `value(self, obj)`
+- [x] `width(self, obj)`
+- [x] `write(self, file, encoding='unicode', indent=True)`
+
+### Bio.Phylo.PhyloXMLIO.PhyloXMLError
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self, /)`
+- [x] `__str__(self, /)`
+- [x] `add_note(self, note, /)`
+- [x] `with_traceback(self, tb, /)`

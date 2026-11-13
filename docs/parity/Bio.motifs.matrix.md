@@ -1,0 +1,149 @@
+## Bio.motifs.matrix
+
+
+### Bio.motifs.matrix.GenericPositionMatrix
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [ ] `__gt__(self, value, /)`
+- [x] `__init__(self, alphabet, values)`
+- [-] `__iter__(self, /)`
+- [ ] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self)`
+- [x] `anticonsensus`
+- [x] `calculate_consensus(self, substitution_matrix=None, plurality=None, identity=0, setcase=None)`
+- [-] `clear(self, /)`
+- [x] `consensus`
+- [-] `copy(self, /)`
+- [x] `degenerate_consensus`
+- [-] `fromkeys(iterable, value=None, /)`
+- [x] `gc_content`
+- [-] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [x] `reverse_complement(self)`
+- [-] `setdefault(self, key, default=None, /)`
+- [-] `update?`
+- [-] `values(self, /)`
+
+### Bio.motifs.matrix.FrequencyPositionMatrix
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [ ] `__gt__(self, value, /)`
+- [x] `__init__(self, alphabet, values)`
+- [-] `__iter__(self, /)`
+- [ ] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self)`
+- [x] `anticonsensus`
+- [x] `calculate_consensus(self, substitution_matrix=None, plurality=None, identity=0, setcase=None)`
+- [-] `clear(self, /)`
+- [x] `consensus`
+- [-] `copy(self, /)`
+- [x] `degenerate_consensus`
+- [-] `fromkeys(iterable, value=None, /)`
+- [x] `gc_content`
+- [-] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [x] `normalize(self, pseudocounts=None)`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [x] `reverse_complement(self)`
+- [-] `setdefault(self, key, default=None, /)`
+- [-] `update?`
+- [-] `values(self, /)`
+
+### Bio.motifs.matrix.PositionWeightMatrix
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [ ] `__gt__(self, value, /)`
+- [x] `__init__(self, alphabet, counts)`
+- [-] `__iter__(self, /)`
+- [ ] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self)`
+- [x] `anticonsensus`
+- [x] `calculate_consensus(self, substitution_matrix=None, plurality=None, identity=0, setcase=None)`
+- [-] `clear(self, /)`
+- [x] `consensus`
+- [-] `copy(self, /)`
+- [x] `degenerate_consensus`
+- [-] `fromkeys(iterable, value=None, /)`
+- [x] `gc_content`
+- [-] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [x] `log_odds(self, background=None)`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [x] `reverse_complement(self)`
+- [-] `setdefault(self, key, default=None, /)`
+- [-] `update?`
+- [-] `values(self, /)`
+
+### Bio.motifs.matrix.PositionSpecificScoringMatrix
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [ ] `__gt__(self, value, /)`
+- [x] `__init__(self, alphabet, values)`
+- [-] `__iter__(self, /)`
+- [ ] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self)`
+- [x] `anticonsensus`
+- [x] `calculate(self, sequence)`
+- [x] `calculate_consensus(self, substitution_matrix=None, plurality=None, identity=0, setcase=None)`
+- [-] `clear(self, /)`
+- [x] `consensus`
+- [-] `copy(self, /)`
+- [x] `degenerate_consensus`
+- [x] `dist_pearson(self, other)`
+- [x] `dist_pearson_at(self, other, offset)`
+- [x] `distribution(self, background=None, precision=1000)`
+- [-] `fromkeys(iterable, value=None, /)`
+- [x] `gc_content`
+- [-] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [x] `max`
+- [x] `mean(self, background=None)`
+- [x] `min`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [x] `reverse_complement(self)`
+- [x] `search(self, sequence, threshold=0.0, both=True, chunksize=1000000)`
+- [-] `setdefault(self, key, default=None, /)`
+- [x] `std(self, background=None)`
+- [-] `update?`
+- [-] `values(self, /)`

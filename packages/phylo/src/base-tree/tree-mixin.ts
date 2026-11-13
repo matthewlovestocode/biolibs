@@ -21,6 +21,9 @@ const orZero = (x: number | null | undefined): number => (x === null || x === un
 /** A branch length as a plain number. */
 export const lengthOf = (x: unknown): number => (x instanceof PyFloat ? x.value : (x as number));
 
+/** Objects that act as tree elements without extending {@link TreeElement} (phyloXML colours). */
+export const isTreeLike = (x: unknown): boolean => typeof x === "object" && x !== null && typeof (x as { pyDict?: unknown }).pyDict === "function";
+
 /** `sorted(elem.__dict__.items())` flattened to the `TreeElement`s inside (single values first, then lists), skipping the named attributes. */
 export function sortedAttrs(elem: TreeElement, skip: ReadonlySet<string> = new Set()): TreeElement[] {
   const singles: unknown[] = [], lists: unknown[] = [];
@@ -29,7 +32,7 @@ export function sortedAttrs(elem: TreeElement, skip: ReadonlySet<string> = new S
     if (child === null || child === undefined) continue;
     if (Array.isArray(child)) lists.push(...child); else singles.push(child);
   }
-  return [...singles, ...lists].filter((x): x is TreeElement => x instanceof TreeElement);
+  return [...singles, ...lists].filter((x): x is TreeElement => x instanceof TreeElement || isTreeLike(x));
 }
 
 function* preorder<T>(root: T, children: (x: T) => T[]): Generator<T> { yield root; for (const v of children(root)) yield* preorder(v, children); }

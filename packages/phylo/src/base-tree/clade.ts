@@ -4,6 +4,9 @@ import { PyFloat, ValueError, pyRepr } from "@biolibs/core";
 import { BranchColor } from "./branch-color.js";
 import { TreeMixin } from "./tree-mixin.js";
 
+/** What a clade's `confidence` can hold. */
+export type ConfidenceLike = number | PyFloat | { readonly value: number } | null;
+
 /** The constructor arguments of a {@link Clade}. */
 export interface CladeOptions {
   /** Length of the branch leading to this clade. */
@@ -13,11 +16,11 @@ export interface CladeOptions {
   /** Sub-clades directly under this one. */
   clades?: Clade[] | null;
   /** Support: an integer, or a float (as a `PyFloat` when the value is whole). */
-  confidence?: number | PyFloat | null;
+  confidence?: ConfidenceLike;
   /** Display colour of the branch and its descendants. */
   color?: BranchColor | string | number[] | null;
   /** Display width of the branch and its descendants. */
-  width?: number | null;
+  width?: number | PyFloat | null;
 }
 
 /** What `clade[index]` accepts: an integer, a slice or a path of integers. */
@@ -31,10 +34,13 @@ export class Clade extends TreeMixin {
   name: string | null;
   /** The sub-clades. */
   clades: Clade[];
-  /** Support, or null. */
-  confidence: number | PyFloat | null;
-  /** The width of the branch, or null. */
-  width: number | null;
+  private confidenceValue: ConfidenceLike = null;
+  /** Support: an integer, a float (a `PyFloat` when whole) or null (phyloXML clades hold a `Confidence` object). */
+  get confidence(): ConfidenceLike { return this.confidenceValue; }
+  set confidence(value: ConfidenceLike | undefined) { this.confidenceValue = value ?? null; }
+
+  /** The width of the branch, or null (a {@link PyFloat} for a float that is a whole number). */
+  width: number | PyFloat | null;
   private colorValue: BranchColor | null = null;
 
   /** @param o - The attributes (all optional); an empty or missing `clades` gives a new empty list. */
@@ -43,7 +49,7 @@ export class Clade extends TreeMixin {
     this.blValue = o.branchLength ?? null;
     this.name = o.name ?? null;
     this.clades = o.clades && o.clades.length > 0 ? o.clades : [];
-    this.confidence = o.confidence ?? null;
+    this.confidenceValue = o.confidence ?? null;
     this.color = o.color ?? null;
     this.width = o.width ?? null;
   }
@@ -62,9 +68,12 @@ export class Clade extends TreeMixin {
     else this.branchLength = value;
   }
 
+  /** `branch_length` as Python holds it: an `int` stays a plain number, a `float` is a {@link PyFloat}. */
+  protected branchLengthPy(): number | PyFloat | null { return this.blValue === null ? null : this.blIsInt ? this.blValue : new PyFloat(this.blValue); }
+
   override pyDict(): [string, unknown][] {
     return [
-      ["branch_length", this.blValue === null ? null : this.blIsInt ? this.blValue : new PyFloat(this.blValue)], ["name", this.name], ["clades", this.clades],
+      ["branch_length", this.branchLengthPy()], ["name", this.name], ["clades", this.clades],
       ["confidence", this.confidence], ["_color", this.colorValue], ["width", this.width],
     ];
   }

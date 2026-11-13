@@ -1,0 +1,37 @@
+## Bio.motifs.clusterbuster
+
+- [x] `read(handle)`
+- [x] `write(motifs, precision=0)`
+
+### Bio.motifs.clusterbuster.Record
+
+- [-] `__add__(self, value, /)`
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__getitem__(self, index, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__iadd__(self, value, /)`
+- [-] `__imul__(self, value, /)`
+- [-] `__init__(self, /, *args, **kwargs)`
+- [-] `__iter__(self, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__rmul__(self, value, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [-] `__str__(self)`
+- [-] `append(self, object, /)`
+- [-] `clear(self, /)`
+- [-] `copy(self, /)`
+- [-] `count(self, value, /)`
+- [-] `extend(self, iterable, /)`
+- [-] `index(self, value, start=0, stop=9223372036854775807, /)`
+- [-] `insert(self, index, object, /)`
+- [-] `pop(self, index=-1, /)`
+- [-] `remove(self, value, /)`
+- [-] `reverse(self, /)`
+- [-] `sort(self, /, *, key=None, reverse=False)`

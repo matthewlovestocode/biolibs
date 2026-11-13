@@ -1,0 +1,178 @@
+## Bio.Seq
+
+- [x] `back_transcribe(rna)`
+- [x] `complement(sequence, inplace=False)`
+- [x] `complement_rna(sequence, inplace=False)`
+- [x] `reverse_complement(sequence, inplace=False)`
+- [x] `reverse_complement_rna(sequence, inplace=False)`
+- [x] `transcribe(dna)`
+- [x] `translate(sequence, table='Standard', stop_symbol='*', to_stop=False, cds=False, gap=None)`
+
+### Bio.Seq.SequenceDataAbstractBaseClass
+
+- [x] `__add__(self, other)`
+- [x] `__bytes__(self)`
+- [x] `__contains__(self, item)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, key)`
+- [x] `__gt__(self, other)`
+- [x] `__hash__(self)`
+- [x] `__init__(self)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
+- [x] `__mul__(self, other)`
+- [x] `__radd__(self, other)`
+- [-] `__repr__(self, /)`
+- [-] `__str__(self, /)`
+- [x] `count(self, sub, start=None, end=None)`
+- [x] `decode(self, encoding='utf-8')`
+- [x] `defined`
+- [x] `defined_ranges`
+- [x] `endswith(self, suffix, start=None, end=None)`
+- [x] `find(self, sub, start=None, end=None)`
+- [x] `index(self, sub, start=None, end=None)`
+- [x] `islower(self)`
+- [x] `isupper(self)`
+- [x] `lower(self)`
+- [x] `lstrip(self, chars=None)`
+- [x] `removeprefix(self, prefix)`
+- [x] `removesuffix(self, suffix)`
+- [x] `replace(self, old, new)`
+- [x] `rfind(self, sub, start=None, end=None)`
+- [x] `rindex(self, sub, start=None, end=None)`
+- [x] `rsplit(self, sep=None, maxsplit=-1)`
+- [x] `rstrip(self, chars=None)`
+- [x] `split(self, sep=None, maxsplit=-1)`
+- [x] `startswith(self, prefix, start=None, end=None)`
+- [x] `strip(self, chars=None)`
+- [x] `translate(self, table, delete=b'')`
+- [x] `upper(self)`
+
+### Bio.Seq.Seq
+
+- [x] `__add__(self, other)`
+- [x] `__bytes__(self)`
+- [x] `__contains__(self, item)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, index)`
+- [x] `__gt__(self, other)`
+- [x] `__hash__(self)`
+- [x] `__imul__(self, other)`
+- [x] `__init__(self, data: str | bytes | bytearray | Bio.Seq._SeqAbstractBaseClass | Bio.Seq.SequenceDataAbstractBaseClass | dict | None, length: int | None = None)`
+- [x] `__iter__(self)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
+- [x] `__mul__(self, other)`
+- [x] `__radd__(self, other)`
+- [x] `__repr__(self)`
+- [x] `__rmul__(self, other)`
+- [x] `__str__(self)`
+- [x] `back_transcribe(self, inplace=False)`
+- [x] `complement(self, inplace=False)`
+- [x] `complement_rna(self, inplace=False)`
+- [x] `count(self, sub, start=None, end=None)`
+- [x] `count_overlap(self, sub, start=None, end=None)`
+- [x] `defined`
+- [x] `defined_ranges`
+- [x] `endswith(self, suffix, start=None, end=None)`
+- [x] `find(self, sub, start=None, end=None)`
+- [x] `index(self, sub, start=None, end=None)`
+- [x] `islower(self)`
+- [x] `isupper(self)`
+- [x] `join(self, other)`
+- [x] `lower(self, inplace=False)`
+- [x] `lstrip(self, chars=None, inplace=False)`
+- [x] `removeprefix(self, prefix, inplace=False)`
+- [x] `removesuffix(self, suffix, inplace=False)`
+- [x] `replace(self, old, new, inplace=False)`
+- [x] `reverse_complement(self, inplace=False)`
+- [x] `reverse_complement_rna(self, inplace=False)`
+- [x] `rfind(self, sub, start=None, end=None)`
+- [x] `rindex(self, sub, start=None, end=None)`
+- [x] `rsplit(self, sep=None, maxsplit=-1)`
+- [x] `rstrip(self, chars=None, inplace=False)`
+- [x] `search(self, subs)`
+- [x] `split(self, sep=None, maxsplit=-1)`
+- [x] `startswith(self, prefix, start=None, end=None)`
+- [x] `strip(self, chars=None, inplace=False)`
+- [x] `transcribe(self, inplace=False)`
+- [x] `translate(self, table='Standard', stop_symbol='*', to_stop=False, cds=False, gap='-')`
+- [x] `upper(self, inplace=False)`
+
+### Bio.Seq.MutableSeq
+
+- [x] `__add__(self, other)`
+- [x] `__bytes__(self)`
+- [x] `__contains__(self, item)`
+- [x] `__delitem__(self, index)`
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, index)`
+- [x] `__gt__(self, other)`
+- [x] `__imul__(self, other)`
+- [x] `__init__(self, data)`
+- [x] `__iter__(self)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
+- [x] `__mul__(self, other)`
+- [x] `__radd__(self, other)`
+- [x] `__repr__(self)`
+- [x] `__rmul__(self, other)`
+- [x] `__setitem__(self, index, value)`
+- [x] `__str__(self)`
+- [x] `append(self, c)`
+- [x] `back_transcribe(self, inplace=False)`
+- [x] `complement(self, inplace=False)`
+- [x] `complement_rna(self, inplace=False)`
+- [x] `count(self, sub, start=None, end=None)`
+- [x] `count_overlap(self, sub, start=None, end=None)`
+- [x] `defined`
+- [x] `defined_ranges`
+- [x] `endswith(self, suffix, start=None, end=None)`
+- [x] `extend(self, other)`
+- [x] `find(self, sub, start=None, end=None)`
+- [x] `index(self, sub, start=None, end=None)`
+- [x] `insert(self, i, c)`
+- [x] `islower(self)`
+- [x] `isupper(self)`
+- [x] `join(self, other)`
+- [x] `lower(self, inplace=False)`
+- [x] `lstrip(self, chars=None, inplace=False)`
+- [x] `pop(self, i=-1)`
+- [x] `remove(self, item)`
+- [x] `removeprefix(self, prefix, inplace=False)`
+- [x] `removesuffix(self, suffix, inplace=False)`
+- [x] `replace(self, old, new, inplace=False)`
+- [x] `reverse(self)`
+- [x] `reverse_complement(self, inplace=False)`
+- [x] `reverse_complement_rna(self, inplace=False)`
+- [x] `rfind(self, sub, start=None, end=None)`
+- [x] `rindex(self, sub, start=None, end=None)`
+- [x] `rsplit(self, sep=None, maxsplit=-1)`
+- [x] `rstrip(self, chars=None, inplace=False)`
+- [x] `search(self, subs)`
+- [x] `split(self, sep=None, maxsplit=-1)`
+- [x] `startswith(self, prefix, start=None, end=None)`
+- [x] `strip(self, chars=None, inplace=False)`
+- [x] `transcribe(self, inplace=False)`
+- [x] `translate(self, table='Standard', stop_symbol='*', to_stop=False, cds=False, gap='-')`
+- [x] `upper(self, inplace=False)`
+
+### Bio.Seq.UndefinedSequenceError
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [-] `__init__(self, /, *args, **kwargs)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__str__(self, /)`
+- [-] `add_note(self, note, /)`
+- [-] `with_traceback(self, tb, /)`

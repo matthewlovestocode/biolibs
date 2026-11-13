@@ -6,7 +6,8 @@
  * - `newick/`: the Newick `Tree` and `Clade` (as `Newick`), the Newick `Parser` and `Writer`
  * - `consensus/`: `Consensus` (strict, majority and Adam consensus, branch support)
  * - `tree-construction/`: `TreeConstruction` (distance matrices, UPGMA, neighbour joining, parsimony)
- * - `io.ts`: `parse`, `read`, `write`, `convert` for the newick and nexus formats
+ * - `phyloxml/`: `PhyloXML` and `PhyloXMLIO` (phyloXML elements, reader and writer)
+ * - `io.ts`: `parse`, `read`, `write`, `convert` for the newick, nexus and phyloxml formats
  */
 
 export * from "./base-tree/index.js";
@@ -16,3 +17,4 @@ export { Writer, type WriteTarget, type WriterOptions } from "./newick/writer.js
 export * from "./io.js";
 export * as Consensus from "./consensus/index.js";
 export * as TreeConstruction from "./tree-construction/index.js";
+export { PhyloXML, PhyloXMLIO } from "./phyloxml/index.js";

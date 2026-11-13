@@ -1,0 +1,81 @@
+## Bio.PDB.Atom
+
+
+### Bio.PDB.Atom.Atom
+
+- [x] `__eq__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__gt__(self, other)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, name: str, coord: numpy.ndarray, bfactor: float | None, occupancy: float | None, altloc: str, fullname: str, serial_number, element: str | None = None, pqr_charge: float | None = None, radius: float | None = None)`
+- [x] `__le__(self, other)`
+- [x] `__lt__(self, other)`
+- [x] `__repr__(self)`
+- [-] `__str__(self, /)`
+- [x] `copy(self)`
+- [x] `detach_parent(self)`
+- [x] `flag_disorder(self)`
+- [x] `get_altloc(self) -> str`
+- [x] `get_anisou(self) -> numpy.ndarray | None`
+- [x] `get_bfactor(self) -> float | None`
+- [x] `get_charge(self) -> float | None`
+- [x] `get_coord(self) -> numpy.ndarray`
+- [x] `get_full_id(self)`
+- [x] `get_fullname(self) -> str`
+- [x] `get_id(self) -> str`
+- [x] `get_level(self) -> str`
+- [x] `get_name(self) -> str`
+- [x] `get_occupancy(self) -> float | None`
+- [x] `get_parent(self) -> Bio.PDB.Residue.Residue | None`
+- [x] `get_radius(self) -> float | None`
+- [x] `get_serial_number(self)`
+- [x] `get_sigatm(self) -> numpy.ndarray | None`
+- [x] `get_siguij(self) -> numpy.ndarray | None`
+- [x] `get_vector(self) -> Bio.PDB.vectors.Vector`
+- [x] `is_disordered(self) -> int`
+- [x] `set_altloc(self, altloc: str)`
+- [x] `set_anisou(self, anisou_array: numpy.ndarray | None)`
+- [x] `set_bfactor(self, bfactor: float | None)`
+- [x] `set_charge(self, pqr_charge: float | None)`
+- [x] `set_coord(self, coord: numpy.ndarray)`
+- [x] `set_occupancy(self, occupancy: float | None)`
+- [x] `set_parent(self, parent)`
+- [x] `set_radius(self, radius: float | None)`
+- [x] `set_serial_number(self, n)`
+- [x] `set_sigatm(self, sigatm_array: numpy.ndarray | None)`
+- [x] `set_siguij(self, siguij_array: numpy.ndarray | None)`
+- [x] `strictly_equals(self: ~_AtomT, other: ~_AtomT, compare_coordinates: bool = False) -> bool`
+- [x] `transform(self, rot: numpy.ndarray, tran: numpy.ndarray)`
+
+### Bio.PDB.Atom.DisorderedAtom
+
+- [ ] `__contains__(self, id)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, other)`
+- [ ] `__getitem__(self, id)`
+- [ ] `__gt__(self, other)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, id: str)`
+- [x] `__iter__(self)`
+- [ ] `__le__(self, other)`
+- [ ] `__len__(self)`
+- [ ] `__lt__(self, other)`
+- [x] `__repr__(self)`
+- [x] `__setitem__(self, id, child)`
+- [-] `__str__(self, /)`
+- [x] `center_of_mass(self)`
+- [x] `copy(self)`
+- [x] `detach_parent(self)`
+- [x] `disordered_add(self, atom)`
+- [x] `disordered_get(self, id=None)`
+- [x] `disordered_get_id_list(self)`
+- [x] `disordered_get_list(self) -> list[Bio.PDB.Atom.Atom]`
+- [x] `disordered_has_id(self, id)`
+- [x] `disordered_remove(self, altloc: str)`
+- [x] `disordered_select(self, id)`
+- [x] `get_id(self)`
+- [x] `get_parent(self)`
+- [x] `is_disordered(self)`
+- [x] `set_parent(self, parent)`
+- [x] `strictly_equals(self, other: 'DisorderedEntityWrapper', compare_coordinates: bool = False) -> bool`
+- [x] `transform(self, rot: numpy.ndarray, tran: numpy.ndarray)`

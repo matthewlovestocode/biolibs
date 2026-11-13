@@ -1,0 +1,45 @@
+## Bio.Align file formats
+
+- [x] `parse(source, fmt)`
+- [x] `read(handle, fmt)`
+- [x] `write(alignments, target, fmt, *args, **kwargs)`
+- [x] `parse: a2m`
+- [x] `write: a2m`
+- [x] `parse: bed`
+- [x] `write: bed`
+- [ ] `parse: bigbed`
+- [ ] `write: bigbed`
+- [ ] `parse: bigmaf`
+- [ ] `write: bigmaf`
+- [ ] `parse: bigpsl`
+- [ ] `write: bigpsl`
+- [x] `parse: chain`
+- [x] `write: chain`
+- [x] `parse: clustal`
+- [x] `write: clustal`
+- [x] `parse: emboss`
+- [-] `write: emboss`
+- [x] `parse: exonerate`
+- [x] `write: exonerate`
+- [x] `parse: fasta`
+- [x] `write: fasta`
+- [x] `parse: hhr`
+- [-] `write: hhr`
+- [x] `parse: maf`
+- [x] `write: maf`
+- [x] `parse: mauve`
+- [x] `write: mauve`
+- [x] `parse: msf`
+- [-] `write: msf`
+- [x] `parse: nexus`
+- [x] `write: nexus`
+- [x] `parse: phylip`
+- [x] `write: phylip`
+- [x] `parse: psl`
+- [x] `write: psl`
+- [x] `parse: sam`
+- [x] `write: sam`
+- [x] `parse: stockholm`
+- [x] `write: stockholm`
+- [x] `parse: tabular`
+- [-] `write: tabular`

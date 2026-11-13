@@ -1,0 +1,90 @@
+## Bio.SeqIO
+
+- [x] `convert(in_file, in_format, out_file, out_format, molecule_type=None)`
+- [~] `index(filename, format, alphabet=None, key_function=None)`
+- [-] `index_db(index_filename, filenames=None, format=None, alphabet=None, key_function=None)`
+- [x] `parse(handle, format, alphabet=None)`
+- [x] `read(handle, format, alphabet=None)`
+- [x] `to_dict(sequences, key_function=None)`
+- [x] `write(sequences: collections.abc.Iterable[Bio.SeqRecord.SeqRecord] | Bio.SeqRecord.SeqRecord, handle: IO[str] | os.PathLike | str | bytes, format: str) -> int`
+
+### Parse formats
+
+- [x] `parse: abi`
+- [x] `parse: abi-trim`
+- [x] `parse: ace`
+- [x] `parse: cif-atom`
+- [x] `parse: cif-seqres`
+- [x] `parse: clustal`
+- [x] `parse: embl`
+- [x] `parse: embl-cds`
+- [x] `parse: emboss`
+- [x] `parse: fasta`
+- [x] `parse: fasta-2line`
+- [x] `parse: fasta-blast`
+- [x] `parse: fasta-m10`
+- [x] `parse: fasta-pearson`
+- [x] `parse: fastq`
+- [x] `parse: fastq-illumina`
+- [x] `parse: fastq-sanger`
+- [x] `parse: fastq-solexa`
+- [x] `parse: gb`
+- [x] `parse: gck`
+- [x] `parse: genbank`
+- [x] `parse: genbank-cds`
+- [x] `parse: gfa1`
+- [x] `parse: gfa2`
+- [x] `parse: ig`
+- [x] `parse: imgt`
+- [x] `parse: maf`
+- [x] `parse: mauve`
+- [x] `parse: msf`
+- [x] `parse: nexus`
+- [x] `parse: nib`
+- [x] `parse: pdb-atom`
+- [x] `parse: pdb-seqres`
+- [x] `parse: phd`
+- [x] `parse: phylip`
+- [x] `parse: phylip-relaxed`
+- [x] `parse: phylip-sequential`
+- [x] `parse: pir`
+- [x] `parse: qual`
+- [~] `parse: seqxml`
+- [x] `parse: sff`
+- [x] `parse: sff-trim`
+- [~] `parse: snapgene`
+- [x] `parse: stockholm`
+- [x] `parse: swiss`
+- [x] `parse: tab`
+- [x] `parse: twobit`
+- [~] `parse: uniprot-xml`
+- [x] `parse: xdna`
+
+### Write formats
+
+- [x] `write: clustal`
+- [x] `write: embl`
+- [x] `write: fasta`
+- [x] `write: fasta-2line`
+- [x] `write: fastq`
+- [x] `write: fastq-illumina`
+- [x] `write: fastq-sanger`
+- [x] `write: fastq-solexa`
+- [x] `write: gb`
+- [x] `write: genbank`
+- [x] `write: imgt`
+- [x] `write: maf`
+- [x] `write: mauve`
+- [x] `write: nexus`
+- [x] `write: nib`
+- [x] `write: phd`
+- [x] `write: phylip`
+- [x] `write: phylip-relaxed`
+- [x] `write: phylip-sequential`
+- [x] `write: pir`
+- [x] `write: qual`
+- [x] `write: seqxml`
+- [x] `write: sff`
+- [x] `write: stockholm`
+- [x] `write: tab`
+- [x] `write: xdna`

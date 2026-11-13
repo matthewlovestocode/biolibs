@@ -23,7 +23,7 @@ const escapeAttrib = (s: string): string =>
  *
  * @returns `qnames` (expanded name to written name) and `namespaces` (uri to prefix, excluding `xml`).
  */
-function namespaces(root: Element): { qnames: Map<string, string>; namespaces: Map<string, string> } {
+function namespaces(root: Element, registered: ReadonlyMap<string, string> = new Map()): { qnames: Map<string, string>; namespaces: Map<string, string> } {
   const qnames = new Map<string, string>();
   const ns = new Map<string, string>();
   const add = (q: string): void => {
@@ -34,7 +34,7 @@ function namespaces(root: Element): { qnames: Map<string, string>; namespaces: M
       const tag = q.slice(close + 1);
       let prefix = ns.get(uri);
       if (prefix === undefined) {
-        prefix = Object.hasOwn(WELL_KNOWN, uri) ? WELL_KNOWN[uri]! : `ns${ns.size}`;
+        prefix = registered.get(uri) ?? (Object.hasOwn(WELL_KNOWN, uri) ? WELL_KNOWN[uri]! : `ns${ns.size}`);
         if (prefix !== "xml") ns.set(uri, prefix);
       }
       qnames.set(q, prefix ? `${prefix}:${tag}` : tag);
@@ -66,17 +66,28 @@ function write(e: Element, qnames: Map<string, string>, decls: Map<string, strin
 }
 
 /**
+ * Serialise an element to a string the way `ElementTree.tostring(element, encoding="unicode")` does: nothing is
+ * escaped beyond the XML specials, and namespaces get prefixes such as `ns0` (or the registered one).
+ *
+ * @param element - The element (its tail text is included, as in Python).
+ * @param registered - Prefixes registered with `register_namespace` (uri to prefix), consulted before `ns0`, `ns1`, ...
+ */
+export function serializeUnicode(element: Element, registered: ReadonlyMap<string, string> = new Map()): string {
+  const { qnames, namespaces: decls } = namespaces(element, registered);
+  const out: string[] = [];
+  write(element, qnames, decls, out);
+  return out.join("");
+}
+
+/**
  * Serialise an element to US-ASCII bytes the way `ElementTree.tostring(element)` does: non-ASCII characters become
  * numeric character references, and namespaces get prefixes such as `ns0`.
  *
  * @param element - The element (its tail text is included, as in Python).
  */
 export function tostring(element: Element): Uint8Array {
-  const { qnames, namespaces: decls } = namespaces(element);
-  const out: string[] = [];
-  write(element, qnames, decls, out);
   let text = "";
-  for (const ch of out.join("")) {
+  for (const ch of serializeUnicode(element)) {
     const cp = ch.codePointAt(0)!;
     text += cp < 128 ? ch : `&#${cp};`;
   }

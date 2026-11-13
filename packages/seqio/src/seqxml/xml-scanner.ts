@@ -18,6 +18,8 @@ class Scanner {
   private readonly events: XmlEvent[] = [];
   private readonly scope = new NamespaceScope();
   private readonly open: string[] = [];
+  /** Where the construct being read began: Expat reports an unclosed token there. */
+  private tokenStart = 0;
 
   constructor(private readonly s: string, private readonly off: Uint32Array, private readonly namespaces = true) {}
 
@@ -34,7 +36,7 @@ class Scanner {
 
   /** Raise the problem for input that ends inside a construct. */
   private eof(message = "unclosed token"): never {
-    return this.fail(message, this.s.length, true);
+    return this.fail(message, message === "unclosed token" ? this.tokenStart : this.s.length, true);
   }
 
   private at(): string { return this.s[this.i] ?? ""; }
@@ -50,16 +52,47 @@ class Scanner {
   }
 
   /** Skip to just after `terminator`; end of input is an unclosed token. */
-  private skipPast(terminator: string): string {
+  private skipPast(terminator: string, unclosed = "unclosed token"): string {
     const end = this.s.indexOf(terminator, this.i);
-    if (end < 0) return this.eof();
+    if (end < 0) return this.eof(unclosed);
     const body = this.s.slice(this.i, end);
     this.i = end + terminator.length;
     return body;
   }
 
+  /**
+   * Check the pseudo-attributes of an XML declaration: `version`, then optionally `encoding`, then optionally `standalone`.
+   * Expat reports the first one that is out of place at its own column (a missing `version` at column 0).
+   */
+  private checkDeclaration(decl: string): void {
+    const attr = /\s+([A-Za-z]+)\s*=\s*("[^"]*"|'[^']*')/y;
+    let pos = 5;
+    const order = ["version", "encoding", "standalone"];
+    let next = 0;
+    for (;;) {
+      attr.lastIndex = pos;
+      const m = attr.exec(decl);
+      if (m === null) {
+        // Only whitespace may remain before `?>`; `version` is required.
+        if (next === 0) this.fail("XML declaration not well-formed", 0);
+        const rest = decl.slice(pos, decl.length - 2);
+        if (rest.trim() !== "") this.fail("XML declaration not well-formed", pos + rest.length - rest.trimStart().length);
+        return;
+      }
+      const at = pos + m[0].length - m[0].trimStart().length;
+      const idx = next === 0 && m[1] !== "version" ? -1 : order.indexOf(m[1]!, next);
+      const value = m[2]!.slice(1, -1);
+      const valid = idx >= 0 && (idx === 0 ? value.length > 0 : idx === 1 ? /^[A-Za-z][A-Za-z0-9._-]*$/.test(value) : value === "yes" || value === "no");
+      if (!valid) this.fail("XML declaration not well-formed", next === 0 ? 0 : at);
+      next = idx + 1;
+      pos += m[0].length;
+    }
+  }
+
   /** Decode a reference starting at `&`; returns the text it stands for. */
   private reference(): string {
+    const saved = this.tokenStart;
+    this.tokenStart = this.i;
     const semi = this.s.indexOf(";", this.i);
     if (semi < 0) return this.eof();
     const body = this.s.slice(this.i + 1, semi);
@@ -70,12 +103,14 @@ class Scanner {
     if (out === undefined) return this.fail(/^[A-Za-z_]/.test(body) ? "undefined entity" : "not well-formed (invalid token)");
     if (!isXmlChar(out.codePointAt(0)!)) return this.fail("reference to invalid character number");
     this.i = semi + 1;
+    this.tokenStart = saved;
     return out;
   }
 
   /** Read a quoted attribute value, normalising whitespace and expanding references. */
   private attributeValue(): string {
     const quote = this.at();
+    if (quote === "") return this.eof();
     if (quote !== '"' && quote !== "'") return this.fail("not well-formed (invalid token)");
     this.i++;
     let out = "";
@@ -158,12 +193,13 @@ class Scanner {
 
   /** Parse an end tag (positioned after `</`). */
   private endTag(): void {
+    const nameStart = this.i;
     const qname = this.name();
     this.skipSpace();
     if (this.i >= this.s.length) return this.eof();
     if (this.at() !== ">") return this.fail("not well-formed (invalid token)");
     this.i++;
-    if (this.open.pop() !== qname) return this.fail("mismatched tag", this.i - 1);
+    if (this.open.pop() !== qname) return this.fail("mismatched tag", nameStart);
     this.events.push({ kind: "end", name: this.names.pop()!, end: this.off[this.i]! });
     if (this.namespaces) this.scope.pop();
   }
@@ -215,13 +251,14 @@ class Scanner {
   run(): void {
     if (this.startsWith("<?xml") && isSpace(this.s[this.i + 5] ?? "")) {
       const decl = this.skipPast("?>");
-      if (!/\bversion\s*=\s*("[^"]+"|'[^']+')/.test(decl)) this.fail("XML declaration not well-formed", 0);
+      this.checkDeclaration(decl);
     }
     let seenRoot = false;
     // Prolog and epilog: whitespace, comments, PIs and (before the root) one DOCTYPE.
     for (;;) {
       this.skipSpace();
       if (this.i >= this.s.length) break;
+      this.tokenStart = this.i;
       if (this.startsWith("<!--")) { this.i += 4; this.comment(); continue; }
       if (this.startsWith("<?")) { this.i += 2; this.pi(); continue; }
       if (!seenRoot && this.startsWith("<!DOCTYPE")) { this.i += 9; this.doctype(); continue; }
@@ -240,11 +277,12 @@ class Scanner {
     while (this.open.length > 0) {
       this.text();
       if (this.i >= this.s.length) return this.eof("no element found");
+      this.tokenStart = this.i;
       this.i++; // the "<"
       if (this.startsWith("!--")) { this.i += 3; this.comment(); }
       else if (this.startsWith("![CDATA[")) {
         this.i += 8;
-        const body = this.skipPast("]]>").replace(/\r\n?/g, "\n");
+        const body = this.skipPast("]]>", "unclosed CDATA section").replace(/\r\n?/g, "\n");
         if (body) this.events.push({ kind: "text", data: body, end: this.off[this.i]!, cdata: true });
       } else if (this.startsWith("?")) { this.i++; this.pi(); }
       else if (this.startsWith("/")) { this.i++; this.endTag(); }

@@ -3,7 +3,7 @@
  * The `uniprot-xml` format, a port of Biopython's `SeqIO.UniprotIO`.
  *
  * - `etree.ts`: `Element` and an `iterparse`-style `PullParser` (also `ParseError`)
- * - `tostring.ts`: `ElementTree.tostring` for raw comments
+ * - `tostring.ts`: `ElementTree.tostring` for raw comments, and `serializeUnicode` (`encoding="unicode"` output, used by the phyloXML writer)
  * - `util.ts`, `errors.ts`: Python-faithful helpers and errors
  * - `comments.ts`, `references.ts`, `features.ts`, `entry.ts`: the element parsers
  * - `iterator.ts`: `UniprotIterator`
@@ -16,3 +16,4 @@ registerIterator("uniprot-xml", UniprotIterator);
 
 export * from "./iterator.js";
 export { Element, ParseError, PullParser } from "./etree.js";
+export { serializeUnicode } from "./tostring.js";
