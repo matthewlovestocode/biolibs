@@ -10,6 +10,8 @@ Case kinds:
   residue - IC_Residue over the residues of a parsed PDB file: what it keeps and under which keys.
   split   - split_akl: a generic list of atom keys made specific to a residue and expanded over its altlocs.
   edra_build - _create_edra: the hedra and dihedra a residue builds from the tables and its neighbours.
+  i2a   - internal_to_atom_coordinates: the atoms rebuilt from the angle values, with part of the chain
+          invalidated first so that there is something to rebuild.
   a2ic  - atom_to_internal_coordinates: the index maps init_edra and build_edraArrays lay down, and the bond
           lengths, bond angles and dihedral angles measured from the atom coordinates.
 
@@ -450,8 +452,104 @@ GEOM = [jitter(t) for t in PROTEINS]
 for i, text in enumerate(TEXTS + GEOM):
     cases.append({"kind": "a2ic", "text": text, "entry": ("chain", "model", "structure")[i % 3]})
 
+# ---------------- rebuilding the atoms ----------------
+# `internal_to_atom_coordinates` is the other direction: `propagate_changes` marks the atoms that depend on one
+# already invalid, `init_atom_coords` places each di/hedron's atoms in its own coordinate space from the measured
+# values, and `assemble_residues` transforms them into the chain's. Something has to be invalid for any of it to
+# do work, so each case says what to invalidate first.
+def run_i2a(case):
+    """Measure a chain, invalidate part of it, rebuild, and record everything the rebuild touched."""
+    import io, warnings as w2, numpy as np
+    from Bio.PDB import PDBParser
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+            for c in s.get_chains(): c.atom_to_internal_coordinates()
+        out = []
+        for chain in list(s.get_chains())[:2]:
+            cic = chain.internal_coord
+            if cic is None or not hasattr(cic, "dAtoms_needs_update"):
+                out.append({"empty": True})
+                continue
+            before = [[enc6(x) for x in row] for row in cic.atomArray]
+            beforeNums = cic.atomArray.copy()
+            how = case["how"]
+            # Invalidate: nothing, everything, the last atom, the N of a middle residue, or change one angle.
+            if how == "all": cic.atomArrayValid[:] = False
+            elif how == "last": cic.atomArrayValid[-1] = False
+            elif how == "mid_n":
+                for ndx, ak in enumerate(cic.aktuple):
+                    if ak.akl[AtomKey.fields.atm] == "N" and ndx > 0:
+                        cic.atomArrayValid[ndx] = False
+                        break
+            elif how == "angle" and cic.dihedraLen > 0:
+                k = cic.dihedraLen // 2
+                cic.dihedraAngle[k] = (cic.dihedraAngle[k] + 30.0 + 180.0) % 360.0 - 180.0
+                cic.dihedraAngleRads[k] = np.deg2rad(cic.dihedraAngle[k])
+                cic.dAtoms_needs_update[k] = True
+                cic.atomArrayValid[cic.a2da_map.reshape(-1, 4)[k][3]] = False
+            with w2.catch_warnings(record=True) as rec:
+                w2.simplefilter("always")
+                entry = case["entry"]
+                if entry == "structure": s.internal_to_atom_coordinates()
+                elif entry == "model": [m.internal_to_atom_coordinates() for m in s.get_models()]
+                else: [c.internal_to_atom_coordinates() for c in s.get_chains()]
+                if case.get("twice"):
+                    chain.internal_to_atom_coordinates()
+            r6 = lambda a: [enc6(x) for x in a]
+            out.append({
+                "before": before,
+                "coords": [[enc6(x) for x in row] for row in cic.atomArray],
+                "valid": [bool(v) for v in cic.atomArrayValid],
+                # how far the rebuilt chain moved: the whole chain is rebuilt in its first hedron's frame when
+                # the start was invalidated, so this is large by design in that case
+                # rounded coarsely on purpose: this is a maximum over every atom, so its last digits are the
+                # noise of whichever difference happened to be largest, and only its size is meaningful
+                "max_dev": round(float(np.max(np.abs(cic.atomArray[:, 0:3] - beforeNums[:, 0:3]))), 3)
+                           if cic.AAsiz else 0.0,
+                "hAtoms": [[r6(a) for a in h] for h in cic.hAtoms],
+                "hAtomsR": [[r6(a) for a in h] for h in cic.hAtomsR],
+                "dAtoms": [[r6(a) for a in d] for d in cic.dAtoms],
+                "a4_pre_rotation": [r6(a) for a in cic.a4_pre_rotation],
+                "hAtoms_needs_update": [bool(v) for v in cic.hAtoms_needs_update],
+                "dAtoms_needs_update": [bool(v) for v in cic.dAtoms_needs_update],
+                "dcsValid": [bool(v) for v in cic.dcsValid],
+                "dSetValid": [[bool(v) for v in row] for row in cic.dSetValid],
+                "dSet": [[r6(a) for a in d] for d in cic.dSet],
+                "atom_views": [None if a is None else r6(a.coord) for a in cic.bpAtomArray],
+                "warnings_seen": [f"{w.category.__name__}: {w.message}" for w in rec],
+                # measuring the rebuilt atoms must give the angles back
+                "remeasured": attempt(lambda chain=chain: [enc6(x) for x in
+                                                           (chain.atom_to_internal_coordinates(), cic.dihedraAngle)[1]]),
+            })
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+# A chain with no internal coordinates raises a bare Exception from the entity entry point.
+def run_i2a_unset(case):
+    import io, warnings as w2
+    from Bio.PDB import PDBParser
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+        return [attempt(lambda c=c: c.internal_to_atom_coordinates()) for c in list(s.get_chains())[:2]]
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+for i, text in enumerate(GEOM):
+    for how in ("none", "all", "last", "mid_n", "angle"):
+        cases.append({"kind": "i2a", "text": text, "how": how, "entry": ("chain", "model", "structure")[i % 3],
+                      "twice": how in ("angle", "all")})
+for text in GEOM[:2] + TEXTS[:2]:
+    cases.append({"kind": "i2a_unset", "text": text})
+
 RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair,
-           "residue": run_residue, "edra_build": run_edra_build, "split": run_split, "a2ic": run_a2ic}
+           "residue": run_residue, "edra_build": run_edra_build, "split": run_split, "a2ic": run_a2ic, "i2a": run_i2a, "i2a_unset": run_i2a_unset}
 kept = []
 for c in cases:
     res = run_isolated(RUNNERS[c["kind"]], c)

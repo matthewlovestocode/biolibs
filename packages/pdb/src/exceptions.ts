@@ -33,3 +33,14 @@ export class PDBIOException extends BioError {
 export const PDB_CONSTRUCTION_WARNING = "PDBConstructionWarning";
 /** Category name of the warnings the structure writers emit. */
 export const PDB_IO_WARNING = "PDBIOWarning";
+
+/**
+ * A bare Python `Exception`, which Biopython raises in a few places rather than a class of its own.
+ *
+ * `Chain.internal_to_atom_coordinates` is one: a chain with no internal coordinates raises `Exception`, and the
+ * type is part of what a caller catches, so it is reproduced rather than mapped to something tidier.
+ */
+export class PythonException extends Error {
+  /** Python's class name for this error. */
+  override name = "Exception";
+}

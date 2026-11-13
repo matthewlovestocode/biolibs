@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Comparison, hash and string members that no class but `object` defines are marked `[-]` automatically, from `inventory.py`'s reading of Biopython; a golden case that pins such a member down wins over that and makes it `[x]`. Edit `reference/status.json`, then re-run the script.
 
-**Progress: 2325 / 2345 applicable items verified against Biopython.**
+**Progress: 2327 / 2345 applicable items verified against Biopython.**
 
 | Section | Verified | Applicable |
 |---|---|---|
@@ -44,8 +44,8 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 | [Bio.PDB.Atom](Bio.PDB.Atom.md) | 68 | 68 |
 | [Bio.PDB.Residue](Bio.PDB.Residue.md) | 62 | 62 |
 | [Bio.PDB.Chain](Bio.PDB.Chain.md) | 33 | 34 |
-| [Bio.PDB.Model](Bio.PDB.Model.md) | 33 | 34 |
-| [Bio.PDB.Structure](Bio.PDB.Structure.md) | 34 | 35 |
+| [Bio.PDB.Model](Bio.PDB.Model.md) | 34 | 34 |
+| [Bio.PDB.Structure](Bio.PDB.Structure.md) | 35 | 35 |
 | [Bio.PDB.StructureBuilder](Bio.PDB.StructureBuilder.md) | 14 | 14 |
 | [Bio.PDB.PDBParser](Bio.PDB.PDBParser.md) | 4 | 4 |
 | [Bio.PDB.MMCIF2Dict](Bio.PDB.MMCIF2Dict.md) | 3 | 3 |

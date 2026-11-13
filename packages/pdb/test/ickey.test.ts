@@ -1,14 +1,14 @@
 /** Replays the Bio.PDB.internal_coords.AtomKey golden cases (reference/golden/gen_ickey_cases.py). */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { AtomKey, Dihedron, Edron, Hedron, IC_Chain, IC_Residue, PDBParser } from "@biolibs/pdb";
+import { AtomKey, Dihedron, Edron, FIELDS, Hedron, IC_Chain, IC_Residue, PDBParser } from "@biolibs/pdb";
 import { captureWarnings } from "@biolibs/core";
 
 type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc };
 interface Spec { how: string; value: unknown }
 interface Spec2 { cls: string; how: string; keys: string[] }
-interface Case { kind: string; text?: string; entry?: string; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
+interface Case { kind: string; text?: string; entry?: string; how?: string; twice?: boolean; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
 
 /** AttributeError is a TypeError here, with no message to compare. */
 const excOk = (want?: Exc, got?: Exc): boolean => {
@@ -294,6 +294,86 @@ const sortRows = (rows: unknown[][]): unknown[][] =>
   [...rows].sort((a, b) => (String(a[0]) < String(b[0]) ? -1 : String(a[0]) > String(b[0]) ? 1 : 0));
 
 /**
+ * Replay `internal_to_atom_coordinates`: the local coordinates of the di/hedra and the atoms rebuilt from them.
+ *
+ * Each case says what to invalidate first, since the assembly only does work where an atom is out of date.
+ */
+function runI2a(c: Case): Out {
+  const parsed = captureWarnings(() => {
+    const st = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", c.text!);
+    for (const ch of st.getChains()) ch.atomToInternalCoordinates();
+    return st;
+  });
+  if (parsed.error !== undefined) return { exc: err(parsed.error) };
+  const s = parsed.result!;
+  return attempt(() => [...s.getChains()].slice(0, 2).map((chain) => {
+    const cic = chain.internalCoord;
+    if (cic === null || cic.dAtomsNeedsUpdate === undefined) return { empty: true };
+    const r6 = (a: ArrayLike<number>): unknown[] => Array.from(a).map(enc6);
+    const rows = (): unknown[][] => Array.from({ length: cic.AAsiz }, (_, i) => r6(cic.atomArray.subarray(i * 4, i * 4 + 4)));
+    const before = rows();
+    const beforeNums = Array.from({ length: cic.AAsiz }, (_, i) => [...cic.atomArray.subarray(i * 4, i * 4 + 4)]);
+
+    if (c.how === "all") cic.atomArrayValid.fill(0);
+    else if (c.how === "last") cic.atomArrayValid[cic.AAsiz - 1] = 0;
+    else if (c.how === "mid_n") {
+      for (let ndx = 1; ndx < cic.AAsiz; ndx++) {
+        if (cic.aktuple[ndx]!.akl[FIELDS.atm] === "N") { cic.atomArrayValid[ndx] = 0; break; }
+      }
+    } else if (c.how === "angle" && cic.dihedraLen > 0) {
+      const k = Math.floor(cic.dihedraLen / 2);
+      const deg = cic.dihedraAngle as Float64Array, rads = cic.dihedraAngleRads as Float64Array;
+      deg[k] = (((deg[k]! + 30 + 180) % 360) + 360) % 360 - 180;
+      rads[k] = (deg[k]! * Math.PI) / 180;
+      cic.dAtomsNeedsUpdate[k] = 1;
+      cic.atomArrayValid[cic.a2daMap![k * 4 + 3]!] = 0;
+    }
+
+    const cap = captureWarnings(() => {
+      if (c.entry === "structure") s.internalToAtomCoordinates();
+      else if (c.entry === "model") for (const m of s.getModels()) m.internalToAtomCoordinates();
+      else for (const ch of s.getChains()) ch.internalToAtomCoordinates();
+      if (c.twice === true) chain.internalToAtomCoordinates();
+    });
+    if (cap.error !== undefined) throw cap.error;
+
+    let dev = 0;
+    for (let i = 0; i < cic.AAsiz; i++) {
+      for (let k = 0; k < 3; k++) dev = Math.max(dev, Math.abs(cic.atomArray[i * 4 + k]! - beforeNums[i]![k]!));
+    }
+    return {
+      before,
+      coords: rows(),
+      valid: [...cic.atomArrayValid].map((v) => v === 1),
+      // how far the rebuilt chain moved: large by design when the chain start itself was invalidated
+      // rounded coarsely on purpose: this is a maximum over every atom, so only its size is meaningful
+      max_dev: Math.round(dev * 1e3) / 1e3,
+      hAtoms: cic.hAtoms!.map((h) => h.map((a) => r6(a))),
+      hAtomsR: cic.hAtomsR!.map((h) => h.map((a) => r6(a))),
+      dAtoms: cic.dAtoms!.map((d) => d.map((a) => r6(a))),
+      a4_pre_rotation: cic.a4PreRotation!.map((a) => r6(a)),
+      hAtoms_needs_update: [...cic.hAtomsNeedsUpdate!].map((v) => v === 1),
+      dAtoms_needs_update: [...cic.dAtomsNeedsUpdate].map((v) => v === 1),
+      dcsValid: [...cic.dcsValid!].map((v) => v === 1),
+      dSetValid: cic.dSetValid!.map((row) => [...row]),
+      dSet: cic.dSet!.map((d) => d.map((a) => r6(a))),
+      atom_views: cic.bpAtomArray.map((a) => (a === null ? null : r6(a.coord))),
+      warnings_seen: cap.warnings.map((w) => `${w.category}: ${w.message}`),
+      // measuring the rebuilt atoms must give the angles back
+      remeasured: attempt(() => { chain.atomToInternalCoordinates(); return r6(cic.dihedraAngle!); }),
+    };
+  }));
+}
+
+/** Replay the bare `Exception` an entity entry point raises for a chain with no internal coordinates. */
+function runI2aUnset(c: Case): Out {
+  return attempt(() => {
+    const s = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", c.text!);
+    return [...s.getChains()].slice(0, 2).map((ch) => attempt(() => ch.internalToAtomCoordinates()));
+  });
+}
+
+/**
  * The path to the first place two recorded results differ, which is what a mismatch report needs.
  *
  * @param a - The expected value. @param b - What the port produced. @returns A dotted path, with the two values.
@@ -314,8 +394,8 @@ function firstDiff(a: unknown, b: unknown, path = ""): string {
 
 describe("Bio.PDB.internal_coords: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/ickey.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic };
-  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic"]) {
+  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic, i2a: runI2a, i2a_unset: runI2aUnset };
+  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic", "i2a", "i2a_unset"]) {
     const list = cases.filter((c) => c.kind === kind);
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
       const bad: string[] = [];

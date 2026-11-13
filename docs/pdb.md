@@ -76,7 +76,7 @@ residue name, atom name, altloc, occupancy) and whose ordering puts a residue's 
 `edron.ts` holds `Edron`, `Hedron` and `Dihedron`, the angles themselves — three bonded atoms with two lengths
 and an angle, or four with the angle between two planes — `ic-residue.ts` holds `IC_Residue` — which atoms a residue keeps, the keys it
 keeps them under, and the hedra and dihedra it builds from the tables and from its neighbours — and `ic-chain.ts` holds `IC_Chain`, which
-decides which of a chain's residues can be built, owns the coordinate array and measures the angles. Verified against Biopython on 962 cases
+decides which of a chain's residues can be built, owns the coordinate array, measures the angles and rebuilds the atoms from them. Verified against Biopython on 1011 cases
 (`packages/pdb/test/golden/ickey.json`, built by `reference/golden/gen_ickey_cases.py`). The geometry the rest of
 the port will rest on is already here, in `homog.ts`, ported with `Bio.PDB.vectors`.
 
@@ -142,9 +142,30 @@ their contents are then *uninitialised memory*; the golden cases record them onl
 cases also avoid exactly collinear atoms: a dihedral angle across them is pure rounding noise — NumPy reads
 1.8e-15 where the exact answer is zero, and the azimuth comes out as a right angle rather than nothing.
 
-Still to come: the assembly that places atoms from the angle values (`init_atom_coords`, `assemble_residues`) and
-the `internal_to_atom_coordinates` entry points on Chain, Model and Structure, which are the three parity items
-left of the six this module exists for.
+`internalToAtomCoordinates` goes the other way, in `ic-assemble.ts`. `propagateChanges` marks what depends on an
+atom already out of date: the array is in atom-key order, so an invalid N, CA or C moves everything to the end of
+the chain segment while an invalid side-chain atom moves only the rest of its residue, and a hydrogen moves
+nothing. `initAtomCoords` places each hedron's atoms in its own frame — second atom at the origin, third up +Z,
+first placed by the *supplement* of the bond angle, since Biopython assumes the angle obtuse and so puts it in -Z
+— and gives each dihedron its first three atoms from its first hedron (reversed when the dihedron is) and its
+fourth from its second hedron, shifted so the shared atom is at the origin and rotated about Z by the dihedral
+angle. `assembleResidues` then transforms each dihedron out of its own space into the chain's: a dihedron with
+its first three atoms placed can place its fourth, which may complete another dihedron, so it repeats until
+nothing is ready. A full rebuild returns every dihedral angle unchanged when measured again, which is what the
+golden cases check alongside the coordinates.
+
+Biopython does all of that with masked NumPy arithmetic. The loops here say which expression each stands for,
+because the masks are what make that code hard to read: a *full-size* mask indexes every dihedron while an
+*update-size* one indexes only those being recomputed, and the two are used together. One branch of
+`assemble_residues` — reusing the stored reverse transforms instead of recomputing them — is unreachable in
+Biopython too, since a dihedron selected for work has just had its transforms marked stale; it is kept for
+fidelity, and no case can cover it.
+
+Still to come: Biopython's *serial* assembly (`assemble_residues_ser`, `IC_Residue.assemble`), which
+`internal_to_atom_coordinates` selects when given a `start` or `fin` sequence position. `Chain`'s entry point
+takes those arguments, so that one parity item stays open until the serial path lands; `start`/`fin` and
+`icSettings.parallelAssembleResidues = false` raise meanwhile. `Model` and `Structure` only ever call the
+parallel path, and are done.
 
 Numerical notes: the cross product reproduces NumPy's `det` (LU factorisation then `exp(sum(log))`), and NumPy's `RuntimeWarning`s (division by zero, invalid value, sqrt of a negative) are emitted through `warn` with category `RuntimeWarning`. NumPy's SIMD `sin`/`cos`/`exp` can differ from JavaScript's in the last bit, so the golden test compares floats to 1e-9 (1e-6 after an `arccos`, which amplifies such differences near 0 and π; a dihedral of ±π counts as equal either way). Cases the golden set avoids because NumPy's own output is undefined: `multiCoordSpace` where the second and third points coincide (uninitialised memory), and `coordSpace` with the first point equal to the second (the result is rounding noise).
 

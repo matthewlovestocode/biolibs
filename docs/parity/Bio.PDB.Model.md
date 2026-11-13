@@ -35,7 +35,7 @@
 - [x] `has_id(self, id)`
 - [x] `id`
 - [x] `insert(self, pos: int, entity: ~_Child)`
-- [ ] `internal_to_atom_coordinates(self, verbose: bool = False) -> None`
+- [x] `internal_to_atom_coordinates(self, verbose: bool = False) -> None`
 - [x] `set_parent(self, entity: ~_Parent)`
 - [x] `strictly_equals(self: ~_Self, other: ~_Self, compare_coordinates: bool = False) -> bool`
 - [x] `transform(self, rot, tran)`

@@ -61,6 +61,8 @@ export function buildEdraArrays(cic: IC_Chain): void {
   cic.hAtoms = Array.from({ length: cic.hedraLen }, () => [0, 1, 2].map(() => [0, 0, 0, 1]));
   cic.hAtomsR = cic.hAtoms.map((h) => h.map((a) => [...a]));
   cic.hAtomsNeedsUpdate = new Uint8Array(cic.hedraLen).fill(1);
+  cic.dAtoms = Array.from({ length: cic.dihedraLen }, () => [0, 1, 2, 3].map(() => [0, 0, 0, 1]));
+  cic.a4PreRotation = Array.from({ length: cic.dihedraLen }, () => [0, 0, 0, 1]);
 
   // Which atom row each hedron's three atoms live in, in hedron order.
   const a2ha: number[] = [];

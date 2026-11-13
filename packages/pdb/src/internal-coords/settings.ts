@@ -15,6 +15,11 @@ export const icSettings = {
   noAltloc: false,
   /** Compute a C-beta position for glycine, which has none. Biopython's `IC_Residue.gly_Cbeta`. */
   glyCbeta: false,
+  /**
+   * Assemble a chain's atoms with the vectorised algorithm rather than residue by residue. Biopython's
+   * `IC_Chain.ParallelAssembleResidues`; the serial assembly is not ported, so turning this off raises.
+   */
+  parallelAssembleResidues: true,
   /** The format Biopython writes internal-coordinate values with in a `.pic` file. */
   picAccuracy: "17.13f",
 };

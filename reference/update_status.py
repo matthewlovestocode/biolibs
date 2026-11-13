@@ -217,6 +217,14 @@ measured = {c["entry"] for c in ick if c["kind"] == "a2ic"
 for entry, cls in (("chain", "Chain"), ("model", "Model"), ("structure", "Structure")):
     if entry in measured: mark(f"Bio.PDB.{cls}.{cls}.atom_to_internal_coordinates")
 
+# `internal_to_atom_coordinates` needs a case that actually rebuilt something: `max_dev` is how far the atoms
+# moved, so a case where nothing was invalidated is not evidence. Chain's own method is left open deliberately --
+# its signature takes start/fin, which select Biopython's serial assembly, and that is not ported.
+rebuilt = {c["entry"] for c in ick if c["kind"] == "i2a"
+           and any(not ch.get("empty") and ch.get("max_dev", 0) > 0 for ch in c.get("result", []))}
+for entry, cls in (("model", "Model"), ("structure", "Structure")):
+    if entry in rebuilt: mark(f"Bio.PDB.{cls}.{cls}.internal_to_atom_coordinates")
+
 # ---- Bio.PDB mmCIF (packages/pdb/test/golden/mmcif.json) ----
 mc = json.load(open(f"{here}/../packages/pdb/test/golden/mmcif.json"))["cases"]
 if any(c["kind"] == "dict" and "dict" in c for c in mc):

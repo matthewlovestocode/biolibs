@@ -4,6 +4,7 @@ import { pyInt, pyTypeName } from "@biolibs/core";
 import type { Atom, DisorderedAtom } from "./atom.js";
 import { DisorderedEntityWrapper, Entity, compareThroughWrapper, type Child } from "./entity.js";
 import { compareIds } from "./util.js";
+import { PythonException } from "./exceptions.js";
 import { IC_Chain } from "./internal-coords/ic-chain.js";
 import type { DisorderedResidue, Residue } from "./residue.js";
 import type { EntityId } from "./util.js";
@@ -90,6 +91,24 @@ export class Chain extends Entity<Residue | DisorderedResidue> implements Child 
   override has(id: EntityId): boolean { return super.has(this.translateId(id)); }
   override delete(id: EntityId): void { super.delete(this.translateId(id)); }
 
+  /**
+   * Compute atom coordinates for this chain from its internal coordinates.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   * @param start - First sequence position to build; selects Biopython's serial assembly, which is not ported.
+   * @param fin - Last sequence position to build, likewise.
+   * @throws PythonException (a bare Python `Exception`) when the chain has no internal coordinates.
+   */
+  internalToAtomCoordinates(verbose = false, start: number | null = null, fin: number | null = null): void {
+    if (this.internalCoord === null) {
+      // Biopython names the structure two levels up, and `%s` of an entity is its repr.
+      const model = this.parent as Model | null;
+      const structure = model === null ? null : (model.getParent() as Structure | null);
+      throw new PythonException(`Structure ${structure === null ? "None" : structure.repr()} Chain ${this.repr()} does not have internal coordinates set`);
+    }
+    this.internalCoord.internalToAtomCoordinates(verbose, start, fin);
+  }
+
   /** Python `repr`. */
   repr(): string { return `<Chain id=${this.getId()}>`; }
 
@@ -128,6 +147,15 @@ export class Model extends Entity<Chain> implements Child {
   repr(): string { return `<Model id=${this.getId()}>`; }
 
   /**
+   * Compute atom coordinates for every chain of this model from its internal coordinates.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   */
+  internalToAtomCoordinates(verbose = false): void {
+    for (const chn of this.getChains()) chn.internalToAtomCoordinates(verbose);
+  }
+
+  /**
    * Measure the internal coordinates of every chain of this model.
    *
    * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
@@ -156,6 +184,15 @@ export class Structure extends Entity<Model> {
 
   /** Python `repr`. */
   repr(): string { return `<Structure id=${this.getId()}>`; }
+
+  /**
+   * Compute atom coordinates for every chain of every model from its internal coordinates.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   */
+  internalToAtomCoordinates(verbose = false): void {
+    for (const chn of this.getChains()) chn.internalToAtomCoordinates(verbose);
+  }
 
   /**
    * Measure the internal coordinates of every chain of every model.

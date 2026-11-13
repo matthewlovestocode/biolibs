@@ -12,6 +12,7 @@
 
 import { AtomKey } from "./atom-key.js";
 import { buildEdraArrays, initEdra, measureChain } from "./ic-measure.js";
+import { assembleResidues, buildChainAtoms, initAtomCoords, propagateChanges, updateDCoordSpace } from "./ic-assemble.js";
 import type { Matrix } from "../vectors.js";
 import type { Dihedron, EdronArrays, Hedron } from "./edron.js";
 import { IC_Residue } from "./ic-residue.js";
@@ -130,6 +131,14 @@ export class IC_Chain implements EdronArrays {
   hAtomsNeedsUpdate?: Uint8Array;
   /** Whether each dihedron's atoms need recomputing. */
   dAtomsNeedsUpdate?: Uint8Array;
+  /** Each dihedron's four atoms in its own coordinate space, which the assembly places in the chain's. */
+  dAtoms?: number[][][];
+  /** Each dihedron's fourth atom before the rotation by the dihedral angle. */
+  a4PreRotation?: number[][];
+  /** The chain coordinates of every dihedron's four atoms, as the assembly last read them. */
+  dSet?: number[][][];
+  /** Which of those four are up to date. */
+  dSetValid?: boolean[][];
   /** For each atom row, the dihedra that use it and its position within each. */
   a2dMap?: [number[], number[]][];
   /** The complement of {@link IC_Chain.dRev}. */
@@ -314,6 +323,39 @@ export class IC_Chain implements EdronArrays {
    * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
    */
   atomToInternalCoordinates(verbose = false): void { measureChain(this, verbose); }
+
+  /**
+   * Invalidate every atom that depends on one already invalid.
+   */
+  propagateChanges(): void { propagateChanges(this); }
+
+  /**
+   * Place each hedron's and dihedron's atoms in its own coordinate space, from the measured values.
+   */
+  initAtomCoords(): void { initAtomCoords(this); }
+
+  /**
+   * Place every atom in chain coordinates, by transforming each dihedron out of its own coordinate space.
+   */
+  assembleResidues(): void { assembleResidues(this); }
+
+  /**
+   * Recompute the coordinate-space transforms of the dihedra whose atoms have moved.
+   *
+   * @param workSelector - Which dihedra to refresh; by default, every one whose transforms went stale.
+   */
+  updateDCoordSpace(workSelector?: boolean[]): void { updateDCoordSpace(this, workSelector); }
+
+  /**
+   * Compute atom coordinates for this chain from its internal coordinates.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   * @param start - First sequence position to build; selects Biopython's serial assembly, which is not ported.
+   * @param fin - Last sequence position to build, likewise.
+   */
+  internalToAtomCoordinates(verbose = false, start: number | null = null, fin: number | null = null): void {
+    buildChainAtoms(this, verbose, start, fin);
+  }
 
   /**
    * Copy one atom's coordinates into its row and leave the atom looking at them.
