@@ -528,7 +528,9 @@ def _ok(c): return "result" in c
 for c in afm:
     f = c.get("fmt", "").lower()
     if f not in inv["Bio.Align.formats"]["formats"]: continue
-    if c["kind"] in ("parse", "read") and _ok(c): mark(f"Bio.Align.parse:{f}")
+    # `bbparse` is a bigBed file built by Biopython's own writer and then read back, which is what reading that
+    # format means; `bbsearch` exercises the same reader through its index.
+    if c["kind"] in ("parse", "read", "bbparse") and _ok(c): mark(f"Bio.Align.parse:{f}")
     if c["kind"] in ("format", "write") and _ok(c): mark(f"Bio.Align.write:{f}")
 for f in ("emboss", "hhr", "msf", "tabular"): mark(f"Bio.Align.write:{f}", "na")   # Biopython has no writer for these formats
 for fn, kind in (("parse", "parse"), ("read", "read"), ("write", "write")):

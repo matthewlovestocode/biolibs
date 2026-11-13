@@ -1,13 +1,13 @@
 /** Replays Bio.Align file-format golden cases (reference/golden/gen_alignfmt_cases.py). */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { Alignment, MultipleSeqAlignment, NumpyArray, PyFloatValue, SummaryInfo, parse, read, write } from "@biolibs/align";
+import { Alignment, type BigBedIterator, MultipleSeqAlignment, NumpyArray, PyFloatValue, SummaryInfo, parse, read, write } from "@biolibs/align";
 import { captureWarnings, pyStr } from "@biolibs/core";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
 type Spec = { recann?: (Record<string, unknown> | null)[]; qann?: Record<string, unknown>; tann?: Record<string, unknown>; qletter?: number[]; seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number | string>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
-interface Case { args?: unknown[]; kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
+interface Case { args?: unknown[]; kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; data?: string; queries?: [string | null, number | null, number | null][]; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
 /** Python keyword arguments to the positional arguments of each writer. */
 const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]], bed: [["bedN", 12]], sam: [["md", false]], exonerate: [["fmt", "vulgar"]], mauve: [["metadata", null], ["identifiers", null]] };
 const kwargArgs = (c: Case): unknown[] => {
@@ -92,6 +92,10 @@ const build = (spec: Spec): Alignment => {
   return a;
 };
 
+/** Bytes from the hex a bigBed case carries its file as. */
+const bytesFromHex = (hex: string): Uint8Array =>
+  Uint8Array.from({ length: hex.length / 2 }, (_, i) => Number.parseInt(hex.slice(i * 2, i * 2 + 2), 16));
+
 describe("Bio.Align file formats", () => {
   cases.forEach((c, n) => {
     it(`${n} ${c.kind} ${c.fmt ?? ""}`, () => {
@@ -115,6 +119,20 @@ describe("Bio.Align file formats", () => {
           return { ic: info.icVector, cols: c.cols!.map((col) => { try { return { v: info.getColumn(col) }; } catch (e: any) { return { exc: [e.name, e.message] }; } }) };
         }
         if (c.kind === "format") return build(c.aln!).format(c.fmt);
+        if (c.kind === "bbparse") {
+          const it = parse(bytesFromHex(c.data!), c.fmt) as unknown as BigBedIterator;
+          const alns = Array.from(it as Iterable<Alignment>).map(enc);
+          return { alns, metadata: null, len: it.length, declaration: it.declaration.toString(), bedN: it.bedN,
+            targets: it.targets.map((t) => [t.id, t.seq!.length]),
+            fields: it.declaration.fields.map((f) => [f.asType, f.name, f.comment]) };
+        }
+        if (c.kind === "bbsearch") {
+          const it = parse(bytesFromHex(c.data!), c.fmt) as unknown as BigBedIterator;
+          return c.queries!.map(([chrom, start, end]) => {
+            try { return { hits: [...it.search(chrom, start, end)].map(enc) }; }
+            catch (e: any) { return { exc: { type: e.name, msg: e.message } }; }
+          });
+        }
         let text = "";
         const nw = write(c.alns!.map(build), { write: (t: string) => { text += t; } }, c.fmt, ...kwargArgs(c));
         return { text, n: nw };
@@ -140,9 +158,9 @@ describe("Bio.Align file formats", () => {
         afterwards();
       } else {
         const got: any = run();
-        if (c.kind === "parse" && got.metadata === null) delete got.metadata;
+        if ((c.kind === "parse" || c.kind === "bbparse") && got.metadata === null) delete got.metadata;
         const want = typeof c.result === "string" || Array.isArray(c.result) ? c.result : { ...c.result };
-        if (c.kind === "parse" && want.metadata === null) delete want.metadata;
+        if ((c.kind === "parse" || c.kind === "bbparse") && want.metadata === null) delete want.metadata;
         expect(got).toEqual(want);
         afterwards();
       }

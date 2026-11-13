@@ -2,12 +2,12 @@
 
 import { ValueError } from "@biolibs/core";
 import type { Alignment } from "../alignment/alignment.js";
-import type { AlignmentIterator, AlignmentWriter, WriteTarget } from "./interfaces.js";
+import type { AlignmentWriter, AnyAlignmentIterator, WriteTarget } from "./interfaces.js";
 
 /** The parser and writer classes of one format. */
 export interface FormatModule {
   /** The parser class. */
-  AlignmentIterator: (new (source: string) => AlignmentIterator) & { mode: "t" | "b"; fmt: string | null };
+  AlignmentIterator: (new (source: string | Uint8Array) => AnyAlignmentIterator) & { mode: "t" | "b"; fmt: string | null };
   /** The writer class, if the format can be written. */
   AlignmentWriter?: new (target: WriteTarget | null, ...args: unknown[]) => AlignmentWriter;
 }
@@ -55,11 +55,11 @@ export function loadFormat(fmt: string): FormatModule {
 /**
  * Parse an alignment file.
  *
- * @param source - The file's contents.
+ * @param source - The file's contents: text, or bytes for a binary format such as bigBed.
  * @param fmt - The format (case-insensitive).
  * @returns A lazy, rewindable iterator over the alignments.
  */
-export function parse(source: string, fmt: string): AlignmentIterator {
+export function parse(source: string | Uint8Array, fmt: string): AnyAlignmentIterator {
   return new (loadFormat(fmt).AlignmentIterator)(source);
 }
 
@@ -68,7 +68,7 @@ export function parse(source: string, fmt: string): AlignmentIterator {
  *
  * @throws ValueError if there is none or more than one.
  */
-export function read(source: string, fmt: string): Alignment {
+export function read(source: string | Uint8Array, fmt: string): Alignment {
   const alignments = parse(source, fmt);
   try {
     const first = alignments.next();

@@ -7,7 +7,7 @@
 - [x] `write: a2m`
 - [x] `parse: bed`
 - [x] `write: bed`
-- [ ] `parse: bigbed`
+- [x] `parse: bigbed`
 - [ ] `write: bigbed`
 - [ ] `parse: bigmaf`
 - [ ] `write: bigmaf`

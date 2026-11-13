@@ -117,7 +117,7 @@ alignments.get(-1).coordinates;    // [[1, 2, 3, 5], [0, 1, 1, 3]]
 
 ### Alignment file formats (`formats/`)
 
-`parse`, `read` and `write` work over text instead of file handles, and `Alignment.format(fmt)` returns file text. Ported and verified against Biopython on about 7,800 cases (valid files, malformed files, odd identifiers, long alignments): `fasta`, `a2m`, `clustal`, `phylip`, `nexus`, `stockholm`, `psl`, `bed`, `chain`, `sam`, `maf`, `mauve` and `exonerate` (read and write; the writer takes an optional `interleave`) and `msf`, `emboss`, `tabular` and `hhr` (read only, as in Biopython; `hhr` reads HHsearch/HHblits output into one pairwise alignment per hit, with the per-hit scores in `annotations`, consensus and secondary-structure strings as letter annotations, and `No_of_seqs` as a tuple; `tabular` reads BLAST `-outfmt 7` and FASTA `-m 8CB`/`8CC` output and, as in Biopython, needs a `BTOP` or `aln_code` column to build coordinates; EMBOSS files keep their header in `metadata`, strand and start become partially defined sequences, and Biopython's `raise ValueError(...) % line` typo surfaces as the same `TypeError`). The other 3 formats of Biopython's table (the binary `bigbed`, `bigmaf` and `bigpsl`) throw `NotImplementedError` when used; the error for an unknown name, a binary format written to text (`StreamModeError`) and a format without a writer (`ValueError`) match Biopython's.
+`parse`, `read` and `write` work over text instead of file handles, and `Alignment.format(fmt)` returns file text. Ported and verified against Biopython on about 7,800 cases (valid files, malformed files, odd identifiers, long alignments): `fasta`, `a2m`, `clustal`, `phylip`, `nexus`, `stockholm`, `psl`, `bed`, `chain`, `sam`, `maf`, `mauve` and `exonerate` (read and write; the writer takes an optional `interleave`) and `msf`, `emboss`, `tabular` and `hhr` (read only, as in Biopython; `hhr` reads HHsearch/HHblits output into one pairwise alignment per hit, with the per-hit scores in `annotations`, consensus and secondary-structure strings as letter annotations, and `No_of_seqs` as a tuple; `tabular` reads BLAST `-outfmt 7` and FASTA `-m 8CB`/`8CC` output and, as in Biopython, needs a `BTOP` or `aln_code` column to build coordinates; EMBOSS files keep their header in `metadata`, strand and start become partially defined sequences, and Biopython's `raise ValueError(...) % line` typo surfaces as the same `TypeError`). Reading `bigbed` is ported too (see below); writing it, and `bigmaf` and `bigpsl`, throw `NotImplementedError` when used; the error for an unknown name, a binary format written to text (`StreamModeError`) and a format without a writer (`ValueError`) match Biopython's.
 
 | Python | TypeScript |
 |---|---|
@@ -128,6 +128,30 @@ alignments.get(-1).coordinates;    // [[1, 2, 3, 5], [0, 1, 1, 3]]
 | `Align.formats` | `FORMATS` |
 
 `AlignmentWriter` in this package is the older function type used by `MultipleSeqAlignment`; the base class of the file writers is exported as `AlignmentFileWriter`.
+
+#### bigBed (`formats/bigbed/`)
+
+A BED file turned into an indexed binary file: a header, a B+ tree naming the chromosomes, zoom summaries, an R
+tree over the data, and the rows themselves in zlib-compressed blocks. `parse` takes the file's **bytes** for a
+binary format, so `parse(bytes, "bigbed")` where a text format takes a string; the reader keeps the chromosome
+records in `targets`, the autoSql column declaration in `declaration`, how many of the columns are standard BED
+columns in `bedN`, and the file's own item count as `length` (it is in the header, so nothing is read to count).
+Columns beyond the standard ones become `alignment.annotations`, converted as their declared autoSql type says —
+`int`, `float`, `string` or an array of those.
+
+`search(chromosome, start, end)` walks the same R tree but prunes the nodes that cannot overlap, and returns the
+alignments that do, counting an item that merely touches the region at an endpoint. As in Biopython, `start`
+alone means one base, no `start` or `end` means the whole chromosome, `end` without `start` is a `ValueError`,
+and `search()` with no chromosome at all raises `UnboundLocalError` — Biopython uses variables it never bound on
+that path, which is reproduced rather than given a meaning of its own.
+
+Two pieces of Biopython here can never run, and are kept only for fidelity: the assertion that a chromosome's id
+matches its position in the B+ tree, and the one-base padding the search adds to the region before pruning (a
+node ending just before the region holds nothing the item test would then accept).
+
+Writing bigBed is not ported. Biopython's own writer needs a real file — it puts its index out with
+`numpy.ndarray.tofile` — and it raises on an empty alignment list, so the golden files are written to a
+temporary file with at least one alignment in them.
 
 ### AlignInfo
 

@@ -6,11 +6,12 @@ Case kinds (each forked so a crash cannot lose the rest):
   format - alignment built from gapped rows (and optional ids / column annotations), then alignment.format(fmt)
   write  - Align.write([alignment...], StringIO, fmt) -> text and count
   other  - parse/read/format with an unknown or binary format name
+  bbparse / bbsearch - a bigBed file built here by Biopython's own writer, then read back and searched
 """
 import io, json, os, warnings
 import numpy as np
 from Bio import Align
-from Bio.Align import Alignment
+from Bio.Align import Alignment, bigbed
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
@@ -140,6 +141,25 @@ def run(case):
                 buf = io.StringIO()
                 n = Align.write(alns, buf, case["fmt"], *case.get("args", []), **case.get("kwargs", {}))
                 out["result"] = {"text": buf.getvalue(), "n": n}
+            elif k == "bbparse":
+                # The file is built here by Biopython's own bigBed writer, then read back: nothing is hand-made.
+                data = bytes.fromhex(case["data"])
+                alns = Align.parse(io.BytesIO(data), "bigbed")
+                res = [enc_aln(a) for a in alns]
+                out["result"] = {"alns": res, "metadata": meta(alns), "len": len(alns),
+                                 "declaration": str(alns.declaration), "bedN": alns.bedN,
+                                 "targets": [[t.id, len(t.seq)] for t in alns.targets],
+                                 "fields": [[f.as_type, f.name, f.comment] for f in alns.declaration]}
+            elif k == "bbsearch":
+                data = bytes.fromhex(case["data"])
+                alns = Align.parse(io.BytesIO(data), "bigbed")
+                out["result"] = []
+                for chrom, start, end in case["queries"]:
+                    try:
+                        hits = [enc_aln(a) for a in alns.search(chrom, start, end)]
+                        out["result"].append({"hits": hits})
+                    except Exception as e:
+                        out["result"].append({"exc": {"type": tname(e), "msg": emsg(e)}})
             elif k == "write":
                 buf = io.StringIO()
                 n = Align.write([build(s) for s in case["alns"]], buf, case["fmt"], *case.get("args", []), **case.get("kwargs", {}))
@@ -1000,6 +1020,143 @@ add({"kind": "write", "fmt": "exonerate", "alns": []})
 for t in EXO_TEXTS[:3] + EXO_TEXTS[24:27]:
     add({"kind": "rewrite", "fmt": "exonerate", "text": t})
     add({"kind": "rewrite", "fmt": "exonerate", "text": t, "args": ["cigar"]})
+
+# ---------------- bigBed ----------------
+# The files are built by Biopython's own bigBed writer, in a forked child like everything else here, and the
+# cases record what its reader makes of them again. bedN says how many standard BED columns each file has;
+# `compress` turns the zlib blocks on and off; `itemsPerSlot` of 1 puts one item in each block, which the search
+# treats differently from a block holding several; an extended declaration adds columns the reader must convert.
+BB_DECL = """table bedDetail
+"Browser extensible data, with extra fields"
+(
+   string  chrom;        "Reference sequence chromosome or scaffold"
+   uint    chromStart;   "Start position in chromosome"
+   uint    chromEnd;     "End position in chromosome"
+   string  name;         "Name of item"
+   uint    score;        "Score (0-1000)"
+   char[1] strand;       "+ or - for strand"
+   uint    thickStart;   "Start of where display should be thick"
+   uint    thickEnd;     "End of where display should be thick"
+   uint    reserved;     "Used as itemRgb"
+   int     blockCount;   "Number of blocks"
+   int[blockCount] blockSizes; "Comma separated list of block sizes"
+   int[blockCount] chromStarts; "Start positions relative to chromStart"
+   int     evidence;     "A whole number"
+   float   weight;       "A number with a fraction"
+   string  note;         "Some text"
+   int[2]  pair;         "Two whole numbers"
+)
+"""
+
+def bb_alignment(chrom, chromStart, blocks, name, score, strand, extra=None):
+    """One alignment shaped the way the bigBed writer wants: a named query against a chromosome."""
+    size = sum(b[1] for b in blocks)
+    target = SeqRecord(Seq(None, length=1000), id=chrom)
+    query = SeqRecord(Seq(None, length=size), id=name)
+    tpos, qpos = chromStart, 0
+    coords = [[tpos, qpos]]
+    for start, length in blocks:
+        if chromStart + start != tpos:
+            coords.append([chromStart + start, qpos])
+            tpos = chromStart + start
+        tpos += length
+        qpos += length
+        coords.append([tpos, qpos])
+    coordinates = np.array(coords, np.intp).transpose()
+    if strand == "-": coordinates[1, :] = size - coordinates[1, :]
+    a = Alignment([target, query], coordinates)
+    a.score = score
+    a.thickStart = chromStart
+    a.thickEnd = coordinates[0, -1]
+    a.itemRgb = "0,0,0"
+    if extra is not None: a.annotations = dict(extra)
+    return a
+
+def bb_file(alns, targets, bedN=12, declaration=None, compress=True, itemsPerSlot=None, extraIndex=()):
+    """Write a bigBed file with Biopython and return its bytes as hex.
+
+    It writes to a real file because the writer puts its index out with `numpy.ndarray.tofile`, which needs one,
+    and it wants an `Alignments` rather than a list because it stores the count on the object it is given.
+    """
+    import tempfile
+    kwargs = {"bedN": bedN, "targets": targets, "compress": compress, "extraIndex": extraIndex}
+    if declaration is not None: kwargs["declaration"] = declaration
+    with tempfile.TemporaryDirectory() as d:
+        path = os.path.join(d, "test.bb")
+        with open(path, "wb") as f:
+            writer = bigbed.AlignmentWriter(f, **kwargs)
+            if itemsPerSlot is not None: writer.itemsPerSlot = itemsPerSlot
+            writer.write(Align.Alignments(alns))
+        return open(path, "rb").read().hex()
+
+BB_TARGETS = [SeqRecord(Seq(None, length=1000), id=n) for n in ("chr1", "chr2", "chrX")]
+BB_ALNS = [
+    bb_alignment("chr1", 10, [(0, 20)], "one", 100, "+"),
+    bb_alignment("chr1", 50, [(0, 10), (20, 30)], "two", 0, "-"),
+    bb_alignment("chr1", 120, [(0, 5), (10, 5), (30, 25)], "three", 1000, "+"),
+    bb_alignment("chr2", 0, [(0, 40)], "four", 7, "-"),
+    bb_alignment("chr2", 300, [(0, 1)], "five", 42, "+"),
+    bb_alignment("chrX", 700, [(0, 100)], "six", 999, "-"),
+]
+BB_EXTRA = [bb_alignment(a.sequences[0].id, int(a.coordinates[0, 0]),
+                         [(0, int(a.coordinates[0, -1] - a.coordinates[0, 0]))],
+                         a.sequences[1].id, int(a.score), "+",
+                         {"evidence": 3, "weight": 1.5, "note": "a note", "pair": [1, 2]})
+            for a in BB_ALNS]
+
+for bedN in (3, 4, 5, 6, 7, 8, 9, 12):
+    for compress in (True, False):
+        data = bb_file(BB_ALNS, BB_TARGETS, bedN=bedN, compress=compress)
+        add({"kind": "bbparse", "fmt": "bigbed", "data": data})
+for itemsPerSlot in (1, 2, 256):
+    data = bb_file(BB_ALNS, BB_TARGETS, itemsPerSlot=itemsPerSlot)
+    if True:
+        add({"kind": "bbparse", "fmt": "bigbed", "data": data})
+        add({"kind": "bbsearch", "fmt": "bigbed", "data": data, "queries": [
+            ["chr1", None, None], ["chr1", 0, 1000], ["chr1", 0, 30], ["chr1", 30, 40], ["chr1", 55, 60],
+            ["chr2", 300, 301], ["chr2", 299, 300], ["chrX", None, None], ["chrX", 750, None],
+            ["chr3", 0, 10], ["chr1", None, 10], [None, None, None], [None, 0, 10]]})
+# An extended declaration: four custom columns, one of them an array, which the reader converts by type.
+data = bb_file(BB_EXTRA, BB_TARGETS, declaration=bigbed.AutoSQLTable.from_string(BB_DECL))
+if True:
+    add({"kind": "bbparse", "fmt": "bigbed", "data": data})
+    add({"kind": "bbsearch", "fmt": "bigbed", "data": data, "queries": [["chr1", 0, 1000], ["chr2", None, None]]})
+# One alignment, with and without compression. A file with no alignments at all cannot be made: Biopython's
+# bigBed writer dereferences its current region before there is one, so writing an empty list raises there.
+for compress in (True, False):
+    add({"kind": "bbparse", "fmt": "bigbed", "data": bb_file([BB_ALNS[0]], BB_TARGETS, compress=compress)})
+# A file with enough items to need several blocks and more than one level of R tree, so that iterating has to
+# walk from leaf to leaf and the search has nodes it can prune. The queries land on block boundaries, which is
+# where the one-base padding the search adds makes a difference, and include zero-length items.
+BB_MANY_TARGETS = [SeqRecord(Seq(None, length=20000), id="chr1"), SeqRecord(Seq(None, length=20000), id="chr2")]
+BB_MANY = []
+for i in range(300):
+    chrom = "chr1" if i < 200 else "chr2"
+    start = (i % 200) * 50
+    BB_MANY.append(bb_alignment(chrom, start, [(0, 10), (20, 10)], f"item{i}", i % 1000, "+-"[i % 2]))
+    if i % 50 == 0:   # a zero-length item, which the search treats as touching its own endpoints
+        BB_MANY.append(bb_alignment(chrom, start + 40, [(0, 0)], f"empty{i}", 0, "+"))
+for itemsPerSlot in (4, 64):
+    data = bb_file(BB_MANY, BB_MANY_TARGETS, itemsPerSlot=itemsPerSlot)
+    add({"kind": "bbparse", "fmt": "bigbed", "data": data})
+    add({"kind": "bbsearch", "fmt": "bigbed", "data": data, "queries": [
+        ["chr1", 0, 20000], ["chr1", 0, 10], ["chr1", 10, 20], ["chr1", 40, 40], ["chr1", 40, 41],
+        ["chr1", 39, 40], ["chr1", 2000, 2050], ["chr1", 5000, 5001], ["chr1", 9999, 10000],
+        ["chr2", 0, 50], ["chr2", 1990, 2010], ["chr1", 19999, None], ["chr2", None, None]]})
+
+# One item to a block, so each item is its own R tree leaf and the node bounds are the item's own. That is where
+# the one-base padding the search adds decides whether a zero-length item at the very edge of the region is
+# found, and it is also the branch that hands the whole block over rather than splitting it into items.
+data = bb_file(BB_MANY[:60], BB_MANY_TARGETS, itemsPerSlot=1)
+add({"kind": "bbparse", "fmt": "bigbed", "data": data})
+add({"kind": "bbsearch", "fmt": "bigbed", "data": data, "queries": [
+    ["chr1", 40, 40], ["chr1", 40, 41], ["chr1", 39, 40], ["chr1", 41, 42], ["chr1", 0, 50],
+    ["chr1", 2540, 2540], ["chr1", 2540, 2541], ["chr1", 2539, 2540], ["chr1", 100, 200]]})
+
+# Not a bigBed file at all, and a truncated one.
+add({"kind": "bbparse", "fmt": "bigbed", "data": b"not a bigbed file at all, not even close".hex()})
+good = bb_file(BB_ALNS, BB_TARGETS)
+add({"kind": "bbparse", "fmt": "bigbed", "data": good[: 2 * (len(good) // 4)]})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 report_skipped()

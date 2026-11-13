@@ -47,6 +47,15 @@ warnings[0].message; // "Partial codon, len(sequence) not a multiple of three. .
 
 Small functions that let ports reproduce Biopython's behaviour and messages exactly: `pyInt` (Python's `int(str)`), `pyRepr` and `pyStr` (`repr`/`str` of `None`, bools, lists, dicts, and objects with `repr()`), `pyTypeName`/`pyClassRepr` (type names for error messages; `registerPythonClasses(module, names)` teaches it `<class 'Bio.X.Y'>`), `pyEquals` (`==` for plain data), `pyTruthy` and `pyContains` (`in`), `PyTuple` (an array that prints as a Python tuple), `pyPercent` (Python's `format % args`) and `PyFloat` (a float that holds a whole number), `pyFormatG` (`%g` / `format(x, "g")`), `pyTextwrapFill` (`textwrap.fill`: tab expansion, breaking after hyphens, `width`, indents and `breakLongWords`).
 
+## DEFLATE (`zlib/`)
+
+`inflate(bytes)` is Python's `zlib.decompress` and `inflateRaw(bytes)` its `wbits=-15` form, with `adler32` for
+the checksum a zlib stream ends with and `ZlibError` (Python's `zlib.error`, whose name is `error`) for data that
+is not valid. Written out here rather than taken from the host, so that the readers that need it work the same
+under Node, a browser and a bundler; `Bio.Align.bigbed` is the first of them. Only decompression is ported --
+nothing here compresses -- and it is verified against Python's own `zlib.compress` at every level, including the
+stored blocks level 0 produces, incompressible data, and payloads longer than one window.
+
 ## `assert(cond, message)`
 
 Throws `BioError(message)` unless `cond` is truthy; narrows types for TypeScript.

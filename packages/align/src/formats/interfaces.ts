@@ -3,6 +3,7 @@
 import { ValueError } from "@biolibs/core";
 import type { Alignment } from "../alignment/alignment.js";
 import { TextStream } from "./stream.js";
+import { ByteStream } from "./byte-stream.js";
 
 /** Anything that accepts text, such as a string builder with `write`. */
 export interface WriteTarget {
@@ -34,14 +35,17 @@ export class Alignments extends Array<Alignment> {
   }
 }
 
-/** A lazy sequence of alignments read from text; subclasses define the format. */
-export abstract class AlignmentIterator implements IterableIterator<Alignment> {
+/** Any format's iterator, whatever kind of stream it reads: what the registry and `parse` hand back. */
+export type AnyAlignmentIterator = AlignmentIterator<{ seek(offset: number): void }>;
+
+/** A lazy sequence of alignments read from a text or byte source; subclasses define the format. */
+export abstract class AlignmentIterator<S extends { seek(offset: number): void } = TextStream> implements IterableIterator<Alignment> {
   /** The format name used in messages. */
   static fmt: string | null = null;
   /** `t` for text formats, `b` for binary ones. */
   static mode: "t" | "b" = "t";
-  /** The text being read. */
-  protected stream: TextStream | null;
+  /** What is being read: a {@link TextStream} for a text format, a {@link ByteStream} for a binary one. */
+  protected stream: S | null;
   /** The number of alignments returned so far. */
   protected index = 0;
   private len?: number;
@@ -52,16 +56,18 @@ export abstract class AlignmentIterator implements IterableIterator<Alignment> {
    * @param source - The file's contents.
    * @throws ValueError (for example `Empty file.`) when the header cannot be read.
    */
-  constructor(readonly source: string | TextStream) {
-    this.stream = typeof source === "string" ? new TextStream(source) : source;
+  constructor(readonly source: string | Uint8Array | S) {
+    // A string is a text format's contents and bytes are a binary format's; anything else is already a stream.
+    this.stream = (typeof source === "string" ? new TextStream(source)
+      : source instanceof Uint8Array ? new ByteStream(source) : source) as S;
     this.readHeader(this.stream);
   }
 
-  /** Read what precedes the first alignment (nothing by default). @param _stream - The text. */
-  protected readHeader(_stream: TextStream): void { /* no header */ }
+  /** Read what precedes the first alignment (nothing by default). @param _stream - The source. */
+  protected readHeader(_stream: S): void { /* no header */ }
 
-  /** @returns The next alignment from the stream, or null at the end. @param stream - The text. */
-  protected abstract readNextAlignment(stream: TextStream): Alignment | null;
+  /** @returns The next alignment from the stream, or null at the end. @param stream - The source. */
+  protected abstract readNextAlignment(stream: S): Alignment | null;
 
   /** @returns The next alignment. */
   next(): IteratorResult<Alignment> {
@@ -107,7 +113,7 @@ export abstract class AlignmentIterator implements IterableIterator<Alignment> {
     const index = this.index;
     const alignments = new Alignments();
     this.stream!.seek(0);
-    (this as unknown as { readHeader(this: unknown, s: TextStream): void }).readHeader.call(alignments, this.stream!);
+    (this as unknown as { readHeader(this: unknown, s: S): void }).readHeader.call(alignments, this.stream!);
     this.rewind();
     alignments.push(...(this as Iterable<Alignment>));
     this.len = this.index;

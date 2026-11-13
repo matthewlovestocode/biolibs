@@ -13,3 +13,4 @@ export * from "./errors.js";
 export * from "./warnings.js";
 export * from "./assert.js";
 export * from "./py/index.js";
+export * from "./zlib/inflate.js";

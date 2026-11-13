@@ -152,6 +152,7 @@
  "Bio.Align.parse": "done",
  "Bio.Align.parse:a2m": "done",
  "Bio.Align.parse:bed": "done",
+ "Bio.Align.parse:bigbed": "done",
  "Bio.Align.parse:chain": "done",
  "Bio.Align.parse:clustal": "done",
  "Bio.Align.parse:emboss": "done",
