@@ -245,6 +245,48 @@ for cls in ("Point", "Neighbor"): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "parti
 for cls in ("KDTree",): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "na")
 mark("Bio.PDB.NeighborSearch.NeighborSearch.__repr__", "na")   # default object repr
 
+# ---- Bio.Restriction (packages/restriction/test/golden/restriction.json) ----
+rc = json.load(open(f"{here}/../packages/restriction/test/golden/restriction.json"))["cases"]
+kinds_done = {c["kind"] for c in rc}
+if {"enzyme", "digest", "pair", "lists"} <= kinds_done:
+    ENZ = {"search", "catalyse", "catalyze", "is_blunt", "is_5overhang", "is_3overhang", "overhang", "is_palindromic", "is_defined", "is_ambiguous", "is_unknown", "is_methylable", "is_comm", "cut_once",
+           "cut_twice", "characteristic", "elucidate", "frequency", "supplier_list", "buffers", "equischizomers", "neoschizomers", "isoschizomers", "is_equischizomer", "is_neoschizomer", "is_isoschizomer",
+           "compatible_end", "__add__", "__eq__", "__ne__", "__rshift__", "__mod__", "__lt__", "__le__", "__gt__", "__ge__", "__len__", "__repr__", "__str__", "__truediv__", "__floordiv__", "__init__"}
+    for cls in ("RestrictionType", "AbstractCut", "NoCut", "OneCut", "TwoCuts", "Meth_Dep", "Meth_Undep", "Palindromic", "NonPalindromic", "Unknown", "Blunt", "Ov5", "Ov3", "Defined", "Ambiguous",
+                "NotDefined", "Commercially_available", "Not_available"):
+        for m in inv["Bio.Restriction"]["classes"][cls]:
+            if m in ENZ: mark(f"Bio.Restriction.{cls}.{m}")
+            elif m in ("suppliers", "all_suppliers"): mark(f"Bio.Restriction.{cls}.{m}", "partial")   # they print; the output is not recorded
+            elif m in ("__hash__", "__rtruediv__", "__rfloordiv__"): mark(f"Bio.Restriction.{cls}.{m}", "na")   # identity hash; reflected operators have no TypeScript spelling
+    FS = {"__init__", "__len__", "__repr__", "__eq__", "circularise", "linearise", "to_linear", "to_circular", "is_linear", "finditer", "__getitem__"}
+    for m in inv["Bio.Restriction"]["classes"]["FormattedSeq"]:
+        if m in FS: mark(f"Bio.Restriction.FormattedSeq.{m}")
+    RB = {"__init__", "__str__", "__repr__", "__contains__", "get", "lambdasplit", "add_supplier", "current_suppliers", "__add__", "__iadd__", "remove", "add", "add_nocheck", "format", "is_restriction",
+          "split", "elements", "as_string", "search", "__truediv__"}
+    for m in inv["Bio.Restriction"]["classes"]["RestrictionBatch"]:
+        if m in RB and m != "__truediv__" and any(c["kind"] == "batch" for c in rc): mark(f"Bio.Restriction.RestrictionBatch.{m}")
+        if m in ("suppl_codes", "show_codes"): mark(f"Bio.Restriction.RestrictionBatch.{m}", "partial")
+    AN = {"__init__", "__repr__", "change", "full", "blunt", "overhang5", "overhang3", "defined", "with_sites", "without_site", "with_N_sites", "with_number_list", "with_name", "with_site_size",
+          "only_between", "between", "show_only_between", "only_outside", "outside", "do_not_cut", "format_output"}
+    for m in inv["Bio.Restriction"]["classes"]["Analysis"]:
+        if m in AN: mark(f"Bio.Restriction.Analysis.{m}")
+        elif m == "print_that": mark("Bio.Restriction.Analysis.print_that", "partial")
+    # Python's set built-ins and the metaclass `mro` have JavaScript equivalents (Set, Object.getPrototypeOf)
+    for cls in ("RestrictionBatch", "Analysis"):
+        for m in inv["Bio.Restriction"]["classes"][cls]:
+            if hasattr(set, m) and m not in ("__contains__", "remove", "add", "__init__", "__repr__", "__str__", "__add__", "__iadd__"): mark(f"Bio.Restriction.{cls}.{m}", "na")
+    for cls in ("RestrictionType", "AbstractCut", "NoCut", "OneCut", "TwoCuts", "Meth_Dep", "Meth_Undep", "Palindromic", "NonPalindromic", "Unknown", "Blunt", "Ov5", "Ov3", "Defined", "Ambiguous",
+                "NotDefined", "Commercially_available", "Not_available"): mark(f"Bio.Restriction.{cls}.mro", "na")
+    # Analysis inherits the batch methods; they are verified on RestrictionBatch itself
+    for m in inv["Bio.Restriction"]["classes"]["Analysis"]:
+        if m in RB and m != "__truediv__": mark(f"Bio.Restriction.Analysis.{m}", "partial")
+        if m in ("print_as", "make_format"): mark(f"Bio.Restriction.Analysis.{m}")
+        if m in ("suppl_codes", "show_codes"): mark(f"Bio.Restriction.Analysis.{m}", "partial")
+    mark("Bio.Restriction.PrintFormat.make_format"); mark("Bio.Restriction.PrintFormat.__repr__", "na"); mark("Bio.Restriction.PrintFormat.__init__", "na")
+    for m in inv["Bio.Restriction"]["classes"]["PrintFormat"]:
+        if m in ("print_as", "format_output"): mark(f"Bio.Restriction.PrintFormat.{m}")
+        elif m == "print_that": mark("Bio.Restriction.PrintFormat.print_that", "partial")
+
 # ---- Bio.PDB.SASA (packages/pdb/test/golden/sasa.json) ----
 sc = json.load(open(f"{here}/../packages/pdb/test/golden/sasa.json"))["cases"]
 if any("ops_out" in c for c in sc):

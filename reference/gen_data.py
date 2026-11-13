@@ -207,6 +207,39 @@ open(os.path.join(PDB_OUT, "pdb-data.ts"), "w").write("".join(lines))
 print("pdb data written")
 
 # ---------------------------------------------------------------------------------------------
+# Bio.Restriction.Restriction_Dictionary -> packages/restriction/src/restriction-dictionary.ts (one enzyme per line)
+from Bio.Restriction import Restriction_Dictionary as _RD
+RD_OUT = os.path.join(os.path.dirname(__file__), "..", "packages", "restriction", "src")
+os.makedirs(RD_OUT, exist_ok=True)
+RD_DESCRIPTIONS = {
+  "rest_dict": "The REBASE data of every restriction enzyme by name: recognition site and regular expression (`compsite`), cut positions (`fst5`, `fst3`, `scd5`, `scd3`), overhang (`ovhg`, `ovhgseq`), expected site frequency, supplier codes and more. `null` where REBASE has no value.",
+  "typedict": "The kinds of enzyme: a type name mapped to its list of base classes (`Palindromic`, `OneCut`, `Blunt`, ...) and the names of the enzymes of that kind.",
+  "suppliers": "Suppliers by one-letter code: the company's name and the names of the enzymes it sells.",
+}
+assert set(RD_DESCRIPTIONS) == {"rest_dict", "typedict", "suppliers"}
+KEEP = ("charac", "compsite", "fst3", "fst5", "freq", "id", "inact_temp", "opt_temp", "ovhg", "ovhgseq", "scd3", "scd5", "site", "size", "substrat", "suppl", "uri")
+def rd_enzyme(d):
+    return json.dumps({k: (list(d[k]) if isinstance(d[k], tuple) else d[k]) for k in KEEP}, separators=(",", ":"))
+rd = [HDR, "/**\n * REBASE restriction enzyme data from Biopython's `Bio.Restriction.Restriction_Dictionary`.\n */\n\n"]
+rd.append("/** One enzyme's REBASE record. */\nexport interface EnzymeData {\n"
+          "  /** Cut characteristics `[fst5, fst3, scd5, scd3, site]`; `null` where unknown. */\n  charac: [number | null, number | null, number | null, number | null, string];\n"
+          "  /** Regular expression (Python syntax) that finds the site on either strand, with the enzyme's name as the group name. */\n  compsite: string;\n"
+          "  /** Cut position of the first cut on the top strand, relative to the start of the site. */\n  fst5: number | null;\n"
+          "  /** Cut position of the first cut on the bottom strand, relative to the end of the site. */\n  fst3: number | null;\n"
+          "  /** Cut position of the second cut on the top strand (enzymes that cut twice). */\n  scd5: number | null;\n"
+          "  /** Cut position of the second cut on the bottom strand (enzymes that cut twice). */\n  scd3: number | null;\n"
+          "  /** Expected number of base pairs between sites in random sequence. */\n  freq: number;\n"
+          "  /** REBASE identifier, or null. */\n  id: number | null;\n  /** Inactivation temperature in Celsius, or null. */\n  inact_temp: number | null;\n  /** Optimal temperature in Celsius, or null. */\n  opt_temp: number | null;\n"
+          "  /** Overhang length (negative for 5' overhangs), or null if unknown. */\n  ovhg: number | null;\n  /** Sequence of the overhang, or null if unknown. */\n  ovhgseq: string | null;\n"
+          "  /** Recognition site. */\n  site: string;\n  /** Length of the site. */\n  size: number;\n  /** Substrate: `DNA` or `RNA`. */\n  substrat: string;\n"
+          "  /** Codes of the suppliers that sell the enzyme. */\n  suppl: string[];\n  /** REBASE link, or null. */\n  uri: string | null;\n}\n\n")
+rd.append(f"/** {RD_DESCRIPTIONS['rest_dict']} */\nexport const restDict: Record<string, EnzymeData> = {{\n" + ",\n".join(f"  {json.dumps(k)}: {rd_enzyme(v)}" for k, v in _RD.rest_dict.items()) + "\n};\n\n")
+rd.append(f"/** {RD_DESCRIPTIONS['typedict']} */\nexport const typedict: Record<string, [string[], string[]]> = {{\n" + ",\n".join(f"  {json.dumps(k)}: [{json.dumps(list(v[0]))}, {json.dumps(list(v[1]), separators=(',', ':'))}]" for k, v in _RD.typedict.items()) + "\n};\n\n")
+rd.append(f"/** {RD_DESCRIPTIONS['suppliers']} */\nexport const suppliers: Record<string, [string, string[]]> = {{\n" + ",\n".join(f"  {json.dumps(k)}: [{json.dumps(v[0])}, {json.dumps(list(v[1]), separators=(',', ':'))}]" for k, v in _RD.suppliers.items()) + "\n};\n")
+open(os.path.join(RD_OUT, "restriction-dictionary.ts"), "w").write("".join(rd))
+print("restriction dictionary written")
+
+# ---------------------------------------------------------------------------------------------
 # Bio.Align.substitution_matrices data files -> packages/align/src/substitution-matrices/matrix-files.ts
 import Bio.Align.substitution_matrices as _SM
 SM_OUT = os.path.join(os.path.dirname(__file__), "..", "packages", "align", "src", "substitution-matrices")

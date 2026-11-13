@@ -13,6 +13,7 @@ TypeScript libraries replacing common Python bioengineering tooling. The goal is
 | `@biolibs/svdsuperimposer` | `Bio.SVDSuperimposer` | `SVDSuperimposer` (least-squares superposition by SVD) done |
 | `@biolibs/pdb` | `Bio.PDB` (first slice) | Structure hierarchy with disorder, `StructureBuilder`, `PDBParser`, header parsing, `MMCIF2Dict`, `MMCIFParser`, `PDBIO`, `MMCIFIO`, `Vector` and the rotation helpers, `Polypeptide`/`PPBuilder`, `Superimposer`, `NeighborSearch`/`KDTree`, `ShrakeRupley` (SASA) done; internal coordinates, DSSP not ported |
 | `@biolibs/align` | `Bio.Align` | `MultipleSeqAlignment`, the substitution matrices and `PairwiseAligner` scoring and alignment done; the `Alignment` file formats are not yet ported |
+| `@biolibs/restriction` | `Bio.Restriction` | 1,088 enzymes: `search`, `catalyse`, `RestrictionBatch`, `Analysis` and its text layouts done |
 | `@biolibs/phylo` | `Bio.Phylo` | Newick parse/write, patristic distance |
 | `@biolibs/seqtools` | `Bio.SeqUtils` | `gc_fraction`, `GC123`, `GC_skew`, `nt_search`, `seq1`/`seq3`, `molecular_weight`, `six_frame_translations`, `CodonAdaptationIndex`, `CheckSum`, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp` done |
 

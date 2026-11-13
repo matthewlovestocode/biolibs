@@ -10,6 +10,11 @@
  * - Content providers (`./seqdata/`) and Python `bytes` semantics (`./pybytes/`) underneath.
  */
 
+import { registerPythonClasses } from "@biolibs/core";
+
+// So error messages can say `<class 'Bio.Seq.Seq'>` like Biopython.
+registerPythonClasses("Bio.Seq", ["Seq", "MutableSeq"]);
+
 export * from "./seq/index.js";
 export {
   SequenceDataAbstractBaseClass,

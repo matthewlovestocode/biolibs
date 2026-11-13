@@ -48,7 +48,7 @@ section("Bio.Align.PairwiseAligner", "Bio.Align.PairwiseAligner", inv["Bio.Align
 section("Bio.Align.substitution_matrices", "Bio.Align.substitution_matrices", inv["Bio.Align.substitution_matrices"])
 for mod in ("Bio.SeqUtils", "Bio.SeqUtils.CheckSum", "Bio.SeqUtils.lcc", "Bio.SeqUtils.IsoelectricPoint", "Bio.SeqUtils.ProtParam", "Bio.SeqUtils.MeltingTemp"):
     section(mod, mod, inv[mod])
-for mod in ("Bio.Nexus.Nexus", "Bio.Nexus.Trees", "Bio.Nexus.Nodes", "Bio.Nexus.StandardData", "Bio.PDB.Entity", "Bio.PDB.Atom", "Bio.PDB.Residue", "Bio.PDB.Chain", "Bio.PDB.Model", "Bio.PDB.Structure", "Bio.PDB.StructureBuilder", "Bio.PDB.PDBParser", "Bio.PDB.MMCIF2Dict", "Bio.PDB.MMCIFParser", "Bio.PDB.PDBIO", "Bio.PDB.mmcifio", "Bio.PDB.vectors", "Bio.PDB.Polypeptide", "Bio.PDB.Superimposer", "Bio.SVDSuperimposer", "Bio.PDB.NeighborSearch", "Bio.PDB.kdtrees", "Bio.PDB.Selection", "Bio.PDB.SASA", "Bio.PDB.parse_pdb_header"):
+for mod in ("Bio.Nexus.Nexus", "Bio.Nexus.Trees", "Bio.Nexus.Nodes", "Bio.Nexus.StandardData", "Bio.PDB.Entity", "Bio.PDB.Atom", "Bio.PDB.Residue", "Bio.PDB.Chain", "Bio.PDB.Model", "Bio.PDB.Structure", "Bio.PDB.StructureBuilder", "Bio.PDB.PDBParser", "Bio.PDB.MMCIF2Dict", "Bio.PDB.MMCIFParser", "Bio.PDB.PDBIO", "Bio.PDB.mmcifio", "Bio.PDB.vectors", "Bio.PDB.Polypeptide", "Bio.PDB.Superimposer", "Bio.SVDSuperimposer", "Bio.PDB.NeighborSearch", "Bio.PDB.kdtrees", "Bio.PDB.Selection", "Bio.PDB.SASA", "Bio.Restriction", "Bio.PDB.parse_pdb_header"):
     section(mod, mod, inv[mod])
 L[3:3] = ["", f"**Progress: {tot[1]} / {tot[0]} applicable items verified against Biopython.**", ""]
 open(f"{here}/../PARITY.md", "w").write("\n".join(L) + "\n")

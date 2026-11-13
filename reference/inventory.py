@@ -21,6 +21,8 @@ PKD = importlib.import_module('Bio.PDB.kdtrees')
 PSel = importlib.import_module('Bio.PDB.Selection')
 PSup = importlib.import_module('Bio.PDB.Superimposer')
 SVDMod = importlib.import_module('Bio.SVDSuperimposer')
+RR = importlib.import_module('Bio.Restriction.Restriction')
+RPF = importlib.import_module('Bio.Restriction.PrintFormat')
 PPoly = importlib.import_module('Bio.PDB.Polypeptide')
 PVec = importlib.import_module('Bio.PDB.vectors')
 PHeader = importlib.import_module('Bio.PDB.parse_pdb_header')  # `import ... as` would give the shadowing function
@@ -97,6 +99,9 @@ inv = {
   "Bio.PDB.kdtrees": {"classes": {c: members(getattr(PKD, c)) for c in ("KDTree", "Point", "Neighbor")}},
   "Bio.PDB.Selection": {"functions": funcs(PSel)},
   "Bio.PDB.SASA": {"classes": {"ShrakeRupley": members(PSASA.ShrakeRupley)}},
+  "Bio.Restriction": {"classes": {**{c: members(getattr(RR, c)) for c in ("FormattedSeq", "RestrictionType", "AbstractCut", "NoCut", "OneCut", "TwoCuts", "Meth_Dep", "Meth_Undep", "Palindromic",
+                                  "NonPalindromic", "Unknown", "Blunt", "Ov5", "Ov3", "Defined", "Ambiguous", "NotDefined", "Commercially_available", "Not_available", "RestrictionBatch", "Analysis")},
+                                  "PrintFormat": members(RPF.PrintFormat)}},
   "Bio.PDB.vectors": {"functions": funcs(PVec), "classes": {"Vector": members(PVec.Vector)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }
