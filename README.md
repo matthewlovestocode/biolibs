@@ -15,7 +15,7 @@ TypeScript libraries replacing common Python bioengineering tooling. The goal is
 | `@biolibs/align` | `Bio.Align` | `MultipleSeqAlignment`, the substitution matrices and `PairwiseAligner` scoring and alignment done; the `Alignment` file formats `fasta`, `a2m`, `clustal`, `phylip`, `nexus`, `msf`, `emboss`, `tabular`, `stockholm`, `psl`, `bed`, `chain`, `sam`, `maf`, `mauve`, `hhr` and `exonerate` done, plus `CodonAligner`, the rest not yet ported |
 | `@biolibs/motifs` | `Bio.motifs` | `Motif`, position matrices, scoring, thresholds, JASPAR/TRANSFAC/Cluster-Buster and the MEME, MAST, AlignACE, XMS and PFM readers done |
 | `@biolibs/restriction` | `Bio.Restriction` | 1,088 enzymes: `search`, `catalyse`, `RestrictionBatch`, `Analysis` and its text layouts done |
-| `@biolibs/phylo` | `Bio.Phylo` | Newick parse/write, patristic distance |
+| `@biolibs/phylo` | `Bio.Phylo` | `Tree`/`Clade` with the full search and editing API, Newick and Nexus I/O; other formats, consensus and tree construction not yet ported |
 | `@biolibs/seqtools` | `Bio.SeqUtils` | `gc_fraction`, `GC123`, `GC_skew`, `nt_search`, `seq1`/`seq3`, `molecular_weight`, `six_frame_translations`, `CodonAdaptationIndex`, `CheckSum`, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp` done |
 
 Full documentation (APIs, conventions, examples) is in [docs/](docs/README.md).

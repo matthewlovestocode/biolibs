@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1745 / 1991 applicable items verified against Biopython.**
+**Progress: 1919 / 2167 applicable items verified against Biopython.**
 
 
 
@@ -952,6 +952,280 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `format(self, fmt='')`
 - [x] `__str__(self)`
 - [-] `__repr__(self)`
+
+## Bio.Phylo.BaseTree
+
+
+### Bio.Phylo.BaseTree.TreeElement
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self) -> str`
+- [x] `__str__(self) -> str`
+
+### Bio.Phylo.BaseTree.TreeMixin
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, /, *args, **kwargs)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self, /)`
+- [x] `__str__(self, /)`
+- [x] `collapse(self, target=None, **kwargs)`
+- [x] `collapse_all(self, target=None, **kwargs)`
+- [x] `common_ancestor(self, targets, *more_targets)`
+- [x] `count_terminals(self)`
+- [x] `depths(self, unit_branch_lengths=False)`
+- [x] `distance(self, target1, target2=None)`
+- [x] `find_any(self, *args, **kwargs)`
+- [x] `find_clades(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `find_elements(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `get_nonterminals(self, order='preorder')`
+- [x] `get_path(self, target=None, **kwargs)`
+- [x] `get_terminals(self, order='preorder')`
+- [x] `is_bifurcating(self)`
+- [x] `is_monophyletic(self, terminals, *more_terminals)`
+- [x] `is_parent_of(self, target=None, **kwargs)`
+- [x] `is_preterminal(self)`
+- [x] `ladderize(self, reverse=False)`
+- [x] `prune(self, target=None, **kwargs)`
+- [x] `split(self, n=2, branch_length=1.0)`
+- [x] `total_branch_length(self)`
+- [x] `trace(self, start, finish)`
+
+### Bio.Phylo.BaseTree.Tree
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, root=None, rooted=True, id=None, name=None)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self) -> str`
+- [x] `__str__(self) -> str`
+- [ ] `as_phyloxml(self, **kwargs)`
+- [x] `clade`
+- [x] `collapse(self, target=None, **kwargs)`
+- [x] `collapse_all(self, target=None, **kwargs)`
+- [x] `common_ancestor(self, targets, *more_targets)`
+- [x] `count_terminals(self)`
+- [x] `depths(self, unit_branch_lengths=False)`
+- [x] `distance(self, target1, target2=None)`
+- [x] `find_any(self, *args, **kwargs)`
+- [x] `find_clades(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `find_elements(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `format(self, fmt=None)`
+- [x] `from_clade(clade, **kwargs)`
+- [x] `get_nonterminals(self, order='preorder')`
+- [x] `get_path(self, target=None, **kwargs)`
+- [x] `get_terminals(self, order='preorder')`
+- [x] `is_bifurcating(self)`
+- [x] `is_monophyletic(self, terminals, *more_terminals)`
+- [x] `is_parent_of(self, target=None, **kwargs)`
+- [x] `is_preterminal(self)`
+- [x] `is_terminal(self)`
+- [x] `ladderize(self, reverse=False)`
+- [x] `prune(self, target=None, **kwargs)`
+- [-] `randomized(taxa, branch_length=1.0, branch_stdev=None)`
+- [x] `root_at_midpoint(self)`
+- [x] `root_with_outgroup(self, outgroup_targets, *more_targets, outgroup_branch_length=None)`
+- [x] `split(self, n=2, branch_length=1.0)`
+- [x] `total_branch_length(self)`
+- [x] `trace(self, start, finish)`
+
+### Bio.Phylo.BaseTree.Clade
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [x] `__getitem__(self, index)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, branch_length=None, name=None, clades=None, confidence=None, color=None, width=None)`
+- [x] `__iter__(self)`
+- [-] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self) -> str`
+- [x] `__str__(self) -> str`
+- [x] `collapse(self, target=None, **kwargs)`
+- [x] `collapse_all(self, target=None, **kwargs)`
+- [x] `color`
+- [x] `common_ancestor(self, targets, *more_targets)`
+- [x] `count_terminals(self)`
+- [x] `depths(self, unit_branch_lengths=False)`
+- [x] `distance(self, target1, target2=None)`
+- [x] `find_any(self, *args, **kwargs)`
+- [x] `find_clades(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `find_elements(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `get_nonterminals(self, order='preorder')`
+- [x] `get_path(self, target=None, **kwargs)`
+- [x] `get_terminals(self, order='preorder')`
+- [x] `is_bifurcating(self)`
+- [x] `is_monophyletic(self, terminals, *more_terminals)`
+- [x] `is_parent_of(self, target=None, **kwargs)`
+- [x] `is_preterminal(self)`
+- [x] `is_terminal(self)`
+- [x] `ladderize(self, reverse=False)`
+- [x] `prune(self, target=None, **kwargs)`
+- [x] `root`
+- [x] `split(self, n=2, branch_length=1.0)`
+- [x] `total_branch_length(self)`
+- [x] `trace(self, start, finish)`
+
+### Bio.Phylo.BaseTree.BranchColor
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, red, green, blue)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self) -> str`
+- [x] `__str__(self) -> str`
+- [x] `from_hex(hexstr)`
+- [x] `from_name(colorname)`
+- [x] `to_hex(self)`
+- [x] `to_rgb(self)`
+
+## Bio.Phylo.Newick
+
+
+### Bio.Phylo.Newick.Tree
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, root=None, rooted=False, id=None, name=None, weight=1.0)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self) -> str`
+- [x] `__str__(self) -> str`
+- [ ] `as_phyloxml(self, **kwargs)`
+- [x] `clade`
+- [x] `collapse(self, target=None, **kwargs)`
+- [x] `collapse_all(self, target=None, **kwargs)`
+- [x] `common_ancestor(self, targets, *more_targets)`
+- [x] `count_terminals(self)`
+- [x] `depths(self, unit_branch_lengths=False)`
+- [x] `distance(self, target1, target2=None)`
+- [x] `find_any(self, *args, **kwargs)`
+- [x] `find_clades(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `find_elements(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `format(self, fmt=None)`
+- [x] `from_clade(clade, **kwargs)`
+- [x] `get_nonterminals(self, order='preorder')`
+- [x] `get_path(self, target=None, **kwargs)`
+- [x] `get_terminals(self, order='preorder')`
+- [x] `is_bifurcating(self)`
+- [x] `is_monophyletic(self, terminals, *more_terminals)`
+- [x] `is_parent_of(self, target=None, **kwargs)`
+- [x] `is_preterminal(self)`
+- [x] `is_terminal(self)`
+- [x] `ladderize(self, reverse=False)`
+- [x] `prune(self, target=None, **kwargs)`
+- [-] `randomized(taxa, branch_length=1.0, branch_stdev=None)`
+- [x] `root_at_midpoint(self)`
+- [x] `root_with_outgroup(self, outgroup_targets, *more_targets, outgroup_branch_length=None)`
+- [x] `split(self, n=2, branch_length=1.0)`
+- [x] `total_branch_length(self)`
+- [x] `trace(self, start, finish)`
+
+### Bio.Phylo.Newick.Clade
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [x] `__getitem__(self, index)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, branch_length=None, name=None, clades=None, confidence=None, comment=None)`
+- [x] `__iter__(self)`
+- [-] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self) -> str`
+- [x] `__str__(self) -> str`
+- [x] `collapse(self, target=None, **kwargs)`
+- [x] `collapse_all(self, target=None, **kwargs)`
+- [x] `color`
+- [x] `common_ancestor(self, targets, *more_targets)`
+- [x] `count_terminals(self)`
+- [x] `depths(self, unit_branch_lengths=False)`
+- [x] `distance(self, target1, target2=None)`
+- [x] `find_any(self, *args, **kwargs)`
+- [x] `find_clades(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `find_elements(self, target=None, terminal=None, order='preorder', **kwargs)`
+- [x] `get_nonterminals(self, order='preorder')`
+- [x] `get_path(self, target=None, **kwargs)`
+- [x] `get_terminals(self, order='preorder')`
+- [x] `is_bifurcating(self)`
+- [x] `is_monophyletic(self, terminals, *more_terminals)`
+- [x] `is_parent_of(self, target=None, **kwargs)`
+- [x] `is_preterminal(self)`
+- [x] `is_terminal(self)`
+- [x] `ladderize(self, reverse=False)`
+- [x] `prune(self, target=None, **kwargs)`
+- [x] `root`
+- [x] `split(self, n=2, branch_length=1.0)`
+- [x] `total_branch_length(self)`
+- [x] `trace(self, start, finish)`
+
+## Bio.Phylo.NewickIO
+
+- [x] `parse(handle, **kwargs)`
+- [x] `write(trees, handle, plain=False, **kwargs)`
+
+### Bio.Phylo.NewickIO.Parser
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, handle)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self, /)`
+- [x] `__str__(self, /)`
+- [x] `from_string(treetext)`
+- [x] `new_clade(self, parent=None)`
+- [x] `parse(self, values_are_confidence=False, comments_are_confidence=False, rooted=False)`
+- [x] `process_clade(self, clade)`
+
+### Bio.Phylo.NewickIO.Writer
+
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self, /)`
+- [x] `__init__(self, trees)`
+- [-] `__le__(self, value, /)`
+- [-] `__lt__(self, value, /)`
+- [x] `__repr__(self, /)`
+- [x] `__str__(self, /)`
+- [x] `to_strings(self, confidence_as_branch_length=False, branch_length_only=False, plain=False, plain_newick=True, ladderize=None, max_confidence=1.0, format_confidence='%1.2f', format_branch_length='%1.8g')`
+- [x] `write(self, handle, **kwargs)`
+
+## Bio.Phylo._io
+
+- [x] `convert(in_file, in_format, out_file, out_format, parse_args=None, **kwargs)`
+- [x] `parse(file, format, **kwargs)`
+- [x] `read(file, format, **kwargs)`
+- [x] `write(trees, file, format, **kwargs)`
+
+## Bio.Phylo.NexusIO
+
+- [x] `parse(handle)`
+- [x] `write(obj, handle, **kwargs)`
 
 ## Bio.SeqUtils
 

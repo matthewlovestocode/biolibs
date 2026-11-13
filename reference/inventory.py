@@ -22,6 +22,11 @@ PSel = importlib.import_module('Bio.PDB.Selection')
 PSup = importlib.import_module('Bio.PDB.Superimposer')
 SVDMod = importlib.import_module('Bio.SVDSuperimposer')
 AIMod = importlib.import_module('Bio.Align.AlignInfo')
+PBT = importlib.import_module('Bio.Phylo.BaseTree')
+PNW = importlib.import_module('Bio.Phylo.Newick')
+PNIO = importlib.import_module('Bio.Phylo.NewickIO')
+PIO2 = importlib.import_module('Bio.Phylo._io')
+PNEX = importlib.import_module('Bio.Phylo.NexusIO')
 BM = importlib.import_module('Bio.motifs')
 BMM = importlib.import_module('Bio.motifs.matrix')
 BMT = importlib.import_module('Bio.motifs.thresholds')
@@ -75,6 +80,11 @@ inv = {
   "Bio.Align": {"classes": {"MultipleSeqAlignment": members(Align.MultipleSeqAlignment)}},
   "Bio.Align.formats": {"functions": {n: str(inspect.signature(getattr(Align, n))) for n in ("parse", "read", "write")}, "formats": sorted(Align.formats) if hasattr(Align, "formats") else sorted(__import__("Bio.Align", fromlist=["x"]).__dict__.get("formats", []))},
   "Bio.Align.CodonAligner": {"classes": {"CodonAligner": {n: "property" for n in dir(Align.CodonAligner) if not n.startswith("_") or n in ("__init__", "__str__", "__repr__")}}},
+  "Bio.Phylo.BaseTree": {"classes": {n: members(getattr(PBT, n)) for n in ("TreeElement", "TreeMixin", "Tree", "Clade", "BranchColor")}},
+  "Bio.Phylo.Newick": {"classes": {n: members(getattr(PNW, n)) for n in ("Tree", "Clade")}},
+  "Bio.Phylo.NewickIO": {"functions": funcs(PNIO), "classes": {n: members(getattr(PNIO, n)) for n in ("Parser", "Writer")}},
+  "Bio.Phylo._io": {"functions": funcs(PIO2)},
+  "Bio.Phylo.NexusIO": {"functions": funcs(PNEX)},
   "Bio.Align.AlignInfo": {"classes": {"SummaryInfo": members(AIMod.SummaryInfo)}},
   "Bio.Align.AlignmentCounts": {"classes": {"AlignmentCounts": {n: "property" for n in dir(Align._alignmentcounts.AlignmentCounts) if not n.startswith("_")}}},
   "Bio.Align.Alignment": {"classes": {"Alignment": members(Align.Alignment)}},

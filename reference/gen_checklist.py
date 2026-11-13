@@ -53,6 +53,8 @@ section("Bio.Align.AlignmentCounts", "Bio.Align.AlignmentCounts", inv["Bio.Align
 section("Bio.Align.Alignment", "Bio.Align.Alignment", inv["Bio.Align.Alignment"])
 section("Bio.Align.PairwiseAligner", "Bio.Align.PairwiseAligner", inv["Bio.Align.PairwiseAligner"])
 section("Bio.Align.substitution_matrices", "Bio.Align.substitution_matrices", inv["Bio.Align.substitution_matrices"])
+for mod in ("Bio.Phylo.BaseTree", "Bio.Phylo.Newick", "Bio.Phylo.NewickIO", "Bio.Phylo._io", "Bio.Phylo.NexusIO"):
+    section(mod, mod, inv[mod])
 for mod in ("Bio.SeqUtils", "Bio.SeqUtils.CheckSum", "Bio.SeqUtils.lcc", "Bio.SeqUtils.IsoelectricPoint", "Bio.SeqUtils.ProtParam", "Bio.SeqUtils.MeltingTemp"):
     section(mod, mod, inv[mod])
 for mod in ("Bio.Nexus.Nexus", "Bio.Nexus.Trees", "Bio.Nexus.Nodes", "Bio.Nexus.StandardData", "Bio.PDB.Entity", "Bio.PDB.Atom", "Bio.PDB.Residue", "Bio.PDB.Chain", "Bio.PDB.Model", "Bio.PDB.Structure", "Bio.PDB.StructureBuilder", "Bio.PDB.PDBParser", "Bio.PDB.MMCIF2Dict", "Bio.PDB.MMCIFParser", "Bio.PDB.PDBIO", "Bio.PDB.mmcifio", "Bio.PDB.vectors", "Bio.PDB.Polypeptide", "Bio.PDB.Superimposer", "Bio.SVDSuperimposer", "Bio.PDB.NeighborSearch", "Bio.PDB.kdtrees", "Bio.PDB.Selection", "Bio.PDB.SASA", "Bio.Restriction", "Bio.motifs", "Bio.motifs.matrix", "Bio.motifs.thresholds", "Bio.motifs.jaspar", "Bio.motifs.transfac", "Bio.motifs.clusterbuster", "Bio.motifs.alignace", "Bio.motifs.meme", "Bio.motifs.minimal", "Bio.motifs.mast", "Bio.motifs.xms", "Bio.motifs.pfm", "Bio.PDB.parse_pdb_header"):

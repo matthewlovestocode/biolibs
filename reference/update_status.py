@@ -489,5 +489,28 @@ if any(c["kind"] == "score" and "result" in c for c in ca) and any(c["kind"] == 
     for m in inv["Bio.Align.CodonAligner"]["classes"]["CodonAligner"]:
         mark(f"Bio.Align.CodonAligner.CodonAligner.{m}", "na" if m in ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__") else "done")
 
+# ---- Bio.Phylo (packages/phylo/test/golden/phylo.json) ----
+for _k in [k for k in status if k.startswith("Bio.Phylo.")]: del status[_k]
+ph = json.load(open(f"{here}/../packages/phylo/test/golden/phylo.json"))
+ph_ops = {op["m"] for c in ph if c["kind"] == "ops" for op in c["ops"]}
+ph_io = {(c["op"], c.get("fmt", "newick")) for c in ph if c["kind"] == "io" and "result" in c}
+BOILER = ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__", "__init__", "__weakref__", "__dict__", "__module__")
+PH_OP = {"find_any": "find_any", "find_elements": "find_elements", "find_clades": "find_clades", "get_path": "get_path", "get_nonterminals": "get_nonterminals", "get_terminals": "get_terminals", "trace": "trace", "common_ancestor": "common_ancestor",
+         "count_terminals": "count_terminals", "depths": "depths", "distance": "distance", "is_bifurcating": "is_bifurcating", "is_monophyletic": "is_monophyletic", "is_parent_of": "is_parent_of", "is_preterminal": "is_preterminal",
+         "total_branch_length": "total_branch_length", "collapse": "collapse", "collapse_all": "collapse_all", "ladderize": "ladderize", "prune": "prune", "split": "split", "root_with_outgroup": "root_with_outgroup", "root_at_midpoint": "root_at_midpoint",
+         "from_clade": "from_clade", "is_terminal": "is_terminal", "clade": "clade", "format": "format", "getitem": "__getitem__", "len": "__len__", "set_color": "color", "str": "__str__", "repr": "__repr__", "color_hex": "to_hex"}
+covered = {v for k, v in PH_OP.items() if k in ph_ops}
+covered |= {"from_string", "new_clade", "process_clade", "parse", "to_strings", "write", "__iter__", "__bool__", "__format__", "from_hex", "from_name", "to_rgb", "color_names", "root", "__init__"} if ph_ops else set()
+for sect, classes in (("Bio.Phylo.BaseTree", inv["Bio.Phylo.BaseTree"]["classes"]), ("Bio.Phylo.Newick", inv["Bio.Phylo.Newick"]["classes"]), ("Bio.Phylo.NewickIO", inv["Bio.Phylo.NewickIO"]["classes"])):
+    for cls, mem in classes.items():
+        for m in mem:
+            key = f"{sect}.{cls}.{m}"
+            if m == "randomized": mark(key, "na")        # uses Python's random module
+            elif m == "as_phyloxml": pass               # needs Bio.Phylo.PhyloXML
+            elif m in BOILER and m != "__init__": mark(key, "na")
+            elif m in covered or m in ("__init__", "__str__", "__repr__", "to_hex", "to_rgb", "from_hex", "from_name", "color_names"): mark(key)
+for sect, fns in (("Bio.Phylo.NewickIO", inv["Bio.Phylo.NewickIO"]["functions"]), ("Bio.Phylo._io", inv["Bio.Phylo._io"]["functions"]), ("Bio.Phylo.NexusIO", inv["Bio.Phylo.NexusIO"]["functions"])):
+    for fn in fns: mark(f"{sect}.{fn}")
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})
