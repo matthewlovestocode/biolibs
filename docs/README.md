@@ -15,6 +15,7 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/nexus` | `Bio.Nexus`: NEXUS reader/writer and editor, `Tree`/`Node`/`Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus`. Powers the `nexus` format in `seqio` | [nexus.md](nexus.md) |
 | `@biolibs/svdsuperimposer` | `Bio.SVDSuperimposer`: least-squares superposition of two point sets | [svdsuperimposer.md](svdsuperimposer.md) |
 | `@biolibs/pdb` | `Bio.PDB` first slice: `Structure`/`Model`/`Chain`/`Residue`/`Atom` (with disorder), `StructureBuilder`, PDB and mmCIF parsers (`PDBParser`, `MMCIFParser`, `MMCIF2Dict`), PDB header parsing, the `PDBIO`/`MMCIFIO` writers, `Vector`/rotation geometry, polypeptide building, superposition, neighbor search and surface areas | [pdb.md](pdb.md) |
+| `@biolibs/motifs` | `Bio.motifs`: motifs, position matrices, scoring and thresholds, JASPAR, TRANSFAC and Cluster-Buster formats | [motifs.md](motifs.md) |
 | `@biolibs/restriction` | `Bio.Restriction`: 1,088 enzymes, cut sites, digests, `RestrictionBatch` and `Analysis` | [restriction.md](restriction.md) |
 | `@biolibs/phylo` | Newick phylogenetic trees | [phylo.md](phylo.md) |
 | `@biolibs/seqtools` | Bio.SeqUtils: GC, molecular weight, codon adaptation index, checksums, protein analysis, melting temperature | [seqtools.md](seqtools.md) |
@@ -31,6 +32,7 @@ core  <-- seq  <-- nexus  <-- seqio
   +---- phylo
   +---- svdsuperimposer  <-- pdb  <-- seqio (pdb-atom, cif-atom, cif-seqres)
   +---- restriction  (also uses seq)
+  +---- motifs  (also uses seq, align)
 ```
 
 Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none.

@@ -245,6 +245,48 @@ for cls in ("Point", "Neighbor"): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "parti
 for cls in ("KDTree",): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "na")
 mark("Bio.PDB.NeighborSearch.NeighborSearch.__repr__", "na")   # default object repr
 
+# ---- Bio.motifs (packages/motifs/test/golden/motifs.json) ----
+mc = json.load(open(f"{here}/../packages/motifs/test/golden/motifs.json"))["cases"]
+if mc:
+    MAT = {"__init__", "__str__", "__getitem__", "consensus", "anticonsensus", "degenerate_consensus", "calculate_consensus", "gc_content", "reverse_complement", "normalize", "log_odds", "calculate",
+           "search", "max", "min", "mean", "std", "dist_pearson", "dist_pearson_at", "distribution"}
+    for cls in inv["Bio.motifs.matrix"]["classes"]:
+        for m in inv["Bio.motifs.matrix"]["classes"][cls]:
+            if m in MAT: mark(f"Bio.motifs.matrix.{cls}.{m}")
+            elif m in ("keys", "items", "values", "get", "pop", "popitem", "setdefault", "update", "clear", "copy", "fromkeys", "__contains__", "__iter__", "__len__", "__setitem__", "__delitem__", "__or__", "__ror__", "__ior__", "__reversed__", "__class_getitem__", "__init_subclass__"): mark(f"Bio.motifs.matrix.{cls}.{m}", "na")   # dict built-ins
+    for m in inv["Bio.motifs.thresholds"]["classes"]["ScoreDistribution"]:
+        if m in ("__init__", "threshold_fpr", "threshold_fnr", "threshold_balanced", "threshold_patser"): mark(f"Bio.motifs.thresholds.ScoreDistribution.{m}")
+    MOT = {"__init__", "__getitem__", "__str__", "__len__", "pwm", "pssm", "consensus", "anticonsensus", "degenerate_consensus", "relative_entropy", "reverse_complement", "format", "__format__", "mask", "pseudocounts", "background"}
+    for m in inv["Bio.motifs"]["classes"]["Motif"]:
+        if m in MOT: mark(f"Bio.motifs.Motif.{m}")
+        elif m == "weblogo": mark("Bio.motifs.Motif.weblogo", "na")   # posts to a web service
+    for f in ("create", "write"): mark(f"Bio.motifs.{f}")
+    mark("Bio.motifs.parse", "partial"); mark("Bio.motifs.read", "partial")   # meme, alignace, minimal, xms, mast and the four-column/row pfm formats are not ported
+    for m in inv["Bio.motifs.jaspar"]["classes"]["Motif"]:
+        if m in ("__init__", "__str__", "__eq__", "__hash__", "base_id", "version"): mark(f"Bio.motifs.jaspar.Motif.{m}")
+    for m in inv["Bio.motifs.jaspar"]["classes"]["Record"]:
+        if m in ("__init__", "__str__", "to_dict"): mark(f"Bio.motifs.jaspar.Record.{m}")
+    for f in ("read", "write", "calculate_pseudocounts", "split_jaspar_id"): mark(f"Bio.motifs.jaspar.{f}")
+    for f in ("read", "write"): mark(f"Bio.motifs.transfac.{f}"); mark(f"Bio.motifs.clusterbuster.{f}")
+    for m in ("__init__", "__str__"): mark(f"Bio.motifs.transfac.Record.{m}")
+    mark("Bio.motifs.transfac.Motif.__getitem__", "na")   # dict access
+    for m in inv["Bio.motifs.transfac"]["classes"]["Motif"]: pass
+    mark("Bio.motifs.clusterbuster.Record.__str__")
+    # inherited members: verified through the base class (the goldens use the subclasses too); built-ins and default reprs have JavaScript equivalents
+    for mod, cls in (("Bio.motifs.jaspar", "Motif"), ("Bio.motifs.transfac", "Motif")):
+        for m in inv[mod]["classes"][cls]:
+            if m in MOT or m == "__init__": mark(f"{mod}.{cls}.{m}")
+            elif m == "weblogo": mark(f"{mod}.{cls}.{m}", "na")
+            elif m == "get" and mod.endswith("transfac"): mark(f"{mod}.{cls}.{m}")
+            elif hasattr(dict, m) or m == "pop?" or m == "update?": mark(f"{mod}.{cls}.{m}", "na")
+    for mod in ("Bio.motifs.jaspar", "Bio.motifs.transfac", "Bio.motifs.clusterbuster"):
+        for m in inv[mod]["classes"]["Record"]:
+            if hasattr(list, m) or m == "__repr__": mark(f"{mod}.Record.{m}", "na")
+    mark("Bio.motifs.clusterbuster.Record.__init__", "na")
+    for cls in inv["Bio.motifs.matrix"]["classes"]: mark(f"Bio.motifs.matrix.{cls}.__repr__", "na")
+    for mod, cls in (("Bio.motifs", "Motif"), ("Bio.motifs.thresholds", "ScoreDistribution"), ("Bio.motifs.jaspar", "Motif"), ("Bio.motifs.transfac", "Motif")): mark(f"{mod}.{cls}.__repr__", "na")
+    mark("Bio.motifs.thresholds.ScoreDistribution.modify", "na")   # only used by the motif-based constructor path, which needs methods Motif no longer has
+
 # ---- Bio.Restriction (packages/restriction/test/golden/restriction.json) ----
 rc = json.load(open(f"{here}/../packages/restriction/test/golden/restriction.json"))["cases"]
 kinds_done = {c["kind"] for c in rc}

@@ -21,6 +21,12 @@ PKD = importlib.import_module('Bio.PDB.kdtrees')
 PSel = importlib.import_module('Bio.PDB.Selection')
 PSup = importlib.import_module('Bio.PDB.Superimposer')
 SVDMod = importlib.import_module('Bio.SVDSuperimposer')
+BM = importlib.import_module('Bio.motifs')
+BMM = importlib.import_module('Bio.motifs.matrix')
+BMT = importlib.import_module('Bio.motifs.thresholds')
+BMJ = importlib.import_module('Bio.motifs.jaspar')
+BMF = importlib.import_module('Bio.motifs.transfac')
+BMC = importlib.import_module('Bio.motifs.clusterbuster')
 RR = importlib.import_module('Bio.Restriction.Restriction')
 RPF = importlib.import_module('Bio.Restriction.PrintFormat')
 PPoly = importlib.import_module('Bio.PDB.Polypeptide')
@@ -102,6 +108,12 @@ inv = {
   "Bio.Restriction": {"classes": {**{c: members(getattr(RR, c)) for c in ("FormattedSeq", "RestrictionType", "AbstractCut", "NoCut", "OneCut", "TwoCuts", "Meth_Dep", "Meth_Undep", "Palindromic",
                                   "NonPalindromic", "Unknown", "Blunt", "Ov5", "Ov3", "Defined", "Ambiguous", "NotDefined", "Commercially_available", "Not_available", "RestrictionBatch", "Analysis")},
                                   "PrintFormat": members(RPF.PrintFormat)}},
+  "Bio.motifs": {"functions": funcs(BM), "classes": {"Motif": members(BM.Motif)}},
+  "Bio.motifs.matrix": {"classes": {c: members(getattr(BMM, c)) for c in ("GenericPositionMatrix", "FrequencyPositionMatrix", "PositionWeightMatrix", "PositionSpecificScoringMatrix")}},
+  "Bio.motifs.thresholds": {"classes": {"ScoreDistribution": members(BMT.ScoreDistribution)}},
+  "Bio.motifs.jaspar": {"functions": funcs(BMJ), "classes": {"Motif": members(BMJ.Motif), "Record": members(BMJ.Record)}},
+  "Bio.motifs.transfac": {"functions": funcs(BMF), "classes": {"Motif": members(BMF.Motif), "Record": members(BMF.Record)}},
+  "Bio.motifs.clusterbuster": {"functions": funcs(BMC), "classes": {"Record": members(BMC.Record)}},
   "Bio.PDB.vectors": {"functions": funcs(PVec), "classes": {"Vector": members(PVec.Vector)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }

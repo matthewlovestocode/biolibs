@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1536 / 1743 applicable items verified against Biopython.**
+**Progress: 1647 / 1889 applicable items verified against Biopython.**
 
 
 
@@ -2501,6 +2501,394 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `make_format(self, cut=(), title='', nc=(), s1='')`
 - [x] `print_as(self, what='list')`
 - [~] `print_that(self, dct, title='', s1='')`
+
+## Bio.motifs
+
+- [x] `create(instances, alphabet='ACGT')`
+- [~] `parse(handle, fmt, strict=True)`
+- [~] `read(handle, fmt, strict=True)`
+- [x] `write(motifs, fmt, **kwargs)`
+
+### Bio.motifs.Motif
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self, alphabet='ACGT', alignment=None, counts=None)`
+- [ ] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [x] `__str__(self, masked=False)`
+- [x] `anticonsensus`
+- [x] `background`
+- [x] `consensus`
+- [x] `degenerate_consensus`
+- [x] `format(self, format_spec)`
+- [x] `mask`
+- [x] `pseudocounts`
+- [x] `pssm`
+- [x] `pwm`
+- [x] `relative_entropy`
+- [x] `reverse_complement(self)`
+- [-] `weblogo(self, fname, fmt='PNG', **kwds)`
+
+## Bio.motifs.matrix
+
+
+### Bio.motifs.matrix.GenericPositionMatrix
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [ ] `__gt__(self, value, /)`
+- [x] `__init__(self, alphabet, values)`
+- [-] `__iter__(self, /)`
+- [ ] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self)`
+- [x] `anticonsensus`
+- [x] `calculate_consensus(self, substitution_matrix=None, plurality=None, identity=0, setcase=None)`
+- [-] `clear(self, /)`
+- [x] `consensus`
+- [-] `copy(self, /)`
+- [x] `degenerate_consensus`
+- [-] `fromkeys(iterable, value=None, /)`
+- [x] `gc_content`
+- [-] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [x] `reverse_complement(self)`
+- [-] `setdefault(self, key, default=None, /)`
+- [-] `update?`
+- [-] `values(self, /)`
+
+### Bio.motifs.matrix.FrequencyPositionMatrix
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [ ] `__gt__(self, value, /)`
+- [x] `__init__(self, alphabet, values)`
+- [-] `__iter__(self, /)`
+- [ ] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self)`
+- [x] `anticonsensus`
+- [x] `calculate_consensus(self, substitution_matrix=None, plurality=None, identity=0, setcase=None)`
+- [-] `clear(self, /)`
+- [x] `consensus`
+- [-] `copy(self, /)`
+- [x] `degenerate_consensus`
+- [-] `fromkeys(iterable, value=None, /)`
+- [x] `gc_content`
+- [-] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [x] `normalize(self, pseudocounts=None)`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [x] `reverse_complement(self)`
+- [-] `setdefault(self, key, default=None, /)`
+- [-] `update?`
+- [-] `values(self, /)`
+
+### Bio.motifs.matrix.PositionWeightMatrix
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [ ] `__gt__(self, value, /)`
+- [x] `__init__(self, alphabet, counts)`
+- [-] `__iter__(self, /)`
+- [ ] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self)`
+- [x] `anticonsensus`
+- [x] `calculate_consensus(self, substitution_matrix=None, plurality=None, identity=0, setcase=None)`
+- [-] `clear(self, /)`
+- [x] `consensus`
+- [-] `copy(self, /)`
+- [x] `degenerate_consensus`
+- [-] `fromkeys(iterable, value=None, /)`
+- [x] `gc_content`
+- [-] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [x] `log_odds(self, background=None)`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [x] `reverse_complement(self)`
+- [-] `setdefault(self, key, default=None, /)`
+- [-] `update?`
+- [-] `values(self, /)`
+
+### Bio.motifs.matrix.PositionSpecificScoringMatrix
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [ ] `__gt__(self, value, /)`
+- [x] `__init__(self, alphabet, values)`
+- [-] `__iter__(self, /)`
+- [ ] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self)`
+- [x] `anticonsensus`
+- [x] `calculate(self, sequence)`
+- [x] `calculate_consensus(self, substitution_matrix=None, plurality=None, identity=0, setcase=None)`
+- [-] `clear(self, /)`
+- [x] `consensus`
+- [-] `copy(self, /)`
+- [x] `degenerate_consensus`
+- [x] `dist_pearson(self, other)`
+- [x] `dist_pearson_at(self, other, offset)`
+- [x] `distribution(self, background=None, precision=1000)`
+- [-] `fromkeys(iterable, value=None, /)`
+- [x] `gc_content`
+- [-] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [x] `max`
+- [x] `mean(self, background=None)`
+- [x] `min`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [x] `reverse_complement(self)`
+- [x] `search(self, sequence, threshold=0.0, both=True, chunksize=1000000)`
+- [-] `setdefault(self, key, default=None, /)`
+- [x] `std(self, background=None)`
+- [-] `update?`
+- [-] `values(self, /)`
+
+## Bio.motifs.thresholds
+
+
+### Bio.motifs.thresholds.ScoreDistribution
+
+- [ ] `__eq__(self, value, /)`
+- [ ] `__ge__(self, value, /)`
+- [ ] `__gt__(self, value, /)`
+- [ ] `__hash__(self, /)`
+- [x] `__init__(self, motif=None, precision=1000, pssm=None, background=None)`
+- [ ] `__le__(self, value, /)`
+- [ ] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [ ] `__str__(self, /)`
+- [-] `modify(self, scores, mo_probs, bg_probs)`
+- [x] `threshold_balanced(self, rate_proportion=1.0, return_rate=False)`
+- [x] `threshold_fnr(self, fnr)`
+- [x] `threshold_fpr(self, fpr)`
+- [x] `threshold_patser(self)`
+
+## Bio.motifs.jaspar
+
+- [x] `calculate_pseudocounts(motif)`
+- [x] `read(handle, format)`
+- [x] `split_jaspar_id(id)`
+- [x] `write(motifs, format)`
+
+### Bio.motifs.jaspar.Motif
+
+- [-] `__eq__(self, other)`
+- [-] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [-] `__gt__(self, value, /)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, matrix_id, name, alphabet='ACGT', alignment=None, counts=None, collection=None, tf_class=None, tf_family=None, species=None, tax_group=None, acc=None, data_type=None, medline=None, pazar_id=None, comment=None)`
+- [-] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [x] `__str__(self)`
+- [x] `anticonsensus`
+- [x] `background`
+- [x] `base_id`
+- [x] `consensus`
+- [x] `degenerate_consensus`
+- [x] `format(self, format_spec)`
+- [x] `mask`
+- [x] `pseudocounts`
+- [x] `pssm`
+- [x] `pwm`
+- [x] `relative_entropy`
+- [x] `reverse_complement(self)`
+- [x] `version`
+- [-] `weblogo(self, fname, fmt='PNG', **kwds)`
+
+### Bio.motifs.jaspar.Record
+
+- [-] `__add__(self, value, /)`
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__getitem__(self, index, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__iadd__(self, value, /)`
+- [-] `__imul__(self, value, /)`
+- [-] `__init__(self)`
+- [-] `__iter__(self, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__rmul__(self, value, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [-] `__str__(self)`
+- [-] `append(self, object, /)`
+- [-] `clear(self, /)`
+- [-] `copy(self, /)`
+- [-] `count(self, value, /)`
+- [-] `extend(self, iterable, /)`
+- [-] `index(self, value, start=0, stop=9223372036854775807, /)`
+- [-] `insert(self, index, object, /)`
+- [-] `pop(self, index=-1, /)`
+- [-] `remove(self, value, /)`
+- [-] `reverse(self, /)`
+- [-] `sort(self, /, *, key=None, reverse=False)`
+- [x] `to_dict(self)`
+
+## Bio.motifs.transfac
+
+- [x] `read(handle, strict=True)`
+- [x] `write(motifs)`
+
+### Bio.motifs.transfac.Motif
+
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [x] `__getitem__(self, key)`
+- [-] `__gt__(self, value, /)`
+- [x] `__init__(self, alphabet='ACGT', alignment=None, counts=None)`
+- [-] `__iter__(self, /)`
+- [-] `__le__(self, value, /)`
+- [x] `__len__(self)`
+- [-] `__lt__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [x] `__str__(self, masked=False)`
+- [x] `anticonsensus`
+- [x] `background`
+- [-] `clear(self, /)`
+- [x] `consensus`
+- [-] `copy(self, /)`
+- [x] `degenerate_consensus`
+- [x] `format(self, format_spec)`
+- [-] `fromkeys(iterable, value=None, /)`
+- [x] `get(self, key, default=None, /)`
+- [-] `items(self, /)`
+- [-] `keys(self, /)`
+- [x] `mask`
+- [-] `pop?`
+- [-] `popitem(self, /)`
+- [x] `pseudocounts`
+- [x] `pssm`
+- [x] `pwm`
+- [x] `relative_entropy`
+- [x] `reverse_complement(self)`
+- [-] `setdefault(self, key, default=None, /)`
+- [-] `update?`
+- [-] `values(self, /)`
+- [-] `weblogo(self, fname, fmt='PNG', **kwds)`
+
+### Bio.motifs.transfac.Record
+
+- [-] `__add__(self, value, /)`
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__getitem__(self, index, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__iadd__(self, value, /)`
+- [-] `__imul__(self, value, /)`
+- [-] `__init__(self)`
+- [-] `__iter__(self, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__rmul__(self, value, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [-] `__str__(self)`
+- [-] `append(self, object, /)`
+- [-] `clear(self, /)`
+- [-] `copy(self, /)`
+- [-] `count(self, value, /)`
+- [-] `extend(self, iterable, /)`
+- [-] `index(self, value, start=0, stop=9223372036854775807, /)`
+- [-] `insert(self, index, object, /)`
+- [-] `pop(self, index=-1, /)`
+- [-] `remove(self, value, /)`
+- [-] `reverse(self, /)`
+- [-] `sort(self, /, *, key=None, reverse=False)`
+
+## Bio.motifs.clusterbuster
+
+- [x] `read(handle)`
+- [x] `write(motifs, precision=0)`
+
+### Bio.motifs.clusterbuster.Record
+
+- [-] `__add__(self, value, /)`
+- [-] `__contains__(self, key, /)`
+- [-] `__delitem__(self, key, /)`
+- [-] `__eq__(self, value, /)`
+- [-] `__ge__(self, value, /)`
+- [-] `__getitem__(self, index, /)`
+- [-] `__gt__(self, value, /)`
+- [-] `__iadd__(self, value, /)`
+- [-] `__imul__(self, value, /)`
+- [-] `__init__(self, /, *args, **kwargs)`
+- [-] `__iter__(self, /)`
+- [-] `__le__(self, value, /)`
+- [-] `__len__(self, /)`
+- [-] `__lt__(self, value, /)`
+- [-] `__mul__(self, value, /)`
+- [-] `__repr__(self, /)`
+- [-] `__rmul__(self, value, /)`
+- [-] `__setitem__(self, key, value, /)`
+- [-] `__str__(self)`
+- [-] `append(self, object, /)`
+- [-] `clear(self, /)`
+- [-] `copy(self, /)`
+- [-] `count(self, value, /)`
+- [-] `extend(self, iterable, /)`
+- [-] `index(self, value, start=0, stop=9223372036854775807, /)`
+- [-] `insert(self, index, object, /)`
+- [-] `pop(self, index=-1, /)`
+- [-] `remove(self, value, /)`
+- [-] `reverse(self, /)`
+- [-] `sort(self, /, *, key=None, reverse=False)`
 
 ## Bio.PDB.parse_pdb_header
 

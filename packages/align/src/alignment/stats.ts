@@ -35,6 +35,8 @@ export function frequencies(alignment: Alignment): Map<string, Float64Array> {
       steps[i] = steps[i]!.map((v) => -v);
     } else throw new ValueError(`Inconsistent steps in row ${i}`);
   });
+  // NumPy's `max` over the rows of an alignment with no sequences fails.
+  if (steps.length === 0) throw new ValueError("zero-size array to reduction operation maximum which has no identity");
   const gaps = columnMax(steps);
   for (const row of steps) row.forEach((v, k) => { if (!(v === gaps[k] || v <= 0)) throw new ValueError("Unequal step sizes in alignment"); });
   const length = gaps.reduce((a, b) => a + b, 0);

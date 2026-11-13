@@ -1,0 +1,12 @@
+{
+  "name": "@biolibs/motifs",
+  "version": "0.1.0",
+  "description": "Port of Biopython Bio.motifs: sequence motifs, position matrices, scoring and thresholds, JASPAR and TRANSFAC formats",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist"],
+  "license": "MIT",
+  "dependencies": { "@biolibs/core": "0.1.0", "@biolibs/seq": "0.1.0", "@biolibs/align": "0.1.0" }
+}

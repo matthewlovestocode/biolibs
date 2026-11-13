@@ -36,6 +36,9 @@
     },
     {
       "path": "packages/restriction"
+    },
+    {
+      "path": "packages/motifs"
     }
   ]
 }
