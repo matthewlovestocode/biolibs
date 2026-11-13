@@ -27,6 +27,8 @@ PNW = importlib.import_module('Bio.Phylo.Newick')
 PNIO = importlib.import_module('Bio.Phylo.NewickIO')
 PIO2 = importlib.import_module('Bio.Phylo._io')
 PNEX = importlib.import_module('Bio.Phylo.NexusIO')
+PCON = importlib.import_module('Bio.Phylo.Consensus')
+PTC = importlib.import_module('Bio.Phylo.TreeConstruction')
 BM = importlib.import_module('Bio.motifs')
 BMM = importlib.import_module('Bio.motifs.matrix')
 BMT = importlib.import_module('Bio.motifs.thresholds')
@@ -85,6 +87,8 @@ inv = {
   "Bio.Phylo.NewickIO": {"functions": funcs(PNIO), "classes": {n: members(getattr(PNIO, n)) for n in ("Parser", "Writer")}},
   "Bio.Phylo._io": {"functions": funcs(PIO2)},
   "Bio.Phylo.NexusIO": {"functions": funcs(PNEX)},
+  "Bio.Phylo.Consensus": {"functions": funcs(PCON), "classes": {"_BitString": members(PCON._BitString)}},
+  "Bio.Phylo.TreeConstruction": {"classes": {n: members(getattr(PTC, n)) for n in ("_Matrix", "DistanceMatrix", "DistanceCalculator", "TreeConstructor", "DistanceTreeConstructor", "Scorer", "TreeSearcher", "NNITreeSearcher", "ParsimonyScorer", "ParsimonyTreeConstructor")}},
   "Bio.Align.AlignInfo": {"classes": {"SummaryInfo": members(AIMod.SummaryInfo)}},
   "Bio.Align.AlignmentCounts": {"classes": {"AlignmentCounts": {n: "property" for n in dir(Align._alignmentcounts.AlignmentCounts) if not n.startswith("_")}}},
   "Bio.Align.Alignment": {"classes": {"Alignment": members(Align.Alignment)}},

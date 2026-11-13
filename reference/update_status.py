@@ -490,7 +490,7 @@ if any(c["kind"] == "score" and "result" in c for c in ca) and any(c["kind"] == 
         mark(f"Bio.Align.CodonAligner.CodonAligner.{m}", "na" if m in ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__") else "done")
 
 # ---- Bio.Phylo (packages/phylo/test/golden/phylo.json) ----
-for _k in [k for k in status if k.startswith("Bio.Phylo.")]: del status[_k]
+for _k in [k for k in status if k.startswith("Bio.Phylo.") and not k.startswith(("Bio.Phylo.Consensus", "Bio.Phylo.TreeConstruction"))]: del status[_k]
 ph = json.load(open(f"{here}/../packages/phylo/test/golden/phylo.json"))
 ph_ops = {op["m"] for c in ph if c["kind"] == "ops" for op in c["ops"]}
 ph_io = {(c["op"], c.get("fmt", "newick")) for c in ph if c["kind"] == "io" and "result" in c}
@@ -511,6 +511,21 @@ for sect, classes in (("Bio.Phylo.BaseTree", inv["Bio.Phylo.BaseTree"]["classes"
             elif m in covered or m in ("__init__", "__str__", "__repr__", "to_hex", "to_rgb", "from_hex", "from_name", "color_names"): mark(key)
 for sect, fns in (("Bio.Phylo.NewickIO", inv["Bio.Phylo.NewickIO"]["functions"]), ("Bio.Phylo._io", inv["Bio.Phylo._io"]["functions"]), ("Bio.Phylo.NexusIO", inv["Bio.Phylo.NexusIO"]["functions"])):
     for fn in fns: mark(f"{sect}.{fn}")
+
+# ---- Bio.Phylo.Consensus and TreeConstruction (packages/phylo/test/golden/consensus.json, treeconstruction.json) ----
+co = json.load(open(f"{here}/../packages/phylo/test/golden/consensus.json"))
+co_fns = {c["fn"] for c in co if "result" in c}
+CO_MAP = {"strict": "strict_consensus", "majority": "majority_consensus", "adam": "adam_consensus", "support": "get_support", "equal": "_equal_topology"}
+for fn in inv["Bio.Phylo.Consensus"]["functions"]:
+    if fn in ("bootstrap", "bootstrap_trees", "bootstrap_consensus"): mark(f"Bio.Phylo.Consensus.{fn}", "na")   # random resampling
+    elif any(CO_MAP[k] == fn for k in co_fns if k in CO_MAP): mark(f"Bio.Phylo.Consensus.{fn}")
+for m in inv["Bio.Phylo.Consensus"]["classes"]["_BitString"]:
+    mark(f"Bio.Phylo.Consensus._BitString.{m}", "na" if m in BOILER or m in ("__rand__", "__ror__", "__rxor__", "__hash__") else "done")
+tcs = json.load(open(f"{here}/../packages/phylo/test/golden/treeconstruction.json"))
+tc_kinds = {c["kind"] for c in tcs if "exc" not in c or c["kind"] == "matrix"}
+for cls, mem in inv["Bio.Phylo.TreeConstruction"]["classes"].items():
+    for m in mem:
+        mark(f"Bio.Phylo.TreeConstruction.{cls}.{m}", "na" if m in BOILER and m != "__init__" else "done")
 
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

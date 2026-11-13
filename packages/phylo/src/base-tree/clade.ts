@@ -25,8 +25,8 @@ export type CladeIndex = number | { start?: number | null; stop?: number | null;
 
 /** A clade: a node of a tree with its sub-clades. */
 export class Clade extends TreeMixin {
-  /** The length of the branch leading to this clade, or null. */
-  branchLength: number | null;
+  private blValue: number | null = null;
+  private blIsInt = false;
   /** The clade's name, or null. */
   name: string | null;
   /** The sub-clades. */
@@ -40,7 +40,7 @@ export class Clade extends TreeMixin {
   /** @param o - The attributes (all optional); an empty or missing `clades` gives a new empty list. */
   constructor(o: CladeOptions = {}) {
     super();
-    this.branchLength = o.branchLength ?? null;
+    this.blValue = o.branchLength ?? null;
     this.name = o.name ?? null;
     this.clades = o.clades && o.clades.length > 0 ? o.clades : [];
     this.confidence = o.confidence ?? null;
@@ -48,9 +48,23 @@ export class Clade extends TreeMixin {
     this.width = o.width ?? null;
   }
 
+  /** The length of the branch leading to this clade, or null. Assigned numbers are floats (see {@link Clade.setIntBranchLength}). */
+  get branchLength(): number | null { return this.blValue; }
+  set branchLength(value: number | null) { this.blValue = value; this.blIsInt = false; }
+
+  /** Set the branch length to a Python `int` (it then prints as `branch_length=0`, not `0.0`). */
+  setIntBranchLength(value: number): void { this.blValue = value; this.blIsInt = true; }
+
+  /** Set the branch length to a Python number, keeping its `int` or `float` type. */
+  setBranchLengthNum(value: number | PyFloat): void {
+    if (value instanceof PyFloat) this.branchLength = value.value;
+    else if (Number.isInteger(value)) this.setIntBranchLength(value);
+    else this.branchLength = value;
+  }
+
   override pyDict(): [string, unknown][] {
     return [
-      ["branch_length", this.branchLength === null ? null : new PyFloat(this.branchLength)], ["name", this.name], ["clades", this.clades],
+      ["branch_length", this.blValue === null ? null : this.blIsInt ? this.blValue : new PyFloat(this.blValue)], ["name", this.name], ["clades", this.clades],
       ["confidence", this.confidence], ["_color", this.colorValue], ["width", this.width],
     ];
   }

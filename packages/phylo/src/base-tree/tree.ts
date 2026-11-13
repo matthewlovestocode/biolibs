@@ -186,6 +186,13 @@ export class Tree extends TreeMixin {
   static str(x: unknown): string { return pyStr(x); }
 }
 
+/** A deep copy of a tree (Python's `copy.deepcopy(tree)`): the same class, with its own clades. */
+export function cloneTree<T extends Tree>(tree: T): T {
+  const copy = Object.create(Object.getPrototypeOf(tree)) as T;
+  for (const [k, v] of Object.entries(tree)) (copy as unknown as Record<string, unknown>)[k] = v instanceof Clade ? cloneClade(v) : v;
+  return copy;
+}
+
 /** A deep copy of a clade and everything below it. */
 export function cloneClade(clade: Clade): Clade {
   const copy = Object.create(Object.getPrototypeOf(clade)) as Clade;

@@ -53,7 +53,7 @@ section("Bio.Align.AlignmentCounts", "Bio.Align.AlignmentCounts", inv["Bio.Align
 section("Bio.Align.Alignment", "Bio.Align.Alignment", inv["Bio.Align.Alignment"])
 section("Bio.Align.PairwiseAligner", "Bio.Align.PairwiseAligner", inv["Bio.Align.PairwiseAligner"])
 section("Bio.Align.substitution_matrices", "Bio.Align.substitution_matrices", inv["Bio.Align.substitution_matrices"])
-for mod in ("Bio.Phylo.BaseTree", "Bio.Phylo.Newick", "Bio.Phylo.NewickIO", "Bio.Phylo._io", "Bio.Phylo.NexusIO"):
+for mod in ("Bio.Phylo.BaseTree", "Bio.Phylo.Newick", "Bio.Phylo.NewickIO", "Bio.Phylo._io", "Bio.Phylo.NexusIO", "Bio.Phylo.Consensus", "Bio.Phylo.TreeConstruction"):
     section(mod, mod, inv[mod])
 for mod in ("Bio.SeqUtils", "Bio.SeqUtils.CheckSum", "Bio.SeqUtils.lcc", "Bio.SeqUtils.IsoelectricPoint", "Bio.SeqUtils.ProtParam", "Bio.SeqUtils.MeltingTemp"):
     section(mod, mod, inv[mod])
