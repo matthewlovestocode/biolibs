@@ -35,14 +35,24 @@ def enc_aln(a):
         except Exception as e: rows.append({"err": [tname(e), emsg(e)]})
     d = {"ids": [getattr(s, "id", None) for s in a.sequences], "rows": rows, "coords": a.coordinates.tolist(),
          "seqs": [seq_text(s) for s in a.sequences]}
-    if getattr(a, "annotations", None): d["ann"] = {k: v for k, v in a.annotations.items()}
+    if getattr(a, "annotations", None): d["ann"] = {k: (v.tolist() if isinstance(v, np.ndarray) else list(v) if isinstance(v, bytes) else v) for k, v in a.annotations.items()}
     d["dbx"] = [list(getattr(s, "dbxrefs", [])) for s in a.sequences]
     d["rann"] = [dict(getattr(s, "annotations", {})) for s in a.sequences]
     d["lann"] = [dict(getattr(s, "letter_annotations", {})) for s in a.sequences]
     if hasattr(a, "operations"): d["ops"] = bytes(a.operations).decode()
     d["feat"] = [[[f.type, str(f.location), {k: v for k, v in f.qualifiers.items()}] for f in getattr(s, "features", [])] for s in a.sequences]
-    ex = {k: getattr(a, k) for k in ("matches", "misMatches", "repMatches", "nCount", "score", "thickStart", "thickEnd", "itemRgb") if hasattr(a, k)}
+    ex = {k: getattr(a, k) for k in ("matches", "misMatches", "repMatches", "nCount", "score", "thickStart", "thickEnd", "itemRgb", "flag", "mapq", "rnext", "pnext", "tlen", "hard_clip_left", "hard_clip_right") if hasattr(a, k)}
     if ex: d["extra"] = ex
+    if hasattr(a, "flag") and getattr(a, "annotations", None):
+        def tag(v):
+            if isinstance(v, bool): return ["bool", v]
+            if isinstance(v, int): return ["int", v]
+            if isinstance(v, float): return ["float", v]
+            if isinstance(v, str): return ["str", v]
+            if isinstance(v, bytes): return ["bytes", list(v)]
+            if isinstance(v, np.ndarray): return ["np", v.tolist()]
+            return ["other", repr(v)]
+        d["sann"] = {k: tag(v) for k, v in a.annotations.items()}
     d["names"] = [getattr(s, "name", None) for s in a.sequences]
     d["descs"] = [getattr(s, "description", None) for s in a.sequences]
     d["weights"] = [getattr(s, "annotations", {}).get("weight") for s in a.sequences]
@@ -60,7 +70,13 @@ def build(spec):
         if spec.get("plain"): recs = [r.seq if p else r for r, p in zip(recs, spec["plain"])]
         a = Alignment(recs, np.array(spec["coords"], dtype=np.intp))
         for k, v in (spec.get("extra") or {}).items(): setattr(a, k, v)
-        if spec.get("ann") is not None: a.annotations = dict(spec["ann"])
+        mark = lambda v: float(v["float"]) if isinstance(v, dict) and "float" in v else v
+        if spec.get("ann") is not None: a.annotations = {k: mark(v) for k, v in spec["ann"].items()}
+        for key, r in (("tann", recs[0]), ("qann", recs[1])):
+            if isinstance(r, SeqRecord):
+                for k, v in (spec.get(key) or {}).items(): r.annotations[k] = v
+        if spec.get("qletter") and isinstance(recs[1], SeqRecord): recs[1].letter_annotations["phred_quality"] = list(spec["qletter"])
+        if spec.get("ops") is not None: a.operations = bytearray(spec["ops"].encode())
         return a
     seqs = []
     gapped = spec["rows"]
@@ -93,6 +109,8 @@ def run(case):
                 alns = Align.parse(io.StringIO(case["text"]), case["fmt"])
                 res = [enc_aln(a) for a in alns]
                 out["result"] = {"alns": res, "metadata": meta(alns)}
+                tg = getattr(alns, "targets", None)
+                if tg is not None: out["result"]["targets"] = [[t.id, len(t.seq), t.description, {k: v for k, v in t.annotations.items()}] for t in tg]
             elif k == "read":
                 out["result"] = {"alns": [enc_aln(Align.read(io.StringIO(case["text"]), case["fmt"]))]}
             elif k == "format":
@@ -641,6 +659,82 @@ add({"kind": "format", "fmt": "chain", "aln": {"ids": ["a", "b"], "seqs": ["ACGT
 add({"kind": "format", "fmt": "chain", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "TTTT"], "coords": [[0, 4], [0, 2]], "extra": {"score": "x"}}})
 for t in CHAIN_TEXTS[:2] + BED_TEXTS[:2]:
     add({"kind": "rewrite", "fmt": "chain" if t in CHAIN_TEXTS else "bed", "text": t})
+
+# ---- SAM ----
+def sam_spec(r, rev=False, ops=False):
+    sp = rand_psl_spec(r, rev=rev)
+    sp["ids"] = ["chr1", "read%d" % r.randint(1, 9)]
+    n = len(sp["seqs"][1])
+    sp["qletter"] = [r.randint(0, 40) for _ in range(n)] if r.random() < 0.5 else None
+    if sp["qletter"] is None: del sp["qletter"]
+    sp["qann"] = {k: r.randint(1, 9) for k in ("hard_clip_left", "hard_clip_right") if r.random() < 0.3}
+    sp["extra"] = {"flag": r.choice([0, 1, 2, 256, 1024]), "mapq": r.choice([0, 30, 60]), "rnext": r.choice(["chr1", "chr2"]), "pnext": r.randint(0, 20)} if r.random() < 0.6 else {}
+    if r.random() < 0.5: sp["extra"]["score"] = r.choice([0, 7, 42.5, 100])
+    if r.random() < 0.5: sp["ann"] = {"NM": r.randint(0, 5), "XS": r.choice(["+", "-", "ab"]), "XF": {"float": r.choice([0.5, 2.0, 1e-5, 3.25])}}
+    return sp
+SAM_SPECS = [sam_spec(prng, rev=v) for v in (False, True) for _ in range(10)]
+SAM_HDR = "@HD\tVN:1.6\tSO:coordinate\n@SQ\tSN:chr1\tLN:100\n@SQ\tSN:chr2\tLN:80\tAS:hg\tSP:Homo\tM5:abc\tDS:desc\tAH:*\tAN:a,b\tTP:circular\tUR:file:x\tXX:y\n@PG\tID:p1\tPN:prog\n@PG\tID:p2\tPN:prog2\tPP:p1\n@CO\tID:note\n"
+SAM_LINES = []
+for sp in SAM_SPECS:
+    for kw in ({}, {"md": True}):
+        try:
+            sp2 = dict(sp, seqs=[sp["seqs"][0].upper(), sp["seqs"][1].upper()])
+            buf = io.StringIO(); Align.write([build(sp2)], buf, "sam", **kw); SAM_LINES.append(buf.getvalue())
+        except Exception: pass
+SAM_TEXTS = [SAM_HDR + "".join(SAM_LINES[:6]), "".join(SAM_LINES[:6])] + [SAM_HDR + l for l in SAM_LINES] + [l for l in SAM_LINES[:12]]
+Q = "ACGTACGTAC"
+H1 = "@SQ\tSN:chr1\tLN:100\n"
+HANDMADE = [
+    f"r1\t0\tchr1\t5\t60\t10M\t*\t0\t0\t{Q}\t*\n", f"r1\t16\tchr1\t5\t60\t10M\t=\t20\t30\t{Q}\t{'I' * 10}\tNM:i:1\tXF:f:2.5\tXA:A:x\tXZ:Z:hello\tXH:H:0102\tXB:B:i1,2,3\tXC:B:f1.5,2\n",
+    f"r1\t0\tchr1\t5\t255\t2S4M1I2M1D1M\t*\t0\t0\t{Q}\t*\n", f"r1\t0\tchr1\t5\t255\t3H2S4M2N4M3S2H\t*\t0\t0\t{Q}\t*\n", f"r1\t0\tchr1\t5\t255\t4=2X4M\t*\t0\t0\t{Q}\t*\n",
+    f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tMD:Z:4A5\tAS:i:7\n", f"r1\t0\tchr1\t5\t255\t4M2D4M\t*\t0\t0\tACGTACGT\t*\tMD:Z:4^GG4\n", f"r1\t0\tchr1\t5\t255\t4M2N4M\t*\t0\t0\tACGTACGT\t*\tMD:Z:8\n",
+    f"r1\t0\tchr1\t5\t255\t4M1I3M\t*\t0\t0\tACGTACGT\t*\tMD:Z:3C3\n", f"r1\t16\tchr1\t5\t255\t4M2D4M\t*\t0\t0\tACGTACGT\t*\tMD:Z:2T1^AC4\n",
+    "r1\t4\t*\t0\t0\t*\t*\t0\t0\tACGT\t*\n", "r1\t4\t*\t0\t0\t*\t*\t0\t0\t*\t*\n", f"r1\t0\tchr1\t5\t255\t*\t*\t0\t0\t{Q}\t*\n", f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t*\t*\n",
+    f"r1\t0\tchr9\t5\t255\t10M\t*\t0\t0\t{Q}\t*\n", f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tMD:Z:10\n", f"r1\t0\tchr9\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tMD:Z:10\n",
+    f"r1\t0\tchr1\t5\t255\t5M1P4M\t*\t0\t0\t{Q}\t*\n", f"r1\t0\tchr1\t5\t255\t8M\t*\t0\t0\t{Q}\t*\n", f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tAS:Z:7\n", f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tMD:i:7\n",
+    f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tXB:B:q,1\n", f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tXB:B:i,1,x\n", f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tXB:B:\n", f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tXH:H:0x\n",
+    f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\tbad\n", f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\n", "r1\t0\n", f"r1\tx\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t*\n",
+    f"r1\t0\tchr1\t5\t255\t10M\t*\t0\t0\t{Q}\t{'I' * 9}\n", f"r1\t0\tchr1\t5\t255\tM\t*\t0\t0\t{Q}\t*\n", f"r1\t0\tchr1\t5\t255\t10Q\t*\t0\t0\t{Q}\t*\n", "\n", "",
+]
+for h in ("", H1, SAM_HDR, "@SQ\tSN:chr1\n", "@SQ\tLN:5\n", "@SQ\tSN:chr1\tLN:5\n@SQ\tLN:7\n", "@SQ\tSN:chr1\tLN:5\tTP:x\n", "@HD\tVN\n", "@HD\tVNN:1\n", "@HD\n@SQ\tSN:a\tLN:x\n", "@CO\tx\n"):
+    for t in HANDMADE[:12] + HANDMADE[12:]:
+        if h in ("", H1) or t is HANDMADE[0] or t is HANDMADE[1]:
+            SAM_TEXTS.append(h + t)
+SAM_TEXTS += ["@HD\tVN:1.6\n", H1, "@SQ\tSN:chr1\tLN:100\n@SQ\tSN:chr1\tLN:50\n" + HANDMADE[0] + HANDMADE[1], SAM_HDR + HANDMADE[0] + HANDMADE[1] + HANDMADE[4]]
+for t in SAM_TEXTS:
+    add({"kind": "parse", "fmt": "sam", "text": t})
+    add({"kind": "read", "fmt": "sam", "text": t})
+for t in SAM_TEXTS[:12] + SAM_TEXTS[40:50]:
+    lines = t.split("\n")
+    for _ in range(8):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if "\t" in m[i] and r < 0.7:
+            f = m[i].split("\t"); k = rnd.randrange(len(f)); f[k] = rnd.choice(["", "x", "-1", "0", "5", "10M", "*", "=", f[k] + "9", f[k][:-1]]); m[i] = "\t".join(f)
+        elif r < 0.85 and "\t" in m[i]:
+            f = m[i].split("\t"); del f[rnd.randrange(len(f))]; m[i] = "\t".join(f)
+        else: del m[i]
+        add({"kind": "parse", "fmt": "sam", "text": "\n".join(m)})
+for sp in SAM_SPECS:
+    add({"kind": "format", "fmt": "sam", "aln": sp})
+    add({"kind": "write", "fmt": "sam", "alns": [sp]})
+    add({"kind": "write", "fmt": "sam", "alns": [sp], "kwargs": {"md": True}})
+    add({"kind": "format", "fmt": "sam", "aln": dict(sp, plain=[True, True])})
+    add({"kind": "format", "fmt": "sam", "aln": dict(sp, undef=[False, True])})
+    add({"kind": "format", "fmt": "sam", "aln": dict(sp, undef=[True, False])})
+    add({"kind": "write", "fmt": "sam", "alns": [dict(sp, undef=[True, False])], "kwargs": {"md": True}})
+    add({"kind": "format", "fmt": "sam", "aln": dict(sp, ops="M" * 20)})
+add({"kind": "write", "fmt": "sam", "alns": SAM_SPECS[:4]})
+add({"kind": "write", "fmt": "sam", "alns": []})
+for t in SAM_TEXTS[:3] + SAM_TEXTS[20:24]:
+    add({"kind": "rewrite", "fmt": "sam", "text": t})
+    add({"kind": "rewrite", "fmt": "sam", "text": t, "kwargs": {"md": True}})
+for kw in ({}, {"md": True}):
+    add({"kind": "rewrite", "fmt": "sam", "text": SAM_HDR + HANDMADE[2] + HANDMADE[3] + HANDMADE[4] + HANDMADE[5], "kwargs": kw})
+add({"kind": "format", "fmt": "sam", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGT"], "coords": [[0, 4], [0, 4]], "ann": {"X": [1]}}})
+add({"kind": "format", "fmt": "sam", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGT"], "coords": [[0], [0]]}})
+add({"kind": "format", "fmt": "sam", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGT"], "coords": [[], []]}})
+add({"kind": "format", "fmt": "sam", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGTA"], "coords": [[0, 2, 4], [0, 2, 5]]}})
+add({"kind": "format", "fmt": "sam", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "ACGT"], "coords": [[0, 4], [0, 4]], "extra": {"score": "x"}}})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)

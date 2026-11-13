@@ -79,6 +79,20 @@ export class Alignment {
   score?: number | string;
   /** Annotations describing the alignment (optional). */
   annotations?: Map<string, unknown>;
+  /** SAM: the FLAG bit field. */
+  flag?: number;
+  /** SAM: the mapping quality (only when it is not 255). */
+  mapq?: number;
+  /** SAM: the reference name of the next read. */
+  rnext?: string;
+  /** SAM: the zero-based position of the next read. */
+  pnext?: number;
+  /** SAM: the template length. */
+  tlen?: number;
+  /** SAM: bases hard-clipped at the left end of the query. */
+  hardClipLeft?: number;
+  /** SAM: bases hard-clipped at the right end of the query. */
+  hardClipRight?: number;
   /** BED column 7: where the thick part starts. */
   thickStart?: number;
   /** BED column 8: where the thick part ends. */

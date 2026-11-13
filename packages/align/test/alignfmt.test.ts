@@ -1,15 +1,15 @@
 /** Replays Bio.Align file-format golden cases (reference/golden/gen_alignfmt_cases.py). */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { Alignment, MultipleSeqAlignment, SummaryInfo, parse, read, write } from "@biolibs/align";
-import { captureWarnings } from "@biolibs/core";
+import { Alignment, MultipleSeqAlignment, NumpyArray, PyFloatValue, SummaryInfo, parse, read, write } from "@biolibs/align";
+import { captureWarnings, pyStr } from "@biolibs/core";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
-type Spec = { seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number | string>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
+type Spec = { qann?: Record<string, number>; tann?: Record<string, unknown>; qletter?: number[]; seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number | string>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
 interface Case { kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
 /** Python keyword arguments to the positional arguments of each writer. */
-const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]], bed: [["bedN", 12]] };
+const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]], bed: [["bedN", 12]], sam: [["md", false]] };
 const kwargArgs = (c: Case): unknown[] => {
   if (!c.kwargs) return [];
   const params = WRITER_PARAMS[c.fmt.toLowerCase()] ?? [];
@@ -23,7 +23,16 @@ const seqText = (q: any): unknown => {
   if (q.defined === undefined || q.defined) return String(q);
   return { len: q.length, defined: q.definedRanges.map(([a, b]: [number, number]) => [a, b, String(q.slice(a, b))]) };
 };
-const EXTRA_NAMES = ["matches", "misMatches", "repMatches", "nCount", "score", "thickStart", "thickEnd", "itemRgb"] as const;
+const EXTRA_NAMES = ["matches", "misMatches", "repMatches", "nCount", "score", "thickStart", "thickEnd", "itemRgb", "flag", "mapq", "rnext", "pnext", "tlen", "hardClipLeft", "hardClipRight"] as const;
+const PY_NAMES: Record<string, string> = { hardClipLeft: "hard_clip_left", hardClipRight: "hard_clip_right" };
+const tagged = (v: unknown): unknown => {
+  if (v instanceof PyFloatValue) return ["float", v.value];
+  if (v instanceof NumpyArray) return ["np", [...v]];
+  if (v instanceof Uint8Array) return ["bytes", [...v]];
+  if (typeof v === "number") return ["int", v];
+  if (typeof v === "string") return ["str", v];
+  return ["other", String(v)];
+};
 const enc = (a: Alignment) => {
   const d: any = {
     ids: a.sequences.map((s) => (s instanceof SeqRecord ? s.id : null)),
@@ -35,12 +44,13 @@ const enc = (a: Alignment) => {
     lann: a.sequences.map((s) => (s instanceof SeqRecord ? Object.fromEntries(s.letterAnnotations) : {})),
     ...(a.operations !== undefined ? { ops: new TextDecoder().decode(a.operations) } : {}),
     feat: a.sequences.map((s) => (s instanceof SeqRecord ? s.features.map((f) => [f.type, String(f.location), Object.fromEntries(f.qualifiers)]) : [])),
-    ...(EXTRA_NAMES.some((k) => a[k] !== undefined) ? { extra: Object.fromEntries(EXTRA_NAMES.filter((k) => a[k] !== undefined).map((k) => [k, a[k]])) } : {}),
+    ...(EXTRA_NAMES.some((k) => a[k] !== undefined) ? { extra: Object.fromEntries(EXTRA_NAMES.filter((k) => a[k] !== undefined).map((k) => [PY_NAMES[k] ?? k, a[k]])) } : {}),
+    ...(a.flag !== undefined && a.annotations !== undefined && a.annotations.size > 0 ? { sann: Object.fromEntries([...a.annotations].map(([k, v]) => [k, tagged(v)])) } : {}),
     names: a.sequences.map((s) => (s instanceof SeqRecord ? s.name : null)),
     descs: a.sequences.map((s) => (s instanceof SeqRecord ? s.description : null)),
     weights: a.sequences.map((s) => (s instanceof SeqRecord && s.annotations.has("weight") ? s.annotations.get("weight") : null)),
   };
-  if (a.annotations !== undefined && a.annotations.size > 0) d.ann = Object.fromEntries(a.annotations);
+  if (a.annotations !== undefined && a.annotations.size > 0) d.ann = Object.fromEntries([...a.annotations].map(([k, v]) => [k, v instanceof PyFloatValue ? v.value : v instanceof NumpyArray || v instanceof Uint8Array ? [...v] : v]));
   if (a.columnAnnotations !== undefined) d.colann = Object.fromEntries(a.columnAnnotations);
   return d;
 };
@@ -52,7 +62,14 @@ const build = (spec: Spec): Alignment => {
     });
     const aln = new Alignment(recs, spec.coords!);
     Object.assign(aln, spec.extra ?? {});
-    if (spec.ann !== undefined) aln.annotations = new Map(Object.entries(spec.ann));
+    if (spec.ann !== undefined) aln.annotations = new Map(Object.entries(spec.ann).map(([k, v]) => [k, v !== null && typeof v === "object" && "float" in (v as object) ? new PyFloatValue((v as { float: number }).float) : v]));
+    const [t, q] = recs;
+    if (t instanceof SeqRecord) for (const [k, v] of Object.entries(spec.tann ?? {})) t.annotations.set(k, v);
+    if (q instanceof SeqRecord) {
+      for (const [k, v] of Object.entries(spec.qann ?? {})) q.annotations.set(k, v);
+      if (spec.qletter) q.letterAnnotations.set("phred_quality", [...spec.qletter]);
+    }
+    if (spec.ops !== undefined) aln.operations = new TextEncoder().encode(spec.ops);
     return aln;
   }
   const parsed = Alignment.parsePrintedAlignment(spec.rows.map((r) => new TextEncoder().encode(r)));
@@ -80,7 +97,8 @@ describe("Bio.Align file formats", () => {
         if (c.kind === "parse") {
           const it = parse(c.text!, c.fmt);
           const alns = Array.from(it).map(enc);
-          return { alns, metadata: (it as { metadata?: Record<string, unknown> }).metadata === undefined ? null : Object.fromEntries(Object.entries((it as any).metadata).map(([k, v]) => [k, String(v)])) };
+          const tg = (it as { targets?: SeqRecord[] }).targets;
+          return { ...(tg !== undefined ? { targets: tg.map((t) => [t.id, t.seq!.length, t.description, Object.fromEntries(t.annotations)]) } : {}), alns, metadata: (it as { metadata?: Record<string, unknown> }).metadata === undefined ? null : Object.fromEntries(Object.entries((it as any).metadata).map(([k, v]) => [k, pyStr(v)])) };
         }
         if (c.kind === "rewrite") {
           let text = "";
