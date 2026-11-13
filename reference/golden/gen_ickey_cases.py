@@ -10,12 +10,14 @@ Case kinds:
   residue - IC_Residue over the residues of a parsed PDB file: what it keeps and under which keys.
   split   - split_akl: a generic list of atom keys made specific to a residue and expanded over its altlocs.
   edra_build - _create_edra: the hedra and dihedra a residue builds from the tables and its neighbours.
+  a2ic  - atom_to_internal_coordinates: the index maps init_edra and build_edraArrays lay down, and the bond
+          lengths, bond angles and dihedral angles measured from the atom coordinates.
 
 `_cmp` returns a pair of ranks rather than a sign, and for two atom names in none of its tables it falls through to
 `int()` of the names and raises; both are recorded as they come.
 """
 import json, os, random
-from Bio.PDB.internal_coords import AtomKey
+from Bio.PDB.internal_coords import AtomKey, Edron
 from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "pdb", "test", "golden", "ickey.json")
@@ -351,8 +353,105 @@ for text in TEXTS + PROTEINS:
     cases.append({"kind": "edra_build", "text": text})
     cases.append({"kind": "split", "text": text})
 
+# ---------------- measuring the angles ----------------
+# `atom_to_internal_coordinates` allocates the chain's value arrays (`init_edra`), builds the index maps between
+# them and the atom array (`build_edraArrays`), then measures every hedron with the law of cosines and every
+# dihedron as the azimuth of its fourth atom in the coordinate space of its first three.
+def enc6(x):
+    """Round to six places, with the strings the other PDB cases use for the values JSON has no syntax for."""
+    import math
+    x = float(x)
+    if math.isnan(x): return "nan"
+    if math.isinf(x): return "inf" if x > 0 else "-inf"
+    return round(x, 6)
+
+def run_a2ic(case):
+    """Measure a parsed chain and record the maps and the values, through the entry point under test."""
+    import io, warnings as w2
+    from Bio.PDB import PDBParser
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+        out = []
+        entry = case["entry"]
+        with w2.catch_warnings(record=True) as rec:
+            w2.simplefilter("always")
+            if entry == "structure": s.atom_to_internal_coordinates()
+            elif entry == "model": [m.atom_to_internal_coordinates() for m in s.get_models()]
+            else: [c.atom_to_internal_coordinates() for c in s.get_chains()]
+        warned = [f"{w.category.__name__}: {w.message}" for w in rec]
+        for chain in list(s.get_chains())[:2]:
+            cic = chain.internal_coord
+            if cic is None or not hasattr(cic, "hedraLen"):
+                # No buildable residue, so atom_to_internal_coordinates escaped before allocating anything.
+                out.append({"empty": True, "residues": [ric.pretty_str() for ric in cic.ordered_aa_ic_list]
+                            if cic is not None else None})
+                continue
+            r6 = lambda a: [enc6(x) for x in a]
+            # With no dihedron the measurement returns right after init_edra, leaving the value arrays as
+            # `np.empty` gave them: uninitialized memory, which is not a thing to record.
+            measured = len(cic.dihedra) > 0
+            vals = lambda a: r6(a) if measured else None
+            out.append({
+                "hedraLen": cic.hedraLen, "dihedraLen": cic.dihedraLen,
+                "hedraNdx": [f"{Edron.gen_key(k)}={v}" for k, v in cic.hedraNdx.items()],
+                "dihedraNdx": [f"{Edron.gen_key(k)}={v}" for k, v in cic.dihedraNdx.items()],
+                "measured": measured,
+                "hedraL12": vals(cic.hedraL12), "hedraL23": vals(cic.hedraL23), "hedraAngle": vals(cic.hedraAngle),
+                "dihedraAngle": vals(cic.dihedraAngle), "dihedraAngleRads": vals(cic.dihedraAngleRads),
+                "a2ha_map": [int(x) for x in cic.a2ha_map], "a2da_map": [int(x) for x in cic.a2da_map],
+                "a2h_map": [[int(x) for x in row] for row in cic.a2h_map],
+                "h2aa": [[int(x) for x in row] for row in cic.h2aa],
+                "a2d_map": [[[int(x) for x in half] for half in pair] for pair in cic.a2d_map],
+                "dRev": [bool(x) for x in cic.dRev], "dFwd": [bool(x) for x in cic.dFwd],
+                "dH1ndx": [int(x) for x in cic.dH1ndx], "dH2ndx": [int(x) for x in cic.dH2ndx],
+                "h1d_map": [[int(x) for x in row] for row in cic.h1d_map],
+                "id3_dh_index": [f"{Edron.gen_key(k)}=" + ",".join(Edron.gen_key(d) for d in v)
+                                 for k, v in cic.id3_dh_index.items()],
+                "id32_dh_index": [f"{Edron.gen_key(k)}=" + ",".join(Edron.gen_key(d) for d in v)
+                                  for k, v in cic.id32_dh_index.items()],
+                "dcsValid": [bool(x) for x in cic.dcsValid],
+                "dAtoms_needs_update": [bool(x) for x in cic.dAtoms_needs_update],
+                "hAtoms_needs_update": [bool(x) for x in cic.hAtoms_needs_update],
+                "dCoordSpace": [[[r6(row) for row in m] for m in half] for half in cic.dCoordSpace]
+                                if measured else None,
+                # the di/hedra now read their values out of the chain's arrays
+                "hedra": sorted([h.id] + ([enc6(h.len12), enc6(h.angle), enc6(h.len23)] if measured else [])
+                                for h in cic.hedra.values()),
+                "dihedra": sorted([d.id] + ([enc6(d.angle)] if measured else []) + [bool(d.reverse),
+                                   d.h1key is None and "" or Edron.gen_key(d.h1key),
+                                   Edron.gen_key(d.h2key)] for d in cic.dihedra.values()),
+                # a second pass must not change anything: init_edra's guards hold
+                "again": attempt(lambda chain=chain: [enc6(x) for x in
+                                                      chain.atom_to_internal_coordinates() or chain.internal_coord.dihedraAngle])
+                         if measured else None,
+            })
+        return {"chains": out, "warnings_seen": warned}
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+# Jittered coordinates, so the angles are not the degenerate 180 degrees a lattice gives.
+jrnd = random.Random(5151)
+def jitter(text):
+    lines = []
+    for line in text.splitlines(True):
+        if line.startswith(("ATOM", "HETATM")):
+            x, y, z = (float(line[30:38]) + jrnd.uniform(-1.4, 1.4) for _ in range(3))
+            line = f"{line[:30]}{x:8.3f}{y:8.3f}{z:8.3f}{line[54:]}"
+        lines.append(line)
+    return "".join(lines)
+
+GEOM = [jitter(t) for t in PROTEINS]
+# The lattice coordinates of PROTEINS put every atom of a residue on one line, and a dihedral angle measured
+# across collinear atoms is pure rounding noise -- NumPy reads 1.8e-15 where the exact answer is zero, so the
+# azimuth comes out as a right angle rather than nothing. Only the jittered copies are measured here.
+for i, text in enumerate(TEXTS + GEOM):
+    cases.append({"kind": "a2ic", "text": text, "entry": ("chain", "model", "structure")[i % 3]})
+
 RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair,
-           "residue": run_residue, "edra_build": run_edra_build, "split": run_split}
+           "residue": run_residue, "edra_build": run_edra_build, "split": run_split, "a2ic": run_a2ic}
 kept = []
 for c in cases:
     res = run_isolated(RUNNERS[c["kind"]], c)

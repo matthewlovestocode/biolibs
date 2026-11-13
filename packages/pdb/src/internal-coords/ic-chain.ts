@@ -11,6 +11,8 @@
  */
 
 import { AtomKey } from "./atom-key.js";
+import { buildEdraArrays, initEdra, measureChain } from "./ic-measure.js";
+import type { Matrix } from "../vectors.js";
 import type { Dihedron, EdronArrays, Hedron } from "./edron.js";
 import { IC_Residue } from "./ic-residue.js";
 import { acceptResnames } from "./ic-data.js";
@@ -84,8 +86,54 @@ export class IC_Chain implements EdronArrays {
   hedraL12?: ArrayLike<number>;
   /** Second length of each hedron; not built yet. */
   hedraL23?: ArrayLike<number>;
-  /** Angle of each dihedron; not built yet, so every dihedron reads 360. */
+  /** Angle of each dihedron, in degrees, once measured. */
   dihedraAngle?: ArrayLike<number>;
+  /** The same angles in radians. */
+  dihedraAngleRads?: ArrayLike<number>;
+  /** How many hedra the chain has. */
+  hedraLen = 0;
+  /** How many dihedra. */
+  dihedraLen = 0;
+  /** Each hedron's index into the angle arrays, by its key. */
+  hedraNdx?: Map<string, number>;
+  /** Each dihedron's index, by its key. */
+  dihedraNdx?: Map<string, number>;
+  /** The atom rows of every hedron's three atoms, in hedron order. */
+  a2haMap?: number[];
+  /** The atom rows of every dihedron's four atoms, in dihedron order. */
+  a2daMap?: number[];
+  /** For each atom row, the hedra that use it. */
+  a2hMap?: number[][];
+  /** For each hedron, the atom rows of its atoms. */
+  h2aa?: number[][];
+  /** Whether each dihedron's atoms run opposite to its hedra. */
+  dRev?: Uint8Array;
+  /** The first hedron of each dihedron, as an index. */
+  dH1ndx?: Int32Array;
+  /** The second hedron of each dihedron. */
+  dH2ndx?: Int32Array;
+  /** For each hedron, the dihedra whose first hedron it is. */
+  h1dMap?: number[][];
+  /** Dihedron keys by the key of their first three atoms. */
+  id3DhIndex?: Map<string, string[]>;
+  /** Dihedron keys by the key of their last three atoms. */
+  id32DhIndex?: Map<string, string[]>;
+  /** Forward and reverse transforms into each dihedron's own coordinate space. */
+  dCoordSpace?: [Matrix[], Matrix[]];
+  /** Whether each dihedron's transforms are current. */
+  dcsValid?: Uint8Array;
+  /** Each hedron's three atoms in its own coordinate space; the assembly fills these in. */
+  hAtoms?: number[][][];
+  /** The same three atoms in reverse order, which the assembly also wants. */
+  hAtomsR?: number[][][];
+  /** Whether each hedron's own atoms need recomputing. */
+  hAtomsNeedsUpdate?: Uint8Array;
+  /** Whether each dihedron's atoms need recomputing. */
+  dAtomsNeedsUpdate?: Uint8Array;
+  /** For each atom row, the dihedra that use it and its position within each. */
+  a2dMap?: [number[], number[]][];
+  /** The complement of {@link IC_Chain.dRev}. */
+  dFwd?: Uint8Array;
 
   /** @param parent - The chain to extend. @param verbose - Report chain breaks as Biopython does. */
   constructor(parent: Chain, verbose = false) {
@@ -245,6 +293,27 @@ export class IC_Chain implements EdronArrays {
       if (ric.akc.size === 0) ric.buildRakCache();
     }
   }
+
+
+
+  /**
+   * Allocate the chain's angle arrays and give every hedron and dihedron its index into them.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   */
+  initEdra(verbose = false): void { initEdra(this, verbose); }
+
+  /**
+   * Build the index maps between the atom array and the angle arrays, and link each dihedron to its two hedra.
+   */
+  buildEdraArrays(): void { buildEdraArrays(this); }
+
+  /**
+   * Measure every bond length, bond angle and dihedral angle from the atom coordinates.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   */
+  atomToInternalCoordinates(verbose = false): void { measureChain(this, verbose); }
 
   /**
    * Copy one atom's coordinates into its row and leave the atom looking at them.

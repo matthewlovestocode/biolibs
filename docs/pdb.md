@@ -76,7 +76,7 @@ residue name, atom name, altloc, occupancy) and whose ordering puts a residue's 
 `edron.ts` holds `Edron`, `Hedron` and `Dihedron`, the angles themselves — three bonded atoms with two lengths
 and an angle, or four with the angle between two planes — `ic-residue.ts` holds `IC_Residue` — which atoms a residue keeps, the keys it
 keeps them under, and the hedra and dihedra it builds from the tables and from its neighbours — and `ic-chain.ts` holds `IC_Chain`, which
-decides which of a chain's residues can be built and owns the coordinate array. Verified against Biopython on 875 cases
+decides which of a chain's residues can be built, owns the coordinate array and measures the angles. Verified against Biopython on 962 cases
 (`packages/pdb/test/golden/ickey.json`, built by `reference/golden/gen_ickey_cases.py`). The geometry the rest of
 the port will rest on is already here, in `homog.ts`, ported with `Bio.PDB.vectors`.
 
@@ -127,10 +127,24 @@ structure's own coordinates become views into it**: `atom.coord` is a window ont
 the atom, and an atom whose coordinates were 32-bit widens to the array's 64. That is Biopython's behaviour and the
 point of the array — a whole chain is recomputed by writing rows.
 
-Still to come: the arrays of angle values (`init_edra`, `build_edraArrays`), the assembly that places atoms from
-them (`init_atom_coords`, `assemble_residues`) and the `atom_to_internal_coordinates` /
-`internal_to_atom_coordinates` entry points on Chain, Model and Structure, which are the six parity items this
-module exists for.
+`atomToInternalCoordinates` measures a chain. `initEdra` allocates the value arrays and numbers the di/hedra —
+in the order of Biopython's `sorted(self.hedra.keys())`, whose keys are tuples of `AtomKey`, so they sort by the
+atoms' own order (N, CA, C) and not by the text of the key. `buildEdraArrays` then lays down the index maps between
+the atom array and the value arrays, and links each dihedron to its two hedra: a dihedron's first three atoms
+usually name a hedron of the chain, and when they do not, the same three *reversed* do, which is what `dRev`
+records and what the assembly will depend on. The measurement itself is the law of cosines for each hedron, and
+for each dihedron the azimuth of its fourth atom in the coordinate space of its first three (`multiCoordSpace`
+from `homog.ts`, whose NumPy warning about uninitialised memory is reproduced once per call). `Chain`, `Model` and
+`Structure` each have the entry point, and a chain reaches its result through `chain.internalCoord`.
+
+Biopython allocates those arrays with `np.empty` and escapes before filling them when a chain has no dihedron, so
+their contents are then *uninitialised memory*; the golden cases record them only once a measurement has run. The
+cases also avoid exactly collinear atoms: a dihedral angle across them is pure rounding noise — NumPy reads
+1.8e-15 where the exact answer is zero, and the azimuth comes out as a right angle rather than nothing.
+
+Still to come: the assembly that places atoms from the angle values (`init_atom_coords`, `assemble_residues`) and
+the `internal_to_atom_coordinates` entry points on Chain, Model and Structure, which are the three parity items
+left of the six this module exists for.
 
 Numerical notes: the cross product reproduces NumPy's `det` (LU factorisation then `exp(sum(log))`), and NumPy's `RuntimeWarning`s (division by zero, invalid value, sqrt of a negative) are emitted through `warn` with category `RuntimeWarning`. NumPy's SIMD `sin`/`cos`/`exp` can differ from JavaScript's in the last bit, so the golden test compares floats to 1e-9 (1e-6 after an `arccos`, which amplifies such differences near 0 and π; a dihedral of ±π counts as equal either way). Cases the golden set avoids because NumPy's own output is undefined: `multiCoordSpace` where the second and third points coincide (uninitialised memory), and `coordSpace` with the first point equal to the second (the result is rounding noise).
 

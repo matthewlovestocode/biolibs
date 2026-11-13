@@ -207,6 +207,16 @@ if any(c["kind"] != "ops" and "structure" in c for c in pdb):
     pdb_members("Bio.PDB.PDBParser", "PDBParser", ("__init__", "get_header", "get_structure", "get_trailer"))
     mark("Bio.PDB.parse_pdb_header.parse_pdb_header")
 
+# ---- Bio.PDB internal coordinates (packages/pdb/test/golden/ickey.json) ----
+# `atom_to_internal_coordinates` is marked on each of the three entities only when a golden case drove it through
+# that entity's own entry point and a chain was actually measured; a chain with no buildable residue escapes
+# before anything is computed, so those cases alone would not be evidence.
+ick = json.load(open(f"{here}/../packages/pdb/test/golden/ickey.json"))["cases"]
+measured = {c["entry"] for c in ick if c["kind"] == "a2ic"
+            and any(not ch.get("empty") and ch.get("measured") for ch in c.get("result", {}).get("chains", []))}
+for entry, cls in (("chain", "Chain"), ("model", "Model"), ("structure", "Structure")):
+    if entry in measured: mark(f"Bio.PDB.{cls}.{cls}.atom_to_internal_coordinates")
+
 # ---- Bio.PDB mmCIF (packages/pdb/test/golden/mmcif.json) ----
 mc = json.load(open(f"{here}/../packages/pdb/test/golden/mmcif.json"))["cases"]
 if any(c["kind"] == "dict" and "dict" in c for c in mc):

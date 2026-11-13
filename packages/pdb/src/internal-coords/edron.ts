@@ -246,6 +246,14 @@ export class Dihedron extends Edron {
   reverse = false;
   /** The residue that holds this dihedron, set when the hedra are linked. */
   ric?: object;
+  /** The key of the first hedron, set when the chain builds its index maps. */
+  h1key?: string;
+  /** The key of the second hedron, likewise. */
+  h2key?: string;
+  /** The first hedron itself. */
+  hedron1?: Hedron;
+  /** The second hedron. */
+  hedron2?: Hedron;
   /** An angle set on the dihedron itself, before a chain holds it. */
   private dihedralValue?: number;
 

@@ -4,6 +4,7 @@ import { pyInt, pyTypeName } from "@biolibs/core";
 import type { Atom, DisorderedAtom } from "./atom.js";
 import { DisorderedEntityWrapper, Entity, compareThroughWrapper, type Child } from "./entity.js";
 import { compareIds } from "./util.js";
+import { IC_Chain } from "./internal-coords/ic-chain.js";
 import type { DisorderedResidue, Residue } from "./residue.js";
 import type { EntityId } from "./util.js";
 
@@ -36,8 +37,18 @@ export class Chain extends Entity<Residue | DisorderedResidue> implements Child 
     return { "<": sign < 0, "<=": sign <= 0, ">": sign > 0, ">=": sign >= 0 }[op];
   }
   readonly level = "C";
-  /** Internal coordinates (not ported); always null. */
-  internalCoord: null = null;
+  /** The chain's internal coordinates, once {@link Chain.atomToInternalCoordinates} or a reader has built them. */
+  internalCoord: IC_Chain | null = null;
+
+  /**
+   * Measure every bond length, bond angle and dihedral angle of this chain from its atom coordinates.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   */
+  atomToInternalCoordinates(verbose = false): void {
+    if (this.internalCoord === null) this.internalCoord = new IC_Chain(this, verbose);
+    this.internalCoord.atomToInternalCoordinates(verbose);
+  }
 
   /** @param id - The chain id (usually one letter). */
   constructor(id: string) {
@@ -115,6 +126,15 @@ export class Model extends Entity<Chain> implements Child {
 
   /** Python `repr`. */
   repr(): string { return `<Model id=${this.getId()}>`; }
+
+  /**
+   * Measure the internal coordinates of every chain of this model.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   */
+  atomToInternalCoordinates(verbose = false): void {
+    for (const chn of this.getChains()) chn.atomToInternalCoordinates(verbose);
+  }
   /** Iterate over the chains. */
   getChains(): IterableIterator<Chain> { return this.childList[Symbol.iterator](); }
   /** Iterate over the residues of all chains. */
@@ -136,6 +156,15 @@ export class Structure extends Entity<Model> {
 
   /** Python `repr`. */
   repr(): string { return `<Structure id=${this.getId()}>`; }
+
+  /**
+   * Measure the internal coordinates of every chain of every model.
+   *
+   * @param verbose - Accepted where Biopython accepts it, which uses it only to report problems while building.
+   */
+  atomToInternalCoordinates(verbose = false): void {
+    for (const chn of this.getChains()) chn.atomToInternalCoordinates(verbose);
+  }
   /** Iterate over the models. */
   getModels(): IterableIterator<Model> { return this.childList[Symbol.iterator](); }
   /** Iterate over the chains of all models. */

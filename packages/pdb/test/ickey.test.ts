@@ -2,12 +2,13 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { AtomKey, Dihedron, Edron, Hedron, IC_Chain, IC_Residue, PDBParser } from "@biolibs/pdb";
+import { captureWarnings } from "@biolibs/core";
 
 type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc };
 interface Spec { how: string; value: unknown }
 interface Spec2 { cls: string; how: string; keys: string[] }
-interface Case { kind: string; text?: string; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
+interface Case { kind: string; text?: string; entry?: string; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
 
 /** AttributeError is a TypeError here, with no message to compare. */
 const excOk = (want?: Exc, got?: Exc): boolean => {
@@ -220,10 +221,101 @@ function runSplit(c: Case): Out {
   });
 }
 
+/**
+ * Replay `atom_to_internal_coordinates`: the index maps and the measured bond lengths, angles and dihedral angles.
+ *
+ * The warning NumPy emits inside `multi_coord_space` is captured, since the number of them says how many times the
+ * transforms were computed.
+ */
+function runA2ic(c: Case): Out {
+  const cap = captureWarnings(() => {
+    // The parse's own warnings are not recorded: the generator parses with the warnings silenced.
+    const parsed = captureWarnings(() => new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", c.text!));
+    if (parsed.error !== undefined) throw parsed.error;
+    const s = parsed.result!;
+    if (c.entry === "structure") s.atomToInternalCoordinates();
+    else if (c.entry === "model") for (const m of s.getModels()) m.atomToInternalCoordinates();
+    else for (const ch of s.getChains()) ch.atomToInternalCoordinates();
+    const chains = [...s.getChains()].slice(0, 2).map((chain) => {
+      const cic = chain.internalCoord;
+      if (cic === null || cic.hedraNdx === undefined) {
+        return { empty: true, residues: cic === null ? null : cic.orderedAaIcList.map((r) => r.prettyStr()) };
+      }
+      const r6 = (a: ArrayLike<number>): unknown[] => Array.from(a).map(enc6);
+      // Biopython leaves the value arrays uninitialized until there is a dihedron to measure, so there is
+      // nothing to compare in that case.
+      const measured = cic.dihedra.size > 0;
+      const vals = (a: ArrayLike<number>): unknown => (measured ? r6(a) : null);
+      return {
+        hedraLen: cic.hedraLen, dihedraLen: cic.dihedraLen,
+        hedraNdx: [...cic.hedraNdx].map(([k, v]) => `${k}=${v}`),
+        dihedraNdx: [...cic.dihedraNdx!].map(([k, v]) => `${k}=${v}`),
+        measured,
+        hedraL12: vals(cic.hedraL12!), hedraL23: vals(cic.hedraL23!), hedraAngle: vals(cic.hedraAngle!),
+        dihedraAngle: vals(cic.dihedraAngle!), dihedraAngleRads: vals(cic.dihedraAngleRads!),
+        a2ha_map: [...cic.a2haMap!], a2da_map: [...cic.a2daMap!],
+        a2h_map: cic.a2hMap!.map((row) => [...row]),
+        h2aa: cic.h2aa!.map((row) => [...row]),
+        a2d_map: cic.a2dMap!.map((pair) => pair.map((half) => [...half])),
+        dRev: [...cic.dRev!].map((x) => x === 1), dFwd: [...cic.dFwd!].map((x) => x === 1),
+        dH1ndx: [...cic.dH1ndx!], dH2ndx: [...cic.dH2ndx!],
+        h1d_map: cic.h1dMap!.map((row) => [...row]),
+        id3_dh_index: [...cic.id3DhIndex!].map(([k, v]) => `${k}=${v.join(",")}`),
+        id32_dh_index: [...cic.id32DhIndex!].map(([k, v]) => `${k}=${v.join(",")}`),
+        dcsValid: [...cic.dcsValid!].map((x) => x === 1),
+        dAtoms_needs_update: [...cic.dAtomsNeedsUpdate!].map((x) => x === 1),
+        hAtoms_needs_update: [...cic.hAtomsNeedsUpdate!].map((x) => x === 1),
+        dCoordSpace: measured ? cic.dCoordSpace!.map((half) => half.map((m) => m.map((row) => r6(row)))) : null,
+        // the di/hedra now read their values out of the chain's arrays
+        hedra: sortRows([...cic.hedra.values()].map((h) =>
+          measured ? [h.id, enc6(h.len12), enc6(h.angle), enc6(h.len23)] : [h.id])),
+        dihedra: sortRows([...cic.dihedra.values()].map((d) =>
+          measured ? [d.id, enc6(d.angle), d.reverse, d.h1key ?? "", d.h2key!] : [d.id, d.reverse, d.h1key ?? "", d.h2key!])),
+        // a second pass must not change anything: initEdra's guards hold
+        // the second pass's warnings are not recorded either, so it runs inside its own capture
+        again: !measured ? null : captureWarnings(() => { chain.atomToInternalCoordinates(); return r6(chain.internalCoord!.dihedraAngle!); }).error === undefined
+          ? { result: r6(chain.internalCoord!.dihedraAngle!) }
+          : { exc: { type: "Error", msg: "" } },
+      };
+    });
+    return { chains, warnings_seen: [] as string[] };
+  });
+  if (cap.error !== undefined) return { exc: err(cap.error) };
+  const out = cap.result!;
+  out.warnings_seen = cap.warnings.map((w) => `${w.category}: ${w.message}`);
+  return { result: out };
+}
+
+/** Round as the generator rounds, with the strings it uses for the values JSON has no syntax for. */
+const enc6 = (x: number): unknown => (Number.isNaN(x) ? "nan" : x === Infinity ? "inf" : x === -Infinity ? "-inf" : round6(x));
+
+/** Sort rows of mixed values the way Python's `sorted` orders lists whose first element is a string id. */
+const sortRows = (rows: unknown[][]): unknown[][] =>
+  [...rows].sort((a, b) => (String(a[0]) < String(b[0]) ? -1 : String(a[0]) > String(b[0]) ? 1 : 0));
+
+/**
+ * The path to the first place two recorded results differ, which is what a mismatch report needs.
+ *
+ * @param a - The expected value. @param b - What the port produced. @returns A dotted path, with the two values.
+ */
+function firstDiff(a: unknown, b: unknown, path = ""): string {
+  if (same(a, b)) return "";
+  const obj = (x: unknown): boolean => x !== null && typeof x === "object";
+  if (Array.isArray(a) && Array.isArray(b)) {
+    if (a.length !== b.length) return `${path}.length ${a.length} vs ${b.length}`;
+    for (let i = 0; i < a.length; i++) if (!same(a[i], b[i])) return firstDiff(a[i], b[i], `${path}[${i}]`);
+  } else if (obj(a) && obj(b) && !Array.isArray(a) && !Array.isArray(b)) {
+    const ao = a as Record<string, unknown>, bo = b as Record<string, unknown>;
+    const keys = [...new Set([...Object.keys(ao), ...Object.keys(bo)])];
+    for (const k of keys) if (!same(ao[k], bo[k])) return firstDiff(ao[k], bo[k], `${path}.${k}`);
+  }
+  return `${path} ${JSON.stringify(a).slice(0, 200)} vs ${JSON.stringify(b).slice(0, 200)}`;
+}
+
 describe("Bio.PDB.internal_coords: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/ickey.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit };
-  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build"]) {
+  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic };
+  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic"]) {
     const list = cases.filter((c) => c.kind === kind);
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
       const bad: string[] = [];
@@ -231,7 +323,7 @@ describe("Bio.PDB.internal_coords: parity with Biopython", () => {
         const got = runners[kind]!(c);
         const want: Out = c.exc ? { exc: c.exc } : { result: c.result };
         if (!outOk(want, got)) {
-          bad.push(`${JSON.stringify(c.spec ?? c.a ?? c.keys ?? (c.text ?? "").slice(0, 60))}\n    want ${JSON.stringify(want).slice(0, 300)}\n    got  ${JSON.stringify(got).slice(0, 300)}`);
+          bad.push(`${JSON.stringify(c.spec ?? c.a ?? c.keys ?? (c.text ?? "").slice(0, 60))} @${firstDiff(want, got)}\n    want ${JSON.stringify(want).slice(0, 300)}\n    got  ${JSON.stringify(got).slice(0, 300)}`);
         }
       }
       expect(bad.length, `${bad.length} mismatches:\n${bad.slice(0, 4).join("\n")}`).toBe(0);

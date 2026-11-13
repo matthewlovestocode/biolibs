@@ -18,7 +18,7 @@
 - [x] `__repr__(self)`
 - [-] `__str__(self, /)`
 - [x] `add(self, entity: ~_Child)`
-- [ ] `atom_to_internal_coordinates(self, verbose: bool = False) -> None`
+- [x] `atom_to_internal_coordinates(self, verbose: bool = False) -> None`
 - [x] `center_of_mass(self, geometric=False)`
 - [x] `copy(self)`
 - [x] `detach_child(self, id)`
