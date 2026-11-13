@@ -1,0 +1,12 @@
+{
+  "name": "@biolibs/pcr",
+  "version": "0.1.0",
+  "description": "PCR in silico: primer quality checks, where a primer binds a template, the products a pair would amplify, and primer design",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist"],
+  "license": "MIT",
+  "dependencies": { "@biolibs/core": "0.1.0", "@biolibs/seq": "0.1.0", "@biolibs/seqtools": "0.1.0" }
+}

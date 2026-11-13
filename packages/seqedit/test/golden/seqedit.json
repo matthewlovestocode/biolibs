@@ -1,0 +1,4644 @@
+{
+ "biopython": "1.88",
+ "records": {
+  "plain": {
+   "$": "rec",
+   "seq": {
+    "$": "Seq",
+    "v": "ATGAAAGGGCCCTTTATGCGTACGTTAGCCATGGCATTAGCATCGATCGGATCCATTAGC"
+   },
+   "id": "demo",
+   "name": "DEMO",
+   "description": "a demonstration record",
+   "dbxrefs": [
+    "GeneID:1"
+   ],
+   "features": [
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 0
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 10
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "gene",
+     "id": "whole-left",
+     "qualifiers": [
+      [
+       "gene",
+       "left"
+      ]
+     ]
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 20
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 30
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "gene",
+     "id": "inside",
+     "qualifiers": [
+      [
+       "gene",
+       "middle"
+      ]
+     ]
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 50
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 60
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "gene",
+     "id": "whole-right",
+     "qualifiers": [
+      [
+       "gene",
+       "right"
+      ]
+     ]
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 5
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 25
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "CDS",
+     "id": "across-start",
+     "qualifiers": [
+      [
+       "product",
+       "p1"
+      ]
+     ]
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 35
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 55
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "CDS",
+     "id": "across-end",
+     "qualifiers": [
+      [
+       "product",
+       "p2"
+      ]
+     ]
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 0
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 60
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "source",
+     "id": "source-whole",
+     "qualifiers": [
+      [
+       "organism",
+       "synthetic"
+      ]
+     ]
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 22
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 24
+      },
+      "strand": null,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "misc_feature",
+     "id": "tiny-nostrand",
+     "qualifiers": []
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "CompoundLocation",
+      "parts": [
+       {
+        "$": "loc",
+        "cls": "SimpleLocation",
+        "start": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 5
+        },
+        "end": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 15
+        },
+        "strand": 1,
+        "ref": null,
+        "ref_db": null
+       },
+       {
+        "$": "loc",
+        "cls": "SimpleLocation",
+        "start": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 25
+        },
+        "end": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 35
+        },
+        "strand": 1,
+        "ref": null,
+        "ref_db": null
+       }
+      ],
+      "operator": "join"
+     },
+     "type": "mRNA",
+     "id": "join-across",
+     "qualifiers": [
+      [
+       "note",
+       "two exons"
+      ]
+     ]
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "CompoundLocation",
+      "parts": [
+       {
+        "$": "loc",
+        "cls": "SimpleLocation",
+        "start": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 21
+        },
+        "end": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 23
+        },
+        "strand": 1,
+        "ref": null,
+        "ref_db": null
+       },
+       {
+        "$": "loc",
+        "cls": "SimpleLocation",
+        "start": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 27
+        },
+        "end": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 29
+        },
+        "strand": 1,
+        "ref": null,
+        "ref_db": null
+       }
+      ],
+      "operator": "join"
+     },
+     "type": "mRNA",
+     "id": "join-inside",
+     "qualifiers": []
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "CompoundLocation",
+      "parts": [
+       {
+        "$": "loc",
+        "cls": "SimpleLocation",
+        "start": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 45
+        },
+        "end": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 50
+        },
+        "strand": -1,
+        "ref": null,
+        "ref_db": null
+       },
+       {
+        "$": "loc",
+        "cls": "SimpleLocation",
+        "start": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 55
+        },
+        "end": {
+         "$": "pos",
+         "cls": "ExactPosition",
+         "v": 58
+        },
+        "strand": -1,
+        "ref": null,
+        "ref_db": null
+       }
+      ],
+      "operator": "join"
+     },
+     "type": "mRNA",
+     "id": "join-right",
+     "qualifiers": []
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "BeforePosition",
+       "v": 18
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 28
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "gene",
+     "id": "fuzzy-before",
+     "qualifiers": []
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 32
+      },
+      "end": {
+       "$": "pos",
+       "cls": "AfterPosition",
+       "v": 44
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "gene",
+     "id": "fuzzy-after",
+     "qualifiers": []
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "WithinPosition",
+       "v": 20,
+       "left": 20,
+       "right": 24
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 30
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "gene",
+     "id": "fuzzy-within",
+     "qualifiers": []
+    }
+   ],
+   "annotations": [
+    [
+     "molecule_type",
+     "DNA"
+    ],
+    [
+     "topology",
+     "linear"
+    ]
+   ],
+   "letter": null
+  },
+  "withletters": {
+   "$": "rec",
+   "seq": {
+    "$": "Seq",
+    "v": "ATGAAAGGGCCCTTTATGCG"
+   },
+   "id": "letters",
+   "name": "LETTERS",
+   "description": "with per-letter annotations",
+   "dbxrefs": [],
+   "features": [
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 2
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 8
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "gene",
+     "id": "g",
+     "qualifiers": []
+    },
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 15
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 20
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "gene",
+     "id": "h",
+     "qualifiers": []
+    }
+   ],
+   "annotations": [
+    [
+     "molecule_type",
+     "DNA"
+    ]
+   ],
+   "letter": [
+    [
+     "phred_quality",
+     {
+      "$": "list",
+      "v": [
+       0,
+       1,
+       2,
+       3,
+       4,
+       5,
+       6,
+       7,
+       8,
+       9,
+       10,
+       11,
+       12,
+       13,
+       14,
+       15,
+       16,
+       17,
+       18,
+       19
+      ]
+     }
+    ],
+    [
+     "secondary_structure",
+     "HHHHHHHHHHHHHHHHHHHH"
+    ]
+   ]
+  },
+  "nofeatures": {
+   "$": "rec",
+   "seq": {
+    "$": "Seq",
+    "v": "ATGAAAGGGCCCTTTATGCGTACGTTAGCCATGGCATTAGCATCGATCGGATCCATTAGC"
+   },
+   "id": "bare",
+   "name": "BARE",
+   "description": "no features",
+   "dbxrefs": [],
+   "features": [],
+   "annotations": [
+    [
+     "molecule_type",
+     "DNA"
+    ]
+   ],
+   "letter": null
+  },
+  "nolocation": {
+   "$": "rec",
+   "seq": {
+    "$": "Seq",
+    "v": "ATGAAAGGGCCCTTTATGCG"
+   },
+   "id": "noloc",
+   "name": "NOLOC",
+   "description": "a feature with no location",
+   "dbxrefs": [],
+   "features": [
+    {
+     "$": "feat",
+     "location": {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 2
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 8
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     "type": "gene",
+     "id": "g",
+     "qualifiers": []
+    },
+    {
+     "$": "feat",
+     "location": null,
+     "type": "assembly_gap",
+     "id": "no-location",
+     "qualifiers": [
+      [
+       "note",
+       "unplaced"
+      ]
+     ]
+    }
+   ],
+   "annotations": [
+    [
+     "molecule_type",
+     "DNA"
+    ]
+   ],
+   "letter": null
+  }
+ },
+ "cases": [
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    0,
+    60
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "ATGAAAGGGCCCTTTATGCGTACGTTAGCCATGGCATTAGCATCGATCGGATCCATTAGC"
+    },
+    "features": [
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 0
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 10
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "whole-left",
+      "qualifiers": [
+       [
+        "gene",
+        "left"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 20
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 30
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "inside",
+      "qualifiers": [
+       [
+        "gene",
+        "middle"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 50
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 60
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "whole-right",
+      "qualifiers": [
+       [
+        "gene",
+        "right"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "CDS",
+      "id": "across-start",
+      "qualifiers": [
+       [
+        "product",
+        "p1"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 55
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "CDS",
+      "id": "across-end",
+      "qualifiers": [
+       [
+        "product",
+        "p2"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 0
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 60
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "source",
+      "id": "source-whole",
+      "qualifiers": [
+       [
+        "organism",
+        "synthetic"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 22
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 24
+       },
+       "strand": null,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "misc_feature",
+      "id": "tiny-nostrand",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 5
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 15
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 25
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 35
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-across",
+      "qualifiers": [
+       [
+        "note",
+        "two exons"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 21
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 23
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 27
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 29
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-inside",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 45
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 50
+         },
+         "strand": -1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 55
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 58
+         },
+         "strand": -1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-right",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "BeforePosition",
+        "v": 18
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 28
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-before",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 32
+       },
+       "end": {
+        "$": "pos",
+        "cls": "AfterPosition",
+        "v": 44
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-after",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "WithinPosition",
+        "v": 20,
+        "left": 20,
+        "right": 24
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 30
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-within",
+      "qualifiers": []
+     }
+    ]
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    0,
+    30
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "ATGAAAGGGCCCTTTATGCGTACGTTAGCC"
+    },
+    "features": [
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 0
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 10
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "whole-left",
+      "qualifiers": [
+       [
+        "gene",
+        "left"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 20
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 30
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "inside",
+      "qualifiers": [
+       [
+        "gene",
+        "middle"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "CDS",
+      "id": "across-start",
+      "qualifiers": [
+       [
+        "product",
+        "p1"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 22
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 24
+       },
+       "strand": null,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "misc_feature",
+      "id": "tiny-nostrand",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 21
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 23
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 27
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 29
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-inside",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "BeforePosition",
+        "v": 18
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 28
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-before",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "WithinPosition",
+        "v": 20,
+        "left": 20,
+        "right": 24
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 30
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-within",
+      "qualifiers": []
+     }
+    ]
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    10,
+    50
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "CCTTTATGCGTACGTTAGCCATGGCATTAGCATCGATCGG"
+    },
+    "features": [
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 10
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 20
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "inside",
+      "qualifiers": [
+       [
+        "gene",
+        "middle"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 12
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 14
+       },
+       "strand": null,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "misc_feature",
+      "id": "tiny-nostrand",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 11
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 13
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 17
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 19
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-inside",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "BeforePosition",
+        "v": 8
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 18
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-before",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 22
+       },
+       "end": {
+        "$": "pos",
+        "cls": "AfterPosition",
+        "v": 34
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-after",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "WithinPosition",
+        "v": 10,
+        "left": 10,
+        "right": 14
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 20
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-within",
+      "qualifiers": []
+     }
+    ]
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    20,
+    30
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "TACGTTAGCC"
+    },
+    "features": [
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 0
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 10
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "inside",
+      "qualifiers": [
+       [
+        "gene",
+        "middle"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 2
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 4
+       },
+       "strand": null,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "misc_feature",
+      "id": "tiny-nostrand",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 1
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 3
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 7
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 9
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-inside",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "WithinPosition",
+        "v": 0,
+        "left": 0,
+        "right": 4
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 10
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-within",
+      "qualifiers": []
+     }
+    ]
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    25,
+    26
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "T"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    0,
+    0
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": ""
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    30,
+    30
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": ""
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    59,
+    60
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "C"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    0,
+    1
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "A"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    5,
+    55
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "AGGGCCCTTTATGCGTACGTTAGCCATGGCATTAGCATCGATCGGATCCA"
+    },
+    "features": [
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 15
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "inside",
+      "qualifiers": [
+       [
+        "gene",
+        "middle"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 0
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 20
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "CDS",
+      "id": "across-start",
+      "qualifiers": [
+       [
+        "product",
+        "p1"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 30
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 50
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "CDS",
+      "id": "across-end",
+      "qualifiers": [
+       [
+        "product",
+        "p2"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 17
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 19
+       },
+       "strand": null,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "misc_feature",
+      "id": "tiny-nostrand",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 0
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 10
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 20
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 30
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-across",
+      "qualifiers": [
+       [
+        "note",
+        "two exons"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 16
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 18
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 22
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 24
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-inside",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "BeforePosition",
+        "v": 13
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 23
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-before",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 27
+       },
+       "end": {
+        "$": "pos",
+        "cls": "AfterPosition",
+        "v": 39
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-after",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "WithinPosition",
+        "v": 15,
+        "left": 15,
+        "right": 19
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-within",
+      "qualifiers": []
+     }
+    ]
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "args": [
+    21,
+    29
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "ACGTTAGC"
+    },
+    "features": [
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 1
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 3
+       },
+       "strand": null,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "misc_feature",
+      "id": "tiny-nostrand",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 0
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 2
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 6
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 8
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-inside",
+      "qualifiers": []
+     }
+    ]
+   },
+   "warnings": []
+  },
+  {
+   "op": "rc",
+   "recv": {
+    "$": "recref",
+    "name": "plain"
+   },
+   "result": {
+    "$": "rec",
+    "seq": {
+     "$": "Seq",
+     "v": "GCTAATGGATCCGATCGATGCTAATGCCATGGCTAACGTACGCATAAAGGGCCCTTTCAT"
+    },
+    "id": "demo",
+    "name": "DEMO",
+    "description": "a demonstration record",
+    "dbxrefs": [
+     "GeneID:1"
+    ],
+    "features": [
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 0
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 10
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "whole-right",
+      "qualifiers": [
+       [
+        "gene",
+        "right"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 0
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 60
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "source",
+      "id": "source-whole",
+      "qualifiers": [
+       [
+        "organism",
+        "synthetic"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 10
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 15
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 2
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 5
+         },
+         "strand": 1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-right",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "CDS",
+      "id": "across-end",
+      "qualifiers": [
+       [
+        "product",
+        "p2"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "BeforePosition",
+        "v": 16
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 28
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-after",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 45
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 55
+         },
+         "strand": -1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 25
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 35
+         },
+         "strand": -1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-across",
+      "qualifiers": [
+       [
+        "note",
+        "two exons"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 30
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 40
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "inside",
+      "qualifiers": [
+       [
+        "gene",
+        "middle"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 30
+       },
+       "end": {
+        "$": "pos",
+        "cls": "WithinPosition",
+        "v": 40,
+        "left": 36,
+        "right": 40
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-within",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "CompoundLocation",
+       "parts": [
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 37
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 39
+         },
+         "strand": -1,
+         "ref": null,
+         "ref_db": null
+        },
+        {
+         "$": "loc",
+         "cls": "SimpleLocation",
+         "start": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 31
+         },
+         "end": {
+          "$": "pos",
+          "cls": "ExactPosition",
+          "v": 33
+         },
+         "strand": -1,
+         "ref": null,
+         "ref_db": null
+        }
+       ],
+       "operator": "join"
+      },
+      "type": "mRNA",
+      "id": "join-inside",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 32
+       },
+       "end": {
+        "$": "pos",
+        "cls": "AfterPosition",
+        "v": 42
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "fuzzy-before",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 55
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "CDS",
+      "id": "across-start",
+      "qualifiers": [
+       [
+        "product",
+        "p1"
+       ]
+      ]
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 36
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 38
+       },
+       "strand": null,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "misc_feature",
+      "id": "tiny-nostrand",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 50
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 60
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "whole-left",
+      "qualifiers": [
+       [
+        "gene",
+        "left"
+       ]
+      ]
+     }
+    ],
+    "annotations": [
+     [
+      "molecule_type",
+      "DNA"
+     ],
+     [
+      "topology",
+      "linear"
+     ]
+    ],
+    "letter": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "withletters"
+   },
+   "args": [
+    0,
+    0
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": ""
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "withletters"
+   },
+   "args": [
+    0,
+    1
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "A"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "rc",
+   "recv": {
+    "$": "recref",
+    "name": "withletters"
+   },
+   "result": {
+    "$": "rec",
+    "seq": {
+     "$": "Seq",
+     "v": "CGCATAAAGGGCCCTTTCAT"
+    },
+    "id": "letters",
+    "name": "LETTERS",
+    "description": "with per-letter annotations",
+    "dbxrefs": [],
+    "features": [
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 0
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "h",
+      "qualifiers": []
+     },
+     {
+      "$": "feat",
+      "location": {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 12
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 18
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      "type": "gene",
+      "id": "g",
+      "qualifiers": []
+     }
+    ],
+    "annotations": [
+     [
+      "molecule_type",
+      "DNA"
+     ]
+    ],
+    "letter": [
+     [
+      "phred_quality",
+      {
+       "$": "list",
+       "v": [
+        19,
+        18,
+        17,
+        16,
+        15,
+        14,
+        13,
+        12,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2,
+        1,
+        0
+       ]
+      }
+     ],
+     [
+      "secondary_structure",
+      "HHHHHHHHHHHHHHHHHHHH"
+     ]
+    ]
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    0,
+    60
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "ATGAAAGGGCCCTTTATGCGTACGTTAGCCATGGCATTAGCATCGATCGGATCCATTAGC"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    0,
+    30
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "ATGAAAGGGCCCTTTATGCGTACGTTAGCC"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    10,
+    50
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "CCTTTATGCGTACGTTAGCCATGGCATTAGCATCGATCGG"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    20,
+    30
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "TACGTTAGCC"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    25,
+    26
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "T"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    0,
+    0
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": ""
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    30,
+    30
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": ""
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    59,
+    60
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "C"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    0,
+    1
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "A"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    5,
+    55
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "AGGGCCCTTTATGCGTACGTTAGCCATGGCATTAGCATCGATCGGATCCA"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "args": [
+    21,
+    29
+   ],
+   "result": {
+    "seq": {
+     "$": "Seq",
+     "v": "ACGTTAGC"
+    },
+    "features": []
+   },
+   "warnings": []
+  },
+  {
+   "op": "rc",
+   "recv": {
+    "$": "recref",
+    "name": "nofeatures"
+   },
+   "result": {
+    "$": "rec",
+    "seq": {
+     "$": "Seq",
+     "v": "GCTAATGGATCCGATCGATGCTAATGCCATGGCTAACGTACGCATAAAGGGCCCTTTCAT"
+    },
+    "id": "bare",
+    "name": "BARE",
+    "description": "no features",
+    "dbxrefs": [],
+    "features": [],
+    "annotations": [
+     [
+      "molecule_type",
+      "DNA"
+     ]
+    ],
+    "letter": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nolocation"
+   },
+   "args": [
+    0,
+    0
+   ],
+   "divergence": "no-location feature: Biopython raises AttributeError, seqedit keeps the feature",
+   "exc": {
+    "type": "AttributeError",
+    "msg": "'NoneType' object has no attribute 'ref'"
+   },
+   "warnings": []
+  },
+  {
+   "op": "slice",
+   "recv": {
+    "$": "recref",
+    "name": "nolocation"
+   },
+   "args": [
+    0,
+    1
+   ],
+   "divergence": "no-location feature: Biopython raises AttributeError, seqedit keeps the feature",
+   "exc": {
+    "type": "AttributeError",
+    "msg": "'NoneType' object has no attribute 'ref'"
+   },
+   "warnings": []
+  },
+  {
+   "op": "rc",
+   "recv": {
+    "$": "recref",
+    "name": "nolocation"
+   },
+   "divergence": "no-location feature: Biopython raises AttributeError, seqedit keeps the feature",
+   "exc": {
+    "type": "AttributeError",
+    "msg": "'NoneType' object has no attribute '_flip'"
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    0
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 10
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 20
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    7
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 17
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 27
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    100
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 110
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 120
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    -3
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 7
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 17
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": -1,
+     "ref": null,
+     "ref_db": null
+    },
+    0
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 10
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 20
+    },
+    "strand": -1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": -1,
+     "ref": null,
+     "ref_db": null
+    },
+    7
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 17
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 27
+    },
+    "strand": -1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": -1,
+     "ref": null,
+     "ref_db": null
+    },
+    100
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 110
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 120
+    },
+    "strand": -1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": -1,
+     "ref": null,
+     "ref_db": null
+    },
+    -3
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 7
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 17
+    },
+    "strand": -1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": null,
+     "ref": null,
+     "ref_db": null
+    },
+    0
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 10
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 20
+    },
+    "strand": null,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": null,
+     "ref": null,
+     "ref_db": null
+    },
+    7
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 17
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 27
+    },
+    "strand": null,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": null,
+     "ref": null,
+     "ref_db": null
+    },
+    100
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 110
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 120
+    },
+    "strand": null,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 10
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 20
+     },
+     "strand": null,
+     "ref": null,
+     "ref_db": null
+    },
+    -3
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 7
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 17
+    },
+    "strand": null,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 0
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 1
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    0
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 0
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 1
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 0
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 1
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    7
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 7
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 8
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 0
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 1
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    100
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 100
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 101
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 0
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 1
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    -3
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": -3
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": -2
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "CompoundLocation",
+     "parts": [
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 15
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      }
+     ],
+     "operator": "join"
+    },
+    0
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "CompoundLocation",
+    "parts": [
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 5
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 15
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 25
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 35
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     }
+    ],
+    "operator": "join"
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "CompoundLocation",
+     "parts": [
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 15
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      }
+     ],
+     "operator": "join"
+    },
+    7
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "CompoundLocation",
+    "parts": [
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 12
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 22
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 32
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 42
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     }
+    ],
+    "operator": "join"
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "CompoundLocation",
+     "parts": [
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 15
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      }
+     ],
+     "operator": "join"
+    },
+    100
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "CompoundLocation",
+    "parts": [
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 105
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 115
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 125
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 135
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     }
+    ],
+    "operator": "join"
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "CompoundLocation",
+     "parts": [
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 15
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      },
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "strand": 1,
+       "ref": null,
+       "ref_db": null
+      }
+     ],
+     "operator": "join"
+    },
+    -3
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "CompoundLocation",
+    "parts": [
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 2
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 12
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     },
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 22
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 32
+      },
+      "strand": 1,
+      "ref": null,
+      "ref_db": null
+     }
+    ],
+    "operator": "join"
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "CompoundLocation",
+     "parts": [
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 15
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      }
+     ],
+     "operator": "order"
+    },
+    0
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "CompoundLocation",
+    "parts": [
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 5
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 15
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     },
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 25
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 35
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     }
+    ],
+    "operator": "order"
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "CompoundLocation",
+     "parts": [
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 15
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      }
+     ],
+     "operator": "order"
+    },
+    7
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "CompoundLocation",
+    "parts": [
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 12
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 22
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     },
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 32
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 42
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     }
+    ],
+    "operator": "order"
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "CompoundLocation",
+     "parts": [
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 15
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      }
+     ],
+     "operator": "order"
+    },
+    100
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "CompoundLocation",
+    "parts": [
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 105
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 115
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     },
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 125
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 135
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     }
+    ],
+    "operator": "order"
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "CompoundLocation",
+     "parts": [
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 5
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 15
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      },
+      {
+       "$": "loc",
+       "cls": "SimpleLocation",
+       "start": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 25
+       },
+       "end": {
+        "$": "pos",
+        "cls": "ExactPosition",
+        "v": 35
+       },
+       "strand": -1,
+       "ref": null,
+       "ref_db": null
+      }
+     ],
+     "operator": "order"
+    },
+    -3
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "CompoundLocation",
+    "parts": [
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 2
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 12
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     },
+     {
+      "$": "loc",
+      "cls": "SimpleLocation",
+      "start": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 22
+      },
+      "end": {
+       "$": "pos",
+       "cls": "ExactPosition",
+       "v": 32
+      },
+      "strand": -1,
+      "ref": null,
+      "ref_db": null
+     }
+    ],
+    "operator": "order"
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "BeforePosition",
+      "v": 5
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 15
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    0
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "BeforePosition",
+     "v": 5
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 15
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "BeforePosition",
+      "v": 5
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 15
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    7
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "BeforePosition",
+     "v": 12
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 22
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "BeforePosition",
+      "v": 5
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 15
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    100
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "BeforePosition",
+     "v": 105
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 115
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "BeforePosition",
+      "v": 5
+     },
+     "end": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 15
+     },
+     "strand": 1,
+     "ref": null,
+     "ref_db": null
+    },
+    -3
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "BeforePosition",
+     "v": 2
+    },
+    "end": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 12
+    },
+    "strand": 1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 5
+     },
+     "end": {
+      "$": "pos",
+      "cls": "AfterPosition",
+      "v": 15
+     },
+     "strand": -1,
+     "ref": null,
+     "ref_db": null
+    },
+    0
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 5
+    },
+    "end": {
+     "$": "pos",
+     "cls": "AfterPosition",
+     "v": 15
+    },
+    "strand": -1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 5
+     },
+     "end": {
+      "$": "pos",
+      "cls": "AfterPosition",
+      "v": 15
+     },
+     "strand": -1,
+     "ref": null,
+     "ref_db": null
+    },
+    7
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 12
+    },
+    "end": {
+     "$": "pos",
+     "cls": "AfterPosition",
+     "v": 22
+    },
+    "strand": -1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 5
+     },
+     "end": {
+      "$": "pos",
+      "cls": "AfterPosition",
+      "v": 15
+     },
+     "strand": -1,
+     "ref": null,
+     "ref_db": null
+    },
+    100
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 105
+    },
+    "end": {
+     "$": "pos",
+     "cls": "AfterPosition",
+     "v": 115
+    },
+    "strand": -1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  },
+  {
+   "op": "shift",
+   "args": [
+    {
+     "$": "loc",
+     "cls": "SimpleLocation",
+     "start": {
+      "$": "pos",
+      "cls": "ExactPosition",
+      "v": 5
+     },
+     "end": {
+      "$": "pos",
+      "cls": "AfterPosition",
+      "v": 15
+     },
+     "strand": -1,
+     "ref": null,
+     "ref_db": null
+    },
+    -3
+   ],
+   "result": {
+    "$": "loc",
+    "cls": "SimpleLocation",
+    "start": {
+     "$": "pos",
+     "cls": "ExactPosition",
+     "v": 2
+    },
+    "end": {
+     "$": "pos",
+     "cls": "AfterPosition",
+     "v": 12
+    },
+    "strand": -1,
+    "ref": null,
+    "ref_db": null
+   },
+   "warnings": []
+  }
+ ]
+}

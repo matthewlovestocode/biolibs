@@ -1,0 +1,12 @@
+{
+  "name": "@biolibs/features",
+  "version": "0.1.0",
+  "description": "Find known elements in a DNA sequence by comparing it with a library of reference pieces on both strands, tolerating a few mismatches",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist"],
+  "license": "MIT",
+  "dependencies": { "@biolibs/core": "0.1.0", "@biolibs/seq": "0.1.0", "@biolibs/seqfeature": "0.1.0" }
+}

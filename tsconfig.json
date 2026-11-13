@@ -39,6 +39,24 @@
     },
     {
       "path": "packages/motifs"
+    },
+    {
+      "path": "packages/gel"
+    },
+    {
+      "path": "packages/seqmap"
+    },
+    {
+      "path": "packages/pcr"
+    },
+    {
+      "path": "packages/seqedit"
+    },
+    {
+      "path": "packages/features"
+    },
+    {
+      "path": "packages/cloning"
     }
   ]
 }

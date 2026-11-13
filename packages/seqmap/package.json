@@ -1,0 +1,12 @@
+{
+  "name": "@biolibs/seqmap",
+  "version": "0.1.0",
+  "description": "Geometry for plasmid and linear sequence maps: positions on a circle or line, feature arcs, scale ticks, lane packing and label de-collision",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist"],
+  "license": "MIT",
+  "dependencies": { "@biolibs/core": "0.1.0" }
+}

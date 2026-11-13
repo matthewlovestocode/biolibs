@@ -20,6 +20,19 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/phylo` | `Bio.Phylo`: `Tree`, `Clade`, `BranchColor` with the full search and editing API, Newick, Nexus and PhyloXML reading and writing, consensus trees and tree construction (UPGMA, neighbour joining, parsimony); NeXML and CDAO not yet ported | [phylo.md](phylo.md) |
 | `@biolibs/seqtools` | Bio.SeqUtils: GC, molecular weight, codon adaptation index, checksums, protein analysis, melting temperature | [seqtools.md](seqtools.md) |
 
+### Bioengineering packages (no Biopython counterpart)
+
+These are not ports. Biopython has no equivalent of any of them, so they are built on the ported packages rather than translated, and `docs/parity/` has nothing to check off for them — see [Testing without a reference implementation](#testing-without-a-reference-implementation) below.
+
+| Package | Purpose | Docs |
+|---|---|---|
+| `@biolibs/seqedit` | Edit a `SeqRecord` while keeping its features true: replace, insert and delete bases with every location moved, stretched or clipped. Verified against Biopython where the two overlap (slicing, reverse complement, location arithmetic) | [seqedit.md](seqedit.md) |
+| `@biolibs/pcr` | Primer quality, where a primer binds, what a pair amplifies, primer design. Melting temperatures come from `seqtools` | [pcr.md](pcr.md) |
+| `@biolibs/cloning` | Restriction digests, ligation and ends that pair; Gibson assembly and overlap primer design. Built on `restriction` | [cloning.md](cloning.md) |
+| `@biolibs/features` | Find known elements in a sequence against a library of reference pieces, on both strands, tolerating mismatches | [features.md](features.md) |
+| `@biolibs/gel` | Virtual agarose gel: where fragments run, ladders, which bands a gel resolves | [gel.md](gel.md) |
+| `@biolibs/seqmap` | Geometry for plasmid and linear maps: positions on a circle or line, feature arcs, ticks, lane packing, label de-collision | [seqmap.md](seqmap.md) |
+
 ## Dependency graph
 
 ```
@@ -33,6 +46,18 @@ core  <-- seq  <-- nexus  <-- seqio
   +---- svdsuperimposer  <-- pdb  <-- seqio (pdb-atom, cif-atom, cif-seqres)
   +---- restriction  (also uses seq)
   +---- motifs  (also uses seq, align)
+  +---- gel
+  +---- seqmap
+```
+
+The bioengineering packages sit on top of the ports:
+
+```
+seqtools  <-- pcr  <-- cloning
+seqrecord <-- seqedit  <-- cloning
+seqfeature <-- features
+restriction  <-- cloning
+gel, seqmap   (core only)
 ```
 
 Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none.
@@ -44,6 +69,18 @@ Only `core` is depended on by every package; `seqio` and `seqtools` also use `se
 - **Errors:** invalid input throws `BioError` (from `@biolibs/core`) with a descriptive message. Functions never silently drop bad characters, except where documented (ambiguous codons translate to `X`).
 - **Mutation is explicit:** functions never modify their inputs. The only mutable objects are `MutableSeq` and methods taking `inplace = true`, as in Biopython.
 - **Alphabets:** like Biopython, DNA and RNA complements are separate methods (`complement` vs `complementRna`); IUPAC ambiguity codes are supported throughout.
+- **Topology:** a record is circular when its `topology` annotation is `"circular"`, which is where GenBank and EMBL put it and what `seqio` writes. `seqedit`, `cloning` and `features` all read it from there rather than inventing a flag.
+
+## Testing without a reference implementation
+
+The ported packages are measured: `reference/.venv` runs real Biopython, generates golden JSON, and the TypeScript tests replay it, so a `docs/parity/` item is `[x]` only when a golden case exercises it.
+
+The six bioengineering packages have no Biopython counterpart, so there is nothing to generate golden data from and they add no parity items. They are held to a different standard instead:
+
+- **Against Biopython wherever the behaviour does overlap.** `seqedit` is golden-tested on 62 cases against `record[a:b]`, `record.reverse_complement()` and `location + offset`, and its one deliberate divergence (a feature with no location, which makes Biopython raise) is recorded in the golden file and asserted, so it cannot quietly spread.
+- **Against published figures.** `pcr`'s melting temperatures are `seqtools`' `Tm_NN`, already verified against Biopython; `cloning` is checked against the real cut coordinates and overhangs of EcoRI, PstI, SmaI, BamHI, BglII and HindIII from the REBASE data in `restriction`.
+- **Against invariants and round trips.** Cutting a plasmid and re-ligating its pieces gives the plasmid back; flipping a fragment twice restores it; a Gibson ring is the molecule its fragments spell; every fragment loaded onto a gel appears in exactly one band; a feature library finds each piece at its own position in its own source sequence.
+- **Against the error paths.** Every refusal has a test, since a cloning tool that silently returns the wrong construct is worse than one that explains itself.
 
 ## Getting started
 
@@ -72,7 +109,7 @@ Packages are not yet published to npm; inside this monorepo they resolve through
 - Each package lives in `packages/<name>/` with `src/index.ts` (public API) and `test/*.test.ts`.
 - TypeScript project references (`tsconfig.json` in each package) give correct incremental build order.
 - Tests import packages by name (`@biolibs/seq`); `vitest.config.ts` aliases these to `src`, so no build is needed to run tests.
-- To add a package: copy an existing one, add it to the root `tsconfig.json` references and the alias list in `vitest.config.ts`.
+- To add a package: copy an existing one, add it to the root `tsconfig.json` references and the alias list in `vitest.config.ts`, then run `npm install` so the `node_modules/@biolibs/<name>` symlink is created (without it, imports from other packages will not resolve).
 
 ## Python to TypeScript cheat sheet
 
@@ -83,8 +120,13 @@ Packages are not yet published to npm; inside this monorepo they resolve through
 | `Seq(s).translate(to_stop=True)` | `new Seq(s).translate({ toStop: true })` |
 | `SeqIO.parse(f, "fasta")` | `parse(text, "fasta")` |
 | `SeqIO.write(recs, f, "fastq")` | `write(recs, out, "fastq")` |
-| `pairwise2.align.globalms` | not yet ported |
+| `pairwise2.align.globalms` | superseded by `PairwiseAligner` in `@biolibs/align` |
 | `Phylo.read(f, "newick")` | `parseNewick(text)` |
 | `SeqUtils.gc_fraction(s)` | `gcFraction(s)` |
 | `SeqUtils.MeltingTemp.Tm_Wallace` | `tmWallace(s)` |
-| `Restriction.EcoRI.search(seq)` | not yet ported |
+| `SeqUtils.MeltingTemp.Tm_NN` | `tmNN(s)`, or `primerTm(s, conditions)` in `@biolibs/pcr` |
+| `Restriction.EcoRI.search(seq)` | `enzymes.EcoRI.search(seq)` |
+| `Restriction.EcoRI.catalyse(seq)` | `enzymes.EcoRI.catalyse(seq)`, or `piecesOf(record, [EcoRI])` for ends and features |
+| `record[a:b]` | `record.slice(a, b)`, or `extractRegion(record, a, b)` to keep edge-crossing features |
+| `location + offset` | `shiftLocation(location, offset)` |
+| *(no equivalent)* | `applyEdit`, `cloneProducts`, `assembleGibson`, `designPrimers`, `detectFeatures`, `bandsOf`, `ringPath` |
