@@ -62,13 +62,22 @@ function checkDefined(text: string): string {
 }
 
 /** A sequence reduced to what the indexing code needs: its text, or its items. */
-export type Items = { text: string } | { list: unknown[] };
+export type Items = { text: string; undefSize?: number } | { list: unknown[] };
 
 /** `str` and `Seq` count as text (Python `isinstance(sequence, (str, Seq))`); everything else is a list of items. */
 export function itemsOf(sequence: unknown): Items {
   const s = unwrap(sequence);
   if (typeof s === "string") return { text: s };
-  if (s instanceof Seq) return { text: s.defined ? s.toString() : partialText(s) };
+  if (s instanceof Seq) {
+    if (s.defined) return { text: s.toString() };
+    // A sequence with no content at all may be enormous (BED files use length 2**63-1), so its text is never built:
+    // asking for it raises Biopython's error when the first slice is taken.
+    if (s.definedRanges.length === 0) {
+      const lazy = Object.defineProperty({}, "text", { get: (): string => { throw new UndefinedSequenceError("Sequence content is undefined"); } });
+      return Object.defineProperty(lazy, "undefSize", { value: s.length }) as Items;
+    }
+    return { text: partialText(s) };
+  }
   if (s instanceof MutableSeq) return { list: Array.from(s.toString()) };
   if (s instanceof Uint8Array) return { list: Array.from(s) };
   if (Array.isArray(s)) return { list: s };
@@ -90,6 +99,11 @@ export function sliceList<T>(items: T[], a: number, b: number): T[] {
 
 /** Python `x[i]` on text or a list: negative indices wrap; out of range is an IndexError. */
 export function itemAt(items: Items, i: number): unknown {
+  if ("undefSize" in items && items.undefSize !== undefined) {
+    const k = i < 0 ? i + items.undefSize : i;
+    if (k < 0 || k >= items.undefSize) throw new IndexError("string index out of range");
+    throw new UndefinedSequenceError("Sequence content is undefined");
+  }
   if ("text" in items) {
     const cps = Array.from(items.text);
     const k = i < 0 ? i + cps.length : i;

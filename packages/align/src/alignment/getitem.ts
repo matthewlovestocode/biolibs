@@ -5,7 +5,7 @@
  */
 
 import { IndexError, ValueError, pyTypeName } from "@biolibs/core";
-import { MutableSeq, Seq, sliceIndices, type PySlice } from "@biolibs/seq";
+import { MutableSeq, Seq, UndefinedSequenceError, sliceIndices, type PySlice } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 import type { Alignment } from "./alignment.js";
 import { alignedColumns, allNonNegative, allNonPositive, columnMax, diffRows, select, type Matrix } from "./coords.js";
@@ -32,6 +32,12 @@ type Line = string | unknown[];
 
 /** The `str` of a sliced sequence, as Python's `str(sequence[a:b])` gives it. */
 function sliceString(items: Items, a: number, b: number): string {
+  if ("undefSize" in items && items.undefSize !== undefined) {
+    // A sequence with no content: only an empty slice can be read.
+    const [start, stop] = sliceIndices({ start: a, stop: b }, items.undefSize);
+    if (start < stop) throw new UndefinedSequenceError("Sequence content is undefined");
+    return "";
+  }
   if ("text" in items) return sliceText(items.text, a, b);
   return `[${sliceList(items.list, a, b).map((x) => (typeof x === "string" ? `'${x}'` : String(x))).join(", ")}]`;
 }

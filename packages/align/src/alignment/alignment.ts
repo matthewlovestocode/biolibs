@@ -76,9 +76,15 @@ export class Alignment {
   /** One row per sequence: its coordinates at each change of direction in the alignment path. */
   coordinates: number[][] | null;
   /** The alignment score, when known (set by the aligner). */
-  score?: number;
+  score?: number | string;
   /** Annotations describing the alignment (optional). */
   annotations?: Map<string, unknown>;
+  /** BED column 7: where the thick part starts. */
+  thickStart?: number;
+  /** BED column 8: where the thick part ends. */
+  thickEnd?: number;
+  /** BED column 9: the item colour, as text. */
+  itemRgb?: string;
   /** Number of matching letters, as read from or written to PSL files. */
   matches?: number;
   /** Number of mismatching letters (PSL). */

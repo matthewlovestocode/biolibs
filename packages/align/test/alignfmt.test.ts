@@ -6,10 +6,10 @@ import { captureWarnings } from "@biolibs/core";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
-type Spec = { seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
+type Spec = { seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number | string>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
 interface Case { kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
 /** Python keyword arguments to the positional arguments of each writer. */
-const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]] };
+const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]], bed: [["bedN", 12]] };
 const kwargArgs = (c: Case): unknown[] => {
   if (!c.kwargs) return [];
   const params = WRITER_PARAMS[c.fmt.toLowerCase()] ?? [];
@@ -23,6 +23,7 @@ const seqText = (q: any): unknown => {
   if (q.defined === undefined || q.defined) return String(q);
   return { len: q.length, defined: q.definedRanges.map(([a, b]: [number, number]) => [a, b, String(q.slice(a, b))]) };
 };
+const EXTRA_NAMES = ["matches", "misMatches", "repMatches", "nCount", "score", "thickStart", "thickEnd", "itemRgb"] as const;
 const enc = (a: Alignment) => {
   const d: any = {
     ids: a.sequences.map((s) => (s instanceof SeqRecord ? s.id : null)),
@@ -34,7 +35,7 @@ const enc = (a: Alignment) => {
     lann: a.sequences.map((s) => (s instanceof SeqRecord ? Object.fromEntries(s.letterAnnotations) : {})),
     ...(a.operations !== undefined ? { ops: new TextDecoder().decode(a.operations) } : {}),
     feat: a.sequences.map((s) => (s instanceof SeqRecord ? s.features.map((f) => [f.type, String(f.location), Object.fromEntries(f.qualifiers)]) : [])),
-    ...(a.matches !== undefined || a.misMatches !== undefined ? { extra: Object.fromEntries((["matches", "misMatches", "repMatches", "nCount"] as const).filter((k) => a[k] !== undefined).map((k) => [k, a[k]])) } : {}),
+    ...(EXTRA_NAMES.some((k) => a[k] !== undefined) ? { extra: Object.fromEntries(EXTRA_NAMES.filter((k) => a[k] !== undefined).map((k) => [k, a[k]])) } : {}),
     names: a.sequences.map((s) => (s instanceof SeqRecord ? s.name : null)),
     descs: a.sequences.map((s) => (s instanceof SeqRecord ? s.description : null)),
     weights: a.sequences.map((s) => (s instanceof SeqRecord && s.annotations.has("weight") ? s.annotations.get("weight") : null)),
@@ -51,6 +52,7 @@ const build = (spec: Spec): Alignment => {
     });
     const aln = new Alignment(recs, spec.coords!);
     Object.assign(aln, spec.extra ?? {});
+    if (spec.ann !== undefined) aln.annotations = new Map(Object.entries(spec.ann));
     return aln;
   }
   const parsed = Alignment.parsePrintedAlignment(spec.rows.map((r) => new TextEncoder().encode(r)));

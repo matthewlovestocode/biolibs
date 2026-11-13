@@ -41,7 +41,7 @@ def enc_aln(a):
     d["lann"] = [dict(getattr(s, "letter_annotations", {})) for s in a.sequences]
     if hasattr(a, "operations"): d["ops"] = bytes(a.operations).decode()
     d["feat"] = [[[f.type, str(f.location), {k: v for k, v in f.qualifiers.items()}] for f in getattr(s, "features", [])] for s in a.sequences]
-    ex = {k: getattr(a, k) for k in ("matches", "misMatches", "repMatches", "nCount") if hasattr(a, k)}
+    ex = {k: getattr(a, k) for k in ("matches", "misMatches", "repMatches", "nCount", "score", "thickStart", "thickEnd", "itemRgb") if hasattr(a, k)}
     if ex: d["extra"] = ex
     d["names"] = [getattr(s, "name", None) for s in a.sequences]
     d["descs"] = [getattr(s, "description", None) for s in a.sequences]
@@ -60,6 +60,7 @@ def build(spec):
         if spec.get("plain"): recs = [r.seq if p else r for r, p in zip(recs, spec["plain"])]
         a = Alignment(recs, np.array(spec["coords"], dtype=np.intp))
         for k, v in (spec.get("extra") or {}).items(): setattr(a, k, v)
+        if spec.get("ann") is not None: a.annotations = dict(spec["ann"])
         return a
     seqs = []
     gapped = spec["rows"]
@@ -551,6 +552,95 @@ add({"kind": "format", "fmt": "psl", "aln": {"ids": ["a", "b", "c"], "seqs": ["A
 for t in PSL_TEXTS[:3]:
     add({"kind": "rewrite", "fmt": "psl", "text": t})
     add({"kind": "rewrite", "fmt": "psl", "text": t, "kwargs": {"header": False}})
+
+# ---- BED and chain ----
+BED_SPECS = []
+for rev in (False, True):
+    for _ in range(8):
+        sp = rand_psl_spec(prng, rev=rev)
+        sp["ids"] = ["chr%d" % prng.randint(1, 5), "read%d" % prng.randint(1, 9)]
+        BED_SPECS.append(sp)
+BED_TEXTS = []
+for sp in BED_SPECS:
+    for n in (12, 12, 9, 6, 5, 4, 3):
+        sp2 = dict(sp, extra={"score": prng.choice([0, 100.5, 960, 1e-5]), "thickStart": sp["coords"][0][0], "thickEnd": sp["coords"][0][-1], "itemRgb": "255,0,0"})
+        try: BED_TEXTS.append(build(sp2).format("bed")) if n == 12 else None
+        except Exception: pass
+        try:
+            buf = io.StringIO(); Align.write([build(sp2)], buf, "bed", bedN=n); BED_TEXTS.append(buf.getvalue())
+        except Exception: pass
+BED_TEXTS += ["", "\n", "chr1\t10\t20\n", "chr1\t10\t20\tname\t.\t+\n", "chr1\t10\t20\tname\tx\n", "chr1\t10\t20\tname\t5\t-\t11\t19\t0,0,255\t1\t10,\t0,\n",
+              "chr1\t10\t20\tname\t5\t-\t11\t19\t0,0,255\t2\t4,6,\t0,4,\n", "chr1\t10\n", "chr1 10 20 name\n", "\t\t\n", "chr1\t10\t20\tn\t1\t+\t1\t2\t3\t1\t10,\t0,\t9\n",
+              "chr1\t10\t20\tn\t1\t+\t1\t2\t3\t2\t10,\t0,\n", "chr1\t10\t20\tn\t1\t+\tx\n"]
+for t in BED_TEXTS:
+    add({"kind": "parse", "fmt": "bed", "text": t})
+    add({"kind": "read", "fmt": "bed", "text": t})
+for t in BED_TEXTS[:25]:
+    lines = t.split("\n")
+    for _ in range(8):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if m[i].count("\t") >= 2 and r < 0.7:
+            f = m[i].split("\t"); k = rnd.randrange(len(f)); f[k] = rnd.choice(["", "x", "-1", "0", "5", "3,", f[k] + "9", "+", "-", "."]); m[i] = "\t".join(f)
+        elif r < 0.85 and m[i].count("\t") >= 2:
+            f = m[i].split("\t"); del f[rnd.randrange(len(f))]; m[i] = "\t".join(f)
+        else: del m[i]
+        add({"kind": "parse", "fmt": "bed", "text": "\n".join(m)})
+for sp in BED_SPECS:
+    for n in (12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 13):
+        add({"kind": "write", "fmt": "bed", "alns": [sp], "kwargs": {"bedN": n}})
+    add({"kind": "format", "fmt": "bed", "aln": sp})
+    add({"kind": "format", "fmt": "bed", "aln": dict(sp, extra={"score": 5, "thickStart": 3, "thickEnd": 9, "itemRgb": "1,2,3"})})
+    add({"kind": "format", "fmt": "bed", "aln": dict(sp, extra={"score": "."})})
+    add({"kind": "format", "fmt": "bed", "aln": dict(sp, plain=[True, True])})
+add({"kind": "write", "fmt": "bed", "alns": BED_SPECS[:4]})
+add({"kind": "write", "fmt": "bed", "alns": []})
+add({"kind": "format", "fmt": "bed", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "TTTT"], "coords": [[0, 2, 4], [0, 0, 4]]}})
+add({"kind": "format", "fmt": "bed", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "TTTT"], "coords": [[0, 4], [4, 0]]}})
+add({"kind": "format", "fmt": "bed", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "TTTT"], "coords": [[4, 0], [0, 4]]}})
+
+CHAIN_SPECS = []
+for tr in (False, True):
+    for qr in (False, True):
+        for _ in range(5):
+            sp = rand_psl_spec(prng, rev=qr)
+            if tr:
+                tl = len(sp["seqs"][0]); sp["coords"][0] = [tl - x for x in sp["coords"][0]]
+            sp["extra"] = {"score": prng.choice([0, 1234, 55.5, 1e7])}
+            if prng.random() < 0.5: sp["ann"] = {"id": str(prng.randint(1, 99))}
+            CHAIN_SPECS.append(sp)
+CHAIN_TEXTS = []
+for sp in CHAIN_SPECS:
+    try: CHAIN_TEXTS.append(build(sp).format("chain"))
+    except Exception: pass
+CHAIN_TEXTS.append("".join(CHAIN_TEXTS[:5]))
+CHAIN_TEXTS.append("# comment\n# more\n" + "".join(CHAIN_TEXTS[:3]))
+CHAIN_TEXTS.append("".join(t.rstrip("\n") + "\n" for t in CHAIN_TEXTS[:4]))
+CHAIN_TEXTS += ["", "\n", "# only comment\n", "chain 5 a 10 + 0 5 b 10 + 0 5\n5\n", "chain 5 a 10 + 0 5 b 10 + 0 5\n", "chain 5 a 10 + 0 5 b 10 + 0 5\n2\t1\t0\n2\n", "chain 5 a 10 x 0 5 b 10 + 0 5\n5\n",
+                "chain 5 a 10 + 0 5 b 10 y 0 5\n5\n", "chain 5 a 10 + 0 5 b 10\n5\n", "foo 5 a 10 + 0 5 b 10 + 0 5\n5\n", "chain x a 10 + 0 5 b 10 + 0 5\n5\n", "chain 5 a 10 + 0 5 b 10 + 0 5\n\n5\n",
+                "chain 5 a 10 + 0 5 b 10 + 0 5\n2\t1\n", "chain 5 a 10 + 0 5 b 10 + 0 5\n2\t1\t1\t9\n"]
+for t in CHAIN_TEXTS:
+    add({"kind": "parse", "fmt": "chain", "text": t})
+    add({"kind": "read", "fmt": "chain", "text": t})
+for t in CHAIN_TEXTS[:14]:
+    lines = t.split("\n")
+    for _ in range(10):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if r < 0.3: del m[i]
+        elif r < 0.6 and m[i]:
+            f = m[i].split(); k = rnd.randrange(len(f)); f[k] = rnd.choice(["", "x", "-1", "0", "5", f[k] + "9", "+", "-"]); m[i] = (" " if m[i].startswith("chain") else "\t").join(f)
+        elif r < 0.8: m.insert(i, rnd.choice(["", "#", "x", "5\t1\t1", "3"]))
+        else: m = m[:i]
+        add({"kind": "parse", "fmt": "chain", "text": "\n".join(m)})
+for sp in CHAIN_SPECS:
+    add({"kind": "format", "fmt": "chain", "aln": sp})
+    add({"kind": "write", "fmt": "chain", "alns": [sp]})
+    add({"kind": "format", "fmt": "chain", "aln": dict(sp, plain=[True, True])})
+add({"kind": "write", "fmt": "chain", "alns": CHAIN_SPECS[:5]})
+add({"kind": "write", "fmt": "chain", "alns": []})
+add({"kind": "format", "fmt": "chain", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "TTTT"], "coords": [[0, 2, 4], [0, 0, 4]]}})
+add({"kind": "format", "fmt": "chain", "aln": {"ids": ["a", "b"], "seqs": ["ACGT", "TTTT"], "coords": [[0, 4], [0, 2]], "extra": {"score": "x"}}})
+for t in CHAIN_TEXTS[:2] + BED_TEXTS[:2]:
+    add({"kind": "rewrite", "fmt": "chain" if t in CHAIN_TEXTS else "bed", "text": t})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)
