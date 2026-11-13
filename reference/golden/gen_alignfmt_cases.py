@@ -144,7 +144,7 @@ def run(case):
             elif k == "bbparse":
                 # The file is built here by Biopython's own bigBed writer, then read back: nothing is hand-made.
                 data = bytes.fromhex(case["data"])
-                alns = Align.parse(io.BytesIO(data), "bigbed")
+                alns = Align.parse(io.BytesIO(data), case["fmt"])
                 res = [enc_aln(a) for a in alns]
                 out["result"] = {"alns": res, "metadata": meta(alns), "len": len(alns),
                                  "declaration": str(alns.declaration), "bedN": alns.bedN,
@@ -152,7 +152,7 @@ def run(case):
                                  "fields": [[f.as_type, f.name, f.comment] for f in alns.declaration]}
             elif k == "bbsearch":
                 data = bytes.fromhex(case["data"])
-                alns = Align.parse(io.BytesIO(data), "bigbed")
+                alns = Align.parse(io.BytesIO(data), case["fmt"])
                 out["result"] = []
                 for chrom, start, end in case["queries"]:
                     try:
@@ -1157,6 +1157,101 @@ add({"kind": "bbsearch", "fmt": "bigbed", "data": data, "queries": [
 add({"kind": "bbparse", "fmt": "bigbed", "data": b"not a bigbed file at all, not even close".hex()})
 good = bb_file(BB_ALNS, BB_TARGETS)
 add({"kind": "bbparse", "fmt": "bigbed", "data": good[: 2 * (len(good) // 4)]})
+
+# ---------------- bigPsl and bigMaf ----------------
+# Both are bigBed files with a different set of extra columns, so they are made the same way: Biopython parses a
+# PSL or MAF file and writes it out through its own bigPsl / bigMaf writer, and the cases record what reading
+# that file gives back. Both writers want the targets passed in; bigMaf's wants the first one named
+# `species.chromosome`, as a MAF file names its sequences, and bigPsl's wants each alignment to carry an
+# `annotations` dict already, which the PSL reader does not give it.
+from Bio.Align import bigpsl, bigmaf
+
+def big_file(module, alns, targets, **kwargs):
+    """Write a bigPsl or bigMaf file with Biopython and return its bytes as hex (a real file: see bb_file)."""
+    import tempfile
+    with tempfile.TemporaryDirectory() as d:
+        path = os.path.join(d, "test.bb")
+        wrapped = Align.Alignments(alns)
+        wrapped.targets = targets
+        with open(path, "wb") as f:
+            module.AlignmentWriter(f, targets=targets, **kwargs).write(wrapped)
+        return open(path, "rb").read().hex()
+
+# The PSL input is the generator's own PSL lines, which were produced by Biopython from random alignments and
+# are therefore self-consistent; a hand-written line is easy to get wrong (its gap counts must add up).
+def psl_one(i, a):
+    """One PSL alignment as its own bigPsl file: a chromosome of its own, sized as that alignment says.
+
+    A bigPsl file keeps the chromosome size both in its tree and in every row, and its reader checks that the
+    two agree, so one file cannot hold the random PSL lines as they are -- they reuse a name with several sizes.
+    """
+    t = a.sequences[0]
+    t.id = f"{t.id}_{i:02d}"
+    a.annotations = {}
+    return [SeqRecord(Seq(None, length=len(t.seq)), id=t.id)]
+
+# Each line on its own, since not all of them survive Biopython's own round trip: a few come back with a query
+# end that disagrees with the blocks, which is recorded as the error it is.
+for _i, _a in enumerate(Align.parse(io.StringIO(PSL_TEXTS[0]), "psl")):
+    _targets = psl_one(_i, _a)
+    try: _data = big_file(bigpsl, [_a], _targets)
+    except Exception as _e:
+        print("bigpsl skipped", _i, _e)
+        continue
+    add({"kind": "bbparse", "fmt": "bigpsl", "data": _data})
+    if _i < 4:
+        _c = _targets[0].id
+        add({"kind": "bbsearch", "fmt": "bigpsl", "data": _data, "queries": [
+            [_c, None, None], [_c, 0, 5], [_c, 0, 10000], ["nosuch", 0, 10], [_c, None, 10]]})
+
+# A query declared as protein and one as DNA, which the writer records as the sequence type and the reader uses
+# to decide whether the query's blocks are a third of the target's.
+for _mol, _which in (("protein", 0), ("DNA", 1), ("protein", 2)):
+    for _i, _a in enumerate(Align.parse(io.StringIO(PSL_TEXTS[0]), "psl")):
+        if _i != _which: continue
+        _targets = psl_one(_i, _a)
+        _a.sequences[1].annotations["molecule_type"] = _mol
+        try: _data = big_file(bigpsl, [_a], _targets)
+        except Exception as _e:
+            print("bigpsl skipped", _mol, _i, _e)
+            continue
+        add({"kind": "bbparse", "fmt": "bigpsl", "data": _data})
+
+# The same lines with the writer's other options, for the ones that do round-trip.
+for _kwargs in ({"compress": False}, {"cds": True}):
+    for _i, _a in enumerate(Align.parse(io.StringIO(PSL_TEXTS[0]), "psl")):
+        if _i >= 6: break
+        _targets = psl_one(_i, _a)
+        try: _data = big_file(bigpsl, [_a], _targets, **_kwargs)
+        except Exception as _e:
+            print("bigpsl skipped", _i, _kwargs, _e)
+            continue
+        add({"kind": "bbparse", "fmt": "bigpsl", "data": _data})
+
+BIG_MAF_TEXT = """##maf version=1 scoring=blastz
+a score=10.0
+s hg38.chr1 10 10 + 1000 ACGTACGTAC
+s mm10.chr2 20 10 + 2000 ACGT-CGTACG
+i mm10.chr2 N 0 C 5
+q mm10.chr2 9999-999999
+e rn5.chr3 5 4 + 500 I
+
+a score=22.5 pass=2
+s hg38.chr1 100 12 + 1000 ACGTACGTACGT
+s mm10.chr2 200 12 - 2000 ACGTACGTACGT
+"""
+def maf_input():
+    """The MAF alignments, freshly parsed: the bigMaf writer renames their targets as it goes."""
+    alns = list(Align.parse(io.StringIO(BIG_MAF_TEXT), "maf"))
+    return alns, [SeqRecord(alns[0].sequences[0].seq, id="hg38.chr1")]
+
+for compress in (True, False):
+    _alns, _targets = maf_input()
+    data = big_file(bigmaf, _alns, _targets, compress=compress)
+    add({"kind": "bbparse", "fmt": "bigmaf", "data": data})
+    add({"kind": "bbsearch", "fmt": "bigmaf", "data": data, "queries": [
+        ["hg38.chr1", None, None], ["hg38.chr1", 0, 50], ["hg38.chr1", 100, 105], ["hg38.chr1", 500, 600],
+        ["chr1", 0, 10]]})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 report_skipped()

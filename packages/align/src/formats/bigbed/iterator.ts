@@ -15,7 +15,7 @@ const BED_NAMES = ["chrom", "chromStart", "chromEnd", "name", "score", "strand",
   "reserved", "blockCount", "blockSizes", "chromStarts"];
 
 /** One item of a data block: where it is on the target, and the tab-separated rest of its columns. */
-interface Row {
+export interface BigBedRow {
   /** Which chromosome, as an index into the targets. */
   chromId: number;
   /** Where the item starts. */
@@ -57,7 +57,7 @@ export class BigBedIterator extends AlignmentIterator<ByteStream> {
   private declare header: Header;
   private declare compressed: boolean;
   private declare customFields: [string, Converter][];
-  private declare rows: Iterator<Row>;
+  private declare rows: Iterator<BigBedRow>;
   private declare declaredLength: number;
 
   /**
@@ -106,7 +106,7 @@ export class BigBedIterator extends AlignmentIterator<ByteStream> {
    * @param definedFieldCount - How many of them are standard BED columns.
    * @throws ValueError for a standard column with the wrong name, or an extra one of an unknown type.
    */
-  private analyzeFields(fields: AutoSQLTable, fieldCount: number, definedFieldCount: number): void {
+  protected analyzeFields(fields: AutoSQLTable, fieldCount: number, definedFieldCount: number): void {
     for (let i = 0; i < this.bedN; i++) {
       const name = fields.fields[i]!.name;
       if (name !== BED_NAMES[i]) throw new ValueError(`Expected field name '${BED_NAMES[i]}'; found '${name}'`);
@@ -130,11 +130,11 @@ export class BigBedIterator extends AlignmentIterator<ByteStream> {
   }
 
   /** The items of one data block, decompressed if the file says they are compressed. */
-  private blockRows(stream: ByteStream, node: RTreeNode): Row[] {
+  protected blockRows(stream: ByteStream, node: RTreeNode): BigBedRow[] {
     stream.seek(node.dataOffset!);
     let data = stream.read(node.dataSize!);
     if (this.compressed) data = inflate(data);
-    const out: Row[] = [];
+    const out: BigBedRow[] = [];
     const view = new DataView(data.buffer, data.byteOffset, data.byteLength);
     let i = 0;
     while (i < data.length) {
@@ -152,7 +152,7 @@ export class BigBedIterator extends AlignmentIterator<ByteStream> {
   }
 
   /** Walk the leaves of the R tree from left to right, yielding every item. */
-  private *iterateIndex(stream: ByteStream): Generator<Row> {
+  private *iterateIndex(stream: ByteStream): Generator<BigBedRow> {
     for (const leaf of leaves(this.tree)) yield* this.blockRows(stream, leaf);
   }
 
@@ -170,7 +170,7 @@ export class BigBedIterator extends AlignmentIterator<ByteStream> {
    * @returns The alignment, with the target from the B+ tree and the query named by the item.
    * @throws ValueError when the block counts or the item's own start and end do not agree with its blocks.
    */
-  private createAlignment(row: Row): Alignment {
+  protected createAlignment(row: BigBedRow): Alignment {
     const { chromId, chromStart, chromEnd, rest, dataStart, dataEnd } = row;
     if (rest[dataEnd - 1] !== 0) throw new ValueError("expected a NUL-terminated row");
     const text = new TextDecoder().decode(rest.subarray(dataStart, dataEnd - 1));
@@ -271,7 +271,7 @@ export class BigBedIterator extends AlignmentIterator<ByteStream> {
   }
 
   /** The items of the blocks that may overlap a region, pruning the nodes that cannot. */
-  private *searchIndex(stream: ByteStream, chromIx: number, start: number, end: number): Generator<Row> {
+  private *searchIndex(stream: ByteStream, chromIx: number, start: number, end: number): Generator<BigBedRow> {
     // The padding is Biopython's: a node is kept when it touches the region at all, even end to end.
     const paddedStart = start - 1, paddedEnd = end + 1;
     const before = (a: [number, number], b: [number, number]): boolean => a[0] < b[0] || (a[0] === b[0] && a[1] < b[1]);
