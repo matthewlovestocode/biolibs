@@ -60,7 +60,10 @@ function apply(s: any, op: any[]): unknown {
     case "chains": return reprs(need("getChains")());
     case "models": return reprs(need("getModels")());
     case "atoms": return reprs(need("getAtoms")());
-    case "setitem": { const child = node(s, op[3]).copy(); need("set")(key(op[2]), child); return [x.selectedChild === null ? "None" : x.selectedChild.repr(), [...x.childDict.keys()].map(keyRepr).sort()]; }
+    case "setitem": {
+      // An Atom has no `set`, which is how the port says what Python says by refusing `__setitem__`.
+      if (typeof x.set !== "function") throw new TypeError(`'${x.constructor.name}' object does not support item assignment`);
+      const child = node(s, op[3]).copy(); need("set")(key(op[2]), child); return [x.selectedChild === null ? "None" : x.selectedChild.repr(), [...x.childDict.keys()].map(keyRepr).sort()]; }
     case "delitem": need("delete")(key(op[2])); return state(x);
     case "dis": {
       const [m, arg] = [op[2], op[3]];
@@ -71,6 +74,7 @@ function apply(s: any, op: any[]): unknown {
       else need("disorderedRemove")(arg);
       return [x.selectedChild === null ? "None" : x.selectedChild.repr(), need("disorderedGetIdList")()];
     }
+    case "get_list": return reprs(need("getList")());
     case "cmp": {
       // `compare` returns a sign; Python's operators turn it into a boolean. A wrapper compares as its selected
       // child, which is where the TypeError for an incomparable operand comes from.
@@ -83,9 +87,18 @@ function apply(s: any, op: any[]): unknown {
       return { lt: sign < 0, le: sign <= 0, gt: sign > 0, ge: sign >= 0 }[op[3] as "lt"];
     }
     case "item": {
-      if (op[2] === "len") return x.length;
-      if (op[2] === "contains") return need("has")(key(op[3]));
-      return need("get")(key(op[3])).repr();
+      // An Atom is not a container: it has none of these, which is how the port says what Python says.
+      const name = x.constructor.name;
+      if (op[2] === "len") {
+        if (typeof x.length !== "number") throw new TypeError(`object of type '${name}' has no len()`);
+        return x.length;
+      }
+      if (op[2] === "contains") {
+        if (typeof x.has !== "function") throw new TypeError(`argument of type '${name}' is not a container or iterable`);
+        return x.has(key(op[3]));
+      }
+      if (typeof x.get !== "function") throw new TypeError(`'${name}' object is not subscriptable`);
+      return x.get(key(op[3])).repr();
     }
     case "detach_parent": need("detachParent")(); return x.getParent() === null;
   }

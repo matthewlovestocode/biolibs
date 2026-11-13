@@ -77,6 +77,8 @@ def apply(s, op):
         if m == "len": return len(x)
         if m == "contains": return key in x
         return repr(x[key])
+    if k == "get_list":
+        return [repr(c) for c in x.get_list()][:15]
     if k == "cmp":
         # A wrapper compares as its selected child, so the TypeError for an operand that cannot be compared names
         # the child's class. The right-hand side is another node, or a literal of some other type.
@@ -141,10 +143,10 @@ def gen_ops(s):
     ENT = ("Structure", "Model", "Chain", "Residue")
     ops = []
     for _ in range(rnd.randint(3, 7)):
-        k = rnd.choice(["transform", "com", "com", "vector", "set", "level", "iterator", "list", "setitem", "delitem", "dis", "item", "item", "cmp", "cmp", "detach_parent"])
+        k = rnd.choice(["transform", "com", "com", "vector", "set", "level", "iterator", "list", "get_list", "setitem", "delitem", "delitem", "dis", "item", "item", "cmp", "cmp", "detach_parent"])
         p = {"vector": pick("Atom"), "set": pick("Atom"), "iterator": pick(*ENT), "list": pick(*ENT), "setitem": pick("DisorderedAtom", "DisorderedResidue"), "delitem": pick(*ENT),
              "dis": pick("DisorderedAtom", "DisorderedResidue"), "item": pick(*ENT, "DisorderedResidue", "DisorderedAtom", "DisorderedAtom"),
-             "cmp": pick("DisorderedAtom", "DisorderedResidue", "Atom", *ENT), "com": pick(*ENT, "DisorderedAtom")}.get(k)
+             "cmp": pick("DisorderedAtom", "DisorderedResidue", "Atom", *ENT), "get_list": pick(*ENT), "com": pick(*ENT, "DisorderedAtom")}.get(k)
         if p is None:
             if k in ("dis", "setitem"): continue
             p = rnd.choice(paths)
@@ -158,10 +160,16 @@ def gen_ops(s):
                  "radius": rnd.choice([1.7, None]), "serial_number": rnd.choice([5, "7", None]), "coord": [1.0, rnd.uniform(-9, 9), "nan"]}[name]
             ops.append(["set", p, name, v])
         elif k == "level": ops.append(["level", p])
+        elif k == "get_list": ops.append(["get_list", p])
         elif k == "iterator": ops.append(["iterator", p])
         elif k == "list": ops.append([rnd.choice(["residues", "chains", "models", "atoms"]), p])
         elif k == "setitem": ops.append(["setitem", p, rnd.choice([" ", "A", "Q", 3, ["H_X", 5, " "]]), rnd.choice(paths)])
-        elif k == "delitem": ops.append(["delitem", p, rnd.choice([" ", "A", "CA", 1, 3, [" ", 1, " "], "N"])])
+        elif k == "delitem":
+            # Half the time, a key the node really has: the fixed list above almost never matches a model's integer
+            # id, so `Structure.__delitem__` never actually deleted anything.
+            own = [c.id for c in getattr(x, "child_list", [])]
+            key = rnd.choice(own) if own and rnd.random() < 0.5 else rnd.choice([" ", "A", "CA", 1, 3, [" ", 1, " "], "N"])
+            ops.append(["delitem", p, list(key) if isinstance(key, tuple) else key])
         elif k == "dis":
             m = rnd.choice(["select", "has", "ids", "get", "remove"])
             arg = rnd.choice([" ", "A", "B", "ALA", "GLY", None]) if m in ("select", "has", "get", "remove") else None
@@ -207,5 +215,26 @@ for _ in range(1400):
     c.update(res); cases.append(c)
 
 report_skipped()
+# `disordered_remove` on a DisorderedResidue, with an id the wrapper really holds: the random argument pool almost
+# never matches a residue name, so this is pinned down on its own rather than left to chance.
+found = False
+for _ in range(40):
+    if found: break
+    text = add_point_mutations(gen_pdb(rnd, False))
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        probe = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(text))
+    for path in all_paths(probe):
+        node_here = node(probe, path)
+        if type(node_here).__name__ != "DisorderedResidue": continue
+        ids = [list(i) if isinstance(i, tuple) else i for i in node_here.disordered_get_id_list()]
+        if len(ids) < 2: continue
+        c = {"text": text, "ops": [["dis", path, "ids", None], ["dis", path, "remove", ids[0]], ["dis", path, "ids", None],
+                                   ["dis", path, "get", ids[-1]], ["get_list", path[:-1]]]}
+        res = run_isolated(run, c)
+        if res is not None:
+            c.update(res); cases.append(c); found = True
+        break
+
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases ->", OUT)

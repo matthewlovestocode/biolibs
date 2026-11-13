@@ -407,6 +407,7 @@ CMP_METHODS = {"lt": "__lt__", "le": "__le__", "gt": "__gt__", "ge": "__ge__"}
 # is as good as a result. For the other kinds a raise may mean the op never reached the method, so it is not a hit.
 RAISING_KINDS = ("item", "cmp")
 LIST_METHODS = {"residues": "get_residues", "chains": "get_chains", "models": "get_models", "atoms": "get_atoms"}
+GET_LIST = {"get_list": "get_list"}
 hits = set()
 for c in po:
     for op, out, t in zip(c["ops"], c["ops_out"], c["types"]):
@@ -419,6 +420,7 @@ for c in po:
         elif k == "item": m = ITEM_METHODS[op[2]]
         elif k == "cmp": m = CMP_METHODS[op[3]]
         elif k in LIST_METHODS: m = LIST_METHODS[k]
+        elif k in GET_LIST: m = GET_LIST[k]
         if m: hits.add((t, m))
 for t, m in hits:
     mod = MODS[t]

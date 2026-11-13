@@ -145,9 +145,12 @@ export class Atom implements Child {
     const other = otherOperand as Atom;
     if (!(other instanceof Atom)) throw new TypeError(`'${op}' not supported between instances of 'Atom' and '${pyTypeName(other)}'`);
     if (this.parent !== other.parent && !(this.parent !== null && other.parent !== null && this.parent.equals(other.parent))) {
-      // the operator travels with the recursion: Biopython compares the parents with the same operator, and its
-      // TypeError names it
-      return this.parent!.compare(other.parent!, op);
+      // Biopython compares the two parents with the same operator, so the operator travels with the recursion and
+      // its TypeError names it. A detached atom has no parent, and `None` cannot be compared with anything.
+      if (this.parent === null || other.parent === null) {
+        throw new TypeError(`'${op}' not supported between instances of '${pyTypeName(this.parent)}' and '${pyTypeName(other.parent)}'`);
+      }
+      return this.parent.compare(other.parent, op);
     }
     const s = SORTING_KEYS[this.name] ?? 4;
     const o = SORTING_KEYS[other.name] ?? 4;
@@ -253,7 +256,9 @@ export class Atom implements Child {
 
   /** @returns The coordinates as a {@link Vector}. */
   getVector(): Vector {
-    if (this.coord.length !== 3) throw new ValueError(this.coord.length > 3 ? `too many values to unpack (expected 3, got ${this.coord.length})` : `not enough values to unpack (expected 3, got ${this.coord.length})`);
+    // Unpacking a NumPy array reports no count when there are too many values (CPython cannot ask for one without
+    // consuming the iterator), but does when there are too few, by which point it has counted them.
+    if (this.coord.length !== 3) throw new ValueError(this.coord.length > 3 ? "too many values to unpack (expected 3)" : `not enough values to unpack (expected 3, got ${this.coord.length})`);
     return new Vector(this.coord[0]!, this.coord[1]!, this.coord[2]!);
   }
 

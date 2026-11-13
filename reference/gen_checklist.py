@@ -19,7 +19,10 @@ L = ["# Biopython parity checklist", "",
      "from `inventory.py`'s reading of Biopython; a golden case that pins such a member down wins over that and "
      "makes it `[x]`. Edit `reference/status.json`, then re-run the script.", ""]
 tot = [0, 0]
+#: Every key the checklist asks about, so that a status entry nobody asks about can be dropped.
+asked = set()
 def item(key, text):
+    asked.add(key)
     tot[0] += status.get(key) != "na"; tot[1] += status.get(key) == "done"
     L.append(f"- {mark(key)} `{text}`")
 def section(title, mod, d):
@@ -82,4 +85,14 @@ for title, body in secs:
     index.append(f"| [{title}]({slug}.md) | {done} | {app} |")
 open(f"{out}/README.md", "w").write("\n".join(index) + "\n")
 open(f"{here}/../PARITY.md", "w").write("# Biopython parity checklist\n\nThe checklist is generated and split by module in [docs/parity/](docs/parity/README.md) (start with its index).\n")
+
+# Keep only the entries the checklist asks about. An entry under a key nobody asks about is inert today but would
+# start counting the day that spelling came back -- an item verified by nobody, which is how six of them came to be
+# marked done with no golden case behind them. Dropping one costs nothing, because `update_status.py` derives every
+# mark from the golden cases on each run: a real item is marked again, and a rule aiming at the wrong key now leaves
+# its item visibly not started instead of quietly passing.
+unasked = sorted(k for k in status if k not in asked)
+for k in unasked: del status[k]
+json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
+if unasked: print(f"{len(unasked)} mark(s) landed on keys no checklist item asks about and were dropped (rules aiming at nothing; harmless, but each is a rule worth checking)")
 print(tot)

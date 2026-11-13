@@ -39,6 +39,11 @@ still cannot run, so a run that loses coverage says so rather than quietly commi
 
 ## What counts as "done"
 
+Every mark is derived from the golden cases on each run, so `status.json` can be deleted and rebuilt: the count it
+produces is the count the cases earn. `gen_checklist.py` drops any entry the checklist does not ask about, which is
+what keeps that true -- six items had been marked done by hand under keys no rule maintained, and nothing would have
+noticed. It also reports how many marks landed on keys nothing asks about, each of which is a rule aiming at nothing.
+
 An item in `PARITY.md` is `[x]` only when a golden case exercises it and the TypeScript output is identical to Biopython's: same result, same exception type and message, same warnings, same receiver state after mutation. Items that exist only because Python inherits them (`object.__eq__`, `BaseException.add_note`, ...) are marked `[-]`. For the comparison, hash and string dunders that is derived, not asserted: `inventory.py` walks each class's MRO and `update_status.py` marks what it finds before anything else, so the count stays right when Biopython changes and no one has to maintain hundreds of entries by hand. A golden case still wins — a few of these have behaviour worth pinning down, such as `SeqFeature.__lt__` raising `TypeError` rather than comparing.
 
 ## Known, intentional divergences
