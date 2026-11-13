@@ -6,8 +6,8 @@ import { captureWarnings } from "@biolibs/core";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
-type Spec = { ids: string[]; rows: string[]; colann?: Record<string, string> };
-interface Case { rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
+type Spec = { ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
+interface Case { kwargs?: { interleave?: boolean }; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
 const cases: Case[] = JSON.parse(readFileSync(new URL("./golden/alignfmt.json", import.meta.url), "utf8"));
 
 const seqText = (q: any): unknown => {
@@ -32,6 +32,8 @@ const build = (spec: Spec): Alignment => {
   const parsed = Alignment.parsePrintedAlignment(spec.rows.map((r) => new TextEncoder().encode(r)));
   const recs = parsed.sequences.map((s, i) => new SeqRecord(new Seq(new TextDecoder().decode(s)), spec.ids[i]!));
   const a = new Alignment(recs, parsed.coordinates);
+  if (spec.mol) for (const r of recs) r.annotations.set("molecule_type", spec.mol);
+  if (spec.mols) spec.mols.forEach((m, i) => { if (m !== null) recs[i]!.annotations.set("molecule_type", m); });
   if (spec.colann) a.columnAnnotations = new Map(Object.entries(spec.colann));
   return a;
 };
@@ -52,7 +54,7 @@ describe("Bio.Align file formats", () => {
         }
         if (c.kind === "format") return build(c.aln!).format(c.fmt);
         let text = "";
-        const nw = write(c.alns!.map(build), { write: (t: string) => { text += t; } }, c.fmt);
+        const nw = write(c.alns!.map(build), { write: (t: string) => { text += t; } }, c.fmt, ...(c.kwargs && "interleave" in c.kwargs ? [c.kwargs.interleave] : []));
         return { text, n: nw };
       };
       let captured: { warnings: { category: string; message: string }[] } = { warnings: [] };

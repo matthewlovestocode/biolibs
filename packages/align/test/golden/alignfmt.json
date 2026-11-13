@@ -38896,5 +38896,9669 @@ null
 }
 },
 "wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n]\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ]"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbe5in data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGT[A\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\n ormat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: ormat "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missin==?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb A-GTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"A-GTTA"
+],
+"coords": [
+[
+0,
+1,
+2,
+4,
+4,
+5
+],
+[
+0,
+1,
+1,
+3,
+4,
+5
+]
+],
+"seqs": [
+"ACGTA",
+"AGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-X\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-X",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTX",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\n\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions nta\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: matrix "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXU]\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"p1",
+"p2"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"coords": [
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+3,
+4,
+6
+]
+],
+"seqs": [
+"MKVLA",
+"MKVQLA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"p1",
+"p2"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"coords": [
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+3,
+4,
+6
+]
+],
+"seqs": [
+"MKVLA",
+"MKVQLA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\n\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 5KVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Taxon p2: Illegal character 5 in sequence 5KVQLA (check dimensions/interleaving)"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\n\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"p1",
+"p2"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"coords": [
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+3,
+4,
+6
+]
+],
+"seqs": [
+"MKVLA",
+"MKVQLA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=p-otein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: p-otein"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n=\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"p1",
+"p2"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"coords": [
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+3,
+4,
+6
+]
+],
+"seqs": [
+"MKVLA",
+"MKVQLA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndim\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: dim "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"p1",
+"p2"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"coords": [
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+3,
+4,
+6
+]
+],
+"seqs": [
+"MKVLA",
+"MKVQLA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: p1 "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NE=US\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGUA",
+"ACGUUA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGUA",
+"ACGUUA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGUA",
+"ACGUUA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU5A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Taxon a: Illegal character 5 in sequence ACGU5A (check dimensions/interleaving)"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUU\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\n\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGUA",
+"ACGUUA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin 5ata;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\n\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\n'atrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data-\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NE\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat da\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: format "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGUA",
+"ACGUUA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nb[gin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nm\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: m "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGUA",
+"ACGUUA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-=\nb ACGUUA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Taxon a: Illegal character = in sequence ACGU-= (check dimensions/interleaving)"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna gap=- missing=?;\nmatrix\na ACGU-A\nb ACGUUA\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#N;XUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatr\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: matr "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T[A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na AC\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Matrix Nchar 6 does not match data length (5) for taxon a"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\n-egin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\na ACG\nb ACG\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb\n\na T-A\nb TTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A\nb TTA\n;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG\n\na T-A",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=? interleave;\nmatrix\na ACG\nb ACG",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin d\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nen\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard ga'=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype]standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ]"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Symbols must be defined when using standard datatype. Please remove any whitespace (spaces, tabs, etc.) between values for symbols as this confuses the Nexus parser."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=standard gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+2,
+4
+],
+[
+0,
+2,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+2,
+4
+],
+[
+0,
+2,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na A=--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Taxon a: Illegal character = in sequence A=--GT (check dimensions/interleaving)"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nb;gin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin dat=;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimension- ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: dimension- "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nm\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: m "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXU'\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+2,
+4
+],
+[
+0,
+2,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "]NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--G\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#N'XUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+2,
+4
+],
+[
+0,
+2,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2  char=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na AC--GT\nb AC--GA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+2,
+4
+],
+[
+0,
+2,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"a"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"a"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: matrix "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na AC A\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"a"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"a"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\n5atrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: 5atrix "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"a"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACXT\na ACGA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"a"
+],
+"rows": [
+"ACXT",
+"ACGA"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACXT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nc;ar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: ar=4 "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"a"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\ne-d;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"a"
+],
+"rows": [
+"ACGT",
+"ACGA"
+],
+"coords": [
+[
+0,
+4
+],
+[
+0,
+4
+]
+],
+"seqs": [
+"ACGT",
+"ACGA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\n egin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT\na ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb AC\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin d\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": "int() can't convert non-string with explicit base"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: matrix"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na \nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na \nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb AXGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"AXGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"AXGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nm[trix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Illegal block nesting in block data"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n \nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Illegal block nesting in block data"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na A5GT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Taxon a: Illegal character 5 in sequence A5GT-A (check dimensions/interleaving)"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n5\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Illegal block nesting in block data"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEX\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntXee t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: txee "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb \n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin[data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nen ;\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Illegal block nesting in block data"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "TypeError",
+"msg": "int() can't convert non-string with explicit base"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: matrix "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Illegal block nesting in block data"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACG\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbeg=n data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nma rix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: ma "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\n\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Illegal block nesting in block data"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nen\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: en "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbe\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: matrix "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\nbegin sets;\ncharset x = 1-2;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "No alignments found in file"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEX\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEX[S\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXU]\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "No alignments found in file"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin tr[es;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\ne]d;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ]"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree ; = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Syntax error in tree description: "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\nend;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree \nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin \ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t[= (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin treesX\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXU[\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\nend;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin trees;\ntree t = (a,b);\n[nd;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin \ntree t = (a,b);\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NE=US\nbegin trees;\ntree t = (a,b);\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\nend;",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\ne\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#n xus\nbegin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#n;xus\nbegin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\nend\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin \nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\nend;",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexu \nbegin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#\nbegin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nex=s\nbegin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\n'nd;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#5exus\nbegin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbe5in data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\nend;",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\nend;",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\nen=;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#nexus\nbegin data;\n-nd;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "NEXUS\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "NEXUS",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "No alignments found in file"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: matrix "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#N]XUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\nb AC\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "-NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nfor\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: for "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXU \nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dn\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n \nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin ]ata;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ]"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#N]XUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: matrix "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NE\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\na ACG\nb AC\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: a "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon t o ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nen\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegi\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- mis ing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntax[n one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\n]egin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ]"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unsupported datatype: dn'a'gap"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\n=nd;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n'\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegi] data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;\nmatrix\ntaxon one ACGT\ntaxon two ACGA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ]"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dn'a'gap=- missing=?;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na AC T-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndi\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: di "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nen;;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [commen\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched ["
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin da;a;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix [comment]\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+]
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n\nend\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n\nend\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n5\nend\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\nend\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nch;r=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: r=6 "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat data5ype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unknown command: format "
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n5\nend\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Empty file."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions  tax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#[EXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "begin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "File does not start with NEXUS header."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\nend\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Dimensions must be specified before matrix!"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- mi sing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"result": {
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"coords": [
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+4,
+5,
+6
+]
+],
+"seqs": [
+"ACGTA",
+"ACGTTA"
+],
+"names": [
+"<unknown name>",
+"<unknown name>"
+],
+"descs": [
+"<unknown description>",
+"<unknown description>"
+],
+"weights": [
+null,
+null
+]
+}
+],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na\nb ACGTTA\n;\nend\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Not enough taxa in matrix."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "read",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "No alignments found in file"
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nm-trix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "NexusError",
+"msg": "Unmatched 'end'."
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmat\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin f\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin fo\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb \n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nform\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT'A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\nb ACGTTA\n;\nend;\n",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin foo;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;",
+"warnings": [],
+"result": {
+"alns": [],
+"metadata": null
+},
+"wtext": []
+},
+{
+"kind": "parse",
+"fmt": "nexus",
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna gap=- missing=?;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein gap=- missing=?;\nmatrix\np1 MKV-LA\np2 MKVQLA\n;\nend;\n",
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "ERROR: TAXLABELS must be identical with MATRIX. Please Report this as a bug, and send in data file."
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"mol": "DNA"
+},
+"warnings": [],
+"result": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna missing=? gap=-;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna missing=? gap=-;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna missing=? gap=- interleave;\nmatrix\na ACGT-A\nb ACGTTA\n\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=dna missing=? gap=-;\nmatrix\na ACGT-A\nb ACGTTA\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"mol": "DNA"
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT-A",
+"ACGTTA"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected to write 1 alignment; wrote 2"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"mol": "RNA"
+},
+"warnings": [],
+"result": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna missing=? gap=-;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"mol": "RNA"
+}
+],
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna missing=? gap=-;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"mol": "RNA"
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna missing=? gap=- interleave;\nmatrix\na ACGU-A\nb ACGUUA\n\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"mol": "RNA"
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=rna missing=? gap=-;\nmatrix\na ACGU-A\nb ACGUUA\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"mol": "RNA"
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU-A",
+"ACGUUA"
+],
+"mol": "RNA"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected to write 1 alignment; wrote 2"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"p",
+"q"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"mol": "protein"
+},
+"warnings": [],
+"result": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein missing=? gap=-;\nmatrix\np MKV-LA\nq MKVQLA\n;\nend;\n",
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"p",
+"q"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"mol": "protein"
+}
+],
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein missing=? gap=-;\nmatrix\np MKV-LA\nq MKVQLA\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"p",
+"q"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"mol": "protein"
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein missing=? gap=- interleave;\nmatrix\np MKV-LA\nq MKVQLA\n\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"p",
+"q"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"mol": "protein"
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=6;\nformat datatype=protein missing=? gap=-;\nmatrix\np MKV-LA\nq MKVQLA\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"p",
+"q"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"mol": "protein"
+},
+{
+"ids": [
+"p",
+"q"
+],
+"rows": [
+"MKV-LA",
+"MKVQLA"
+],
+"mol": "protein"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected to write 1 alignment; wrote 2"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU",
+"ACGU"
+],
+"mol": "DNA"
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains U, but DNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU",
+"ACGU"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains U, but DNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU",
+"ACGU"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains U, but DNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU",
+"ACGU"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains U, but DNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU",
+"ACGU"
+],
+"mol": "DNA"
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGU",
+"ACGU"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains U, but DNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mol": "RNA"
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains T, but RNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mol": "RNA"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains T, but RNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mol": "RNA"
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains T, but RNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mol": "RNA"
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains T, but RNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mol": "RNA"
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mol": "RNA"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "a contains T, but RNA alignment"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+"protein"
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+"protein"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+"protein"
+]
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+"protein"
+]
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+"protein"
+]
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+"protein"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"gDNA",
+"DNA"
+]
+},
+"warnings": [],
+"result": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna missing=? gap=-;\nmatrix\na ACGT\nb ACGT\n;\nend;\n",
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"gDNA",
+"DNA"
+]
+}
+],
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna missing=? gap=-;\nmatrix\na ACGT\nb ACGT\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"gDNA",
+"DNA"
+]
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna missing=? gap=- interleave;\nmatrix\na ACGT\nb ACGT\n\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"gDNA",
+"DNA"
+]
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna missing=? gap=-;\nmatrix\na ACGT\nb ACGT\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"gDNA",
+"DNA"
+]
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"gDNA",
+"DNA"
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected to write 1 alignment; wrote 2"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+null
+]
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+null
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+null
+]
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+null
+]
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+null
+]
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"ACGT",
+"ACGT"
+],
+"mols": [
+"DNA",
+null
+]
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Need the molecule type to be defined"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a b",
+"c"
+],
+"rows": [
+"AC-T",
+"ACGT"
+],
+"mol": "DNA"
+},
+"warnings": [],
+"result": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna missing=? gap=-;\nmatrix\n'a b' AC-T\nc     ACGT\n;\nend;\n",
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a b",
+"c"
+],
+"rows": [
+"AC-T",
+"ACGT"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna missing=? gap=-;\nmatrix\n'a b' AC-T\nc     ACGT\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a b",
+"c"
+],
+"rows": [
+"AC-T",
+"ACGT"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna missing=? gap=- interleave;\nmatrix\n'a b' AC-T\nc     ACGT\n\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a b",
+"c"
+],
+"rows": [
+"AC-T",
+"ACGT"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=4;\nformat datatype=dna missing=? gap=-;\nmatrix\n'a b' AC-T\nc     ACGT\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a b",
+"c"
+],
+"rows": [
+"AC-T",
+"ACGT"
+],
+"mol": "DNA"
+},
+{
+"ids": [
+"a b",
+"c"
+],
+"rows": [
+"AC-T",
+"ACGT"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected to write 1 alignment; wrote 2"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+},
+"warnings": [],
+"result": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=1001;\nformat datatype=dna missing=? gap=- interleave;\nmatrix\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCC\n\n;\nend;\n",
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=1001;\nformat datatype=dna missing=? gap=- interleave;\nmatrix\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCC\n\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=1001;\nformat datatype=dna missing=? gap=- interleave;\nmatrix\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCC\n\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=1001;\nformat datatype=dna missing=? gap=-;\nmatrix\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected to write 1 alignment; wrote 2"
+},
+"wtext": []
+},
+{
+"kind": "format",
+"fmt": "nexus",
+"aln": {
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+},
+"warnings": [],
+"result": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=130;\nformat datatype=dna missing=? gap=-;\nmatrix\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n;\nend;\n",
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=130;\nformat datatype=dna missing=? gap=-;\nmatrix\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": true
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=130;\nformat datatype=dna missing=? gap=- interleave;\nmatrix\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+}
+],
+"kwargs": {
+"interleave": false
+},
+"warnings": [],
+"result": {
+"text": "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=130;\nformat datatype=dna missing=? gap=-;\nmatrix\na AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nb CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n;\nend;\n",
+"n": 1
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+},
+{
+"ids": [
+"a",
+"b"
+],
+"rows": [
+"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+],
+"mol": "DNA"
+}
+],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected to write 1 alignment; wrote 2"
+},
+"wtext": []
+},
+{
+"kind": "write",
+"fmt": "nexus",
+"alns": [],
+"warnings": [],
+"exc": {
+"type": "ValueError",
+"msg": "Expected to write 1 alignment; wrote 0"
+},
+"wtext": []
 }
 ]

@@ -21,6 +21,13 @@ export class TextStream implements Iterable<string> {
     return { next: (): IteratorResult<string> => { const l = this.readline(); return l === "" ? { done: true, value: undefined } : { done: false, value: l }; } };
   }
 
+  /** @returns Everything not yet read (Python `stream.read()`), leaving the stream at its end. */
+  read(): string {
+    const rest = this.text.slice(this.pos);
+    this.pos = this.text.length;
+    return rest;
+  }
+
   /** @returns The current offset (0 until something has been read). */
   tell(): number { return this.pos; }
 

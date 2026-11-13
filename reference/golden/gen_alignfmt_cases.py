@@ -49,6 +49,11 @@ def build(spec):
     sequences, coords = Alignment.parse_printed_alignment([r.encode() for r in gapped]) if hasattr(Alignment, "parse_printed_alignment") else (None, None)
     recs = [SeqRecord(Seq(bytes(s).decode()), id=i) for s, i in zip(sequences, spec["ids"])]
     a = Alignment(recs, coords)
+    if spec.get("mol"):
+        for r in recs: r.annotations["molecule_type"] = spec["mol"]
+    if spec.get("mols"):
+        for r, m in zip(recs, spec["mols"]):
+            if m is not None: r.annotations["molecule_type"] = m
     if spec.get("colann"): a.column_annotations = dict(spec["colann"])
     return a
 
@@ -77,7 +82,7 @@ def run(case):
                 out["wmsg"] = [str(x.message) for x in w]
             elif k == "write":
                 buf = io.StringIO()
-                n = Align.write([build(s) for s in case["alns"]], buf, case["fmt"])
+                n = Align.write([build(s) for s in case["alns"]], buf, case["fmt"], **case.get("kwargs", {}))
                 out["result"] = {"text": buf.getvalue(), "n": n}
         except Exception as e:
             out["exc"] = {"type": tname(e), "msg": emsg(e)}
@@ -251,6 +256,43 @@ for t in E_BASES:
         add({"kind": "parse", "fmt": "emboss", "text": "\n".join(m)})
 for t in ["", "x\n", RULE + "\n", RULE + "\n# Program\n", RULE + "\n# Program: x\n" + RULE + "\n"]:
     add({"kind": "parse", "fmt": "emboss", "text": t})
+
+# ---- NEXUS ----
+def nex(datatype="dna", rows=(("a", "ACGT-A"), ("b", "ACGTTA")), interleave=False, extra="", gap="-", missing="?"):
+    n = len(rows); L = len(rows[0][1])
+    t = f"#NEXUS\nbegin data;\ndimensions ntax={n} nchar={L};\nformat datatype={datatype} gap={gap} missing={missing}{' interleave' if interleave else ''};\nmatrix\n"
+    if interleave:
+        h = L // 2
+        t += "".join(f"{k} {v[:h]}\n" for k, v in rows) + "\n" + "".join(f"{k} {v[h:]}\n" for k, v in rows)
+    else: t += "".join(f"{k} {v}\n" for k, v in rows)
+    return t + ";\nend;\n" + extra
+NEX = [nex(), nex("protein", (("p1", "MKV-LA"), ("p2", "MKVQLA"))), nex("rna", (("a", "ACGU-A"), ("b", "ACGUUA"))), nex(interleave=True), nex("standard"), nex("dna", (("a", "AC--GT"), ("b", "AC--GA"))),
+       nex("dna", (("a", "ACGT"), ("a", "ACGA"))), nex(extra="begin trees;\ntree t = (a,b);\nend;\n"), nex(extra="begin sets;\ncharset x = 1-2;\nend;\n"),
+       "#NEXUS\n", "#NEXUS\nbegin trees;\ntree t = (a,b);\nend;\n", "#nexus\nbegin data;\nend;\n", "", "NEXUS\n", "#NEXUS\nbegin data;\ndimensions ntax=2 nchar=3;\nformat datatype=dna;\nmatrix\na ACG\nb AC\n;\nend;\n",
+       nex("dna", (("taxon one", "ACGT"), ("taxon two", "ACGA"))).replace("a ", "'a'"), nex().replace("matrix", "matrix [comment]"), nex().replace(";\nend;", ";\nend"), nex().replace("begin data", "begin foo")]
+for t in NEX:
+    add({"kind": "parse", "fmt": "nexus", "text": t})
+    add({"kind": "read", "fmt": "nexus", "text": t})
+    lines = t.split("\n")
+    for _ in range(25):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if r < 0.35: del m[i]
+        elif r < 0.55: m[i] = m[i][:rnd.randrange(len(m[i]) + 1)]
+        elif r < 0.8 and m[i]:
+            j = rnd.randrange(len(m[i])); m[i] = m[i][:j] + rnd.choice("X-5 ;=[]'") + m[i][j + 1:]
+        else: m = m[:i]
+        add({"kind": "parse", "fmt": "nexus", "text": "\n".join(m)})
+add({"kind": "parse", "fmt": "nexus", "text": NEX[0] + NEX[1]})
+for aln in [{"ids": ["a", "b"], "rows": ["ACGT-A", "ACGTTA"], "mol": "DNA"}, {"ids": ["a", "b"], "rows": ["ACGU-A", "ACGUUA"], "mol": "RNA"}, {"ids": ["p", "q"], "rows": ["MKV-LA", "MKVQLA"], "mol": "protein"},
+            {"ids": ["a", "b"], "rows": ["ACGT", "ACGT"]}, {"ids": ["a", "b"], "rows": ["ACGU", "ACGU"], "mol": "DNA"}, {"ids": ["a", "b"], "rows": ["ACGT", "ACGT"], "mol": "RNA"},
+            {"ids": ["a", "b"], "rows": ["ACGT", "ACGT"], "mols": ["DNA", "protein"]}, {"ids": ["a", "b"], "rows": ["ACGT", "ACGT"], "mols": ["gDNA", "DNA"]}, {"ids": ["a", "b"], "rows": ["ACGT", "ACGT"], "mols": ["DNA", None]},
+            {"ids": ["a b", "c"], "rows": ["AC-T", "ACGT"], "mol": "DNA"}, {"ids": ["a", "b"], "rows": ["A" * 1001, "C" * 1001], "mol": "DNA"}, {"ids": ["a", "b"], "rows": ["A" * 130, "C" * 130], "mol": "DNA"}]:
+    add({"kind": "format", "fmt": "nexus", "aln": aln})
+    add({"kind": "write", "fmt": "nexus", "alns": [aln]})
+    add({"kind": "write", "fmt": "nexus", "alns": [aln], "kwargs": {"interleave": True}})
+    add({"kind": "write", "fmt": "nexus", "alns": [aln], "kwargs": {"interleave": False}})
+    add({"kind": "write", "fmt": "nexus", "alns": [aln, aln]})
+add({"kind": "write", "fmt": "nexus", "alns": []})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)
