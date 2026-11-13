@@ -1,8 +1,8 @@
 /** `Atom` and `DisorderedAtom` (Biopython's `Bio.PDB.Atom`). Coordinates are single-precision, like NumPy's `"f"` arrays. */
 
-import { ValueError, pyRepr, warn } from "@biolibs/core";
+import { ValueError, pyRepr, pyTypeName, warn } from "@biolibs/core";
 import { IUPACData } from "@biolibs/seq";
-import { DisorderedEntityWrapper, type Child, type Entity } from "./entity.js";
+import { DisorderedEntityWrapper, compareThroughWrapper, type Child, type Entity } from "./entity.js";
 import { PDB_CONSTRUCTION_WARNING } from "./exceptions.js";
 import { averageCoords, transformCoord, type Coord, type RotMatrix } from "./geometry.js";
 import { Vector } from "./vectors.js";
@@ -140,10 +140,14 @@ export class Atom implements Child {
   }
 
   /** Ordering (`<` etc.): by parent, then backbone order (N, CA, C, O), then name, then altloc. Negative, zero or positive. */
-  compare(other: Atom, op = "<"): number {
-    if (!(other instanceof Atom)) throw new TypeError(`'${op}' not supported between instances of 'Atom' and '${(other as object)?.constructor?.name ?? "NoneType"}'`);
+  compare(otherOperand: Atom | unknown, op = "<"): number {
+    if (otherOperand instanceof DisorderedEntityWrapper) return compareThroughWrapper(this, otherOperand, op);
+    const other = otherOperand as Atom;
+    if (!(other instanceof Atom)) throw new TypeError(`'${op}' not supported between instances of 'Atom' and '${pyTypeName(other)}'`);
     if (this.parent !== other.parent && !(this.parent !== null && other.parent !== null && this.parent.equals(other.parent))) {
-      return this.parent!.compare(other.parent!);
+      // the operator travels with the recursion: Biopython compares the parents with the same operator, and its
+      // TypeError names it
+      return this.parent!.compare(other.parent!, op);
     }
     const s = SORTING_KEYS[this.name] ?? 4;
     const o = SORTING_KEYS[other.name] ?? 4;

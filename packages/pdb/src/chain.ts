@@ -1,13 +1,40 @@
 /** `Chain`, `Model` and `Structure`: the upper levels of the hierarchy (`Bio.PDB.Chain`, `Model`, `Structure`). */
 
-import { pyInt } from "@biolibs/core";
+import { pyInt, pyTypeName } from "@biolibs/core";
 import type { Atom, DisorderedAtom } from "./atom.js";
-import { Entity, type Child } from "./entity.js";
+import { DisorderedEntityWrapper, Entity, compareThroughWrapper, type Child } from "./entity.js";
+import { compareIds } from "./util.js";
 import type { DisorderedResidue, Residue } from "./residue.js";
 import type { EntityId } from "./util.js";
 
 /** A chain of residues. */
 export class Chain extends Entity<Residue | DisorderedResidue> implements Child {
+
+  /**
+   * Python's `<`, `<=`, `>` and `>=`, which `Chain` overrides with a special case for the blank id.
+   *
+   * Biopython returns the **integers** 0 and 1 there rather than booleans, and the same value whichever operator was
+   * asked for: a blank-id chain is 0 against any other id, a non-blank one is 1 against a blank, so `blank < other`
+   * and `blank > other` are both `0`. Only when the two ids are alike in blankness does the operator decide. This
+   * cannot be expressed as an ordering, which is why it is not folded into {@link Entity.compare}.
+   *
+   * @param other - The right-hand operand; anything but a chain is refused the way Python refuses it.
+   * @param op - The operator.
+   * @returns Python's own result: a boolean, or 0 or 1 when exactly one of the ids is blank.
+   * @throws TypeError when `other` is not a `Chain`.
+   */
+  compareOp(other: unknown, op: "<" | "<=" | ">" | ">="): boolean | number {
+    // A wrapper on the right is refused here as Biopython refuses it, and Python then retries the mirrored
+    // operator on the wrapper, which delegates to its selected child. No wrapper holds a chain, so that attempt
+    // always ends in the child's own TypeError, which is the one Biopython reports.
+    if (other instanceof DisorderedEntityWrapper) return compareThroughWrapper(this, other, op);
+    if (!(other instanceof Chain)) throw new TypeError(`'${op}' not supported between instances of 'Chain' and '${pyTypeName(other)}'`);
+    const mine = String(this.id), theirs = String(other.id);
+    if (mine === " " && theirs !== " ") return 0;
+    if (mine !== " " && theirs === " ") return 1;
+    const sign = compareIds(this.id, other.id);
+    return { "<": sign < 0, "<=": sign <= 0, ">": sign > 0, ">=": sign >= 0 }[op];
+  }
   readonly level = "C";
   /** Internal coordinates (not ported); always null. */
   internalCoord: null = null;

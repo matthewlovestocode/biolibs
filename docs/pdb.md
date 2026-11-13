@@ -130,10 +130,11 @@ sup.apply(movingAtoms);                   // or any atoms, e.g. a whole chain's:
 Details kept faithful to Biopython:
 
 - Coordinates are `Float32Array`; `atom.minus(other)` computes the distance in single precision.
-- A blank chain id sorts oddly (`Chain.gt` and friends), exactly as in Python.
+- A chain's comparisons are not an ordering, so they live in `Chain.compareOp(other, op)` rather than `compare`: Biopython special-cases the blank id and returns the **integers** 0 and 1 there, the same value whichever operator was asked for, so `blank < other` and `blank > other` are both `0`.
 - Changing an id to one already used by a sibling warns, and `detachChild(3)` on a `Chain` raises `KeyError` after the child has been detached, because Python deletes the untranslated id.
 - `Atom.strictlyEquals` raises `TypeError` when a B-factor or occupancy is missing (`np.isclose(None, None)`).
 - Ordering of entities of different kinds raises `TypeError`, as Python's `NotImplemented` does.
+- A disordered wrapper compares, and is indexed, through its selected child: `length`, `get` and `has` delegate, so every one of them throws on a `DisorderedAtom` (an `Atom` is not a container) while a `DisorderedResidue` reports its residue. With a wrapper on the *right*, Biopython reaches the answer by reflection — the mirrored operator is retried on the wrapper, which delegates it — so the comparison that happens is the mirror of the one asked for, and its `TypeError` names the operands in that mirrored order. `compareThroughWrapper` models exactly that.
 
 ## Not yet ported
 

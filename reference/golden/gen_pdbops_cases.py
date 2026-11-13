@@ -77,6 +77,11 @@ def apply(s, op):
         if m == "len": return len(x)
         if m == "contains": return key in x
         return repr(x[key])
+    if k == "cmp":
+        # A wrapper compares as its selected child, so the TypeError for an operand that cannot be compared names
+        # the child's class. The right-hand side is another node, or a literal of some other type.
+        other = node(s, op[2]) if isinstance(op[2], list) else val(op[2])
+        return {"lt": lambda: x < other, "le": lambda: x <= other, "gt": lambda: x > other, "ge": lambda: x >= other}[op[3]]()
     if k == "detach_parent":
         x.detach_parent(); return x.get_parent() is None
     raise ValueError(k)
@@ -96,10 +101,7 @@ def run(case):
             try: types.append(type(node(s, op[1])).__name__)
             except Exception: types.append(None)
             try: res.append({"result": apply(s, op)})
-            except Exception as e:
-                # A missing-capability TypeError on a plain Atom (an earlier op shifted the path) is Python wording; match the type only.
-                msg = None if isinstance(e, TypeError) and "'Atom' object" in str(e) else emsg(e)
-                res.append({"exc": {"type": tname(e), "msg": msg}})
+            except Exception as e: res.append({"exc": {"type": tname(e), "msg": emsg(e)}})
         out["ops_out"] = res
         out["types"] = types
     out["warnings"] = [str(x.message) for x in w]
@@ -139,9 +141,10 @@ def gen_ops(s):
     ENT = ("Structure", "Model", "Chain", "Residue")
     ops = []
     for _ in range(rnd.randint(3, 7)):
-        k = rnd.choice(["transform", "com", "com", "vector", "set", "level", "iterator", "list", "setitem", "delitem", "dis", "item", "detach_parent"])
+        k = rnd.choice(["transform", "com", "com", "vector", "set", "level", "iterator", "list", "setitem", "delitem", "dis", "item", "item", "cmp", "cmp", "detach_parent"])
         p = {"vector": pick("Atom"), "set": pick("Atom"), "iterator": pick(*ENT), "list": pick(*ENT), "setitem": pick("DisorderedAtom", "DisorderedResidue"), "delitem": pick(*ENT),
-             "dis": pick("DisorderedAtom", "DisorderedResidue"), "item": pick(*ENT, "DisorderedResidue"), "com": pick(*ENT, "DisorderedAtom")}.get(k)
+             "dis": pick("DisorderedAtom", "DisorderedResidue"), "item": pick(*ENT, "DisorderedResidue", "DisorderedAtom", "DisorderedAtom"),
+             "cmp": pick("DisorderedAtom", "DisorderedResidue", "Atom", *ENT), "com": pick(*ENT, "DisorderedAtom")}.get(k)
         if p is None:
             if k in ("dis", "setitem"): continue
             p = rnd.choice(paths)
@@ -164,6 +167,10 @@ def gen_ops(s):
             arg = rnd.choice([" ", "A", "B", "ALA", "GLY", None]) if m in ("select", "has", "get", "remove") else None
             ops.append(["dis", p, m, arg])
         elif k == "item": ops.append(["item", p, rnd.choice(["len", "contains", "get"]), rnd.choice([" ", "A", "CA", "N", 1, [" ", 1, " "]])])
+        elif k == "cmp":
+            # against another node of any kind, and against values no entity can be compared with
+            right = rnd.choice([rnd.choice(paths), rnd.choice(paths), pick("DisorderedAtom", "DisorderedResidue") or rnd.choice(paths), 3, "x", None])
+            ops.append(["cmp", p, right, rnd.choice(["lt", "le", "gt", "ge"])])
         else: ops.append(["detach_parent", p])
     return ops
 

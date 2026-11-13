@@ -394,17 +394,23 @@ po = json.load(open(f"{here}/../packages/pdb/test/golden/pdbops.json"))["cases"]
 MODS = {"Atom": "Bio.PDB.Atom", "DisorderedAtom": "Bio.PDB.Atom", "Residue": "Bio.PDB.Residue", "DisorderedResidue": "Bio.PDB.Residue", "Chain": "Bio.PDB.Chain", "Model": "Bio.PDB.Model", "Structure": "Bio.PDB.Structure"}
 DIS_METHODS = {"has": "disordered_has_id", "ids": "disordered_get_id_list", "get": "disordered_get", "select": "disordered_select", "remove": "disordered_remove"}
 ITEM_METHODS = {"len": "__len__", "contains": "__contains__", "get": "__getitem__"}
+CMP_METHODS = {"lt": "__lt__", "le": "__le__", "gt": "__gt__", "ge": "__ge__"}
+# For `item` and `cmp` the exception *is* the behaviour -- every `len`, `[]` and `in` on a DisorderedAtom raises,
+# because the selected child is an Atom -- and the type and message are compared exactly, so a recorded exception
+# is as good as a result. For the other kinds a raise may mean the op never reached the method, so it is not a hit.
+RAISING_KINDS = ("item", "cmp")
 LIST_METHODS = {"residues": "get_residues", "chains": "get_chains", "models": "get_models", "atoms": "get_atoms"}
 hits = set()
 for c in po:
     for op, out, t in zip(c["ops"], c["ops_out"], c["types"]):
-        if "result" not in out or t not in MODS: continue
         k = op[0]
+        if t not in MODS or ("result" not in out and k not in RAISING_KINDS): continue
         m = {"transform": "transform", "com": "center_of_mass", "vector": "get_vector", "level": "get_level", "iterator": "get_iterator", "delitem": "__delitem__",
              "setitem": "__setitem__", "detach_parent": "detach_parent"}.get(k)
         if k == "set": m = "set_" + op[2]
         elif k == "dis": m = DIS_METHODS[op[2]]
         elif k == "item": m = ITEM_METHODS[op[2]]
+        elif k == "cmp": m = CMP_METHODS[op[3]]
         elif k in LIST_METHODS: m = LIST_METHODS[k]
         if m: hits.add((t, m))
 for t, m in hits:

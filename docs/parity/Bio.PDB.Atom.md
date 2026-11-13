@@ -49,17 +49,17 @@
 
 ### Bio.PDB.Atom.DisorderedAtom
 
-- [ ] `__contains__(self, id)`
+- [x] `__contains__(self, id)`
 - [-] `__eq__(self, value, /)`
-- [ ] `__ge__(self, other)`
-- [ ] `__getitem__(self, id)`
-- [ ] `__gt__(self, other)`
+- [x] `__ge__(self, other)`
+- [x] `__getitem__(self, id)`
+- [x] `__gt__(self, other)`
 - [-] `__hash__(self, /)`
 - [x] `__init__(self, id: str)`
 - [x] `__iter__(self)`
-- [ ] `__le__(self, other)`
-- [ ] `__len__(self)`
-- [ ] `__lt__(self, other)`
+- [x] `__le__(self, other)`
+- [x] `__len__(self)`
+- [x] `__lt__(self, other)`
 - [x] `__repr__(self)`
 - [x] `__setitem__(self, id, child)`
 - [-] `__str__(self, /)`

@@ -3,7 +3,7 @@
  * wrappers that hold alternative locations (Biopython's `Bio.PDB.Entity`).
  */
 
-import { warn } from "@biolibs/core";
+import { pyTypeName, warn } from "@biolibs/core";
 import { PDBConstructionException } from "./exceptions.js";
 import { centerOfMass, type RotMatrix } from "./geometry.js";
 import { compareIds, idKey, idsEqual, keyToId, pySortedIds, pyStr, type EntityId } from "./util.js";
@@ -101,9 +101,11 @@ export abstract class Entity<C extends Child = Child> {
   }
 
   /** Ordering of two entities of the same kind: negative, zero or positive. */
-  compare(other: Entity<Child>, op = "<"): number {
+  compare(otherOperand: Entity<Child> | unknown, op = "<"): number {
+    if (otherOperand instanceof DisorderedEntityWrapper) return compareThroughWrapper(this, otherOperand, op);
+    const other = otherOperand as Entity<Child>;
     if (!(other instanceof (this.constructor as new (...a: never[]) => object))) {
-      throw new TypeError(`'${op}' not supported between instances of '${this.constructor.name}' and '${(other as object)?.constructor?.name ?? "NoneType"}'`);
+      throw new TypeError(`'${op}' not supported between instances of '${this.constructor.name}' and '${pyTypeName(other)}'`);
     }
     if (this.parent === null) return compareIds(this.id, other.id);
     return compareIds(this.getFullId().slice(1), other.getFullId().slice(1));
@@ -248,6 +250,27 @@ export abstract class Entity<C extends Child = Child> {
   }
 }
 
+/** The operator Python retries when the left-hand operand refuses a comparison. */
+const MIRROR: Readonly<Record<string, string>> = { "<": ">", "<=": ">=", ">": "<", ">=": "<=" };
+
+/**
+ * Comparing an entity or atom with a disordered wrapper, which Biopython only ever does by reflection.
+ *
+ * `Atom.__lt__` and `Entity.__lt__` accept nothing but their own kind, so a wrapper on the right makes them return
+ * `NotImplemented`; Python then retries the mirrored operator on the wrapper, which delegates it to its selected
+ * child. The comparison that actually happens is therefore the mirror of the one asked for, so its sign is negated
+ * here — and its `TypeError`, when the two cannot be compared at all, names the operands in that mirrored order,
+ * which is what Biopython reports.
+ *
+ * @param left - The operand that was asked first and cannot take a wrapper.
+ * @param wrapper - The wrapper on the right.
+ * @param op - The operator as asked.
+ * @returns The sign of `left` against the wrapper's selected child.
+ */
+export function compareThroughWrapper(left: unknown, wrapper: DisorderedEntityWrapper, op: string): number {
+  return -wrapper.compare(left, MIRROR[op] ?? op);
+}
+
 /** Wrap a disordered wrapper so unknown properties are read from its selected child (Python's `__getattr__`). */
 function forwardToSelected<T extends DisorderedEntityWrapper>(wrapper: T): T {
   return new Proxy(wrapper, {
@@ -304,6 +327,63 @@ export abstract class DisorderedEntityWrapper {
   /** Iterate the selected child (Python `__iter__`). */
   [Symbol.iterator](): Iterator<unknown> {
     return (this.selectedChild as unknown as Iterable<unknown>)[Symbol.iterator]();
+  }
+
+  /** The Python type name of the selected child, which is what its own operations name in their messages. */
+  private get childType(): string {
+    return this.selectedChild === null ? "NoneType" : this.selectedChild.constructor.name;
+  }
+
+  /**
+   * Ordering (`<`, `<=`, `>`, `>=`), which Biopython delegates to the selected child: `self.selected_child < other`.
+   *
+   * Both sides end up unwrapped. `Atom.__lt__` and `Entity.__lt__` accept only their own kind and return
+   * `NotImplemented` for a wrapper, so Python retries the reflected operator on the other side, which unwraps it in
+   * turn and compares the two selected children. The `TypeError` for something that is not comparable therefore
+   * names the *child's* class, not the wrapper's.
+   *
+   * @param other - The right-hand operand; a wrapper is compared by its selected child.
+   * @param op - The operator, for the message.
+   * @returns Negative, zero or positive.
+   * @throws TypeError when nothing is selected, or the child cannot be compared with `other`.
+   */
+  compare(other: unknown, op = "<"): number {
+    if (this.selectedChild === null) throw new TypeError(`'${op}' not supported between instances of 'NoneType' and '${pyTypeName(other)}'`);
+    const child = this.selectedChild as unknown as { compare(o: unknown, op?: string): number };
+    return child.compare(other, op);
+  }
+
+  /**
+   * Python `len(wrapper)`, which is `len(self.selected_child)`. An `Atom` is not a container, so a
+   * {@link DisorderedAtom} always raises here while a {@link DisorderedResidue} reports its residue's atom count.
+   *
+   * @throws TypeError when the selected child has no length (or nothing is selected).
+   */
+  get length(): number {
+    if (!(this.selectedChild instanceof Entity)) throw new TypeError(`object of type '${this.childType}' has no len()`);
+    return this.selectedChild.length;
+  }
+
+  /**
+   * Python `wrapper[id]`, which is `self.selected_child[id]`.
+   *
+   * @param id - The child id to look up in the selected child.
+   * @throws TypeError when the selected child is not subscriptable (every `DisorderedAtom`); KeyError from the child.
+   */
+  get(id: EntityId): Child {
+    if (!(this.selectedChild instanceof Entity)) throw new TypeError(`'${this.childType}' object is not subscriptable`);
+    return this.selectedChild.get(id) as Child;
+  }
+
+  /**
+   * Python `id in wrapper`, which is `id in self.selected_child`.
+   *
+   * @param id - The child id to look for in the selected child.
+   * @throws TypeError when the selected child is not a container (every `DisorderedAtom`).
+   */
+  has(id: EntityId): boolean {
+    if (!(this.selectedChild instanceof Entity)) throw new TypeError(`argument of type '${this.childType}' is not a container or iterable`);
+    return this.selectedChild.has(id);
   }
 
   /**

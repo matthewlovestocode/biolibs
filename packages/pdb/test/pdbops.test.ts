@@ -71,6 +71,17 @@ function apply(s: any, op: any[]): unknown {
       else need("disorderedRemove")(arg);
       return [x.selectedChild === null ? "None" : x.selectedChild.repr(), need("disorderedGetIdList")()];
     }
+    case "cmp": {
+      // `compare` returns a sign; Python's operators turn it into a boolean. A wrapper compares as its selected
+      // child, which is where the TypeError for an incomparable operand comes from.
+      const other = Array.isArray(op[2]) ? node(s, op[2]) : val(op[2]);
+      const symbol = { lt: "<", le: "<=", gt: ">", ge: ">=" }[op[3] as "lt"] as "<";
+      // A chain's operators are not an ordering (a blank id answers 0 or 1 whichever way it is asked), so it has
+      // its own method; everything else turns `compare`'s sign into the operator's answer.
+      if (typeof x.compareOp === "function") return x.compareOp(other, symbol);
+      const sign = need("compare")(other, symbol) as number;
+      return { lt: sign < 0, le: sign <= 0, gt: sign > 0, ge: sign >= 0 }[op[3] as "lt"];
+    }
     case "item": {
       if (op[2] === "len") return x.length;
       if (op[2] === "contains") return need("has")(key(op[3]));
