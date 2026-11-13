@@ -5,6 +5,8 @@ Case kinds:
           covalent-radius class.
   pair  - two keys: their `_cmp` ranks, the four ordering operators, equality and `altloc_match`.
   sort  - a list of keys sorted, which is what puts a residue's atoms in a canonical order.
+  edron - build an Edron, Hedron or Dihedron and record its identity, classification and fields.
+  epair - two di/hedra: the ordering operators and the pair of keys `_cmp` reports.
 
 `_cmp` returns a pair of ranks rather than a sign, and for two atom names in none of its tables it falls through to
 `int()` of the names and raises; both are recorded as they come.
@@ -116,7 +118,71 @@ for keys in GROUPS:
         rnd.shuffle(shuffled)
         cases.append({"kind": "sort", "keys": shuffled})
 
-RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort}
+# ---------------- Edron, Hedron and Dihedron ----------------
+# Their lengths and angle values live on IC_Chain, which is not ported yet; without a chain Biopython reads 0.0 for
+# a hedron and raises for a dihedron's repr, and both are recorded as they come.
+def build_edron(spec):
+    from Bio.PDB.internal_coords import Edron, Hedron, Dihedron
+    cls = {"edron": Edron, "hedron": Hedron, "dihedron": Dihedron}[spec["cls"]]
+    how = spec["how"]
+    if how == "list": return cls([AtomKey(k) for k in spec["keys"]])
+    if how == "args": return cls(*[AtomKey(k) for k in spec["keys"]])
+    if how == "kwargs": return cls(**{n: k for n, k in zip(("a1", "a2", "a3", "a4"), spec["keys"])})
+    raise ValueError(how)
+
+def run_edron(case):
+    def one():
+        e = build_edron(case["spec"])
+        out = {"id": e.id, "e_class": e.e_class, "re_class": e.re_class, "cre_class": e.cre_class, "rc": e.rc,
+               "is_backbone": e.is_backbone(), "repr": attempt(lambda: repr(e)), "needs_update": e.needs_update,
+               "keys": [k.id for k in e.atomkeys], "contains": e.atomkeys[0] in e,
+               "gen_key": Edron.gen_key(list(e.atomkeys)),
+               "gen_tuple": [k.id for k in Edron.gen_tuple(e.id)]}
+        if case["spec"]["cls"] == "hedron":
+            out["xrh_class"] = getattr(e, "xrh_class", None)
+            out["values"] = [attempt(lambda: e.len12), attempt(lambda: e.angle), attempt(lambda: e.len23)]
+        if case["spec"]["cls"] == "dihedron":
+            out["id3"] = [k.id for k in e.id3]
+            out["id32"] = [k.id for k in e.id32]
+            out["primary"] = e.primary
+            out["pclass"] = getattr(e, "pclass", None)
+            out["altCB_class"] = getattr(e, "altCB_class", None)
+            out["reverse"] = e.reverse
+            out["angle"] = attempt(lambda: e.angle)
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+def run_epair(case):
+    def one():
+        a, b = build_edron(case["a"]), build_edron(case["b"])
+        return {"lt": attempt(lambda: a < b), "le": attempt(lambda: a <= b), "gt": attempt(lambda: a > b),
+                "ge": attempt(lambda: a >= b), "eq": a == b, "ne": a != b,
+                "cmp": attempt(lambda: [k.id for k in a._cmp(b)] if a._cmp(b) else False)}
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+from Bio.PDB.internal_coords import Edron
+HEDRA = ["52_G_N:52_G_CA:52_G_C", "52_G_CA:52_G_C:52_G_O", "52_G_C:53_P_N:53_P_CA", "52_G_CA:52_G_C:53_P_N",
+         "52_G_N:52_G_CA:52_G_CB", "52_G_CB:52_G_CG:52_G_CD1", "52A_G_C:52B_G_N:52B_G_CA", "7_K_CE:7_K_NZ:7_K_HZ1"]
+DIHEDRA = ["52_G_N:52_G_CA:52_G_C:53_P_N", "52_G_CA:52_G_C:53_P_N:53_P_CA", "52_G_C:53_P_N:53_P_CA:53_P_C",
+           "52_G_C:53_P_N:53_P_CA:53_P_CB", "52_G_N:52_G_CA:52_G_CB:52_G_CG", "52_G_CA:52_G_CB:52_G_CG:52_G_CD",
+           "52_G_CB:52_G_CG:52_G_CD:52_G_CE", "7_K_CG:7_K_CD:7_K_CE:7_K_NZ", "52_G_O:52_G_C:52_G_CA:52_G_CB"]
+for spec_keys, cls in [(HEDRA, "hedron"), (DIHEDRA, "dihedron"), (HEDRA, "edron"), (DIHEDRA, "edron")]:
+    for idstr in spec_keys:
+        keys = idstr.split(":")
+        for how in ("list", "args", "kwargs"):
+            cases.append({"kind": "edron", "spec": {"cls": cls, "how": how, "keys": keys}})
+# every pair of hedra and of dihedra, which is how a residue's angles are ordered
+for pool, cls in ((HEDRA, "hedron"), (DIHEDRA, "dihedron")):
+    for i, a in enumerate(pool):
+        for b in pool[i:]:
+            cases.append({"kind": "epair", "a": {"cls": cls, "how": "list", "keys": a.split(":")},
+                          "b": {"cls": cls, "how": "list", "keys": b.split(":")}})
+
+RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair}
 kept = []
 for c in cases:
     res = run_isolated(RUNNERS[c["kind"]], c)

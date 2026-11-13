@@ -1,12 +1,13 @@
 /** Replays the Bio.PDB.internal_coords.AtomKey golden cases (reference/golden/gen_ickey_cases.py). */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { AtomKey } from "@biolibs/pdb";
+import { AtomKey, Dihedron, Edron, Hedron } from "@biolibs/pdb";
 
 type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc };
 interface Spec { how: string; value: unknown }
-interface Case { kind: string; spec?: Spec; a?: Spec; b?: Spec; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
+interface Spec2 { cls: string; how: string; keys: string[] }
+interface Case { kind: string; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
 
 /** AttributeError is a TypeError here, with no message to compare. */
 const excOk = (want?: Exc, got?: Exc): boolean => {
@@ -16,11 +17,34 @@ const excOk = (want?: Exc, got?: Exc): boolean => {
 };
 const err = (e: unknown): Exc => ({ type: (e as Error).name, msg: (e as Error).message });
 const attempt = (f: () => unknown): Out => { try { return { result: f() }; } catch (e) { return { exc: err(e) }; } };
-const same = (a: unknown, b: unknown): boolean => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+/**
+ * Compare two recorded results, applying {@link excOk} wherever one of them holds a recorded exception.
+ *
+ * A case's result has `attempt()`s nested inside it, and the generator writes `msg: null` for an AttributeError
+ * (which is a TypeError here, with a message of its own); a plain JSON comparison would call those different.
+ */
+function same(a: unknown, b: unknown): boolean {
+  const isExc = (x: unknown): x is { exc: Exc } => x !== null && typeof x === "object" && "exc" in x;
+  if (isExc(a) || isExc(b)) {
+    if (!isExc(a) || !isExc(b)) return false;
+    return excOk(a.exc, b.exc);
+  }
+  if (Array.isArray(a) || Array.isArray(b)) {
+    if (!Array.isArray(a) || !Array.isArray(b) || a.length !== b.length) return false;
+    return a.every((x, i) => same(x, b[i]));
+  }
+  if (a !== null && b !== null && typeof a === "object" && typeof b === "object") {
+    const ka = Object.keys(a), kb = Object.keys(b);
+    if (ka.length !== kb.length) return false;
+    return ka.every((k) => k in (b as object) && same((a as Record<string, unknown>)[k], (b as Record<string, unknown>)[k]));
+  }
+  return JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
+}
 const outOk = (w: Out, g: Out): boolean => (w.exc ? excOk(w.exc, g.exc) : g.exc === undefined && same(w.result, g.result));
 
 /** Build a key the way the generator's `build` does. */
 function build(spec: Spec): AtomKey {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const { how, value } = spec;
   if (how === "string") return new AtomKey(value);
   if (how === "args") return new AtomKey(value as unknown[]);
@@ -55,10 +79,62 @@ function runSort(c: Case): Out {
   });
 }
 
-describe("Bio.PDB.internal_coords.AtomKey: parity with Biopython", () => {
+/** Build an Edron, Hedron or Dihedron the way the generator's `build_edron` does. */
+function buildEdron(spec: Spec2): Edron {
+  const keys = spec.keys.map((k) => new AtomKey(k));
+  const Cls = { edron: Edron, hedron: Hedron, dihedron: Dihedron }[spec.cls]!;
+  if (spec.how === "list") return new Cls([keys]);
+  if (spec.how === "args") return new Cls(keys);
+  if (spec.how === "kwargs") {
+    const names = ["a1", "a2", "a3", "a4"] as const;
+    return new Cls([], Object.fromEntries(spec.keys.map((k, i) => [names[i]!, k])));
+  }
+  throw new Error(spec.how);
+}
+
+function runEdron(c: Case): Out {
+  return attempt(() => {
+    const spec = c.spec as Spec2;
+    const e = buildEdron(spec);
+    const out: Record<string, unknown> = {
+      id: e.id, e_class: e.eClass, re_class: e.reClass, cre_class: e.creClass, rc: e.rc,
+      is_backbone: e.isBackbone(), repr: attempt(() => e.repr()), needs_update: e.needsUpdate,
+      keys: e.atomkeys.map((k) => k.id), contains: e.contains(e.atomkeys[0]!),
+      gen_key: Edron.genKey([...e.atomkeys]), gen_tuple: Edron.genTuple(e.id).map((k) => k.id),
+    };
+    if (spec.cls === "hedron") {
+      const h = e as Hedron;
+      out["xrh_class"] = h.xrhClass ?? null;
+      out["values"] = [attempt(() => h.len12), attempt(() => h.angle), attempt(() => h.len23)];
+    }
+    if (spec.cls === "dihedron") {
+      const d = e as Dihedron;
+      out["id3"] = d.id3.map((k) => k.id);
+      out["id32"] = d.id32.map((k) => k.id);
+      out["primary"] = d.primary;
+      out["pclass"] = d.pclass ?? null;
+      out["altCB_class"] = d.altCBClass ?? null;
+      out["reverse"] = d.reverse;
+      out["angle"] = attempt(() => d.angle);
+    }
+    return out;
+  });
+}
+
+function runEpair(c: Case): Out {
+  return attempt(() => {
+    const a = buildEdron(c.a as Spec2), b = buildEdron(c.b as Spec2);
+    const r = a.compare(b);
+    return { lt: attempt(() => a.lt(b)), le: attempt(() => a.le(b)), gt: attempt(() => a.gt(b)),
+      ge: attempt(() => a.ge(b)), eq: a.equals(b), ne: !a.equals(b),
+      cmp: attempt(() => (r === null ? false : r.map((k) => k.id))) };
+  });
+}
+
+describe("Bio.PDB.internal_coords: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/ickey.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort };
-  for (const kind of ["key", "pair", "sort"]) {
+  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair };
+  for (const kind of ["key", "pair", "sort", "edron", "epair"]) {
     const list = cases.filter((c) => c.kind === kind);
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
       const bad: string[] = [];
