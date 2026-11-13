@@ -6,7 +6,7 @@ import { captureWarnings } from "@biolibs/core";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
-type Spec = { ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
+type Spec = { ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
 interface Case { kwargs?: { interleave?: boolean }; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
 const cases: Case[] = JSON.parse(readFileSync(new URL("./golden/alignfmt.json", import.meta.url), "utf8"));
 
@@ -21,6 +21,10 @@ const enc = (a: Alignment) => {
     rows: Array.from({ length: a.size }, (_, i) => { try { return a.get(i); } catch (e: any) { return { err: [e.name, e.message] }; } }),
     coords: a.coordinates,
     seqs: a.sequences.map((s) => seqText(s instanceof SeqRecord ? s.seq : s)),
+    dbx: a.sequences.map((s) => (s instanceof SeqRecord ? [...s.dbxrefs] : [])),
+    rann: a.sequences.map((s) => (s instanceof SeqRecord ? Object.fromEntries(s.annotations) : {})),
+    lann: a.sequences.map((s) => (s instanceof SeqRecord ? Object.fromEntries(s.letterAnnotations) : {})),
+    ...(a.operations !== undefined ? { ops: new TextDecoder().decode(a.operations) } : {}),
     names: a.sequences.map((s) => (s instanceof SeqRecord ? s.name : null)),
     descs: a.sequences.map((s) => (s instanceof SeqRecord ? s.description : null)),
     weights: a.sequences.map((s) => (s instanceof SeqRecord && s.annotations.has("weight") ? s.annotations.get("weight") : null)),
@@ -35,7 +39,16 @@ const build = (spec: Spec): Alignment => {
   const a = new Alignment(recs, parsed.coordinates);
   if (spec.mol) for (const r of recs) r.annotations.set("molecule_type", spec.mol);
   if (spec.mols) spec.mols.forEach((m, i) => { if (m !== null) recs[i]!.annotations.set("molecule_type", m); });
-  if (spec.colann) a.columnAnnotations = new Map(Object.entries(spec.colann));
+  (spec.recinfo ?? []).forEach((info, i) => {
+    const r = recs[i]!;
+    if (info.desc !== undefined && info.desc !== null) r.description = info.desc;
+    if (info.dbx && info.dbx.length > 0) r.dbxrefs = [...info.dbx];
+    for (const [k, v] of Object.entries(info.ann ?? {})) r.annotations.set(k, v);
+    for (const [k, v] of Object.entries(info.letter ?? {})) r.letterAnnotations.set(k, v);
+  });
+  if (spec.ann !== undefined) a.annotations = new Map(Object.entries(spec.ann));
+  if (spec.ops !== undefined) a.operations = new TextEncoder().encode(spec.ops);
+  if (spec.colann && Object.keys(spec.colann).length > 0) a.columnAnnotations = new Map(Object.entries(spec.colann));
   return a;
 };
 
@@ -48,6 +61,7 @@ describe("Bio.Align file formats", () => {
           const alns = Array.from(it).map(enc);
           return { alns, metadata: (it as { metadata?: Record<string, unknown> }).metadata === undefined ? null : Object.fromEntries(Object.entries((it as any).metadata).map(([k, v]) => [k, String(v)])) };
         }
+        if (c.kind === "roundtrip") return Array.from(parse(c.text!, c.fmt)).map((a) => a.format(c.fmt));
         if (c.kind === "read") return { alns: [enc(read(c.text!, c.fmt))] };
         if (c.kind === "alninfo") {
           const info = new SummaryInfo(new MultipleSeqAlignment(c.rows!.map((r, i) => new SeqRecord(new Seq(r), c.ids![i]!))));
@@ -80,7 +94,7 @@ describe("Bio.Align file formats", () => {
       } else {
         const got: any = run();
         if (c.kind === "parse" && got.metadata === null) delete got.metadata;
-        const want = typeof c.result === "string" ? c.result : { ...c.result };
+        const want = typeof c.result === "string" || Array.isArray(c.result) ? c.result : { ...c.result };
         if (c.kind === "parse" && want.metadata === null) delete want.metadata;
         expect(got).toEqual(want);
         afterwards();

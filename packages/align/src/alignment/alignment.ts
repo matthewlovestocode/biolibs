@@ -79,6 +79,8 @@ export class Alignment {
   score?: number;
   /** Annotations describing the alignment (optional). */
   annotations?: Map<string, unknown>;
+  /** The per-column operation (`M` match, `D` deletion, `I` insertion) kept by the Stockholm reader; Stockholm files use it to tell `-` from `.`. */
+  operations?: Uint8Array;
   /** Annotations describing each column: a string or a list per key (optional). */
   columnAnnotations?: Map<string, string | unknown[]>;
 

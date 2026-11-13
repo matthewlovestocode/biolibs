@@ -94,7 +94,7 @@ export class TabularIterator extends AlignmentIterator {
           if (k < 0) throw new ValueError("not enough values to unpack (expected 2, got 1)");
           queryLine = value.slice(0, k);
           const sizeUnit = value.slice(k + 3).split(/\s+/).filter(Boolean);
-          if (sizeUnit.length !== 2) throw new ValueError(sizeUnit.length < 2 ? `not enough values to unpack (expected 2, got ${sizeUnit.length})` : "too many values to unpack (expected 2)");
+          if (sizeUnit.length !== 2) throw new ValueError(sizeUnit.length < 2 ? `not enough values to unpack (expected 2, got ${sizeUnit.length})` : `too many values to unpack (expected 2, got ${sizeUnit.length})`);
           st.querySize = pyInt(sizeUnit[0]!);
           if (sizeUnit[1] !== "nt" && sizeUnit[1] !== "aa") throw new AssertionError("");
         } else { queryLine = value; st.querySize = null; }

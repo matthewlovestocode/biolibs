@@ -91,7 +91,7 @@ export class EmbossIterator extends AlignmentIterator {
         for (const l2 of stream) {
           if (!l2.startsWith("# ")) throw unexpectedLine();
           const parts = l2.slice(2).split(":");
-          if (parts.length !== 2) throw new ValueError(parts.length < 2 ? `not enough values to unpack (expected 2, got ${parts.length})` : "too many values to unpack (expected 2)");
+          if (parts.length !== 2) throw new ValueError(parts.length < 2 ? `not enough values to unpack (expected 2, got ${parts.length})` : `too many values to unpack (expected 2, got ${parts.length})`);
           if (i + 1 !== pyInt(parts[0]!)) throw new AssertionError("");
           identifiers.push(strip(parts[1]!));
           i += 1;

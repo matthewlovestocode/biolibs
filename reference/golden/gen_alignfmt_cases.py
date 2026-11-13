@@ -36,6 +36,10 @@ def enc_aln(a):
     d = {"ids": [getattr(s, "id", None) for s in a.sequences], "rows": rows, "coords": a.coordinates.tolist(),
          "seqs": [seq_text(s) for s in a.sequences]}
     if getattr(a, "annotations", None): d["ann"] = {k: v for k, v in a.annotations.items()}
+    d["dbx"] = [list(getattr(s, "dbxrefs", [])) for s in a.sequences]
+    d["rann"] = [dict(getattr(s, "annotations", {})) for s in a.sequences]
+    d["lann"] = [dict(getattr(s, "letter_annotations", {})) for s in a.sequences]
+    if hasattr(a, "operations"): d["ops"] = bytes(a.operations).decode()
     d["names"] = [getattr(s, "name", None) for s in a.sequences]
     d["descs"] = [getattr(s, "description", None) for s in a.sequences]
     d["weights"] = [getattr(s, "annotations", {}).get("weight") for s in a.sequences]
@@ -58,6 +62,13 @@ def build(spec):
     if spec.get("mols"):
         for r, m in zip(recs, spec["mols"]):
             if m is not None: r.annotations["molecule_type"] = m
+    for r, info in zip(recs, spec.get("recinfo") or []):
+        if info.get("desc") is not None: r.description = info["desc"]
+        if info.get("dbx"): r.dbxrefs = list(info["dbx"])
+        for k, v in (info.get("ann") or {}).items(): r.annotations[k] = v
+        for k, v in (info.get("letter") or {}).items(): r.letter_annotations[k] = v
+    if spec.get("ann") is not None: a.annotations = dict(spec["ann"])
+    if spec.get("ops") is not None: a.operations = bytearray(spec["ops"].encode())
     if spec.get("colann"): a.column_annotations = dict(spec["colann"])
     return a
 
@@ -84,6 +95,9 @@ def run(case):
                     try: out["result"]["cols"].append({"v": info.get_column(col)})
                     except Exception as e: out["result"]["cols"].append({"exc": [tname(e), emsg(e)]})
                 out["wmsg"] = [str(x.message) for x in w]
+            elif k == "roundtrip":
+                alns = list(Align.parse(io.StringIO(case["text"]), case["fmt"]))
+                out["result"] = [a.format(case["fmt"]) for a in alns]
             elif k == "write":
                 buf = io.StringIO()
                 n = Align.write([build(s) for s in case["alns"]], buf, case["fmt"], **case.get("kwargs", {}))
@@ -340,6 +354,112 @@ for t in TAB:
         elif r < 0.85: m.insert(i, rnd.choice(["", "#", "# x: y", "junk", "# 3 hits found"]))
         else: m = m[:i]
         add({"kind": "parse", "fmt": "tabular", "text": "\n".join(m)})
+
+# ---- Stockholm ----
+HAT = """# STOCKHOLM 1.0
+#=GF ID   HAT
+#=GF AC   PF02184.18
+#=GF DE   HAT (Half-A-TPR) repeat
+#=GF AU   SMART;
+#=GF AU   Someone Else;
+#=GF SE   Alignment kindly provided by SMART
+#=GF GA   21.00 21.00;
+#=GF TC   21.00 21.00;
+#=GF NC   20.90 20.90;
+#=GF BM   hmmbuild HMM.ann SEED.ann
+#=GF SM   hmmsearch -Z 57096847 -E 1000 --cpu 4 HMM pfamseq
+#=GF TP   Repeat
+#=GF CL   CL0020
+#=GF RC   A comment on the first reference.
+#=GF RN   [1]
+#=GF RM   9478129
+#=GF RT   The HAT helix, a repetitive motif implicated in RNA processing.
+#=GF RA   Preker PJ, Keller W;
+#=GF RL   Trends Biochem Sci 1998;23:15-16.
+#=GF RN   [2]
+#=GF RM   1234
+#=GF RT   A second
+#=GF RT   title.
+#=GF RA   Doe J;
+#=GF RL   Nature.
+#=GF DR   INTERPRO; IPR003107;
+#=GF DC   a database comment
+#=GF DR   SMART; HAT;
+#=GF NE   PF00001
+#=GF NL   1-20
+#=GF CC   The HAT (Half A TPR) repeat is found in several RNA processing
+#=GF CC   proteins [1].
+#=GF WK   Some_page
+#=GF WK   Other/
+#=GF WK   _page
+#=GF SQ   3
+#=GS CRN_DROME/191-222     AC P17886.2
+#=GS CLF1_SCHPO/185-216    AC P87312.1
+#=GS CLF1_SCHPO/185-216    DR PDB; 3JB9 R; 185-216;
+#=GS CLF1_SCHPO/185-216    DE a described one
+#=GS O16376_CAEEL/201-233  OS Caenorhabditis elegans
+CRN_DROME/191-222                KEIDRAREIYERFVYVH.PDVKNWIKFARFEES
+CLF1_SCHPO/185-216               HENERARGIYERFVVVH.PEVTNWLRWARFEEE
+#=GR CLF1_SCHPO/185-216    SS    --HHHHHHHHHHHHHHS.--HHHHHHHHHHHHH
+O16376_CAEEL/201-233             KEIDRARSVYQRFLHVHGINVQNWIKYAKFEER
+#=GC SS_cons                     --HHHHHHHHHHHHHHS.--HHHHHHHHHHHHH
+#=GC seq_cons                    KEIDRARuIYERFVaVH.P-VpNWIKaARFEEc
+//
+"""
+SIMPLE = "# STOCKHOLM 1.0\nseq1 AC-GT\nseq2 ACGGT\n//\n"
+ST = [HAT, SIMPLE, SIMPLE + SIMPLE.replace("seq", "other"), "# STOCKHOLM 1.0\nseq1 AC--T\nseq2 AC--T\nseq3 AC-GT\n//\n", "# STOCKHOLM 1.0\nseq1 AC.GT\nseq2 ACG-T\n//\n",
+      "# STOCKHOLM 1.0\nseq1 AC.GT\nseq2 AC-GT\n//\n", "# STOCKHOLM 1.0\nseq1 AC-GT\nseq2 ACGG\n//\n", "# STOCKHOLM 1.0\nseq1\n//\n", "# STOCKHOLM 1.0\n//\n", "", "\n\n", "# STOCKHOLM 1.0\nseq1 ACGT\n",
+      "#=GF ID x\n", "seq1 ACGT\n", "//\n", "#=GR a SS xx\n", "#=GC SS ACGT\n", "#=GS a AC x\n", "#=GF RM 1\n", "#=GF RN [1]\n", "#=GF DC x\n", "#=GF NL x\n",
+      "# STOCKHOLM 1.0\nseq1 ACGT\n#=GC SS_cons ..HH\n#=GC SS_cons ..HH\nseq2 ACGT\n//\n",
+      "# STOCKHOLM 1.0\nseq1 AC-GT\nseq2 AC-GA\n#=GC SS_cons ..-HH\n//\n", "# STOCKHOLM 1.0\nseq1 AC-GT\nseq2 AC-GA\n#=GC SS_cons ..HH\n//\n",
+      "# STOCKHOLM 1.0\n#=GF SQ 3\nseq1 ACGT\nseq2 ACGT\n//\n", "# STOCKHOLM 1.0\n#=GF ID a\n#=GF ID b\nseq1 ACGT\n//\n", "# STOCKHOLM 1.0\n#=GF WK abc/\nseq1 ACGT\n//\n",
+      "# STOCKHOLM 1.0\n#=GF XX unknown\n#=GF RT title\nseq1 ACGT\n//\n", "# STOCKHOLM 1.0\n#=GF RN [1]\n#=GF RT t\n#=GF RA a\nseq1 ACGT\n//\n", "# STOCKHOLM 1.0\n#=GF RN 1\nseq1 ACGT\n//\n",
+      "# STOCKHOLM 1.0\n#=GF RN [x]\nseq1 ACGT\n//\n", "# STOCKHOLM 1.0\n#=GF RN [1]\n#=GF RM a\n#=GF RM b\n#=GF RT t\n#=GF RA a\n#=GF RL l\nseq1 ACGT\n//\n",
+      "# STOCKHOLM 1.0\nseq1 ACGT\n#=GS seq1 AC x\n#=GS seq1 AC y\nseq2 ACGT\n//\n", "# STOCKHOLM 1.0\nseq1 ACGT\n#=GS seq1 DE\n//\n", "# STOCKHOLM 1.0\nseq1 ACGT\n#=GS seq9 AC x\n//\n",
+      "# STOCKHOLM 1.0\nseq1 ACGT\n#=GR seq1 SS HHHH\n#=GR seq1 PP 9999\n#=GR seq1 CSA ----\n//\n", "# STOCKHOLM 1.0\nseq1 AC-T\n#=GR seq1 SS HH.\n//\n", "# STOCKHOLM 1.0\nseq1 ACGT\n#=GR seq1 SS HH\n//\n",
+      "# STOCKHOLM 1.0\nseq1 ACGT\n#=GR seq2 SS HHHH\n//\n", "# STOCKHOLM 1.0\nseq1 ACGT\n#=GR seq1\n//\n", "# STOCKHOLM 1.0\nseq1 ACGT\n#=GR\n//\n", "# STOCKHOLM 1.0\nseq1 ACGT\n#=GC SS ACGT x\n//\n",
+      "# STOCKHOLM 1.0\nseq1 ACGT\n#=GC\n//\n", "# STOCKHOLM 1.0\n#=GF CC  one\n#=GF CC  two\nseq1 ACGT\n//\n", "# STOCKHOLM 1.0\n#=GF SQ 1\n#=GF SQ 1\nseq1 ACGT\n//\n"]
+for t in ST:
+    add({"kind": "parse", "fmt": "stockholm", "text": t})
+    add({"kind": "read", "fmt": "stockholm", "text": t})
+    lines = t.split("\n")
+    for _ in range(30):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if r < 0.3: del m[i]
+        elif r < 0.5: m[i] = m[i][:rnd.randrange(len(m[i]) + 1)]
+        elif r < 0.75 and m[i]:
+            j = rnd.randrange(len(m[i])); m[i] = m[i][:j] + rnd.choice("X-. 5#=/") + m[i][j + 1:]
+        elif r < 0.9: m.insert(i, rnd.choice(["", "#", "# x", "junk", "//", "#=GF", "seq1 ACGT", "#=GC SS_cons ..", "# STOCKHOLM 1.0"]))
+        else: m = m[:i]
+        add({"kind": "parse", "fmt": "stockholm", "text": "\n".join(m)})
+
+REFS = [{"number": 1, "medline": "9478129", "title": "A very long title that goes on and on and on, with well-known hyphenated-words to wrap on and more text after it", "author": "Preker PJ, Keller W;", "location": "Trends 1998;23:15-16.", "comment": "short comment"},
+        {"number": 2, "medline": "1", "title": "T", "author": "A", "location": "L"}]
+
+ALNS_ST = [
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {}},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"]},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus secondary structure": "..H.H", "consensus sequence": "ACxGT", "custom": "12345"}},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}, "ops": "MMIMM"},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}, "ops": "MMM"},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}, "ann": {"identifier": "ID1", "accession": "AC1", "definition": "A definition", "author": ["Me;", "You;"], "wikipedia": ["Page", "Other"], "comment": "A long comment text that needs wrapping because it is longer than seventy-nine characters in total, yes indeed.", "source of seed": "x", "clan": "CL1"}},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}, "ann": {"references": REFS, "database references": [{"reference": "PDB; 1ABC", "comment": "c"}, {"reference": "SMART; X"}], "nested domains": [{"accession": "PF1", "location": "1-5"}, {"accession": "PF2"}]}},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}, "ann": {"bogus": "x"}},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}, "ann": {"references": [{"number": 1}]}},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}, "ann": {"references": [{"number": 1, "medline": "1", "title": "t", "author": "a"}]}},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}, "recinfo": [{"desc": "first seq", "dbx": ["PDB; 1", "SMART; 2"], "ann": {"accession": "P1", "organism": "Homo", "other": "x"}, "letter": {"secondary structure": "HHHH", "custom": "abcd"}}, {}]},
+    {"ids": ["a", "bb"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}, "recinfo": [{"letter": {"secondary structure": "HHH"}}, {}]},
+    {"ids": ["a" * 25, "b"], "rows": ["AC-GT", "ACGGT"], "colann": {"consensus sequence": "ACGGT"}},
+    {"ids": ["a", "b"], "rows": ["ACGT", "ACGT"], "colann": {"consensus sequence": "ACGT"}, "ann": {"comment": "a" * 100 + " " + "word-" * 30 + " tail"}},
+]
+for aln in ALNS_ST:
+    add({"kind": "format", "fmt": "stockholm", "aln": aln})
+    add({"kind": "write", "fmt": "stockholm", "alns": [aln]})
+add({"kind": "write", "fmt": "stockholm", "alns": ALNS_ST[:3]})
+add({"kind": "write", "fmt": "stockholm", "alns": []})
+# round trips of what the reader produced
+for t in (HAT, SIMPLE):
+    add({"kind": "roundtrip", "fmt": "stockholm", "text": t})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)
