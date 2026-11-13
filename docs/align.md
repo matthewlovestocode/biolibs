@@ -24,9 +24,13 @@ aln.format("clustal");         // needs @biolibs/seqio to be imported
 | `del aln[i]`, `aln.sort(key, reverse)` | `aln.delete(i)`, `aln.sort(key, reverse)` |
 | `aln.column_annotations` | `aln.columnAnnotations` (a `RestrictedDict`) |
 | `format(aln, "fmt")` | `aln.format("fmt")` |
-| `aln.substitutions`, `aln.alignment` | not yet (need substitution matrices and the `Alignment` class) |
+| `aln.substitutions`, `aln.alignment` | `aln.substitutions`, `aln.alignment` |
 
 Records must all have the same length (`ValueError` otherwise); a record without a sequence raises `TypeError` when the alignment length is needed, as `len(None)` does in Python.
+
+`aln.substitutions` counts every pair of letters over every pair of rows, gaps skipped, weighted by each record's `annotations["weight"]` (1 by default), then halves each cell against its mirror so the matrix is symmetric. An alignment with no rows throws `TypeError` (Python's `set.union()` with no argument); one with nothing but gaps gives an empty alphabet, which only fails when the matrix is printed.
+
+`aln.alignment` returns the same alignment as an `Alignment`, each row's gaps removed and turned into coordinates. **Reading it has a side effect**, as in Biopython: the records are shallow-copied, so clearing the copy's letter annotations empties the *original* record's as well — the docstring there claims the opposite. An alignment with no rows throws `ValueError`, from NumPy's minimum of an empty array.
 
 ## Substitution matrices
 
@@ -72,7 +76,7 @@ new PairwiseAligner({ scoring: "blastn" });       // also "megablast" and "blast
 
 Properties are the Python names in camelCase: `mode`, `matchScore`, `mismatchScore`, `substitutionMatrix`, `epsilon`, `wildcard`, `algorithm`, and every gap-score property (`gapScore`, `openGapScore`, `extendInternalGapScore`, `endInsertionScore`, ... 45 of them). They are generated from Biopython's C source (`reference/gen_aligner_props.py`), including the rules for which properties read and write which of the twelve base gap scores, the `gap scores are different` and `using a gap score function` errors, and the deprecated names (`targetGapScore`, ...), which warn with `BiopythonDeprecationWarning`. A gap function is `(position, length) => score`.
 
-Sequences may be strings, `Seq`, `MutableSeq`, `SeqRecord`, bytes, an `Int32Array` of indices, or an array of items (mapped through the substitution matrix's alphabet, or an alphabet built from the items). Differences from Python: a Python `bytearray` is rejected by Biopython but a `Uint8Array` here is treated as `bytes`; `toString()` shows `<Array object>` for the substitution matrix instead of a memory address; and `warn_defaults_changed` is not ported.
+Sequences may be strings, `Seq`, `MutableSeq`, `SeqRecord`, bytes, an `Int32Array` of indices, or an array of items (mapped through the substitution matrix's alphabet, or an alphabet built from the items). Differences from Python: a Python `bytearray` is rejected by Biopython but a `Uint8Array` here is treated as `bytes`; `toString()` shows `<Array object>` for the substitution matrix instead of a memory address; and `warn_defaults_changed` is not ported: it warns at most once per *process*, not per aligner, and only when some gap score was left at its default, so replaying it case by case in one test process would see the warning only once.
 
 ### Alignments
 

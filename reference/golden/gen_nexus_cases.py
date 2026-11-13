@@ -7,7 +7,7 @@ Case kinds:
   tree - build Tree(newick) and run "ops" ([name, args]); records str(tree) after each op.
 The SeqIO side of Bio.Nexus (parse/write of "nexus") is covered by seqio-nexus.json.
 """
-import contextlib, io, json, os, random, sys, warnings
+import contextlib, io, json, os, random, sys, tempfile, warnings
 import Bio
 from Bio.Nexus import Nexus, Trees, Nodes, StandardData
 from Bio.Seq import Seq
@@ -47,6 +47,32 @@ def run_nexus_op(n, name, kw):
         try: r = n.write_nexus_data(filename=h, **kw)
         finally: pass
         return {"text": h.getvalue(), "returned": r is h}
+    if name in ("export_fasta", "export_phylip"):
+        # Biopython opens a real file here (unlike write_nexus_data, which also takes a handle), so it writes into a
+        # temporary directory and the text is read back. The port writes to a `write(text)` target instead and
+        # returns the name Biopython derives, so both the text and that name are recorded.
+        args = dict(kw)          # a copy: popping from `kw` would erase `stem` from the recorded case
+        with tempfile.TemporaryDirectory() as d:
+            n.filename = os.path.join(d, args.pop("stem"))
+            returned = getattr(n, name)(**args)
+            with open(returned) as fh: text = fh.read()
+        return {"text": text, "filename": os.path.basename(returned)}
+    if name == "write_nexus_data_partitions":
+        args = dict(kw)
+        # `charpartition` is the partition mapping itself, not a name: Biopython iterates it and subscripts it with
+        # what it yields. "part" asks for that lookup; "literal" keeps the string, which is what Biopython chokes on.
+        lookup = args.pop("charpartition", None)
+        if lookup == "literal": args["charpartition"] = "part"
+        elif lookup is not None: args["charpartition"] = n.charpartitions.get(lookup, {})
+        with tempfile.TemporaryDirectory() as d:
+            n.filename = os.path.join(d, args.pop("stem"))
+            returned = getattr(n, name)(**args)
+            if returned is None: return None
+            if isinstance(returned, str): returned = {"": returned}
+            out = {}
+            for part, path in returned.items():
+                with open(path) as fh: out[part] = {"text": fh.read(), "filename": os.path.basename(path)}
+            return out
     if name == "append_sets": return n.append_sets(**kw)
     if name == "crop_matrix": return n.crop_matrix(**kw)
     if name == "adjust_charlabels": return n._adjust_charlabels(**kw)
@@ -95,7 +121,11 @@ def run(case):
                 out["initial"] = str(t)
                 for name, args in case["ops"]:
                     try:
-                        if name == "str": r = str(t)
+                        if name == "display":
+                            buf = io.StringIO()
+                            with contextlib.redirect_stdout(buf): t.display()
+                            r = buf.getvalue()
+                        elif name == "str": r = str(t)
                         elif name == "to_string": r = t.to_string(**args[0])
                         elif name == "is_compatible":
                             with contextlib.redirect_stdout(io.StringIO()): r = t.is_compatible(Trees.Tree(args[0]), *args[1:])
@@ -136,7 +166,8 @@ def rand_ops(rnd, n, L):
     ops = []
     names = ["tax%d" % i for i in range(n)]
     for _ in range(rnd.randint(2, 6)):
-        k = rnd.choice(["write", "write", "write", "append", "crop", "adj", "const", "cstatus", "step", "add", "gap", "inv", "gaponly", "tgm"])
+        k = rnd.choice(["write", "write", "write", "append", "crop", "adj", "const", "cstatus", "step", "add", "gap", "inv", "gaponly", "tgm",
+                        "fasta", "fasta", "phylip", "phylip", "partitions", "partitions"])
         ex = rnd.sample(range(L), rnd.randint(0, min(3, L)))
         de = rnd.sample(names, rnd.randint(0, 1)) + (["nope"] if rnd.random() < .05 else [])
         if k == "write":
@@ -152,6 +183,22 @@ def rand_ops(rnd, n, L):
             if rnd.random() < .2: kw["mrbayes"] = True
             if rnd.random() < .2: kw["codons_block"] = False
             ops.append(["write_nexus_data", kw])
+        elif k == "fasta":
+            # `stem` is the name the file gets inside the temp directory, which is what the derived name comes from
+            kw = {"stem": rnd.choice(["aln.nex", "aln.NEXUS", "aln.dat", "aln.txt", "aln", "a.b.paup"])}
+            if rnd.random() < .5: kw["width"] = rnd.choice([1, 3, 70, 1000, -5])
+            ops.append(["export_fasta", kw])
+        elif k == "phylip": ops.append(["export_phylip", {"stem": rnd.choice(["aln.nex", "aln.txt", "aln"])}])
+        elif k == "partitions":
+            kw = {"stem": rnd.choice(["aln.nex", "aln"])}
+            if rnd.random() < .7: kw["charpartition"] = rnd.choice(["part", "part", "nope", "literal", None])
+            if rnd.random() < .4: kw["exclude"] = ex
+            if rnd.random() < .3: kw["delete"] = de
+            if rnd.random() < .3: kw["interleave"] = True
+            if rnd.random() < .3: kw["blocksize"] = rnd.randint(1, 10)
+            if rnd.random() < .3: kw["comment"] = "a comment"
+            if rnd.random() < .2: kw["mrbayes"] = True
+            ops.append(["write_nexus_data_partitions", kw])
         elif k == "append": ops.append(["append_sets", {"exclude": ex, "delete": de, "mrbayes": rnd.random() < .3, "include_codons": rnd.random() < .5, "codons_only": rnd.random() < .2}])
         elif k == "crop":
             kw = {"delete": de}
@@ -191,7 +238,7 @@ def tree_cases():
         taxa = ["T%d" % i for i in range(rnd.randint(3, 8))]
         nw = rand_newick(rnd, taxa, bl=rnd.random() < .8, support=rnd.random() < .4)
         if not nw.startswith("("): nw = "(" + nw + ")"
-        ops = [["str", []], ["get_taxa", []], ["count_terminals", []], ["is_bifurcating", []], ["has_support", []], ["sum_branchlength", []], ["get_terminals", []],
+        ops = [["str", []], ["display", []], ["get_taxa", []], ["count_terminals", []], ["is_bifurcating", []], ["has_support", []], ["sum_branchlength", []], ["get_terminals", []],
                ["to_string", [{"plain": False}]], ["to_string", [{"plain_newick": True}]], ["to_string", [{"branchlengths_only": True}]], ["to_string", [{"support_as_branchlengths": True}]], ["to_string", [{"ladderize": rnd.choice(["LEFT", "RIGHT", None])}]]]
         for _ in range(rnd.randint(1, 4)):
             a, b = rnd.sample(taxa, 2)

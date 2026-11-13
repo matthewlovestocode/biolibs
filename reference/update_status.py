@@ -125,9 +125,12 @@ for m in ("format", "__format__"):
 
 # ---- Bio.Align.MultipleSeqAlignment (packages/align/test/golden/msa.json) ----
 if os.path.exists(f"{here}/../packages/align/test/golden/msa.json"):
+    msa_cases = json.load(open(f"{here}/../packages/align/test/golden/msa.json"))["cases"]
     for m in inv["Bio.Align"]["classes"]["MultipleSeqAlignment"]:
         key = f"Bio.Align.MultipleSeqAlignment.{m}"
-        if m in ("alignment", "substitutions"): continue         # need the new Alignment class and substitution matrices
+        # `alignment` and `substitutions` are exercised by ops of their own, since they only arrived with the new
+        # Alignment class and the substitution matrices
+        if m in ("alignment", "substitutions") and not any(op[0] == m for c in msa_cases for op in c["ops"]): continue
         elif m in ("__repr__", "__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__"): mark(key, "na")   # object boilerplate; __repr__ shows a memory address
         else: mark(key)
 

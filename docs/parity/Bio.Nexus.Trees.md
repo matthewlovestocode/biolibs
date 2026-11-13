@@ -21,7 +21,7 @@
 - [x] `common_ancestor(self, node1, node2)`
 - [x] `convert_absolute_support(self, nrep)`
 - [x] `count_terminals(self, node=None)`
-- [ ] `display(self)`
+- [x] `display(self)`
 - [x] `distance(self, node1, node2)`
 - [x] `get_taxa(self, node_id=None)`
 - [x] `get_terminals(self)`

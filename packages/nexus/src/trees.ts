@@ -36,6 +36,9 @@ export interface ToStringOptions {
 /** Python's `round(x, 3)` for a float. */
 const round3 = (x: number): number => Number(pyFormatFixed(x, 3));
 
+/** Python's `str()` for the values {@link Tree.display} puts in a cell: `None`, an integer, or a list of them. */
+const cellStr = (v: number | number[] | null): string => (v === null ? "None" : Array.isArray(v) ? `[${v.join(", ")}]` : String(v));
+
 /**
  * A tree: a chain of nodes with a root, a name, a weight and rooted/unrooted flag. Built from a Newick description.
  *
@@ -324,6 +327,48 @@ export class Tree extends Chain<NodeData> {
   }
 
   /** Sum of branch lengths from `node` up to `root`. */
+  /**
+   * A table of every node: id, taxon, previous and successor ids, branch length, cumulative length, support and
+   * comment, then the root id. Biopython's "quick and dirty" listing, printed with `console.log`.
+   *
+   * Columns are right-aligned to Biopython's widths (`%3s %32s %15s %15s %8s %10s %8s %20s`), and a node with no
+   * data at all shows a dash in every column but its own id. Note that Biopython formats the branch length
+   * *before* testing it for `None`, so a node whose length is missing raises rather than showing a dash.
+   *
+   * @returns The text, which is also what is printed.
+   * @example
+   * ```ts
+   * tree.display();   // prints, and returns, the table
+   * ```
+   */
+  display(): string {
+    const rows: string[][] = [["#", "taxon", "prev", "succ", "brlen", "blen (sum)", "support", "comment"]];
+    for (const i of this.allIds()) {
+      const n = this.node(i);
+      const data = n.data as NodeData | null;
+      // Python's `if not n.data` is truthiness: a node with no data shows dashes.
+      if (!data) {
+        rows.push([String(i), "-", cellStr(n.prev), cellStr(n.succ), "-", "-", "-", "-"]);
+        continue;
+      }
+      // `f"{branchlength:0.2f}"` runs first and raises for a missing length, so the `None` branch is dead code.
+      if (data.branchlength === null) throw new TypeError("unsupported format string passed to NoneType.__format__");
+      rows.push([
+        String(i), data.taxon || "-", cellStr(n.prev), cellStr(n.succ),
+        pyFormatFixed(data.branchlength, 2), pyFormatFixed(this.sumBranchlength(null, i), 2),
+        data.support === null ? "-" : pyFormatFixed(data.support, 2),
+        data.comment === null ? "-" : data.comment,
+      ]);
+    }
+    const widths = [3, 32, 15, 15, 8, 10, 8, 20];
+    const table = rows.map((r) => r.map((cell, k) => cell.padStart(widths[k]!)).join(" ")).join("\n");
+    const tail = `\nRoot:  ${cellStr(this.root)}`;
+    // Biopython prints the table and the root separately, so the text ends with a newline of its own.
+    console.log(table);
+    console.log(tail);
+    return `${table}\n${tail}\n`;
+  }
+
   sumBranchlength(root: number | null = null, node: number | null = null): number {
     if (root === null) root = this.root;
     if (node === null) throw new TreeError("Missing node id.");

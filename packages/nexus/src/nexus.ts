@@ -3,12 +3,32 @@
 import { Seq } from "@biolibs/seq";
 import { IndexError, RuntimeError, ValueError } from "@biolibs/core";
 import { NexusError, PyAttributeError } from "./errors.js";
-import { StepMatrix, compact4nexus, getStartEnd, safename, sortKeysByValues, uniqueLabel } from "./helpers.js";
+import { StepMatrix, compact4nexus, getStartEnd, makeUnique, safename, sortKeysByValues, uniqueLabel } from "./helpers.js";
 import { CODONPOSITIONS, NexusParser, type MatrixRow } from "./nexus-parser.js";
 
 /** Anything with a `write(text)` method. */
 export interface NexusTarget {
   write(text: string): unknown;
+}
+
+/** One partition's output: the name Biopython would have written to, and the text. */
+export interface PartitionOutput {
+  /** The file name Biopython derives for this partition. */
+  filename: string;
+  /** The NEXUS data block. */
+  text: string;
+}
+
+/** Options of {@link Nexus.writeNexusDataPartitions}. */
+export interface PartitionOptions extends WriteOptions {
+  /**
+   * The character partition itself — a `Map` of partition name to its characters, as
+   * {@link Nexus.charpartitions} holds them — not the name of one. Without it, a single block is written.
+   *
+   * Biopython iterates this argument and subscripts it with what it yields, so a *string* there iterates its
+   * characters and fails; that failure is reproduced rather than corrected.
+   */
+  charpartition?: Map<string, number[]> | string | null;
 }
 
 /** Options of {@link Nexus.writeNexusData}. */
@@ -33,12 +53,52 @@ export interface WriteOptions {
 
 const text = (row: MatrixRow): string => row.toString();
 
+/**
+ * The target to write to, or the refusal Biopython's file-by-name argument turns into here.
+ *
+ * @param target - What the caller passed as `filename`.
+ * @returns The target.
+ * @throws TypeError when it is not an object with a `write(text)` method.
+ */
+function requireTarget(target: NexusTarget | null | undefined): NexusTarget {
+  if (target === undefined || target === null || typeof target.write !== "function") {
+    throw new TypeError("Writing to a file by name is not supported; pass an object with a write(text) method as filename");
+  }
+  return target;
+}
+
 /** `row[index]` with Python indexing: negative counts from the end, out of range is an IndexError. */
 function charAt(row: MatrixRow, index: number): string {
   const s = text(row);
   const i = index < 0 ? index + s.length : index;
   if (i < 0 || i >= s.length) throw new IndexError("index out of range");
   return s[i]!;
+}
+
+/** The extensions {@link exportedName} replaces rather than appends to, as Biopython lists them. */
+const NEXUS_EXTENSIONS = ["paup", "nexus", "nex", "dat"];
+
+/**
+ * The name Biopython derives for an exported file: a known NEXUS extension is replaced, anything else appended to.
+ *
+ * `data.nex` becomes `data.fas`, `data.txt` becomes `data.txt.fas`, and a name with no dot at all is appended to.
+ * The test is on the last dot-separated piece, lowercased, so `DATA.NEX` counts as well.
+ *
+ * @param filename - The NEXUS file's name, as `Nexus.filename` holds it.
+ * @param extension - The new extension, without the dot.
+ * @returns The derived name.
+ * @example
+ * ```ts
+ * exportedName("aln.nex", "fas");   // "aln.fas"
+ * exportedName("aln.txt", "fas");   // "aln.txt.fas"
+ * ```
+ */
+export function exportedName(filename: string, extension: string): string {
+  const parts = filename.split(".");
+  if (parts.length > 1 && NEXUS_EXTENSIONS.includes(parts[parts.length - 1]!.toLowerCase())) {
+    return `${parts.slice(0, -1).join(".")}.${extension}`;
+  }
+  return `${filename}.${extension}`;
 }
 
 /**
@@ -49,7 +109,10 @@ function charAt(row: MatrixRow, index: number): string {
  * const n = new Nexus("#NEXUS\nbegin data; dimensions ntax=2 nchar=4; format datatype=dna; matrix\na ACGT\nb ACGA\n; end;");
  * n.taxlabels;   // ["a", "b"]
  * ```
- * Writing to a file by name, the `export_*` helpers, `bootstrap` and `write_nexus_data_partitions` are not ported.
+ * Writing to a file by name is not supported: {@link Nexus.writeNexusData}, {@link Nexus.exportFasta},
+ * {@link Nexus.exportPhylip} and {@link Nexus.writeNexusDataPartitions} all take an object with a `write(text)`
+ * method instead, and return the name Biopython would have derived. `bootstrap` is not ported: it resamples sites
+ * with Python's `random`, so nothing here could reproduce its output to compare against.
  */
 export class Nexus extends NexusParser {
   /** The sub-matrix without excluded characters and deleted taxa (rebuilt even for an empty exclusion, as Biopython does for its default). */
@@ -70,6 +133,122 @@ export class Nexus extends NexusParser {
       return new Map(undelete.map((t, k) => [t, new Seq(keep.map((i) => rows[k]![i]).join(""))] as [string, MatrixRow]));
     }
     return new Map(this.taxlabels.filter((t) => matrix!.has(t) && !deleteTaxa.includes(t)).map((t) => [t, matrix!.get(t)!] as [string, MatrixRow]));
+  }
+
+  /**
+   * Write one NEXUS data block per partition in a character partition.
+   *
+   * Each block leaves out the characters outside its partition (on top of `exclude`) and the deleted taxa, and
+   * carries a comment naming the partition. Biopython writes a file per partition and returns their names; since
+   * writing by name is not supported here, each partition's text comes back with the name Biopython would have
+   * used. Without a `charpartition` it writes one block, named `<filename>.data`.
+   *
+   * @param options - As {@link WriteOptions}, plus `charpartition`: the partition mapping itself, from
+   *   {@link Nexus.charpartitions}.
+   * @returns The text and derived name per partition, keyed by partition name; a single entry under `""` when no
+   *   character partition was given; `undefined` when there is no matrix to write.
+   * @throws TypeError when `charpartition` is a non-empty string, which is what Biopython does with one.
+   * @example
+   * ```ts
+   * const parts = nexus.writeNexusDataPartitions({ charpartition: nexus.charpartitions.get("genes") });
+   * parts?.get("gene1")?.text;
+   * ```
+   */
+  writeNexusDataPartitions(options: PartitionOptions = {}): Map<string, PartitionOutput> | undefined {
+    let matrix = options.matrix ?? null;
+    if (!matrix || matrix.size === 0) matrix = this.matrix;
+    if (!matrix || matrix.size === 0) return undefined;
+    const exclude = options.exclude ?? [];
+    const comment = options.comment ?? "";
+    const charpartition = options.charpartition;
+    const out = new Map<string, PartitionOutput>();
+
+    const write = (filename: string, partExclude: number[], partComment: string): PartitionOutput => {
+      let text = "";
+      this.writeNexusData({
+        ...options, filename: { write: (chunk: string) => { text += chunk; } },
+        matrix, exclude: partExclude, comment: partComment, appendSets: false,
+      });
+      return { filename, text };
+    };
+
+    // Python's `if charpartition:` is truthiness, so an empty mapping (or an empty string) writes the single block.
+    if (typeof charpartition === "string") {
+      if (charpartition !== "") throw new TypeError("string indices must be integers, not 'str'");
+    } else if (charpartition !== undefined && charpartition !== null && charpartition.size > 0) {
+      for (const [part, characters] of charpartition) {
+        // Everything outside this partition is excluded as well, and Biopython keeps the list unique.
+        const outside = [];
+        for (let c = 0; c < this.nchar; c++) if (!characters.includes(c)) outside.push(c);
+        const dot = this.filename.lastIndexOf(".");
+        out.set(part, write(
+          dot > 0 ? `${this.filename.slice(0, dot)}_${part}.data` : `${this.filename}_${part}`,
+          makeUnique([...exclude, ...outside]),
+          `${comment}\nPartition: ${part}\n`,
+        ));
+      }
+      return out;
+    }
+    out.set("", write(`${this.filename}.data`, exclude, comment));
+    return out;
+  }
+
+  /**
+   * One taxon's row, with Python's own failure for a matrix that was never built.
+   *
+   * @param taxon - The taxon label.
+   * @returns Its row.
+   * @throws TypeError when there is no matrix at all (Python subscripts `None`); KeyError for an unknown taxon.
+   */
+  private rowFor(taxon: string): MatrixRow {
+    if (this.matrix === null) throw new TypeError("'NoneType' object is not subscriptable");
+    const row = this.matrix.get(taxon);
+    if (row === undefined) throw Object.assign(new Error(taxon), { name: "KeyError" });
+    return row;
+  }
+
+  /**
+   * Write the matrix as FASTA.
+   *
+   * Biopython's `export_fasta` opens a file by name and can do nothing else, so this takes a target with a
+   * `write(text)` method, as {@link Nexus.writeNexusData} does, and returns the name Biopython would have derived
+   * from {@link Nexus.filename} — which is also what it returns there.
+   *
+   * @param options - `filename` is the target; `width` is the line width (default 70).
+   * @returns The derived file name.
+   * @throws TypeError when no target is given; ValueError for a `width` of 0, as Python's `range` step does.
+   * @example
+   * ```ts
+   * const out: string[] = [];
+   * nexus.exportFasta({ filename: { write: (t) => out.push(t) } });
+   * ```
+   */
+  exportFasta(options: { filename?: NexusTarget | null; width?: number } = {}): string {
+    const target = requireTarget(options.filename);
+    const width = options.width ?? 70;
+    if (width === 0) throw new ValueError("range() arg 3 must not be zero");
+    for (const taxon of this.taxlabels) {
+      target.write(`>${safename(taxon)}\n`);
+      const row = text(this.rowFor(taxon));
+      // Python walks the sequence with `range(0, len, width)`, so a negative width writes no sequence at all.
+      for (let i = 0; width > 0 && i < row.length; i += width) target.write(`${row.slice(i, i + width)}\n`);
+    }
+    return exportedName(this.filename, "fas");
+  }
+
+  /**
+   * Write the matrix as relaxed PHYLIP: a header of taxon and character counts, then one line per taxon with its
+   * name untruncated and unchecked, as Biopython's `export_phylip` writes it.
+   *
+   * @param options - `filename` is the target, as in {@link Nexus.exportFasta}.
+   * @returns The derived file name.
+   * @throws TypeError when no target is given.
+   */
+  exportPhylip(options: { filename?: NexusTarget | null } = {}): string {
+    const target = requireTarget(options.filename);
+    target.write(`${this.ntax} ${this.nchar}\n`);
+    for (const taxon of this.taxlabels) target.write(`${safename(taxon)} ${text(this.rowFor(taxon))}\n`);
+    return exportedName(this.filename, "phy");
   }
 
   /** Character labels adjusted for characters removed (`exclude`) or gaps inserted (`insert`). */

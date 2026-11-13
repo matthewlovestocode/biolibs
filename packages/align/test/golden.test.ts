@@ -18,7 +18,17 @@ function encMsa(a: MultipleSeqAlignment): unknown {
   const col = a.peekColumnAnnotations();
   return { $: "msa", records: [...a].map((r) => enc(r)), annotations: enc(a.annotations), column: col === null ? null : [...col].map(([k, v]) => [k, enc(v)]) };
 }
-const encAny = (x: unknown): unknown => (x instanceof MultipleSeqAlignment ? encMsa(x) : enc(x));
+/**
+ * `enc` all the way down. The shared codec encodes a record only when it is handed one directly, while Python's
+ * reaches one nested in a list or a dict, which `alignment` returns.
+ */
+function encDeep(x: unknown): unknown {
+  if (x instanceof SeqRecord) return enc(x);
+  if (Array.isArray(x)) return { $: "list", v: x.map(encDeep) };
+  if (x instanceof Map) return { $: "dict", v: [...x].map(([k, v]) => [encDeep(k), encDeep(v)]) };
+  return enc(x);
+}
+const encAny = (x: unknown): unknown => (x instanceof MultipleSeqAlignment ? encMsa(x) : encDeep(x));
 
 function apply(a: MultipleSeqAlignment, op: any[]): unknown {
   switch (op[0]) {
@@ -38,6 +48,25 @@ function apply(a: MultipleSeqAlignment, op: any[]): unknown {
     case "set_column": a.columnAnnotations = new Map(op[1].map(([k, v]: [string, unknown]) => [k, dec(v)])); return undefined;
     case "col_set": a.columnAnnotations.set(op[1], dec(op[2])); return undefined;
     case "format": return a.format(op[1]);
+    case "substitutions": {
+      const m = a.substitutions;
+      const letters = [...(m.alphabet as string)];
+      return new Map<string, unknown>([
+        ["alphabet", m.alphabet],
+        ["cells", letters.flatMap((x) => letters.map((y) => [x + y, m.get([x, y]) as number]))],
+      ]);
+    }
+    case "alignment": {
+      const al = a.alignment;
+      return new Map<string, unknown>([
+        ["sequences", al.sequences as SeqRecord[]],
+        ["coordinates", al.coordinates],
+        ["annotations", al.annotations ?? new Map()],
+        ["column", al.columnAnnotations ?? new Map()],
+        // reading `alignment` clears the original records' letter annotations, as in Biopython
+        ["after", [...a]],
+      ]);
+    }
     default: throw new Error(op[0]);
   }
 }

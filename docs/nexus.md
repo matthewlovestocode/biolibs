@@ -27,8 +27,9 @@ n.writeNexusData({ filename: { write: (t) => (out += t) }, interleave: true });
 
 Differences from Python:
 
-- **No file names.** `filename` must be an object with `write(text)`; passing a string, or nothing, throws `TypeError` (Python would open the file, or use `self.filename`). The same reason keeps `export_fasta`, `export_phylip` and `write_nexus_data_partitions` unported.
-- `bootstrap` and `Tree.randomize` (random numbers) and `Tree.display` (prints) are not ported. `Tree.isCompatible` does not print the names of missing taxa.
+- **No file names.** `filename` must be an object with `write(text)`; passing a string, or nothing, throws `TypeError` (Python would open the file, or use `self.filename`). `exportFasta`, `exportPhylip` and `writeNexusDataPartitions` take the same kind of target and return the name Biopython would have derived from `filename` — a known NEXUS extension (`paup`, `nexus`, `nex`, `dat`) is replaced, anything else appended to, which is what `exportedName` does. `writeNexusDataPartitions` returns each partition's text and name in a `Map`, keyed by partition (under `""` when no character partition was given).
+- `bootstrap` and `Tree.randomize` are not ported: both draw from Python's `random`, so no output here could be compared with Biopython's and the parity rule would have nothing to measure. `Tree.display` *is* ported — it prints with `console.log` and returns the same text, which the golden cases compare. `Tree.isCompatible` does not print the names of missing taxa.
+- `writeNexusDataPartitions` takes the character partition **itself** (a `Map` from `charpartitions`), not its name, because Biopython iterates the argument and subscripts it with what it yields. Passing a name there throws `TypeError: string indices must be integers, not 'str'`, exactly as it does in Biopython; an empty mapping writes the single unpartitioned block.
 - `exclude` distinguishes "not given" from an empty list in `cropMatrix`, exactly as Python's `()` vs `[]` does.
 - `combine` raises `RuntimeError` ("dictionary keys changed during iteration") when the first matrix has character or taxon sets: Biopython renames them while iterating over the dictionary.
 - `constant` is checked against Biopython only for deterministic cases; with ambiguity codes Python builds sets whose order is not stable.

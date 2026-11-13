@@ -2,10 +2,32 @@
 
 import { IndexError, NotImplementedError, ValueError, pyEquals, pyTypeName } from "@biolibs/core";
 import { RestrictedDict, SeqRecord, type LetterValue } from "@biolibs/seqrecord";
-import type { PySlice } from "@biolibs/seq";
+import { Seq, type PySlice } from "@biolibs/seq";
+import { Alignment } from "./alignment/index.js";
+import { parsePrintedAlignment } from "./alignment/printed-alignment.js";
+import { SubstitutionArray } from "./substitution-matrices/index.js";
 
 /** Function that renders an alignment in a file format (installed by `@biolibs/seqio`). */
 export type AlignmentWriter = (alignment: MultipleSeqAlignment) => string;
+
+/**
+ * Python's `copy.copy` of a record: a new object sharing every field, the per-letter annotations included.
+ *
+ * The sharing matters. {@link MultipleSeqAlignment.alignment} clears the copy's letter annotations before
+ * refilling them, and because the dictionary is shared that clears the *original* record's as well — a Biopython
+ * bug its own docstring contradicts, reproduced here rather than corrected.
+ *
+ * @param record - The record to copy.
+ * @returns The shallow copy.
+ */
+function shallowCopy(record: SeqRecord): SeqRecord {
+  const copy = Object.create(Object.getPrototypeOf(record) as object) as SeqRecord;
+  Object.assign(copy, record);
+  return copy;
+}
+
+/** A sequence's characters as bytes, which is what {@link parsePrintedAlignment} reads. */
+const asBytes = (text: string): Uint8Array => new TextEncoder().encode(text);
 
 /** `len(record.seq)`: a record without a sequence raises as Python's `len(None)` does. */
 function seqLength(record: SeqRecord): number {
@@ -256,6 +278,98 @@ export class MultipleSeqAlignment implements Iterable<SeqRecord> {
   }
 
   /** Sort the records in place by id, or by a key function; `reverse` reverses the order (keeping ties stable). */
+  /**
+   * The same alignment as a new-style {@link Alignment}: each record copied with its gaps removed, and the gaps
+   * turned into coordinates.
+   *
+   * A record's per-letter annotations are carried over with the gap positions dropped. Biopython does that by
+   * clearing the annotations on a *shallow* copy, which empties them on the original record too; that is
+   * reproduced here, so reading this property is not free of side effects.
+   *
+   * @returns The alignment, carrying this one's `annotations` and `columnAnnotations`.
+   * @throws {@link ValueError} for an alignment with no rows, as NumPy's `min` of an empty array does.
+   * @example
+   * ```ts
+   * const alignment = msa.alignment;
+   * alignment.coordinates;   // where each row's gaps are
+   * ```
+   */
+  get alignment(): Alignment {
+    const records = this.records.map(shallowCopy);
+    let alignment: Alignment;
+    if (records.length > 0) {
+      const parsed = parsePrintedAlignment(records.map((r) => asBytes(r.seq === null ? "" : r.seq.toString())));
+      records.forEach((record, row) => {
+        const ungapped = new TextDecoder().decode(parsed.sequences[row]!);
+        const annotations = record._perLetterAnnotations;
+        if (annotations !== null && annotations.size > 0) {
+          const gapless = [...(record.seq === null ? "" : record.seq.toString())].flatMap((c, i) => (c === "-" ? [] : [i]));
+          const kept = [...annotations];
+          annotations.clear();                      // shared with the original record, as in Biopython
+          record.seq = new Seq(ungapped);
+          const refilled = new RestrictedDict(ungapped.length);
+          for (const [key, value] of kept) {
+            refilled.setUnchecked(key, typeof value === "string" ? gapless.map((i) => value[i]!).join("") : gapless.map((i) => (value as unknown[])[i]));
+          }
+          record._perLetterAnnotations = refilled;
+        } else {
+          record.seq = new Seq(ungapped);
+        }
+      });
+      alignment = new Alignment(records, parsed.coordinates);
+    } else {
+      alignment = new Alignment([]);
+    }
+    alignment.annotations = this.annotations;
+    alignment.columnAnnotations = this.columnAnnotations as Map<string, string | unknown[]>;
+    return alignment;
+  }
+
+  /**
+   * The number of substitutions between every pair of letters, as a symmetric {@link SubstitutionArray}.
+   *
+   * Every pair of rows is compared column by column, gaps skipped, each pair of letters counted once and weighted
+   * by the two records' `annotations["weight"]` (1 by default). The counts are then made symmetric by halving each
+   * cell against its mirror, so a pair's total is split evenly on both sides of the diagonal.
+   *
+   * @returns The counts over the alphabet of letters present, gaps excluded, sorted.
+   * @throws TypeError for an alignment with no rows; {@link ValueError} when nothing but gaps is left.
+   * @example
+   * ```ts
+   * msa.substitutions.get(["A", "T"]);   // how often A aligns with T
+   * ```
+   */
+  get substitutions(): SubstitutionArray {
+    if (this.records.length === 0) throw new TypeError("unbound method set.union() needs an argument");
+    const present = new Set<string>();
+    for (const record of this.records) for (const c of record.seq === null ? "" : record.seq.toString()) present.add(c);
+    present.delete("-");
+    const letters = [...present].sort().join("");
+    const counts = new SubstitutionArray({ alphabet: letters, dims: 2 });
+    const weight = (record: SeqRecord): number => (record.annotations.get("weight") as number | undefined) ?? 1.0;
+    // Biopython's inner loop breaks at the diagonal, so each unordered pair of rows is counted once, in row order.
+    for (let i = 0; i < this.records.length; i++) {
+      const first = this.records[i]!;
+      const seq1 = first.seq === null ? "" : first.seq.toString();
+      for (let j = 0; j < i; j++) {
+        const second = this.records[j]!;
+        const seq2 = second.seq === null ? "" : second.seq.toString();
+        const product = weight(first) * weight(second);
+        for (let k = 0; k < Math.min(seq1.length, seq2.length); k++) {
+          const a = seq1[k]!, b = seq2[k]!;
+          if (a === "-" || b === "-") continue;
+          counts.set([a, b], (counts.get([a, b]) as number) + product);
+        }
+      }
+    }
+    // `m += m.transpose(); m /= 2.0`, cell by cell.
+    const symmetric = new SubstitutionArray({ alphabet: letters, dims: 2 });
+    for (const a of letters) for (const b of letters) {
+      symmetric.set([a, b], ((counts.get([a, b]) as number) + (counts.get([b, a]) as number)) / 2.0);
+    }
+    return symmetric;
+  }
+
   sort(key: ((record: SeqRecord) => string | number) | null = null, reverse = false): void {
     const k = key ?? ((r: SeqRecord) => r.id as string);
     const sign = reverse ? -1 : 1;

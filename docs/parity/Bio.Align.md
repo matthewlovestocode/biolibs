@@ -17,10 +17,10 @@
 - [-] `__lt__(self, value, /)`
 - [-] `__repr__(self)`
 - [x] `__str__(self)`
-- [ ] `alignment`
+- [x] `alignment`
 - [x] `append(self, record)`
 - [x] `column_annotations`
 - [x] `extend(self, records)`
 - [x] `get_alignment_length(self)`
 - [x] `sort(self, key=None, reverse=False)`
-- [ ] `substitutions`
+- [x] `substitutions`

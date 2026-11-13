@@ -49,6 +49,29 @@ function nexusOp(n: Nexus, name: string, kw: Record<string, any>): unknown {
       const r = n.writeNexusData({ ...k, filename: handle });
       return new Map<string, unknown>([["text", text], ["returned", r === handle]]);
     }
+    case "export_fasta":
+    case "export_phylip": {
+      // Biopython writes a real file and returns its name; here the text goes to a target and the derived name
+      // comes back, so `stem` becomes the Nexus's own filename.
+      let text = "";
+      n.filename = k.stem;
+      const filename = name === "export_fasta"
+        ? n.exportFasta({ filename: { write(t: string) { text += t; } }, width: k.width })
+        : n.exportPhylip({ filename: { write(t: string) { text += t; } } });
+      return new Map<string, unknown>([["text", text], ["filename", filename]]);
+    }
+    case "write_nexus_data_partitions": {
+      n.filename = k.stem;
+      // As in the generator: "part"/"nope" name a partition to look up, "literal" passes the string Biopython
+      // chokes on, and anything else leaves it out.
+      const asked = k.charpartition as string | null | undefined;
+      const charpartition = asked === "literal" ? "part"
+        : asked === undefined || asked === null ? null
+          : n.charpartitions.get(asked) ?? new Map<string, number[]>();
+      const parts = n.writeNexusDataPartitions({ ...k, stem: undefined, charpartition });
+      if (parts === undefined) return null;
+      return new Map([...parts].map(([part, out]) => [part, new Map<string, unknown>([["text", out.text], ["filename", out.filename]])]));
+    }
     case "append_sets": return n.appendSets(k.exclude, k.delete, k.mrbayes, k.includeCodons, k.codonsOnly);
     case "crop_matrix": return n.cropMatrix(null, k.delete, k.exclude);
     case "adjust_charlabels": return n.adjustCharlabels(k.exclude, k.insert);
@@ -66,6 +89,7 @@ function nexusOp(n: Nexus, name: string, kw: Record<string, any>): unknown {
 
 function treeOp(t: Tree, name: string, args: any[]): unknown {
   switch (name) {
+    case "display": return t.display();
     case "str": return t.toString();
     case "to_string": return t.toString(camelKeys(args[0]));
     case "is_identical": return t.isIdentical(new Tree(args[0]));

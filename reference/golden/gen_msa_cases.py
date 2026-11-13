@@ -51,6 +51,16 @@ def apply(a, op):
     if k == "set_column": a.column_annotations = {x: dec(y) for x, y in op[1]}; return None
     if k == "col_set": a.column_annotations[op[1]] = dec(op[2]); return None
     if k == "format": return format(a, op[1])
+    if k == "substitutions":
+        m = a.substitutions
+        # `str(m)` raises for an empty alphabet, so the cells are recorded one by one
+        return {"alphabet": m.alphabet, "cells": [[x + y, float(m[x, y])] for x in m.alphabet for y in m.alphabet]}
+    if k == "alignment":
+        al = a.alignment
+        return {"sequences": list(al.sequences), "coordinates": al.coordinates.tolist(),
+                "annotations": al.annotations, "column": dict(al.column_annotations),
+                # reading `alignment` clears the original records' letter annotations, which is recorded too
+                "after": list(a)}
     raise ValueError(k)
 
 def run(case):
@@ -93,7 +103,7 @@ COLS = [("i", 0), ("i", -1), ("i", 99), ("s", None, None, None), ("s", 1, 4, Non
 for _ in range(60):
     n = rnd.randint(0, 5); L = rnd.randint(1, 12)
     recs = [R(i, L, letter=[["q", LST(*range(L))]] if rnd.random() < .3 else None) for i in range(n)]
-    ops = [["len"], ["align_len"], ["str"], ["ids"]]
+    ops = [["len"], ["align_len"], ["str"], ["ids"], ["substitutions"], ["alignment"], ["substitutions"]]
     ops += [["get", list(s)] for s in rnd.sample(SPECS, 4)]
     ops += [["get2", list(rnd.choice(SPECS)), list(rnd.choice(COLS))] for _ in range(6)]
     ops += [["append", R(9, L)], ["append", R(8, L + 1)], ["append", 5], ["extend", [R(7, L), R(6, L)]], ["extend", [R(5, L), R(4, L + 2)]], ["extend_gen", [R(3, L)]],
