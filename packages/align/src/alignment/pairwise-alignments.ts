@@ -1,7 +1,17 @@
 /** `PairwiseAlignments`: the alignments found by the aligner, as a lazily evaluated, indexable sequence. */
 
 import { IndexError } from "@biolibs/core";
-import type { PathGeneratorBase } from "../pairwise/path-generator.js";
+import type { Path } from "../pairwise/path-generator.js";
+
+/** What {@link PairwiseAlignments} needs from a path generator. */
+export interface PathSource {
+  /** The next path, or null. */
+  next(): Path | null;
+  /** Start again. */
+  reset(): void;
+  /** The number of paths. */
+  length(): bigint;
+}
 import { Alignment } from "./alignment.js";
 
 /**
@@ -18,7 +28,7 @@ export class PairwiseAlignments implements Iterable<Alignment> {
   private current: Alignment | null = null;
 
   /** @param seqA - Target. @param seqB - Query. @param score - The optimal score. @param paths - Generator of the paths. */
-  constructor(seqA: unknown, seqB: unknown, score: number, private readonly paths: PathGeneratorBase) {
+  constructor(seqA: unknown, seqB: unknown, score: number, private readonly paths: PathSource) {
     this.sequences = [seqA, seqB];
     this.score = score;
   }

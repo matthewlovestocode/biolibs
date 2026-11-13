@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1725 / 1971 applicable items verified against Biopython.**
+**Progress: 1745 / 1991 applicable items verified against Biopython.**
 
 
 
@@ -765,6 +765,32 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [x] `write: stockholm`
 - [x] `parse: tabular`
 - [-] `write: tabular`
+
+## Bio.Align.CodonAligner
+
+
+### Bio.Align.CodonAligner.CodonAligner
+
+- [x] `__init__`
+- [x] `__repr__`
+- [x] `__str__`
+- [x] `align`
+- [x] `epsilon`
+- [x] `frameshift_minus_one_score`
+- [x] `frameshift_minus_score`
+- [x] `frameshift_minus_two_score`
+- [x] `frameshift_one_score`
+- [x] `frameshift_plus_one_score`
+- [x] `frameshift_plus_score`
+- [x] `frameshift_plus_two_score`
+- [x] `frameshift_score`
+- [x] `frameshift_two_score`
+- [x] `match`
+- [x] `match_score`
+- [x] `mismatch`
+- [x] `mismatch_score`
+- [x] `score`
+- [x] `wildcard`
 
 ## Bio.Align.AlignInfo
 

@@ -74,6 +74,7 @@ inv = {
   "Bio.Data.IUPACData": sorted(n for n in dir(IUPACData) if not n.startswith("_")),
   "Bio.Align": {"classes": {"MultipleSeqAlignment": members(Align.MultipleSeqAlignment)}},
   "Bio.Align.formats": {"functions": {n: str(inspect.signature(getattr(Align, n))) for n in ("parse", "read", "write")}, "formats": sorted(Align.formats) if hasattr(Align, "formats") else sorted(__import__("Bio.Align", fromlist=["x"]).__dict__.get("formats", []))},
+  "Bio.Align.CodonAligner": {"classes": {"CodonAligner": {n: "property" for n in dir(Align.CodonAligner) if not n.startswith("_") or n in ("__init__", "__str__", "__repr__")}}},
   "Bio.Align.AlignInfo": {"classes": {"SummaryInfo": members(AIMod.SummaryInfo)}},
   "Bio.Align.AlignmentCounts": {"classes": {"AlignmentCounts": {n: "property" for n in dir(Align._alignmentcounts.AlignmentCounts) if not n.startswith("_")}}},
   "Bio.Align.Alignment": {"classes": {"Alignment": members(Align.Alignment)}},

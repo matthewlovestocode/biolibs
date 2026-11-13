@@ -1,0 +1,23404 @@
+[
+{
+"kind": "score",
+"a": [
+"rec",
+"YHT"
+],
+"b": [
+"rec",
+"TATCACAC"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"KCRALTPLSCAR"
+],
+"b": [
+"seq",
+"AAATGCCGTGCCTAACGCCCTAATCCTGCGCTAGG"
+],
+"settings": [],
+"result": 8.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"KCRALTPLSCAR"
+],
+"b": [
+"seq",
+"AAATGCCGTGCCTAACGCCCTAATCCTGCGCTAGG"
+],
+"settings": [],
+"result": {
+"score": 8.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+4,
+4,
+12
+],
+[
+0,
+12,
+11,
+35
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"WHRX"
+],
+"b": [
+"str",
+"TGCATCGTTAA"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 3.0
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"GNLVAMSQPLE"
+],
+"b": [
+"seq",
+"GGTAATCTAGTTGCAATGTCACAACCGCTTCCT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 10.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"GNLVAMSQPLE"
+],
+"b": [
+"seq",
+"GGTAATCTAGTTGCAATGTCACAACCGCTTCCT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 10.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+11
+],
+[
+0,
+33
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"LRMAAIP"
+],
+"b": [
+"str",
+"CUGCGAAUGGCUGCUGCAUUCCC"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 13.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"LRMAAIP"
+],
+"b": [
+"str",
+"CUGCGAAUGGCUGCUGCAUUCCC"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 13.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+5,
+5,
+7
+],
+[
+0,
+15,
+17,
+23
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"VSGWP"
+],
+"b": [
+"seq",
+"GTAAGTGGGCGTCC"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"VSGWP"
+],
+"b": [
+"seq",
+"GTAAGTGGGCGTCC"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"VPTMEAS"
+],
+"b": [
+"mut",
+"GTTCCTACCATGGAAGCTTCA"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 14.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"VPTMEAS"
+],
+"b": [
+"mut",
+"GTTCCTACCATGGAAGCTTCA"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 14.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"SHDVSYFVDT"
+],
+"b": [
+"seq",
+"AGCCATGATGTCTCATATTTCGAGTCGATACG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"SHDVSYFVDT"
+],
+"b": [
+"seq",
+"AGCCATGATGTCTCATATTTCGAGTCGATACG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 9.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7,
+7,
+10
+],
+[
+0,
+21,
+23,
+32
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"QGSSCFR"
+],
+"b": [
+"str",
+"CAAGGTTCAAGTTGCTTCAGG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"QGSSCFR"
+],
+"b": [
+"str",
+"CAAGGTTCAAGTTGCTTCAGG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"RVGPSYSFCCLP"
+],
+"b": [
+"str",
+"CGCGUUGGACCCUCUUCCUCGUUCUGGCCUGCCA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"RVGPSYSFCCLP"
+],
+"b": [
+"str",
+"CGCGUUGGACCCUCUUCCUCGUUCUGGCCUGCCA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"XIADXAC"
+],
+"b": [
+"seq",
+"AAATCGCAGACTGAGCCTGT"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 2.0
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"ARRA"
+],
+"b": [
+"str",
+"GCTCGTCGTGCCTG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"ARRA"
+],
+"b": [
+"str",
+"GCTCGTCGTGCCTG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"TLL"
+],
+"b": [
+"seq",
+"ATGTTATTA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"TLL"
+],
+"b": [
+"seq",
+"ATGTTATTA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3
+],
+[
+0,
+9
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"ILSPEEL"
+],
+"b": [
+"str",
+"ATCCTCTCTCCGGAGGAATTA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 7.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"ILSPEEL"
+],
+"b": [
+"str",
+"ATCCTCTCTCCGGAGGAATTA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 7.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"GHELV"
+],
+"b": [
+"mut",
+"GGGCACGAAUAGUC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"GHELV"
+],
+"b": [
+"mut",
+"GGGCACGAAUAGUC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+12,
+11,
+14
+]
+],
+[
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+9,
+8,
+14
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"KTWRLLKNFMS"
+],
+"b": [
+"seq",
+"AAAACGTGGAGACGCTTCTCAAGCCCATCATGAGT"
+],
+"settings": [],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"KTWRLLKNFMS"
+],
+"b": [
+"seq",
+"AAAACGTGGAGACGCTTCTCAAGCCCATCATGAGT"
+],
+"settings": [],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+4,
+4,
+11
+],
+[
+0,
+12,
+14,
+35
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"LAHYLRG"
+],
+"b": [
+"mut",
+"TTGGCGCATGGCCTAAGGAGGGG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"LAHYLRG"
+],
+"b": [
+"mut",
+"TTGGCGCATGGCCTAAGGAGGGG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"XSF"
+],
+"b": [
+"str",
+"AAAGCTTT"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"IALXAESRS"
+],
+"b": [
+"seq",
+"ATTGCACTGTAGGCAGTCGCGATCT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"IALXAESRS"
+],
+"b": [
+"seq",
+"ATTGCACTGTAGGCAGTCGCGATCT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+18,
+16,
+25
+]
+],
+[
+[
+0,
+5,
+5,
+9
+],
+[
+0,
+15,
+13,
+25
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"YDXVGRP"
+],
+"b": [
+"mut",
+"UACGUAAGUAGGUCGACCA"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 7.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"YDXVGRP"
+],
+"b": [
+"mut",
+"UACGUAAGUAGGUCGACCA"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 7.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+3,
+3,
+7
+],
+[
+0,
+9,
+7,
+19
+]
+],
+[
+[
+0,
+2,
+2,
+7
+],
+[
+0,
+6,
+4,
+19
+]
+],
+[
+[
+0,
+1,
+1,
+7
+],
+[
+0,
+3,
+1,
+19
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"SGGGTVXQYSW"
+],
+"b": [
+"seq",
+"TCCGGGGGAGGCACCGTATAACAGTTCTTGG"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"SGGGTVXQYSW"
+],
+"b": [
+"seq",
+"TCCGGGGGAGGCACCGTATAACAGTTCTTGG"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": {
+"score": 6.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+9,
+9,
+11
+],
+[
+0,
+27,
+25,
+31
+]
+],
+[
+[
+0,
+8,
+8,
+11
+],
+[
+0,
+24,
+22,
+31
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"DXVP"
+],
+"b": [
+"str",
+"GATTAGGTGC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"ALSPIHSRRHI"
+],
+"b": [
+"seq",
+"GCCCTCTCTCCAATCCATTCTCGGAGGCTATT"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 7.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"ALSPIHSRRHI"
+],
+"b": [
+"seq",
+"GCCCTCTCTCCAATCCATTCTCGGAGGCTATT"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": {
+"score": 7.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+10,
+10,
+11
+],
+[
+0,
+30,
+29,
+32
+]
+],
+[
+[
+0,
+9,
+9,
+11
+],
+[
+0,
+27,
+26,
+32
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"TYRRSTLXM"
+],
+"b": [
+"str",
+"ACCTATAGAAGATCTACTCTGTATG"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"TYRRSTLXM"
+],
+"b": [
+"str",
+"ACCTATAGAAGATCTACTCTGTATG"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"VAY"
+],
+"b": [
+"seq",
+"GTGGCGG"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"PPDY"
+],
+"b": [
+"seq",
+"CCACCUUGAUUAC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"PPDY"
+],
+"b": [
+"seq",
+"CCACCUUGAUUAC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2,
+2,
+4
+],
+[
+0,
+6,
+7,
+13
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"VEIRNKL"
+],
+"b": [
+"seq",
+"AGAGATTCGCAACAAGTTA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 5.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"RRNLD"
+],
+"b": [
+"seq",
+"CGCCGUGUAUCUGGAU"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"RRNLD"
+],
+"b": [
+"seq",
+"CGCCGUGUAUCUGGAU"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+2,
+2,
+5
+],
+[
+0,
+6,
+7,
+16
+]
+],
+[
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+9,
+10,
+16
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"AXLGNITA"
+],
+"b": [
+"seq",
+"GCCUAGUUGGGAAACAUCACUC"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 2.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"AXLGNITA"
+],
+"b": [
+"seq",
+"GCCUAGUUGGGAAACAUCACUC"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7,
+7,
+8
+],
+[
+0,
+21,
+19,
+22
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"PKALTLPKCSQ"
+],
+"b": [
+"mut",
+"CCAAGCGCACTTACCTTACCGAAATGTAGCTCAA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 7.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"PKALTLPKCSQ"
+],
+"b": [
+"mut",
+"CCAAGCGCACTTACCTTACCGAAATGTAGCTCAA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 7.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+11
+],
+[
+0,
+33
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"LFPAETEFGL"
+],
+"b": [
+"seq",
+"ACTTTTCCCTGCTGAAACTGAGTTTGGCCTG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 20.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"LFPAETEFGL"
+],
+"b": [
+"seq",
+"ACTTTTCCCTGCTGAAACTGAGTTTGGCCTG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 20.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+10
+],
+[
+1,
+31
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"VNHDLFELL"
+],
+"b": [
+"str",
+"GTAAATCACCTGACCTTAAAAAGCTATTA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"VNHDLFELL"
+],
+"b": [
+"str",
+"GTAAATCACCTGACCTTAAAAAGCTATTA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+9,
+11,
+29
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"PIRFGEGEFSL"
+],
+"b": [
+"mut",
+"CCTATCAGGTTCTGAAGGTCACTTCTCTCTC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"PIRFGEGEFSL"
+],
+"b": [
+"mut",
+"CCTATCAGGTTCTGAAGGTCACTTCTCTCTC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": {
+"score": 6.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+5,
+5,
+11
+],
+[
+0,
+15,
+13,
+31
+]
+],
+[
+[
+0,
+4,
+4,
+11
+],
+[
+0,
+12,
+10,
+31
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"GSSLSLRRGTLL"
+],
+"b": [
+"seq",
+"GGACTTCCGAGTTAAGCCTTCGGAGGTTATAGTTGTTA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"GSSLSLRRGTLL"
+],
+"b": [
+"seq",
+"GGACTTCCGAGTTAAGCCTTCGGAGGTTATAGTTGTTA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 4.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+12
+],
+[
+2,
+38
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"TIRVF"
+],
+"b": [
+"rec",
+"ACGACCGGGTTTTT"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 1.0
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"RSHXTISACRX"
+],
+"b": [
+"str",
+"CGGAGTCATTAGACAATTTCTGCTTGTCCATAG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"RSHXTISACRX"
+],
+"b": [
+"str",
+"CGGAGTCATTAGACAATTTCTGCTTGTCCATAG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"SCDGTHN"
+],
+"b": [
+"mut",
+"TCATGCGACGGGACTCATAACTT"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 7.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"SCDGTHN"
+],
+"b": [
+"mut",
+"TCATGCGACGGGACTCATAACTT"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 7.0,
+"n": 6,
+"paths": [
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+7
+],
+[
+2,
+0,
+9,
+10,
+13,
+12,
+21
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+7
+],
+[
+1,
+0,
+9,
+10,
+13,
+12,
+21
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+7
+],
+[
+0,
+9,
+10,
+13,
+12,
+21
+]
+],
+[
+[
+0,
+0,
+7
+],
+[
+2,
+0,
+21
+]
+],
+[
+[
+0,
+0,
+7
+],
+[
+1,
+0,
+21
+]
+],
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"WRPLID"
+],
+"b": [
+"seq",
+"TGGAGACCCCTGTATACA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"WRPLID"
+],
+"b": [
+"seq",
+"TGGAGACCCCTGTATACA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 4.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+6
+],
+[
+0,
+18
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"KCTSVQAE"
+],
+"b": [
+"str",
+"AAGUGCACGAGUGUUCAGCAGGAGG"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"KCTSVQAE"
+],
+"b": [
+"str",
+"AAGUGCACGAGUGUUCAGCAGGAGG"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"RLKT"
+],
+"b": [
+"seq",
+"CGACTGTGTACG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"RLKT"
+],
+"b": [
+"seq",
+"CGACTGTGTACG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+4
+],
+[
+0,
+12
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"RGTNQVDIRSEL"
+],
+"b": [
+"str",
+"AGGGGCACCAATCAAGTCGATATCCGGAGCTAGCATTA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 10.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"RGTNQVDIRSEL"
+],
+"b": [
+"str",
+"AGGGGCACCAATCAAGTCGATATCCGGAGCTAGCATTA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 10.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+12
+],
+[
+0,
+36
+]
+],
+[
+[
+0,
+10,
+10,
+12
+],
+[
+0,
+30,
+32,
+38
+]
+],
+[
+[
+0,
+11,
+11,
+12
+],
+[
+0,
+33,
+35,
+38
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"PHYAL"
+],
+"b": [
+"seq",
+"CCACACTATGCGCTAT"
+],
+"settings": [],
+"result": 5.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"PHYAL"
+],
+"b": [
+"seq",
+"CCACACTATGCGCTAT"
+],
+"settings": [],
+"result": {
+"score": 5.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+5
+],
+[
+0,
+15
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"PEEDERRICWP"
+],
+"b": [
+"mut",
+"CCUGAGGAGGAUGAACGGGAUCUGUUGGCCG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"PEEDERRICWP"
+],
+"b": [
+"mut",
+"CCUGAGGAGGAUGAACGGGAUCUGUUGGCCG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 9.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+7,
+7,
+11
+],
+[
+0,
+21,
+19,
+31
+]
+],
+[
+[
+0,
+6,
+6,
+11
+],
+[
+0,
+18,
+16,
+31
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"RVRR"
+],
+"b": [
+"str",
+"CGAGTAGAAGA"
+],
+"settings": [],
+"result": 1.0
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"LLSQTPPDSQCL"
+],
+"b": [
+"mut",
+"UACUUAGUCAGACGCCCCCAGACAGCCAGUGUCUC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 10.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"AKXS"
+],
+"b": [
+"str",
+"GCTCTAGTCC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"LLRSMNNCIGM"
+],
+"b": [
+"mut",
+"CTGCTTAGGTCAATGAAACTGCATTGGGTGG"
+],
+"settings": [],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"LLRSMNNCIGM"
+],
+"b": [
+"mut",
+"CTGCTTAGGTCAATGAAACTGCATTGGGTGG"
+],
+"settings": [],
+"result": {
+"score": 6.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+6,
+6,
+11
+],
+[
+0,
+18,
+16,
+31
+]
+],
+[
+[
+0,
+5,
+5,
+11
+],
+[
+0,
+15,
+13,
+31
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"XSMCDXGHACK"
+],
+"b": [
+"seq",
+"UAAAGCAUCUGCGAUUAGGGAUUGCGUGCAAG"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"XSMCDXGHACK"
+],
+"b": [
+"seq",
+"UAAAGCAUCUGCGAUUAGGGAUUGCGUGCAAG"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": {
+"score": 4.0,
+"n": 4,
+"paths": [
+[
+[
+0,
+8,
+8,
+11
+],
+[
+0,
+24,
+23,
+32
+]
+],
+[
+[
+0,
+7,
+7,
+11
+],
+[
+0,
+21,
+20,
+32
+]
+],
+[
+[
+0,
+6,
+6,
+11
+],
+[
+0,
+18,
+17,
+32
+]
+],
+[
+[
+0,
+5,
+5,
+11
+],
+[
+0,
+15,
+14,
+32
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"RYD"
+],
+"b": [
+"str",
+"CGTGGAC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"RYD"
+],
+"b": [
+"str",
+"CGTGGAC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+2,
+2,
+3
+],
+[
+0,
+6,
+4,
+7
+]
+],
+[
+[
+0,
+1,
+1,
+3
+],
+[
+0,
+3,
+1,
+7
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"DLHR"
+],
+"b": [
+"mut",
+"GACUUGCACAGG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 8.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"DLHR"
+],
+"b": [
+"mut",
+"GACUUGCACAGG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 8.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+4
+],
+[
+0,
+12
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"PEITPRSADDNS"
+],
+"b": [
+"seq",
+"CCAGAGCTGACACCTCGACGTCTGCTGATGACAACTCC"
+],
+"settings": [],
+"result": 8.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"PEITPRSADDNS"
+],
+"b": [
+"seq",
+"CCAGAGCTGACACCTCGACGTCTGCTGATGACAACTCC"
+],
+"settings": [],
+"result": {
+"score": 8.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+6,
+6,
+12
+],
+[
+0,
+18,
+20,
+38
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"QLDPGC"
+],
+"b": [
+"rec",
+"CAACCTTAGATCGTGGCTGC"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"QLDPGC"
+],
+"b": [
+"rec",
+"CAACCTTAGATCGTGGCTGC"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": {
+"score": 4.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+6
+],
+[
+2,
+20
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"GDSNXVMGPS"
+],
+"b": [
+"mut",
+"CGAGACUCAAACUAGGUGAUGGCCAAGC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"GDSNXVMGPS"
+],
+"b": [
+"mut",
+"CGAGACUCAAACUAGGUGAUGGCCAAGC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": {
+"score": 4.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+8,
+8,
+10
+],
+[
+0,
+24,
+22,
+28
+]
+],
+[
+[
+0,
+7,
+7,
+10
+],
+[
+0,
+21,
+19,
+28
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"DILGQPL"
+],
+"b": [
+"mut",
+"GATATCAGAGGACAACCTCTG"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"DILGQPL"
+],
+"b": [
+"mut",
+"GATATCAGAGGACAACCTCTG"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"VRS"
+],
+"b": [
+"mut",
+"GAAGAGT"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"TLI"
+],
+"b": [
+"str",
+"ACGCTTAA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"TLI"
+],
+"b": [
+"str",
+"ACGCTTAA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"XSELA"
+],
+"b": [
+"mut",
+"TAGTTCGAACTAG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"XSELA"
+],
+"b": [
+"mut",
+"TAGTTCGAACTAG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+2,
+2,
+4,
+4,
+5
+],
+[
+1,
+7,
+6,
+12,
+10,
+13
+]
+],
+[
+[
+0,
+4,
+4,
+5
+],
+[
+0,
+12,
+10,
+13
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"IXSCFIW"
+],
+"b": [
+"seq",
+"AUCUGAAGUUGUUUCAUUUGG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"IXSCFIW"
+],
+"b": [
+"seq",
+"AUCUGAAGUUGUUUCAUUUGG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"PVPYCEYY"
+],
+"b": [
+"mut",
+"TATGTGCCATATTGTATTTATTAC"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 12.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"PVPYCEYY"
+],
+"b": [
+"mut",
+"TATGTGCCATATTGTATTTATTAC"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 12.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+8
+],
+[
+0,
+24
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"QNMGI"
+],
+"b": [
+"seq",
+"CAGAACAGGGCATA"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"QNMGI"
+],
+"b": [
+"seq",
+"CAGAACAGGGCATA"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": {
+"score": 1.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+9,
+8,
+14
+]
+],
+[
+[
+0,
+2,
+2,
+5
+],
+[
+0,
+6,
+5,
+14
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"AWRAH"
+],
+"b": [
+"rec",
+"GCAUGGAGUAGCGCAC"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"AWRAH"
+],
+"b": [
+"rec",
+"GCAUGGAGUAGCGCAC"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 4.0,
+"n": 18,
+"paths": [
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5
+],
+[
+2,
+0,
+6,
+8,
+11,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5
+],
+[
+1,
+0,
+6,
+8,
+11,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5
+],
+[
+0,
+6,
+8,
+11,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5
+],
+[
+2,
+0,
+6,
+7,
+10,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5
+],
+[
+1,
+0,
+6,
+7,
+10,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5
+],
+[
+0,
+6,
+7,
+10,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+5
+],
+[
+2,
+0,
+6,
+8,
+11,
+10,
+16
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+5
+],
+[
+1,
+0,
+6,
+8,
+11,
+10,
+16
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+5
+],
+[
+0,
+6,
+8,
+11,
+10,
+16
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+5
+],
+[
+2,
+0,
+6,
+7,
+16
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+5
+],
+[
+1,
+0,
+6,
+7,
+16
+]
+],
+[
+[
+0,
+2,
+2,
+5
+],
+[
+0,
+6,
+7,
+16
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5
+],
+[
+2,
+0,
+9,
+10,
+16
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5
+],
+[
+1,
+0,
+9,
+10,
+16
+]
+],
+[
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+9,
+10,
+16
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+5
+],
+[
+2,
+0,
+6,
+5,
+8,
+10,
+16
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+5
+],
+[
+1,
+0,
+6,
+5,
+8,
+10,
+16
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+5
+],
+[
+0,
+6,
+5,
+8,
+10,
+16
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"TYGAGXRW"
+],
+"b": [
+"rec",
+"ACCTACGGGTTCGGTTAGAGATGG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"TYGAGXRW"
+],
+"b": [
+"rec",
+"ACCTACGGGTTCGGTTAGAGATGG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+8
+],
+[
+0,
+24
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"KDLVYLSHAW"
+],
+"b": [
+"seq",
+"AAGAAGCGTTAGTTTACCTTTCCCACGCGTGG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"KDLVYLSHAW"
+],
+"b": [
+"seq",
+"AAGAAGCGTTAGTTTACCTTTCCCACGCGTGG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+10
+],
+[
+2,
+32
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"KSGIDYAST"
+],
+"b": [
+"seq",
+"AAGTCGGGAATCCGTTATGCCTCACAC"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 14.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"KSGIDYAST"
+],
+"b": [
+"seq",
+"AAGTCGGGAATCCGTTATGCCTCACAC"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 14.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+8,
+8,
+9
+],
+[
+0,
+24,
+23,
+26
+]
+],
+[
+[
+0,
+9
+],
+[
+0,
+27
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"QFSTSSGKSNGW"
+],
+"b": [
+"str",
+"GUGUUUAGUACCUAGCGGGAAGUCCAAUGGUUGG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"QFSTSSGKSNGW"
+],
+"b": [
+"str",
+"GUGUUUAGUACCUAGCGGGAAGUCCAAUGGUUGG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"YATRXRX"
+],
+"b": [
+"str",
+"TATGCGACACGGTGACGATGA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 5.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"YATRXRX"
+],
+"b": [
+"str",
+"TATGCGACACGGTGACGATGA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 5.0,
+"n": 90,
+"paths": [
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+14,
+17,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+14,
+17,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+14,
+17,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+14,
+17,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+14,
+17,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+14,
+17,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+13,
+16,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+13,
+16,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+13,
+16,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+13,
+16,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+13,
+16,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+13,
+16,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+6,
+6,
+7
+],
+[
+2,
+0,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+6,
+6,
+7
+],
+[
+1,
+0,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+6,
+6,
+7
+],
+[
+0,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+11,
+14,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+11,
+14,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+11,
+14,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+11,
+14,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+11,
+14,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+11,
+14,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+10,
+13,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+10,
+13,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+10,
+13,
+15,
+18,
+16,
+19
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+14,
+17,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+14,
+17,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+14,
+17,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+14,
+17,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+14,
+17,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+14,
+17,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+13,
+16,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+13,
+16,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+13,
+16,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+13,
+16,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+13,
+16,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+13,
+16,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+6,
+6,
+7
+],
+[
+2,
+0,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+6,
+6,
+7
+],
+[
+1,
+0,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+6,
+6,
+7
+],
+[
+0,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+11,
+14,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+11,
+14,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+11,
+14,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+11,
+14,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+11,
+14,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+11,
+14,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+10,
+13,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+10,
+13,
+15,
+18,
+17,
+20
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+10,
+13,
+15,
+18,
+17,
+20
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"LGAFQQQ"
+],
+"b": [
+"seq",
+"TTGGGAGCCTTTCAAAAAAG"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 5.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"LGAFQQQ"
+],
+"b": [
+"seq",
+"TTGGGAGCCTTTCAAAAAAG"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 5.0,
+"n": 216,
+"paths": [
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+10,
+13,
+11,
+14,
+12,
+15
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+10,
+13,
+11,
+14,
+12,
+15
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+10,
+13,
+11,
+14,
+12,
+15
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+11,
+14,
+12,
+15
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+11,
+14,
+12,
+15
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+11,
+14,
+12,
+15
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+12,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+12,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+12,
+11,
+14,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+10,
+13,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+10,
+13,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+10,
+13,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+12,
+15,
+13,
+16
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+9,
+10,
+13,
+12,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+9,
+10,
+13,
+12,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+9,
+10,
+13,
+12,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+12,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+12,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+12,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+15,
+13,
+16,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+12,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+12,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+12,
+11,
+14,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+12,
+10,
+13,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+12,
+10,
+13,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+12,
+10,
+13,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+12,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+9,
+10,
+13,
+12,
+15,
+14,
+17,
+15,
+18
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+9,
+10,
+13,
+12,
+15,
+14,
+17,
+15,
+18
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+9,
+10,
+13,
+12,
+15,
+14,
+17,
+15,
+18
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+12,
+15,
+14,
+17,
+15,
+18
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+12,
+15,
+14,
+17,
+15,
+18
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7
+],
+[
+0,
+3,
+2,
+5,
+6,
+9,
+10,
+13,
+12,
+15,
+14,
+17,
+15,
+18
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"KFSVTKFMGQ"
+],
+"b": [
+"seq",
+"AAATTTAGCGTAACCAAGTTCATGGGGGCCAT"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"KFSVTKFMGQ"
+],
+"b": [
+"seq",
+"AAATTTAGCGTAACCAAGTTCATGGGGGCCAT"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": {
+"score": 9.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+10
+],
+[
+0,
+30
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"RLAHVFLPV"
+],
+"b": [
+"str",
+"CGTCTCGCTCATGTCTTCTCCCCTGTC"
+],
+"settings": [],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"RLAHVFLPV"
+],
+"b": [
+"str",
+"CGTCTCGCTCATGTCTTCTCCCCTGTC"
+],
+"settings": [],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"KAVRNLISD"
+],
+"b": [
+"str",
+"AAGGCAGTCCGCAATTTAATCAGTGAT"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"KAVRNLISD"
+],
+"b": [
+"str",
+"AAGGCAGTCCGCAATTTAATCAGTGAT"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 9.0,
+"n": 6,
+"paths": [
+[
+[
+0,
+0,
+9
+],
+[
+2,
+0,
+27
+]
+],
+[
+[
+0,
+0,
+9
+],
+[
+1,
+0,
+27
+]
+],
+[
+[
+0,
+9
+],
+[
+0,
+27
+]
+],
+[
+[
+0,
+0,
+7,
+7,
+8,
+8,
+9
+],
+[
+2,
+0,
+21,
+19,
+22,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+7,
+7,
+8,
+8,
+9
+],
+[
+1,
+0,
+21,
+19,
+22,
+24,
+27
+]
+],
+[
+[
+0,
+7,
+7,
+8,
+8,
+9
+],
+[
+0,
+21,
+19,
+22,
+24,
+27
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"GYEI"
+],
+"b": [
+"str",
+"GGCGTGAAATA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"GYEI"
+],
+"b": [
+"str",
+"GGCGTGAAATA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"FLYGHXARLTVS"
+],
+"b": [
+"seq",
+"UUCCUAUAUGGGCAUUGAGCGAGAUUGACCGUCUCG"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 11.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"FLYGHXARLTVS"
+],
+"b": [
+"seq",
+"UUCCUAUAUGGGCAUUGAGCGAGAUUGACCGUCUCG"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": {
+"score": 11.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+12
+],
+[
+0,
+36
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"GSVVSHRCTT"
+],
+"b": [
+"str",
+"GGTTCGGTCGTATCACAGATGTACTACT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"GSVVSHRCTT"
+],
+"b": [
+"str",
+"GGTTCGGTCGTATCACAGATGTACTACT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"IWTCKGL"
+],
+"b": [
+"seq",
+"ATATGGACTTGTAAAGGCTTA"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 14.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"IWTCKGL"
+],
+"b": [
+"seq",
+"ATATGGACTTGTAAAGGCTTA"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 14.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"VCWYT"
+],
+"b": [
+"mut",
+"GTCGTTTGGTTACACT"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 5.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"VCWYT"
+],
+"b": [
+"mut",
+"GTCGTTTGGTTACACT"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 5.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+9,
+10,
+16
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"XELMQDXXXE"
+],
+"b": [
+"seq",
+"TGAGAGCTTATTCAGGACTAGTAATGAGAG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 10.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"XELMQDXXXE"
+],
+"b": [
+"seq",
+"TGAGAGCTTATTCAGGACTAGTAATGAGAG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 10.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+10
+],
+[
+0,
+30
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"QDLMIP"
+],
+"b": [
+"str",
+"CAGGATCTGATGATCCCC"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"QDLMIP"
+],
+"b": [
+"str",
+"CAGGATCTGATGATCCCC"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 6.0,
+"n": 6,
+"paths": [
+[
+[
+0,
+0,
+5,
+5,
+6
+],
+[
+2,
+0,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+5,
+5,
+6
+],
+[
+1,
+0,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+5,
+5,
+6
+],
+[
+0,
+15,
+14,
+17
+]
+],
+[
+[
+0,
+0,
+6
+],
+[
+2,
+0,
+18
+]
+],
+[
+[
+0,
+0,
+6
+],
+[
+1,
+0,
+18
+]
+],
+[
+[
+0,
+6
+],
+[
+0,
+18
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"RRRSSQ"
+],
+"b": [
+"seq",
+"CGTCGCCGCTCAAGTCTCAG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"RRRSSQ"
+],
+"b": [
+"seq",
+"CGTCGCCGCTCAAGTCTCAG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 4.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+6
+],
+[
+0,
+18
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"HHTX"
+],
+"b": [
+"str",
+"CACCAUAUAG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"HHTX"
+],
+"b": [
+"str",
+"CACCAUAUAG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"CLIRSIRLP"
+],
+"b": [
+"str",
+"TGTTTAATACGAAGCATACGCTTGT"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 13.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"CLIRSIRLP"
+],
+"b": [
+"str",
+"TGTTTAATACGAAGCATACGCTTGT"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 13.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+8,
+8,
+9
+],
+[
+0,
+24,
+22,
+25
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"VNLLLSLL"
+],
+"b": [
+"str",
+"GTCAACCTTTTGCTTTCTTTATTG"
+],
+"settings": [],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"VNLLLSLL"
+],
+"b": [
+"str",
+"GTCAACCTTTTGCTTTCTTTATTG"
+],
+"settings": [],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"DVVMQWGXG"
+],
+"b": [
+"str",
+"GAUGUGGUAAUGCAGUGGAAGUAAGGG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"DVVMQWGXG"
+],
+"b": [
+"str",
+"GAUGUGGUAAUGCAGUGGAAGUAAGGG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"SFVYS"
+],
+"b": [
+"mut",
+"TCATTCGTTTACCG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"XYTGFEHLYRSX"
+],
+"b": [
+"mut",
+"UGAUAUACGGGCUUCGAGCACUUAUACAGACAUAG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 8.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"XYTGFEHLYRSX"
+],
+"b": [
+"mut",
+"UGAUAUACGGGCUUCGAGCACUUAUACAGACAUAG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 8.0,
+"n": 4,
+"paths": [
+[
+[
+0,
+11,
+11,
+12
+],
+[
+0,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+10,
+10,
+12
+],
+[
+0,
+30,
+28,
+34
+]
+],
+[
+[
+0,
+11,
+11,
+12
+],
+[
+0,
+33,
+32,
+35
+]
+],
+[
+[
+0,
+10,
+10,
+12
+],
+[
+0,
+30,
+29,
+35
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"GDFPWKVTDTQ"
+],
+"b": [
+"str",
+"GGCGTTTTCTTGGAAAGTAACCGACACGCTG"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 8.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"GDFPWKVTDTQ"
+],
+"b": [
+"str",
+"GGCGTTTTCTTGGAAAGTAACCGACACGCTG"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 8.0,
+"n": 2208,
+"paths": [
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+4,
+7,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+4,
+7,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+4,
+7,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+2,
+5,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+1,
+4,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+1,
+4,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+1,
+4,
+6,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+4,
+7,
+5,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+4,
+7,
+5,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+4,
+7,
+5,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+6,
+5,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+6,
+5,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+6,
+5,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+2,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+2,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+2,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+1,
+4,
+5,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+1,
+4,
+5,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+1,
+4,
+5,
+8,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+6,
+4,
+7,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+6,
+4,
+7,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+6,
+4,
+7,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+2,
+5,
+4,
+7,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+2,
+5,
+4,
+7,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+2,
+5,
+4,
+7,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+1,
+7,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+1,
+7,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+1,
+7,
+9,
+12,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+5,
+8,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+4,
+7,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+4,
+7,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+4,
+7,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+2,
+5,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+1,
+4,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+1,
+4,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+1,
+4,
+6,
+9,
+8,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+4,
+7,
+5,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+4,
+7,
+5,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+4,
+7,
+5,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+6,
+5,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+6,
+5,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+6,
+5,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+2,
+0,
+3,
+2,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+1,
+0,
+3,
+2,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+],
+[
+[
+0,
+1,
+1,
+4,
+4,
+5,
+5,
+6,
+6,
+9,
+9,
+10,
+10,
+11
+],
+[
+0,
+3,
+2,
+11,
+10,
+13,
+14,
+17,
+16,
+25,
+23,
+26,
+24,
+27
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"SRXI"
+],
+"b": [
+"str",
+"TCTCGTTAGATA"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"SRXI"
+],
+"b": [
+"str",
+"TCTCGTTAGATA"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"RAGTRS"
+],
+"b": [
+"str",
+"AGGCCGGTACCAGAAGT"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"RAGTRS"
+],
+"b": [
+"str",
+"AGGCCGGTACCAGAAGT"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 6.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+0,
+1,
+1,
+6
+],
+[
+2,
+0,
+3,
+2,
+17
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+6
+],
+[
+1,
+0,
+3,
+2,
+17
+]
+],
+[
+[
+0,
+1,
+1,
+6
+],
+[
+0,
+3,
+2,
+17
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"GIVG"
+],
+"b": [
+"mut",
+"GGGATTGTAGG"
+],
+"settings": [],
+"result": 1.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"EASITESEPX"
+],
+"b": [
+"str",
+"GAGGCCAGCATTACGGACCGAAGCGTAG"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"EASITESEPX"
+],
+"b": [
+"str",
+"GAGGCCAGCATTACGGACCGAAGCGTAG"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": {
+"score": 3.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+7,
+7,
+10
+],
+[
+0,
+21,
+19,
+28
+]
+],
+[
+[
+0,
+6,
+6,
+10
+],
+[
+0,
+18,
+16,
+28
+]
+],
+[
+[
+0,
+5,
+5,
+10
+],
+[
+0,
+15,
+13,
+28
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"LHLLLSRLE"
+],
+"b": [
+"rec",
+"UUACACCUAACUCUUGUCCAGACUUGAA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"LHLLLSRLE"
+],
+"b": [
+"rec",
+"UUACACCUAACUCUUGUCCAGACUUGAA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 9.0,
+"n": 12,
+"paths": [
+[
+[
+0,
+0,
+3,
+3,
+7,
+7,
+8,
+8,
+9
+],
+[
+2,
+0,
+9,
+10,
+22,
+23,
+26,
+25,
+28
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+7,
+7,
+8,
+8,
+9
+],
+[
+1,
+0,
+9,
+10,
+22,
+23,
+26,
+25,
+28
+]
+],
+[
+[
+0,
+3,
+3,
+7,
+7,
+8,
+8,
+9
+],
+[
+0,
+9,
+10,
+22,
+23,
+26,
+25,
+28
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+7,
+7,
+8,
+8,
+9
+],
+[
+2,
+0,
+9,
+10,
+13,
+12,
+15,
+16,
+22,
+23,
+26,
+25,
+28
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+7,
+7,
+8,
+8,
+9
+],
+[
+1,
+0,
+9,
+10,
+13,
+12,
+15,
+16,
+22,
+23,
+26,
+25,
+28
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+7,
+7,
+8,
+8,
+9
+],
+[
+0,
+9,
+10,
+13,
+12,
+15,
+16,
+22,
+23,
+26,
+25,
+28
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+9
+],
+[
+2,
+0,
+9,
+10,
+28
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+9
+],
+[
+1,
+0,
+9,
+10,
+28
+]
+],
+[
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+9,
+10,
+28
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+9
+],
+[
+2,
+0,
+9,
+10,
+13,
+12,
+15,
+16,
+28
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+9
+],
+[
+1,
+0,
+9,
+10,
+13,
+12,
+15,
+16,
+28
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+9
+],
+[
+0,
+9,
+10,
+13,
+12,
+15,
+16,
+28
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"NYDGWV"
+],
+"b": [
+"str",
+"AACTATGCGGTTGGGTG"
+],
+"settings": [],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"NYDGWV"
+],
+"b": [
+"str",
+"AACTATGCGGTTGGGTG"
+],
+"settings": [],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"TMRVRASTIVGW"
+],
+"b": [
+"seq",
+"ACGAUGCGCGUACGGGCAUCGACUAUCGUUGAGGUUGG"
+],
+"settings": [],
+"result": 10.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"TMRVRASTIVGW"
+],
+"b": [
+"seq",
+"ACGAUGCGCGUACGGGCAUCGACUAUCGUUGAGGUUGG"
+],
+"settings": [],
+"result": {
+"score": 10.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+12
+],
+[
+0,
+36
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"PFKRDPXQAXLF"
+],
+"b": [
+"str",
+"CCGTTTCTGAGGGATCCTAACAAGCATAACTATTT"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"PFKRDPXQAXLF"
+],
+"b": [
+"str",
+"CCGTTTCTGAGGGATCCTAACAAGCATAACTATTT"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"LIETVLAHI"
+],
+"b": [
+"mut",
+"CTTATCGAAACGGTCCTTGCTCATATT"
+],
+"settings": [],
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"LIETVLAHI"
+],
+"b": [
+"mut",
+"CTTATCGAAACGGTCCTTGCTCATATT"
+],
+"settings": [],
+"result": {
+"score": 9.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+9
+],
+[
+0,
+27
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"VPYQLVAWLEIP"
+],
+"b": [
+"rec",
+"GTAAAATATGCATTAGTACGCTGGCCAGAAATCG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 11.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"VPYQLVAWLEIP"
+],
+"b": [
+"rec",
+"GTAAAATATGCATTAGTACGCTGGCCAGAAATCG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 11.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+11,
+11,
+12
+],
+[
+0,
+33,
+31,
+34
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"ISRDITYVD"
+],
+"b": [
+"rec",
+"ATTTCTAGGGACATTAACTCCGTGGAT"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 7.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"ISRDITYVD"
+],
+"b": [
+"rec",
+"ATTTCTAGGGACATTAACTCCGTGGAT"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": {
+"score": 7.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+9
+],
+[
+0,
+27
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"XIKRHTRCLK"
+],
+"b": [
+"seq",
+"TAGATCAAACGCGCATACCCGTTGCCTAAAA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"XIKRHTRCLK"
+],
+"b": [
+"seq",
+"TAGATCAAACGCGCATACCCGTTGCCTAAAA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 9.0,
+"n": 48,
+"paths": [
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+4,
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+3,
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+1,
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+0,
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+3,
+1,
+4,
+3,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+2,
+1,
+4,
+3,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+1,
+4,
+3,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+0,
+1,
+4,
+3,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+2,
+0,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+1,
+0,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+9,
+9,
+10
+],
+[
+0,
+9,
+11,
+14,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+9,
+9,
+10
+],
+[
+4,
+2,
+5,
+3,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+9,
+9,
+10
+],
+[
+3,
+2,
+5,
+3,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+1,
+1,
+4,
+4,
+9,
+9,
+10
+],
+[
+2,
+5,
+3,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+9,
+9,
+10
+],
+[
+1,
+2,
+5,
+3,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+9,
+9,
+10
+],
+[
+0,
+2,
+5,
+3,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+9,
+9,
+10
+],
+[
+3,
+1,
+4,
+3,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+9,
+9,
+10
+],
+[
+2,
+1,
+4,
+3,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+1,
+1,
+4,
+4,
+9,
+9,
+10
+],
+[
+1,
+4,
+3,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+9,
+9,
+10
+],
+[
+0,
+1,
+4,
+3,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+9,
+9,
+10
+],
+[
+2,
+0,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+9,
+9,
+10
+],
+[
+1,
+0,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+4,
+4,
+9,
+9,
+10
+],
+[
+0,
+12,
+13,
+28,
+27,
+30
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+10
+],
+[
+4,
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+10
+],
+[
+3,
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+10
+],
+[
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+10
+],
+[
+1,
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+10
+],
+[
+0,
+2,
+5,
+3,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+10
+],
+[
+3,
+1,
+4,
+3,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+10
+],
+[
+2,
+1,
+4,
+3,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+10
+],
+[
+1,
+4,
+3,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+10
+],
+[
+0,
+1,
+4,
+3,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+10
+],
+[
+2,
+0,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+10
+],
+[
+1,
+0,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+10
+],
+[
+0,
+9,
+11,
+14,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+10
+],
+[
+4,
+2,
+5,
+3,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+10
+],
+[
+3,
+2,
+5,
+3,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+1,
+1,
+4,
+4,
+10
+],
+[
+2,
+5,
+3,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+10
+],
+[
+1,
+2,
+5,
+3,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+10
+],
+[
+0,
+2,
+5,
+3,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+10
+],
+[
+3,
+1,
+4,
+3,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+10
+],
+[
+2,
+1,
+4,
+3,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+1,
+1,
+4,
+4,
+10
+],
+[
+1,
+4,
+3,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+4,
+4,
+10
+],
+[
+0,
+1,
+4,
+3,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+10
+],
+[
+2,
+0,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+10
+],
+[
+1,
+0,
+12,
+13,
+31
+]
+],
+[
+[
+0,
+4,
+4,
+10
+],
+[
+0,
+12,
+13,
+31
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"TVFQGR"
+],
+"b": [
+"seq",
+"ACGGTCTTTCAGGGCCGC"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"TVFQGR"
+],
+"b": [
+"seq",
+"ACGGTCTTTCAGGGCCGC"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+6
+],
+[
+0,
+18
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"LVPGVGAGTGSQ"
+],
+"b": [
+"seq",
+"TTGCCCCGGGCAGTGGAGCGGGAACTGGGTCACAG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 18.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"LVPGVGAGTGSQ"
+],
+"b": [
+"seq",
+"TTGCCCCGGGCAGTGGAGCGGGAACTGGGTCACAG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 18.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+2,
+2,
+12
+],
+[
+0,
+6,
+5,
+35
+]
+],
+[
+[
+0,
+1,
+1,
+12
+],
+[
+0,
+3,
+2,
+35
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"NGAHXPMAGDGF"
+],
+"b": [
+"seq",
+"AAUGGGGCUUGUUAGCCUAUGGCCGGUGACGGCUU"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"NGAHXPMAGDGF"
+],
+"b": [
+"seq",
+"AAUGGGGCUUGUUAGCCUAUGGCCGGUGACGGCUU"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 9.0,
+"n": 342,
+"paths": [
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+9,
+11,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+9,
+11,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+5,
+8,
+6,
+9,
+11,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+4,
+7,
+6,
+9,
+11,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+4,
+7,
+6,
+9,
+11,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+4,
+7,
+6,
+9,
+11,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+9,
+11,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+9,
+11,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+9,
+11,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+9,
+10,
+13,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+9,
+10,
+13,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+5,
+8,
+6,
+9,
+10,
+13,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+4,
+7,
+6,
+9,
+10,
+13,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+4,
+7,
+6,
+9,
+10,
+13,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+4,
+7,
+6,
+9,
+10,
+13,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+9,
+10,
+13,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+9,
+10,
+13,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+9,
+10,
+13,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+12,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+12,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+5,
+8,
+6,
+12,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+4,
+7,
+6,
+12,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+4,
+7,
+6,
+12,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+4,
+7,
+6,
+12,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+12,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+12,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+12,
+14,
+17,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+9,
+11,
+14,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+9,
+11,
+14,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+5,
+8,
+6,
+9,
+11,
+14,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+4,
+7,
+6,
+9,
+11,
+14,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+4,
+7,
+6,
+9,
+11,
+14,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+4,
+7,
+6,
+9,
+11,
+14,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+9,
+11,
+14,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+9,
+11,
+14,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+9,
+11,
+14,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+9,
+10,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+9,
+10,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+5,
+8,
+6,
+9,
+10,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+4,
+7,
+6,
+9,
+10,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+4,
+7,
+6,
+9,
+10,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+4,
+7,
+6,
+9,
+10,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+9,
+10,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+9,
+10,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+3,
+3,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+9,
+10,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+12,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+12,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+5,
+8,
+6,
+12,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+4,
+7,
+6,
+12,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+4,
+7,
+6,
+12,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+4,
+7,
+6,
+12,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+12,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+12,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+12,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+9,
+8,
+11,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+9,
+8,
+11,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+5,
+8,
+6,
+9,
+8,
+11,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+2,
+0,
+3,
+4,
+7,
+6,
+9,
+8,
+11,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+1,
+0,
+3,
+4,
+7,
+6,
+9,
+8,
+11,
+13,
+16,
+15,
+33,
+31,
+34
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+11,
+11,
+12
+],
+[
+0,
+3,
+4,
+7,
+6,
+9,
+8,
+11,
+13,
+16,
+15,
+33,
+31,
+34
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"NRHVPTER"
+],
+"b": [
+"str",
+"AACCGGCCGACGTCCCCACGGAGCGA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 7.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"NRHVPTER"
+],
+"b": [
+"str",
+"AACCGGCCGACGTCCCCACGGAGCGA"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 7.0,
+"n": 27,
+"paths": [
+[
+[
+0,
+0,
+2,
+2,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+6,
+8,
+14,
+15,
+18,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+6,
+8,
+14,
+15,
+18,
+17,
+26
+]
+],
+[
+[
+0,
+2,
+2,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+6,
+8,
+14,
+15,
+18,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+6,
+7,
+10,
+11,
+14,
+15,
+18,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+6,
+7,
+10,
+11,
+14,
+15,
+18,
+17,
+26
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+6,
+7,
+10,
+11,
+14,
+15,
+18,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+9,
+11,
+14,
+15,
+18,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+9,
+11,
+14,
+15,
+18,
+17,
+26
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+9,
+11,
+14,
+15,
+18,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+8
+],
+[
+2,
+0,
+6,
+8,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+8
+],
+[
+1,
+0,
+6,
+8,
+26
+]
+],
+[
+[
+0,
+2,
+2,
+8
+],
+[
+0,
+6,
+8,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+8
+],
+[
+2,
+0,
+6,
+7,
+10,
+11,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+8
+],
+[
+1,
+0,
+6,
+7,
+10,
+11,
+26
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+8
+],
+[
+0,
+6,
+7,
+10,
+11,
+26
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+8
+],
+[
+2,
+0,
+9,
+11,
+26
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+8
+],
+[
+1,
+0,
+9,
+11,
+26
+]
+],
+[
+[
+0,
+3,
+3,
+8
+],
+[
+0,
+9,
+11,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+6,
+8,
+14,
+13,
+16,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+6,
+8,
+14,
+13,
+16,
+17,
+26
+]
+],
+[
+[
+0,
+2,
+2,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+6,
+8,
+14,
+13,
+16,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+6,
+7,
+10,
+11,
+14,
+13,
+16,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+6,
+7,
+10,
+11,
+14,
+13,
+16,
+17,
+26
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+6,
+7,
+10,
+11,
+14,
+13,
+16,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+9,
+11,
+14,
+13,
+16,
+17,
+26
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+9,
+11,
+14,
+13,
+16,
+17,
+26
+]
+],
+[
+[
+0,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+9,
+11,
+14,
+13,
+16,
+17,
+26
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"CPRERS"
+],
+"b": [
+"seq",
+"TGCCCAGAGTGCGCAGC"
+],
+"settings": [],
+"result": 2.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"CPRERS"
+],
+"b": [
+"seq",
+"TGCCCAGAGTGCGCAGC"
+],
+"settings": [],
+"result": {
+"score": 2.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+2,
+2,
+6
+],
+[
+0,
+6,
+5,
+17
+]
+],
+[
+[
+0,
+1,
+1,
+6
+],
+[
+0,
+3,
+2,
+17
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"HTLI"
+],
+"b": [
+"seq",
+"CATACTCTGATA"
+],
+"settings": [],
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"HTLI"
+],
+"b": [
+"seq",
+"CATACTCTGATA"
+],
+"settings": [],
+"result": {
+"score": 4.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+4
+],
+[
+0,
+12
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"DLEEVTLYLS"
+],
+"b": [
+"seq",
+"GACTTAGACGAGGTTACCTGTATTTGTCT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 8.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"DLEEVTLYLS"
+],
+"b": [
+"seq",
+"GACTTAGACGAGGTTACCTGTATTTGTCT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 8.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+6,
+6,
+10
+],
+[
+0,
+18,
+17,
+29
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"WGVRGVLTF"
+],
+"b": [
+"rec",
+"TGGGGTGTGCGTGGTGTTTTCACGTTT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 8.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"WGVRGVLTF"
+],
+"b": [
+"rec",
+"TGGGGTGTGCGTGGTGTTTTCACGTTT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 8.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+9
+],
+[
+0,
+27
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"RLESLSP"
+],
+"b": [
+"seq",
+"AGGTGCGAGTCTTTGTCCCGACC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 5.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"RLESLSP"
+],
+"b": [
+"seq",
+"AGGTGCGAGTCTTTGTCCCGACC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": {
+"score": 5.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"SHWLYHND"
+],
+"b": [
+"seq",
+"AGCCAUUGGCUAUAUCACUCGGACU"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"SHWLYHND"
+],
+"b": [
+"seq",
+"AGCCAUUGGCUAUAUCACUCGGACU"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+8
+],
+[
+0,
+24
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"ASFSKT"
+],
+"b": [
+"seq",
+"UGUUUUUCUCUUCGACG"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 2.0
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"RPRMXRNCSY"
+],
+"b": [
+"str",
+"TCTCCCCGAATGTGACGTAATATATCCTAC"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"RPRMXRNCSY"
+],
+"b": [
+"str",
+"TCTCCCCGAATGTGACGTAATATATCCTAC"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"WYSRQI"
+],
+"b": [
+"mut",
+"UGGUAUUCUAGACAAAUU"
+],
+"settings": [],
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"WYSRQI"
+],
+"b": [
+"mut",
+"UGGUAUUCUAGACAAAUU"
+],
+"settings": [],
+"result": {
+"score": 6.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+6
+],
+[
+0,
+18
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"LGVLN"
+],
+"b": [
+"mut",
+"TTGGGTGTTGAAC"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 5.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"LGVLN"
+],
+"b": [
+"mut",
+"TTGGGTGTTGAAC"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 5.0,
+"n": 12,
+"paths": [
+[
+[
+0,
+0,
+3,
+3,
+5
+],
+[
+2,
+0,
+9,
+7,
+13
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5
+],
+[
+1,
+0,
+9,
+7,
+13
+]
+],
+[
+[
+0,
+3,
+3,
+5
+],
+[
+0,
+9,
+7,
+13
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5
+],
+[
+2,
+0,
+3,
+2,
+5,
+6,
+9,
+7,
+13
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5
+],
+[
+1,
+0,
+3,
+2,
+5,
+6,
+9,
+7,
+13
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5
+],
+[
+0,
+3,
+2,
+5,
+6,
+9,
+7,
+13
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+5
+],
+[
+2,
+0,
+6,
+4,
+13
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+5
+],
+[
+1,
+0,
+6,
+4,
+13
+]
+],
+[
+[
+0,
+2,
+2,
+5
+],
+[
+0,
+6,
+4,
+13
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+5
+],
+[
+2,
+0,
+3,
+2,
+5,
+4,
+13
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+5
+],
+[
+1,
+0,
+3,
+2,
+5,
+4,
+13
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+5
+],
+[
+0,
+3,
+2,
+5,
+4,
+13
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"LTVLCSN"
+],
+"b": [
+"rec",
+"TTAACCGTTTTATGTTCAAAC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": 7.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"LTVLCSN"
+],
+"b": [
+"rec",
+"TTAACCGTTTTATGTTCAAAC"
+],
+"settings": [
+[
+"epsilon",
+1e-09
+]
+],
+"result": {
+"score": 7.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"VYC"
+],
+"b": [
+"str",
+"GTCCTACTGT"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"VYC"
+],
+"b": [
+"str",
+"GTCCTACTGT"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 4.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3
+],
+[
+1,
+10
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"EEXHAXRICE"
+],
+"b": [
+"seq",
+"GAGGAGUAACACGCAUAGAGGAUCUGUGAA"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 16.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"EEXHAXRICE"
+],
+"b": [
+"seq",
+"GAGGAGUAACACGCAUAGAGGAUCUGUGAA"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 16.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+10
+],
+[
+0,
+30
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"EAHHPHWGR"
+],
+"b": [
+"seq",
+"TGAGCACATCATCCCCACGGGCCGT"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 11.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"EAHHPHWGR"
+],
+"b": [
+"seq",
+"TGAGCACATCATCCCCACGGGCCGT"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 11.0,
+"n": 4,
+"paths": [
+[
+[
+0,
+1,
+1,
+7,
+7,
+9
+],
+[
+1,
+4,
+3,
+21,
+19,
+25
+]
+],
+[
+[
+0,
+7,
+7,
+9
+],
+[
+0,
+21,
+19,
+25
+]
+],
+[
+[
+0,
+1,
+1,
+6,
+6,
+9
+],
+[
+1,
+4,
+3,
+18,
+16,
+25
+]
+],
+[
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+18,
+16,
+25
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"SNTTVAIHLTT"
+],
+"b": [
+"seq",
+"UCGAACACAACGGUCGCCAUUCACCUUACAAAC"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"SNTTVAIHLTT"
+],
+"b": [
+"seq",
+"UCGAACACAACGGUCGCCAUUCACCUUACAAAC"
+],
+"settings": [
+[
+"wildcard",
+"N"
+]
+],
+"result": {
+"score": 9.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+11
+],
+[
+0,
+33
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"YPPRYER"
+],
+"b": [
+"seq",
+"TATCCTCCCAGATATGAGCGG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 14.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"YPPRYER"
+],
+"b": [
+"seq",
+"TATCCTCCCAGATATGAGCGG"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 14.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7
+],
+[
+0,
+21
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"rec",
+"EYDV"
+],
+"b": [
+"seq",
+"GAAUACGAUCGUU"
+],
+"settings": [],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"rec",
+"EYDV"
+],
+"b": [
+"seq",
+"GAAUACGAUCGUU"
+],
+"settings": [],
+"result": {
+"score": 3.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+4
+],
+[
+0,
+12
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"mut",
+"FPGYGF"
+],
+"b": [
+"mut",
+"TTTGCAGGCTATGGTTTC"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": 10.0
+},
+{
+"kind": "align",
+"a": [
+"mut",
+"FPGYGF"
+],
+"b": [
+"mut",
+"TTTGCAGGCTATGGTTTC"
+],
+"settings": [
+[
+"match_score",
+2.0
+],
+[
+"frameshift_minus_one_score",
+-2.0
+],
+[
+"frameshift_plus_two_score",
+-1.0
+]
+],
+"result": {
+"score": 10.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+6
+],
+[
+0,
+18
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"VAHTPTLF"
+],
+"b": [
+"seq",
+"GUUGCGCACACCGAACUCUCUUU"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": 8.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"VAHTPTLF"
+],
+"b": [
+"seq",
+"GUUGCGCACACCGAACUCUCUUU"
+],
+"settings": [
+[
+"frameshift_score",
+0.0
+],
+[
+"mismatch",
+0.0
+]
+],
+"result": {
+"score": 8.0,
+"n": 54,
+"paths": [
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+3,
+5,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+3,
+5,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+3,
+5,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+12,
+10,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+9,
+7,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+9,
+7,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+3,
+5,
+8,
+6,
+9,
+7,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+9,
+7,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+9,
+7,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+9,
+7,
+13,
+14,
+17,
+19,
+22,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+3,
+5,
+11,
+9,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+3,
+5,
+11,
+9,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+3,
+5,
+11,
+9,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+8
+],
+[
+2,
+0,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+8
+],
+[
+1,
+0,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+8
+],
+[
+0,
+12,
+10,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+8
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+9,
+7,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+8
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+9,
+7,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+8
+],
+[
+0,
+3,
+5,
+8,
+6,
+9,
+7,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+8
+],
+[
+2,
+0,
+9,
+7,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+8
+],
+[
+1,
+0,
+9,
+7,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+3,
+3,
+5,
+5,
+8
+],
+[
+0,
+9,
+7,
+13,
+14,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+3,
+5,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+3,
+5,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+1,
+1,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+3,
+5,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+2,
+2,
+3,
+3,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+6,
+8,
+11,
+9,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+3,
+5,
+8,
+6,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+4,
+4,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+12,
+10,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+3,
+5,
+8,
+6,
+9,
+7,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+3,
+5,
+8,
+6,
+9,
+7,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+1,
+1,
+2,
+2,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+3,
+5,
+8,
+6,
+9,
+7,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+2,
+0,
+9,
+7,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+0,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+1,
+0,
+9,
+7,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+],
+[
+[
+0,
+3,
+3,
+5,
+5,
+6,
+6,
+7,
+7,
+8
+],
+[
+0,
+9,
+7,
+13,
+14,
+17,
+15,
+18,
+20,
+23
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"settings": [],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"settings": [],
+"result": {
+"score": 3.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3
+],
+[
+0,
+9
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MSR"
+],
+"b": [
+"seq",
+"ATGTCTCGT"
+],
+"settings": [],
+"result": {
+"score": 3.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3
+],
+[
+0,
+9
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3
+],
+[
+0,
+9
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MSR"
+],
+"b": [
+"seq",
+"ATGTCTCGT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3
+],
+[
+0,
+9
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3
+],
+[
+0,
+9
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MSR"
+],
+"b": [
+"seq",
+"ATGTCTCGT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+3
+],
+[
+0,
+9
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MLGSNESRVCPKLSPS"
+],
+"b": [
+"str",
+"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"
+],
+"settings": [],
+"result": 13.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MLGSNESRVCPKLSPS"
+],
+"b": [
+"str",
+"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"
+],
+"settings": [],
+"result": {
+"score": 13.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7,
+7,
+16
+],
+[
+0,
+21,
+20,
+47
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MLGSNESRVCPKLSPS"
+],
+"b": [
+"seq",
+"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"
+],
+"settings": [],
+"result": {
+"score": 13.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7,
+7,
+16
+],
+[
+0,
+21,
+20,
+47
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MLGSNESRVCPKLSPS"
+],
+"b": [
+"str",
+"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 15.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MLGSNESRVCPKLSPS"
+],
+"b": [
+"str",
+"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 15.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7,
+7,
+16
+],
+[
+0,
+21,
+20,
+47
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MLGSNESRVCPKLSPS"
+],
+"b": [
+"seq",
+"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 15.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7,
+7,
+16
+],
+[
+0,
+21,
+20,
+47
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MLGSNESRVCPKLSPS"
+],
+"b": [
+"str",
+"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 13.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MLGSNESRVCPKLSPS"
+],
+"b": [
+"str",
+"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 13.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7,
+7,
+16
+],
+[
+0,
+21,
+20,
+47
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MLGSNESRVCPKLSPS"
+],
+"b": [
+"seq",
+"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 13.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+7,
+7,
+16
+],
+[
+0,
+21,
+20,
+47
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"FKKKKF"
+],
+"b": [
+"str",
+"TTTAAAAAAAAAAATTT"
+],
+"settings": [],
+"result": 3.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"FKKKKF"
+],
+"b": [
+"str",
+"TTTAAAAAAAAAAATTT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 5.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"FKKKKF"
+],
+"b": [
+"str",
+"TTTAAAAAAAAAAATTT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 5.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+4,
+4,
+6
+],
+[
+0,
+12,
+11,
+17
+]
+],
+[
+[
+0,
+3,
+3,
+6
+],
+[
+0,
+9,
+8,
+17
+]
+],
+[
+[
+0,
+2,
+2,
+6
+],
+[
+0,
+6,
+5,
+17
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"FKKKKF"
+],
+"b": [
+"seq",
+"TTTAAAAAAAAAAATTT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 5.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+4,
+4,
+6
+],
+[
+0,
+12,
+11,
+17
+]
+],
+[
+[
+0,
+3,
+3,
+6
+],
+[
+0,
+9,
+8,
+17
+]
+],
+[
+[
+0,
+2,
+2,
+6
+],
+[
+0,
+6,
+5,
+17
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"FKKKKF"
+],
+"b": [
+"str",
+"TTTAAAAAAAAAAATTT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 3.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"FKKKKF"
+],
+"b": [
+"str",
+"TTTAAAAAAAAAAATTT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+4,
+4,
+6
+],
+[
+0,
+12,
+11,
+17
+]
+],
+[
+[
+0,
+3,
+3,
+6
+],
+[
+0,
+9,
+8,
+17
+]
+],
+[
+[
+0,
+2,
+2,
+6
+],
+[
+0,
+6,
+5,
+17
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"FKKKKF"
+],
+"b": [
+"seq",
+"TTTAAAAAAAAAAATTT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 3.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+4,
+4,
+6
+],
+[
+0,
+12,
+11,
+17
+]
+],
+[
+[
+0,
+3,
+3,
+6
+],
+[
+0,
+9,
+8,
+17
+]
+],
+[
+[
+0,
+2,
+2,
+6
+],
+[
+0,
+6,
+5,
+17
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+""
+],
+"b": [
+"str",
+""
+],
+"settings": [],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+""
+],
+"b": [
+"str",
+""
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+""
+],
+"b": [
+"str",
+""
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+""
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+""
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+""
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+""
+],
+"settings": [],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+""
+],
+"settings": [],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+""
+],
+"settings": [],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+""
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+""
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+""
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+""
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+""
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+""
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"A"
+],
+"settings": [],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"A"
+],
+"settings": [],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"A"
+],
+"settings": [],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"A"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"A"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"A"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"A"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"A"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"A"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"AT"
+],
+"settings": [],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"AT"
+],
+"settings": [],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"AT"
+],
+"settings": [],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"AT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"AT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"AT"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"AT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"AT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"AT"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 0,
+"paths": []
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"ATG"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MM"
+],
+"b": [
+"str",
+"ATGATG"
+],
+"settings": [],
+"result": 2.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MM"
+],
+"b": [
+"str",
+"ATGATG"
+],
+"settings": [],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MM"
+],
+"b": [
+"seq",
+"ATGATG"
+],
+"settings": [],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MM"
+],
+"b": [
+"str",
+"ATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 2.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MM"
+],
+"b": [
+"str",
+"ATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MM"
+],
+"b": [
+"seq",
+"ATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MM"
+],
+"b": [
+"str",
+"ATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 2.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MM"
+],
+"b": [
+"str",
+"ATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MM"
+],
+"b": [
+"seq",
+"ATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MX"
+],
+"b": [
+"str",
+"ATGNNN"
+],
+"settings": [],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MX"
+],
+"b": [
+"str",
+"ATGNNN"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MX"
+],
+"b": [
+"seq",
+"ATGNNN"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MX"
+],
+"b": [
+"str",
+"ATGNNN"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MX"
+],
+"b": [
+"str",
+"ATGNNN"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MX"
+],
+"b": [
+"seq",
+"ATGNNN"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MX"
+],
+"b": [
+"str",
+"ATGNNN"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MX"
+],
+"b": [
+"str",
+"ATGNNN"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MX"
+],
+"b": [
+"seq",
+"ATGNNN"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATGATGATG"
+],
+"settings": [],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATGATGATG"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+3,
+6
+]
+],
+[
+[
+0,
+1
+],
+[
+6,
+9
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"ATGATGATG"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+3,
+6
+]
+],
+[
+[
+0,
+1
+],
+[
+6,
+9
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATGATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATGATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+3,
+6
+]
+],
+[
+[
+0,
+1
+],
+[
+6,
+9
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"ATGATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+3,
+6
+]
+],
+[
+[
+0,
+1
+],
+[
+6,
+9
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATGATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATGATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+3,
+6
+]
+],
+[
+[
+0,
+1
+],
+[
+6,
+9
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"ATGATGATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 3,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+3,
+6
+]
+],
+[
+[
+0,
+1
+],
+[
+6,
+9
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MMMM"
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [],
+"result": 1.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MMMM"
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MMMM"
+],
+"b": [
+"str",
+"ATG"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"K"
+],
+"b": [
+"str",
+"AAAA"
+],
+"settings": [],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"K"
+],
+"b": [
+"str",
+"AAAA"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+1,
+4
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"K"
+],
+"b": [
+"seq",
+"AAAA"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+1,
+4
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"K"
+],
+"b": [
+"str",
+"AAAA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"K"
+],
+"b": [
+"str",
+"AAAA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+1,
+4
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"K"
+],
+"b": [
+"seq",
+"AAAA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+1,
+4
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"K"
+],
+"b": [
+"str",
+"AAAA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"K"
+],
+"b": [
+"str",
+"AAAA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+1,
+4
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"K"
+],
+"b": [
+"seq",
+"AAAA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+],
+[
+[
+0,
+1
+],
+[
+1,
+4
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M*"
+],
+"b": [
+"str",
+"ATGTAA"
+],
+"settings": [],
+"result": 2.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M*"
+],
+"b": [
+"str",
+"ATGTAA"
+],
+"settings": [],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M*"
+],
+"b": [
+"seq",
+"ATGTAA"
+],
+"settings": [],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M*"
+],
+"b": [
+"str",
+"ATGTAA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 2.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M*"
+],
+"b": [
+"str",
+"ATGTAA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M*"
+],
+"b": [
+"seq",
+"ATGTAA"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M*"
+],
+"b": [
+"str",
+"ATGTAA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 2.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M*"
+],
+"b": [
+"str",
+"ATGTAA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M*"
+],
+"b": [
+"seq",
+"ATGTAA"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 2.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+2
+],
+[
+0,
+6
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"L"
+],
+"b": [
+"str",
+"CTN"
+],
+"settings": [],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"L"
+],
+"b": [
+"str",
+"CTN"
+],
+"settings": [],
+"result": {
+"score": 0.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"L"
+],
+"b": [
+"seq",
+"CTN"
+],
+"settings": [],
+"result": {
+"score": 0.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"L"
+],
+"b": [
+"str",
+"CTN"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"L"
+],
+"b": [
+"str",
+"CTN"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"L"
+],
+"b": [
+"seq",
+"CTN"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"L"
+],
+"b": [
+"str",
+"CTN"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 0.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"L"
+],
+"b": [
+"str",
+"CTN"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"L"
+],
+"b": [
+"seq",
+"CTN"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 0.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"atg"
+],
+"settings": [],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"atg"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"atg"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"atg"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"atg"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"atg"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"atg"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"atg"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"M"
+],
+"b": [
+"seq",
+"atg"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"A"
+],
+"b": [
+"str",
+"GCTGC"
+],
+"settings": [],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"A"
+],
+"b": [
+"str",
+"GCTGC"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"A"
+],
+"b": [
+"seq",
+"GCTGC"
+],
+"settings": [],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"A"
+],
+"b": [
+"str",
+"GCTGC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"A"
+],
+"b": [
+"str",
+"GCTGC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"A"
+],
+"b": [
+"seq",
+"GCTGC"
+],
+"settings": [
+[
+"frameshift_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"A"
+],
+"b": [
+"str",
+"GCTGC"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": 1.0
+},
+{
+"kind": "align",
+"a": [
+"str",
+"A"
+],
+"b": [
+"str",
+"GCTGC"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"A"
+],
+"b": [
+"seq",
+"GCTGC"
+],
+"settings": [
+[
+"frameshift_score",
+-3.0
+],
+[
+"mismatch_score",
+-1.0
+]
+],
+"result": {
+"score": 1.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+1
+],
+[
+0,
+3
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"NKGXCFRINRPL"
+],
+"b": [
+"str",
+"AACAAAGGGTAGTGTCCGTATCAACCGACCTTCC"
+],
+"table": 1,
+"result": 6.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"NKGXCFRINRPL"
+],
+"b": [
+"seq",
+"AACAAAGGGTAGTGTCCGTATCAACCGACCTTCC"
+],
+"table": 1,
+"result": {
+"score": 6.0,
+"n": 2,
+"paths": [
+[
+[
+0,
+6,
+6,
+12
+],
+[
+0,
+18,
+16,
+34
+]
+],
+[
+[
+0,
+5,
+5,
+12
+],
+[
+0,
+15,
+13,
+34
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"GLLIR"
+],
+"b": [
+"str",
+"GGTCTACTGATACGGT"
+],
+"table": 2,
+"result": 4.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"GLLIR"
+],
+"b": [
+"seq",
+"GGTCTACTGATACGGT"
+],
+"table": 2,
+"result": {
+"score": 4.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+5
+],
+[
+0,
+15
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"XEVASE"
+],
+"b": [
+"str",
+"TGAGAAGTCTTCGGAG"
+],
+"table": 11,
+"result": 1.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"NXIPSIPLNSA"
+],
+"b": [
+"str",
+"AATTAGATACCTTCAATTCCGCTGAATTCGGCA"
+],
+"table": 5,
+"result": 9.0
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"NXIPSIPLNSA"
+],
+"b": [
+"seq",
+"AATTAGATACCTTCAATTCCGCTGAATTCGGCA"
+],
+"table": 5,
+"result": {
+"score": 9.0,
+"n": 1,
+"paths": [
+[
+[
+0,
+11
+],
+[
+0,
+33
+]
+]
+]
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"GHI"
+],
+"b": [
+"str",
+"GGACTATT"
+],
+"table": 6,
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"str",
+"M"
+],
+"b": [
+"str",
+"ATG"
+],
+"table": "bad",
+"exc": {
+"type": "TypeError",
+"msg": "Input table is not a CodonTable object"
+}
+},
+{
+"kind": "score",
+"a": [
+"list",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqA must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"list",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqA must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"int",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqA must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"int",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqA must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"list",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"list",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "TypeError",
+"msg": null
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"int",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'int' has no len()"
+}
+},
+{
+"kind": "align",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"int",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'int' has no len()"
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"MSR"
+],
+"b": [
+"list",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MSR"
+],
+"b": [
+"list",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqB must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"MSR"
+],
+"b": [
+"int",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'int' has no len()"
+}
+},
+{
+"kind": "align",
+"a": [
+"seq",
+"MSR"
+],
+"b": [
+"int",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'int' has no len()"
+}
+},
+{
+"kind": "score",
+"a": [
+"list",
+"MSR"
+],
+"b": [
+"seq",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqA must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "align",
+"a": [
+"list",
+"MSR"
+],
+"b": [
+"seq",
+"ATGTCTCGT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "seqA must be a string, Seq, MutableSeq, or SeqRecord object"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTXGT"
+],
+"exc": {
+"type": "TranslationError",
+"msg": "Codon 'XGT' is invalid"
+}
+},
+{
+"kind": "score",
+"a": [
+"str",
+"MSR"
+],
+"b": [
+"str",
+"ATGTCTCG"
+],
+"result": 0.0
+},
+{
+"kind": "score",
+"a": [
+"seq",
+"MSR"
+],
+"b": [
+"seq",
+"ATGTCTRGT"
+],
+"result": 2.0
+},
+{
+"kind": "str",
+"result": [
+"Codon aligner with parameters\n  wildcard: 'X'\n  match_score: 1.0\n  mismatch_score: 0.0\n  frameshift_minus_two_score: -3.0\n  frameshift_minus_one_score: -3.0\n  frameshift_plus_one_score: -3.0\n  frameshift_plus_two_score: -3.0\n",
+"Codon aligner, implementing a dynamic programming algorithm to align a nucleotide sequence to an amino acid sequence"
+]
+},
+{
+"kind": "str",
+"settings": [
+[
+"frameshift_score",
+-2.0
+],
+[
+"wildcard",
+"N"
+],
+[
+"match",
+3.0
+]
+],
+"result": [
+"Codon aligner with parameters\n  wildcard: 'N'\n  match_score: 3.0\n  mismatch_score: 0.0\n  frameshift_minus_two_score: -2.0\n  frameshift_minus_one_score: -2.0\n  frameshift_plus_one_score: -2.0\n  frameshift_plus_two_score: -2.0\n",
+"Codon aligner, implementing a dynamic programming algorithm to align a nucleotide sequence to an amino acid sequence"
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"match_score",
+"x"
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "invalid match score"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"mismatch_score",
+null
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "invalid mismatch score"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"wildcard",
+"NN"
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "wildcard should be a single ASCII character"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"wildcard",
+5
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"exc": {
+"type": "TypeError",
+"msg": "wildcard should be a single ASCII character"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"wildcard",
+"\u00e9"
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"exc": {
+"type": "OverflowError",
+"msg": "character argument not in range(0x110000)"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"wildcard",
+"\u0100"
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "wildcard should be a single ASCII character"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"wildcard",
+""
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "wildcard should be a single ASCII character"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"epsilon",
+"x"
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"exc": {
+"type": "TypeError",
+"msg": "must be real number, not str"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_score",
+"x"
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"exc": {
+"type": "TypeError",
+"msg": "must be real number, not str"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_one_score",
+1
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"result": [
+1.0,
+0.0,
+1e-06,
+"X",
+-3.0,
+1.0,
+1.0,
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_two_score",
+-1.5
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"result": [
+1.0,
+0.0,
+1e-06,
+"X",
+-1.5,
+-3.0,
+-3.0,
+-1.5
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_score",
+-2.0
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"result": [
+1.0,
+0.0,
+1e-06,
+"X",
+-2.0,
+-2.0,
+-3.0,
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_score",
+-4.0
+]
+],
+"names": [
+"match_score",
+"mismatch_score",
+"epsilon",
+"wildcard",
+"frameshift_minus_two_score",
+"frameshift_minus_one_score",
+"frameshift_plus_one_score",
+"frameshift_plus_two_score"
+],
+"result": [
+1.0,
+0.0,
+1e-06,
+"X",
+-3.0,
+-3.0,
+-4.0,
+-4.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_one_score",
+-1.0
+]
+],
+"names": [
+"frameshift_one_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "-1 and +1 frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_one_score",
+-1.0
+]
+],
+"names": [
+"frameshift_two_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_one_score",
+-1.0
+]
+],
+"names": [
+"frameshift_minus_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "-2 and -1 frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_one_score",
+-1.0
+]
+],
+"names": [
+"frameshift_plus_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_one_score",
+-1.0
+]
+],
+"names": [
+"frameshift_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_two_score",
+-5.0
+]
+],
+"names": [
+"frameshift_one_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_two_score",
+-5.0
+]
+],
+"names": [
+"frameshift_two_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "-2 and +2 frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_two_score",
+-5.0
+]
+],
+"names": [
+"frameshift_minus_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_two_score",
+-5.0
+]
+],
+"names": [
+"frameshift_plus_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "+2 and +1 frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_two_score",
+-5.0
+]
+],
+"names": [
+"frameshift_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_two_score",
+-2.0
+]
+],
+"names": [
+"frameshift_one_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_two_score",
+-2.0
+]
+],
+"names": [
+"frameshift_two_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "-2 and +2 frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_two_score",
+-2.0
+]
+],
+"names": [
+"frameshift_minus_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "-2 and -1 frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_two_score",
+-2.0
+]
+],
+"names": [
+"frameshift_plus_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_minus_two_score",
+-2.0
+]
+],
+"names": [
+"frameshift_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_one_score",
+-7.0
+]
+],
+"names": [
+"frameshift_one_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "-1 and +1 frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_one_score",
+-7.0
+]
+],
+"names": [
+"frameshift_two_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_one_score",
+-7.0
+]
+],
+"names": [
+"frameshift_minus_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_one_score",
+-7.0
+]
+],
+"names": [
+"frameshift_plus_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "+2 and +1 frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"settings": [
+[
+"frameshift_plus_one_score",
+-7.0
+]
+],
+"names": [
+"frameshift_score"
+],
+"exc": {
+"type": "ValueError",
+"msg": "frame shift scores are different"
+}
+},
+{
+"kind": "get",
+"names": [
+"match"
+],
+"result": [
+1.0
+]
+},
+{
+"kind": "get",
+"names": [
+"mismatch"
+],
+"result": [
+0.0
+]
+},
+{
+"kind": "get",
+"names": [
+"frameshift_one_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"names": [
+"frameshift_two_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"names": [
+"frameshift_minus_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"names": [
+"frameshift_plus_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"names": [
+"frameshift_score"
+],
+"result": [
+-3.0
+]
+},
+{
+"kind": "get",
+"names": [
+"wildcard"
+],
+"result": [
+"X"
+]
+},
+{
+"kind": "get",
+"names": [
+"epsilon"
+],
+"result": [
+1e-06
+]
+}
+]

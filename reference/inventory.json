@@ -862,6 +862,32 @@
    "tabular"
   ]
  },
+ "Bio.Align.CodonAligner": {
+  "classes": {
+   "CodonAligner": {
+    "__init__": "property",
+    "__repr__": "property",
+    "__str__": "property",
+    "align": "property",
+    "epsilon": "property",
+    "frameshift_minus_one_score": "property",
+    "frameshift_minus_score": "property",
+    "frameshift_minus_two_score": "property",
+    "frameshift_one_score": "property",
+    "frameshift_plus_one_score": "property",
+    "frameshift_plus_score": "property",
+    "frameshift_plus_two_score": "property",
+    "frameshift_score": "property",
+    "frameshift_two_score": "property",
+    "match": "property",
+    "match_score": "property",
+    "mismatch": "property",
+    "mismatch_score": "property",
+    "score": "property",
+    "wildcard": "property"
+   }
+  }
+ },
  "Bio.Align.AlignInfo": {
   "classes": {
    "SummaryInfo": {

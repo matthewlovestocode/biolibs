@@ -483,5 +483,11 @@ if any(c["kind"] == "alninfo" and _ok(c) for c in afm):
     for m in inv["Bio.Align.AlignInfo"]["classes"]["SummaryInfo"]:
         mark(f"Bio.Align.AlignInfo.SummaryInfo.{m}", "na" if m in ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__", "__repr__") else "done")
 
+# ---- Bio.Align.CodonAligner (packages/align/test/golden/codonaligner.json) ----
+ca = json.load(open(f"{here}/../packages/align/test/golden/codonaligner.json"))
+if any(c["kind"] == "score" and "result" in c for c in ca) and any(c["kind"] == "align" and "result" in c for c in ca):
+    for m in inv["Bio.Align.CodonAligner"]["classes"]["CodonAligner"]:
+        mark(f"Bio.Align.CodonAligner.CodonAligner.{m}", "na" if m in ("__eq__", "__ge__", "__gt__", "__hash__", "__le__", "__lt__") else "done")
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})
