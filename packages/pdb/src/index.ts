@@ -57,3 +57,4 @@ export * from "./kdtrees.js";
 export * from "./selection.js";
 export * from "./neighbor-search.js";
 export * from "./sasa.js";
+export * from "./internal-coords/index.js";

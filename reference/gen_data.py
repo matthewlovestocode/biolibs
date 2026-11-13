@@ -207,6 +207,63 @@ open(os.path.join(PDB_OUT, "pdb-data.ts"), "w").write("".join(lines))
 print("pdb data written")
 
 # ---------------------------------------------------------------------------------------------
+# Bio.PDB.ic_data tables -> packages/pdb/src/internal-coords/ic-data.ts (internal coordinates)
+import Bio.PDB.ic_data as _icd
+
+def ic_type(v):
+    """TypeScript type of an ic_data value: nested tuples, lists, dicts and sets of them."""
+    if isinstance(v, str): return "string"
+    if isinstance(v, bool): return "boolean"
+    if isinstance(v, (int, float)): return "number"
+    if isinstance(v, (set, frozenset)): return "readonly string[]"
+    if isinstance(v, (tuple, list)):
+        inner = {ic_type(x) for x in v}
+        one = inner.pop() if len(inner) == 1 else "(" + " | ".join(sorted(inner)) + ")"
+        # `readonly readonly string[][]` is not legal; the inner modifier goes inside parentheses
+        if one.startswith("readonly "): one = f"({one})"
+        return f"readonly {one}[]"
+    if isinstance(v, dict):
+        inner = {ic_type(x) for x in v.values()}
+        if len(inner) == 1: return "Readonly<Record<string, " + inner.pop() + ">>"
+        return "Readonly<Record<string, " + " | ".join(sorted(inner)) + ">>"
+    raise TypeError(type(v))
+
+def ic_js(v):
+    """JSON for an ic_data value; tuples become arrays and a set becomes a sorted array."""
+    if isinstance(v, (set, frozenset)): v = sorted(v)
+    if isinstance(v, tuple): v = list(v)
+    if isinstance(v, list): return "[" + ", ".join(ic_js(x) for x in v) + "]"
+    if isinstance(v, dict): return "{" + ", ".join(f"{json.dumps(k)}: {ic_js(x)}" for k, x in v.items()) + "}"
+    return json.dumps(v)
+
+IC_OUT = os.path.join(os.path.dirname(__file__), "..", "packages", "pdb", "src", "internal-coords")
+os.makedirs(IC_OUT, exist_ok=True)
+IC_DESCRIPTIONS = {
+  "ic_data_backbone": "The hedra and dihedra of the protein backbone, as tuples of three or four atom names; a fourth or fifth element names the dihedral angle (`phi`, `psi`, `omg`, `tau`).",
+  "ic_data_sidechains": "Each amino acid's side-chain hedra and dihedra by one-letter code, as tuples of atom names; a fifth element names the angle (`chi1` to `chi5`).",
+  "ic_data_sidechain_extras": "Side-chain dihedra added for the residues whose terminal groups need them.",
+  "hedra_defaults": "Average bond lengths and angle for each hedron, keyed by its atom names joined together: `[[len12, angle, len23], standard deviation]`.",
+  "dihedra_primary_defaults": "Average value of each primary dihedral angle, keyed by its atom names joined together.",
+  "dihedra_secondary_defaults": "Each secondary dihedral angle as `[primary angle key, offset]`, so it can be computed from the primary one.",
+  "dihedra_secondary_xoxt_defaults": "Like {@link dihedraSecondaryDefaults}, for the dihedra involving the terminal `OXT` oxygen.",
+  "primary_angles": "The dihedral angles that are measured directly rather than derived from another, sorted.",
+  "residue_atom_bond_state": "Covalent radius class of each atom, by residue one-letter code; `X` holds the classes shared by every residue.",
+  "covalent_radii": "Covalent radius in angstroms of each bond-state class, e.g. `Csb` single-bonded carbon.",
+  "atomic_weight": "Atomic weight of the elements that appear in a protein.",
+  "electronegativity": "Pauling electronegativity of the elements that appear in a protein.",
+}
+lines = [HDR, "/**\n * Tables from Biopython's `Bio.PDB.ic_data`: the hedra and dihedra that make up each residue, their average\n * values, and the atom properties used to decide bond lengths.\n */\n\n"]
+for n in sorted(vars(_icd)):
+    if n.startswith("_"): continue
+    v = getattr(_icd, n)
+    if not isinstance(v, (dict, tuple, list, set, frozenset)): continue
+    if n not in IC_DESCRIPTIONS:
+        raise SystemExit(f"ic_data.{n} has no entry in IC_DESCRIPTIONS (gen_data.py); describe it before regenerating")
+    lines.append(f"/** {IC_DESCRIPTIONS[n]} */\nexport const {camel(n)}: {ic_type(v)} = {ic_js(v)};\n\n")
+open(os.path.join(IC_OUT, "ic-data.ts"), "w").write("".join(lines))
+print("ic_data tables written")
+
+# ---------------------------------------------------------------------------------------------
 # Bio.Restriction.Restriction_Dictionary -> packages/restriction/src/restriction-dictionary.ts (one enzyme per line)
 from Bio.Restriction import Restriction_Dictionary as _RD
 RD_OUT = os.path.join(os.path.dirname(__file__), "..", "packages", "restriction", "src")
