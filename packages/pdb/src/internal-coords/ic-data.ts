@@ -41,3 +41,24 @@ export const primaryAngles: readonly string[] = ["CACBCG1CD1", "CACBCGCD", "CACB
 /** Covalent radius class of each atom, by residue one-letter code; `X` holds the classes shared by every residue. */
 export const residueAtomBondState: Readonly<Record<string, Readonly<Record<string, string>>>> = {"X": {"N": "Nsb", "CA": "Csb", "C": "Cdb", "O": "Odb", "OXT": "Osb", "CB": "Csb", "H": "Hsb"}, "V": {"CG1": "Csb", "CG2": "Csb"}, "L": {"CG": "Csb", "CD1": "Csb", "CD2": "Csb"}, "I": {"CG1": "Csb", "CG2": "Csb", "CD1": "Csb"}, "M": {"CG": "Csb", "SD": "Ssb", "CE": "Csb"}, "F": {"CG": "Cdb", "CD1": "Cres", "CD2": "Cres", "CE1": "Cdb", "CE2": "Cdb", "CZ": "Cres"}, "P": {"CG": "Csb", "CD": "Csb"}, "S": {"OG": "Osb"}, "T": {"OG1": "Osb", "CG2": "Csb"}, "C": {"SG": "Ssb"}, "N": {"CG": "Csb", "OD1": "Odb", "ND2": "Ndb"}, "Q": {"CG": "Csb", "CD": "Csb", "OE1": "Odb", "NE2": "Ndb"}, "Y": {"CG": "Cdb", "CD1": "Cres", "CD2": "Cres", "CE1": "Cdb", "CE2": "Cdb", "CZ": "Cres", "OH": "Osb"}, "W": {"CG": "Cdb", "CD1": "Cdb", "CD2": "Cres", "NE1": "Nsb", "CE2": "Cdb", "CE3": "Cdb", "CZ2": "Cres", "CZ3": "Cres", "CH2": "Cdb"}, "D": {"CG": "Csb", "OD1": "Ores", "OD2": "Ores"}, "E": {"CG": "Csb", "CD": "Csb", "OE1": "Ores", "OE2": "Ores"}, "H": {"CG": "Cdb", "CD2": "Cdb", "ND1": "Nsb", "CE1": "Cdb", "NE2": "Ndb"}, "K": {"CG": "Csb", "CD": "Csb", "CE": "Csb", "NZ": "Nsb"}, "R": {"CG": "Csb", "CD": "Csb", "NE": "Nsb", "CZ": "Cdb", "NH1": "Nres", "NH2": "Nres"}};
 
+/** The backbone atoms, including the terminal `OXT`. */
+export const acceptBackbone: readonly string[] = ["N", "CA", "C", "O", "OXT"];
+
+/** Every side-chain atom name of the twenty standard amino acids. */
+export const acceptSidechain: readonly string[] = ["CB", "CG", "CG1", "OG1", "OG", "SG", "CG2", "CD", "CD1", "SD", "OD1", "ND1", "CD2", "ND2", "CE", "CE1", "NE", "OE1", "NE1", "CE2", "OE2", "NE2", "CE3", "CZ", "NZ", "CZ2", "CZ3", "OD2", "OH", "CH2", "NH1", "NH2"];
+
+/** The backbone and side-chain atoms together: every non-hydrogen atom. */
+export const acceptMainchain: readonly string[] = ["N", "CA", "C", "O", "OXT", "CB", "CG", "CG1", "OG1", "OG", "SG", "CG2", "CD", "CD1", "SD", "OD1", "ND1", "CD2", "ND2", "CE", "CE1", "NE", "OE1", "NE1", "CE2", "OE2", "NE2", "CE3", "CZ", "NZ", "CZ2", "CZ3", "OD2", "OH", "CH2", "NH1", "NH2"];
+
+/** Every hydrogen atom name. */
+export const acceptHydrogens: readonly string[] = ["H", "H1", "H2", "H3", "HA", "HA2", "HA3", "HB", "HB1", "HB2", "HB3", "HG2", "HG3", "HD2", "HD3", "HE2", "HE3", "HZ1", "HZ2", "HZ3", "HG11", "HG12", "HG13", "HG21", "HG22", "HG23", "HZ", "HD1", "HE1", "HD11", "HD12", "HD13", "HG", "HG1", "HD21", "HD22", "HD23", "NH1", "NH2", "HE", "HH11", "HH12", "HH21", "HH22", "HE21", "HE22", "HE2", "HH", "HH2"];
+
+/** Every deuterium atom name, the same names with `D` for `H`. */
+export const acceptDeuteriums: readonly string[] = ["D", "D1", "D2", "D3", "DA", "DA2", "DA3", "DB", "DB1", "DB2", "DB3", "DG2", "DG3", "DD2", "DD3", "DE2", "DE3", "DZ1", "DZ2", "DZ3", "DG11", "DG12", "DG13", "DG21", "DG22", "DG23", "DZ", "DD1", "DE1", "DD11", "DD12", "DD13", "DG", "DG1", "DD21", "DD22", "DD23", "ND1", "ND2", "DE", "DH11", "DH12", "DH21", "DH22", "DE21", "DE22", "DE2", "DH", "DH2"];
+
+/** Every atom name an `IC_Residue` keeps; an atom named anything else is dropped on input. */
+export const acceptAtoms: readonly string[] = ["N", "CA", "C", "O", "OXT", "CB", "CG", "CG1", "OG1", "OG", "SG", "CG2", "CD", "CD1", "SD", "OD1", "ND1", "CD2", "ND2", "CE", "CE1", "NE", "OE1", "NE1", "CE2", "OE2", "NE2", "CE3", "CZ", "NZ", "CZ2", "CZ3", "OD2", "OH", "CH2", "NH1", "NH2", "H", "H1", "H2", "H3", "HA", "HA2", "HA3", "HB", "HB1", "HB2", "HB3", "HG2", "HG3", "HD2", "HD3", "HE2", "HE3", "HZ1", "HZ2", "HZ3", "HG11", "HG12", "HG13", "HG21", "HG22", "HG23", "HZ", "HD1", "HE1", "HD11", "HD12", "HD13", "HG", "HG1", "HD21", "HD22", "HD23", "NH1", "NH2", "HE", "HH11", "HH12", "HH21", "HH22", "HE21", "HE22", "HE2", "HH", "HH2"];
+
+/** Residue names that are kept although they are not one of the twenty standard amino acids. */
+export const acceptResnames: readonly string[] = ["CYG", "YCM", "UNK"];
+

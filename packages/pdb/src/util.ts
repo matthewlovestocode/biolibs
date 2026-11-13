@@ -1,4 +1,6 @@
-/** Python-flavoured helpers: dictionary keys for tuple ids, and ordering of ids. */
+/** Python-flavoured helpers: dictionary keys for tuple ids, ordering of ids, and the repr of an id tuple. */
+
+import { pyRepr } from "@biolibs/core";
 
 /** A residue, chain or atom id: a string, an integer, or a tuple (array) of those. */
 export type EntityId = string | number | readonly (string | number)[];
@@ -99,4 +101,16 @@ export function pyStr(id: EntityId | null | undefined): string {
   if (!Array.isArray(id)) return String(id);
   const parts = (id as readonly (string | number)[]).map((x) => (typeof x === "string" ? `'${x}'` : String(x)));
   return `(${parts.join(", ")}${parts.length === 1 ? "," : ""})`;
+}
+
+/**
+ * Python `repr` of an id tuple such as a full id: an array prints as a tuple, and a one-element tuple keeps its
+ * trailing comma.
+ *
+ * @param x - The value, usually an array of ids.
+ * @returns Its Python repr.
+ */
+export function tupleRepr(x: unknown): string {
+  if (!Array.isArray(x)) return pyRepr(x);
+  return `(${x.map(tupleRepr).join(", ")}${x.length === 1 ? "," : ""})`;
 }

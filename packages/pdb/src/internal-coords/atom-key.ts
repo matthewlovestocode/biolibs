@@ -8,7 +8,8 @@
  * is a direct port of Biopython's `_cmp`, whose answer is a pair of ranks rather than a sign.
  */
 
-import { pyInt } from "@biolibs/core";
+import { pyFloatRepr, pyInt } from "@biolibs/core";
+import { icSettings } from "./settings.js";
 import { residueAtomBondState } from "./ic-data.js";
 
 /** The six fields of a key, in order; `AtomKey.fields` maps each name to its index. */
@@ -35,6 +36,22 @@ const SIDECHAIN_SORT: Readonly<Record<string, number>> = {
 
 /** The Greek letters naming a hydrogen's position, in alphabet order: alpha, beta, gamma, ... */
 const GREEK_SORT: Readonly<Record<string, number>> = { A: 0, B: 1, G: 2, D: 3, E: 4, Z: 5, H: 6 };
+
+/** Anything shaped like an `IC_Residue`: it contributes the position, insertion code and residue name. */
+export interface HasRbase {
+  /** Residue position, insertion code and name, as `IC_Residue.rbase` holds them. */
+  rbase: readonly (string | number | null)[];
+}
+
+/** Anything shaped like an `Atom`: it contributes the atom name, and the altloc and occupancy of a disordered one. */
+export interface HasAtomName {
+  /** The atom name. */
+  name: string;
+  /** Its alternative-location label; a space means none. */
+  altloc: string;
+  /** Its occupancy; 1 means the only location. */
+  occupancy: number | null;
+}
 
 /** What a key can be built from: its six fields in order, or by name. */
 export type AtomKeyFields = Partial<Record<(typeof FIELD_NAMES)[number], string | number | null>>;
@@ -93,7 +110,8 @@ export class AtomKey {
 
   /**
    * @param args - Any mixture of: the whole key as a string (`"52B_G_CA_0.33"`); single field values as strings, in
-   *   order; an array of fields; or an object with the field names. A string holding `_` is parsed as a whole key
+   *   order; an array of fields; an {@link HasRbase} (an `IC_Residue`) followed by an {@link HasAtomName} (an
+   *   `Atom`); or an object with the field names. A string holding `_` is parsed as a whole key
    *   and must come first.
    * @param named - Fields by name, filling whatever the positional arguments left.
    * @throws An error named `Exception`, as Biopython raises a bare one, for input it does not recognise or a whole key that is not the first argument.
@@ -116,6 +134,22 @@ export class AtomKey {
         akl.push(String(arg));
       } else if (Array.isArray(arg)) {
         for (const x of arg) akl.push(x === null || x === undefined ? null : String(x));
+      } else if (arg !== null && arg !== undefined && typeof arg === "object" && "rbase" in arg) {
+        // An IC_Residue contributes the residue's three fields, and must come first.
+        if (akl.length !== 0) throw new PythonException("Atom Key init Residue not first argument");
+        akl = (arg as HasRbase).rbase.map((v) => (v === null ? null : String(v)));
+      } else if (arg !== null && arg !== undefined && typeof arg === "object" && "name" in arg && "altloc" in arg) {
+        // An Atom contributes the atom name and, unless altlocs are being ignored, its altloc and occupancy.
+        if (akl.length !== 3) throw new PythonException("Atom Key init Atom before Residue info");
+        const atom = arg as HasAtomName;
+        akl.push(atom.name);
+        if (!icSettings.noAltloc) {
+          akl.push(atom.altloc !== " " ? atom.altloc : null);
+          const occ = Number(atom.occupancy);
+          akl.push(occ !== 1.0 ? pyFloatRepr(occ) : null);
+        } else {
+          akl.push(null, null);
+        }
       } else if (arg !== null && arg !== undefined && typeof arg === "object") {
         const fields = arg as AtomKeyFields;
         for (const n of FIELD_NAMES) {

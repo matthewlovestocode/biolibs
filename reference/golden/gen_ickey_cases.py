@@ -7,6 +7,7 @@ Case kinds:
   sort  - a list of keys sorted, which is what puts a residue's atoms in a canonical order.
   edron - build an Edron, Hedron or Dihedron and record its identity, classification and fields.
   epair - two di/hedra: the ordering operators and the pair of keys `_cmp` reports.
+  residue - IC_Residue over the residues of a parsed PDB file: what it keeps and under which keys.
 
 `_cmp` returns a pair of ranks rather than a sign, and for two atom names in none of its tables it falls through to
 `int()` of the names and raises; both are recorded as they come.
@@ -182,7 +183,59 @@ for pool, cls in ((HEDRA, "hedron"), (DIHEDRA, "dihedron")):
             cases.append({"kind": "epair", "a": {"cls": cls, "how": "list", "keys": a.split(":")},
                           "b": {"cls": cls, "how": "list", "keys": b.split(":")}})
 
-RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair}
+# ---------------- IC_Residue over parsed structures ----------------
+# Which atoms a residue keeps, the keys it keeps them under, and the identity it takes from the residue. The hedra
+# and dihedra are not built yet, so nothing here needs a chain.
+def run_residue(case):
+    import io, warnings as w2
+    from Bio.PDB import PDBParser
+    from Bio.PDB.internal_coords import IC_Residue
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+        out = []
+        for res in list(s.get_residues())[:12]:
+            ric = IC_Residue(res)
+            out.append({
+                "rbase": [str(x) if x is not None else None for x in ric.rbase],
+                "lc": ric.lc, "is20AA": ric.is20AA, "isAccept": ric.isAccept,
+                "repr": repr(ric), "pretty_str": ric.pretty_str(),
+                "ak_set": sorted(k.id for k in ric.ak_set),
+                "akc": sorted(f"{k if isinstance(k, str) else k.name}={v.id}" for k, v in ric.akc.items()),
+                "rak_CA": attempt(lambda ric=ric: ric.rak("CA").id),
+                "rak_missing": attempt(lambda ric=ric: [ric.rak("ZZ").id, ric.rak("ZZ").missing]),
+                "contains": [attempt(lambda ric=ric, k=k: k in ric) for k in sorted(ric.ak_set)[:4]],
+                "alt_ids": ric.alt_ids,
+            })
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+# A handful of structures with disorder, point mutations, hetero residues and terminal oxygens
+from pdb_text import gen_pdb
+TEXTS = []
+for _ in range(14):
+    TEXTS.append(gen_pdb(rnd, False))
+TEXTS.append("".join([
+    "ATOM      1  N   ALA A   1      11.000  11.000  11.000  1.00  0.00           N\n",
+    "ATOM      2  CA  ALA A   1      12.000  11.000  11.000  1.00  0.00           C\n",
+    "ATOM      3  C   ALA A   1      13.000  11.000  11.000  1.00  0.00           C\n",
+    "ATOM      4  O'  ALA A   1      14.000  11.000  11.000  1.00  0.00           O\n",
+    "ATOM      5  O'' ALA A   1      15.000  11.000  11.000  1.00  0.00           O\n",
+    "ATOM      6  ZZ  ALA A   1      16.000  11.000  11.000  1.00  0.00           C\n",
+    "ATOM      7  N  AGLY A   2      17.000  11.000  11.000  0.60  0.00           N\n",
+    "ATOM      8  N  BGLY A   2      17.500  11.000  11.000  0.40  0.00           N\n",
+    "HETATM    9  C1  UNK A   3      18.000  11.000  11.000  1.00  0.00           C\n",
+    "HETATM   10  O   HOH A   4      19.000  11.000  11.000  1.00  0.00           O\n",
+    "END\n",
+]))
+for text in TEXTS:
+    cases.append({"kind": "residue", "text": text})
+
+RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair,
+           "residue": run_residue}
 kept = []
 for c in cases:
     res = run_isolated(RUNNERS[c["kind"]], c)

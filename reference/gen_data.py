@@ -260,6 +260,20 @@ for n in sorted(vars(_icd)):
     if n not in IC_DESCRIPTIONS:
         raise SystemExit(f"ic_data.{n} has no entry in IC_DESCRIPTIONS (gen_data.py); describe it before regenerating")
     lines.append(f"/** {IC_DESCRIPTIONS[n]} */\nexport const {camel(n)}: {ic_type(v)} = {ic_js(v)};\n\n")
+# The atom and residue names IC_Residue will accept are class attributes rather than ic_data tables, but they are
+# just as much data -- 86 atom names -- so they are generated too.
+from Bio.PDB.internal_coords import IC_Residue as _ICR
+ACCEPT_DESCRIPTIONS = {
+  "accept_backbone": "The backbone atoms, including the terminal `OXT`.",
+  "accept_sidechain": "Every side-chain atom name of the twenty standard amino acids.",
+  "accept_mainchain": "The backbone and side-chain atoms together: every non-hydrogen atom.",
+  "accept_hydrogens": "Every hydrogen atom name.",
+  "accept_deuteriums": "Every deuterium atom name, the same names with `D` for `H`.",
+  "accept_atoms": "Every atom name an `IC_Residue` keeps; an atom named anything else is dropped on input.",
+  "accept_resnames": "Residue names that are kept although they are not one of the twenty standard amino acids.",
+}
+for n, d in ACCEPT_DESCRIPTIONS.items():
+    lines.append(f"/** {d} */\nexport const {camel(n)}: {ic_type(getattr(_ICR, n))} = {ic_js(getattr(_ICR, n))};\n\n")
 open(os.path.join(IC_OUT, "ic-data.ts"), "w").write("".join(lines))
 print("ic_data tables written")
 

@@ -6,16 +6,11 @@ import { PDBIOException, PDB_IO_WARNING } from "./exceptions.js";
 import { Select, StructureIO, defaultSelect } from "./structure-io.js";
 import { AssertionError, capitalize, fixed, padLeft, padRight, pctC, pctI, strLen, truncInt } from "./pyformat.js";
 import type { Atom } from "./atom.js";
+import { tupleRepr } from "./util.js";
 
 const MAX_B_FACTOR_2DP = 1_000;
 const MAX_B_FACTOR_1DP = 10_000;
 const MAX_B_FACTOR = 999_999;
-
-/** Python `repr` of an id tuple such as a full id: arrays print as tuples. */
-function tupleRepr(x: unknown): string {
-  if (!Array.isArray(x)) return pyRepr(x);
-  return `(${x.map(tupleRepr).join(", ")}${x.length === 1 ? "," : ""})`;
-}
 
 /** Python `isalpha()` on one character. */
 const isAlpha = (c: string): boolean => /^\p{L}$/u.test(c);

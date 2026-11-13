@@ -1,13 +1,13 @@
 /** Replays the Bio.PDB.internal_coords.AtomKey golden cases (reference/golden/gen_ickey_cases.py). */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { AtomKey, Dihedron, Edron, Hedron } from "@biolibs/pdb";
+import { AtomKey, Dihedron, Edron, Hedron, IC_Residue, PDBParser } from "@biolibs/pdb";
 
 type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc };
 interface Spec { how: string; value: unknown }
 interface Spec2 { cls: string; how: string; keys: string[] }
-interface Case { kind: string; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
+interface Case { kind: string; text?: string; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
 
 /** AttributeError is a TypeError here, with no message to compare. */
 const excOk = (want?: Exc, got?: Exc): boolean => {
@@ -131,10 +131,32 @@ function runEpair(c: Case): Out {
   });
 }
 
+function runResidue(c: Case): Out {
+  return attempt(() => {
+    const s = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", c.text!);
+    const residues = [...s.getResidues()].slice(0, 12);
+    return residues.map((res) => {
+      const ric = new IC_Residue(res);
+      const sortedKeys = [...ric.akSet].sort((a, b) => { const [p, q] = a.compare(b); return p - q; });
+      return {
+        rbase: ric.rbase.map((x) => (x === null ? null : String(x))),
+        lc: ric.lc, is20AA: ric.is20AA, isAccept: ric.isAccept,
+        repr: ric.repr(), pretty_str: ric.prettyStr(),
+        ak_set: sortedKeys.map((k) => k.id).sort(),
+        akc: [...ric.akc].map(([k, v]) => `${typeof k === "string" ? k : (k as { name: string }).name}=${v.id}`).sort(),
+        rak_CA: attempt(() => ric.rak("CA").id),
+        rak_missing: attempt(() => [ric.rak("ZZ").id, ric.rak("ZZ").missing]),
+        contains: sortedKeys.slice(0, 4).map((k) => attempt(() => ric.contains(k))),
+        alt_ids: ric.altIds,
+      };
+    });
+  });
+}
+
 describe("Bio.PDB.internal_coords: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/ickey.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair };
-  for (const kind of ["key", "pair", "sort", "edron", "epair"]) {
+  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue };
+  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue"]) {
     const list = cases.filter((c) => c.kind === kind);
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
       const bad: string[] = [];
@@ -142,7 +164,7 @@ describe("Bio.PDB.internal_coords: parity with Biopython", () => {
         const got = runners[kind]!(c);
         const want: Out = c.exc ? { exc: c.exc } : { result: c.result };
         if (!outOk(want, got)) {
-          bad.push(`${JSON.stringify(c.spec ?? [c.a, c.b] ?? c.keys)}\n    want ${JSON.stringify(want).slice(0, 300)}\n    got  ${JSON.stringify(got).slice(0, 300)}`);
+          bad.push(`${JSON.stringify(c.spec ?? c.a ?? c.keys ?? (c.text ?? "").slice(0, 60))}\n    want ${JSON.stringify(want).slice(0, 300)}\n    got  ${JSON.stringify(got).slice(0, 300)}`);
         }
       }
       expect(bad.length, `${bad.length} mismatches:\n${bad.slice(0, 4).join("\n")}`).toBe(0);
