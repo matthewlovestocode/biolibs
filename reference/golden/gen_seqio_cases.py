@@ -124,7 +124,7 @@ def run(case):
                 out["pairs"] = items
                 for pair in fn(io.StringIO(case["text"])): items.append(list(pair))
         except Exception as e:
-            out["exc"] = {"type": tname(e), "msg": None if tname(e) in ("SAXParseException", "ExpatError", "ParseError") else emsg(e)}   # expat's wording is not reproduced
+            out["exc"] = {"type": tname(e), "msg": emsg(e)}
         finally:
             for h in OPENED: h.close()
             OPENED.clear()

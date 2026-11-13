@@ -1,7 +1,7 @@
 /** A minimal DOM, enough for the queries SnapGene's XML packets need (a port of the parts of `xml.dom.minidom` used). */
 
 import { scanXml } from "../seqxml/xml-scanner.js";
-import { ExpatError } from "../seqxml/xml-types.js";
+import { ExpatError, expatMessage } from "../seqxml/xml-types.js";
 
 /** DOM node type numbers (as in `xml.dom.Node`). */
 export const ELEMENT_NODE = 1;
@@ -76,7 +76,8 @@ export class DomDocument extends DomElement {
  */
 export function parseString(text: string): DomDocument {
   const scan = scanXml(new TextEncoder().encode(text), { namespaces: false, ignoreDeclaredEncoding: true });
-  if (scan.problem !== null) throw new ExpatError(scan.problem.message);
+  // pyexpat words the position after the reason, unlike the SAX form the scanner reports
+  if (scan.problem !== null) throw new ExpatError(expatMessage(scan.problem));
   const doc = new DomDocument();
   const stack: DomElement[] = [doc];
   for (const e of scan.events) {

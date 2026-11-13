@@ -26,8 +26,14 @@ export interface ScanOptions {
 
 /** A well-formedness problem found while scanning. */
 export interface XmlProblem {
-  /** What was wrong, with line and column like expat's message. */
+  /** What was wrong, with line and column as `xml.sax` writes them: `<unknown>:LINE:COL: reason`. */
   message: string;
+  /** What was wrong, without the position: expat's own wording, such as `mismatched tag`. */
+  reason: string;
+  /** Line of the problem, counting from 1 as expat does. */
+  line: number;
+  /** Column of the problem, counting from 0 as expat does. */
+  column: number;
   /** Byte offset at which an incremental parser notices it. */
   at: number;
   /** True when the input simply ended too early; such problems only surface when the parser is closed. */
@@ -60,4 +66,32 @@ export class ExpatError extends BioError {
     super(message);
     this.name = "ExpatError";
   }
+}
+
+/**
+ * The message `xml.etree.ElementTree.ParseError` and `xml.parsers.expat.ExpatError` carry.
+ *
+ * Both put the position after the reason (`mismatched tag: line 2, column 949`), where `xml.sax` puts it in front
+ * (`<unknown>:2:949: mismatched tag`). The scanner reports the SAX form, since seqXML is read through SAX; the other
+ * two readers format the same problem their own way.
+ *
+ * @param problem - The problem the scanner reported.
+ * @returns The message, expat's way round.
+ */
+export function expatMessage(problem: XmlProblem): string {
+  return `${problem.reason}: line ${problem.line}, column ${problem.column}`;
+}
+
+/**
+ * The reason out of an expat message, whichever way round the position was written.
+ *
+ * `xml.sax` puts it in front (`<unknown>:2:9: no element found`) and ElementTree and pyexpat put it behind
+ * (`no element found: line 2, column 9`), so code that wants to know *what* went wrong asks this rather than
+ * matching the text.
+ *
+ * @param message - The message from any of the three readers.
+ * @returns Expat's wording on its own.
+ */
+export function xmlReason(message: string): string {
+  return message.replace(/^<unknown>:\d+:\d+: /, "").replace(/: line \d+, column \d+$/, "");
 }

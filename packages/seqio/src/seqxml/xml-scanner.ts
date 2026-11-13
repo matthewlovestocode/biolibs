@@ -8,6 +8,19 @@ import { NamespaceScope } from "./xml-names.js";
 import { ENTITIES, decodeDocument, isNameChar, isNameStart, isSpace, isXmlChar } from "./xml-chars.js";
 import type { ScanOptions, XmlEvent, XmlName, XmlProblem, XmlScan } from "./xml-types.js";
 
+/**
+ * Where expat blames a declaration that has no usable `version`.
+ *
+ * It points at the first pseudo-attribute it managed to read — column 6 of `<?xml encoding="UTF-8"?>`, just past
+ * `<?xml ` — and just past `<?xml` itself (column 5) when the declaration is empty.
+ *
+ * @param decl - The declaration, `<?xml` to `?>` inclusive.
+ * @returns The character index to report, relative to the declaration's start.
+ */
+function declarationFault(decl: string): number {
+  const m = /^<\?xml(\s+)\S/.exec(decl);
+  return m === null ? 5 : 5 + m[1]!.length;
+}
 /** Thrown internally to abandon the scan at the first problem. */
 class Stop extends Error {
   constructor(readonly problem: XmlProblem) { super(problem.message); }
@@ -31,7 +44,10 @@ class Scanner {
     const line = before.split("\n").length;
     const column = before.length - (before.lastIndexOf("\n") + 1);
     const size = this.off[this.s.length]!;
-    throw new Stop({ message: `<unknown>:${line}:${column}: ${message}`, at: atEnd ? size : this.off[Math.min(at + 1, this.s.length)]!, atEnd });
+    throw new Stop({
+      message: `<unknown>:${line}:${column}: ${message}`, reason: message, line, column,
+      at: atEnd ? size : this.off[Math.min(at + 1, this.s.length)]!, atEnd,
+    });
   }
 
   /** Raise the problem for input that ends inside a construct. */
@@ -45,6 +61,8 @@ class Scanner {
 
   /** Read an XML name. */
   private name(): string {
+    // Input that stops where a name should start has not gone wrong yet: the token is merely unclosed.
+    if (this.i >= this.s.length) return this.eof();
     if (!isNameStart(this.at())) return this.fail("not well-formed (invalid token)");
     const from = this.i;
     while (this.i < this.s.length && isNameChar(this.s[this.i]!)) this.i++;
@@ -74,7 +92,7 @@ class Scanner {
       const m = attr.exec(decl);
       if (m === null) {
         // Only whitespace may remain before `?>`; `version` is required.
-        if (next === 0) this.fail("XML declaration not well-formed", 0);
+        if (next === 0) this.fail("XML declaration not well-formed", declarationFault(decl));
         const rest = decl.slice(pos, decl.length - 2);
         if (rest.trim() !== "") this.fail("XML declaration not well-formed", pos + rest.length - rest.trimStart().length);
         return;
@@ -83,7 +101,7 @@ class Scanner {
       const idx = next === 0 && m[1] !== "version" ? -1 : order.indexOf(m[1]!, next);
       const value = m[2]!.slice(1, -1);
       const valid = idx >= 0 && (idx === 0 ? value.length > 0 : idx === 1 ? /^[A-Za-z][A-Za-z0-9._-]*$/.test(value) : value === "yes" || value === "no");
-      if (!valid) this.fail("XML declaration not well-formed", next === 0 ? 0 : at);
+      if (!valid) this.fail("XML declaration not well-formed", next === 0 ? declarationFault(decl) : at);
       next = idx + 1;
       pos += m[0].length;
     }
@@ -138,12 +156,13 @@ class Scanner {
       const c = this.at();
       if (c === ">" || c === "/") break;
       if (!hadSpace) return this.fail("not well-formed (invalid token)");
+      const nameAt = this.i;                 // expat reports a duplicate at the attribute's name, not its value
       const an = this.name();
       this.skipSpace();
       if (this.at() !== "=") return this.at() === "" ? this.eof() : this.fail("not well-formed (invalid token)");
       this.i++;
       this.skipSpace();
-      if (raw.some(([n]) => n === an)) return this.fail("duplicate attribute");
+      if (raw.some(([n]) => n === an)) return this.fail("duplicate attribute", nameAt);
       raw.push([an, this.attributeValue()]);
     }
     const empty = this.at() === "/";
@@ -169,11 +188,12 @@ class Scanner {
     }
     this.scope.push(bindings);
     const name = this.scope.expand(qname, false);
-    if (name === null) return this.fail("unbound prefix", this.i - 1);
+    // Expat blames the whole start tag for an unbound prefix, wherever in it the prefix was used.
+    if (name === null) return this.fail("unbound prefix", this.tokenStart);
     const attrs: [XmlName, string][] = [];
     for (const [n, v] of plain) {
       const expanded = this.scope.expand(n, true);
-      if (expanded === null) return this.fail("unbound prefix", this.i - 1);
+      if (expanded === null) return this.fail("unbound prefix", this.tokenStart);
       if (attrs.some(([e]) => e[0] === expanded[0] && e[1] === expanded[1])) return this.fail("duplicate attribute", this.i - 1);
       attrs.push([expanded, v]);
     }
@@ -213,8 +233,9 @@ class Scanner {
 
   /** Skip a processing instruction (positioned after `<?`). */
   private pi(): void {
+    const start = this.i - 2;                // the `<?`, which is where expat puts this one
     const target = this.name();
-    if (target.toLowerCase() === "xml") this.fail("XML or text declaration not at start of entity");
+    if (target.toLowerCase() === "xml") this.fail("XML or text declaration not at start of entity", start);
     const data = this.skipPast("?>");
     this.events.push({ kind: "pi", target, data: data.replace(/^[ \t\r\n]+/, ""), end: this.off[this.i]! });
   }
@@ -249,7 +270,9 @@ class Scanner {
 
   /** Scan the whole document. */
   run(): void {
-    if (this.startsWith("<?xml") && isSpace(this.s[this.i + 5] ?? "")) {
+    // `<?xml` at the very start is the declaration whether or not anything follows it: `<?xml?>` is a declaration
+    // that lacks `version`, not a processing instruction named `xml`.
+    if (this.startsWith("<?xml") && (isSpace(this.s[this.i + 5] ?? "") || this.s.startsWith("?>", this.i + 5))) {
       const decl = this.skipPast("?>");
       this.checkDeclaration(decl);
     }
@@ -260,10 +283,24 @@ class Scanner {
       if (this.i >= this.s.length) break;
       this.tokenStart = this.i;
       if (this.startsWith("<!--")) { this.i += 4; this.comment(); continue; }
+      // Once the document element has closed, a declaration is simply junk: expat has stopped looking for one.
+      if (seenRoot && /^<\?xml($|[\s?])/i.test(this.s.slice(this.i, this.i + 7))) return this.fail("junk after document element");
       if (this.startsWith("<?")) { this.i += 2; this.pi(); continue; }
       if (!seenRoot && this.startsWith("<!DOCTYPE")) { this.i += 9; this.doctype(); continue; }
-      if (this.at() !== "<") return seenRoot ? this.fail("junk after document element") : this.fail("syntax error");
-      if (seenRoot) return this.fail("junk after document element");
+      // `&` looks like the start of markup, so expat calls it an invalid token; other stray text is a syntax error.
+      if (this.at() !== "<") {
+        if (seenRoot) return this.fail("junk after document element");
+        return this.fail(this.at() === "&" ? "not well-formed (invalid token)" : "syntax error");
+      }
+      if (seenRoot) {
+        // Expat keeps tokenizing after the document element: `<` followed by something that cannot begin a tag is an
+        // invalid token at that character, while a second element is junk at the `<` itself.
+        const after = this.s[this.i + 1] ?? "";
+        if (after !== "" && !isNameStart(after) && after !== "!" && after !== "?") {
+          return this.fail("not well-formed (invalid token)", this.i + 1);
+        }
+        return this.fail("junk after document element");
+      }
       seenRoot = true;
       this.i++;
       this.startTag();
@@ -306,7 +343,7 @@ class Scanner {
 export function scanXml(bytes: Uint8Array, options: ScanOptions = {}): XmlScan {
   const { text, offsets } = decodeDocument(bytes, options.ignoreDeclaredEncoding ?? false);
   if (text === null) {
-    return { events: [], problem: { message: "<unknown>:1:0: not well-formed (invalid token)", at: 1, atEnd: false }, size: bytes.length };
+    return { events: [], problem: { message: "<unknown>:1:0: not well-formed (invalid token)", reason: "not well-formed (invalid token)", line: 1, column: 0, at: 1, atEnd: false }, size: bytes.length };
   }
   const scanner = new Scanner(text, offsets, options.namespaces ?? true);
   let problem: XmlProblem | null = null;

@@ -5,7 +5,7 @@
 
 import { BioError } from "@biolibs/core";
 import { scanXml } from "../seqxml/xml-scanner.js";
-import type { XmlEvent, XmlName, XmlScan } from "../seqxml/xml-types.js";
+import { expatMessage, type XmlEvent, type XmlName, type XmlProblem, type XmlScan } from "../seqxml/xml-types.js";
 
 /** Mirrors `xml.etree.ElementTree.ParseError`: the XML is not well-formed. */
 export class ParseError extends BioError {
@@ -54,10 +54,9 @@ export type PullEvent = { kind: "start-ns"; prefix: string; uri: string } | { ki
 
 const expand = (n: XmlName): string => (n[0] ? `{${n[0]}}${n[1]}` : n[1]);
 
-/** Parse `<unknown>:LINE:COL:` out of a scanner message. */
-function position(message: string): [number, number] {
-  const m = /^<unknown>:(\d+):(\d+):/.exec(message);
-  return m ? [Number(m[1]), Number(m[2])] : [1, 0];
+/** The `ParseError` for a scanner problem, worded and positioned as ElementTree words it. */
+function parseError(problem: XmlProblem): ParseError {
+  return new ParseError(expatMessage(problem), [problem.line, problem.column]);
 }
 
 /**
@@ -123,7 +122,7 @@ export class PullParser {
     const p = this.scan.problem;
     const events = this.scan.events;
     while (this.next < events.length && events[this.next]!.end <= this.fed) this.process(events[this.next++]!);
-    if (p !== null && !p.atEnd && p.at <= this.fed) this.queue.push({ kind: "error", error: new ParseError(p.message, position(p.message)) });
+    if (p !== null && !p.atEnd && p.at <= this.fed) this.queue.push({ kind: "error", error: parseError(p) });
     return this.queue.splice(0);
   }
 
@@ -135,7 +134,7 @@ export class PullParser {
   close(): PullEvent[] {
     const events = this.scan.events;
     while (this.next < events.length) this.process(events[this.next++]!);
-    if (this.scan.problem !== null) throw new ParseError(this.scan.problem.message, position(this.scan.problem.message));
+    if (this.scan.problem !== null) throw parseError(this.scan.problem);
     return this.queue.splice(0);
   }
 }

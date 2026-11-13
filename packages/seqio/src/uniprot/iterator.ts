@@ -6,6 +6,7 @@ import { SequenceIterator } from "../interfaces.js";
 import { createRecord } from "./entry.js";
 import { StopIterationSignal } from "./errors.js";
 import { ParseError, PullParser, type PullEvent } from "./etree.js";
+import { xmlReason } from "../seqxml/xml-types.js";
 import { NS } from "./util.js";
 
 /**
@@ -40,7 +41,8 @@ export class UniprotIterator extends SequenceIterator {
 
   /** Biopython's handling of a ParseError: running out of input with no element is "Empty file.". */
   private static translate(e: unknown): unknown {
-    if (e instanceof ParseError && e.message.endsWith("no element found")) {
+    // The reason, not the whole message: ElementTree puts the position after it ("...: line 1, column 0").
+    if (e instanceof ParseError && xmlReason(e.message) === "no element found") {
       if (e.position[0] !== 1 || e.position[1] !== 0) return new AssertionError("");
       return new ValueError("Empty file.");
     }

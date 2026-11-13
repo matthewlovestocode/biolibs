@@ -111,11 +111,12 @@ if {"parse", "read", "write", "to_dict"} <= kinds:
         for k in list(status):
             pass
         mark(f"Bio.SeqIO.{fn}")
-# seqxml: behaviour (records, timing of errors, handler errors) is verified, but expat's wording for malformed XML is not reproduced
+# The three XML readers: records, the timing of errors and handler errors are verified, and so is expat's own wording
+# for nine of its twelve reasons along with every position. What is left is the choice between "not well-formed
+# (invalid token)", "syntax error" and "junk after document element" in the prolog and the epilog, which needs
+# expat's tokenizer states; `packages/seqio/test/xml-errors.test.ts` counts the 39 cases that still differ.
 if "seqxml" in parsed: mark("Bio.SeqIO.parse:seqxml", "partial")
-# uniprot-xml: records and error timing are verified, but expat's wording for malformed XML (ParseError) is not reproduced
 if "uniprot-xml" in parsed: mark("Bio.SeqIO.parse:uniprot-xml", "partial")
-# snapgene reads XML packets with a minimal DOM; expat's wording for malformed XML is likewise not reproduced
 if "snapgene" in parsed: mark("Bio.SeqIO.parse:snapgene", "partial")
 # convert is complete once every direct fast path (fastq->fastq/fasta/qual..., genbank/embl->fasta) has a verified case
 direct = {("genbank", "fasta"), ("embl", "fasta"), ("fastq", "fasta")}

@@ -16,13 +16,9 @@ export type XmlEvent = ["start" | "end", Element];
  * @param source - The document.
  */
 export function* iterparse(source: string | Uint8Array): Generator<XmlEvent> {
-  try {
-    yield* iterparseRaw(source);
-  } catch (e) {
-    // ElementTree words its `ParseError` as "message: line L, column C".
-    if (e instanceof ParseError) throw new ParseError(`${e.message.replace(/^<unknown>:\d+:\d+: /, "")}: line ${e.position[0]}, column ${e.position[1]}`, e.position);
-    throw e;
-  }
+  // `ParseError` already carries ElementTree's wording ("reason: line L, column C"), which it used not to: this
+  // function reworded it here until `@biolibs/seqio` started doing it where the error is raised.
+  yield* iterparseRaw(source);
 }
 
 function* iterparseRaw(source: string | Uint8Array): Generator<XmlEvent> {
