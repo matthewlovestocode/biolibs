@@ -11,13 +11,14 @@ interface Case { kwargs?: { interleave?: boolean }; rows?: string[]; ids?: strin
 const cases: Case[] = JSON.parse(readFileSync(new URL("./golden/alignfmt.json", import.meta.url), "utf8"));
 
 const seqText = (q: any): unknown => {
+  if (q === null) return null;
   if (q.defined === undefined || q.defined) return String(q);
   return { len: q.length, defined: q.definedRanges.map(([a, b]: [number, number]) => [a, b, String(q.slice(a, b))]) };
 };
 const enc = (a: Alignment) => {
   const d: any = {
     ids: a.sequences.map((s) => (s instanceof SeqRecord ? s.id : null)),
-    rows: Array.from({ length: a.size }, (_, i) => a.get(i)),
+    rows: Array.from({ length: a.size }, (_, i) => { try { return a.get(i); } catch (e: any) { return { err: [e.name, e.message] }; } }),
     coords: a.coordinates,
     seqs: a.sequences.map((s) => seqText(s instanceof SeqRecord ? s.seq : s)),
     names: a.sequences.map((s) => (s instanceof SeqRecord ? s.name : null)),

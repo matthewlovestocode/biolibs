@@ -24,11 +24,15 @@ def emsg(e):
 def seq_text(s):
     """str(seq), or for a partially defined sequence its length and the text of each defined range."""
     q = getattr(s, "seq", s)
+    if q is None: return None
     if getattr(q, "defined", True): return str(q)
     return {"len": len(q), "defined": [[a, b, str(q[a:b])] for a, b in q.defined_ranges]}
 
 def enc_aln(a):
-    rows = [str(s) for s in a]
+    rows = []
+    for i in range(len(a)):
+        try: rows.append(str(a[i]))
+        except Exception as e: rows.append({"err": [tname(e), emsg(e)]})
     d = {"ids": [getattr(s, "id", None) for s in a.sequences], "rows": rows, "coords": a.coordinates.tolist(),
          "seqs": [seq_text(s) for s in a.sequences]}
     if getattr(a, "annotations", None): d["ann"] = {k: v for k, v in a.annotations.items()}
@@ -113,7 +117,7 @@ def add(c):
     if res is None: return
     # Rows of unequal length make Biopython's printed-alignment parser return coordinates that depend on uninitialised memory
     for a in res.get("result", {}).get("alns", []) if isinstance(res.get("result"), dict) else []:
-        if len({len(r) for r in a["rows"]}) > 1: return
+        if len({len(r) for r in a["rows"] if isinstance(r, str)}) > 1: return
     cases.append(dict(c, **res))
 
 FASTA = ">a desc\nAC-GT\n>b\nACGGT\n"
@@ -293,6 +297,49 @@ for aln in [{"ids": ["a", "b"], "rows": ["ACGT-A", "ACGTTA"], "mol": "DNA"}, {"i
     add({"kind": "write", "fmt": "nexus", "alns": [aln], "kwargs": {"interleave": False}})
     add({"kind": "write", "fmt": "nexus", "alns": [aln, aln]})
 add({"kind": "write", "fmt": "nexus", "alns": []})
+
+# ---- Tabular (BLAST -outfmt 7, FASTA -m 8C*) ----
+STD = "query id, subject id, % identity, alignment length, mismatches, gap opens, q. start, q. end, s. start, s. end, evalue, bit score"
+def blast(prog="BLASTN 2.2.28+", fields=STD, rows=(), query="Query: q1 a query", hits=None, db="nt", processed=1, extra=()):
+    L = [f"# {prog}", f"# {query}", f"# Database: {db}"] + list(extra) + [f"# Fields: {fields}", f"# {len(rows) if hits is None else hits} hits found"]
+    L += ["\t".join(map(str, r)) for r in rows]
+    return "\n".join(L + [f"# BLAST processed {processed} queries", ""])
+R1 = ("q1", "s1", 95.0, 20, 1, 0, 1, 20, 5, 24, "1e-05", 30.5)
+R2 = ("q1", "s2", 80.0, 15, 3, 1, 20, 6, 40, 54, "0.002", 21.1)
+fields_btop = STD + ", BTOP"
+TAB = [blast(rows=[R1, R2]), blast(rows=[]), blast("BLASTP 2.9.0+", rows=[R1]), blast(fields=fields_btop, rows=[R1 + ("10A-G5",), R2 + ("3-A5TC2G-4",)]),
+       blast("BLASTX 2.9.0+", fields=fields_btop, rows=[R1 + ("5AG10",), R2 + ("12",)]),
+       blast("TBLASTN 2.9.0+", fields=fields_btop + ", query length, subject length, query seq, subject seq", rows=[("q1", "s1", 90.0, 8, 1, 0, 2, 9, 11, 18, "1e-3", 20.0, "8", 10, 30, "ACDEFGHI", "ACDEFGHI")]),
+       blast("TBLASTX 2.9.0+", fields=STD + ", query seq, subject seq, subject length", rows=[("q1", "s1", 90.0, 6, 1, 0, 1, 18, 5, 22, "1e-3", 20.0, "ACDEFG", "ACDEFG", 100)]),
+       blast("BLASTP 2.9.0+", fields=STD + ", query seq, subject seq", rows=[R1 + ("ACDE", "ACDE")]),
+       blast(fields="query acc.ver, subject acc.ver, score, identical, positives, gaps, % positives, query length, subject length, query gi, subject title, subject strand, % subject coverage, BTOP, q. start, q. end, s. start, s. end",
+             rows=[("q1.1", "s1.2", 40, 18, 19, 0, 95.0, 100, 500, "123", "Some title", "plus", 12.5, "18", 1, 18, 7, 24)]),
+       blast(fields="query id, subject id, bogus", rows=[("q1", "s1", "x")]),
+       blast(rows=[R1], query="Query: q1"), blast(rows=[R1], query="Query: "), blast(rows=[R1], query="Query: q1 desc", extra=["# RID: ABC123"]),
+       blast(rows=[("q9",) + R1[1:]]),
+       blast(rows=[R1], processed=1).replace("# BLAST processed 1 queries\n", ""), blast(rows=[R1, R2]) + blast(rows=[R2]).split("\n", 0)[0],
+       "# BLASTN 2.2.28+\n# Query: q1\n# Database: nt\n# Fields: " + STD + "\n# 1 hits found\n" + "\t".join(map(str, R1)) + "\n# BLASTN 2.2.28+\n# Query: q2 second\n# Database: nt\n# Fields: " + STD + "\n# 1 hits found\n" + "\t".join(map(str, ("q2",) + R1[1:])) + "\n# BLAST processed 2 queries\n"]
+FHEAD = lambda rows, q="Query: sp|P1|NAME desc - 100 aa", fields=STD + ", aln_code": "\n".join(["# fasta36 -m 8CB q.fa db.fa", "# FASTA 36.3.8h Aug, 2019", "# " + q, "# Database: db.fa", "# Fields: " + fields, f"# {len(rows)} hits found"] + ["\t".join(map(str, r)) for r in rows] + ["# FASTA processed 1 queries", ""])
+TAB += [FHEAD([("sp|P1|NAME", "t1", 99.0, 20, 0, 0, 1, 20, 3, 22, "1e-5", 50.0, "20M")]), FHEAD([("sp|P1|NAME", "t1", 99.0, 20, 0, 0, 20, 1, 3, 22, "1e-5", 50.0, "5M2I8M3D5M")]),
+        FHEAD([]), FHEAD([("sp|P1|NAME", "t1", 99.0, 20, 0, 0, 1, 20, 3, 22, "1e-5", 50.0, "20M")], q="Query: sp|P1|NAME desc - 100 xx"), FHEAD([("sp|P1|NAME", "t1", 99.0, 20, 0, 0, 1, 20, 3, 22, "1e-5", 50.0, "20M")], q="Query: nodash"),
+        FHEAD([("sp|P1|NAME", "t1", 99.0, 20, 0, 0, 1, 20, 3, 22, "1e-5", 50.0, "xM")]),
+        "# fasta36 -m 8CB q.fa db.fa\n", "# only", "# fasta36\nnot a header\n", "", "no hash\n", "# BLASTN 2.2\n# Query: q\n# 1 hits found\n", "# BLASTN 2.2\n# Query: q\n# Fields: query id\n# x hits found\n"]
+for t in TAB:
+    add({"kind": "parse", "fmt": "tabular", "text": t})
+    add({"kind": "read", "fmt": "tabular", "text": t})
+    lines = t.split("\n")
+    for _ in range(40):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if r < 0.25: del m[i]
+        elif r < 0.45: m[i] = m[i][:rnd.randrange(len(m[i]) + 1)]
+        elif r < 0.7 and m[i]:
+            if "\t" in m[i] and rnd.random() < 0.6:
+                f = m[i].split("\t"); k = rnd.randrange(len(f)); f[k] = rnd.choice(["", "x", "-1", "0", "5", "1.5", f[k] + "9"]); m[i] = "\t".join(f)
+            else:
+                j = rnd.randrange(len(m[i])); m[i] = m[i][:j] + rnd.choice("X-5 :#\t") + m[i][j + 1:]
+        elif r < 0.85: m.insert(i, rnd.choice(["", "#", "# x: y", "junk", "# 3 hits found"]))
+        else: m = m[:i]
+        add({"kind": "parse", "fmt": "tabular", "text": "\n".join(m)})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)

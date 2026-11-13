@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Edit `reference/status.json`, then re-run the script.
 
-**Progress: 1707 / 1971 applicable items verified against Biopython.**
+**Progress: 1708 / 1971 applicable items verified against Biopython.**
 
 
 
@@ -763,7 +763,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 - [ ] `write: sam`
 - [ ] `parse: stockholm`
 - [ ] `write: stockholm`
-- [ ] `parse: tabular`
+- [x] `parse: tabular`
 - [-] `write: tabular`
 
 ## Bio.Align.AlignInfo
