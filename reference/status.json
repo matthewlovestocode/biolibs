@@ -156,6 +156,7 @@
  "Bio.Align.parse:clustal": "done",
  "Bio.Align.parse:emboss": "done",
  "Bio.Align.parse:fasta": "done",
+ "Bio.Align.parse:hhr": "done",
  "Bio.Align.parse:maf": "done",
  "Bio.Align.parse:mauve": "done",
  "Bio.Align.parse:msf": "done",

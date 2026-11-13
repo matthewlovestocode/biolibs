@@ -27,6 +27,7 @@ export function pyRepr(x: unknown): string {
   if (typeof x === "boolean") return x ? "True" : "False";
   if (typeof x === "number") return String(x);
   if (typeof x === "string") return reprString(x);
+  if (typeof (x as { repr?: unknown }).repr === "function") return (x as { repr(): string }).repr();
   if (Array.isArray(x)) return "[" + x.map(pyRepr).join(", ") + "]";
   if (x instanceof Map) return "{" + [...x].map(([k, v]) => `${pyRepr(k)}: ${pyRepr(v)}`).join(", ") + "}";
   if (typeof (x as { repr?: unknown }).repr === "function") return (x as { repr(): string }).repr();
@@ -156,4 +157,13 @@ export function pyBytesRepr(bytes: Uint8Array): string {
     else out += String.fromCharCode(b);
   }
   return `b${q}${out}${q}`;
+}
+
+/** A Python tuple: an array that prints as `(1, 2)` (and `(1,)` for one item). */
+export class PyTuple<T = unknown> extends Array<T> {
+  /** @returns Python's `repr(tuple)`. */
+  repr(): string {
+    const items = Array.from(this, pyRepr);
+    return items.length === 1 ? `(${items[0]},)` : `(${items.join(", ")})`;
+  }
 }

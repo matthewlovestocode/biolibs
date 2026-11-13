@@ -884,6 +884,63 @@ for k, sp in enumerate(MAUVE_SPECS):
     add({"kind": "write", "fmt": "mauve", "alns": [sp], "kwargs": {"metadata": {"File": "x", "BackboneFile": "bb"}, "identifiers": ["0", "x"]}})
 add({"kind": "write", "fmt": "mauve", "alns": []})
 
+# ---- HHR ----
+def hhr_text(r, nhits=2, match=30, with_ss=True, dones=True, name="sp|P12345|TEST some description"):
+    L = [f"Query         {name}", f"Match_columns {match}", "No_of_seqs    10 out of 12", "Neff          3.5", "Searched_HMMs 100", "Date          Mon Jan  1 00:00:00 2020", "Command       hhsearch -i q.a3m -d db", ""]
+    L.append(" No Hit                             Prob E-value P-value  Score    SS Cols Query HMM  Template HMM")
+    hits = []
+    for i in range(nhits):
+        cols = r.randint(6, 12)
+        qs, ts = r.randint(0, match - cols), r.randint(0, 20)
+        q = ""; t = ""
+        for _ in range(cols):
+            k = r.random()
+            if k < 0.1: q += "-"; t += r.choice("ACDEFGHIK")
+            elif k < 0.2: t += "-"; q += r.choice("ACDEFGHIK")
+            else: q += r.choice("ACDEFGHIK"); t += r.choice("ACDEFGHIK")
+        tlen = ts + len(t.replace("-", "")) + r.randint(0, 10)
+        hits.append((f"tmpl{i + 1}", f"description {i + 1}", qs, ts, q, t, tlen))
+        L.append(f"{i + 1:>3} tmpl{i + 1} description {i + 1}        99.9 1.2E-20 3.4E-25  100.1   5.0   {cols}    {qs + 1}-{qs + len(q.replace('-', ''))}     {ts + 1}-{ts + len(t.replace('-', ''))} ({tlen})")
+    L.append("")
+    for i, (tn, td, qs, ts, q, t, tlen) in enumerate(hits):
+        qe, te = qs + len(q.replace("-", "")), ts + len(t.replace("-", ""))
+        L += [f"No {i + 1}", f">{tn} {td}", "Probab=99.89  E-value=1.2e-20  Score=100.12  Aligned_cols=%d  Identities=40%%  Similarity=0.5  Sum_probs=29.0  Template_Neff=5.0" % len(q), ""]
+        L.append(f"Q {name.split()[0]:<14} {qs + 1:>3} {q} {qe:>3} ({match})")
+        L.append(f"Q Consensus    {qs + 1:>3} {q} {qe:>3} ({match})")
+        L.append("                  " + "".join("|" if a == b else " " for a, b in zip(q, t)))
+        L.append(f"T Consensus    {ts + 1:>3} {t} {te:>3} ({tlen})")
+        L.append(f"T {tn:<14} {ts + 1:>3} {t} {te:>3} ({tlen})")
+        L.append("Confidence     " + "9" * len(q))
+        if with_ss:
+            L.append("Q ss_pred      " + "c" * len(q.replace("-", "")))
+            L.append("T ss_pred      " + "h" * len(t.replace("-", "")))
+            L.append("T ss_dssp      " + "e" * len(t.replace("-", "")))
+        L.append("")
+    if dones: L.append("Done!")
+    return "\n".join(L) + "\n"
+HHR_TEXTS = [hhr_text(prng, nh, match=m, with_ss=ss) for nh in (1, 2, 3) for m in (30, 40) for ss in (True, False)]
+HHR_TEXTS += [hhr_text(prng, 2, dones=False), hhr_text(prng, 2, name="q1"), hhr_text(prng, 1, match=12), "", "\n", "Query q\n", "Query q\nMatch_columns 5\n\n", "Query q\nMatch_columns 5\n\n No Hit x\n",
+              "Bogus 1\n\n", "Query q\nNo_of_seqs 5\n\n", "Query q\nNo_of_seqs 5 out of 6 out of 7\n\n", "Query q\nNeff x\n\n", "Query q\nSearched_HMMs 1.5\n\n", "Query\n\n",
+              "Query q\nMatch_columns 5\n\n No Hit Prob E-value P-value Score SS Cols Query HMM Template HMM\n  1 a b\n\nNo 1\n>a b\nProbab=1\n\nQ q 1 AC 2 (5)\nT a 1 AC 2 (5)\n\nDone!\n",
+              "Query q\nMatch_columns 5\n\n No Hit Prob E-value P-value Score SS Cols Query HMM Template HMM\n  1 a b\n\nNo 1\nNo 2\n", "Query q\nMatch_columns 5\n\n No Hit Prob E-value P-value Score SS Cols Query HMM Template HMM\n  2 a b\n\n",
+              "Query q\nMatch_columns 5\n\n No Hit Prob E-value P-value Score SS Cols Query HMM Template HMM\n  1 a b\n\nNo 1\nzzz\n"]
+for t in HHR_TEXTS:
+    add({"kind": "parse", "fmt": "hhr", "text": t})
+    add({"kind": "read", "fmt": "hhr", "text": t})
+for t in HHR_TEXTS[:14]:
+    lines = t.split("\n")
+    for _ in range(14):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if r < 0.25: del m[i]
+        elif r < 0.55 and m[i].split():
+            f = m[i].split(" "); k = rnd.randrange(len(f)); f[k] = rnd.choice(["", "x", "-1", "0", "5", f[k] + "9", "(5)", "()", "1.5"]); m[i] = " ".join(f)
+        elif r < 0.75: m.insert(i, rnd.choice(["", " ", "Done!", "No 1", "No 9", "Confidence", "Q ss_pred", "T ss_pred x", "junk", ">a b", "Q Consensus 1 AC 2 (30)"]))
+        elif r < 0.9: m[i] = m[i][:rnd.randrange(len(m[i]) + 1)]
+        else: m = m[:i]
+        t2 = "\n".join(m)
+        # rows of unequal length are not a valid alignment (and read uninitialised memory in Biopython's parser)
+        add({"kind": "parse", "fmt": "hhr", "text": t2})
+
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)
 print(len(cases), "cases")

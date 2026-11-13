@@ -5,7 +5,7 @@
  * - `stream.ts`: `TextStream`
  * - `interfaces.ts`: `AlignmentIterator`, `AlignmentWriter`, `Alignments`
  * - `registry.ts`: the format table, `parse`, `read`, `write`, `formatAs`
- * - `fasta.ts`, `a2m.ts`, `clustal.ts`, `phylip.ts`, `msf.ts`, `emboss.ts`, `nexus.ts`, `tabular.ts`, `stockholm*.ts` (reader, writer and keyword tables), `psl*.ts`, `bed.ts`, `chain.ts`, `sam*.ts`, `maf*.ts`, `mauve.ts`, `shlex.ts`: the formats
+ * - `fasta.ts`, `a2m.ts`, `clustal.ts`, `phylip.ts`, `msf.ts`, `emboss.ts`, `nexus.ts`, `tabular.ts`, `stockholm*.ts` (reader, writer and keyword tables), `psl*.ts`, `bed.ts`, `chain.ts`, `sam*.ts`, `maf*.ts`, `mauve.ts`, `hhr.ts`, `shlex.ts`: the formats
  */
 
 import "./fasta.js";
@@ -23,6 +23,7 @@ import "./chain.js";
 import "./sam.js";
 import "./maf.js";
 import "./mauve.js";
+import "./hhr.js";
 
 export * from "./stream.js";
 export * from "./interfaces.js";
@@ -42,5 +43,6 @@ export * from "./chain.js";
 export * from "./sam.js";
 export * from "./maf.js";
 export * from "./mauve.js";
+export * from "./hhr.js";
 export * from "./shlex.js";
 export { PythonException, AssertionError } from "./rows.js";
