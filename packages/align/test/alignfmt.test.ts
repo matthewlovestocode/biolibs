@@ -6,11 +6,12 @@ import { captureWarnings, pyStr } from "@biolibs/core";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
-type Spec = { recann?: (Record<string, unknown> | null)[]; qann?: Record<string, number>; tann?: Record<string, unknown>; qletter?: number[]; seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number | string>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
-interface Case { kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
+type Spec = { recann?: (Record<string, unknown> | null)[]; qann?: Record<string, unknown>; tann?: Record<string, unknown>; qletter?: number[]; seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number | string>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
+interface Case { args?: unknown[]; kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
 /** Python keyword arguments to the positional arguments of each writer. */
-const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]], bed: [["bedN", 12]], sam: [["md", false]], mauve: [["metadata", null], ["identifiers", null]] };
+const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]], bed: [["bedN", 12]], sam: [["md", false]], exonerate: [["fmt", "vulgar"]], mauve: [["metadata", null], ["identifiers", null]] };
 const kwargArgs = (c: Case): unknown[] => {
+  if (c.args) return c.args;
   if (!c.kwargs) return [];
   const params = WRITER_PARAMS[c.fmt.toLowerCase()] ?? [];
   const last = params.reduce((m, [k], i) => (k in c.kwargs! ? i : m), -1);

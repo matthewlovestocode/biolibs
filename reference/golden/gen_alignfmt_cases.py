@@ -137,11 +137,11 @@ def run(case):
             elif k == "rewrite":
                 alns = Align.parse(io.StringIO(case["text"]), case["fmt"])
                 buf = io.StringIO()
-                n = Align.write(alns, buf, case["fmt"], **case.get("kwargs", {}))
+                n = Align.write(alns, buf, case["fmt"], *case.get("args", []), **case.get("kwargs", {}))
                 out["result"] = {"text": buf.getvalue(), "n": n}
             elif k == "write":
                 buf = io.StringIO()
-                n = Align.write([build(s) for s in case["alns"]], buf, case["fmt"], **case.get("kwargs", {}))
+                n = Align.write([build(s) for s in case["alns"]], buf, case["fmt"], *case.get("args", []), **case.get("kwargs", {}))
                 out["result"] = {"text": buf.getvalue(), "n": n}
         except Exception as e:
             out["exc"] = {"type": tname(e), "msg": emsg(e)}
@@ -174,6 +174,8 @@ def add(c):
     # Rows of unequal length make Biopython's printed-alignment parser return coordinates that depend on uninitialised memory
     for a in res.get("result", {}).get("alns", []) if isinstance(res.get("result"), dict) else []:
         if len({len(r) for r in a["rows"] if isinstance(r, str)}) > 1: return
+        # cells that np.empty left unfilled (Exonerate's vulgar reader) show up as NUL operations
+        if "\x00" in a.get("ops", ""): return
         # uninitialised memory shows up as enormous coordinates or absurd lengths
         if any(abs(x) > 10 ** 12 for row in a["coords"] for x in row if x != 9223372036854775807) or (a["coords"] and len(a["coords"][0]) > 5000): return
     cases.append(dict(c, **res))
@@ -940,6 +942,77 @@ for t in HHR_TEXTS[:14]:
         t2 = "\n".join(m)
         # rows of unequal length are not a valid alignment (and read uninitialised memory in Biopython's parser)
         add({"kind": "parse", "fmt": "hhr", "text": t2})
+
+# ---- Exonerate ----
+def exo_spec(r, dnax, rev_t=False, rev_q=False, ops=False, protein_target=False):
+    sp = rand_psl_spec(r, dnax=dnax, rev=False)
+    tc, qc = sp["coords"]
+    tl, ql = len(sp["seqs"][0]), len(sp["seqs"][1])
+    if rev_t: tc = [tl - x for x in tc]
+    if rev_q: qc = [ql - x for x in qc]
+    sp["coords"] = [tc, qc]
+    sp["ids"] = ["target1", "query1"]
+    sp["extra"] = {"score": r.choice([0, 100, 55.5, 1e6])}
+    if dnax: sp["qann"] = {"molecule_type": "protein"}
+    if protein_target: sp["tann"] = {"molecule_type": "protein"}
+    if ops:
+        steps = [(abs(tc[i + 1] - tc[i]), abs(qc[i + 1] - qc[i])) for i in range(len(tc) - 1)]
+        o = ""
+        for t, q in steps:
+            if t == q: o += "M"
+            elif q == 0: o += "D"
+            elif t == 0: o += "I"
+            else: o += "M"
+        o = "".join(r.choice(o) if r.random() < 0.1 else ch for ch in o)
+        sp["ops"] = o
+    return sp
+EXO_SPECS = []
+for dnax in (False, True):
+    for rt, rq in ((False, False), (True, False), (False, True), (True, True)):
+        for ops in (False, True):
+            for _ in range(2): EXO_SPECS.append(exo_spec(prng, dnax, rt, rq, ops))
+EXO_SPECS += [exo_spec(prng, False, protein_target=True) for _ in range(2)] + [exo_spec(prng, True, protein_target=True) for _ in range(2)]
+EXO_HDR = "Command line: [exonerate --model est2genome q.fa t.fa]\nHostname: [myhost]\n"
+EXO_TEXTS = []
+for sp in EXO_SPECS:
+    for kw in ({}, {"fmt": "cigar"}):
+        try:
+            buf = io.StringIO(); Align.write([build(sp)], buf, "exonerate", **kw); EXO_TEXTS.append(buf.getvalue())
+        except Exception: pass
+EXO_TEXTS += [EXO_HDR + "vulgar: q 0 11 + t 100 111 + 55 M 11 11\n-- completed exonerate analysis\n", EXO_HDR + "cigar: q 0 11 + t 100 111 - 55.5 M 11\n-- completed exonerate analysis\n",
+              EXO_HDR + "vulgar: q 0 30 . t 0 90 + 100 M 10 30 5 0 2 I 0 100 3 0 2 M 10 30 G 0 3 C 3 9 S 1 1 F 0 1 N 2 4\n-- completed exonerate analysis\n",
+              EXO_HDR + "cigar: q 0 10 . t 0 30 + 100 M 10 D 2 I 1\n-- completed exonerate analysis\n", EXO_HDR + "cigar: q 0 10 + t 0 30 . 100 M 10 D 2 I 1\n-- completed exonerate analysis\n",
+              EXO_HDR + "vulgar: q 0 11 + t 0 11 + 5 X 1 1\n-- completed exonerate analysis\n", EXO_HDR + "cigar: q 0 11 + t 0 11 + 5 X 1\n-- completed exonerate analysis\n",
+              EXO_HDR + "vulgar: q 0 11 + t 0 11 + 5 G 1 1\n-- completed exonerate analysis\n", EXO_HDR + "vulgar: q 0 11 x t 0 11 + 5 M 11 11\n-- completed exonerate analysis\n", EXO_HDR + "cigar: q 0 11 + t 0 11 y 5 M 11\n-- completed exonerate analysis\n",
+              EXO_HDR, EXO_HDR + "-- completed exonerate analysis\n", EXO_HDR + "-- completed exonerate analysis\nextra\n", EXO_HDR + "junk\n", EXO_HDR + "vulgar: q 0\n", EXO_HDR + "vulgar: q 0 11 + t 0 11 + 5\n-- completed exonerate analysis\n",
+              EXO_HDR + "vulgar: q 0 11 + t 0 11 + 5 M 11\n-- completed exonerate analysis\n", EXO_HDR + "vulgar: q 0 11 + t 0 11 + 5 M a b\n-- completed exonerate analysis\n", EXO_HDR + "vulgar: q 0 11 + t 0 11 + x M 11 11\n-- completed exonerate analysis\n",
+              EXO_HDR + "vulgar: q 0 11 + t 0 11 + 5 M 11 11 M 1 1\nvulgar: q 0 11 + t 0 11 + 5 M 11 11\n-- completed exonerate analysis\n", "", "Command line: x\n", "Command line: [x]\n", "Command line: [x]\nHostname: y\n", "Command line: [x]\nHost: [y]\n",
+              EXO_HDR + "vulgar: q 0 11 + t 0 11 + 5 N 0 5 M 11 11\n-- completed exonerate analysis\n", EXO_HDR + "vulgar: q 0 11 + t 0 11 + 5 N 3 5 M 11 11\n-- completed exonerate analysis\n"]
+for t in EXO_TEXTS:
+    add({"kind": "parse", "fmt": "exonerate", "text": t})
+    add({"kind": "read", "fmt": "exonerate", "text": t})
+for t in EXO_TEXTS[:12] + EXO_TEXTS[24:34]:
+    lines = t.split("\n")
+    for _ in range(8):
+        m = list(lines); i = rnd.randrange(len(m)); r = rnd.random()
+        if r < 0.2: del m[i]
+        elif r < 0.7 and m[i].split():
+            f = m[i].split(" "); k = rnd.randrange(len(f)); f[k] = rnd.choice(["", "x", "-1", "0", "5", "M", "G", "N", "I", "U", f[k] + "9", "+", "-", "."]); m[i] = " ".join(f)
+        elif r < 0.85: m.insert(i, rnd.choice(["", "junk", "vulgar: q 0 1 + t 0 1 + 1 M 1 1", "-- completed exonerate analysis"]))
+        else: m = m[:i]
+        add({"kind": "parse", "fmt": "exonerate", "text": "\n".join(m)})
+for sp in EXO_SPECS:
+    add({"kind": "format", "fmt": "exonerate", "aln": sp})
+    add({"kind": "write", "fmt": "exonerate", "alns": [sp]})
+    add({"kind": "write", "fmt": "exonerate", "alns": [sp], "args": ["cigar"]})
+    add({"kind": "write", "fmt": "exonerate", "alns": [sp, sp], "args": ["cigar"]})
+    add({"kind": "format", "fmt": "exonerate", "aln": dict(sp, plain=[True, True])})
+    add({"kind": "format", "fmt": "exonerate", "aln": dict(sp, extra={})})
+add({"kind": "write", "fmt": "exonerate", "alns": [EXO_SPECS[0]], "args": ["bogus"]})
+add({"kind": "write", "fmt": "exonerate", "alns": []})
+for t in EXO_TEXTS[:3] + EXO_TEXTS[24:27]:
+    add({"kind": "rewrite", "fmt": "exonerate", "text": t})
+    add({"kind": "rewrite", "fmt": "exonerate", "text": t, "args": ["cigar"]})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)
