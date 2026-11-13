@@ -15,4 +15,4 @@ import { UniprotIterator } from "./iterator.js";
 registerIterator("uniprot-xml", UniprotIterator);
 
 export * from "./iterator.js";
-export { ParseError } from "./etree.js";
+export { Element, ParseError, PullParser } from "./etree.js";

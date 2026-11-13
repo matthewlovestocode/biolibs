@@ -7,7 +7,7 @@ import * as M from "@biolibs/motifs";
 
 type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc };
-interface Case { kind: string; matrix: any; other: any; spec: any; ops: any[][]; ops_out: Out[]; op: string; fmt: string; text: string; strict?: boolean; to: string[]; exc?: Exc; matrix_enc?: unknown; motif?: unknown; result?: unknown; version?: unknown; str?: unknown; extra?: unknown; id?: string; written?: Record<string, Out>; warnings: string[] }
+interface Case { kind: string; matrix: any; other: any; spec: any; ops: any[][]; ops_out: Out[]; op: string; fmt: string; text: string; strict?: boolean; to: string[]; exc?: Exc; matrix_enc?: unknown; motif?: unknown; result?: unknown; version?: unknown; str?: unknown; extra?: unknown; extras?: unknown; record?: unknown; id?: string; written?: Record<string, Out>; warnings: string[] }
 
 const SP: Record<string, number> = { nan: NaN, inf: Infinity, "-inf": -Infinity };
 const dec = (v: any): any => (typeof v === "string" && Object.hasOwn(SP, v) ? SP[v] : v);
@@ -31,7 +31,7 @@ function enc(x: any): unknown {
   if (Array.isArray(x)) return x.map(enc);
   throw new Error("cannot encode " + String(x));
 }
-const pyClass = (m: any): string => (m instanceof M.clusterbuster.ClusterbusterMotif ? "motifs.Motif" : m instanceof M.transfac.TransfacMotif ? "transfac.Motif" : m instanceof M.jaspar.JasparMotif ? "jaspar.Motif" : "motifs.Motif");
+const pyClass = (m: any): string => (m instanceof M.meme.MemeMotif ? "meme.Motif" : m instanceof M.clusterbuster.ClusterbusterMotif ? "motifs.Motif" : m instanceof M.transfac.TransfacMotif ? "transfac.Motif" : m instanceof M.jaspar.JasparMotif ? "jaspar.Motif" : "motifs.Motif");
 function encMotif(m: any): unknown {
   const out: any = {
     cls: pyClass(m), name: m.name, length: m.length, alphabet: m.alphabet, mask: [...m.mask], pseudocounts: [...m.pseudocounts].map(([k, v]: any) => [k, num(v)]), background: [...m.background].map(([k, v]: any) => [k, num(v)]),
@@ -146,13 +146,35 @@ function runMotif(c: Case): Record<string, any> {
   return { ops_out, motif: motif0 };
 }
 
+const SNAKE: Record<string, string> = { num_occurrences: "numOccurrences", alt_id: "altId", strand_handling: "strandHandling" };
+const camel = (k: string): string => SNAKE[k] ?? k;
+const INSTANCE_KEYS: [string, string][] = [["motif_name", "motifName"], ["sequence_id", "sequenceId"], ["sequence_name", "sequenceName"], ["start", "start"], ["pvalue", "pvalue"], ["strand", "strand"], ["length", "lengthAttr"]];
+
+function encExtra(m: any): unknown {
+  const ex: Record<string, unknown> = {};
+  for (const k of ["score", "number", "evalue", "num_occurrences", "id", "alt_id"]) if (camel(k) in m) ex[k] = typeof m[camel(k)] === "number" && !Number.isInteger(m[camel(k)]) ? num(m[camel(k)]) : m[camel(k)];
+  if (m.alignment !== null) ex["instances"] = m.alignment.sequences.map((s: any) => Object.fromEntries(INSTANCE_KEYS.filter(([, t]) => Object.hasOwn(s, t) && s[t] !== undefined).map(([k, t]) => [k, typeof s[t] === "number" && !Number.isInteger(s[t]) ? num(s[t]) : s[t]])));
+  return ex;
+}
+function encRecord(rec: any): unknown {
+  const out: Record<string, unknown> = {};
+  for (const k of ["version", "command", "parameters", "sequences", "datafile", "alphabet", "background", "diagrams", "database", "strand_handling"]) {
+    const t = camel(k);
+    if (!(t in rec) || rec[t] === undefined) continue;
+    const v = rec[t];
+    out[k] = v instanceof Map ? Object.fromEntries([...v].map(([a, b]) => [a, typeof b === "number" && !Number.isInteger(b) ? num(b) : b])) : v;
+  }
+  return out;
+}
+
 function runIo(c: Case): Record<string, any> {
   const out: Record<string, any> = {};
   try {
     if (c.op === "parse") {
       const ms: any = M.parse(c.text, c.fmt, c.strict ?? true);
       out["result"] = ms.map(encMotif);
-      out["version"] = ms.version ?? null;
+      if (["alignace", "meme", "minimal", "mast", "xms", "pfm-four-columns", "pfm-four-rows"].includes(c.fmt)) { out["extras"] = [...ms].map(encExtra); out["record"] = encRecord(ms); }
+      out["version"] = ["meme", "minimal", "mast", "alignace"].includes(c.fmt) ? null : ms.version ?? null;
       if (c.fmt === "jaspar" && ms.length) {
         const first = ms[0];
         const ex: Record<string, unknown> = { ids: [...ms].map((m: any) => [m.baseId, m.version]), dict: [...ms.toDict().keys()].sort(), eq: [...ms].map((m: any) => first.equals(m)), str: ms.toString() };
@@ -166,6 +188,7 @@ function runIo(c: Case): Record<string, any> {
     else {
       const ms = M.parse(c.text, c.fmt);
       out["written"] = Object.fromEntries(c.to.map((f) => [f, attempt(() => M.write([...ms], f))]));
+      out["written"]["pfm-four-columns"] = attempt(() => M.pfm.write([...ms]));
     }
   } catch (e) { out["exc"] = err(e); }
   return out;
@@ -194,6 +217,7 @@ describe("Bio.motifs: parity with Biopython", () => {
         if (c.exc || got["exc"]) why = excOk(c.exc, got["exc"]) ? "" : `exc: want ${JSON.stringify(c.exc)} got ${JSON.stringify(got["exc"])}`;
         else if (c.op === "write") { for (const f of Object.keys(c.written!)) if (!outOk(c.written![f]!, got["written"][f])) { why = `write ${f}: want ${JSON.stringify(c.written![f]).slice(0, 300)} got ${JSON.stringify(got["written"][f]).slice(0, 300)}`; break; } }
         else if (!same(c.result, got["result"])) why = `result: want ${JSON.stringify(c.result).slice(0, 500)} got ${JSON.stringify(got["result"]).slice(0, 500)}`;
+        else if (c.op === "parse" && c.extras !== undefined && !same([c.extras, c.record], [got["extras"], got["record"]])) why = `extras: want ${JSON.stringify([c.extras, c.record]).slice(0, 500)} got ${JSON.stringify([got["extras"], got["record"]]).slice(0, 500)}`;
         else if (c.op === "parse" && c.extra !== undefined && !same(c.extra, got["extra"])) why = `extra: want ${JSON.stringify(c.extra).slice(0, 400)} got ${JSON.stringify(got["extra"]).slice(0, 400)}`;
         else if (c.op === "parse" && (c.version !== got["version"] || c.str !== got["str"])) why = `version/str: want ${JSON.stringify([c.version, c.str]).slice(0, 300)} got ${JSON.stringify([got["version"], got["str"]]).slice(0, 300)}`;
       } else {

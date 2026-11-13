@@ -1,6 +1,6 @@
 # @biolibs/motifs
 
-A TypeScript port of the core of Biopython's `Bio.motifs`: motifs made from aligned instances or counts, position matrices (counts, weights, log-odds scores), scanning sequences, score distributions and thresholds, and the JASPAR (`pfm`, `sites`, `jaspar`), TRANSFAC and Cluster-Buster formats. Verified against Biopython 1.88 on 2,213 cases (`packages/motifs/test/golden/motifs.json`, built by `reference/golden/gen_motif_cases.py`).
+A TypeScript port of `Bio.motifs`: motifs made from aligned instances or counts, position matrices (counts, weights, log-odds scores), scanning sequences, score distributions and thresholds, and the formats JASPAR (`pfm`, `sites`, `jaspar`), TRANSFAC, Cluster-Buster, AlignACE, MEME (XML and minimal text), MAST, XMS and `pfm-four-columns`/`pfm-four-rows`. Verified against Biopython 1.88 on 3,059 cases (`packages/motifs/test/golden/motifs.json`, built by `reference/golden/gen_motif_cases.py`).
 
 ```ts
 import { Seq } from "@biolibs/seq";
@@ -37,6 +37,10 @@ Details kept as in Biopython, including the unexpected ones:
 - `ScoreDistribution` fails with `ValueError` for matrices that contain `-Infinity` scores (zero probabilities), because Python converts `nan` to `int`.
 - A TRANSFAC `VV` line is stored as the record's version *and* as an annotation; a line with only a key reuses the previous value; reading stops matrices at the first non-numeric line and processes that line as an ordinary field.
 
+## The other readers
+
+`motifs.parse(text, fmt)` also reads `alignace`, `meme` (XML), `minimal` (MEME's text output), `mast` (XML), `xms` and `pfm-four-columns`/`pfm-four-rows`; each module (`motifs.meme`, ...) has its own `read` and record class with the extra attributes (`evalue`, `numOccurrences`, `score`, hit `diagrams`, ...). The XML formats use the small ElementTree in `@biolibs/seqio`. Biopython's `Seq` attribute `length` on a MEME site is `lengthAttr` here (a `Seq`'s own `length` is its size). Malformed XML in an XMS file raises an error named `ExpatError` (Python's minidom); the exact expat wording is not reproduced.
+
 ## Not ported
 
-`meme`, `alignace`, `minimal`, `mast`, `xms` and the `pfm-four-columns`/`pfm-four-rows` readers (`parse` throws "not ported yet" for them), `motifs.jaspar.db` (a MySQL client), `Motif.weblogo` (posts to a web service), and the `Bio.motifs.matlab`/`universal` helpers. The motif-based `ScoreDistribution` path in Biopython needs methods `Motif` no longer has, and is not ported.
+`motifs.jaspar.db` (a MySQL client), `Motif.weblogo` (posts to a web service), and the `Bio.motifs.matlab`/`universal` helpers. The motif-based `ScoreDistribution` path in Biopython needs methods `Motif` no longer has, and is not ported.

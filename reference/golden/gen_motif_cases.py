@@ -16,7 +16,7 @@ cases = []
 
 def tname(e): return "TypeError" if type(e).__name__ == "AttributeError" else type(e).__name__
 def emsg(e):
-    if type(e).__name__ == "AttributeError": return None
+    if type(e).__name__ in ("AttributeError", "ExpatError"): return None   # expat's wording for malformed XML is not reproduced exactly
     return str(e.args[0]) if isinstance(e, KeyError) and e.args else str(e)
 
 def num(x):
@@ -259,6 +259,22 @@ for _ in range(450):
 add(run_motif, {"kind": "motif", "spec": {"how": "both", "alphabet": "ACGT", "instances": ["ACGT"], "counts": [[l, [1, 1, 1, 1]] for l in "ACGT"]}, "ops": []})
 
 # ---------------- io ----------------
+def enc_extra(m):
+    ex = {}
+    for k in ("score", "number", "evalue", "num_occurrences", "id", "alt_id"):
+        if hasattr(m, k): ex[k] = getattr(m, k) if not isinstance(getattr(m, k), float) else num(getattr(m, k))
+    if m.alignment is not None:
+        ex["instances"] = [{k: (num(v) if isinstance(v, float) else v) for k, v in vars(s).items() if k in ("motif_name", "sequence_id", "sequence_name", "start", "pvalue", "strand", "length")} for s in m.alignment.sequences]
+    return ex
+
+def enc_record(ms):
+    rec = {}
+    for k in ("version", "command", "parameters", "sequences", "datafile", "alphabet", "background", "diagrams", "database", "strand_handling"):
+        if hasattr(ms, k):
+            v = getattr(ms, k)
+            rec[k] = {kk: (num(vv) if isinstance(vv, float) else vv) for kk, vv in v.items()} if isinstance(v, dict) else v
+    return rec
+
 def run_io(case):
     out = {}
     with warnings.catch_warnings(record=True) as w:
@@ -267,7 +283,9 @@ def run_io(case):
             if case["op"] == "parse":
                 ms = motifs.parse(io.StringIO(case["text"]), case["fmt"], case.get("strict", True))
                 out["result"] = [enc_motif(m) for m in ms]
-                out["version"] = getattr(ms, "version", None)
+                if case["fmt"] in ("alignace", "meme", "minimal", "mast", "xms", "pfm-four-columns", "pfm-four-rows"):
+                    out["extras"] = [enc_extra(m) for m in ms]; out["record"] = enc_record(ms)
+                out["version"] = getattr(ms, "version", None) if case["fmt"] not in ("meme", "minimal", "mast", "alignace") else None
                 if case["fmt"] == "jaspar" and len(ms):
                     ex = {"ids": [[m.base_id, m.version] for m in ms], "dict": sorted(ms.to_dict().keys()), "eq": [ms[0] == m for m in ms], "str": str(ms)}
                     ex["pseudo"] = attempt(lambda: jaspar.calculate_pseudocounts(ms[0]))
@@ -280,6 +298,8 @@ def run_io(case):
             else:   # write: parse as jaspar/transfac then write in another format
                 ms = motifs.parse(io.StringIO(case["text"]), case["fmt"])
                 out["written"] = {f: attempt(lambda f=f: motifs.write(list(ms), f)) for f in case["to"]}
+                from Bio.motifs import pfm as _pfm
+                out["written"]["pfm-four-columns"] = attempt(lambda: _pfm.write(list(ms)))
         except Exception as e:
             out["exc"] = {"type": tname(e), "msg": emsg(e)}
         out["warnings"] = [str(x.message) for x in w]
@@ -314,6 +334,92 @@ def transfac_text(n, strict_ok=True):
         block += ["XX", "CC  Some comment", "XX", "RN  [1]; RE0000001.", "RX  PUBMED: 12345.", "RA  Author A, Author B.", "RT  A title.", "RL  J. Mol. Biol. 1:2-3 (1990).", "XX", "//"]
         out.append("\n".join(block) + "\n")
     return "".join(out)
+
+def alignace_text(n):
+    lines = ["AlignACE 4.0 (compiled Nov  1 2001)", "./AlignACE -i seqs.fa -numcols 6", "", "Input Sequences:", "#1\tseq1", "#2\tseq2", "", "Parameter values:", "expect=10", "gcback=0.38", ""]
+    for k in range(n):
+        lines.append(f"Motif {k + 1}")
+        width = rnd.randint(2, 6)
+        for _ in range(rnd.randint(1, 5)):
+            lines.append("".join(rnd.choice("ACGT") for _ in range(width)) + f"\t{rnd.randint(1, 2)}\t{rnd.choice('+-')}\t{rnd.randint(1, 50)}")
+        lines.append("*" * width if rnd.random() < 0.8 else " " * 1 + "*" * (width - 1))
+        lines.append(f"MAP Score: {rnd.uniform(1, 20):.3f}")
+        lines.append("")
+    return "\n".join(lines) + "\n"
+
+def minimal_text(n):
+    lines = ["********************************************************************************", "MEME - Motif discovery tool", "********************************************************************************", "MEME version 4.12.0 (Release date: Thu Aug 31 14:23:12 2017 +1000)", "",
+             "ALPHABET= " + rnd.choice(["ACGT", "ACGT", "ACGU"]), "", "strands: + -", "", "Background letter frequencies (from file `db'):", "A 0.250 C 0.250 G 0.250 T 0.250", ""]
+    for k in range(n):
+        w = rnd.randint(2, 6)
+        lines.append(f"MOTIF {rnd.choice(['GCTA', 'TTGA', 'ACGT'])}{k} MEME-{k + 1}")
+        lines.append("")
+        lines.append(f"letter-probability matrix: alength= 4 w= {w} nsites= {rnd.randint(2, 30)} E= {rnd.choice(['1.2e-005', '0.5', '3.4e+002'])}")
+        for _ in range(w):
+            ps = [rnd.random() for _ in range(4)]
+            t = sum(ps)
+            lines.append(" ".join(f"{p / t:.6f}" for p in ps))
+        lines.append("")
+    return "\n".join(lines) + "\n"
+
+def meme_xml(n):
+    seqs = "".join(f'<sequence id="sequence_{i}" name="seq{i}" length="100" weight="1.0"/>' for i in range(3))
+    motifs_xml = ""
+    for k in range(n):
+        width = rnd.randint(2, 5)
+        sites = ""
+        for s in range(rnd.randint(1, 4)):
+            letters = "".join(f'<letter_ref letter_id="letter_{rnd.choice("ACGT")}"/>' for _ in range(width))
+            sites += f'<contributing_site sequence_id="sequence_{rnd.randint(0, 2)}" position="{rnd.randint(0, 80)}" strand="{rnd.choice(["plus", "minus", "none"])}" pvalue="{rnd.choice(["1.2e-05", "0.001"])}"><left_flank>AA</left_flank><site>{letters}</site><right_flank>CC</right_flank></contributing_site>'
+        motifs_xml += f'<motif id="motif_{k + 1}" name="MOTIF{k + 1}" alt="MEME-{k + 1}" width="{width}" sites="{rnd.randint(1, 9)}" ic="10.1" re="11" llr="50" e_value="{rnd.choice(["1.5e-010", "2.0"])}" bayes_threshold="9.5" elapsed_time="1.0"><contributing_sites>{sites}</contributing_sites></motif>'
+    alpha = "".join(f'<value letter_id="letter_{c}">0.25</value>' for c in "ACGT")
+    return (f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<MEME version="4.11.2" release="Sat Nov 14 12:00:00 2015 -0800"><training_set primary_sequences="/data/seqs.fa" primary_count="3" primary_positions="300" control_sequences="--none--" control_count="0" control_positions="0">'
+            f'{seqs}<letter_frequencies><alphabet_array>{alpha}</alphabet_array></letter_frequencies></training_set><model><command_line>meme seqs.fa -dna -nmotifs {n}</command_line><host>localhost</host></model><motifs>{motifs_xml}</motifs></MEME>\n')
+
+def mast_xml(n, strand):
+    motifs_xml = "".join(f'<motif id="motif_{i + 1}" alt="MEME-{i + 1}" length="{rnd.randint(3, 8)}" nsites="5" evalue="1e-05" bad_ic_threshold="1.0"/>' for i in range(n))
+    seqs = ""
+    for i in range(rnd.randint(1, 3)):
+        hits = "".join(f'<hit pos="{p}" idx="{rnd.randint(0, n - 1)}" rc="{rnd.choice("yn")}" pvalue="1e-4" match="AAAA" translation="X"/>' for p in sorted(rnd.sample(range(1, 90), rnd.randint(0, 4))))
+        seqs += f'<sequence name="seq{i}" comment="" length="100" score="12.5" combined_pvalue="1e-5" db="db_1" seg_count="1"><seg start="1">{hits}</seg></sequence>'
+    return (f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<mast version="4.11.2" release="Date"><model><command_line>mast meme.xml seqs.fa</command_line></model><alphabet name="DNA"/><motifs>{motifs_xml}</motifs>'
+            f'<sequence_dbs><sequence_db source="/data/seqs.fa" name="seqs" type="1" last_mod_date="date" seq_count="3" residue_count="300"/></sequence_dbs><settings strand_handling="{strand}"/><sequences>{seqs}</sequences></mast>\n')
+
+def xms_xml(n):
+    out = '<?xml version="1.0" encoding="UTF-8"?>\n<motifset>\n'
+    for k in range(n):
+        out += f"  <motif>\n    <name>Motif{k}</name>\n    <prop><key>x</key><value>1</value></prop>\n"
+        for _ in range(rnd.randint(1, 5)):
+            ws = "".join(f'<weight symbol="{s}">{rnd.choice(["0.25", "1", "0.5", " 3 "])}</weight>' for s in ("adenine", "cytosine", "guanine", "thymine") if rnd.random() < 0.9)
+            out += f"    <column pos=\"1\">{ws}</column>\n"
+        out += "  </motif>\n"
+    return out + "</motifset>\n"
+
+def pfm_cols_text(n):
+    out = []
+    for k in range(n):
+        style = rnd.choice(["plain", "gene", "motif", "pos", "fasta"])
+        if style == "gene": out.append(f"Gene\tG{k}")
+        elif style == "motif": out.append(f"Motif\tM{k}")
+        elif style == "fasta": out.append(f">name {k}")
+        if style == "pos": out.append("Pos\tA\tC\tG\tT")
+        elif rnd.random() < 0.3: out.append(rnd.choice(["A C G T", "T G C A", "A C G"]))
+        for i in range(rnd.randint(1, 5)):
+            row = [str(rnd.choice([0, 1, 5, 12.5])) for _ in range(4)]
+            out.append(("\t".join(([str(i + 1)] if style == "pos" else []) + row)))
+        out.append("" if rnd.random() < 0.7 else "# comment")
+    return "\n".join(out) + "\n"
+
+def pfm_rows_text(n):
+    out = []
+    for k in range(n):
+        if rnd.random() < 0.7: out.append(f">motif{k}")
+        w = rnd.randint(1, 5)
+        for l in "ACGT":
+            vals = " ".join(str(rnd.choice([0, 1, 5, 12.5, "1e-2"])) for _ in range(w))
+            out.append(rnd.choice([f"{l} [ {vals} ]", f"{l} | {vals}", vals, f"{l.lower()}  {vals}"]))
+        if rnd.random() < 0.2: out.append("Ent= 1.5")
+    return "\n".join(out) + "\n"
 
 def clusterbuster_text(n):
     out = []
@@ -354,6 +460,14 @@ for _ in range(150):
     if rnd.random() < 0.3: text = mutate(text)
     add(run_io, {"kind": "io", "op": rnd.choice(["parse", "parse", "read"]), "fmt": "clusterbuster", "text": text})
 add(run_io, {"kind": "io", "op": "parse", "fmt": "clusterbuster", "text": ""})
+GEN = {"alignace": lambda: alignace_text(rnd.randint(1, 3)), "minimal": lambda: minimal_text(rnd.randint(1, 3)), "meme": lambda: meme_xml(rnd.randint(1, 3)), "mast": lambda: mast_xml(rnd.randint(1, 3), rnd.choice(["combine", "unstranded", "other"])),
+       "xms": lambda: xms_xml(rnd.randint(1, 3)), "pfm-four-columns": lambda: pfm_cols_text(rnd.randint(1, 3)), "pfm-four-rows": lambda: pfm_rows_text(rnd.randint(1, 3))}
+for fmt, gen in GEN.items():
+    for _ in range(120):
+        text = gen()
+        if rnd.random() < 0.3: text = mutate(text) if fmt not in ("meme", "mast", "xms") else text.replace(rnd.choice(["<", "=", "\"", "/>"]), rnd.choice(["", "<<", "x"]), 1)
+        add(run_io, {"kind": "io", "op": rnd.choice(["parse", "parse", "read"]), "fmt": fmt, "text": text})
+    add(run_io, {"kind": "io", "op": "parse", "fmt": fmt, "text": ""})
 for i in ("MA0001.1", "MA0001", "a.b.c", "", ".1", "x.", "A.B"):
     cases.append({"kind": "split_id", "id": i, "result": list(jaspar.split_jaspar_id(i))})
 add(run_io, {"kind": "io", "op": "parse", "fmt": "bogus", "text": ""})

@@ -261,7 +261,18 @@ if mc:
         if m in MOT: mark(f"Bio.motifs.Motif.{m}")
         elif m == "weblogo": mark("Bio.motifs.Motif.weblogo", "na")   # posts to a web service
     for f in ("create", "write"): mark(f"Bio.motifs.{f}")
-    mark("Bio.motifs.parse", "partial"); mark("Bio.motifs.read", "partial")   # meme, alignace, minimal, xms, mast and the four-column/row pfm formats are not ported
+    mark("Bio.motifs.parse"); mark("Bio.motifs.read")
+    for n in ("alignace", "meme", "minimal", "mast", "xms", "pfm"):
+        mod = f"Bio.motifs.{n}"
+        mark(f"{mod}.read")
+        for cls, members_ in inv[mod]["classes"].items():
+            for m in members_:
+                if m in ("__init__", "__getitem__", "__str__") or hasattr(list, m) and m != "__init__": mark(f"{mod}.{cls}.{m}", "na" if (hasattr(list, m) and m not in ("__init__", "__getitem__", "__str__")) or m == "__repr__" else "done")
+                elif m == "__repr__": mark(f"{mod}.{cls}.{m}", "na")
+    mark("Bio.motifs.pfm.write")
+    for m in inv["Bio.motifs.meme"]["classes"]["Motif"]:
+        if m in MOT: mark(f"Bio.motifs.meme.Motif.{m}")
+        elif m == "weblogo": mark("Bio.motifs.meme.Motif.weblogo", "na")
     for m in inv["Bio.motifs.jaspar"]["classes"]["Motif"]:
         if m in ("__init__", "__str__", "__eq__", "__hash__", "base_id", "version"): mark(f"Bio.motifs.jaspar.Motif.{m}")
     for m in inv["Bio.motifs.jaspar"]["classes"]["Record"]:

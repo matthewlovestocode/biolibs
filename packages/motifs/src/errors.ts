@@ -49,3 +49,8 @@ export function pow2(x: number): number {
   if (r === Infinity && Number.isFinite(x)) throw Object.assign(new Error("math range error"), { name: "OverflowError" });
   return r;
 }
+
+/** Python's `AssertionError` (a failed `assert`). */
+export class AssertionError extends Error {
+  override name = "AssertionError";
+}

@@ -27,6 +27,7 @@ BMT = importlib.import_module('Bio.motifs.thresholds')
 BMJ = importlib.import_module('Bio.motifs.jaspar')
 BMF = importlib.import_module('Bio.motifs.transfac')
 BMC = importlib.import_module('Bio.motifs.clusterbuster')
+BMX = {n: importlib.import_module('Bio.motifs.' + n) for n in ('alignace', 'meme', 'minimal', 'mast', 'xms', 'pfm')}
 RR = importlib.import_module('Bio.Restriction.Restriction')
 RPF = importlib.import_module('Bio.Restriction.PrintFormat')
 PPoly = importlib.import_module('Bio.PDB.Polypeptide')
@@ -114,6 +115,7 @@ inv = {
   "Bio.motifs.jaspar": {"functions": funcs(BMJ), "classes": {"Motif": members(BMJ.Motif), "Record": members(BMJ.Record)}},
   "Bio.motifs.transfac": {"functions": funcs(BMF), "classes": {"Motif": members(BMF.Motif), "Record": members(BMF.Record)}},
   "Bio.motifs.clusterbuster": {"functions": funcs(BMC), "classes": {"Record": members(BMC.Record)}},
+  **{f"Bio.motifs.{n}": {"functions": funcs(mod), "classes": {c: members(getattr(mod, c)) for c in ("Motif", "Record") if hasattr(mod, c) and getattr(mod, c).__module__ == mod.__name__}} for n, mod in BMX.items()},
   "Bio.PDB.vectors": {"functions": funcs(PVec), "classes": {"Vector": members(PVec.Vector)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
 }

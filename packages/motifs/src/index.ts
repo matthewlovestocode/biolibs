@@ -9,16 +9,23 @@
  * - `jaspar.ts`: JASPAR motifs, `pfm`/`sites`/`jaspar` readers and writers
  * - `transfac.ts`: TRANSFAC reader and writer
  * - `clusterbuster.ts`: Cluster-Buster reader and writer
+ * - `alignace.ts`, `meme.ts`, `minimal.ts`, `mast.ts`, `xms.ts`, `pfm.ts`: readers of the other formats (`xml.ts`, `convert.ts`: helpers)
  * - `errors.ts`, `format.ts`, `lines.ts`, `pyfloat.ts`, `slices.ts`: Python-compatibility helpers
  */
 
 import { Alignment } from "@biolibs/align";
 import { ValueError } from "@biolibs/core";
 import type { Seq } from "@biolibs/seq";
+import * as alignace from "./alignace.js";
 import * as clusterbuster from "./clusterbuster.js";
 import * as jaspar from "./jaspar.js";
+import * as mast from "./mast.js";
+import * as meme from "./meme.js";
+import * as minimal from "./minimal.js";
+import * as pfm from "./pfm.js";
 import { Motif, formatMotifs, writers } from "./motif.js";
 import * as transfac from "./transfac.js";
+import * as xms from "./xms.js";
 
 export * from "./errors.js";
 export * from "./format.js";
@@ -28,7 +35,7 @@ export * from "./slices.js";
 export * from "./matrix.js";
 export * from "./motif.js";
 export * from "./thresholds.js";
-export { clusterbuster, jaspar, transfac };
+export { alignace, clusterbuster, jaspar, mast, meme, minimal, pfm, transfac, xms };
 
 writers["pfm"] = (m) => jaspar.write(m, "pfm");
 writers["jaspar"] = (m) => jaspar.write(m, "jaspar");
@@ -49,16 +56,21 @@ export function create(instances: Seq[], alphabet = "ACGT"): Motif {
  * Parse motifs from text.
  *
  * @param text - The file contents.
- * @param fmt - `pfm`, `sites`, `jaspar`, `transfac` or `clusterbuster`.
+ * @param fmt - `pfm`, `sites`, `jaspar`, `transfac`, `clusterbuster`, `alignace`, `meme`, `minimal`, `xms`, `mast`, `pfm-four-columns` or `pfm-four-rows`.
  * @param strict - TRANSFAC only: apply the strict layout checks.
- * @throws ValueError for an unknown format; Error for formats not ported yet (alignace, meme, minimal, clusterbuster, pfm-four-columns/rows, xms, mast).
+ * @throws ValueError for an unknown format.
  */
 export function parse(text: string, fmt: string, strict = true): Motif[] {
   const f = fmt.toLowerCase();
   if (f === "transfac") return transfac.read(text, strict);
   if (f === "clusterbuster") return clusterbuster.read(text);
   if (f === "pfm" || f === "sites" || f === "jaspar") return jaspar.read(text, f);
-  if (["alignace", "meme", "minimal", "pfm-four-columns", "pfm-four-rows", "xms", "mast"].includes(f)) throw new Error(`Motif format '${f}' is not ported yet`);
+  if (f === "alignace") return alignace.read(text);
+  if (f === "meme") return meme.read(text);
+  if (f === "minimal") return minimal.read(text);
+  if (f === "xms") return xms.read(text);
+  if (f === "mast") return mast.read(text) as unknown as Motif[];
+  if (f === "pfm-four-columns" || f === "pfm-four-rows") return pfm.read(text, f);
   throw new ValueError(`Unknown format ${f}`);
 }
 
