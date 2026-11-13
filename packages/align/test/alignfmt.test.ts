@@ -10,16 +10,21 @@ type Spec = { ids: string[]; rows: string[]; colann?: Record<string, string> };
 interface Case { rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
 const cases: Case[] = JSON.parse(readFileSync(new URL("./golden/alignfmt.json", import.meta.url), "utf8"));
 
+const seqText = (q: any): unknown => {
+  if (q.defined === undefined || q.defined) return String(q);
+  return { len: q.length, defined: q.definedRanges.map(([a, b]: [number, number]) => [a, b, String(q.slice(a, b))]) };
+};
 const enc = (a: Alignment) => {
   const d: any = {
     ids: a.sequences.map((s) => (s instanceof SeqRecord ? s.id : null)),
     rows: Array.from({ length: a.size }, (_, i) => a.get(i)),
     coords: a.coordinates,
-    seqs: a.sequences.map((s) => String(s instanceof SeqRecord ? s.seq : s)),
+    seqs: a.sequences.map((s) => seqText(s instanceof SeqRecord ? s.seq : s)),
     names: a.sequences.map((s) => (s instanceof SeqRecord ? s.name : null)),
     descs: a.sequences.map((s) => (s instanceof SeqRecord ? s.description : null)),
     weights: a.sequences.map((s) => (s instanceof SeqRecord && s.annotations.has("weight") ? s.annotations.get("weight") : null)),
   };
+  if (a.annotations !== undefined && a.annotations.size > 0) d.ann = Object.fromEntries(a.annotations);
   if (a.columnAnnotations !== undefined) d.colann = Object.fromEntries(a.columnAnnotations);
   return d;
 };

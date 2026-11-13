@@ -1,7 +1,7 @@
 /** Helpers for the many kinds of sequence an `Alignment` can hold: strings, `Seq`, `MutableSeq`, `SeqRecord`, lists, bytes. */
 
 import { IndexError } from "@biolibs/core";
-import { MutableSeq, Seq, reverseComplement, sliceIndices } from "@biolibs/seq";
+import { MutableSeq, Seq, UndefinedSequenceError, reverseComplement, sliceIndices } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 
 /** Python `len(sequence)`. @throws TypeError for objects without a length. */
@@ -31,6 +31,30 @@ export function reverseComplementOf(sequence: unknown): unknown {
   throw new TypeError(`'${sequence === null ? "NoneType" : typeof sequence}' object has no attribute 'encode'`);
 }
 
+/** Placeholder for positions of a partially defined sequence that have no content; reading one raises `UndefinedSequenceError`. */
+const UNDEFINED = "\u0000";
+
+/**
+ * The text of a partially defined `Seq` with {@link UNDEFINED} where there is no content, so that the position-based
+ * slicing the alignment code does only fails (as Biopython's does) when it touches an undefined position.
+ */
+function partialText(seq: Seq): string {
+  const parts: string[] = [];
+  let at = 0;
+  for (const [a, b] of seq.definedRanges) {
+    parts.push(UNDEFINED.repeat(a - at), String(seq.slice(a, b)));
+    at = b;
+  }
+  parts.push(UNDEFINED.repeat(seq.length - at));
+  return parts.join("");
+}
+
+/** Raise Biopython's error if text read from a partially defined sequence includes undefined positions. */
+function checkDefined(text: string): string {
+  if (text.includes(UNDEFINED)) throw new UndefinedSequenceError("Sequence content is only partially defined");
+  return text;
+}
+
 /** A sequence reduced to what the indexing code needs: its text, or its items. */
 export type Items = { text: string } | { list: unknown[] };
 
@@ -38,7 +62,7 @@ export type Items = { text: string } | { list: unknown[] };
 export function itemsOf(sequence: unknown): Items {
   const s = unwrap(sequence);
   if (typeof s === "string") return { text: s };
-  if (s instanceof Seq) return { text: s.toString() };
+  if (s instanceof Seq) return { text: s.defined ? s.toString() : partialText(s) };
   if (s instanceof MutableSeq) return { list: Array.from(s.toString()) };
   if (s instanceof Uint8Array) return { list: Array.from(s) };
   if (Array.isArray(s)) return { list: s };
@@ -49,7 +73,7 @@ export function itemsOf(sequence: unknown): Items {
 export function sliceText(text: string, a: number, b: number): string {
   const cps = Array.from(text);
   const [start, stop] = sliceIndices({ start: a, stop: b }, cps.length);
-  return start < stop ? cps.slice(start, stop).join("") : "";
+  return start < stop ? checkDefined(cps.slice(start, stop).join("")) : "";
 }
 
 /** Python `s[a:b]` on a list. */
@@ -64,7 +88,7 @@ export function itemAt(items: Items, i: number): unknown {
     const cps = Array.from(items.text);
     const k = i < 0 ? i + cps.length : i;
     if (k < 0 || k >= cps.length) throw new IndexError("string index out of range");
-    return cps[k];
+    return checkDefined(cps[k]!);
   }
   const k = i < 0 ? i + items.list.length : i;
   if (k < 0 || k >= items.list.length) throw new IndexError("list index out of range");

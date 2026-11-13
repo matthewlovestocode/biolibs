@@ -21,10 +21,17 @@ def emsg(e):
     if type(e).__name__ == "AttributeError": return None
     return str(e.args[0]) if isinstance(e, KeyError) and e.args else str(e)
 
+def seq_text(s):
+    """str(seq), or for a partially defined sequence its length and the text of each defined range."""
+    q = getattr(s, "seq", s)
+    if getattr(q, "defined", True): return str(q)
+    return {"len": len(q), "defined": [[a, b, str(q[a:b])] for a, b in q.defined_ranges]}
+
 def enc_aln(a):
     rows = [str(s) for s in a]
     d = {"ids": [getattr(s, "id", None) for s in a.sequences], "rows": rows, "coords": a.coordinates.tolist(),
-         "seqs": [str(getattr(s, "seq", s)) for s in a.sequences]}
+         "seqs": [seq_text(s) for s in a.sequences]}
+    if getattr(a, "annotations", None): d["ann"] = {k: v for k, v in a.annotations.items()}
     d["names"] = [getattr(s, "name", None) for s in a.sequences]
     d["descs"] = [getattr(s, "description", None) for s in a.sequences]
     d["weights"] = [getattr(s, "annotations", {}).get("weight") for s in a.sequences]
@@ -98,7 +105,11 @@ def run_isolated(case):
 cases = []
 def add(c):
     res = run_isolated(c)
-    if res is not None: cases.append(dict(c, **res))
+    if res is None: return
+    # Rows of unequal length make Biopython's printed-alignment parser return coordinates that depend on uninitialised memory
+    for a in res.get("result", {}).get("alns", []) if isinstance(res.get("result"), dict) else []:
+        if len({len(r) for r in a["rows"]}) > 1: return
+    cases.append(dict(c, **res))
 
 FASTA = ">a desc\nAC-GT\n>b\nACGGT\n"
 FASTA2 = ">a\nAC-GT\n>b\nACGGT\n\n>c\nAAA\n>d\nAAA\n".replace("\n\n", "\n")
@@ -174,6 +185,72 @@ for fmt in ["fasta", "a2m", "clustal", "phylip", "FASTA", "bigbed", "nosuch", "e
         add({"kind": "write", "fmt": fmt, "alns": [a]})
     add({"kind": "write", "fmt": fmt, "alns": ALNS[:2]})
     add({"kind": "write", "fmt": fmt, "alns": []})
+
+# ---- EMBOSS ----
+import random
+rnd = random.Random(5)
+RULE = "#" * 40
+def emboss_header(fmt="srspair", extra=True):
+    L = [RULE, "# Program: needle", "# Rundate: Sun 27 Apr 2008 17:09:12", "# Commandline: needle", "#    -asequence a.fa", "#    -bsequence b.fa"]
+    if fmt: L.append(f"# Align_format: {fmt}")
+    L += ["# Report_file: stdout", RULE, ""]
+    return L
+
+def emboss_alignment(ids, rows, starts, strands, fmt="srspair", brief=True, matrix="EBLOSUM62"):
+    """rows: gapped rows; starts: 1-based first residue of each sequence in the alignment; strands: +1/-1."""
+    n, ncols = len(rows), len(rows[0])
+    L = ["#" + "=" * 39, "#", f"# Aligned_sequences: {n}"] + [f"# {i + 1}: {ids[i]}" for i in range(n)]
+    L += [f"# Matrix: {matrix}", "# Gap_penalty: 10.0", "# Extend_penalty: 0.5", "#", f"# Length: {ncols}",
+          "# Identity:      %d/%d (75.6%%)" % (3, ncols), "# Similarity:     3/%d (75.6%%)" % ncols, "# Gaps:          1/%d (18.3%%)" % ncols, "# Score: 412.5"]
+    if not brief: L += ["# Longest_Identity = 40/50 (80.0%)", "# Shortest_Identity = 40/50 (80.0%)"]
+    L += ["# ", "#", "#" + "=" * 39, ""]
+    pos = [st for st in starts]   # next residue number (1-based) per sequence
+    last = [None] * n
+    for c in range(0, ncols, 50):
+        cons = ""
+        for k in range(n):
+            chunk = rows[k][c:c + 50]
+            cnt = len(chunk.replace("-", ""))
+            if strands[k] > 0:
+                if cnt: a, b = pos[k], pos[k] + cnt - 1; pos[k] += cnt; last[k] = b
+                elif fmt == "srspair": a = b = (last[k] if last[k] is not None else pos[k] - 1)
+                else: a, b = pos[k], pos[k] - 1
+            else:
+                if cnt: a, b = pos[k], pos[k] - cnt + 1; pos[k] -= cnt; last[k] = b
+                elif fmt == "srspair": a = (last[k] if last[k] is not None else pos[k] + 1) + 1; b = a
+                else: a, b = pos[k], pos[k] + 1
+            L.append("%-13s%7d %s %6d" % (ids[k][:13], a, chunk, b))
+            if k == 0 and n == 2: cons = "".join("|" if x == y and x != "-" else " " for x, y in zip(rows[0][c:c + 50], rows[1][c:c + 50]))
+            if k == 0 and n == 2: L.append(" " * 21 + cons)
+        L.append("")
+    L += ["", "#---------------------------------------", "#---------------------------------------"]
+    return L
+
+E_BASES = []
+for fmt in ("srspair", "pair", "simple", None):
+    for strands in ((1, 1), (1, -1)):
+        txt = "\n".join(emboss_header(fmt) + emboss_alignment(["IXI_234", "IXI_235"], ["ACGT-ACGTTT" * 6, "ACGTTAC-TTTA" * 5 + "AAAAAA"], [1, 7] if strands[1] > 0 else [1, 70], strands, fmt or "srspair") + emboss_alignment(["a", "b"], ["AAAA", "AA-A"], [3, 3], (1, 1), fmt or "srspair", brief=False)) + "\n"
+        E_BASES.append(txt)
+E_BASES.append("\n".join(emboss_header("srspair") + emboss_alignment(["a", "b"], ["AC------", "--GTTTGG"], [1, 1], (1, 1))) + "\n")
+E_BASES.append("\n".join(emboss_header("pair") + emboss_alignment(["a", "b"], ["AC------", "--GTTTGG"], [1, 1], (1, 1), "pair")) + "\n")
+E_BASES.append("\n".join(emboss_header("srspair") + emboss_alignment(["a", "b", "c"], ["ACGT", "AC-T", "A-GT"], [1, 1, 1], (1, 1, 1))) + "\n")
+E_BASES.append("\n".join(emboss_header("srspair")) + "\n")
+for t in E_BASES:
+    add({"kind": "parse", "fmt": "emboss", "text": t})
+    add({"kind": "read", "fmt": "emboss", "text": t})
+    lines = t.split("\n")
+    for _ in range(40):
+        m = list(lines); r = rnd.random()
+        i = rnd.randrange(len(m))
+        if r < 0.3: del m[i]
+        elif r < 0.5: m[i] = m[i][:rnd.randrange(len(m[i]) + 1)]
+        elif r < 0.7 and m[i]:
+            j = rnd.randrange(len(m[i])); m[i] = m[i][:j] + rnd.choice("X-5 :#=|") + m[i][j + 1:]
+        elif r < 0.85: m.insert(i, rnd.choice(["", "#", "# x", "junk", "# Length: 3"]))
+        else: m = m[:i]
+        add({"kind": "parse", "fmt": "emboss", "text": "\n".join(m)})
+for t in ["", "x\n", RULE + "\n", RULE + "\n# Program\n", RULE + "\n# Program: x\n" + RULE + "\n"]:
+    add({"kind": "parse", "fmt": "emboss", "text": t})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0)

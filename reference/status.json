@@ -152,6 +152,7 @@
  "Bio.Align.parse": "done",
  "Bio.Align.parse:a2m": "done",
  "Bio.Align.parse:clustal": "done",
+ "Bio.Align.parse:emboss": "done",
  "Bio.Align.parse:fasta": "done",
  "Bio.Align.parse:msf": "done",
  "Bio.Align.parse:phylip": "done",
