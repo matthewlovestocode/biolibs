@@ -11,6 +11,13 @@ import { pyFormatFixed } from "@biolibs/core";
 /** How internal coordinates read a structure; Biopython's `IC_Residue` class attributes. */
 export const icSettings = {
   /**
+   * Override the serial number written by {@link IC_Residue.pdbResidueString}, incrementing as it goes;
+   * null leaves each atom's own. Biopython keeps this on the class, so setting it changes every residue.
+   */
+  atomSernum: null as number | null,
+  /** Override the chain id those records carry; null leaves the atom's own chain. */
+  atomChain: null as string | null,
+  /**
    * Ignore alternative locations: keep only the selected atom of a disordered one, and leave the altloc and
    * occupancy fields of its {@link AtomKey} empty. Biopython's `IC_Residue.no_altloc`.
    */

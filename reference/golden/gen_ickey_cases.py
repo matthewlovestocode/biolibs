@@ -756,9 +756,158 @@ for text in GEOM[:3]:
     for what in ("lengths", "bits", "hash"):
         cases.append({"kind": "edra_access", "text": text, "what": what})
 
+
+# ---------------- IC_Residue's angle and length accessors ----------------
+# `pick_angle` is the keystone: every one of `get_angle`, `set_angle`, `bond_rotate` and `bond_set` goes
+# through it, and its key grammar is five different things (a tuple, an atom-name string, a relative-position
+# string, a named backbone angle, a chiN). Where an angle lives matters too: a residue's phi and omega, and
+# the hedra under them, are kept on the *previous* residue, so picking them has to look there.
+ANGLE_KEYS = ["psi", "phi", "omg", "omega", "tau", "chi1", "chi2", "chi3", "chi4", "chi5",
+              "N:CA:C", "N:CA:C:1N", "-1C:N:CA:C", "-1CA:-1C:N:CA", "0N:0CA:0C", "CA:CB:CG:CD",
+              "N:CA:CB", "1N:1CA", "-1C:N", "nonsense", "chi9", "chi", "N:CA:C:1N:1CA"]
+LENGTH_KEYS = ["N:CA", "CA:C", "C:O", "CA:CB", "0C:1N", "-1C:N", "N:CA:C", "nonsense", "N"]
+
+def run_residue_access(case):
+    import io, warnings as w2
+    from Bio.PDB import PDBParser
+    from Bio.PDB.internal_coords import IC_Residue, AtomKey
+    import numpy as np
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+            s.atom_to_internal_coordinates()
+        chain = next(s.get_chains())
+        cic = chain.internal_coord
+        rics = cic.ordered_aa_ic_list
+        if not rics: return {"empty": True}
+        what = case["what"]
+        out = {}
+        if what == "pick":
+            rows = []
+            for ric in rics[:3]:
+                row = {"res": ric.pretty_str(), "pick": [], "get": []}
+                for k in ANGLE_KEYS:
+                    row["pick"].append(attempt(lambda ric=ric, k=k: (lambda e: None if e is None else e.id)(
+                        ric.pick_angle(k))))
+                    row["get"].append(attempt(lambda ric=ric, k=k: (lambda v: None if v is None else enc6(v))(
+                        ric.get_angle(k))))
+                # a tuple of AtomKeys, which is the only way to reach a disordered angle
+                aks = tuple(sorted(ric.ak_set))[:4]
+                for n in (3, 4, 2):
+                    row["pick"].append(attempt(lambda ric=ric, t=tuple(aks[:n]): (
+                        lambda e: None if e is None else e.id)(ric.pick_angle(t))))
+                rows.append(row)
+            out["residues"] = rows
+        if what == "set":
+            rows = []
+            for ric in rics[:3]:
+                row = {"res": ric.pretty_str()}
+                for k, overlap in (("chi1", True), ("chi1", False), ("psi", True), ("psi", False),
+                                   ("tau", True), ("phi", True), ("nonsense", True)):
+                    # Each set runs on a chain of its own so the changes cannot pile up.
+                    with w2.catch_warnings():
+                        w2.simplefilter("ignore")
+                        s2 = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("y", io.StringIO(case["text"]))
+                        s2.atom_to_internal_coordinates()
+                    c2 = next(s2.get_chains()).internal_coord
+                    r2 = c2.ordered_aa_ic_list[rics.index(ric)]
+                    before = {d.id: enc6(d.angle) for d in sorted(c2.dihedra.values(), key=lambda d: d.id)}
+                    err = attempt(lambda r2=r2, k=k, overlap=overlap: r2.set_angle(k, 42.5, overlap=overlap))
+                    after = {d.id: enc6(d.angle) for d in sorted(c2.dihedra.values(), key=lambda d: d.id)}
+                    row[f"{k}-{overlap}"] = {"exc": err.get("exc"),
+                                             "changed": {kk: [before[kk], after[kk]]
+                                                         for kk in before if before[kk] != after[kk]}}
+                rows.append(row)
+            out["residues"] = rows
+        if what == "rotate":
+            rows = []
+            for ric in rics[:3]:
+                row = {"res": ric.pretty_str()}
+                for fn, k, v in (("bond_rotate", "chi1", 15.0), ("bond_rotate", "psi", -30.0),
+                                 ("bond_set", "chi1", 60.0), ("bond_set", "psi", 170.0),
+                                 ("bond_rotate", "nonsense", 10.0), ("bond_rotate", "tau", 5.0)):
+                    with w2.catch_warnings():
+                        w2.simplefilter("ignore")
+                        s2 = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("y", io.StringIO(case["text"]))
+                        s2.atom_to_internal_coordinates()
+                    c2 = next(s2.get_chains()).internal_coord
+                    r2 = c2.ordered_aa_ic_list[rics.index(ric)]
+                    before = {d.id: enc6(d.angle) for d in sorted(c2.dihedra.values(), key=lambda d: d.id)}
+                    err = attempt(lambda r2=r2, fn=fn, k=k, v=v: getattr(r2, fn)(k, v))
+                    after = {d.id: enc6(d.angle) for d in sorted(c2.dihedra.values(), key=lambda d: d.id)}
+                    row[f"{fn}-{k}"] = {"exc": err.get("exc"),
+                                        "changed": {kk: [before[kk], after[kk]]
+                                                    for kk in before if before[kk] != after[kk]}}
+                rows.append(row)
+            out["residues"] = rows
+        if what == "lengths":
+            rows = []
+            for ric in rics[:3]:
+                row = {"res": ric.pretty_str(), "pick": [], "get": []}
+                for k in LENGTH_KEYS:
+                    row["pick"].append(attempt(lambda ric=ric, k=k: (lambda r: (
+                        None if r[0] is None else sorted(h.id for h in r[0]),
+                        None if r[1] is None else [a.id for a in r[1]]))(ric.pick_length(k))))
+                    row["get"].append(attempt(lambda ric=ric, k=k: (lambda v: None if v is None else enc6(v))(
+                        ric.get_length(k))))
+                # set_length, then read it back through get_length
+                row["set"] = []
+                for k in ("N:CA", "CA:C", "0C:1N", "nonsense"):
+                    with w2.catch_warnings():
+                        w2.simplefilter("ignore")
+                        s2 = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("y", io.StringIO(case["text"]))
+                        s2.atom_to_internal_coordinates()
+                    c2 = next(s2.get_chains()).internal_coord
+                    r2 = c2.ordered_aa_ic_list[rics.index(ric)]
+                    err = attempt(lambda r2=r2, k=k: r2.set_length(k, 1.6))
+                    row["set"].append({"key": k, "exc": err.get("exc"),
+                                       "back": attempt(lambda r2=r2, k=k: (lambda v: None if v is None
+                                                                           else enc6(v))(r2.get_length(k)))})
+                rows.append(row)
+            out["residues"] = rows
+        if what == "misc":
+            ric = rics[0]
+            # applyMtx over a known transform: a scale, which shows up in every coordinate of that residue.
+            mtx = np.array([[2.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0],
+                            [0.0, 0.0, 0.0, 1.0]])
+            before = [[enc6(x) for x in cic.atomArray[cic.atomArrayIndex[ak]]] for ak in sorted(ric.ak_set)]
+            out["applyMtx"] = {"exc": attempt(lambda: ric.applyMtx(mtx)).get("exc"), "before": before,
+                               "after": [[enc6(x) for x in cic.atomArray[cic.atomArrayIndex[ak]]]
+                                         for ak in sorted(ric.ak_set)]}
+            out["clear_transforms"] = {
+                "before": [bool(x) for x in cic.dcsValid],
+                "exc": attempt(lambda: rics[0].clear_transforms()).get("exc"),
+                "after": [bool(x) for x in cic.dcsValid]}
+            # The OpenSCAD markers, which are plain attributes the writer reads later.
+            for fn, flags in (("set_flexible", ("flex_female_1", "flex_female_2", "flex_male_1",
+                                                "flex_male_2", "skinny_1")),
+                              ("set_hbond", ("hbond_1", "hbond_2"))):
+                for r2 in rics: getattr(r2, fn)()
+                out[fn] = sorted(
+                    [h.id] + [f for f in flags if getattr(h, f, False)]
+                    for h in cic.hedra.values() if any(getattr(h, f, False) for f in flags))
+            out["pdb_residue_string"] = [attempt(lambda r2=r2: r2.pdb_residue_string()) for r2 in rics[:3]]
+            # with the class-level overrides set, which change the serial number and the chain id
+            IC_Residue.atom_sernum, IC_Residue.atom_chain = 500, "Z"
+            out["pdb_residue_string_override"] = attempt(lambda: rics[0].pdb_residue_string())
+            IC_Residue.atom_sernum, IC_Residue.atom_chain = None, None
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+# Jittered fixtures only. `protein_pdb`'s invented coordinates put whole runs of atoms on a line, and a
+# dihedral through three collinear atoms is undefined: both libraries then read it off a cross product that
+# is zero to within rounding, so numpy lands on exactly 0.0 and this port on atan2 of two values near 1e-15
+# -- which is 56 degrees. Nothing to reconcile there, so the cases use geometry that is not degenerate.
+for text in [GEOM[1], GEOM[2], GEOM[0], jitter(protein_pdb("CMPTY"))]:
+    for what in ("pick", "set", "rotate", "lengths", "misc"):
+        cases.append({"kind": "residue_access", "text": text, "what": what})
+
 RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair,
            "residue": run_residue, "edra_build": run_edra_build, "split": run_split, "a2ic": run_a2ic, "i2a": run_i2a, "i2a_unset": run_i2a_unset, "i2a_ser": run_i2a_ser, "assemble": run_assemble,
-           "accuracy": run_accuracy, "angle_stat": run_angle_stat, "edra_access": run_edra_access}
+           "accuracy": run_accuracy, "angle_stat": run_angle_stat, "edra_access": run_edra_access, "residue_access": run_residue_access}
 kept = []
 for c in cases:
     res = run_isolated(RUNNERS[c["kind"]], c)

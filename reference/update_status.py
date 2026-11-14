@@ -300,6 +300,20 @@ if "bits" in access:
 if "hash" in access:
     for name in ("Edron", "Hedron", "Dihedron"): mark(f"{IC}.{name}.__hash__")
 
+# IC_Residue's angle and length accessors, its transforms and its PDB records, each marked by the
+# `residue_access` case that compares its own answer.
+racc = {c["what"] for c in ick if c["kind"] == "residue_access"}
+if "pick" in racc:
+    for n in ("pick_angle", "get_angle"): mark(f"{IC}.IC_Residue.{n}")
+if "set" in racc: mark(f"{IC}.IC_Residue.set_angle")
+if "rotate" in racc:
+    for n in ("bond_rotate", "bond_set"): mark(f"{IC}.IC_Residue.{n}")
+if "lengths" in racc:
+    for n in ("pick_length", "get_length", "set_length"): mark(f"{IC}.IC_Residue.{n}")
+if "misc" in racc:
+    for n in ("applyMtx", "clear_transforms", "set_flexible", "set_hbond", "pdb_residue_string"):
+        mark(f"{IC}.IC_Residue.{n}")
+
 # `HedronMatchError` and `MissingAtomError` are bare `class X(Exception): pass`, so every member they
 # report is BaseException machinery rather than Biopython API -- the same rule applied to
 # `Bio.Seq.UndefinedSequenceError` above.

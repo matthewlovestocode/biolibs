@@ -19,6 +19,36 @@ import { AtomKey, FIELDS } from "./atom-key.js";
 import type { Matrix } from "../vectors.js";
 
 /**
+ * What setting an angle invalidates on the chain, beyond the value arrays themselves.
+ *
+ * Kept separate from {@link EdronArrays} because a hedron can read its values from a chain that has not built
+ * these yet, and Biopython's setters reach them through `self.cic` and let the `AttributeError` fall where it
+ * may.
+ */
+export interface EdronInvalidation {
+  /** Per-hedron flag: its atoms need recomputing. */
+  hAtomsNeedsUpdate?: Uint8Array;
+  /** Per-dihedron flag, likewise. */
+  dAtomsNeedsUpdate?: Uint8Array;
+  /** Per-dihedron angle in radians, kept alongside the degrees. */
+  dihedraAngleRads?: ArrayLike<number>;
+  /** Per-atom validity, indexed through {@link EdronInvalidation.atomArrayIndex}. */
+  atomArrayValid?: Uint8Array;
+  /** Row of each atom key in the chain's atom array, by the key's hash. */
+  atomArrayIndex?: Map<string, number>;
+}
+
+/**
+ * Mark one atom's coordinates stale, which is what changing an angle does to the atom it places.
+ *
+ * @param cic - The chain, which may not have built its arrays yet. @param ak - The atom to invalidate.
+ */
+function invalidateAtom(cic: EdronInvalidation | undefined, ak: AtomKey): void {
+  const ndx = cic?.atomArrayIndex?.get(ak.hashKey);
+  if (ndx !== undefined && cic?.atomArrayValid !== undefined) cic.atomArrayValid[ndx] = 0;
+}
+
+/**
  * Python's `%` on two floats, which keeps the sign of the divisor where JavaScript's keeps the dividend.
  *
  * {@link Dihedron.angleDif} depends on this: `(180 - a2 + a1) % 360` has to land in [0, 360) for a negative
@@ -252,6 +282,19 @@ export class Hedron extends Edron {
   readonly xrhClass?: string;
 
   /**
+   * The OpenSCAD markers {@link IC_Residue.setFlexible} and {@link IC_Residue.setHbond} set, which
+   * `Bio.PDB.SCADIO` reads when it emits a printable model: which bonds are flexible joints, which are
+   * hydrogen bonds (magnets, in the model), and which hedron has to be printed thin to clear a joint.
+   */
+  flexFemale1 = false;
+  /** @see {@link Hedron.flexFemale1} */ flexFemale2 = false;
+  /** @see {@link Hedron.flexFemale1} */ flexMale1 = false;
+  /** @see {@link Hedron.flexFemale1} */ flexMale2 = false;
+  /** @see {@link Hedron.flexFemale1} */ skinny1 = false;
+  /** @see {@link Hedron.flexFemale1} */ hbond1 = false;
+  /** @see {@link Hedron.flexFemale1} */ hbond2 = false;
+
+  /**
    * @param args - As {@link Edron}.
    * @param named - As {@link Edron}; Biopython also accepts `len12`, `angle` and `len23` here, which it stores on
    *   the chain rather than the hedron, so they are not accepted until that part of the port lands.
@@ -275,6 +318,22 @@ export class Hedron extends Edron {
 
   /** The angle in degrees, from the chain that holds it; 0 while there is none. */
   get angle(): number { return this.cic?.hedraAngle === undefined ? 0 : this.cic.hedraAngle[this.ndx]!; }
+
+  /**
+   * Set the angle in degrees, invalidating what depends on it.
+   *
+   * The third atom's position is computed from this angle, so it stops being valid; the chain's `hAtoms` for
+   * this hedron have to be recomputed too.
+   *
+   * @param angleDeg - The new angle.
+   */
+  set angle(angleDeg: number) {
+    const cic = this.cic as (EdronArrays & EdronInvalidation) | undefined;
+    if (cic?.hedraAngle !== undefined) (cic.hedraAngle as unknown as number[])[this.ndx] = angleDeg;
+    if (cic?.hAtomsNeedsUpdate !== undefined) cic.hAtomsNeedsUpdate[this.ndx] = 1;
+    invalidateAtom(cic, this.atomkeys[2]!);
+    this.needsUpdate = true;
+  }
   /** The length between the first and second atoms; 0 while no chain holds it. */
   get len12(): number { return this.cic?.hedraL12 === undefined ? 0 : this.cic.hedraL12[this.ndx]!; }
   /** The length between the second and third atoms; 0 while no chain holds it. */
@@ -381,6 +440,27 @@ export class Dihedron extends Edron {
   get angle(): number {
     if (this.cic?.dihedraAngle !== undefined) return this.cic.dihedraAngle[this.ndx]!;
     return this.dihedralValue ?? 360;
+  }
+
+  /**
+   * Set the dihedral angle in degrees, wrapped into ±180 and invalidating what depends on it.
+   *
+   * The wrap is a single ±360 step rather than a modulus, which is Biopython's: a value more than 540° out
+   * stays out, and that is the behaviour a port has to keep.
+   *
+   * @param dangleDegIn - The new angle.
+   */
+  set angle(dangleDegIn: number) {
+    const dangleDeg = dangleDegIn > 180 ? dangleDegIn - 360 : dangleDegIn < -180 ? dangleDegIn + 360 : dangleDegIn;
+    this.dihedralValue = dangleDeg;
+    this.needsUpdate = true;
+    const cic = this.cic as (EdronArrays & EdronInvalidation) | undefined;
+    if (cic?.dihedraAngle !== undefined) (cic.dihedraAngle as unknown as number[])[this.ndx] = dangleDeg;
+    if (cic?.dihedraAngleRads !== undefined) {
+      (cic.dihedraAngleRads as unknown as number[])[this.ndx] = (dangleDeg * Math.PI) / 180;
+    }
+    if (cic?.dAtomsNeedsUpdate !== undefined) cic.dAtomsNeedsUpdate[this.ndx] = 1;
+    invalidateAtom(cic, this.atomkeys[3]!);
   }
 
   /**

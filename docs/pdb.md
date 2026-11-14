@@ -4,8 +4,8 @@ A TypeScript port of Biopython's `Bio.PDB`: the structure hierarchy, the PDB and
 PQR and mmCIF writers, the vector and rotation geometry of `Bio.PDB.vectors`, polypeptides, neighbour
 search, surface area, superimposition and internal coordinates.
 
-**482 of 502 applicable items** across twenty-one modules are verified against Biopython 1.88, on
-**18,641 recorded cases** in ten golden files (58 MB):
+**495 of 502 applicable items** across twenty-one modules are verified against Biopython 1.88, on
+**18,661 recorded cases** in ten golden files (58 MB):
 
 | Golden file | Cases | Generator |
 |---|---|---|
@@ -16,12 +16,12 @@ search, surface area, superimposition and internal coordinates.
 | `nsearch.json` | 1,713 | `gen_nsearch_cases.py` |
 | `mmcif.json` | 1,430 | `gen_mmcif_cases.py` |
 | `pdbops.json` | 1,401 | `gen_pdbops_cases.py` |
-| `ickey.json` | 1,283 | `gen_ickey_cases.py` |
+| `ickey.json` | 1,303 | `gen_ickey_cases.py` |
 | `sasa.json` | 505 | `gen_sasa_cases.py` |
 | `superimposer.json` | 388 | `gen_svd_cases.py` |
 
-Every module but one is finished. `Bio.PDB.internal_coords` stands at **83 of 103** applicable items, on
-1,283 of those cases; the 20 outstanding are listed in
+Every module but one is finished. `Bio.PDB.internal_coords` stands at **96 of 103** applicable items, on
+1,303 of those cases; the 7 outstanding are listed in
 [docs/parity/Bio.PDB.internal_coords.md](parity/Bio.PDB.internal_coords.md) and summarised in the
 section below.
 
@@ -95,7 +95,7 @@ Python operators become methods: `+` `add`, `-` `sub`, `*` `dot`, `**` `cross` (
 ## Internal coordinates (`internal-coords/`)
 
 A protein described by bond lengths, bond angles and dihedral angles rather than by Cartesian coordinates
-(Biopython's `Bio.PDB.internal_coords`), **83 of 103 items** verified on 1,283 cases — **both**
+(Biopython's `Bio.PDB.internal_coords`), **96 of 103 items** verified on 1,303 cases — **both**
 directions:
 `chain.atomToInternalCoordinates()` measures the angles from the atoms and
 `chain.internalToAtomCoordinates()` puts the atoms back, exactly where they were. What is **not** ported

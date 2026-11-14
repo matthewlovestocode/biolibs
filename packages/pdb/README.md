@@ -26,23 +26,20 @@ message, the warnings, and the state of the structure afterwards. The tests repl
 | `Bio.PDB.Entity` | **54 / 54** | | `Bio.PDB.StructureBuilder` | **14 / 14** |
 | `Bio.PDB.Structure` | **35 / 35** | | `Bio.PDB.PDBIO` | **11 / 11** |
 | `Bio.PDB.Chain` | **34 / 34** | | `Bio.PDB.kdtrees` | **8 / 8** |
-| `Bio.PDB.Model` | **34 / 34** | | `Bio.PDB.internal_coords` | **83 / 103** |
+| `Bio.PDB.Model` | **34 / 34** | | `Bio.PDB.internal_coords` | **96 / 103** |
 | the other six modules | **27 / 27** | | | |
 
-**482 of 502 applicable items**, verified by **18,504 recorded cases** across ten golden files (58 MB).
+**495 of 502 applicable items**, verified by **18,661 recorded cases** across ten golden files (58 MB).
 The full breakdown is in [docs/parity/](../../docs/parity/README.md).
 
 Where the claim stops:
 
-- **Internal coordinates are the one module not finished**: 83 of its 103 applicable items are verified
-  by 1,283 recorded cases, and 20 are outstanding. The port covers `AtomKey`,
+- **Internal coordinates are the one module not finished**: 96 of its 103 applicable items are verified
+  by 1,303 recorded cases, and 7 are outstanding. The port covers `AtomKey`,
   `Edron`/`Hedron`/`Dihedron` with their angles and lengths, `IC_Residue`'s keys and splitting, and both
-  directions of conversion on `IC_Chain`. Outstanding, in two groups: `IC_Residue`'s per-angle and
-  per-length accessors (`get_angle`, `set_angle`, `pick_angle`, `pick_length`, `get_length`,
-  `set_length`) with its transform and bond methods (`applyMtx`, `bond_rotate`, `bond_set`,
-  `clear_transforms`, `set_flexible`, `set_hbond`, `pdb_residue_string`); and `IC_Chain`'s
-  distance-plot work (`distance_plot`, `distance_to_internal_coordinates`, `distplot_to_dh_arrays`)
-  with `clear_ic`, `copy_initNCaCs`, `dihedral_signs` and `make_extended`. `ic_rebuild` with its PIC
+  directions of conversion on `IC_Chain`. Outstanding: `IC_Chain`'s distance-plot work
+  (`distance_plot`, `distance_to_internal_coordinates`, `distplot_to_dh_arrays`) and four housekeeping
+  methods (`clear_ic`, `copy_initNCaCs`, `dihedral_signs`, `make_extended`). `ic_rebuild` with its PIC
   file format (`read_PIC`, `write_PIC`, `structure_rebuild_test`) is a separate module and not ported
   at all.
 - **`index_db`-style extras are out of scope**: `DSSP` and `NACCESS` run external programs,
@@ -356,7 +353,7 @@ npm test                 # the whole workspace
 npx vitest run packages/pdb/test
 ```
 
-Ten golden files, 58 MB, 18,641 cases. Each test file is a single `it` that replays one of them:
+Ten golden files, 58 MB, 18,661 cases. Each test file is a single `it` that replays one of them:
 
 | File | Cases | What it checks |
 |---|---|---|
@@ -367,7 +364,7 @@ Ten golden files, 58 MB, 18,641 cases. Each test file is a single `it` that repl
 | `test/nsearch.test.ts` | 1,713 | `NeighborSearch` and the `KDTree` under it |
 | `test/mmcif.test.ts` | 1,430 | `MMCIF2Dict`, `MMCIFParser`, `FastMMCIFParser` |
 | `test/pdbops.test.ts` | 1,401 | entity operations: add, detach, copy, compare, disorder |
-| `test/ickey.test.ts` | 1,283 | internal coordinates: `AtomKey`, the edra, measuring and assembling |
+| `test/ickey.test.ts` | 1,303 | internal coordinates: `AtomKey`, the edra, measuring and assembling |
 | `test/sasa.test.ts` | 505 | `ShrakeRupley` at every level |
 | `test/superimposer.test.ts` | 388 | `Superimposer` and the SVD under it |
 | `test/readme.test.ts` | — | every code block in this file |

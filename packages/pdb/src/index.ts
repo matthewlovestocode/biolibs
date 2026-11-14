@@ -1,15 +1,15 @@
 /**
  * @packageDocumentation
- * `@biolibs/pdb`: a TypeScript port of Biopython's `Bio.PDB` — **482 of 502** applicable items across
- * twenty-one modules, verified against Biopython 1.88 by 18,641 recorded cases (58 MB of golden files,
+ * `@biolibs/pdb`: a TypeScript port of Biopython's `Bio.PDB` — **495 of 502** applicable items across
+ * twenty-one modules, verified against Biopython 1.88 by 18,661 recorded cases (58 MB of golden files,
  * the largest corpus in this repository).
  *
  * The parsers take a file's *text*, not its name, and `PDBIO.save()` returns the text rather than writing
  * a file: there is no file-system access here.
  *
- * `Bio.PDB.internal_coords` is the one module not finished: 83 of its 103 applicable items are verified
- * by 1,283 of those cases. The 20 outstanding are `IC_Residue`'s per-angle and per-length accessors with
- * its transform and bond methods, and `IC_Chain`'s distance-plot functions.
+ * `Bio.PDB.internal_coords` is the one module not finished: 96 of its 103 applicable items are verified
+ * by 1,303 of those cases. The 7 outstanding are `IC_Chain`'s distance-plot work and four of its
+ * housekeeping methods.
  *
  * Not ported at all: `ic_rebuild` and the PIC format, `PICIO`, `SCADIO`, `HSExposure`, `ResidueDepth`,
  * `FragmentMapper`, `cealign`, `PDBMLParser`, `binary_cif`/MMTF, and the four that need an external

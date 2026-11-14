@@ -572,10 +572,169 @@ function runEdraAccess(c: Case): Out {
   });
 }
 
+
+/** The angle keys the generator picks over, in its order. */
+const ANGLE_KEYS = ["psi", "phi", "omg", "omega", "tau", "chi1", "chi2", "chi3", "chi4", "chi5",
+  "N:CA:C", "N:CA:C:1N", "-1C:N:CA:C", "-1CA:-1C:N:CA", "0N:0CA:0C", "CA:CB:CG:CD",
+  "N:CA:CB", "1N:1CA", "-1C:N", "nonsense", "chi9", "chi", "N:CA:C:1N:1CA"];
+/** The bond keys, likewise. */
+const LENGTH_KEYS = ["N:CA", "CA:C", "C:O", "CA:CB", "0C:1N", "-1C:N", "N:CA:C", "nonsense", "N"];
+
+/** A measured chain from a case's text, parsed afresh so one case cannot see another's edits. */
+function measured(text: string): IC_Chain {
+  const parsed = captureWarnings(() => {
+    const s = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", text);
+    s.atomToInternalCoordinates();
+    return s;
+  });
+  if (parsed.error !== undefined) throw parsed.error;
+  return [...parsed.result!.getChains()][0]!.internalCoord!;
+}
+
+/** Every dihedral angle of a chain, by id, as the generator records them before and after a change. */
+function angles(cic: IC_Chain): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const d of [...cic.dihedra.values()].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))) {
+    out[d.id] = enc6(d.angle);
+  }
+  return out;
+}
+
+/** What changed between two angle snapshots: `{id: [before, after]}`, as the generator reports it. */
+function changed(before: Record<string, unknown>, after: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const k of Object.keys(before)) if (before[k] !== after[k]) out[k] = [before[k], after[k]];
+  return out;
+}
+
+/** `IC_Residue`'s angle and length accessors, its transforms and its PDB records. */
+function runResidueAccess(c: Case): Out {
+  return attempt(() => {
+    const cic = measured(c.text!);
+    const rics = cic.orderedAaIcList;
+    if (rics.length === 0) return { empty: true };
+    const out: Record<string, unknown> = {};
+    if (c.what === "pick") {
+      out.residues = rics.slice(0, 3).map((ric) => {
+        const row: Record<string, unknown> = { res: ric.prettyStr() };
+        const pick: unknown[] = [];
+        const get: unknown[] = [];
+        for (const k of ANGLE_KEYS) {
+          pick.push(attempt(() => { const e = ric.pickAngle(k); return e === null ? null : e.id; }));
+          get.push(attempt(() => { const v = ric.getAngle(k); return v === null ? null : enc6(v); }));
+        }
+        const aks = [...(ric.akSet ?? [])].sort((a, b) => (a.lt(b) ? -1 : a.equals(b) ? 0 : 1)).slice(0, 4);
+        for (const n of [3, 4, 2]) {
+          pick.push(attempt(() => {
+            const e = ric.pickAngle(aks.slice(0, n)); return e === null ? null : e.id;
+          }));
+        }
+        row.pick = pick;
+        row.get = get;
+        return row;
+      });
+    }
+    if (c.what === "set") {
+      out.residues = rics.slice(0, 3).map((ric, i) => {
+        const row: Record<string, unknown> = { res: ric.prettyStr() };
+        for (const [k, overlap] of [["chi1", true], ["chi1", false], ["psi", true], ["psi", false],
+                                    ["tau", true], ["phi", true], ["nonsense", true]] as [string, boolean][]) {
+          const c2 = measured(c.text!);
+          const r2 = c2.orderedAaIcList[i]!;
+          const before = angles(c2);
+          const e = attempt(() => r2.setAngle(k, 42.5, overlap));
+          // Python's booleans capitalise, and the generator built these keys with one.
+          row[`${k}-${overlap ? "True" : "False"}`] = { exc: e.exc ?? null,
+                                                        changed: changed(before, angles(c2)) };
+        }
+        return row;
+      });
+    }
+    if (c.what === "rotate") {
+      out.residues = rics.slice(0, 3).map((ric, i) => {
+        const row: Record<string, unknown> = { res: ric.prettyStr() };
+        const probes: [string, string, number][] = [["bond_rotate", "chi1", 15.0],
+          ["bond_rotate", "psi", -30.0], ["bond_set", "chi1", 60.0], ["bond_set", "psi", 170.0],
+          ["bond_rotate", "nonsense", 10.0], ["bond_rotate", "tau", 5.0]];
+        for (const [fn, k, v] of probes) {
+          const c2 = measured(c.text!);
+          const r2 = c2.orderedAaIcList[i]!;
+          const before = angles(c2);
+          const e = attempt(() => (fn === "bond_rotate" ? r2.bondRotate(k, v) : r2.bondSet(k, v)));
+          row[`${fn}-${k}`] = { exc: e.exc ?? null, changed: changed(before, angles(c2)) };
+        }
+        return row;
+      });
+    }
+    if (c.what === "lengths") {
+      out.residues = rics.slice(0, 3).map((ric, i) => {
+        const row: Record<string, unknown> = { res: ric.prettyStr() };
+        const pick: unknown[] = [];
+        const get: unknown[] = [];
+        for (const k of LENGTH_KEYS) {
+          pick.push(attempt(() => {
+            const [hs, spec] = ric.pickLength(k);
+            return [hs === null ? null : hs.map((h) => h.id).sort(),
+                    spec === null ? null : spec.map((a) => a.id)];
+          }));
+          get.push(attempt(() => { const v = ric.getLength(k); return v === null ? null : enc6(v); }));
+        }
+        row.pick = pick;
+        row.get = get;
+        row.set = ["N:CA", "CA:C", "0C:1N", "nonsense"].map((k) => {
+          const c2 = measured(c.text!);
+          const r2 = c2.orderedAaIcList[i]!;
+          const e = attempt(() => r2.setLength(k, 1.6));
+          return { key: k, exc: e.exc ?? null,
+                   back: attempt(() => { const v = r2.getLength(k); return v === null ? null : enc6(v); }) };
+        });
+        return row;
+      });
+    }
+    if (c.what === "misc") {
+      const ric = rics[0]!;
+      const sorted = [...(ric.akSet ?? [])].sort((a, b) => (a.lt(b) ? -1 : a.equals(b) ? 0 : 1));
+      const coords = (): unknown[] => sorted.map((ak) => {
+        const ndx = cic.atomArrayIndex.get(ak.hashKey)!;
+        return Array.from(cic.atomArray.subarray(ndx * 4, ndx * 4 + 4)).map(enc6);
+      });
+      const before = coords();
+      const mtx: number[][] = [[2, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]];
+      out.applyMtx = { exc: attempt(() => ric.applyMtx(mtx)).exc ?? null, before, after: coords() };
+      const valid = (): boolean[] => Array.from(cic.dcsValid ?? []).map((x) => x !== 0);
+      const dcsBefore = valid();
+      out.clear_transforms = { before: dcsBefore, exc: attempt(() => rics[0]!.clearTransforms()).exc ?? null,
+                               after: valid() };
+      // The flags are the camelCase of Biopython's, which the generator reports by its own names.
+      const pyName: Record<string, string> = { flexFemale1: "flex_female_1", flexFemale2: "flex_female_2",
+        flexMale1: "flex_male_1", flexMale2: "flex_male_2", skinny1: "skinny_1", hbond1: "hbond_1",
+        hbond2: "hbond_2" };
+      for (const [fn, flags] of [["set_flexible", ["flexFemale1", "flexFemale2", "flexMale1", "flexMale2",
+                                                   "skinny1"]],
+                                 ["set_hbond", ["hbond1", "hbond2"]]] as [string, string[]][]) {
+        for (const r2 of rics) if (fn === "set_flexible") r2.setFlexible(); else r2.setHbond();
+        const rows = [...cic.hedra.values()]
+          .filter((h) => flags.some((f) => (h as unknown as Record<string, boolean>)[f]))
+          // The generator reports the Python names, so they are mapped back here rather than renamed there.
+          .map((h) => [h.id, ...flags.filter((f) => (h as unknown as Record<string, boolean>)[f])
+            .map((f) => pyName[f]!)]);
+        out[fn] = rows.sort((a, b) => (JSON.stringify(a) < JSON.stringify(b) ? -1 : 1));
+      }
+      out.pdb_residue_string = rics.slice(0, 3).map((r2) => attempt(() => r2.pdbResidueString()));
+      icSettings.atomSernum = 500;
+      icSettings.atomChain = "Z";
+      out.pdb_residue_string_override = attempt(() => rics[0]!.pdbResidueString());
+      icSettings.atomSernum = null;
+      icSettings.atomChain = null;
+    }
+    return out;
+  });
+}
+
 describe("Bio.PDB.internal_coords: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/ickey.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic, i2a: runI2a, i2a_unset: runI2aUnset, i2a_ser: runI2aSer, assemble: runAssemble, accuracy: runAccuracy, angle_stat: runAngleStat, edra_access: runEdraAccess };
-  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic", "i2a", "i2a_unset", "i2a_ser", "assemble", "accuracy", "angle_stat", "edra_access"]) {
+  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic, i2a: runI2a, i2a_unset: runI2aUnset, i2a_ser: runI2aSer, assemble: runAssemble, accuracy: runAccuracy, angle_stat: runAngleStat, edra_access: runEdraAccess, residue_access: runResidueAccess };
+  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic", "i2a", "i2a_unset", "i2a_ser", "assemble", "accuracy", "angle_stat", "edra_access", "residue_access"]) {
     const list = cases.filter((c) => c.kind === kind);
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
       const bad: string[] = [];

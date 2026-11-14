@@ -89,22 +89,22 @@
 - [-] `__lt__(self, value, /)`
 - [x] `__repr__(self) -> str`
 - [x] `__str__(self, /)`
-- [ ] `applyMtx(self, mtx: <built-in function array>) -> None`
+- [x] `applyMtx(self, mtx: <built-in function array>) -> None`
 - [x] `assemble(self, resetLocation: bool = False, verbose: bool = False) -> dict['AtomKey', numpy.array] | dict[tuple['AtomKey', 'AtomKey', 'AtomKey'], numpy.array] | None`
-- [ ] `bond_rotate(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str, delta: float)`
-- [ ] `bond_set(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str, val: float)`
-- [ ] `clear_transforms(self)`
-- [ ] `get_angle(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str) -> float | None`
-- [ ] `get_length(self, ak_spec: str | tuple['AtomKey', 'AtomKey']) -> float | None`
-- [ ] `pdb_residue_string(self) -> str`
-- [ ] `pick_angle(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str) -> ForwardRef('Hedron') | ForwardRef('Dihedron') | None`
-- [ ] `pick_length(self, ak_spec: str | tuple['AtomKey', 'AtomKey']) -> tuple[list['Hedron'] | None, tuple['AtomKey', 'AtomKey'] | None]`
+- [x] `bond_rotate(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str, delta: float)`
+- [x] `bond_set(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str, val: float)`
+- [x] `clear_transforms(self)`
+- [x] `get_angle(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str) -> float | None`
+- [x] `get_length(self, ak_spec: str | tuple['AtomKey', 'AtomKey']) -> float | None`
+- [x] `pdb_residue_string(self) -> str`
+- [x] `pick_angle(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str) -> ForwardRef('Hedron') | ForwardRef('Dihedron') | None`
+- [x] `pick_length(self, ak_spec: str | tuple['AtomKey', 'AtomKey']) -> tuple[list['Hedron'] | None, tuple['AtomKey', 'AtomKey'] | None]`
 - [x] `pretty_str(self) -> str`
 - [x] `rak(self, atm: str | Bio.PDB.Atom.Atom) -> 'AtomKey'`
-- [ ] `set_angle(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str, v: float, overlap=True)`
-- [ ] `set_flexible(self) -> None`
-- [ ] `set_hbond(self) -> None`
-- [ ] `set_length(self, ak_spec: str | tuple['AtomKey', 'AtomKey'], val: float) -> None`
+- [x] `set_angle(self, angle_key: tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'] | str, v: float, overlap=True)`
+- [x] `set_flexible(self) -> None`
+- [x] `set_hbond(self) -> None`
+- [x] `set_length(self, ak_spec: str | tuple['AtomKey', 'AtomKey'], val: float) -> None`
 - [x] `split_akl(self, lst: tuple['AtomKey', ...] | list['AtomKey'], missingOK: bool = False) -> list[tuple['AtomKey', ...]]`
 
 ### Bio.PDB.internal_coords.IC_Chain

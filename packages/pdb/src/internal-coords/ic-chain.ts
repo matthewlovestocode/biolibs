@@ -15,7 +15,7 @@ import { buildEdraArrays, initEdra, measureChain } from "./ic-measure.js";
 import { assembleResidues, buildChainAtoms, initAtomCoords, propagateChanges, updateDCoordSpace } from "./ic-assemble.js";
 import { assembleResiduesSer } from "./ic-serial.js";
 import type { Matrix } from "../vectors.js";
-import type { Dihedron, EdronArrays, Hedron } from "./edron.js";
+import type { Dihedron, EdronArrays, EdronInvalidation, Hedron } from "./edron.js";
 import { IC_Residue } from "./ic-residue.js";
 import { acceptResnames } from "./ic-data.js";
 import { icSettings } from "./settings.js";
@@ -53,7 +53,7 @@ const isDisordered = (atm: Atom | DisorderedAtom): boolean =>
  * cic.atomArray.length;         // four numbers per atom: x, y, z and 1
  * ```
  */
-export class IC_Chain implements EdronArrays {
+export class IC_Chain implements EdronArrays, EdronInvalidation {
   /** The chain this extends. */
   readonly chain: Chain;
   /** The residues that can be built, in chain order. */
