@@ -1,6 +1,9 @@
 # @biolibs/motifs
 
-A TypeScript port of `Bio.motifs`: motifs made from aligned instances or counts, position matrices (counts, weights, log-odds scores), scanning sequences, score distributions and thresholds, and the formats JASPAR (`pfm`, `sites`, `jaspar`), TRANSFAC, Cluster-Buster, AlignACE, MEME (XML and minimal text), MAST, XMS and `pfm-four-columns`/`pfm-four-rows`. Verified against Biopython 1.88 on 3,154 cases (`packages/motifs/test/golden/motifs.json`, built by `reference/golden/gen_motif_cases.py`).
+A TypeScript port of `Bio.motifs`: motifs made from aligned instances or counts, position matrices (counts, weights, log-odds scores), scanning sequences, score distributions and thresholds, and the formats JASPAR (`pfm`, `sites`, `jaspar`), TRANSFAC, Cluster-Buster, AlignACE, MEME (XML and minimal text), MAST, XMS and `pfm-four-columns`/`pfm-four-rows`. All **173 items** are at parity, verified against Biopython 1.88 on **3,154 cases**
+(`packages/motifs/test/golden/motifs.json`, built by `reference/golden/gen_motif_cases.py`): 2,099 on the
+readers and writers, 503 on the matrices, 452 on `Motif` itself, 93 on matrix comparison and 7 on JASPAR
+id splitting. See [the package README](../packages/motifs/README.md) for the API with worked examples.
 
 ```ts
 import { Seq } from "@biolibs/seq";
