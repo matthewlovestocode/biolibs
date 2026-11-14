@@ -88,6 +88,23 @@ export class IC_Chain implements EdronArrays, EdronInvalidation {
   hedraL12?: ArrayLike<number>;
   /** Second length of each hedron; not built yet. */
   hedraL23?: ArrayLike<number>;
+  /**
+   * Length between the *first and third* atoms of each hedron — the side the angle opens onto.
+   *
+   * Only {@link IC_Chain.distplotToDhArrays} fills this: measuring a chain from its atoms computes the
+   * angle directly and never needs it, while going the other way, from distances, has nothing else to work
+   * from.
+   */
+  hedraL13?: ArrayLike<number>;
+  /** Length between the first and fourth atoms of each dihedron, likewise. */
+  dihedraL14?: ArrayLike<number>;
+  /**
+   * The sign (+1 or −1) each dihedral angle had, from {@link IC_Chain.dihedralSigns}.
+   *
+   * A distance plot cannot tell a structure from its mirror image, so the signs have to be carried
+   * separately and multiplied back in at the end of {@link IC_Chain.distanceToInternalCoordinates}.
+   */
+  dihedraSigns?: readonly number[];
   /** Angle of each dihedron, in degrees, once measured. */
   dihedraAngle?: ArrayLike<number>;
   /** The same angles in radians. */
@@ -367,6 +384,149 @@ export class IC_Chain implements EdronArrays, EdronInvalidation {
    */
   internalToAtomCoordinates(verbose = false, start: number | null = null, fin: number | null = null): void {
     buildChainAtoms(this, verbose, start, fin);
+  }
+
+
+  /**
+   * The pairwise distances between this chain's atoms, as a square matrix.
+   *
+   * @param filter - Rows of {@link IC_Chain.atomArray} to include, as indices; all of them by default.
+   *   The classic C-alpha plot is the indices of the atoms whose key names `CA`.
+   * @returns `n × n` distances, in the order of the rows given.
+   */
+  distancePlot(filter: readonly number[] | null = null): number[][] {
+    const rows = filter ?? [...Array(this.AAsiz).keys()];
+    const pts = rows.map((r) => Array.from(this.atomArray.subarray(r * 4, r * 4 + 4)));
+    return pts.map((a) => pts.map((b) => {
+      let sum = 0;
+      // The homogeneous fourth component is 1 in both, so its difference adds nothing.
+      for (let i = 0; i < 4; i++) { const d = a[i]! - b[i]!; sum += d * d; }
+      return Math.sqrt(sum);
+    }));
+  }
+
+  /**
+   * The sign of every dihedral angle, which a distance plot cannot carry.
+   *
+   * @returns +1, −1 or 0 per dihedron, in `dihedraAngle` order.
+   */
+  dihedralSigns(): number[] {
+    return Array.from(this.dihedraAngle ?? [], (a) => Math.sign(a));
+  }
+
+  /**
+   * Fill the di/hedra distance arrays from a distance plot.
+   *
+   * Kept separate from {@link IC_Chain.distanceToInternalCoordinates} deliberately, as Biopython keeps it:
+   * a caller may have the distances from somewhere other than a plot.
+   *
+   * @param distplot - A full all-atom plot, as {@link IC_Chain.distancePlot} with no filter gives.
+   * @param dihedraSigns - The signs to restore, from {@link IC_Chain.dihedralSigns}.
+   */
+  distplotToDhArrays(distplot: readonly (readonly number[])[], dihedraSigns: readonly number[]): void {
+    const ha = this.a2haMap!;
+    const l12 = new Float64Array(this.hedraLen);
+    const l23 = new Float64Array(this.hedraLen);
+    const l13 = new Float64Array(this.hedraLen);
+    for (let h = 0; h < this.hedraLen; h++) {
+      const a0 = ha[h * 3]!, a1 = ha[h * 3 + 1]!, a2 = ha[h * 3 + 2]!;
+      l12[h] = distplot[a0]![a1]!;
+      l23[h] = distplot[a1]![a2]!;
+      l13[h] = distplot[a0]![a2]!;
+    }
+    this.hedraL12 = l12;
+    this.hedraL23 = l23;
+    this.hedraL13 = l13;
+    const da = this.a2daMap!;
+    const l14 = new Float64Array(this.dihedraLen);
+    for (let d = 0; d < this.dihedraLen; d++) l14[d] = distplot[da[d * 4]!]![da[d * 4 + 3]!]!;
+    this.dihedraL14 = l14;
+    this.dihedraSigns = dihedraSigns;
+  }
+
+  /**
+   * Compute every angle of the chain from the distances alone, plus the chirality signs.
+   *
+   * Each dihedron with its two hedra is a tetrahedron, and the dihedral angle along one edge follows from
+   * the six edge lengths — Blue the Hedronometer's answer to "the dihedral angles of a tetrahedron in
+   * terms of its edge lengths". The hedra angles then come from the law of cosines.
+   *
+   * A chain break leaves each fragment starting at the origin, since a distance plot says nothing about
+   * where anything is; {@link IC_Chain.copyInitNCaCs} is how to avoid that.
+   *
+   * @param resetAtoms - True (the default) marks every atom and di/hedron for rebuilding. Pass false to
+   *   manage the validity flags yourself and save the work.
+   */
+  distanceToInternalCoordinates(resetAtoms = true): void {
+    const h1 = this.dH1ndx!, h2 = this.dH2ndx!, fwd = this.dFwd!;
+    const L12 = this.hedraL12!, L23 = this.hedraL23!, L13 = this.hedraL13!;
+    const rads = this.dihedraAngleRads as Float64Array;
+    const degs = this.dihedraAngle as Float64Array;
+    const signs = this.dihedraSigns!;
+    for (let d = 0; d < this.dihedraLen; d++) {
+      const i1 = h1[d]!, i2 = h2[d]!;
+      const reversed = fwd[d] === 0;
+      // The labels are Biopython's: o is the dihedron's second atom, a its third.
+      const oa = reversed ? L12[i1]! : L23[i1]!;
+      const ob = reversed ? L23[i1]! : L12[i1]!;
+      const ac = reversed ? L12[i2]! : L23[i2]!;
+      const ab = L13[i1]!;
+      const oc = L13[i2]!;
+      const bc = this.dihedraL14![d]!;
+      const ys = (oa + ac + oc) / 2;
+      const zs = (oa + ob + ab) / 2;
+      const ysqr = ys * (ys - oa) * (ys - ac) * (ys - oc);
+      const zsqr = zs * (zs - oa) * (zs - ob) * (zs - ab);
+      const hsqr = (4 * oa * oa * bc * bc - (ob * ob + ac * ac - (oc * oc + ab * ab)) ** 2) / 16;
+      const cos = (ysqr + zsqr - hsqr) / (2 * Math.sqrt(ysqr) * Math.sqrt(zsqr));
+      // Rounding can push the cosine a hair outside its range, and `acos` would give NaN.
+      rads[d] = Math.acos(cos < -1 ? -1 : cos > 1 ? 1 : cos) * signs[d]!;
+      degs[d] = (rads[d]! * 180) / Math.PI;
+    }
+    const angle = this.hedraAngle as Float64Array;
+    for (let h = 0; h < this.hedraLen; h++) {
+      const a = L12[h]!, b = L23[h]!, c = L13[h]!;
+      angle[h] = (Math.acos((a * a + b * b - c * c) / (2 * a * b)) * 180) / Math.PI;
+    }
+    if (resetAtoms) {
+      this.atomArrayValid.fill(0);
+      this.dAtomsNeedsUpdate?.fill(1);
+      this.hAtomsNeedsUpdate?.fill(1);
+    }
+  }
+
+  /**
+   * Copy another chain's chain-start atoms into this one, and mark them valid.
+   *
+   * The atoms are the initial N-CA-C and the one after every chain break, which is exactly what
+   * {@link IC_Chain.distanceToInternalCoordinates} cannot recover from distances.
+   *
+   * Angle and length changes invalidate their own atoms, so make those first and copy afterwards.
+   *
+   * @param other - The chain to copy from; the two must index their atoms alike.
+   */
+  copyInitNCaCs(other: IC_Chain): void {
+    for (const iNCaC of other.initNCaCs) {
+      for (const ak of iNCaC) {
+        const ndx = this.atomArrayIndex.get(ak.hashKey);
+        if (ndx === undefined) continue;
+        for (let i = 0; i < 4; i++) this.atomArray[ndx * 4 + i] = other.atomArray[ndx * 4 + i]!;
+        this.atomArrayValid[ndx] = 1;
+      }
+    }
+  }
+
+  /** Put every residue into the extended conformation: psi 123°, phi −104°. */
+  makeExtended(): void {
+    for (const ric of this.orderedAaIcList) {
+      ric.setAngle("psi", 123);
+      ric.setAngle("phi", -104);
+    }
+  }
+
+  /** Forget this chain's internal coordinates, residue by residue. */
+  clearIc(): void {
+    for (const res of this.chain.getResidues()) res.internalCoord = null;
   }
 
   /**

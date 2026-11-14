@@ -9,7 +9,7 @@ type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc };
 interface Spec { how: string; value: unknown }
 interface Spec2 { cls: string; how: string; keys: string[] }
-interface Case { kind: string; num?: number; fn?: string; a?: Spec | Spec2 | number; b?: Spec | Spec2 | number; angles?: number[]; avg?: number; in_rads?: boolean; out_rads?: boolean; what?: string; text?: string; entry?: string; how?: string; twice?: boolean; start?: number; fin?: number; serial_flag?: boolean; reset?: boolean; spec?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
+interface Case { kind: string; num?: number; fn?: string; a?: Spec | Spec2 | number; b?: Spec | Spec2 | number; angles?: number[]; avg?: number; in_rads?: boolean; out_rads?: boolean; what?: string; reset?: boolean; text?: string; entry?: string; how?: string; twice?: boolean; start?: number; fin?: number; serial_flag?: boolean; reset?: boolean; spec?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
 
 /** AttributeError is a TypeError here, with no message to compare. */
 const excOk = (want?: Exc, got?: Exc): boolean => {
@@ -731,10 +731,75 @@ function runResidueAccess(c: Case): Out {
   });
 }
 
+
+/** `IC_Chain` from distances: the plot, the round trip through it, and the housekeeping. */
+function runChainDist(c: Case): Out {
+  return attempt(() => {
+    const cic = measured(c.text!);
+    const out: Record<string, unknown> = {};
+    const r6 = (a: ArrayLike<number> | readonly number[]): unknown[] => Array.from(a).map(enc6);
+    if (c.what === "plot") {
+      const plot = cic.distancePlot();
+      out.shape = [plot.length, plot.length];
+      out.plot = plot.map((row) => r6(row));
+      const ca = [...cic.atomArrayIndex.entries()]
+        .filter(([hash]) => cic.aktuple.find((k) => k.hashKey === hash)!.akl[FIELDS.atm] === "CA")
+        .map(([, ndx]) => ndx);
+      out.ca_filter = ca;
+      out.ca_plot = cic.distancePlot(ca).map((row) => r6(row));
+      out.signs = r6(cic.dihedralSigns());
+    }
+    if (c.what === "round_trip") {
+      const plot = cic.distancePlot();
+      const signs = cic.dihedralSigns();
+      const before = { hedra: r6(cic.hedraAngle!), dihedra: r6(cic.dihedraAngle!) };
+      cic.distplotToDhArrays(plot, signs);
+      out.arrays = { L12: r6(cic.hedraL12!), L23: r6(cic.hedraL23!), L13: r6(cic.hedraL13!),
+                     L14: r6(cic.dihedraL14!) };
+      cic.distanceToInternalCoordinates(c.reset ?? true);
+      out.before = before;
+      out.after = { hedra: r6(cic.hedraAngle!), dihedra: r6(cic.dihedraAngle!) };
+      out.valid = Array.from(cic.atomArrayValid).map((x) => x !== 0);
+      out.needs_update = { h: Array.from(cic.hAtomsNeedsUpdate ?? []).map((x) => x !== 0),
+                           d: Array.from(cic.dAtomsNeedsUpdate ?? []).map((x) => x !== 0) };
+      // Without the signs every angle comes back positive, which is the point of carrying them.
+      cic.distplotToDhArrays(plot, signs.map(() => 1));
+      cic.distanceToInternalCoordinates();
+      out.unsigned = r6(cic.dihedraAngle!);
+    }
+    if (c.what === "copy_extend") {
+      const c2 = measured(c.text!);
+      c2.atomArray.fill(0);
+      c2.atomArrayValid.fill(0);
+      c2.copyInitNCaCs(cic);
+      const order = [...cic.initNCaCs]
+        .sort((a, b) => (JSON.stringify(a.map((k) => k.id)) < JSON.stringify(b.map((k) => k.id)) ? -1 : 1));
+      out.initNCaCs = order.map((t) => t.map((ak) => ak.id));
+      out.copied = order.flatMap((t) => t.map((ak) => {
+        const ndx = cic.atomArrayIndex.get(ak.hashKey)!;
+        return r6(c2.atomArray.subarray(ndx * 4, ndx * 4 + 4));
+      }));
+      out.valid_after_copy = Array.from(c2.atomArrayValid).map((x) => x !== 0);
+      cic.makeExtended();
+      out.extended = {
+        psi: cic.orderedAaIcList.map((r) => attempt(() => {
+          const v = r.getAngle("psi"); return v === null ? null : enc6(v);
+        })),
+        phi: cic.orderedAaIcList.map((r) => attempt(() => {
+          const v = r.getAngle("phi"); return v === null ? null : enc6(v);
+        })),
+      };
+      cic.clearIc();
+      out.cleared = [...cic.chain.getResidues()].map((r) => r.internalCoord === null);
+    }
+    return out;
+  });
+}
+
 describe("Bio.PDB.internal_coords: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/ickey.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic, i2a: runI2a, i2a_unset: runI2aUnset, i2a_ser: runI2aSer, assemble: runAssemble, accuracy: runAccuracy, angle_stat: runAngleStat, edra_access: runEdraAccess, residue_access: runResidueAccess };
-  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic", "i2a", "i2a_unset", "i2a_ser", "assemble", "accuracy", "angle_stat", "edra_access", "residue_access"]) {
+  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic, i2a: runI2a, i2a_unset: runI2aUnset, i2a_ser: runI2aSer, assemble: runAssemble, accuracy: runAccuracy, angle_stat: runAngleStat, edra_access: runEdraAccess, residue_access: runResidueAccess, chain_dist: runChainDist };
+  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic", "i2a", "i2a_unset", "i2a_ser", "assemble", "accuracy", "angle_stat", "edra_access", "residue_access", "chain_dist"]) {
     const list = cases.filter((c) => c.kind === kind);
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
       const bad: string[] = [];

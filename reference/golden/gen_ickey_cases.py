@@ -905,9 +905,89 @@ for text in [GEOM[1], GEOM[2], GEOM[0], jitter(protein_pdb("CMPTY"))]:
     for what in ("pick", "set", "rotate", "lengths", "misc"):
         cases.append({"kind": "residue_access", "text": text, "what": what})
 
+
+# ---------------- IC_Chain from distances, and the housekeeping ----------------
+# The round trip that matters: measure a chain, take a distance plot of its atoms, throw the angles away
+# and recover them from the distances alone. A plot cannot tell a structure from its mirror image, so the
+# chirality signs travel separately -- without them every dihedral comes back positive.
+def run_chain_dist(case):
+    import io, warnings as w2
+    import numpy as np
+    from Bio.PDB import PDBParser
+    from Bio.PDB.internal_coords import AtomKey
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+            s.atom_to_internal_coordinates()
+        chain = next(s.get_chains())
+        cic = chain.internal_coord
+        out = {}
+        if case["what"] == "plot":
+            plot = cic.distance_plot()
+            out["shape"] = list(plot.shape)
+            out["plot"] = [[enc6(x) for x in row] for row in plot]
+            # the classic C-alpha plot, by the filter the docstring recommends
+            atmNdx = AtomKey.fields.atm
+            ca = [cic.atomArrayIndex[k] for k in cic.atomArrayIndex if k.akl[atmNdx] == "CA"]
+            out["ca_filter"] = ca
+            out["ca_plot"] = [[enc6(x) for x in row] for row in cic.distance_plot(ca)]
+            out["signs"] = [enc6(x) for x in cic.dihedral_signs()]
+        if case["what"] == "round_trip":
+            plot = cic.distance_plot()
+            signs = cic.dihedral_signs()
+            before = {"hedra": [enc6(x) for x in cic.hedraAngle],
+                      "dihedra": [enc6(x) for x in cic.dihedraAngle]}
+            cic.distplot_to_dh_arrays(plot, signs)
+            out["arrays"] = {"L12": [enc6(x) for x in cic.hedraL12], "L23": [enc6(x) for x in cic.hedraL23],
+                             "L13": [enc6(x) for x in cic.hedraL13],
+                             "L14": [enc6(x) for x in cic.dihedraL14]}
+            cic.distance_to_internal_coordinates(resetAtoms=case.get("reset", True))
+            out["before"] = before
+            out["after"] = {"hedra": [enc6(x) for x in cic.hedraAngle],
+                            "dihedra": [enc6(x) for x in cic.dihedraAngle]}
+            out["valid"] = [bool(x) for x in cic.atomArrayValid]
+            out["needs_update"] = {"h": [bool(x) for x in cic.hAtoms_needs_update],
+                                   "d": [bool(x) for x in cic.dAtoms_needs_update]}
+            # Without the signs, every angle comes back positive -- recorded so the port cannot skip them.
+            cic.distplot_to_dh_arrays(plot, np.ones(len(signs)))
+            cic.distance_to_internal_coordinates()
+            out["unsigned"] = [enc6(x) for x in cic.dihedraAngle]
+        if case["what"] == "copy_extend":
+            with w2.catch_warnings():
+                w2.simplefilter("ignore")
+                s2 = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("y", io.StringIO(case["text"]))
+                s2.atom_to_internal_coordinates()
+            c2 = next(s2.get_chains()).internal_coord
+            c2.atomArray[:] = 0.0
+            c2.atomArrayValid[:] = False
+            c2.copy_initNCaCs(cic)
+            out["initNCaCs"] = [[ak.id for ak in t] for t in sorted(cic.initNCaCs, key=lambda t: [a.id for a in t])]
+            out["copied"] = [[enc6(x) for x in c2.atomArray[cic.atomArrayIndex[ak]]]
+                             for iN in sorted(cic.initNCaCs, key=lambda t: [a.id for a in t]) for ak in iN]
+            out["valid_after_copy"] = [bool(x) for x in c2.atomArrayValid]
+            # make_extended, which is set_angle("psi") and set_angle("phi") over every residue
+            cic.make_extended()
+            out["extended"] = {"psi": [attempt(lambda r=r: (lambda v: None if v is None else enc6(v))(
+                                   r.get_angle("psi"))) for r in cic.ordered_aa_ic_list],
+                               "phi": [attempt(lambda r=r: (lambda v: None if v is None else enc6(v))(
+                                   r.get_angle("phi"))) for r in cic.ordered_aa_ic_list]}
+            # and clear_ic, which drops every residue's internal_coord
+            cic.clear_ic()
+            out["cleared"] = [r.internal_coord is None for r in chain.get_residues()]
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+for text in [GEOM[0], GEOM[1], GEOM[2], jitter(protein_pdb("AGS", drop=((2, "CA"),)))]:
+    for what in ("plot", "round_trip", "copy_extend"):
+        cases.append({"kind": "chain_dist", "text": text, "what": what})
+cases.append({"kind": "chain_dist", "text": GEOM[1], "what": "round_trip", "reset": False})
+
 RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair,
            "residue": run_residue, "edra_build": run_edra_build, "split": run_split, "a2ic": run_a2ic, "i2a": run_i2a, "i2a_unset": run_i2a_unset, "i2a_ser": run_i2a_ser, "assemble": run_assemble,
-           "accuracy": run_accuracy, "angle_stat": run_angle_stat, "edra_access": run_edra_access, "residue_access": run_residue_access}
+           "accuracy": run_accuracy, "angle_stat": run_angle_stat, "edra_access": run_edra_access, "residue_access": run_residue_access, "chain_dist": run_chain_dist}
 kept = []
 for c in cases:
     res = run_isolated(RUNNERS[c["kind"]], c)

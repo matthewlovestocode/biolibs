@@ -123,16 +123,16 @@
 - [x] `atom_to_internal_coordinates(self, verbose: bool = False) -> None`
 - [x] `build_atomArray(self) -> None`
 - [x] `build_edraArrays(self) -> None`
-- [ ] `clear_ic(self)`
-- [ ] `copy_initNCaCs(self, other: 'IC_Chain') -> None`
-- [ ] `dihedral_signs(self) -> numpy.ndarray`
-- [ ] `distance_plot(self, filter: numpy.ndarray | None = None) -> numpy.ndarray`
-- [ ] `distance_to_internal_coordinates(self, resetAtoms: bool | None = True) -> None`
-- [ ] `distplot_to_dh_arrays(self, distplot: numpy.ndarray, dihedra_signs: numpy.ndarray) -> None`
+- [x] `clear_ic(self)`
+- [x] `copy_initNCaCs(self, other: 'IC_Chain') -> None`
+- [x] `dihedral_signs(self) -> numpy.ndarray`
+- [x] `distance_plot(self, filter: numpy.ndarray | None = None) -> numpy.ndarray`
+- [x] `distance_to_internal_coordinates(self, resetAtoms: bool | None = True) -> None`
+- [x] `distplot_to_dh_arrays(self, distplot: numpy.ndarray, dihedra_signs: numpy.ndarray) -> None`
 - [x] `init_atom_coords(self) -> None`
 - [x] `init_edra(self, verbose: bool = False) -> None`
 - [x] `internal_to_atom_coordinates(self, verbose: bool = False, start: int | None = None, fin: int | None = None) -> None`
-- [ ] `make_extended(self)`
+- [x] `make_extended(self)`
 - [x] `propagate_changes(self) -> None`
 - [x] `update_dCoordSpace(self, workSelector: numpy.ndarray | None = None) -> None`
 

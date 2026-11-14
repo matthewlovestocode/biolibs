@@ -11,7 +11,8 @@ Structure/Model/Chain/Residue/Atom hierarchy, measure it, search it, superimpose
 - **Geometry** — `Vector`, the rotation matrices of `Bio.PDB.vectors`, `calcAngle`, `calcDihedral`
 - **Analysis** — `PPBuilder`/`CaPPBuilder` for polypeptides, `Superimposer`, `NeighborSearch` over a
   `KDTree`, `ShrakeRupley` for solvent-accessible surface area, `unfoldEntities` for selection
-- **Internal coordinates** — a chain as bond lengths, angles and dihedrals, and back again
+- **Internal coordinates** — a chain as bond lengths, angles and dihedrals, back again, and recovered
+  from a distance plot alone
 - No file system: parsers take the file's text
 
 ## What is verified
@@ -26,22 +27,20 @@ message, the warnings, and the state of the structure afterwards. The tests repl
 | `Bio.PDB.Entity` | **54 / 54** | | `Bio.PDB.StructureBuilder` | **14 / 14** |
 | `Bio.PDB.Structure` | **35 / 35** | | `Bio.PDB.PDBIO` | **11 / 11** |
 | `Bio.PDB.Chain` | **34 / 34** | | `Bio.PDB.kdtrees` | **8 / 8** |
-| `Bio.PDB.Model` | **34 / 34** | | `Bio.PDB.internal_coords` | **96 / 103** |
+| `Bio.PDB.Model` | **34 / 34** | | `Bio.PDB.internal_coords` | **103 / 103** |
 | the other six modules | **27 / 27** | | | |
 
-**495 of 502 applicable items**, verified by **18,661 recorded cases** across ten golden files (58 MB).
+Every module is complete.
+
+**502 of 502 applicable items**, verified by **18,674 recorded cases** across ten golden files (58 MB).
 The full breakdown is in [docs/parity/](../../docs/parity/README.md).
 
-Where the claim stops:
+Where the claim stops — which is now about modules the port leaves out, not items within them:
 
-- **Internal coordinates are the one module not finished**: 96 of its 103 applicable items are verified
-  by 1,303 recorded cases, and 7 are outstanding. The port covers `AtomKey`,
-  `Edron`/`Hedron`/`Dihedron` with their angles and lengths, `IC_Residue`'s keys and splitting, and both
-  directions of conversion on `IC_Chain`. Outstanding: `IC_Chain`'s distance-plot work
-  (`distance_plot`, `distance_to_internal_coordinates`, `distplot_to_dh_arrays`) and four housekeeping
-  methods (`clear_ic`, `copy_initNCaCs`, `dihedral_signs`, `make_extended`). `ic_rebuild` with its PIC
-  file format (`read_PIC`, `write_PIC`, `structure_rebuild_test`) is a separate module and not ported
-  at all.
+- **Internal coordinates are complete**, on 1,316 recorded cases of their own — `AtomKey`, the edra with
+  their angles and lengths, `IC_Residue`'s keys and accessors, and `IC_Chain` three ways: from the atoms,
+  back to them, and from a distance plot alone. `ic_rebuild` with its PIC file format (`read_PIC`,
+  `write_PIC`, `structure_rebuild_test`) is a separate module and not ported.
 - **`index_db`-style extras are out of scope**: `DSSP` and `NACCESS` run external programs,
   and `PDBList` and `alphafold_db` download from the internet.
 - **Not ported**: `HSExposure`, `ResidueDepth`, `FragmentMapper`, `StructureAlignment`/`cealign`,
@@ -353,7 +352,7 @@ npm test                 # the whole workspace
 npx vitest run packages/pdb/test
 ```
 
-Ten golden files, 58 MB, 18,661 cases. Each test file is a single `it` that replays one of them:
+Ten golden files, 58 MB, 18,674 cases. Each test file is a single `it` that replays one of them:
 
 | File | Cases | What it checks |
 |---|---|---|
@@ -364,7 +363,7 @@ Ten golden files, 58 MB, 18,661 cases. Each test file is a single `it` that repl
 | `test/nsearch.test.ts` | 1,713 | `NeighborSearch` and the `KDTree` under it |
 | `test/mmcif.test.ts` | 1,430 | `MMCIF2Dict`, `MMCIFParser`, `FastMMCIFParser` |
 | `test/pdbops.test.ts` | 1,401 | entity operations: add, detach, copy, compare, disorder |
-| `test/ickey.test.ts` | 1,303 | internal coordinates: `AtomKey`, the edra, measuring and assembling |
+| `test/ickey.test.ts` | 1,316 | internal coordinates: `AtomKey`, the edra, measuring and assembling |
 | `test/sasa.test.ts` | 505 | `ShrakeRupley` at every level |
 | `test/superimposer.test.ts` | 388 | `Superimposer` and the SVD under it |
 | `test/readme.test.ts` | — | every code block in this file |

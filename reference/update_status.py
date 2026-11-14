@@ -314,6 +314,15 @@ if "misc" in racc:
     for n in ("applyMtx", "clear_transforms", "set_flexible", "set_hbond", "pdb_residue_string"):
         mark(f"{IC}.IC_Residue.{n}")
 
+# IC_Chain's distance work and its housekeeping, from the `chain_dist` cases.
+cdist = {c["what"] for c in ick if c["kind"] == "chain_dist"}
+if "plot" in cdist:
+    for n in ("distance_plot", "dihedral_signs"): mark(f"{IC}.IC_Chain.{n}")
+if "round_trip" in cdist:
+    for n in ("distplot_to_dh_arrays", "distance_to_internal_coordinates"): mark(f"{IC}.IC_Chain.{n}")
+if "copy_extend" in cdist:
+    for n in ("copy_initNCaCs", "make_extended", "clear_ic"): mark(f"{IC}.IC_Chain.{n}")
+
 # `HedronMatchError` and `MissingAtomError` are bare `class X(Exception): pass`, so every member they
 # report is BaseException machinery rather than Biopython API -- the same rule applied to
 # `Bio.Seq.UndefinedSequenceError` above.
