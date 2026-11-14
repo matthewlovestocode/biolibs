@@ -1,0 +1,10332 @@
+{
+"cuts": [
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [
+[
+0,
+1
+],
+[
+0,
+0
+],
+[
+1,
+0
+]
+],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+],
+[
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "AAGFFZZ",
+"watson": "AAG",
+"crick": "AATTCTT",
+"len": 7,
+"ovhg": 0,
+"right_ovhg": -4,
+"str": "AAGAATT",
+"circular": false
+},
+{
+"data": "EEXXCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTG",
+"len": 67,
+"ovhg": -4,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 70,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [
+null,
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+null
+],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false,
+"enzymes": [
+"BamHI",
+"HindIII"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [
+[
+0,
+1
+],
+[
+1,
+2
+]
+],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+],
+[
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+}
+],
+[
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "AAGAATTCAAGQFZJ",
+"watson": "AAGAATTCAAG",
+"crick": "GATCCTTGAATTCTT",
+"len": 15,
+"ovhg": 0,
+"right_ovhg": -4,
+"str": "AAGAATTCAAGGATC",
+"circular": false
+},
+{
+"data": "PEXICAAAFQJZ",
+"watson": "GATCCAAA",
+"crick": "AGCTTTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCCAAAAGCT",
+"circular": false
+},
+{
+"data": "EPIXTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTA",
+"len": 51,
+"ovhg": -4,
+"right_ovhg": 0,
+"str": "AGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 70,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [
+{
+"value": {
+"data": "PEXICAAAFQJZ",
+"watson": "GATCCAAA",
+"crick": "AGCTTTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCCAAAAGCT",
+"circular": false
+}
+},
+null
+],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false,
+"enzymes": [
+"SmaI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+}
+],
+[
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCC",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCC",
+"crick": "GGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 29,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCC",
+"circular": false
+},
+{
+"data": "GGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "GGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCC",
+"len": 41,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 70,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false,
+"enzymes": [
+"PstI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+}
+],
+[
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACXPIE",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCA",
+"crick": "GTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 39,
+"ovhg": 0,
+"right_ovhg": 4,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCA",
+"circular": false
+},
+{
+"data": "ZQJFGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "GAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCA",
+"len": 35,
+"ovhg": 4,
+"right_ovhg": 0,
+"str": "TGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 70,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false,
+"enzymes": [
+"NotI",
+"XbaI",
+"KpnI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 44,
+"ovhg": -4,
+"enzyme": "NotI"
+},
+{
+"watson": 54,
+"ovhg": -4,
+"enzyme": "XbaI"
+},
+{
+"watson": 66,
+"ovhg": 4,
+"enzyme": "KpnI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 44,
+"ovhg": -4,
+"enzyme": "NotI"
+}
+],
+[
+{
+"watson": 44,
+"ovhg": -4,
+"enzyme": "NotI"
+},
+{
+"watson": 54,
+"ovhg": -4,
+"enzyme": "XbaI"
+}
+],
+[
+{
+"watson": 54,
+"ovhg": -4,
+"enzyme": "XbaI"
+},
+{
+"watson": 66,
+"ovhg": 4,
+"enzyme": "KpnI"
+}
+],
+[
+{
+"watson": 66,
+"ovhg": 4,
+"enzyme": "KpnI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCQQJJ",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGC",
+"crick": "GGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 48,
+"ovhg": 0,
+"right_ovhg": -4,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCC",
+"circular": false
+},
+{
+"data": "PPIIGCAAATJZFQ",
+"watson": "GGCCGCAAAT",
+"crick": "CTAGATTTGC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGCCGCAAATCTAG",
+"circular": false
+},
+{
+"data": "IXEPAAAGPXEI",
+"watson": "CTAGAAAGGTAC",
+"crick": "CTTT",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "CTAGAAAGGTAC",
+"circular": false
+},
+{
+"data": "QZFJCAAA",
+"watson": "CAAA",
+"crick": "TTTGGTAC",
+"len": 8,
+"ovhg": 4,
+"right_ovhg": 0,
+"str": "GTACCAAA",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 70,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false,
+"enzymes": [
+"EcoRI",
+"BamHI",
+"HindIII",
+"SmaI",
+"PstI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [
+[
+0,
+2
+],
+[
+2,
+4
+],
+[
+0,
+4
+]
+],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+},
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+},
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+],
+[
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+],
+[
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+}
+],
+[
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+},
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+}
+],
+[
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+},
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+}
+],
+[
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "AAGFFZZ",
+"watson": "AAG",
+"crick": "AATTCTT",
+"len": 7,
+"ovhg": 0,
+"right_ovhg": -4,
+"str": "AAGAATT",
+"circular": false
+},
+{
+"data": "EEXXCAAGQFZJ",
+"watson": "AATTCAAG",
+"crick": "GATCCTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCAAGGATC",
+"circular": false
+},
+{
+"data": "PEXICAAAFQJZ",
+"watson": "GATCCAAA",
+"crick": "AGCTTTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCCAAAAGCT",
+"circular": false
+},
+{
+"data": "EPIXTAACCC",
+"watson": "AGCTTAACCC",
+"crick": "GGGTTA",
+"len": 10,
+"ovhg": -4,
+"right_ovhg": 0,
+"str": "AGCTTAACCC",
+"circular": false
+},
+{
+"data": "GGGAACXPIE",
+"watson": "GGGAACTGCA",
+"crick": "GTTCCC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 4,
+"str": "GGGAACTGCA",
+"circular": false
+},
+{
+"data": "ZQJFGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "GAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCA",
+"len": 35,
+"ovhg": 4,
+"right_ovhg": 0,
+"str": "TGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 70,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [
+{
+"value": {
+"data": "EEXXCAAGGATCCAAAFQJZ",
+"watson": "AATTCAAGGATCCAAA",
+"crick": "AGCTTTTGGATCCTTG",
+"len": 20,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCAAGGATCCAAAAGCT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "EPIXTAACCCGGGAACXPIE",
+"watson": "AGCTTAACCCGGGAACTGCA",
+"crick": "GTTCCCGGGTTA",
+"len": 20,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "AGCTTAACCCGGGAACTGCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "EEXXCAAGGATCCAAAAGCTTAACCCGGGAACXPIE",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCA",
+"crick": "GTTCCCGGGTTAAGCTTTTGGATCCTTG",
+"len": 36,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCA",
+"circular": false
+}
+}
+],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false,
+"enzymes": [
+"BsaI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+},
+"cutsites": {
+"value": []
+},
+"pairs_out": {
+"value": []
+},
+"fragments": {
+"value": []
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 70,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false,
+"enzymes": [
+"EcoRV"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+},
+"cutsites": {
+"value": []
+},
+"pairs_out": {
+"value": []
+},
+"fragments": {
+"value": []
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 70,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false,
+"enzymes": [],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+},
+"cutsites": {
+"value": []
+},
+"pairs_out": {
+"value": []
+},
+"fragments": {
+"value": []
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 70,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [
+[
+0,
+1
+],
+[
+0,
+0
+],
+[
+1,
+0
+]
+],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true
+},
+"cutsites": {
+"value": [
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "EEXXCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGFFZZ",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "AATTCTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTG",
+"len": 74,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATT",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"watson": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"crick": "TTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAAT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "CTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [
+null,
+{
+"value": {
+"data": "EEXXCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGFFZZ",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "AATTCTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTG",
+"len": 74,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATT",
+"circular": false
+}
+},
+null
+],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true,
+"enzymes": [
+"BamHI",
+"HindIII"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [
+[
+0,
+1
+],
+[
+1,
+2
+]
+],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true
+},
+"cutsites": {
+"value": [
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+}
+],
+[
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+},
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "PEXICAAAFQJZ",
+"watson": "GATCCAAA",
+"crick": "AGCTTTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCCAAAAGCT",
+"circular": false
+},
+{
+"data": "EPIXTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATTCAAGQFZJ",
+"watson": "AGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATTCAAG",
+"crick": "GATCCTTGAATTCTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTA",
+"len": 66,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATTCAAGGATC",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"watson": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"crick": "TTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAAT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "CTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [
+{
+"value": {
+"data": "PEXICAAAFQJZ",
+"watson": "GATCCAAA",
+"crick": "AGCTTTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCCAAAAGCT",
+"circular": false
+}
+},
+null
+],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true,
+"enzymes": [
+"SmaI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true
+},
+"cutsites": {
+"value": [
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+},
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+}
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "GGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATTCAAGGATCCAAAAGCTTAACCC",
+"watson": "GGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATTCAAGGATCCAAAAGCTTAACCC",
+"crick": "GGGTTAAGCTTTTGGATCCTTGAATTCTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCC",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATTCAAGGATCCAAAAGCTTAACCC",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"watson": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"crick": "TTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAAT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "CTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true,
+"enzymes": [
+"PstI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true
+},
+"cutsites": {
+"value": [
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+},
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+}
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "ZQJFGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACXPIE",
+"watson": "GAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCA",
+"crick": "GTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCA",
+"len": 74,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "TGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCA",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"watson": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"crick": "TTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAAT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "CTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true,
+"enzymes": [
+"NotI",
+"XbaI",
+"KpnI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true
+},
+"cutsites": {
+"value": [
+{
+"watson": 44,
+"ovhg": -4,
+"enzyme": "NotI"
+},
+{
+"watson": 54,
+"ovhg": -4,
+"enzyme": "XbaI"
+},
+{
+"watson": 66,
+"ovhg": 4,
+"enzyme": "KpnI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+{
+"watson": 44,
+"ovhg": -4,
+"enzyme": "NotI"
+},
+{
+"watson": 54,
+"ovhg": -4,
+"enzyme": "XbaI"
+}
+],
+[
+{
+"watson": 54,
+"ovhg": -4,
+"enzyme": "XbaI"
+},
+{
+"watson": 66,
+"ovhg": 4,
+"enzyme": "KpnI"
+}
+],
+[
+{
+"watson": 66,
+"ovhg": 4,
+"enzyme": "KpnI"
+},
+{
+"watson": 44,
+"ovhg": -4,
+"enzyme": "NotI"
+}
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "PPIIGCAAATJZFQ",
+"watson": "GGCCGCAAAT",
+"crick": "CTAGATTTGC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGCCGCAAATCTAG",
+"circular": false
+},
+{
+"data": "IXEPAAAGPXEI",
+"watson": "CTAGAAAGGTAC",
+"crick": "CTTT",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "CTAGAAAGGTAC",
+"circular": false
+},
+{
+"data": "QZFJCAAAAAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCQQJJ",
+"watson": "CAAAAAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGC",
+"crick": "GGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTTTTTGGTAC",
+"len": 56,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GTACCAAAAAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCC",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"watson": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"crick": "TTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAAT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "CTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true,
+"enzymes": [
+"EcoRI",
+"BamHI",
+"HindIII",
+"SmaI",
+"PstI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [
+[
+0,
+2
+],
+[
+2,
+4
+],
+[
+0,
+4
+]
+],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true
+},
+"cutsites": {
+"value": [
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+},
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+},
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+],
+[
+{
+"watson": 11,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+}
+],
+[
+{
+"watson": 19,
+"ovhg": -4,
+"enzyme": "HindIII"
+},
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+}
+],
+[
+{
+"watson": 29,
+"ovhg": 0,
+"enzyme": "SmaI"
+},
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+}
+],
+[
+{
+"watson": 39,
+"ovhg": 4,
+"enzyme": "PstI"
+},
+{
+"watson": 3,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "EEXXCAAGQFZJ",
+"watson": "AATTCAAG",
+"crick": "GATCCTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCAAGGATC",
+"circular": false
+},
+{
+"data": "PEXICAAAFQJZ",
+"watson": "GATCCAAA",
+"crick": "AGCTTTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCCAAAAGCT",
+"circular": false
+},
+{
+"data": "EPIXTAACCC",
+"watson": "AGCTTAACCC",
+"crick": "GGGTTA",
+"len": 10,
+"ovhg": -4,
+"right_ovhg": 0,
+"str": "AGCTTAACCC",
+"circular": false
+},
+{
+"data": "GGGAACXPIE",
+"watson": "GGGAACTGCA",
+"crick": "GTTCCC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 4,
+"str": "GGGAACTGCA",
+"circular": false
+},
+{
+"data": "ZQJFGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGFFZZ",
+"watson": "GAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "AATTCTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCA",
+"len": 42,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "TGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAGAATT",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"watson": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"crick": "TTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAAT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "CTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [
+{
+"value": {
+"data": "EEXXCAAGGATCCAAAFQJZ",
+"watson": "AATTCAAGGATCCAAA",
+"crick": "AGCTTTTGGATCCTTG",
+"len": 20,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCAAGGATCCAAAAGCT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "EPIXTAACCCGGGAACXPIE",
+"watson": "AGCTTAACCCGGGAACTGCA",
+"crick": "GTTCCCGGGTTA",
+"len": 20,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "AGCTTAACCCGGGAACTGCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "EEXXCAAGGATCCAAAAGCTTAACCCGGGAACXPIE",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCA",
+"crick": "GTTCCCGGGTTAAGCTTTTGGATCCTTG",
+"len": 36,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCA",
+"circular": false
+}
+}
+],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true,
+"enzymes": [
+"BsaI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true
+},
+"cutsites": {
+"value": []
+},
+"pairs_out": {
+"value": []
+},
+"fragments": {
+"value": []
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"watson": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"crick": "TTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAAT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "CTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true,
+"enzymes": [
+"EcoRV"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true
+},
+"cutsites": {
+"value": []
+},
+"pairs_out": {
+"value": []
+},
+"fragments": {
+"value": []
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"watson": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"crick": "TTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAAT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "CTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true,
+"enzymes": [],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": true
+},
+"cutsites": {
+"value": []
+},
+"pairs_out": {
+"value": []
+},
+"fragments": {
+"value": []
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+70,
+70
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AAGA",
+"watson": "AAGA",
+"crick": "TCTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"crick": "TTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"watson": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"crick": "TTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAAT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAA",
+"watson": "CAAA",
+"crick": "TTTG",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"watson": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"crick": "TGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATTCTT",
+"len": 68,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAGAATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AGATA",
+"watson": "AGATA",
+"crick": "TATCT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGATA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAACTTAAGA",
+"watson": "GAACTTAAGA",
+"crick": "TCTTAAGTTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAACTTAAGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"watson": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"crick": "CTTTTTGGTACCTTTCTAGATTTGCGGCCGCTTCTGCAGTTCCCGGGTTAAGCTTTTGGATCCTTGAATT",
+"len": 70,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAGGATCCAAAAGCTTAACCCGGGAACTGCAGAAGCGGCCGCAAATCTAGAAAGGTACCAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATAACACACGAGGGGGACGATCA",
+"watson": "AATAACACACGAGGGGGACGATCA",
+"crick": "TGATCGTCCCCCTCGTGTGTTATT",
+"len": 24,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATAACACACGAGGGGGACGATCA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"circular": true,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"watson": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"crick": "CTTTTTTTTTTTTTTTTTTTTTTTTTTTGAATT",
+"len": 33,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"circular": true
+},
+"cutsites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "EEXXCAAAAAAAAAAAAAAAAAAAAAAAAAAAGFFZZ",
+"watson": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"crick": "AATTCTTTTTTTTTTTTTTTTTTTTTTTTTTTG",
+"len": 37,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAGAATT",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+33,
+33
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AATT",
+"watson": "AATT",
+"crick": "AATT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "TTCA",
+"watson": "TTCA",
+"crick": "TGAA",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "TTCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"watson": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"crick": "CTTTTTTTTTTTTTTTTTTTTTTTTTTTGAATT",
+"len": 33,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAGAA",
+"watson": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAGAA",
+"crick": "TTCTTTTTTTTTTTTTTTTTTTTTTTTTTTG",
+"len": 31,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAGAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAAG",
+"watson": "AAAG",
+"crick": "CTTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"watson": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"crick": "TTTTTTTTTTTTTTTTTTTTTTTTTTGAATT",
+"len": 31,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATCAA",
+"watson": "ATCAA",
+"crick": "TTGAT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATCAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAAAAACTTA",
+"watson": "AAAAAACTTA",
+"crick": "TAAGTTTTTT",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAAAAACTTA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "TCAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAT",
+"watson": "TCAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAT",
+"crick": "ATTCTTTTTTTTTTTTTTTTTTTTTTTTTTTGA",
+"len": 33,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "TCAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATAAAAAAAAA",
+"watson": "ATAAAAAAAAA",
+"crick": "TTTTTTTTTAT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATAAAAAAAAA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": []
+},
+"no_cutters": {
+"value": [
+"BamHI",
+"BsaI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"circular": false,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"watson": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"crick": "CTTTTTTTTTTTTTTTTTTTTTTTTTTTGAATT",
+"len": 33,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"circular": false
+},
+"cutsites": {
+"value": []
+},
+"pairs_out": {
+"value": []
+},
+"fragments": {
+"value": []
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+33,
+33
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 33,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "AATT",
+"watson": "AATT",
+"crick": "AATT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "TTCA",
+"watson": "TTCA",
+"crick": "TGAA",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "TTCA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"watson": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"crick": "CTTTTTTTTTTTTTTTTTTTTTTTTTTTGAATT",
+"len": 33,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAAG",
+"watson": "AAAG",
+"crick": "CTTT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"watson": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"crick": "TTTTTTTTTTTTTTTTTTTTTTTTTTGAATT",
+"len": 31,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AATTCAAAAAAAAAAAAAAAAAAAAAAAAAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATCAA",
+"watson": "ATCAA",
+"crick": "TTGAT",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATCAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "AAAAAACTTA",
+"watson": "AAAAAACTTA",
+"crick": "TAAGTTTTTT",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AAAAAACTTA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATAAAAAAAAA",
+"watson": "ATAAAAAAAAA",
+"crick": "TTTTTTTTTAT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATAAAAAAAAA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": []
+},
+"no_cutters": {
+"value": [
+"BamHI",
+"BsaI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "GAATTCGAATTC",
+"circular": false,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [
+[
+0,
+1
+],
+[
+1,
+0
+]
+],
+"snap": {
+"data": "GAATTCGAATTC",
+"watson": "GAATTCGAATTC",
+"crick": "GAATTCGAATTC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTCGAATTC",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+],
+[
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+],
+[
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "GFFZZ",
+"watson": "G",
+"crick": "AATTC",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": -4,
+"str": "GAATT",
+"circular": false
+},
+{
+"data": "EEXXCGFFZZ",
+"watson": "AATTCG",
+"crick": "AATTCG",
+"len": 10,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCGAATT",
+"circular": false
+},
+{
+"data": "EEXXC",
+"watson": "AATTC",
+"crick": "G",
+"len": 5,
+"ovhg": -4,
+"right_ovhg": 0,
+"str": "AATTC",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+12,
+12
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 12,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTC",
+"watson": "ATTC",
+"crick": "GAAT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAATTCGAATTC",
+"watson": "GAATTCGAATTC",
+"crick": "GAATTCGAATTC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTCGAATTC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTC",
+"watson": "ATTC",
+"crick": "GAAT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAATTCGAAT",
+"watson": "GAATTCGAAT",
+"crick": "ATTCGAATTC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTCGAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GATGA",
+"watson": "GATGA",
+"crick": "TCATC",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "TTAAGCTTAA",
+"watson": "TTAAGCTTAA",
+"crick": "TTAAGCTTAA",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "TTAAGCTTAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GTGT",
+"watson": "GTGT",
+"crick": "ACAC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GTGT",
+"circular": false
+}
+}
+],
+"applied": [
+{
+"value": {
+"data": "EEXXCGFFZZ",
+"watson": "AATTCG",
+"crick": "AATTCG",
+"len": 10,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCGAATT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+}
+],
+"cutters": {
+"value": [
+"EcoRI"
+]
+},
+"no_cutters": {
+"value": [
+"BamHI",
+"BsaI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "GGATCCGGATCC",
+"circular": false,
+"enzymes": [
+"BamHI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [
+[
+0,
+1
+]
+],
+"snap": {
+"data": "GGATCCGGATCC",
+"watson": "GGATCCGGATCC",
+"crick": "GGATCCGGATCC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGATCCGGATCC",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+],
+[
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+],
+[
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "GQFZJ",
+"watson": "G",
+"crick": "GATCC",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": -4,
+"str": "GGATC",
+"circular": false
+},
+{
+"data": "PEXICGQFZJ",
+"watson": "GATCCG",
+"crick": "GATCCG",
+"len": 10,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCCGGATC",
+"circular": false
+},
+{
+"data": "PEXIC",
+"watson": "GATCC",
+"crick": "G",
+"len": 5,
+"ovhg": -4,
+"right_ovhg": 0,
+"str": "GATCC",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+12,
+12
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 12,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "GGAT",
+"watson": "GGAT",
+"crick": "ATCC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATCC",
+"watson": "ATCC",
+"crick": "GGAT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATCC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GGATCCGGATCC",
+"watson": "GGATCCGGATCC",
+"crick": "GGATCCGGATCC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGATCCGGATCC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATCC",
+"watson": "ATCC",
+"crick": "GGAT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATCC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GGATCCGGAT",
+"watson": "GGATCCGGAT",
+"crick": "ATCCGGATCC",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGATCCGGAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GACGA",
+"watson": "GACGA",
+"crick": "TCGTC",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GACGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CTAGGCCTAG",
+"watson": "CTAGGCCTAG",
+"crick": "CTAGGCCTAG",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CTAGGCCTAG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GTGT",
+"watson": "GTGT",
+"crick": "ACAC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GTGT",
+"circular": false
+}
+}
+],
+"applied": [
+{
+"value": {
+"data": "PEXICGQFZJ",
+"watson": "GATCCG",
+"crick": "GATCCG",
+"len": 10,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCCGGATC",
+"circular": false
+}
+}
+],
+"cutters": {
+"value": [
+"BamHI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": [
+"BamHI"
+]
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "PPPPGAATTCAAGGATCCAAQQQQ",
+"circular": false,
+"enzymes": [
+"EcoRI",
+"BamHI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "PPPPGAATTCAAGGATCCAAQQQQ",
+"watson": "GGGGGAATTCAAGGATCCAA",
+"crick": "CCCCTTGGATCCTTGAATTC",
+"len": 24,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCAAGGATCCAAGGGG",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 5,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 13,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 5,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+],
+[
+{
+"watson": 5,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 13,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+],
+[
+{
+"watson": 13,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "PPPPGFFZZ",
+"watson": "GGGGG",
+"crick": "AATTC",
+"len": 9,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATT",
+"circular": false
+},
+{
+"data": "EEXXCAAGQFZJ",
+"watson": "AATTCAAG",
+"crick": "GATCCTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCAAGGATC",
+"circular": false
+},
+{
+"data": "PEXICAAQQQQ",
+"watson": "GATCCAA",
+"crick": "CCCCTTG",
+"len": 11,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCCAAGGGG",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+4
+]
+},
+"right_end": {
+"value": [
+20,
+24
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 20,
+"ovhg": -4,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "PPPP",
+"watson": "GGGG",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPGA",
+"watson": "GGGA",
+"crick": "TC",
+"len": 4,
+"ovhg": -2,
+"right_ovhg": 0,
+"str": "GGGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPPPGAATTCAAGGATCCAAQQQQ",
+"watson": "GGGGGAATTCAAGGATCCAA",
+"crick": "CCCCTTGGATCCTTGAATTC",
+"len": 24,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCAAGGATCCAAGGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "QQQQ",
+"watson": "",
+"crick": "CCCC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPPPGAATTCAAGGATCCAAQQ",
+"watson": "GGGGGAATTCAAGGATCCAA",
+"crick": "CCTTGGATCCTTGAATTC",
+"len": 22,
+"ovhg": -4,
+"right_ovhg": -2,
+"str": "GGGGGAATTCAAGGATCCAAGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPGAT",
+"watson": "GGGAT",
+"crick": "ATC",
+"len": 5,
+"ovhg": -2,
+"right_ovhg": 0,
+"str": "GGGAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ACTTAAGPPP",
+"watson": "ACTTAAGGGG",
+"crick": "CTTAAGT",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 3,
+"str": "ACTTAAGGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPACGTAQ",
+"watson": "GGACGTA",
+"crick": "CTACGT",
+"len": 8,
+"ovhg": -2,
+"right_ovhg": -1,
+"str": "GGACGTAG",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "PPPPPPGAATTCQQQQQQ",
+"circular": false,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "PPPPPPGAATTCQQQQQQ",
+"watson": "GGGGGGGAATTC",
+"crick": "CCCCCCGAATTC",
+"len": 18,
+"ovhg": -6,
+"right_ovhg": -6,
+"str": "GGGGGGGAATTCGGGGGG",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+],
+[
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "PPPPPPGFFZZ",
+"watson": "GGGGGGG",
+"crick": "AATTC",
+"len": 11,
+"ovhg": -6,
+"right_ovhg": -4,
+"str": "GGGGGGGAATT",
+"circular": false
+},
+{
+"data": "EEXXCQQQQQQ",
+"watson": "AATTC",
+"crick": "CCCCCCG",
+"len": 11,
+"ovhg": -4,
+"right_ovhg": -6,
+"str": "AATTCGGGGGG",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+6
+]
+},
+"right_end": {
+"value": [
+12,
+18
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": -6,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 12,
+"ovhg": -6,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "PPPP",
+"watson": "GGGG",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPPP",
+"watson": "GGGG",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPPPPPGAATTCQQQQQQ",
+"watson": "GGGGGGGAATTC",
+"crick": "CCCCCCGAATTC",
+"len": 18,
+"ovhg": -6,
+"right_ovhg": -6,
+"str": "GGGGGGGAATTCGGGGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "QQQQ",
+"watson": "",
+"crick": "CCCC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPPPPPGAATTCQQQQ",
+"watson": "GGGGGGGAATTC",
+"crick": "CCCCGAATTC",
+"len": 16,
+"ovhg": -6,
+"right_ovhg": -4,
+"str": "GGGGGGGAATTCGGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPPGA",
+"watson": "GGGGA",
+"crick": "TC",
+"len": 5,
+"ovhg": -3,
+"right_ovhg": 0,
+"str": "GGGGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "TTAAGPPPPP",
+"watson": "TTAAGGGGGG",
+"crick": "CTTAA",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 5,
+"str": "TTAAGGGGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPGTQQ",
+"watson": "GGGT",
+"crick": "CCAC",
+"len": 6,
+"ovhg": -2,
+"right_ovhg": -2,
+"str": "GGGTGG",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"EcoRI"
+]
+},
+"no_cutters": {
+"value": [
+"BamHI",
+"BsaI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "QQQQGAATTCAAGGATCCAAPPPP",
+"circular": false,
+"enzymes": [
+"EcoRI",
+"BamHI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "QQQQGAATTCAAGGATCCAAPPPP",
+"watson": "GAATTCAAGGATCCAAGGGG",
+"crick": "TTGGATCCTTGAATTCCCCC",
+"len": 24,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCAAGGATCCAAGGGG",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 5,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 13,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 5,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+],
+[
+{
+"watson": 5,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 13,
+"ovhg": -4,
+"enzyme": "BamHI"
+}
+],
+[
+{
+"watson": 13,
+"ovhg": -4,
+"enzyme": "BamHI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "QQQQGFFZZ",
+"watson": "G",
+"crick": "AATTCCCCC",
+"len": 9,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGAATT",
+"circular": false
+},
+{
+"data": "EEXXCAAGQFZJ",
+"watson": "AATTCAAG",
+"crick": "GATCCTTG",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCAAGGATC",
+"circular": false
+},
+{
+"data": "PEXICAAPPPP",
+"watson": "GATCCAAGGGG",
+"crick": "TTG",
+"len": 11,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GATCCAAGGGG",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+4,
+0
+]
+},
+"right_end": {
+"value": [
+24,
+20
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 24,
+"ovhg": 4,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "QQQQ",
+"watson": "",
+"crick": "CCCC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "QQGA",
+"watson": "GA",
+"crick": "TCCC",
+"len": 4,
+"ovhg": 2,
+"right_ovhg": 0,
+"str": "GGGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "QQQQGAATTCAAGGATCCAAPPPP",
+"watson": "GAATTCAAGGATCCAAGGGG",
+"crick": "TTGGATCCTTGAATTCCCCC",
+"len": 24,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCAAGGATCCAAGGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PPPP",
+"watson": "GGGG",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "QQQQGAATTCAAGGATCCAAPP",
+"watson": "GAATTCAAGGATCCAAGG",
+"crick": "TTGGATCCTTGAATTCCCCC",
+"len": 22,
+"ovhg": 4,
+"right_ovhg": 2,
+"str": "GGGGGAATTCAAGGATCCAAGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "QQGAT",
+"watson": "GAT",
+"crick": "ATCCC",
+"len": 5,
+"ovhg": 2,
+"right_ovhg": 0,
+"str": "GGGAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ACTTAAGQQQ",
+"watson": "ACTTAAG",
+"crick": "CCCCTTAAGT",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": -3,
+"str": "ACTTAAGGGG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "QQACGTAP",
+"watson": "ACGTAG",
+"crick": "TACGTCC",
+"len": 8,
+"ovhg": 2,
+"right_ovhg": 1,
+"str": "GGACGTAG",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"no_cutters": {
+"value": [
+"BsaI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "PEXIPEXIPEXI",
+"circular": false,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "PEXIPEXIPEXI",
+"watson": "GATCGATCGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATCGATC",
+"circular": false
+},
+"cutsites": {
+"value": []
+},
+"pairs_out": {
+"value": []
+},
+"fragments": {
+"value": []
+},
+"left_end": {
+"exc": {
+"type": "TypeError",
+"msg": "'>' not supported between instances of 'NoneType' and 'int'"
+}
+},
+"right_end": {
+"exc": {
+"type": "TypeError",
+"msg": "'<' not supported between instances of 'NoneType' and 'int'"
+}
+},
+"left_cutsite": {
+"exc": {
+"type": "TypeError",
+"msg": "'>' not supported between instances of 'NoneType' and 'int'"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "TypeError",
+"msg": "'>' not supported between instances of 'NoneType' and 'int'"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "XIPE",
+"watson": "TCGA",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "TCGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PEXIPEXIPEXI",
+"watson": "GATCGATCGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATCGATC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PEXIPEXIPE",
+"watson": "GATCGATCGA",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATCGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PXPXP",
+"watson": "GTGTG",
+"crick": "",
+"len": 5,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GTGTG",
+"circular": false
+}
+},
+{
+"value": {
+"data": "XEPIXEPIXE",
+"watson": "TAGCTAGCTA",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "TAGCTAGCTA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "PIXE",
+"watson": "GCTA",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GCTA",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": []
+},
+"no_cutters": {
+"value": [
+"BamHI",
+"BsaI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "GAATTC",
+"circular": false,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"cutsites": {
+"value": [
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+],
+[
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+null
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "GFFZZ",
+"watson": "G",
+"crick": "AATTC",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": -4,
+"str": "GAATT",
+"circular": false
+},
+{
+"data": "EEXXC",
+"watson": "AATTC",
+"crick": "G",
+"len": 5,
+"ovhg": -4,
+"right_ovhg": 0,
+"str": "AATTC",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+6,
+6
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 6,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTC",
+"watson": "ATTC",
+"crick": "GAAT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTC",
+"watson": "ATTC",
+"crick": "GAAT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAT",
+"watson": "GAT",
+"crick": "ATC",
+"len": 3,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "CTTAA",
+"watson": "CTTAA",
+"crick": "TTAAG",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "CTTAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GT",
+"watson": "GT",
+"crick": "AC",
+"len": 2,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GT",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"EcoRI"
+]
+},
+"no_cutters": {
+"value": [
+"BamHI",
+"BsaI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "GAATTC",
+"circular": true,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+4,
+null
+],
+[
+2,
+6,
+null
+],
+[
+null,
+null,
+null
+],
+[
+4,
+2,
+null
+],
+[
+-4,
+null,
+null
+],
+[
+null,
+-2,
+null
+],
+[
+0,
+10,
+2
+],
+[
+10,
+0,
+-1
+],
+[
+3,
+3,
+null
+],
+[
+0,
+null,
+3
+]
+],
+"pairs": [],
+"snap": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"cutsites": {
+"value": [
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+},
+"pairs_out": {
+"value": [
+[
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "EcoRI"
+},
+{
+"watson": 1,
+"ovhg": -4,
+"enzyme": "EcoRI"
+}
+]
+]
+},
+"fragments": {
+"value": [
+{
+"data": "EEXXCGFFZZ",
+"watson": "AATTCG",
+"crick": "AATTCG",
+"len": 10,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AATTCGAATT",
+"circular": false
+}
+]
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+6,
+6
+]
+},
+"left_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a left end"
+}
+},
+"right_cutsite": {
+"exc": {
+"type": "ValueError",
+"msg": "Circular sequences do not have a right end"
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTC",
+"watson": "ATTC",
+"crick": "GAAT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "TCGA",
+"watson": "TCGA",
+"crick": "TCGA",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "TCGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "ATTC",
+"watson": "ATTC",
+"crick": "GAAT",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "ATTC",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GAAT",
+"watson": "GAAT",
+"crick": "ATTC",
+"len": 4,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAT",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GATGA",
+"watson": "GATGA",
+"crick": "TCATC",
+"len": 5,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATGA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "TTAAGCTTAA",
+"watson": "TTAAGCTTAA",
+"crick": "TTAAGCTTAA",
+"len": 10,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "TTAAGCTTAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "TTCGAA",
+"watson": "TTCGAA",
+"crick": "TTCGAA",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "TTCGAA",
+"circular": false
+}
+},
+{
+"value": {
+"data": "GT",
+"watson": "GT",
+"crick": "AC",
+"len": 2,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GT",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": [
+"EcoRI"
+]
+},
+"no_cutters": {
+"value": [
+"BamHI",
+"BsaI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+},
+{
+"data": "",
+"circular": false,
+"enzymes": [
+"EcoRI"
+],
+"slices": [
+[
+0,
+1,
+null
+],
+[
+null,
+null,
+null
+]
+],
+"pairs": [],
+"snap": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+},
+"cutsites": {
+"value": []
+},
+"pairs_out": {
+"value": []
+},
+"fragments": {
+"value": []
+},
+"left_end": {
+"value": [
+0,
+0
+]
+},
+"right_end": {
+"value": [
+0,
+0
+]
+},
+"left_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"right_cutsite": {
+"value": {
+"watson": 0,
+"ovhg": 0,
+"enzyme": null
+}
+},
+"slices_out": [
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+},
+{
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+}
+}
+],
+"applied": [],
+"cutters": {
+"value": []
+},
+"no_cutters": {
+"value": [
+"BamHI",
+"BsaI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"KpnI",
+"NotI",
+"PstI",
+"SmaI",
+"XbaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": []
+},
+"three_cutters": {
+"value": []
+}
+}
+],
+"circular": [
+{
+"data": "",
+"ops": [
+[
+"shifted",
+[
+0
+]
+],
+[
+"shifted",
+[
+1
+]
+],
+[
+"shifted",
+[
+3
+]
+],
+[
+"shifted",
+[
+-2
+]
+],
+[
+"shifted",
+[
+7
+]
+],
+[
+"shifted",
+[
+14
+]
+],
+[
+"slice",
+[
+0,
+3,
+null
+]
+],
+[
+"slice",
+[
+5,
+2,
+null
+]
+],
+[
+"slice",
+[
+null,
+null,
+null
+]
+],
+[
+"slice",
+[
+2,
+2,
+null
+]
+],
+[
+"slice",
+[
+-3,
+null,
+null
+]
+],
+[
+"slice",
+[
+0,
+10,
+2
+]
+],
+[
+"slice",
+[
+6,
+0,
+-1
+]
+],
+[
+"slice",
+[
+null,
+null,
+-1
+]
+],
+[
+"slice",
+[
+1,
+null,
+7
+]
+],
+[
+"cutaround",
+[
+0,
+3
+]
+],
+[
+"cutaround",
+[
+5,
+4
+]
+],
+[
+"cutaround",
+[
+2,
+0
+]
+],
+[
+"cutaround",
+[
+-1,
+3
+]
+],
+[
+"cutaround",
+[
+3,
+20
+]
+],
+[
+"find",
+[
+"GAT"
+]
+],
+[
+"find",
+[
+"ACAG"
+]
+],
+[
+"find",
+[
+"TTC"
+]
+],
+[
+"find",
+[
+""
+]
+],
+[
+"find",
+[
+"XYZ"
+]
+],
+[
+"replace_with",
+[
+0,
+3,
+"TTT"
+]
+],
+[
+"replace_with",
+[
+5,
+2,
+"TTTT"
+]
+],
+[
+"replace_with",
+[
+0,
+2,
+"T"
+]
+],
+[
+"replace_with",
+[
+1,
+4,
+"GGG"
+]
+],
+[
+"at",
+[
+0
+]
+],
+[
+"at",
+[
+1
+]
+],
+[
+"at",
+[
+-1
+]
+],
+[
+"at",
+[
+9
+]
+]
+],
+"ops_out": [
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "CircularBytes index out of range (empty bytes)"
+}
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "CircularBytes index out of range (empty bytes)"
+}
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "CircularBytes index out of range (empty bytes)"
+}
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "CircularBytes index out of range (empty bytes)"
+}
+}
+]
+},
+{
+"data": "A",
+"ops": [
+[
+"shifted",
+[
+0
+]
+],
+[
+"shifted",
+[
+1
+]
+],
+[
+"shifted",
+[
+3
+]
+],
+[
+"shifted",
+[
+-2
+]
+],
+[
+"shifted",
+[
+7
+]
+],
+[
+"shifted",
+[
+14
+]
+],
+[
+"slice",
+[
+0,
+3,
+null
+]
+],
+[
+"slice",
+[
+5,
+2,
+null
+]
+],
+[
+"slice",
+[
+null,
+null,
+null
+]
+],
+[
+"slice",
+[
+2,
+2,
+null
+]
+],
+[
+"slice",
+[
+-3,
+null,
+null
+]
+],
+[
+"slice",
+[
+0,
+10,
+2
+]
+],
+[
+"slice",
+[
+6,
+0,
+-1
+]
+],
+[
+"slice",
+[
+null,
+null,
+-1
+]
+],
+[
+"slice",
+[
+1,
+null,
+7
+]
+],
+[
+"cutaround",
+[
+0,
+3
+]
+],
+[
+"cutaround",
+[
+5,
+4
+]
+],
+[
+"cutaround",
+[
+2,
+0
+]
+],
+[
+"cutaround",
+[
+-1,
+3
+]
+],
+[
+"cutaround",
+[
+3,
+20
+]
+],
+[
+"find",
+[
+"GAT"
+]
+],
+[
+"find",
+[
+"ACAG"
+]
+],
+[
+"find",
+[
+"TTC"
+]
+],
+[
+"find",
+[
+""
+]
+],
+[
+"find",
+[
+"XYZ"
+]
+],
+[
+"replace_with",
+[
+0,
+3,
+"TTT"
+]
+],
+[
+"replace_with",
+[
+5,
+2,
+"TTTT"
+]
+],
+[
+"replace_with",
+[
+0,
+2,
+"T"
+]
+],
+[
+"replace_with",
+[
+1,
+4,
+"GGG"
+]
+],
+[
+"at",
+[
+0
+]
+],
+[
+"at",
+[
+1
+]
+],
+[
+"at",
+[
+-1
+]
+],
+[
+"at",
+[
+9
+]
+]
+],
+"ops_out": [
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "AA"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "AA"
+},
+{
+"value": "AA"
+},
+{
+"value": "AA"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "AAA"
+},
+{
+"value": "AAAA"
+},
+{
+"value": ""
+},
+{
+"value": "AAA"
+},
+{
+"value": "AAAAAAAAAAAAAAAAAAAA"
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": "TTTA"
+},
+{
+"exc": {
+"type": "ValueError",
+"msg": "Replacement length must match the length of the subsequence"
+}
+},
+{
+"exc": {
+"type": "ValueError",
+"msg": "Replacement length must match the length of the subsequence"
+}
+},
+{
+"value": "AGGG"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+}
+]
+},
+{
+"data": "GATTACA",
+"ops": [
+[
+"shifted",
+[
+0
+]
+],
+[
+"shifted",
+[
+1
+]
+],
+[
+"shifted",
+[
+3
+]
+],
+[
+"shifted",
+[
+-2
+]
+],
+[
+"shifted",
+[
+7
+]
+],
+[
+"shifted",
+[
+14
+]
+],
+[
+"slice",
+[
+0,
+3,
+null
+]
+],
+[
+"slice",
+[
+5,
+2,
+null
+]
+],
+[
+"slice",
+[
+null,
+null,
+null
+]
+],
+[
+"slice",
+[
+2,
+2,
+null
+]
+],
+[
+"slice",
+[
+-3,
+null,
+null
+]
+],
+[
+"slice",
+[
+0,
+10,
+2
+]
+],
+[
+"slice",
+[
+6,
+0,
+-1
+]
+],
+[
+"slice",
+[
+null,
+null,
+-1
+]
+],
+[
+"slice",
+[
+1,
+null,
+7
+]
+],
+[
+"cutaround",
+[
+0,
+3
+]
+],
+[
+"cutaround",
+[
+5,
+4
+]
+],
+[
+"cutaround",
+[
+2,
+0
+]
+],
+[
+"cutaround",
+[
+-1,
+3
+]
+],
+[
+"cutaround",
+[
+3,
+20
+]
+],
+[
+"find",
+[
+"GAT"
+]
+],
+[
+"find",
+[
+"ACAG"
+]
+],
+[
+"find",
+[
+"TTC"
+]
+],
+[
+"find",
+[
+""
+]
+],
+[
+"find",
+[
+"XYZ"
+]
+],
+[
+"replace_with",
+[
+0,
+3,
+"TTT"
+]
+],
+[
+"replace_with",
+[
+5,
+2,
+"TTTT"
+]
+],
+[
+"replace_with",
+[
+0,
+2,
+"T"
+]
+],
+[
+"replace_with",
+[
+1,
+4,
+"GGG"
+]
+],
+[
+"at",
+[
+0
+]
+],
+[
+"at",
+[
+1
+]
+],
+[
+"at",
+[
+-1
+]
+],
+[
+"at",
+[
+9
+]
+]
+],
+"ops_out": [
+{
+"value": "GATTACA"
+},
+{
+"value": "ATTACAG"
+},
+{
+"value": "TACAGAT"
+},
+{
+"value": "CAGATTA"
+},
+{
+"value": "GATTACA"
+},
+{
+"value": "GATTACA"
+},
+{
+"value": "GAT"
+},
+{
+"value": "CAGA"
+},
+{
+"value": "GATTACA"
+},
+{
+"value": "TTACAGA"
+},
+{
+"value": "ACA"
+},
+{
+"value": "GTAAA"
+},
+{
+"value": "ACATTA"
+},
+{
+"value": "ACATTAG"
+},
+{
+"value": "A"
+},
+{
+"value": "GAT"
+},
+{
+"value": "CAGA"
+},
+{
+"value": ""
+},
+{
+"value": "AGA"
+},
+{
+"value": "TACAGATTACAGATTACAGA"
+},
+{
+"value": 0
+},
+{
+"value": 4
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": "TTTTACA"
+},
+{
+"value": "TTTTATT"
+},
+{
+"exc": {
+"type": "ValueError",
+"msg": "Replacement length must match the length of the subsequence"
+}
+},
+{
+"value": "GGGGACA"
+},
+{
+"value": "G"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "T"
+}
+]
+},
+{
+"data": "GAATTCGAATTC",
+"ops": [
+[
+"shifted",
+[
+0
+]
+],
+[
+"shifted",
+[
+1
+]
+],
+[
+"shifted",
+[
+3
+]
+],
+[
+"shifted",
+[
+-2
+]
+],
+[
+"shifted",
+[
+7
+]
+],
+[
+"shifted",
+[
+14
+]
+],
+[
+"slice",
+[
+0,
+3,
+null
+]
+],
+[
+"slice",
+[
+5,
+2,
+null
+]
+],
+[
+"slice",
+[
+null,
+null,
+null
+]
+],
+[
+"slice",
+[
+2,
+2,
+null
+]
+],
+[
+"slice",
+[
+-3,
+null,
+null
+]
+],
+[
+"slice",
+[
+0,
+10,
+2
+]
+],
+[
+"slice",
+[
+6,
+0,
+-1
+]
+],
+[
+"slice",
+[
+null,
+null,
+-1
+]
+],
+[
+"slice",
+[
+1,
+null,
+7
+]
+],
+[
+"cutaround",
+[
+0,
+3
+]
+],
+[
+"cutaround",
+[
+5,
+4
+]
+],
+[
+"cutaround",
+[
+2,
+0
+]
+],
+[
+"cutaround",
+[
+-1,
+3
+]
+],
+[
+"cutaround",
+[
+3,
+20
+]
+],
+[
+"find",
+[
+"GAT"
+]
+],
+[
+"find",
+[
+"ACAG"
+]
+],
+[
+"find",
+[
+"TTC"
+]
+],
+[
+"find",
+[
+""
+]
+],
+[
+"find",
+[
+"XYZ"
+]
+],
+[
+"replace_with",
+[
+0,
+3,
+"TTT"
+]
+],
+[
+"replace_with",
+[
+5,
+2,
+"TTTT"
+]
+],
+[
+"replace_with",
+[
+0,
+2,
+"T"
+]
+],
+[
+"replace_with",
+[
+1,
+4,
+"GGG"
+]
+],
+[
+"at",
+[
+0
+]
+],
+[
+"at",
+[
+1
+]
+],
+[
+"at",
+[
+-1
+]
+],
+[
+"at",
+[
+9
+]
+]
+],
+"ops_out": [
+{
+"value": "GAATTCGAATTC"
+},
+{
+"value": "AATTCGAATTCG"
+},
+{
+"value": "TTCGAATTCGAA"
+},
+{
+"value": "TCGAATTCGAAT"
+},
+{
+"value": "AATTCGAATTCG"
+},
+{
+"value": "ATTCGAATTCGAATTCGAATTCGA"
+},
+{
+"value": "GAA"
+},
+{
+"value": "CGAATTCGA"
+},
+{
+"value": "GAATTCGAATTC"
+},
+{
+"value": "ATTCGAATTCGA"
+},
+{
+"value": "TTC"
+},
+{
+"value": "GATGA"
+},
+{
+"value": "GCTTAA"
+},
+{
+"value": "CTTAAGCTTAAG"
+},
+{
+"value": "AA"
+},
+{
+"value": "GAA"
+},
+{
+"value": "CGAA"
+},
+{
+"value": ""
+},
+{
+"value": "CGA"
+},
+{
+"value": "TTCGAATTCGAATTCGAATT"
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 3
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": "TTTTTCGAATTC"
+},
+{
+"exc": {
+"type": "ValueError",
+"msg": "Replacement length must match the length of the subsequence"
+}
+},
+{
+"exc": {
+"type": "ValueError",
+"msg": "Replacement length must match the length of the subsequence"
+}
+},
+{
+"value": "GGGGTCGAATTC"
+},
+{
+"value": "G"
+},
+{
+"value": "A"
+},
+{
+"value": "C"
+},
+{
+"value": "T"
+}
+]
+}
+]
+}

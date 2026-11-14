@@ -48,7 +48,28 @@ Dseq.fromRepresentation("GAATTC\n  TAA").crick;   // "AATTC"
 | `d.rc()`, `d.reverse_complement()` | `d.rc()`, `d.reverseComplement()` |
 | `d.looped()`, `d.shifted(n)` | the same names |
 | `d.cast_to_ds()`, `..._left()`, `..._right()` | `d.castToDs()`, `castToDsLeft()`, `castToDsRight()` |
-| `a + b`, `d * n`, `a == b`, `d[a:b]` | `a.add(b)`, `d.multiply(n)`, `a.equals(b)`, `d.slice(a, b)` |
+| `a + b`, `d * n`, `a == b`, `d[a:b:c]` | `a.add(b)`, `d.multiply(n)`, `a.equals(b)`, `d.slice(a, b, c)` |
+| `d.cut(EcoRI, BamHI)` | `cut(d, [EcoRI, BamHI])` |
+| `d.get_cutsites(...)`, `d.cutsite_is_valid(c)` | `getCutsites(d, [...])`, `cutsiteIsValid(d, c)` |
+| `d.get_cutsite_pairs(cs)`, `d.apply_cut(l, r)` | `getCutsitePairs(d, cs)`, `applyCut(d, l, r)` |
+| `d.get_cut_parameters(c, isLeft)` | `getCutParameters(d, c, isLeft)` |
+| `d.left_end_position()`, `d.right_end_position()` | `leftEndPosition(d)`, `rightEndPosition(d)` |
+| `d.get_left_end_as_cutsite()` | `getLeftEndAsCutsite(d)` (and `getRightEndAsCutsite`) |
+| `d.cutters(b)`, `d.no_cutters(b)`, `d.n_cutters(n, b)` | `cuttersBy(d, b, null)`, `cuttersBy(d, b, 0)`, `cuttersBy(d, b, n)` |
+| `CircularBytes(...)[a:b:c]`, `.shifted(n)`, `.cutaround(i, n)`, `.find(s)`, `.replace_with(a, b, s)` | `circularSlice`, `circularShifted`, `cutaround`, `circularFind`, `replaceWith` |
+
+Cutting is free functions rather than methods so that `Dseq` itself does not have to know about enzymes,
+which keeps the two modules from importing each other. The enzymes are `@biolibs/restriction`'s, so a
+Type IIS enzyme that cuts away from its recognition site works the same way it does in pydna.
+
+```ts
+import { cut, Dseq, getCutsites } from "@biolibs/dseq";
+import { enzymes } from "@biolibs/restriction";
+
+const plasmid = new Dseq("AAGAATTCAAGGATCCAA", null, null, true);   // circular
+getCutsites(plasmid, [enzymes.EcoRI]);      // [{ watson: 3, ovhg: -4, enzyme: EcoRI }]
+cut(plasmid, [enzymes.EcoRI, enzymes.BamHI]).map((f) => f.figure());
+```
 
 ## What this slice covers, and what it does not
 
@@ -56,12 +77,14 @@ Ported and measured against pydna 5.5.16: construction from one strand, from two
 or an inferred overhang, from a full sequence with overhangs and from a drawn representation; both
 strands; the overhang at each end; the blunt reading; the figure, long runs shortened as pydna shortens
 them; the parts; the ends; bluntness; molecular weight; reverse complement; filling an end in;
-circularising and rotating a circle; ligation and repetition; equality.
+circularising and rotating a circle; ligation and repetition; equality; slicing, wrapping round the
+origin for a circle; and cutting — the cut sites, which of them are possible, how they pair up, every
+fragment, the ends written as cut sites, and the cutter counts.
 
-Not yet: cutting with enzymes (`cut`, `apply_cut`, `get_cutsites` and the cutter counts), the
-end-modifying enzymes (`fill_in`, `t4`, `mung`, `exo1_end`, `klenow`, `terminal_transferase`, the
-`nibble_*` family), melting, `seguid`, and slicing a circular molecule, which wraps — `slice` throws for
-a circular molecule rather than guessing. `docs/parity-pydna/` is the current list.
+Not yet: the end-modifying enzymes (`fill_in`, `t4`/`T4`, `mung`, `exo1_end`, `exo1_front`, `klenow`,
+`terminal_transferase`, `user`, the `nibble_*` family, `nibble_to_blunt`), melting (`melt`,
+`melt_ss_dna`, the `*_meltsites` family, `shed_ss_dna`), `seguid`, `join`, `find`, `__contains__` and
+`__hash__`. `docs/parity-pydna/` is the current list.
 
 Quirks kept because pydna has them, each pinned by a golden case:
 
@@ -74,3 +97,17 @@ Quirks kept because pydna has them, each pinned by a golden case:
   report that the strands do not anneal.
 - `representationTuple` shortens what it calls the right 5' overhang with the 3' placeholder and the other
   way round, because pydna unpacks the parts into its own names in the wrong order.
+- A circle's slices wrap, and a stop that is not past its start means a whole turn rather than nothing, so
+  `circularSlice(data, 4, 2)` reads all the way round. `circularShifted` is written on top of those slices
+  as `d[shift:] + d[:shift]`, which means a shift larger than the circle returns something *longer* than
+  the circle; `replaceWith` inherits the same behaviour. An empty circle has no length to divide by, so
+  `circularShifted` throws `ZeroDivisionError`.
+- The cutter counts (`cuttersBy`) search the molecule as a linear one whatever its topology, because pydna
+  leaves Biopython's `linear` argument at its default there — so a circular molecule's counts miss a site
+  that straddles the origin even though `getCutsites` finds it.
+- A single-stranded molecule has no overhang, so `leftEndPosition` and the end-as-cut-site helpers throw
+  `TypeError: '>' not supported between instances of 'NoneType' and 'int'`, which is Python comparing
+  `None` with a number.
+- `CircularBytes.replace_with` concatenates its replacement onto a byte string, so in pydna it can only be
+  called with `bytes`; given a `str` it always raises. `replaceWith` here takes a string, which is the
+  path pydna's own code uses.

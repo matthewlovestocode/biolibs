@@ -18,6 +18,7 @@ def mark(key, value="done"):
 
 
 ds = json.load(open(f"{here}/../packages/dseq/test/golden/dseq.json"))
+cuts = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-cut.json"))
 built = [c for c in ds if "snap" in c]
 ops = {op[0] for c in ds for op in c["ops"]}
 kinds = {c["kind"] for c in ds}
@@ -64,9 +65,23 @@ GROUPS = {"un_ambiguous_ds_dna": "GATC", "ds_rna": "UO", "ambiguous_ds_dna": "RY
 for group, letters in GROUPS.items():
     if any(any(ch in letters for ch in d) for d in data):
         mark(f"pydna.alphabet.codes.{group}")
-# Slicing is ported for a linear molecule only; a circular one wraps, which is not done yet.
-if "slice" in ops:
-    mark("pydna.dseq.Dseq.__getitem__", "partial")
+# Cutting, which the dseq-cut.json cases cover: every case records the cut sites, how they pair up, the
+# fragments, both ends as cut sites and the cutter counts, so one built case covers the lot.
+if cuts["cuts"]:
+    for member in ("cut", "apply_cut", "get_cutsites", "cutsite_is_valid", "get_cut_parameters",
+                   "get_cutsite_pairs", "get_left_end_as_cutsite", "get_right_end_as_cutsite",
+                   "left_end_position", "right_end_position", "cutters", "n_cutters", "no_cutters",
+                   "unique_cutters", "twice_cutters", "once_cutters", "__getitem__"):
+        mark(f"pydna.dseq.Dseq.{member}")
+# The circular byte string, exercised directly.
+circular_ops = {op[0] for c in cuts["circular"] for op in c["ops"]}
+CIRCULAR = {"shifted": ("shifted",), "slice": ("__getitem__",), "at": ("__getitem__",),
+            "cutaround": ("cutaround",), "find": ("find",), "replace_with": ("replace_with",)}
+for op in circular_ops:
+    for member in CIRCULAR.get(op, ()):
+        mark(f"pydna.dseq.CircularBytes.{member}")
+if cuts["circular"]:
+    mark("pydna.dseq.CircularBytes.__new__")
 
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

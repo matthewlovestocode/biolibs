@@ -7,9 +7,15 @@
  *
  * - `data/dscode.ts` — pydna's alphabet, generated from it by `reference/gen_pydna_data.py`.
  * - `alphabet.ts` — reading the strands and the overhangs off a dscode string.
+ * - `circular.ts` — indexing a circle, which wraps.
  * - `dseq.ts` — `Dseq` itself: construction, geometry, printing, ligation and circularity.
+ * - `dseq-util.ts` — the pieces of that which do not need the class: the overlap search, the end kinds.
+ * - `cut.ts` — cutting with restriction enzymes, and the fragments that come out.
  */
 
 export * from "./alphabet.js";
+export * from "./circular.js";
+export * from "./cut.js";
 export * from "./dseq.js";
+export * from "./dseq-util.js";
 export * as dscode from "./data/dscode.js";
