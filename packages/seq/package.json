@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/seq",
   "version": "0.1.0",
-  "description": "Biological sequences: complement, transcription, translation (Biopython Bio.Seq)",
+  "description": "Biological sequences, verified against Biopython: Seq and MutableSeq, translation with all 27 genetic codes, undefined and partially defined content, CodonTable and IUPACData (Bio.Seq, Bio.Data)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,6 +1,12 @@
 # @biolibs/seq
 
-A TypeScript port of Biopython's `Bio.Seq`, `Bio.Data.CodonTable` and `Bio.Data.IUPACData`. Behaviour is verified against Biopython 1.88 with about 22,700 recorded calls (results, exceptions and their messages, warnings, and state after mutation) plus complete dumps of every genetic code table. See [PARITY.md](../PARITY.md) for the item-by-item checklist.
+A TypeScript port of Biopython's `Bio.Seq`, `Bio.Data.CodonTable` and `Bio.Data.IUPACData`. Behaviour is verified against Biopython 1.88 with **23,556 recorded calls** over 94 methods and the
+module functions — results, exceptions *and their messages*, warnings, and the object's state after a
+mutation. 5,089 of those calls record an exception and 506 a warning. Every one of the 27 genetic codes is
+dumped whole in all six flavours, with 865 further cases for the ambiguity functions and the 32 IUPAC
+constants compared entry by entry. All 219 items are verified: `Bio.Seq` 151, `Bio.Data.CodonTable` 36,
+`Bio.Data.IUPACData` 32. See [PARITY.md](../PARITY.md) for the item-by-item checklist, and
+[the package README](../packages/seq/README.md) for the API with worked examples.
 
 ```ts
 import { Seq, MutableSeq, translate, reverseComplement, CodonTable } from "@biolibs/seq";
