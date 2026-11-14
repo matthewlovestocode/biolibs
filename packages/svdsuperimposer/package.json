@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/svdsuperimposer",
   "version": "0.1.0",
-  "description": "Port of Biopython Bio.SVDSuperimposer: least-squares superposition of two point sets by singular value decomposition",
+  "description": "Least-squares superposition of two sets of 3D points, verified against Biopython: the Kabsch algorithm through a 3x3 Jacobi SVD, in single or double precision, with no dependencies (Bio.SVDSuperimposer)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
