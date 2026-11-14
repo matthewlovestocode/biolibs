@@ -1,7 +1,7 @@
 /** Replays the DEFLATE golden cases (reference/golden/gen_zlib_cases.py): Python compresses, the port inflates. */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { adler32, inflate, inflateRaw } from "../src/index.js";
+import { adler32, deflateStored, inflate, inflateRaw } from "../src/index.js";
 
 interface Case { level: number | null; raw: string | null; zlib: string; deflate: string | null; error?: string }
 
@@ -42,5 +42,27 @@ describe("zlib inflate", () => {
     const stream = [...bytes(cases.find((c) => c.raw !== null && c.raw.length > 20)!.zlib)];
     stream[stream.length - 1] = stream[stream.length - 1]! ^ 0xff;
     expect(() => inflate(Uint8Array.from(stream))).toThrow(/incorrect data check/);
+  });
+});
+
+describe("zlib deflate (stored blocks)", () => {
+  const { cases } = JSON.parse(readFileSync(new URL("./golden/zlib.json", import.meta.url), "utf8")) as { cases: Case[] };
+
+  it("wraps data in a stream this inflater reads back", () => {
+    const bad: string[] = [];
+    for (const c of cases) {
+      if (c.raw === null) continue;
+      const want = bytes(c.raw);
+      const got = inflate(deflateStored(want));
+      if (hex(got) !== hex(want)) bad.push(`${want.length} bytes: got ${got.length}`);
+    }
+    expect(bad.length, bad.join("\n")).toBe(0);
+  });
+
+  it("writes a stream longer than one stored block", () => {
+    const big = Uint8Array.from({ length: 200000 }, (_, i) => i % 251);
+    const stream = deflateStored(big);
+    expect(stream.length).toBeGreaterThan(big.length);
+    expect(hex(inflate(stream))).toBe(hex(big));
   });
 });

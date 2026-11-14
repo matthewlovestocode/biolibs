@@ -117,7 +117,7 @@ alignments.get(-1).coordinates;    // [[1, 2, 3, 5], [0, 1, 1, 3]]
 
 ### Alignment file formats (`formats/`)
 
-`parse`, `read` and `write` work over text instead of file handles, and `Alignment.format(fmt)` returns file text. Ported and verified against Biopython on about 7,800 cases (valid files, malformed files, odd identifiers, long alignments): `fasta`, `a2m`, `clustal`, `phylip`, `nexus`, `stockholm`, `psl`, `bed`, `chain`, `sam`, `maf`, `mauve` and `exonerate` (read and write; the writer takes an optional `interleave`) and `msf`, `emboss`, `tabular` and `hhr` (read only, as in Biopython; `hhr` reads HHsearch/HHblits output into one pairwise alignment per hit, with the per-hit scores in `annotations`, consensus and secondary-structure strings as letter annotations, and `No_of_seqs` as a tuple; `tabular` reads BLAST `-outfmt 7` and FASTA `-m 8CB`/`8CC` output and, as in Biopython, needs a `BTOP` or `aln_code` column to build coordinates; EMBOSS files keep their header in `metadata`, strand and start become partially defined sequences, and Biopython's `raise ValueError(...) % line` typo surfaces as the same `TypeError`). Reading `bigbed`, `bigpsl` and `bigmaf` is ported too (see below); writing them throws `NotImplementedError`; the error for an unknown name, a binary format written to text (`StreamModeError`) and a format without a writer (`ValueError`) match Biopython's.
+`parse`, `read` and `write` work over text instead of file handles, and `Alignment.format(fmt)` returns file text. Ported and verified against Biopython on about 7,800 cases (valid files, malformed files, odd identifiers, long alignments): `fasta`, `a2m`, `clustal`, `phylip`, `nexus`, `stockholm`, `psl`, `bed`, `chain`, `sam`, `maf`, `mauve` and `exonerate` (read and write; the writer takes an optional `interleave`) and `msf`, `emboss`, `tabular` and `hhr` (read only, as in Biopython; `hhr` reads HHsearch/HHblits output into one pairwise alignment per hit, with the per-hit scores in `annotations`, consensus and secondary-structure strings as letter annotations, and `No_of_seqs` as a tuple; `tabular` reads BLAST `-outfmt 7` and FASTA `-m 8CB`/`8CC` output and, as in Biopython, needs a `BTOP` or `aln_code` column to build coordinates; EMBOSS files keep their header in `metadata`, strand and start become partially defined sequences, and Biopython's `raise ValueError(...) % line` typo surfaces as the same `TypeError`). Reading `bigbed`, `bigpsl` and `bigmaf` is ported too, and writing `bigbed` (see below); writing the other two throws `NotImplementedError`; the error for an unknown name, a binary format written to text (`StreamModeError`) and a format without a writer (`ValueError`) match Biopython's.
 
 | Python | TypeScript |
 |---|---|
@@ -166,7 +166,39 @@ Twelve of the golden bigPsl files cannot be read back by Biopython at all — it
 the query start and end for some reverse-strand and translated alignments (`Inconsistent qEnd found (8, expected
 14)`) — and the cases record those errors with their numbers, which the port reproduces.
 
-Writing bigBed, bigPsl and bigMaf is not ported. Biopython's own writer needs a real file — it puts its index out with
+#### Writing bigBed
+
+`write(alignments, new ByteWriter(), "bigbed", options)` writes one, where `options` are Biopython's keyword
+arguments (`bedN`, `declaration`, `targets`, `compress`, `itemsPerSlot`, `blockSize`, `extraIndex`). The target
+must be a `ByteWriter`, since a text target is what Biopython refuses with `StreamModeError`; it collects the
+bytes and lets the writer seek back to fill in the header, which is the last thing to be known. As in Biopython,
+the call returns nothing rather than a count.
+
+The file is laid out in one pass: room for the header, the declaration, the summary and the extra indexes, then
+the chromosome B+ tree, the data in blocks, the R tree over them, the zoom levels, the extra indexes' own trees,
+and the magic number again at the end. The zoom levels are the part with real work in them: the coverage depth
+of the alignments is kept in a red-black tree of non-overlapping ranges (`range-tree.ts`), summarised over
+windows of a fixed width, and then summarised again at four times the width until a level holds no fewer
+summaries than the one before. Those figures are 32-bit floats in Biopython, so the arithmetic rounds through
+`Math.fround` at each step.
+
+**An uncompressed file matches Biopython's byte for byte**, which is what the golden cases compare — across
+`bedN` 3 to 12, several `itemsPerSlot` and `blockSize` combinations, an extended declaration, extra indexes over
+two columns, a 120-item file with several blocks and index levels, and a pile of 300 overlapping alignments.
+A **compressed** file cannot be: `@biolibs/core` has no zlib-compatible compressor, so it wraps each block in
+stored DEFLATE blocks instead. The file is valid and both readers give back the same alignments — the cases
+check exactly that — but the bytes differ, and compression is the default, which is why `write: bigbed` is
+marked partial rather than done. Making it `[x]` means porting zlib's own match finder.
+
+Two more differences the cases pin down. A score that is a whole number is written `100.0` by Biopython, whose
+BED reader makes every score a `float`, and `100` here, where a JavaScript number that happens to be whole is
+an `int`; the byte-compared cases therefore use fractional scores, and an integer-score file is compared by
+reading it back. And three combinations of `blockSize` and `itemsPerSlot` make Biopython's own R tree writer
+notice that its offsets do not add up and raise `RuntimeError: Internal error: offset mismatch (1839 vs 1891)`
+— the port raises the same error with the same numbers, which is the strongest check there is that the layout
+agrees up to that point.
+
+Writing bigPsl and bigMaf is not ported. Biopython's own writer needs a real file — it puts its index out with
 `numpy.ndarray.tofile` — and it raises on an empty alignment list, so the golden files are written to a
 temporary file with at least one alignment in them. The bigPsl writer also wants each alignment to carry an
 `annotations` dict already, and the bigMaf writer renames the targets of the alignments it is given, so each

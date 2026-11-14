@@ -7,6 +7,8 @@ Case kinds (each forked so a crash cannot lose the rest):
   write  - Align.write([alignment...], StringIO, fmt) -> text and count
   other  - parse/read/format with an unknown or binary format name
   bbparse / bbsearch - a bigBed file built here by Biopython's own writer, then read back and searched
+  bbwrite - Align.write(..., "bigbed"): the file's bytes when it is written uncompressed, and what reading it
+          back gives either way
 """
 import io, json, os, warnings
 import numpy as np
@@ -160,6 +162,36 @@ def run(case):
                         out["result"].append({"hits": hits})
                     except Exception as e:
                         out["result"].append({"exc": {"type": tname(e), "msg": emsg(e)}})
+            elif k == "bbwrite":
+                # Both sides start from the same BED text, whose reader is verified already, and write it out as
+                # a bigBed file. An uncompressed file is compared byte for byte; a compressed one cannot be,
+                # since the compressed form is zlib's own, so it is read back and compared as a whole.
+                import tempfile
+                alns = Align.Alignments(list(Align.parse(io.StringIO(case["bed"]), "bed")))
+                targets = [SeqRecord(Seq(None, length=n), id=i) for i, n in case["targets"]]
+                alns.targets = targets
+                if case.get("no_targets"):
+                    # A plain list has no `targets`, and the writer reads it when none is passed.
+                    alns = list(alns)
+                opts = dict(case.get("opts") or {})
+                if "declaration" in opts:
+                    opts["declaration"] = bigbed.AutoSQLTable.from_string(opts["declaration"])
+                if case.get("no_targets"): opts["targets"] = None
+                else: opts["targets"] = targets
+                with tempfile.TemporaryDirectory() as d:
+                    path = os.path.join(d, "out.bb")
+                    with open(path, "wb") as f:
+                        n = bigbed.AlignmentWriter(f, **opts).write(alns)
+                    with open(path, "rb") as f:
+                        data = f.read()
+                byte_exact = opts.get("compress") is False and case.get("bytes") is not False
+                out["result"] = {"n": n, "size": len(data) if byte_exact else None,
+                                 "hex": data.hex() if byte_exact else None}
+                back = Align.parse(io.BytesIO(data), "bigbed")
+                out["result"]["logical"] = {
+                    "alns": [enc_aln(a) for a in back], "len": len(back), "bedN": back.bedN,
+                    "declaration": str(back.declaration),
+                    "targets": [[t.id, len(t.seq)] for t in back.targets]}
             elif k == "write":
                 buf = io.StringIO()
                 n = Align.write([build(s) for s in case["alns"]], buf, case["fmt"], *case.get("args", []), **case.get("kwargs", {}))
@@ -1252,6 +1284,124 @@ for compress in (True, False):
     add({"kind": "bbsearch", "fmt": "bigmaf", "data": data, "queries": [
         ["hg38.chr1", None, None], ["hg38.chr1", 0, 50], ["hg38.chr1", 100, 105], ["hg38.chr1", 500, 600],
         ["chr1", 0, 10]]})
+
+# ---------------- writing bigBed ----------------
+# Both sides start from BED text, parse it with their own (already verified) BED reader, and write it out as a
+# bigBed file. `compress=False` makes the bytes comparable; with compression they cannot be, because the
+# compressed form is whatever zlib produces, so those cases compare the file by reading it back.
+# The scores have a fractional part on purpose. Biopython's BED reader makes every score a `float`, and the
+# writer puts `str(score)` in the file, so an integer score is written "100.0" where a TypeScript number is
+# written "100" -- the int/float distinction JavaScript does not have. A fractional score is written the same
+# either way, which lets the bytes be compared; the integer-score file below is compared by reading it back.
+BBW_BED = "".join([
+    "chr1\t10\t30\tone\t100.5\t+\t10\t30\t0,0,0\t1\t20,\t0,\n",
+    "chr1\t50\t110\ttwo\t0.5\t-\t50\t110\t255,0,0\t2\t10,30,\t0,30,\n",
+    "chr1\t120\t180\tthree\t999.5\t+\t120\t180\t0,255,0\t3\t5,5,25,\t0,10,35,\n",
+    "chr2\t0\t40\tfour\t7.5\t-\t0\t40\t0,0,255\t1\t40,\t0,\n",
+    "chr2\t300\t301\tfive\t42.5\t+\t300\t301\t0,0,0\t1\t1,\t0,\n",
+    "chrX\t700\t800\tsix\t999.5\t-\t700\t800\t1,2,3\t1\t100,\t0,\n",
+])
+BBW_BED_INT = BBW_BED.replace(".5\t", "\t")
+BBW_TARGETS = [["chr1", 1000], ["chr2", 2000], ["chrX", 1500]]
+for _bedN in (3, 4, 5, 6, 7, 8, 9, 12):
+    for _compress in (False, True):
+        add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS,
+             "opts": {"bedN": _bedN, "compress": _compress}})
+for _opts in ({"itemsPerSlot": 1}, {"itemsPerSlot": 2}, {"blockSize": 2}, {"blockSize": 2, "itemsPerSlot": 1},
+              {"itemsPerSlot": 1, "blockSize": 3}):
+    add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS,
+         "opts": {**_opts, "compress": False}})
+    # Some of these combinations make Biopython's own R tree writer notice that its offsets do not add up and
+    # raise; the offsets it reports are file positions, so the compressed variant of such a combination cannot
+    # be compared -- the message itself would carry the size of zlib's output.
+    if _opts != {"blockSize": 2, "itemsPerSlot": 1}:
+        add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS, "opts": dict(_opts)})
+# One alignment, overlapping alignments (which deepen the coverage tree), and many of them (several blocks and
+# more than one level of index).
+BBW_ONE = BBW_BED.split("\n")[0] + "\n"
+BBW_OVERLAP = "".join(f"chr1\t{10 * i}\t{10 * i + 55}\titem{i}\t{i}.5\t+\t{10 * i}\t{10 * i + 55}\t0,0,0\t1\t55,\t0,\n"
+                      for i in range(12))
+BBW_MANY = "".join(f"chr1\t{7 * i}\t{7 * i + 5}\tm{i}\t{i % 1000}.5\t{'+-'[i % 2]}\t{7 * i}\t{7 * i + 5}\t0,0,0\t1\t5,\t0,\n"
+                   for i in range(120))
+for _text, _targets in ((BBW_ONE, BBW_TARGETS), (BBW_OVERLAP, BBW_TARGETS), (BBW_MANY, [["chr1", 2000]])):
+    for _compress in (False, True):
+        add({"kind": "bbwrite", "fmt": "bigbed", "bed": _text, "targets": _targets, "opts": {"compress": _compress}})
+    add({"kind": "bbwrite", "fmt": "bigbed", "bed": _text, "targets": _targets,
+         "opts": {"compress": False, "itemsPerSlot": 4, "blockSize": 3}})
+# A long chromosome with deeply overlapping alignments of varied lengths. This is what makes the zoom levels
+# work: the coverage depth climbs into the dozens, the sums grow past what a 32-bit float holds exactly (which
+# is the precision Biopython keeps them in), and the ranges have to be split at both ends as they arrive.
+BBW_DEEP = "".join(
+    f"chr1\t{s}\t{s + ln}\td{i}\t{i % 1000}.5\t+\t{s}\t{s + ln}\t0,0,0\t1\t{ln},\t0,\n"
+    for i, (s, ln) in enumerate(sorted((
+        (((i * 37) % 4000) * 25, 400 + (i % 7) * 311) for i in range(260)))))
+for _compress in (False, True):
+    add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_DEEP, "targets": [["chr1", 120000]],
+         "opts": {"compress": _compress}})
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_DEEP, "targets": [["chr1", 120000]],
+     "opts": {"compress": False, "itemsPerSlot": 8}})
+# Three hundred alignments over one stretch: the coverage depth reaches three hundred, so the sums of squares
+# run past 2**24 and the 32-bit floats Biopython keeps them in start rounding.
+BBW_PILE = "".join(
+    f"chr1\t{i}\t{i + 3000}\tp{i}\t{i % 1000}.5\t+\t{i}\t{i + 3000}\t0,0,0\t1\t3000,\t0,\n"
+    for i in range(300))
+for _compress in (False, True):
+    add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_PILE, "targets": [["chr1", 10000]],
+         "opts": {"compress": _compress}})
+
+# An extended declaration, whose extra columns come from the alignment annotations, and an extra index over one.
+BBW_DECL = """table bedExtra
+"BED with extra fields"
+(
+   string  chrom;        "Reference sequence chromosome or scaffold"
+   uint    chromStart;   "Start position in chromosome"
+   uint    chromEnd;     "End position in chromosome"
+   string  name;         "Name of item"
+   uint    score;        "Score (0-1000)"
+   char[1] strand;       "+ or - for strand"
+   uint    thickStart;   "Start of where display should be thick"
+   uint    thickEnd;     "End of where display should be thick"
+   uint    reserved;     "Used as itemRgb"
+   int     blockCount;   "Number of blocks"
+   int[blockCount] blockSizes; "Comma separated list of block sizes"
+   int[blockCount] chromStarts; "Start positions relative to chromStart"
+)
+"""
+for _compress in (False, True):
+    add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS,
+         "opts": {"compress": _compress, "declaration": BBW_DECL}})
+for _field in ("name", "chrom"):
+    add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS,
+         "opts": {"compress": False, "extraIndex": [_field]}})
+    add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS,
+         "opts": {"extraIndex": [_field]}})
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS,
+     "opts": {"compress": False, "extraIndex": ["name", "chrom"]}})
+# The same file with integer scores, which only the read-back comparison can cover.
+for _compress in (False, True):
+    add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED_INT, "targets": BBW_TARGETS, "bytes": False,
+         "opts": {"compress": _compress}})
+
+# Things the writer refuses: a bedN out of range, an unsorted file, an alignment off the end of its chromosome,
+# a chromosome the target list does not have, an extra index on a column that is not a string, and a score out
+# of range.
+BBW_UNSORTED = BBW_BED.split("\n")[1] + "\n" + BBW_BED.split("\n")[0] + "\n"
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS, "opts": {"bedN": 2}})
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS, "opts": {"bedN": 13}})
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_UNSORTED, "targets": BBW_TARGETS, "opts": {"compress": False}})
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": [["chr1", 100], ["chr2", 2000], ["chrX", 1500]],
+     "opts": {"compress": False}})
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": [["chr1", 1000]], "opts": {"compress": False}})
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS,
+     "opts": {"compress": False, "extraIndex": ["score"]}})
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS,
+     "opts": {"compress": False, "extraIndex": ["nosuch"]}})
+add({"kind": "bbwrite", "fmt": "bigbed",
+     "bed": "chr1\t10\t30\tone\t5000.5\t+\t10\t30\t0,0,0\t1\t20,\t0,\n",
+     "targets": BBW_TARGETS, "opts": {"compress": False}})
+# No targets at all, neither passed nor on the alignments.
+add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS, "no_targets": True,
+     "opts": {"compress": False}})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 report_skipped()

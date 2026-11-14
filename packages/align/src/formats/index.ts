@@ -2,7 +2,7 @@
  * @packageDocumentation
  * Alignment file formats of Biopython's `Bio.Align` (`parse`, `read`, `write` and `Alignment.format`).
  *
- * - `stream.ts`: `TextStream`; `byte-stream.ts`: `ByteStream`, for the binary formats
+ * - `stream.ts`: `TextStream`; `byte-stream.ts` and `byte-writer.ts`: `ByteStream` and `ByteWriter`, for the binary formats
  * - `interfaces.ts`: `AlignmentIterator`, `AlignmentWriter`, `Alignments`
  * - `registry.ts`: the format table, `parse`, `read`, `write`, `formatAs`
  * - `fasta.ts`, `a2m.ts`, `clustal.ts`, `phylip.ts`, `msf.ts`, `emboss.ts`, `nexus.ts`, `tabular.ts`, `stockholm*.ts` (reader, writer and keyword tables), `psl*.ts`, `bed.ts`, `bigbed/` (header, indexes and iterator), `chain.ts`, `sam*.ts`, `maf*.ts`, `mauve.ts`, `hhr.ts`, `exonerate.ts`, `shlex.ts`: the formats
@@ -42,6 +42,7 @@ export * from "./stockholm.js";
 export * from "./psl.js";
 export * from "./bed.js";
 export * from "./byte-stream.js";
+export * from "./byte-writer.js";
 export * from "./bigbed/index.js";
 export * from "./chain.js";
 export * from "./sam.js";

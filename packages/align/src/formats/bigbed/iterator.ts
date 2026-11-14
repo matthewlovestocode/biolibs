@@ -6,7 +6,6 @@ import { SeqRecord } from "@biolibs/seqrecord";
 import { Alignment } from "../../alignment/alignment.js";
 import type { ByteStream } from "../byte-stream.js";
 import { AlignmentIterator } from "../interfaces.js";
-import { registerFormat } from "../registry.js";
 import { AutoSQLTable } from "./autosql.js";
 import { readBPlusTree, readHeader, readRTree, readRTreeHeader, readZoomLevels, type Header, type RTreeNode } from "./indexes.js";
 
@@ -315,5 +314,3 @@ function* leaves(root: RTreeNode, keep: (node: RTreeNode) => boolean = () => tru
     yield* leaves(child, keep);
   }
 }
-
-registerFormat("bigbed", { AlignmentIterator: BigBedIterator as never });

@@ -8,7 +8,7 @@
 - [x] `parse: bed`
 - [x] `write: bed`
 - [x] `parse: bigbed`
-- [ ] `write: bigbed`
+- [~] `write: bigbed`
 - [x] `parse: bigmaf`
 - [ ] `write: bigmaf`
 - [x] `parse: bigpsl`

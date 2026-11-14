@@ -5,7 +5,6 @@ import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
 import { Alignment } from "../../alignment/alignment.js";
 import type { ByteStream } from "../byte-stream.js";
-import { registerFormat } from "../registry.js";
 import { BigBedIterator, type BigBedRow } from "./iterator.js";
 
 /** The statuses an `i` line may give for the sequence either side of a block. */
@@ -176,5 +175,3 @@ export class BigMafIterator extends BigBedIterator {
     return alignment;
   }
 }
-
-registerFormat("bigmaf", { AlignmentIterator: BigMafIterator as never });

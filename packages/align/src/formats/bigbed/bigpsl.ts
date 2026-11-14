@@ -5,7 +5,6 @@ import { Seq } from "@biolibs/seq";
 import { Location, SeqFeature, type SimpleLocation } from "@biolibs/seqfeature";
 import { SeqRecord } from "@biolibs/seqrecord";
 import { Alignment } from "../../alignment/alignment.js";
-import { registerFormat } from "../registry.js";
 import type { AutoSQLTable } from "./autosql.js";
 import { BigBedIterator, type BigBedRow } from "./iterator.js";
 
@@ -140,5 +139,3 @@ export class BigPslIterator extends BigBedIterator {
     return alignment;
   }
 }
-
-registerFormat("bigpsl", { AlignmentIterator: BigPslIterator as never });

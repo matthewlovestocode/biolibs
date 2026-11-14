@@ -3,6 +3,7 @@
 import { ValueError } from "@biolibs/core";
 import type { Alignment } from "../alignment/alignment.js";
 import type { AlignmentWriter, AnyAlignmentIterator, WriteTarget } from "./interfaces.js";
+import { isByteWriter, type ByteWriter } from "./byte-writer.js";
 
 /** The parser and writer classes of one format. */
 export interface FormatModule {
@@ -88,17 +89,17 @@ export function read(source: string | Uint8Array, fmt: string): Alignment {
  * @returns The number of alignments written.
  * @throws ValueError for unknown formats or formats without a writer.
  */
-export function write(alignments: Alignment | Iterable<Alignment>, target: WriteTarget, fmt: string, ...args: unknown[]): number {
+export function write(alignments: Alignment | Iterable<Alignment>, target: WriteTarget | ByteWriter, fmt: string, ...args: unknown[]): number {
   const list: Iterable<Alignment> = (alignments as { sequences?: unknown }).sequences !== undefined ? [alignments as Alignment] : (alignments as Iterable<Alignment>);
   const f = fmt.toLowerCase();
   if (Object.hasOwn(KNOWN, f)) {
     if (!KNOWN[f]!.writer) throw new ValueError(`File writing has not yet been implemented for the ${fmt} format`);
-    // Targets here are always text, so a binary format's writer rejects them as Biopython's does for a text-mode handle.
-    if (KNOWN[f]!.mode === "b") throw new StreamModeError("File must be opened in binary mode.");
+    // A binary format needs a binary target, as Biopython needs a file opened in binary mode.
+    if (KNOWN[f]!.mode === "b" && !isByteWriter(target)) throw new StreamModeError("File must be opened in binary mode.");
   }
   const mod = loadFormat(fmt);
   if (!mod.AlignmentWriter) throw new ValueError(`File writing has not yet been implemented for the ${fmt} format`);
-  return new mod.AlignmentWriter(target, ...args).write(list);
+  return new mod.AlignmentWriter(target as WriteTarget, ...args).write(list);
 }
 
 /**

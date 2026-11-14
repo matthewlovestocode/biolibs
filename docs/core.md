@@ -52,8 +52,10 @@ Small functions that let ports reproduce Biopython's behaviour and messages exac
 `inflate(bytes)` is Python's `zlib.decompress` and `inflateRaw(bytes)` its `wbits=-15` form, with `adler32` for
 the checksum a zlib stream ends with and `ZlibError` (Python's `zlib.error`, whose name is `error`) for data that
 is not valid. Written out here rather than taken from the host, so that the readers that need it work the same
-under Node, a browser and a bundler; `Bio.Align.bigbed` is the first of them. Only decompression is ported --
-nothing here compresses -- and it is verified against Python's own `zlib.compress` at every level, including the
+under Node, a browser and a bundler; `Bio.Align.bigbed` is the first of them. `deflateStored(bytes)` goes the other way, but only as far as a valid zlib stream of *stored* blocks: nothing
+here squeezes anything, because matching `zlib.compress` byte for byte would mean porting zlib's own match
+finder. A writer that needs its output to match Biopython's exactly has to write uncompressed. Decompression is
+verified against Python's own `zlib.compress` at every level, including the
 stored blocks level 0 produces, incompressible data, and payloads longer than one window.
 
 ## `assert(cond, message)`

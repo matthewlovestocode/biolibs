@@ -93,8 +93,8 @@ export function readHeader(stream: ByteStream): Header {
   return header;
 }
 
-/** One zoom level (supplemental table 6). */
-export interface ZoomLevel {
+/** One zoom level as a file holds it (supplemental table 6); the writer has a class of its own. */
+export interface ZoomLevelRead {
   /** How many bases each summary covers. */
   reductionLevel: number;
   /** Where that level's summaries are. */
@@ -112,8 +112,8 @@ export interface ZoomLevel {
  * @param stream - The file, positioned after the header.
  * @returns The levels that are filled in.
  */
-export function readZoomLevels(stream: ByteStream): ZoomLevel[] {
-  const out: ZoomLevel[] = [];
+export function readZoomLevels(stream: ByteStream): ZoomLevelRead[] {
+  const out: ZoomLevelRead[] = [];
   for (let i = 0; i < MAX_ZOOM_LEVELS; i++) {
     const rec = stream.record(ZOOM_SIZE);
     const reductionLevel = rec.u32();
