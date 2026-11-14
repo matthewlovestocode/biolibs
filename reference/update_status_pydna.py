@@ -113,5 +113,14 @@ if rest["joins"]:
 if rest["anneals"]:
     mark("pydna.alphabet.anneal_strands")
 
+# The common-substring matcher: every case records both functions' answers, including the refusals, so one
+# case that was not refused covers both. Upstream these are a call into pydivsufsort, so what the cases
+# compare is that library's output rather than anything written in Python.
+subs = json.load(open(f"{here}/../packages/assembly/test/golden/substrings.json"))
+if any("value" in c["css"] for c in subs["cases"]):
+    mark("pydna.common_sub_strings.common_sub_strings")
+if any("value" in c["terminal"] for c in subs["cases"]):
+    mark("pydna.common_sub_strings.terminal_overlap")
+
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

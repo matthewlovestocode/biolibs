@@ -9,7 +9,7 @@ listed: the inherited `Bio.Seq` API is already measured under `docs/parity/Bio.S
 """
 import inspect, json
 import pydna
-from pydna import alphabet, dseq
+from pydna import alphabet, common_sub_strings, dseq
 
 #: Dunder members a port has to provide even though their names are private.
 DUNDERS = ("__init__", "__len__", "__getitem__", "__setitem__", "__iter__", "__next__", "__str__",
@@ -63,6 +63,11 @@ inv = {
     "pydna.dseq": {
         "functions": funcs(dseq),
         "classes": {"Dseq": members(dseq.Dseq), "CircularBytes": members(dseq.CircularBytes)},
+    },
+    # The matcher every homology-based assembly starts from. The module's own `Match` is a type alias
+    # rather than a class, so there is nothing to list for it beyond the two functions.
+    "pydna.common_sub_strings": {
+        "functions": funcs(common_sub_strings),
     },
 }
 

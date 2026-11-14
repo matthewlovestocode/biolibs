@@ -47,6 +47,9 @@
       "path": "packages/seguid"
     },
     {
+      "path": "packages/assembly"
+    },
+    {
       "path": "packages/gel"
     },
     {

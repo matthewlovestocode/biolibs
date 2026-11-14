@@ -25,6 +25,8 @@
  "pydna.alphabet.regex_ds_melt_factory": "done",
  "pydna.alphabet.regex_ss_melt_factory": "done",
  "pydna.alphabet.representation_tuple": "done",
+ "pydna.common_sub_strings.common_sub_strings": "done",
+ "pydna.common_sub_strings.terminal_overlap": "done",
  "pydna.dseq.CircularBytes.__getitem__": "done",
  "pydna.dseq.CircularBytes.__new__": "done",
  "pydna.dseq.CircularBytes.cutaround": "done",

@@ -185,5 +185,11 @@
     "shifted": "(self, shift: int) -> 'CircularBytes'"
    }
   }
+ },
+ "pydna.common_sub_strings": {
+  "functions": {
+   "common_sub_strings": "(stringx: str, stringy: str, limit: int = 25) -> List[Tuple[int, int, int]]",
+   "terminal_overlap": "(stringx: str, stringy: str, limit: int = 15) -> List[Tuple[int, int, int]]"
+  }
  }
 }
