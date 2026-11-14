@@ -57,6 +57,12 @@ Dseq.fromRepresentation("GAATTC\n  TAA").crick;   // "AATTC"
 | `d.get_left_end_as_cutsite()` | `getLeftEndAsCutsite(d)` (and `getRightEndAsCutsite`) |
 | `d.cutters(b)`, `d.no_cutters(b)`, `d.n_cutters(n, b)` | `cuttersBy(d, b, null)`, `cuttersBy(d, b, 0)`, `cuttersBy(d, b, n)` |
 | `CircularBytes(...)[a:b:c]`, `.shifted(n)`, `.cutaround(i, n)`, `.find(s)`, `.replace_with(a, b, s)` | `circularSlice`, `circularShifted`, `cutaround`, `circularFind`, `replaceWith` |
+| `d.fill_in(n)`, `d.klenow(n)` | `fillIn(d, n)`, `klenow(d, n)` |
+| `d.T4(n)`, `d.t4(n)` | `T4(d, n)`, `t4(d, n)` |
+| `d.mung()`, `d.nibble_to_blunt()` | `mung(d)`, `nibbleToBlunt(d)` |
+| `d.nibble_five_prime_left(n)` and the other three | `nibbleFivePrimeLeft(d, n)` and the other three |
+| `d.exo1_front(n)`, `d.exo1_end(n)` | `exo1Front(d, n)`, `exo1End(d, n)` |
+| `d.terminal_transferase(n)`, `d.user()` | `terminalTransferase(d, n)`, `user(d)` |
 
 Cutting is free functions rather than methods so that `Dseq` itself does not have to know about enzymes,
 which keeps the two modules from importing each other. The enzymes are `@biolibs/restriction`'s, so a
@@ -81,10 +87,15 @@ circularising and rotating a circle; ligation and repetition; equality; slicing,
 origin for a circle; and cutting — the cut sites, which of them are possible, how they pair up, every
 fragment, the ends written as cut sites, and the cutter counts.
 
-Not yet: the end-modifying enzymes (`fill_in`, `t4`/`T4`, `mung`, `exo1_end`, `exo1_front`, `klenow`,
-`terminal_transferase`, `user`, the `nibble_*` family, `nibble_to_blunt`), melting (`melt`,
-`melt_ss_dna`, the `*_meltsites` family, `shed_ss_dna`), `seguid`, `join`, `find`, `__contains__` and
-`__hash__`. `docs/parity-pydna/` is the current list.
+The enzymes that change an end are here too: filling a recessed 3' end in (`fillIn`, `klenow`), bringing
+both ends to blunt (`t4`, which fills a 5' overhang in and chews a 3' one back), throwing the
+single-stranded ends away (`mung`, `nibbleToBlunt`), chewing one strand back from one end (the four
+`nibble*` functions, and `exo1Front` / `exo1End` under pydna's older names), adding a tail
+(`terminalTransferase`, one A by default, which is what readies a fragment for TA cloning) and excising
+uracils (`user`).
+
+Not yet: melting (`melt`, `melt_ss_dna`, the `*_meltsites` family, `shed_ss_dna`), `seguid`, `join`,
+`find`, `__contains__` and `__hash__`. `docs/parity-pydna/` is the current list.
 
 Quirks kept because pydna has them, each pinned by a golden case:
 
@@ -111,3 +122,8 @@ Quirks kept because pydna has them, each pinned by a golden case:
 - `CircularBytes.replace_with` concatenates its replacement onto a byte string, so in pydna it can only be
   called with `bytes`; given a `str` it always raises. `replaceWith` here takes a string, which is the
   path pydna's own code uses.
+- `fillIn` and `t4` disagree about an empty list of bases: `fill_in` only treats `None` as "all of them",
+  so `fillIn(d, "")` adds nothing, while `T4` tests for falsiness and so takes `""` as all of them.
+- `fillIn` on a single strand throws `TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'`,
+  because it adds the length it filled to an overhang that is not there. `t4` on the same molecule works,
+  since it never looks at the overhang.

@@ -3,7 +3,7 @@
 
 ### pydna.dseq.Dseq
 
-- [ ] `T4(self, nucleotides=None) -> ~DseqType`
+- [x] `T4(self, nucleotides=None) -> ~DseqType`
 - [x] `__add__(self: ~DseqType, other: [~DseqType, <class 'str'>, <class 'bytes'>]) -> ~DseqType`
 - [x] `__bytes__(self) -> bytes`
 - [ ] `__contains__(self, sub: [<class 'str'>, <class 'bytes'>]) -> bool`
@@ -22,9 +22,9 @@
 - [x] `cut(self: ~DseqType, *enzymes: ~EnzymesType) -> Tuple[~DseqType, ...]`
 - [x] `cutsite_is_valid(self, cutsite: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]) -> bool`
 - [x] `cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
-- [ ] `exo1_end(self: ~DseqType, n: int = 1) -> ~DseqType`
-- [ ] `exo1_front(self: ~DseqType, n: int = 1) -> ~DseqType`
-- [ ] `fill_in(self, nucleotides: None | str = None) -> ~DseqType`
+- [x] `exo1_end(self: ~DseqType, n: int = 1) -> ~DseqType`
+- [x] `exo1_front(self: ~DseqType, n: int = 1) -> ~DseqType`
+- [x] `fill_in(self, nucleotides: None | str = None) -> ~DseqType`
 - [ ] `find(self, sub: Bio.Seq._SeqAbstractBaseClass | str | bytes, start=0, end=9223372036854775807) -> int`
 - [x] `five_prime_end(self) -> Tuple[str, str]`
 - [x] `from_full_sequence_and_overhangs(cls, full_sequence: str, crick_ovhg: int, watson_ovhg: int)`
@@ -39,20 +39,20 @@
 - [ ] `get_ss_meltsites(self: ~DseqType, length: int) -> tuple[int, int]`
 - [x] `isblunt(self) -> bool`
 - [ ] `join(self, fragments)`
-- [ ] `klenow(self, nucleotides: None | str = None) -> ~DseqType`
+- [x] `klenow(self, nucleotides: None | str = None) -> ~DseqType`
 - [x] `left_end_position(self) -> Tuple[int, int]`
 - [x] `left_ovhg(self) -> int`
 - [x] `looped(self: ~DseqType) -> ~DseqType`
 - [ ] `melt(self, length)`
 - [ ] `melt_ss_dna(self, length) -> tuple['Dseq', list['Dseq']]`
-- [ ] `mung(self) -> ~DseqType`
+- [x] `mung(self) -> ~DseqType`
 - [x] `mw(self) -> float`
 - [x] `n_cutters(self, n=3, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
-- [ ] `nibble_five_prime_left(self: ~DseqType, n: int = 1) -> ~DseqType`
-- [ ] `nibble_five_prime_right(self: ~DseqType, n: int = 1) -> ~DseqType`
-- [ ] `nibble_three_prime_left(self: ~DseqType, n=1) -> ~DseqType`
-- [ ] `nibble_three_prime_right(self: ~DseqType, n=1) -> ~DseqType`
-- [ ] `nibble_to_blunt(self) -> ~DseqType`
+- [x] `nibble_five_prime_left(self: ~DseqType, n: int = 1) -> ~DseqType`
+- [x] `nibble_five_prime_right(self: ~DseqType, n: int = 1) -> ~DseqType`
+- [x] `nibble_three_prime_left(self: ~DseqType, n=1) -> ~DseqType`
+- [x] `nibble_three_prime_right(self: ~DseqType, n=1) -> ~DseqType`
+- [x] `nibble_to_blunt(self) -> ~DseqType`
 - [x] `no_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
 - [x] `once_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
 - [x] `ovhg(self) -> int`
@@ -66,13 +66,13 @@
 - [ ] `shift_melt_cutsite(self, cutsite: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], is_right: bool) -> Tuple[int, int]`
 - [ ] `shift_melt_cutsite_pairs(self, cutsite_pairs: List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]) -> List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]`
 - [x] `shifted(self: ~DseqType, shift: int) -> ~DseqType`
-- [ ] `t4(self, nucleotides=None) -> ~DseqType`
-- [ ] `terminal_transferase(self, nucleotides: str = 'a') -> ~DseqType`
+- [x] `t4(self, nucleotides=None) -> ~DseqType`
+- [x] `terminal_transferase(self, nucleotides: str = 'a') -> ~DseqType`
 - [x] `three_prime_end(self) -> Tuple[str, str]`
 - [x] `to_blunt_string(self) -> str`
 - [x] `twice_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
 - [x] `unique_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
-- [ ] `user(self) -> ~DseqType`
+- [x] `user(self) -> ~DseqType`
 - [x] `watson(self) -> str`
 - [x] `watson_ovhg(self) -> int`
 

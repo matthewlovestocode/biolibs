@@ -19,6 +19,7 @@ def mark(key, value="done"):
 
 ds = json.load(open(f"{here}/../packages/dseq/test/golden/dseq.json"))
 cuts = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-cut.json"))
+ends = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-ends.json"))
 built = [c for c in ds if "snap" in c]
 ops = {op[0] for c in ds for op in c["ops"]}
 kinds = {c["kind"] for c in ds}
@@ -82,6 +83,10 @@ for op in circular_ops:
         mark(f"pydna.dseq.CircularBytes.{member}")
 if cuts["circular"]:
     mark("pydna.dseq.CircularBytes.__new__")
+# The end-modifying enzymes: every case in dseq-ends.json runs all of them over one molecule.
+end_ops = {op[0] for c in ends for op in c["ops"]}
+for op in end_ops:
+    mark(f"pydna.dseq.Dseq.{op}")
 
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

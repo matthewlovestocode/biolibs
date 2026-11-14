@@ -11,6 +11,7 @@
  * - `dseq.ts` — `Dseq` itself: construction, geometry, printing, ligation and circularity.
  * - `dseq-util.ts` — the pieces of that which do not need the class: the overlap search, the end kinds.
  * - `cut.ts` — cutting with restriction enzymes, and the fragments that come out.
+ * - `enzymes.ts` — the enzymes that change an end: filling in, blunting, chewing back, tailing.
  */
 
 export * from "./alphabet.js";
@@ -18,4 +19,5 @@ export * from "./circular.js";
 export * from "./cut.js";
 export * from "./dseq.js";
 export * from "./dseq-util.js";
+export * from "./enzymes.js";
 export * as dscode from "./data/dscode.js";
