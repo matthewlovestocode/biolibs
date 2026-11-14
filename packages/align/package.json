@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/align",
   "version": "0.1.0",
-  "description": "Port of Biopython Bio.Align: MultipleSeqAlignment (the pairwise aligner is not yet ported)",
+  "description": "Sequence alignment: a port of Biopython's Bio.Align, verified against it case by case (pairwise and multiple alignment, substitution matrices, codon alignment, dN/dS, file formats)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

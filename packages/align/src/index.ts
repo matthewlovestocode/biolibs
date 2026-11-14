@@ -1,12 +1,11 @@
 /**
  * @packageDocumentation
- * A port of Biopython's `Bio.Align`. So far: `MultipleSeqAlignment`, the container the alignment file formats
- * of `@biolibs/seqio` read and write. The pairwise aligner and the `Alignment` class are not yet ported, and
- * the earlier string-only scaffold has been removed.
+ * A port of Biopython's `Bio.Align`, at parity on all 175 items of its nine modules: see
+ * `docs/parity/` for the checklist and `docs/align.md` for the reference.
  *
  * - `multiple-seq-alignment.ts`: `MultipleSeqAlignment`
- * - `alignment/`: `Alignment` (data only so far) and `PairwiseAlignments`
- * - `pairwise/`: `PairwiseAligner` (settings and `score`; `align` is not ported yet)
+ * - `alignment/`: `Alignment` and `PairwiseAlignments`
+ * - `pairwise/`: `PairwiseAligner` — the scoring settings, `score` and `align`
  * - `codon/`: `CodonAligner`
  * - `analysis/`: `analysis` (dN/dS and the McDonald-Kreitman test)
  * - `formats/`: `parse`, `read`, `write` and the fasta, a2m, clustal, phylip and msf file formats

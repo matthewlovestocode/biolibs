@@ -1,6 +1,6 @@
 # @biolibs/align
 
-A TypeScript port of Biopython's `Bio.Align`: `MultipleSeqAlignment`, the `Alignment` class, the substitution matrices, `PairwiseAligner` with scoring and alignment, and the alignment file formats (every one Biopython reads, and every writer it has apart from the three binary `big*` containers). Verified against Biopython 1.88 with about 1,900 recorded operations plus 7,836 file-format cases (`packages/align/test/golden/alignfmt.json`). See [PARITY.md](../PARITY.md).
+A TypeScript port of Biopython's `Bio.Align`: `MultipleSeqAlignment`, the `Alignment` class, the substitution matrices, `PairwiseAligner` with scoring and alignment, and the alignment file formats (every one Biopython reads, and every writer it has, the three binary `big*` containers included). Verified against Biopython 1.88 with about 1,900 recorded operations plus 7,836 file-format cases (`packages/align/test/golden/alignfmt.json`). See [PARITY.md](../PARITY.md).
 
 ```ts
 import { MultipleSeqAlignment } from "@biolibs/align";
@@ -113,7 +113,7 @@ alignments.get(-1).coordinates;    // [[1, 2, 3, 5], [0, 1, 1, 3]]
 | `.frequencies`, `.substitutions` | `.frequencies` (a `Map` of letter to per-column weights), `.substitutions` (a `SubstitutionArray`) |
 | `Alignment.parse_printed_alignment(lines)` | `Alignment.parsePrintedAlignment(lines)` (lines are `Uint8Array`s) |
 
-`format("fasta")`, `"a2m"`, `"clustal"` and `"phylip"` give file text (see below); any other Biopython format throws `NotImplementedError` until it is ported. In a pair key an array is a Python tuple, so a top-level list key (a `TypeError` in Python) behaves like a 1-element tuple here (`ValueError`). Biopython reads uninitialised memory when a zero-width column selection of three or more rows is re-parsed; that case is not reproduced. On the minus strand the query coordinates run backwards, as in Biopython. On the minus strand the query coordinates run backwards, as in Biopython. The traceback follows the C implementation cell by cell (including the way it prunes and extends paths in place), so alignments come out in the same order.
+`format("fasta")`, `"a2m"`, `"clustal"` and `"phylip"` give file text (see below); any other Biopython format throws `NotImplementedError` until it is ported. In a pair key an array is a Python tuple, so a top-level list key (a `TypeError` in Python) behaves like a 1-element tuple here (`ValueError`). Biopython reads uninitialised memory when a zero-width column selection of three or more rows is re-parsed; that case is not reproduced. On the minus strand the query coordinates run backwards, as in Biopython. The traceback follows the C implementation cell by cell (including the way it prunes and extends paths in place), so alignments come out in the same order.
 
 
 ### Alignment file formats (`formats/`)
