@@ -1,6 +1,6 @@
 /** `KDTree`, `Point` and `Neighbor`: a port of Biopython's C extension `Bio.PDB.kdtrees` (radius searches in 3D). */
 
-import { ValueError } from "@biolibs/core";
+import { PySystemError, ValueError } from "@biolibs/core";
 
 const DIM = 3;
 /** Stand-in for infinity in the root region, as in the C source. */
@@ -20,20 +20,37 @@ export function formatG(x: number): string {
   return s.includes(".") ? s.replace(/0+$/, "").replace(/\.$/, "") : s;
 }
 
+/**
+ * Python's message for the one thing `kdtrees.c` cannot do: print one of these objects.
+ *
+ * Both `Point_repr` and `Neighbor_repr` build their text with `PyUnicode_FromFormat("...%g", ...)`, and
+ * `%g` is not a conversion that function has ever supported, so every CPython from 3.12 on refuses it. No
+ * Biopython therefore prints the radius; it raises, and so does this.
+ */
+const REPR_FAULT = "invalid format string: %g";
+
 /** A point found by {@link KDTree.search}: its index and its distance from the query center. */
 export class Point {
   /** @param index - Index of the point in the array the tree was built from. @param radius - Distance from the center. */
   constructor(public index: number, public radius = 0) {}
-  /** @returns Python's repr: `index: radius`. */
-  repr(): string { return `${this.index}: ${formatG(this.radius)}`; }
+  /** @returns Nothing: `repr` of a point raises, as Biopython's does. @throws PySystemError always. */
+  repr(): string { throw new PySystemError(REPR_FAULT); }
+  /** @returns Nothing: `str` goes the same way. @throws PySystemError always. */
+  toString(): string { throw new PySystemError(REPR_FAULT); }
+  /** @returns What the C code meant to print, which no Python version does: `index: radius`. */
+  format(): string { return `${this.index}: ${formatG(this.radius)}`; }
 }
 
 /** A pair of points found by {@link KDTree.neighborSearch}, `index1 < index2`. */
 export class Neighbor {
   /** @param index1 - Smaller index. @param index2 - Larger index. @param radius - Distance between the two. */
   constructor(public index1: number, public index2: number, public radius = 0) {}
-  /** @returns Python's repr: `(index1, index2): radius`. */
-  repr(): string { return `(${this.index1}, ${this.index2}): ${formatG(this.radius)}`; }
+  /** @returns Nothing: `repr` of a neighbour raises, as Biopython's does. @throws PySystemError always. */
+  repr(): string { throw new PySystemError(REPR_FAULT); }
+  /** @returns Nothing: `str` goes the same way. @throws PySystemError always. */
+  toString(): string { throw new PySystemError(REPR_FAULT); }
+  /** @returns What the C code meant to print: `(index1, index2): radius`. */
+  format(): string { return `(${this.index1}, ${this.index2}): ${formatG(this.radius)}`; }
 }
 
 interface DataPoint { index: number; coord: number[] }

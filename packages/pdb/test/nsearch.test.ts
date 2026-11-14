@@ -6,7 +6,7 @@ import { getUniqueParents, unfoldEntities, uniqueify, KDTree, Neighbor, Neighbor
 import { excOk, type Exc } from "./encode.js";
 
 interface Out { result?: unknown; exc?: Exc }
-interface Case { kind: "kdtree" | "ns" | "point" | "neighbor" | "sel"; fn: string; paths: number[][]; single: boolean; level: string; result: unknown; args: number[];  coords: number[][]; bucket: number; text: string; mode: string; indices: number[] | null; ops: any[][]; ops_out: Out[]; exc?: Exc; warnings: string[] }
+interface Case { kind: "kdtree" | "ns" | "point" | "neighbor" | "sel"; fn: string; paths: number[][]; single: boolean; level: string; result: unknown; args: number[];  coords: number[][]; bucket: number; text: string; mode: string; indices: number[] | null; ops: any[][]; ops_out: Out[]; exc?: Exc; warnings: string[]; repr?: Out; str?: Out }
 
 const num = (x: number): unknown => (Number.isNaN(x) ? "nan" : x);
 const parse = (text: string): any => captureWarnings(() => new PDBParser({ permissive: true, quiet: true }).getStructure("x", text)).result;
@@ -40,13 +40,27 @@ function same(want: any, got: any): boolean {
   return want === got;
 }
 
+/** What a call produced, in the shape the cases record. */
+const attempt = (f: () => unknown): Out => {
+  try { return { result: f() }; } catch (e) { return { exc: { type: (e as Error).name, msg: (e as Error).message } }; }
+};
+
 describe("KDTree and NeighborSearch: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/nsearch.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
   it(`searches (${cases.length} cases, Biopython ${biopython})`, () => {
     const bad: string[] = [];
     for (const c of cases) {
-      if (c.kind === "point") { const p = new Point(c.args[0]!, c.args[1]); if (!same(c.result, [p.index, p.radius])) bad.push(`point ${c.args}`); continue; }
-      if (c.kind === "neighbor") { const n = new Neighbor(c.args[0]!, c.args[1]!, c.args[2]); if (!same(c.result, [n.index1, n.index2, n.radius])) bad.push(`neighbor ${c.args}`); continue; }
+      if (c.kind === "point" || c.kind === "neighbor") {
+        const obj = c.kind === "point" ? new Point(c.args[0]!, c.args[1]) : new Neighbor(c.args[0]!, c.args[1]!, c.args[2]);
+        const fields = obj instanceof Point ? [obj.index, obj.radius] : [obj.index1, obj.index2, obj.radius];
+        if (!same(c.result, fields)) bad.push(`${c.kind} ${c.args}`);
+        // Printing one of these raises in Biopython, and the cases record that like any other result.
+        for (const [what, want] of [["repr", c.repr], ["str", c.str]] as const) {
+          const got = attempt(() => (what === "repr" ? obj.repr() : obj.toString()));
+          if (JSON.stringify(want) !== JSON.stringify(got)) bad.push(`${c.kind} ${c.args} ${what}: want ${JSON.stringify(want)} got ${JSON.stringify(got)}`);
+        }
+        continue;
+      }
       if (c.kind === "sel") {
         const s = parse(c.text);
         const ents = c.paths.map((p) => p.reduce((x: any, i) => x.childList[i], s));

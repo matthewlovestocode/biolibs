@@ -25,7 +25,7 @@
 - [x] `__init__(self, /, *args, **kwargs)`
 - [-] `__le__(self, value, /)`
 - [-] `__lt__(self, value, /)`
-- [~] `__repr__(self, /)`
+- [x] `__repr__(self, /)`
 - [-] `__str__(self, /)`
 
 ### Bio.PDB.kdtrees.Neighbor
@@ -37,5 +37,5 @@
 - [x] `__init__(self, /, *args, **kwargs)`
 - [-] `__le__(self, value, /)`
 - [-] `__lt__(self, value, /)`
-- [~] `__repr__(self, /)`
+- [x] `__repr__(self, /)`
 - [-] `__str__(self, /)`

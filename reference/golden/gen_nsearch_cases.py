@@ -121,11 +121,21 @@ for _ in range(500):
         if k == "search": ops.append(["search", rnd.choice([rnd.choice(coords), [rnd.uniform(-scale, scale) for _ in range(3)], [0.0, 0.0, 0.0]]), r])
         else: ops.append([k, r])
     add(run_kd, {"kind": "kdtree", "coords": coords, "bucket": rnd.choice([1, 2, 3, 5, 10, 20]), "ops": ops})
-# Point and Neighbor objects built directly (their repr raises SystemError on this Python build, so it is not recorded)
+# Point and Neighbor objects built directly, with what `repr` and `str` of each actually do. Both are
+# `PyUnicode_FromFormat("...%g", ...)` in `kdtrees.c`, and no CPython from 3.12 on accepts `%g` there, so both
+# raise SystemError rather than printing the radius -- which is recorded here like any other result.
+def shown(obj, fn):
+    try: return {"result": fn(obj)}
+    except Exception as e: return {"exc": {"type": tname(e), "msg": emsg(e)}}
+
 for args in ([3], [3, 1.5], [0, 0.0], [7, 2.25]):
-    cases.append({"kind": "point", "args": args, "result": [Point(*args).index, Point(*args).radius]})
+    p = Point(*args)
+    cases.append({"kind": "point", "args": args, "result": [p.index, p.radius],
+                  "repr": shown(p, repr), "str": shown(p, str)})
 for args in ([1, 2], [1, 2, 3.5], [9, 4, 0.5]):
-    cases.append({"kind": "neighbor", "args": args, "result": [Neighbor(*args).index1, Neighbor(*args).index2, Neighbor(*args).radius]})
+    n = Neighbor(*args)
+    cases.append({"kind": "neighbor", "args": args, "result": [n.index1, n.index2, n.radius],
+                  "repr": shown(n, repr), "str": shown(n, str)})
 # bad construction and queries
 add(run_kd, {"kind": "kdtree", "coords": [[0, 0, 0], [1, 1, 1]], "bucket": 0, "ops": []})
 add(run_kd, {"kind": "kdtree", "coords": [[0, 0, 0], [1e6, 1, 1]], "bucket": 2, "ops": []})

@@ -278,8 +278,11 @@ for c in nc:
     elif c["kind"] == "neighbor": mark("Bio.PDB.kdtrees.Neighbor.__init__")
     elif c["kind"] == "sel" and ("result" in c or "exc" in c):
         mark({"unfold": "Bio.PDB.Selection.unfold_entities", "parents": "Bio.PDB.Selection.get_unique_parents", "unique": "Bio.PDB.Selection.uniqueify"}[c["fn"]])
-# repr of Point/Neighbor raises SystemError on this Python build (a %g format CPython no longer accepts), so only the C intent is ported
-for cls in ("Point", "Neighbor"): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "partial")
+# `repr` and `str` of Point and Neighbor raise SystemError: `kdtrees.c` formats them with `%g`, which
+# `PyUnicode_FromFormat` has never accepted, so no CPython from 3.12 on prints the radius. The port raises the
+# same thing, and the cases record it, so these count as done -- the C code's intention is kept as `format()`.
+for cls in ("Point", "Neighbor"):
+    if any(c["kind"] == cls.lower() and "repr" in c for c in nc): mark(f"Bio.PDB.kdtrees.{cls}.__repr__")
 for cls in ("KDTree",): mark(f"Bio.PDB.kdtrees.{cls}.__repr__", "na")
 mark("Bio.PDB.NeighborSearch.NeighborSearch.__repr__", "na")   # default object repr
 

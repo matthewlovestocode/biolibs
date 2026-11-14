@@ -107,6 +107,20 @@ export class ZeroDivisionError extends BioError {
   }
 }
 
+/**
+ * Mirrors Python's `SystemError`, which an extension module raises when it misuses the interpreter's own API.
+ *
+ * `Bio.PDB.kdtrees`'s C code is the one place a port has to reproduce this: it formats a `repr` with `%g`, which
+ * `PyUnicode_FromFormat` has never accepted, so printing a `Point` or a `Neighbor` raises instead.
+ */
+export class PySystemError extends BioError {
+  /** @param message - Python's own wording. */
+  constructor(message: string) {
+    super(message);
+    this.name = "SystemError";
+  }
+}
+
 /** Mirrors Python's `UnboundLocalError`: a local variable was used before it was given a value. */
 export class UnboundLocalError extends BioError {
   /** @param message - Python's wording, `"cannot access local variable 'x' where it is not associated with a value"`. */
