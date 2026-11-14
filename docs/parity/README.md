@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Comparison, hash and string members that no class but `object` defines are marked `[-]` automatically, from `inventory.py`'s reading of Biopython; a golden case that pins such a member down wins over that and makes it `[x]`. Edit `reference/status.json`, then re-run the script.
 
-**Progress: 2345 / 2345 applicable items verified against Biopython.**
+**Progress: 2417 / 2448 applicable items verified against Biopython.**
 
 Two other libraries are ported too, and counted separately: see the [pydna](../parity-pydna/README.md) and [seguid](../parity-seguid/README.md) checklists.
 
@@ -62,6 +62,7 @@ Two other libraries are ported too, and counted separately: see the [pydna](../p
 | [Bio.PDB.kdtrees](Bio.PDB.kdtrees.md) | 8 | 8 |
 | [Bio.PDB.Selection](Bio.PDB.Selection.md) | 3 | 3 |
 | [Bio.PDB.SASA](Bio.PDB.SASA.md) | 2 | 2 |
+| [Bio.PDB.internal_coords](Bio.PDB.internal_coords.md) | 72 | 103 |
 | [Bio.Restriction](Bio.Restriction.md) | 491 | 491 |
 | [Bio.motifs](Bio.motifs.md) | 19 | 19 |
 | [Bio.motifs.matrix](Bio.motifs.matrix.md) | 67 | 67 |

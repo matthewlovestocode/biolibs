@@ -44,6 +44,7 @@ RPF = importlib.import_module('Bio.Restriction.PrintFormat')
 PPoly = importlib.import_module('Bio.PDB.Polypeptide')
 PVec = importlib.import_module('Bio.PDB.vectors')
 PHeader = importlib.import_module('Bio.PDB.parse_pdb_header')  # `import ... as` would give the shadowing function
+PICo = importlib.import_module('Bio.PDB.internal_coords')
 from Bio.Nexus import Nexus as NexusMod, Trees as TreesMod, Nodes as NodesMod, StandardData as StandardDataMod
 
 # Dunders that carry no Biopython meaning unless a class overrides them. `inspect.getmembers`
@@ -155,6 +156,12 @@ inv = {
   **{f"Bio.motifs.{n}": {"functions": funcs(mod), "classes": {c: members(getattr(mod, c)) for c in ("Motif", "Record") if hasattr(mod, c) and getattr(mod, c).__module__ == mod.__name__}} for n, mod in BMX.items()},
   "Bio.PDB.vectors": {"functions": funcs(PVec), "classes": {"Vector": members(PVec.Vector)}},
   "Bio.PDB.parse_pdb_header": {"functions": funcs(PHeader)},
+  # The two exception classes carry nothing but `BaseException`'s own members, which the checklist marks
+  # not-applicable on its own, so listing them costs nothing and keeps the module's surface complete.
+  "Bio.PDB.internal_coords": {"functions": funcs(PICo),
+                              "classes": {n: members(getattr(PICo, n)) for n in
+                                          ("AtomKey", "Edron", "Hedron", "Dihedron", "IC_Residue",
+                                           "IC_Chain", "HedronMatchError", "MissingAtomError")}},
 }
 
 def object_defaults(label, cls_name, ms):

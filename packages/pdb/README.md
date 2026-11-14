@@ -26,19 +26,26 @@ message, the warnings, and the state of the structure afterwards. The tests repl
 | `Bio.PDB.Entity` | **54 / 54** | | `Bio.PDB.StructureBuilder` | **14 / 14** |
 | `Bio.PDB.Structure` | **35 / 35** | | `Bio.PDB.PDBIO` | **11 / 11** |
 | `Bio.PDB.Chain` | **34 / 34** | | `Bio.PDB.kdtrees` | **8 / 8** |
-| `Bio.PDB.Model` | **34 / 34** | | the other six modules | **27 / 27** |
+| `Bio.PDB.Model` | **34 / 34** | | `Bio.PDB.internal_coords` | **72 / 103** |
+| the other six modules | **27 / 27** | | | |
 
-**399 of 399 items**, verified by **18,504 recorded cases** across ten golden files (58 MB). The full
-breakdown is in [docs/parity/](../../docs/parity/README.md).
+**471 of 502 applicable items**, verified by **18,504 recorded cases** across ten golden files (58 MB).
+The full breakdown is in [docs/parity/](../../docs/parity/README.md).
 
 Where the claim stops:
 
-- **Internal coordinates are ported but not counted.** `Bio.PDB.internal_coords` is not in the
-  inventory the checklists are generated from, so its items are in neither the 399 nor the repository
-  total. The port covers `AtomKey`, `Edron`/`Hedron`/`Dihedron`, `IC_Residue`, `IC_Chain` and both
-  directions of conversion, verified on **1,146 recorded cases** — but the per-angle accessors
-  (`get_angle`, `set_angle`, `pick_angle`) are not ported, and neither is `ic_rebuild` with its PIC file
-  format (`read_PIC`, `write_PIC`, `structure_rebuild_test`).
+- **Internal coordinates are the one module not finished**: 72 of its 103 applicable items are verified
+  by 1,146 recorded cases, and 31 are outstanding. The port covers `AtomKey`,
+  `Edron`/`Hedron`/`Dihedron` with their angles and lengths, `IC_Residue`'s keys and splitting, and both
+  directions of conversion on `IC_Chain`. Outstanding, in groups: `IC_Residue`'s per-angle and
+  per-length accessors (`get_angle`, `set_angle`, `pick_angle`, `pick_length`, `get_length`,
+  `set_length`) and its transform and bond methods (`applyMtx`, `bond_rotate`, `bond_set`,
+  `clear_transforms`, `set_flexible`, `set_hbond`, `pdb_residue_string`); `IC_Chain`'s distance-plot
+  work (`distance_plot`, `distance_to_internal_coordinates`, `distplot_to_dh_arrays`) with `clear_ic`,
+  `copy_initNCaCs`, `dihedral_signs` and `make_extended`; `Dihedron`'s ensemble statistics
+  (`angle_avg`, `angle_dif`, `angle_pop_sd`, `bits`, `difference`); `Hedron.get_length`/`set_length`;
+  the edra `__hash__`; and `set_accuracy_95`. `ic_rebuild` with its PIC file format (`read_PIC`,
+  `write_PIC`, `structure_rebuild_test`) is a separate module and not ported at all.
 - **`index_db`-style extras are out of scope**: `DSSP` and `NACCESS` run external programs,
   and `PDBList` and `alphafold_db` download from the internet.
 - **Not ported**: `HSExposure`, `ResidueDepth`, `FragmentMapper`, `StructureAlignment`/`cealign`,

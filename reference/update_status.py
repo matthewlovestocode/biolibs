@@ -230,6 +230,66 @@ if any(c["kind"] == "i2a_ser" and (c.get("start") or c.get("fin"))
        for c in ick):
     mark("Bio.PDB.Chain.Chain.internal_to_atom_coordinates")
 
+# The `Bio.PDB.internal_coords` section itself, marked member by member from the same cases. Nothing here
+# is marked by being "obviously covered" by the chain-level entry points above: an item is ticked only
+# where a recorded case compares that member's own answer.
+IC = "Bio.PDB.internal_coords"
+key_hows = {c["spec"]["how"] for c in ick if c["kind"] == "key"}
+# All five constructor forms are exercised, which is what makes `__init__` evidence rather than a byproduct.
+if key_hows >= {"string", "args", "list", "dict", "kwargs"}:
+    mark(f"{IC}.AtomKey.__init__")
+if any(c["kind"] == "key" and "repr" in c.get("result", {}) for c in ick):
+    for n in ("__repr__", "__str__", "atm", "is_backbone", "cr_class"):
+        mark(f"{IC}.AtomKey.{n}")
+if any(c["kind"] == "pair" and "altloc_match" in c.get("result", {}) for c in ick):
+    for n in ("__eq__", "__lt__", "__le__", "__gt__", "__ge__", "altloc_match"):
+        mark(f"{IC}.AtomKey.{n}")
+# `ak_set` is a Python *set* of AtomKeys, so a recorded one agreeing proves the hash agrees too.
+if any(c["kind"] == "residue" and any(r.get("ak_set") for r in c.get("result", []) if isinstance(r, dict))
+       for c in ick):
+    mark(f"{IC}.AtomKey.__hash__")
+
+# The edra. `values` is [len12, angle, len23] for a hedron; a dihedron reports its own `angle`.
+edron_classes = {c["spec"]["cls"] for c in ick if c["kind"] == "edron"}
+for cls, name in (("edron", "Edron"), ("hedron", "Hedron"), ("dihedron", "Dihedron")):
+    if cls not in edron_classes: continue
+    for n in ("__init__", "__repr__", "__str__", "__contains__", "gen_key", "gen_tuple", "is_backbone"):
+        mark(f"{IC}.{name}.{n}")
+if any(c["kind"] == "edron" and c["spec"]["cls"] == "hedron" and len(c.get("result", {}).get("values", [])) == 3
+       for c in ick):
+    for n in ("len12", "angle", "len23"): mark(f"{IC}.Hedron.{n}")
+if any(c["kind"] == "edron" and c["spec"]["cls"] == "dihedron" and "angle" in c.get("result", {}) for c in ick):
+    mark(f"{IC}.Dihedron.angle")
+if any(c["kind"] == "epair" for c in ick):
+    for name in ("Edron", "Hedron", "Dihedron"):
+        for n in ("__eq__", "__lt__", "__le__", "__gt__", "__ge__"): mark(f"{IC}.{name}.{n}")
+
+# IC_Residue: what the residue, split and assemble cases compare.
+if any(c["kind"] == "residue" and any("pretty_str" in r for r in c.get("result", []) if isinstance(r, dict))
+       for c in ick):
+    for n in ("__init__", "__repr__", "__str__", "__contains__", "pretty_str", "rak"):
+        mark(f"{IC}.IC_Residue.{n}")
+if any(c["kind"] == "split" for c in ick): mark(f"{IC}.IC_Residue.split_akl")
+if any(c["kind"] == "assemble" for c in ick): mark(f"{IC}.IC_Residue.assemble")
+
+# IC_Chain: each entry point is marked by the case kind that drives it.
+if measured:
+    for n in ("__init__", "atom_to_internal_coordinates", "build_atomArray", "build_edraArrays",
+              "init_edra"):
+        mark(f"{IC}.IC_Chain.{n}")
+if any(c["kind"] == "assemble" for c in ick):
+    for n in ("assemble_residues", "init_atom_coords"): mark(f"{IC}.IC_Chain.{n}")
+if rebuilt:
+    for n in ("internal_to_atom_coordinates", "propagate_changes", "update_dCoordSpace"):
+        mark(f"{IC}.IC_Chain.{n}")
+if any(c["kind"] == "i2a_ser" for c in ick): mark(f"{IC}.IC_Chain.assemble_residues_ser")
+
+# `HedronMatchError` and `MissingAtomError` are bare `class X(Exception): pass`, so every member they
+# report is BaseException machinery rather than Biopython API -- the same rule applied to
+# `Bio.Seq.UndefinedSequenceError` above.
+for cls in ("HedronMatchError", "MissingAtomError"):
+    for m in inv[IC]["classes"][cls]: mark(f"{IC}.{cls}.{m}", "na")
+
 # ---- Bio.PDB mmCIF (packages/pdb/test/golden/mmcif.json) ----
 mc = json.load(open(f"{here}/../packages/pdb/test/golden/mmcif.json"))["cases"]
 if any(c["kind"] == "dict" and "dict" in c for c in mc):

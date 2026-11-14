@@ -4,7 +4,7 @@ TypeScript ports of Python bioengineering libraries, verified case by case again
 few packages that have no Python equivalent.
 
 - **23 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
-- **2,590 API items at parity** across three upstream libraries
+- **2,662 API items at parity** across three upstream libraries, of 2,693 applicable
 - **17,556 tests**, replaying answers recorded from the real Python libraries
 
 > **Not published to npm yet.** Clone and build; see [Building](#building).
@@ -21,7 +21,7 @@ cases rather than maintained by hand.
 
 | Upstream | Verified | Checklist |
 |---|---|---|
-| Biopython 1.88 | **2,345 / 2,345** | [docs/parity/](docs/parity/README.md) |
+| Biopython 1.88 | **2,417 / 2,448** | [docs/parity/](docs/parity/README.md) |
 | pydna 5.5.16 | **222 / 225** | [docs/parity-pydna/](docs/parity-pydna/README.md) |
 | seguid | **23 / 23** | [docs/parity-seguid/](docs/parity-seguid/README.md) |
 
@@ -29,9 +29,10 @@ The three unverified pydna items are `Dseqrecord.format`, `write` and `figure`. 
 because Python inherits them, and behaviour that is genuinely undefined upstream — where Biopython reads
 uninitialised memory, say — are marked rather than claimed; each checklist says which and why.
 
-One port is **verified but not counted**: `Bio.PDB.internal_coords` is absent from the inventory the
-checklists are generated from, so its 1,146 recorded cases raise no number above. See
-[`@biolibs/pdb`](packages/pdb#what-is-verified) for what of it is ported.
+The 31 outstanding items are all in `Bio.PDB.internal_coords`, which was added to the inventory last and
+is the one module not finished: 72 of its 103 applicable items are verified. What is missing is listed in
+[`@biolibs/pdb`](packages/pdb#what-is-verified) — chiefly `IC_Residue`'s per-angle accessors and
+`IC_Chain`'s distance-plot functions.
 
 ## Ports of Biopython
 
@@ -43,7 +44,7 @@ checklists are generated from, so its 1,146 recorded cases raise no number above
 | [`@biolibs/seqio`](packages/seqio) | `Bio.SeqIO` | 81 | 49 formats in and 26 out — text, binary and XML — plus `index`. `index_db` is not ported: its index lives in an SQLite file. [README](packages/seqio/README.md) |
 | [`@biolibs/align`](packages/align) | `Bio.Align` | 175 | `PairwiseAligner` with scoring and alignment, `Alignment`, `MultipleSeqAlignment`, the substitution matrices, `CodonAligner`, dN/dS, and every alignment file format Biopython reads or writes. [README](packages/align/README.md) |
 | [`@biolibs/phylo`](packages/phylo) | `Bio.Phylo` | 489 | `Tree`/`Clade` with search and editing, Newick, NEXUS and phyloXML both ways, consensus, UPGMA, neighbour joining, parsimony. NeXML, CDAO and drawing are not ported. [README](packages/phylo/README.md) |
-| [`@biolibs/pdb`](packages/pdb) | `Bio.PDB` | 399 | the structure hierarchy with disorder, `PDBParser`, `MMCIFParser`, `PDBIO`, `MMCIFIO`, header parsing, `Vector`, `Polypeptide`, `Superimposer`, `NeighborSearch`/`KDTree`, SASA — and internal coordinates both ways, verified but uncounted (see below). DSSP needs an external program. [README](packages/pdb/README.md) |
+| [`@biolibs/pdb`](packages/pdb) | `Bio.PDB` | 471 | the structure hierarchy with disorder, `PDBParser`, `MMCIFParser`, `PDBIO`, `MMCIFIO`, header parsing, `Vector`, `Polypeptide`, `Superimposer`, `NeighborSearch`/`KDTree`, SASA — plus internal coordinates both ways. DSSP needs an external program. [README](packages/pdb/README.md) |
 | [`@biolibs/restriction`](packages/restriction) | `Bio.Restriction` | 491 | 1,088 enzymes: `search`, `catalyse`, `RestrictionBatch`, `Analysis` and its text layouts |
 | [`@biolibs/motifs`](packages/motifs) | `Bio.motifs` | 173 | `Motif`, position matrices, scoring, thresholds, and the JASPAR, TRANSFAC, Cluster-Buster, MEME, MAST, AlignACE, XMS and PFM readers |
 | [`@biolibs/nexus`](packages/nexus) | `Bio.Nexus` | 84 | the `Nexus` class, `Tree`, `Node`, `StandardData`, `StepMatrix`, `combine`, `consensus` — and `bootstrap`, `randomize` and `display`, which need Python's own random number generator |
