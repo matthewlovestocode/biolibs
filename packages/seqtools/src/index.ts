@@ -9,7 +9,7 @@
  * - `weight.ts`: `molecularWeight`
  * - `six-frame.ts`: `sixFrameTranslations`
  * - `cai.ts`: `CodonAdaptationIndex`
- * - `checksum.ts`, `sha1.ts`: `crc32`, `crc64`, `gcg`, `seguid`
+ * - `checksum.ts`: `crc32`, `crc64`, `gcg`, `seguid` (SHA-1 and base64 come from `@biolibs/core`)
  * - `lcc.ts`: `lccSimp`, `lccMult`
  * - `amino-counts.ts`, `isoelectric.ts`, `protparam.ts`: `IsoelectricPoint`, `ProteinAnalysis`
  * - `melting-salt.ts`, `melting-simple.ts`, `melting-nn.ts`: `tmWallace`, `tmGC`, `tmNN`, `saltCorrection`, `chemCorrection`, `makeTable`

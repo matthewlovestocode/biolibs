@@ -1,0 +1,3548 @@
+{
+"cases": [
+{
+"data": "GAATTC",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=KWz6XOz6bn0wUrIPaoy6_CGGPeo"
+},
+"find": [
+{
+"value": 0
+},
+{
+"value": 2
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='GAATTC', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"GAATTC",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "GAATTC"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": true
+}
+},
+{
+"data": "GAATTC",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"seguid": {
+"value": "cdseguid=nqNI8kElPdaPzZm2S4AOFSfp9YY"
+},
+"find": [
+{
+"value": 0
+},
+{
+"value": 2
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='GAATTC', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"GAATTC",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "GAATTC"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": true
+}
+},
+{
+"data": "gaattc",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "gaattc",
+"watson": "gaattc",
+"crick": "gaattc",
+"len": 6,
+"ovhg": 0,
+"str": "gaattc",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=KWz6XOz6bn0wUrIPaoy6_CGGPeo"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='gaattc', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"gaattc",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "gaattc"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "gaattc",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "gaattc",
+"watson": "gaattc",
+"crick": "gaattc",
+"len": 6,
+"ovhg": 0,
+"str": "gaattc",
+"circular": true
+},
+"seguid": {
+"value": "cdseguid=nqNI8kElPdaPzZm2S4AOFSfp9YY"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='gaattc', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"gaattc",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "gaattc"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "PPGAATTCQQ",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "PPGAATTCQQ",
+"watson": "GGGAATTC",
+"crick": "CCGAATTC",
+"len": 10,
+"ovhg": -2,
+"str": "GGGAATTCGG",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=2485BbMUJuztQM4DsPAs3rRaj1c"
+},
+"find": [
+{
+"value": 2
+},
+{
+"value": 4
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": 8
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='PP', sticky_left3='', middle='GAATTC', sticky_right3='', sticky_right5='QQ', single_watson='', single_crick='')",
+"list": [
+"PP",
+"",
+"GAATTC",
+"",
+"QQ",
+"",
+""
+],
+"items": [
+{
+"value": "PP"
+},
+{
+"value": "GAATTC"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "PPGAATTCQQ",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Molecule is internally split in 1 location(s):\n\n[6:11]\nTC\nAGCC"
+}
+},
+{
+"data": "QQGAATTCPP",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "QQGAATTCPP",
+"watson": "GAATTCGG",
+"crick": "GAATTCCC",
+"len": 10,
+"ovhg": 2,
+"str": "GGGAATTCGG",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=WauKvEerBRlN7kmgV1tBK_Pc3C8"
+},
+"find": [
+{
+"value": 2
+},
+{
+"value": 4
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": 8
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='QQ', middle='GAATTC', sticky_right3='PP', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"QQ",
+"GAATTC",
+"PP",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "GAATTC"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "QQGAATTCPP",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Molecule is internally split in 1 location(s):\n\n[6:11]\nTCGG\nAG"
+}
+},
+{
+"data": "PPPPGAATTC",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "PPPPGAATTC",
+"watson": "GGGGGAATTC",
+"crick": "GAATTC",
+"len": 10,
+"ovhg": -4,
+"str": "GGGGGAATTC",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=74TgVgwzzi-LkJ7b22jKP_kx-Yo"
+},
+"find": [
+{
+"value": 4
+},
+{
+"value": 6
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='PPPP', sticky_left3='', middle='GAATTC', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"PPPP",
+"",
+"GAATTC",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": "PPPP"
+},
+{
+"value": "GAATTC"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "PPPPGAATTC",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "PPPPGAATTC",
+"watson": "GGGGGAATTC",
+"crick": "GAATTC",
+"len": 10,
+"ovhg": -4,
+"str": "GGGGGAATTC",
+"circular": true
+},
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+"find": [
+{
+"value": 4
+},
+{
+"value": 6
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='PPPP', sticky_left3='', middle='GAATTC', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"PPPP",
+"",
+"GAATTC",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": "PPPP"
+},
+{
+"value": "GAATTC"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "GAATTCQQQQ",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "GAATTCQQQQ",
+"watson": "GAATTC",
+"crick": "CCCCGAATTC",
+"len": 10,
+"ovhg": 0,
+"str": "GAATTCGGGG",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=i2Q7MSR3vwzLRC0iXviCr9MLRmk"
+},
+"find": [
+{
+"value": 0
+},
+{
+"value": 2
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 6
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='GAATTC', sticky_right3='', sticky_right5='QQQQ', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"GAATTC",
+"",
+"QQQQ",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "GAATTC"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "GAATTCQQQQ",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "GAATTCQQQQ",
+"watson": "GAATTC",
+"crick": "CCCCGAATTC",
+"len": 10,
+"ovhg": 0,
+"str": "GAATTCGGGG",
+"circular": true
+},
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+"find": [
+{
+"value": 0
+},
+{
+"value": 2
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 6
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='GAATTC', sticky_right3='', sticky_right5='QQQQ', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"GAATTC",
+"",
+"QQQQ",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "GAATTC"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "GAATTCGGGGAAAATTTT",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "GAATTCGGGGAAAATTTT",
+"watson": "GAATTCGGGGAAAATTTT",
+"crick": "AAAATTTTCCCCGAATTC",
+"len": 18,
+"ovhg": 0,
+"str": "GAATTCGGGGAAAATTTT",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=dY6VU6hNtoYBiE6zUxPrG5TitCE"
+},
+"find": [
+{
+"value": 0
+},
+{
+"value": 2
+},
+{
+"value": 0
+},
+{
+"value": 6
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='GAATTCGGGGAAAATTTT', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"GAATTCGGGGAAAATTTT",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "GAATTCGGGGAAAATTTT"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "GAATTCGGGGAAAATTTT",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "GAATTCGGGGAAAATTTT",
+"watson": "GAATTCGGGGAAAATTTT",
+"crick": "AAAATTTTCCCCGAATTC",
+"len": 18,
+"ovhg": 0,
+"str": "GAATTCGGGGAAAATTTT",
+"circular": true
+},
+"seguid": {
+"value": "cdseguid=dY6VU6hNtoYBiE6zUxPrG5TitCE"
+},
+"find": [
+{
+"value": 0
+},
+{
+"value": 2
+},
+{
+"value": 0
+},
+{
+"value": 6
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='GAATTCGGGGAAAATTTT', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"GAATTCGGGGAAAATTTT",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "GAATTCGGGGAAAATTTT"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "ATGCGCAT",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "ATGCGCAT",
+"watson": "ATGCGCAT",
+"crick": "ATGCGCAT",
+"len": 8,
+"ovhg": 0,
+"str": "ATGCGCAT",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=zP8rTm5jFvXNLcrTOIl4l6whXRw"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='ATGCGCAT', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"ATGCGCAT",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "ATGCGCAT"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "ATGCGCAT",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "ATGCGCAT",
+"watson": "ATGCGCAT",
+"crick": "ATGCGCAT",
+"len": 8,
+"ovhg": 0,
+"str": "ATGCGCAT",
+"circular": true
+},
+"seguid": {
+"value": "cdseguid=R2tig4ptAvjTtP04dc4hksx-N9k"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='ATGCGCAT', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"ATGCGCAT",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "ATGCGCAT"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "AAAATTTT",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "AAAATTTT",
+"watson": "AAAATTTT",
+"crick": "AAAATTTT",
+"len": 8,
+"ovhg": 0,
+"str": "AAAATTTT",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=MmVPhc-dDpggGotRdqFVQz5r9gk"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": 3
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='AAAATTTT', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"AAAATTTT",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "AAAATTTT"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "AAAATTTT",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "AAAATTTT",
+"watson": "AAAATTTT",
+"crick": "AAAATTTT",
+"len": 8,
+"ovhg": 0,
+"str": "AAAATTTT",
+"circular": true
+},
+"seguid": {
+"value": "cdseguid=MmVPhc-dDpggGotRdqFVQz5r9gk"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": 3
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='AAAATTTT', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"AAAATTTT",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "AAAATTTT"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "PEXI",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"str": "GATC",
+"circular": false
+},
+"seguid": {
+"exc": {
+"type": "TypeError",
+"msg": "can't multiply sequence by non-int of type 'NoneType'"
+}
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='', sticky_right3='', sticky_right5='', single_watson='PEXI', single_crick='')",
+"list": [
+"",
+"",
+"",
+"",
+"",
+"PEXI",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "PEXI",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"str": "GATC",
+"circular": true
+},
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": "Crick sequence must not be empty"
+}
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='', sticky_right3='', sticky_right5='', single_watson='PEXI', single_crick='')",
+"list": [
+"",
+"",
+"",
+"",
+"",
+"PEXI",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "QFZJ",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"str": "GATC",
+"circular": false
+},
+"seguid": {
+"exc": {
+"type": "TypeError",
+"msg": "can't multiply sequence by non-int of type 'NoneType'"
+}
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='', sticky_right3='', sticky_right5='', single_watson='', single_crick='QFZJ')",
+"list": [
+"",
+"",
+"",
+"",
+"",
+"",
+"QFZJ"
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": "QFZJ"
+},
+{
+"value": "QFZJ"
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "QFZJ",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"str": "GATC",
+"circular": true
+},
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": "Watson sequence must not be empty"
+}
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='', sticky_right3='', sticky_right5='', single_watson='', single_crick='QFZJ')",
+"list": [
+"",
+"",
+"",
+"",
+"",
+"",
+"QFZJ"
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": "QFZJ"
+},
+{
+"value": "QFZJ"
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "G",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"str": "G",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=Qm7_CiVgi0h5aVYcMuvCJa2AZ2g"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='G', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"G",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "G"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "G",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"str": "G",
+"circular": true
+},
+"seguid": {
+"value": "cdseguid=Qm7_CiVgi0h5aVYcMuvCJa2AZ2g"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='G', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"G",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "G"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"str": "",
+"circular": false
+},
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": "Watson sequence must not be empty"
+}
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"str": "",
+"circular": true
+},
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": "Watson sequence must not be empty"
+}
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "UUGGAAUU",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"str": "UUGGAAUU",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=1mhg_l1iKea_-84eRY7AtaaO_t4"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='UUGGAAUU', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"UUGGAAUU",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "UUGGAAUU"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "UUGGAAUU",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"str": "UUGGAAUU",
+"circular": true
+},
+"seguid": {
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'U' not in the 'alphabet'"
+}
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='UUGGAAUU', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"UUGGAAUU",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "UUGGAAUU"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "RYMKSWHBVDN",
+"circular": false,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "RYMKSWHBVDN",
+"watson": "RYMKSWHBVDN",
+"crick": "NHBVDWSMKRY",
+"len": 11,
+"ovhg": 0,
+"str": "RYMKSWHBVDN",
+"circular": false
+},
+"seguid": {
+"value": "ldseguid=4PZCZWGsbac0l5dBJjo3bWUFfNE"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='RYMKSWHBVDN', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"RYMKSWHBVDN",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "RYMKSWHBVDN"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+},
+{
+"data": "RYMKSWHBVDN",
+"circular": true,
+"needles": [
+"GAATTC",
+"ATT",
+"",
+"GGG",
+"PP",
+"QQ",
+"gaattc",
+"TTTTTTT"
+],
+"snap": {
+"data": "RYMKSWHBVDN",
+"watson": "RYMKSWHBVDN",
+"crick": "NHBVDWSMKRY",
+"len": 11,
+"ovhg": 0,
+"str": "RYMKSWHBVDN",
+"circular": true
+},
+"seguid": {
+"value": "cdseguid=MvAuVY0lE1llLZ6j2zjYdiFF6nY"
+},
+"find": [
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": 0
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+},
+{
+"value": -1
+}
+],
+"contains": [
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": true
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+},
+{
+"value": false
+}
+],
+"hash": {
+"exc": {
+"type": "TypeError",
+"msg": "unhashable type: 'Dseq'"
+}
+},
+"parts": {
+"repr": "DseqParts(sticky_left5='', sticky_left3='', middle='RYMKSWHBVDN', sticky_right3='', sticky_right5='', single_watson='', single_crick='')",
+"list": [
+"",
+"",
+"RYMKSWHBVDN",
+"",
+"",
+"",
+""
+],
+"items": [
+{
+"value": ""
+},
+{
+"value": "RYMKSWHBVDN"
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"exc": {
+"type": "IndexError",
+"msg": "tuple index out of range"
+}
+}
+],
+"eq_self": true,
+"eq_other": false
+}
+}
+],
+"joins": [
+{
+"separator": "GG",
+"fragments": [
+"AA",
+"TT",
+"CC"
+],
+"result": {
+"value": {
+"data": "AAGGTTGGCC",
+"watson": "AAGGTTGGCC",
+"crick": "GGCCAACCTT",
+"len": 10,
+"ovhg": 0,
+"str": "AAGGTTGGCC",
+"circular": false
+}
+}
+},
+{
+"separator": "GG",
+"fragments": [
+"AA"
+],
+"result": {
+"value": {
+"data": "AA",
+"watson": "AA",
+"crick": "TT",
+"len": 2,
+"ovhg": 0,
+"str": "AA",
+"circular": false
+}
+}
+},
+{
+"separator": "GG",
+"fragments": [],
+"result": {
+"value": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"str": "",
+"circular": false
+}
+}
+},
+{
+"separator": "PPGG",
+"fragments": [
+"AAQQ",
+"TTQQ"
+],
+"result": {
+"value": {
+"data": "AAGGGGTTQQ",
+"watson": "AAGGGGTT",
+"crick": "CCAACCCCTT",
+"len": 10,
+"ovhg": 0,
+"str": "AAGGGGTTGG",
+"circular": false
+}
+}
+},
+{
+"separator": "",
+"fragments": [
+"AA",
+"TT"
+],
+"result": {
+"value": {
+"data": "AATT",
+"watson": "AATT",
+"crick": "AATT",
+"len": 4,
+"ovhg": 0,
+"str": "AATT",
+"circular": false
+}
+}
+},
+{
+"separator": "GG",
+"fragments": [
+"PEXI",
+"QFZJ"
+],
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+}
+},
+{
+"separator": "QQGG",
+"fragments": [
+"AAPP"
+],
+"result": {
+"value": {
+"data": "AAPP",
+"watson": "AAGG",
+"crick": "TT",
+"len": 4,
+"ovhg": 0,
+"str": "AAGG",
+"circular": false
+}
+}
+}
+],
+"anneals": [
+{
+"a": "GATC",
+"b": "GATC",
+"result": {
+"value": true
+}
+},
+{
+"a": "GATC",
+"b": "AAAA",
+"result": {
+"value": false
+}
+},
+{
+"a": "PEXI",
+"b": "QFZJ",
+"result": {
+"value": true
+}
+},
+{
+"a": "GATC",
+"b": "GAT",
+"result": {
+"value": false
+}
+},
+{
+"a": "",
+"b": "",
+"result": {
+"value": true
+}
+},
+{
+"a": "GATC",
+"b": "",
+"result": {
+"value": true
+}
+},
+{
+"a": "UUUU",
+"b": "AAAA",
+"result": {
+"value": true
+}
+},
+{
+"a": "RYMK",
+"b": "RYMK",
+"result": {
+"value": false
+}
+}
+]
+}

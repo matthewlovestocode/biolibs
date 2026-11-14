@@ -20,6 +20,7 @@ def mark(key, value="done"):
 ds = json.load(open(f"{here}/../packages/dseq/test/golden/dseq.json"))
 cuts = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-cut.json"))
 ends = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-ends.json"))
+rest = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-rest.json"))
 melts = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-melt.json"))
 built = [c for c in ds if "snap" in c]
 ops = {op[0] for c in ds for op in c["ops"]}
@@ -96,6 +97,21 @@ if any("rounds" in c for c in melts):
         mark(f"pydna.dseq.Dseq.{member}")
     mark("pydna.alphabet.regex_ss_melt_factory")
     mark("pydna.alphabet.regex_ds_melt_factory")
+# The checksum, searching, joining, the parts record's own behaviour and whether two strands anneal.
+built_rest = [c for c in rest["cases"] if "snap" in c]
+if built_rest:
+    for member in ("seguid", "find", "__contains__"):
+        mark(f"pydna.dseq.Dseq.{member}")
+    for member in ("__repr__", "__iter__", "__getitem__", "__eq__", "__init__"):
+        mark(f"pydna.alphabet.DseqParts.{member}")
+    # Python sets `__hash__` to None on both classes because `__eq__` is defined without it, so neither
+    # can be hashed; JavaScript has no hashing protocol for a port to provide.
+    mark("pydna.dseq.Dseq.__hash__", "na")
+    mark("pydna.alphabet.DseqParts.__hash__", "na")
+if rest["joins"]:
+    mark("pydna.dseq.Dseq.join")
+if rest["anneals"]:
+    mark("pydna.alphabet.anneal_strands")
 
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

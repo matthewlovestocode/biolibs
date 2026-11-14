@@ -1,6 +1,6 @@
 ## pydna.alphabet
 
-- [ ] `anneal_strands(strand_a: str, strand_b: str) -> bool`
+- [x] `anneal_strands(strand_a: str, strand_b: str) -> bool`
 - [x] `dsbreaks(datastring: str) -> list[str]`
 - [x] `get_parts(datastring: str) -> pydna.alphabet.DseqParts`
 - [x] `regex_ds_melt_factory(length: int, circular: bool) -> re.Pattern`
@@ -16,19 +16,19 @@
 - [x] `sticky_left5`
 - [x] `sticky_right3`
 - [x] `sticky_right5`
-- [ ] `__eq__(self, other)`
-- [ ] `__getitem__(self, index: int) -> str`
-- [ ] `__hash__`
-- [ ] `__init__(self, sticky_left5: str, sticky_left3: str, middle: str, sticky_right3: str, sticky_right5: str, single_watson: str, single_crick: str) -> None`
-- [ ] `__iter__(self)`
-- [ ] `__repr__(self)`
+- [x] `__eq__(self, other)`
+- [x] `__getitem__(self, index: int) -> str`
+- [-] `__hash__`
+- [x] `__init__(self, sticky_left5: str, sticky_left3: str, middle: str, sticky_right3: str, sticky_right5: str, single_watson: str, single_crick: str) -> None`
+- [x] `__iter__(self)`
+- [x] `__repr__(self)`
 
-### pydna.alphabet: the dscode encoding
+### pydna.alphabet: codes
 
-- [x] `un_ambiguous_ds_dna (4 pairs)`
-- [x] `ds_rna (2 pairs)`
-- [x] `ambiguous_ds_dna (11 pairs)`
-- [x] `single_stranded_dna_rna (10 pairs)`
-- [x] `loops_dna_rna (10 pairs)`
-- [x] `mismatched_dna_rna (18 pairs)`
-- [x] `gap (1 pairs)`
+- [x] `un_ambiguous_ds_dna (4 entries)`
+- [x] `ds_rna (2 entries)`
+- [x] `ambiguous_ds_dna (11 entries)`
+- [x] `single_stranded_dna_rna (10 entries)`
+- [x] `loops_dna_rna (10 entries)`
+- [x] `mismatched_dna_rna (18 entries)`
+- [x] `gap (1 entries)`

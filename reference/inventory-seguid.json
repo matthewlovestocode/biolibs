@@ -1,0 +1,50 @@
+{
+ "version": "0.2.1",
+ "seguid": {
+  "functions": {
+   "seguid": "(seq: str, alphabet: str = '{DNA}', form: str = 'long') -> str",
+   "lsseguid": "(seq: str, alphabet: str = '{DNA}', form: str = 'long') -> str",
+   "csseguid": "(seq: str, alphabet: str = '{DNA}', form: str = 'long') -> str",
+   "ldseguid": "(watson: str, crick: str, alphabet: str = '{DNA}', form: str = 'long') -> str",
+   "cdseguid": "(watson: str, crick: str, alphabet: str = '{DNA}', form: str = 'long') -> str"
+  }
+ },
+ "seguid._manip": {
+  "functions": {
+   "min_rotation_py": "(s: str) -> int",
+   "reverse": "(seq) -> str",
+   "rotate": "(seq: str, amount: int = 0) -> str",
+   "rotate_to_min": "(s: str) -> int"
+  }
+ },
+ "seguid._tables": {
+  "functions": {
+   "tablefactory": "(argument: str)"
+  },
+  "alphabets": [
+   "{DNA-extended}",
+   "{DNA}",
+   "{RNA-extended}",
+   "{RNA}",
+   "{protein-extended}",
+   "{protein}"
+  ]
+ },
+ "seguid._asserts": {
+  "functions": {
+   "assert_alphabet": "(alphabet: dict)",
+   "assert_complementary": "(watson: str, crick: str, alphabet: dict)",
+   "assert_in_alphabet": "(seq: str, alphabet: set)",
+   "reverse": "(seq) -> str"
+  }
+ },
+ "seguid._chksum": {
+  "functions": {
+   "cdseguid": "(watson: str, crick: str, alphabet: str = '{DNA}', form: str = 'long') -> str",
+   "csseguid": "(seq: str, alphabet: str = '{DNA}', form: str = 'long') -> str",
+   "ldseguid": "(watson: str, crick: str, alphabet: str = '{DNA}', form: str = 'long') -> str",
+   "lsseguid": "(seq: str, alphabet: str = '{DNA}', form: str = 'long') -> str",
+   "seguid": "(seq: str, alphabet: str = '{DNA}', form: str = 'long') -> str"
+  }
+ }
+}

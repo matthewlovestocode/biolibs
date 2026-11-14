@@ -8,5 +8,5 @@
   "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
   "files": ["dist"],
   "license": "MIT",
-  "dependencies": { "@biolibs/core": "0.1.0", "@biolibs/seq": "0.1.0", "@biolibs/restriction": "0.1.0" }
+  "dependencies": { "@biolibs/core": "0.1.0", "@biolibs/seq": "0.1.0", "@biolibs/restriction": "0.1.0", "@biolibs/seguid": "0.1.0" }
 }

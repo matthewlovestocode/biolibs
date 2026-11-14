@@ -6,10 +6,10 @@
 - [x] `T4(self, nucleotides=None) -> ~DseqType`
 - [x] `__add__(self: ~DseqType, other: [~DseqType, <class 'str'>, <class 'bytes'>]) -> ~DseqType`
 - [x] `__bytes__(self) -> bytes`
-- [ ] `__contains__(self, sub: [<class 'str'>, <class 'bytes'>]) -> bool`
+- [x] `__contains__(self, sub: [<class 'str'>, <class 'bytes'>]) -> bool`
 - [x] `__eq__(self, other: ~DseqType) -> bool`
 - [x] `__getitem__(self, sl: [<class 'slice'>, <class 'int'>]) -> ~DseqType`
-- [ ] `__hash__`
+- [-] `__hash__`
 - [x] `__init__(self, watson: str | bytes, crick: str | bytes | None = None, ovhg=None, circular=False, pos=0)`
 - [x] `__mul__(self: ~DseqType, number: int) -> ~DseqType`
 - [x] `__repr__(self, lim: int = 30) -> pydna._pretty.pretty_str`
@@ -25,7 +25,7 @@
 - [x] `exo1_end(self: ~DseqType, n: int = 1) -> ~DseqType`
 - [x] `exo1_front(self: ~DseqType, n: int = 1) -> ~DseqType`
 - [x] `fill_in(self, nucleotides: None | str = None) -> ~DseqType`
-- [ ] `find(self, sub: Bio.Seq._SeqAbstractBaseClass | str | bytes, start=0, end=9223372036854775807) -> int`
+- [x] `find(self, sub: Bio.Seq._SeqAbstractBaseClass | str | bytes, start=0, end=9223372036854775807) -> int`
 - [x] `five_prime_end(self) -> Tuple[str, str]`
 - [x] `from_full_sequence_and_overhangs(cls, full_sequence: str, crick_ovhg: int, watson_ovhg: int)`
 - [x] `from_representation(cls, dsdna: str, *args, **kwargs)`
@@ -38,7 +38,7 @@
 - [x] `get_right_end_as_cutsite(self) -> Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]`
 - [x] `get_ss_meltsites(self: ~DseqType, length: int) -> tuple[int, int]`
 - [x] `isblunt(self) -> bool`
-- [ ] `join(self, fragments)`
+- [x] `join(self, fragments)`
 - [x] `klenow(self, nucleotides: None | str = None) -> ~DseqType`
 - [x] `left_end_position(self) -> Tuple[int, int]`
 - [x] `left_ovhg(self) -> int`
@@ -61,7 +61,7 @@
 - [x] `reverse_complement(self) -> 'Dseq'`
 - [x] `right_end_position(self) -> Tuple[int, int]`
 - [x] `right_ovhg(self) -> int`
-- [ ] `seguid(self) -> str`
+- [x] `seguid(self) -> str`
 - [x] `shed_ss_dna(self, watson_cutpairs: list[tuple[int, int]] = None, crick_cutpairs: list[tuple[int, int]] = None)`
 - [x] `shift_melt_cutsite(self, cutsite: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], is_right: bool) -> Tuple[int, int]`
 - [x] `shift_melt_cutsite_pairs(self, cutsite_pairs: List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]) -> List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]`

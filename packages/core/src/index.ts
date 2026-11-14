@@ -15,3 +15,4 @@ export * from "./assert.js";
 export * from "./py/index.js";
 export * from "./zlib/inflate.js";
 export * from "./zlib/deflate.js";
+export * from "./hash/index.js";

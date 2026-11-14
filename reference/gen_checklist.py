@@ -77,7 +77,8 @@ for line in L[3:]:
     if cur is not None: cur[1].append(line)
 index = ["# Biopython parity checklist", "", legend, "", f"**Progress: {tot[1]} / {tot[0]} applicable items verified against Biopython.**", "",
          # pydna is a second upstream library with a checklist of its own; the two counts are never mixed.
-         "pydna is ported too, and counted separately: see [the pydna checklist](../parity-pydna/README.md).", "",
+         "Two other libraries are ported too, and counted separately: see the [pydna]"
+         "(../parity-pydna/README.md) and [seguid](../parity-seguid/README.md) checklists.", "",
          "| Section | Verified | Applicable |", "|---|---|---|"]
 for title, body in secs:
     slug = re.sub(r"[^A-Za-z0-9._]+", "-", title).strip("-")

@@ -24,7 +24,8 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 
 | Package | Purpose | Docs |
 |---|---|---|
-| `@biolibs/dseq` | [pydna](https://github.com/BjornFJohansson/pydna)'s `Dseq`: double-stranded DNA whose sticky ends, nicks and circularity are part of the molecule. Measured against pydna in [docs/parity-pydna/](parity-pydna/README.md) | [dseq.md](dseq.md) |
+| `@biolibs/dseq` | [pydna](https://github.com/BjornFJohansson/pydna)'s `Dseq`: double-stranded DNA whose sticky ends, nicks and circularity are part of the molecule. `pydna.dseq` and `pydna.alphabet` are at parity — see [docs/parity-pydna/](parity-pydna/README.md) | [dseq.md](dseq.md) |
+| `@biolibs/seguid` | [SEGUID v2](https://github.com/seguid/seguid-python) checksums: stable identifiers for a sequence, single- or double-stranded, linear or circular. At parity — see [docs/parity-seguid/](parity-seguid/README.md) | [seguid.md](seguid.md) |
 
 ### Bioengineering packages (no Biopython counterpart)
 
@@ -64,7 +65,8 @@ seqrecord <-- seqedit  <-- cloning
 seqfeature <-- features
 restriction  <-- cloning
 gel, seqmap   (core only)
-seq  <-- dseq
+seq, restriction, seguid  <-- dseq
+core  <-- seguid
 ```
 
 Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none.
@@ -80,7 +82,7 @@ Only `core` is depended on by every package; `seqio` and `seqtools` also use `se
 
 ## Testing without a reference implementation
 
-The ported packages are measured: `reference/.venv` runs real Biopython, generates golden JSON, and the TypeScript tests replay it, so a `docs/parity/` item is `[x]` only when a golden case exercises it. `@biolibs/dseq` is measured the same way against pydna, with a checklist and a progress count of its own in `docs/parity-pydna/`, because parity with one library says nothing about parity with another.
+The ported packages are measured: `reference/.venv` runs real Biopython, generates golden JSON, and the TypeScript tests replay it, so a `docs/parity/` item is `[x]` only when a golden case exercises it. `@biolibs/dseq` and `@biolibs/seguid` are measured the same way against pydna and the seguid package, each with a checklist and a progress count of its own in `docs/parity-<library>/`, because parity with one library says nothing about parity with another.
 
 The six bioengineering packages have no Biopython counterpart, so there is nothing to generate golden data from and they add no parity items. They are held to a different standard instead:
 

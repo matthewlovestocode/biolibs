@@ -44,6 +44,9 @@
       "path": "packages/dseq"
     },
     {
+      "path": "packages/seguid"
+    },
+    {
       "path": "packages/gel"
     },
     {

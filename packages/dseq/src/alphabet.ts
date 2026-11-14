@@ -147,3 +147,67 @@ export function representationTuple(data: string, lengthLimit = 30, chunk = 4): 
     || parts.singleWatson + parts.singleCrick;
   return [toWatson(processed).replace(/\s+$/, ""), toCrick(processed).replace(/\s+$/, "")];
 }
+
+/**
+ * Whether two strands would anneal: every pair they would form has to be one the alphabet knows.
+ *
+ * @param strandA - One strand, as dscode. @param strandB - The other.
+ * @returns Whether they pair all the way along the shorter of the two.
+ */
+export function annealStrands(strandA: string, strandB: string): boolean {
+  const w = toWatson(strandA);
+  const c = [...toCrick(translateCode(strandB, COMPLEMENT))].reverse().join("");
+  for (let i = 0; i < Math.min(w.length, c.length); i++) {
+    if (!BASEPAIR_TO_CODE.has(w[i]! + c[i]!)) return false;
+  }
+  return true;
+}
+
+/** The order {@link DseqParts}'s fields are iterated and indexed in. */
+const PART_ORDER = ["stickyLeft5", "stickyLeft3", "middle", "stickyRight3", "stickyRight5",
+  "singleWatson", "singleCrick"] as const;
+
+/**
+ * The parts as a list, which is what iterating pydna's `DseqParts` gives.
+ *
+ * @param parts - The parts.
+ * @returns Them in pydna's own order.
+ */
+export const partsList = (parts: DseqParts): string[] => PART_ORDER.map((name) => parts[name]);
+
+/**
+ * One part by position.
+ *
+ * @param parts - The parts. @param index - Which one, counting from the end for a negative number.
+ * @returns That part.
+ * @throws IndexError for a position outside the seven.
+ */
+export function partAt(parts: DseqParts, index: number): string {
+  const list = partsList(parts);
+  const at = index < 0 ? list.length + index : index;
+  const part = list[at];
+  if (part === undefined) throw new PartsIndexError("tuple index out of range");
+  return part;
+}
+
+/** Python's `IndexError`, which indexing past the parts raises. */
+export class PartsIndexError extends ValueError {
+  override name = "IndexError";
+}
+
+/**
+ * @param a - Some parts. @param b - Some others.
+ * @returns Whether all seven are the same, which is what the dataclass compares.
+ */
+export const partsEqual = (a: DseqParts, b: DseqParts): boolean =>
+  PART_ORDER.every((name) => a[name] === b[name]);
+
+/**
+ * @param parts - The parts.
+ * @returns Them as pydna prints them, which is what a dataclass's `repr` gives.
+ */
+export const partsRepr = (parts: DseqParts): string =>
+  `DseqParts(sticky_left5='${parts.stickyLeft5}', sticky_left3='${parts.stickyLeft3}', `
+  + `middle='${parts.middle}', sticky_right3='${parts.stickyRight3}', `
+  + `sticky_right5='${parts.stickyRight5}', single_watson='${parts.singleWatson}', `
+  + `single_crick='${parts.singleCrick}')`;

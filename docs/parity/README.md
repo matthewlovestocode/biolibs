@@ -4,7 +4,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 
 **Progress: 2345 / 2345 applicable items verified against Biopython.**
 
-pydna is ported too, and counted separately: see [the pydna checklist](../parity-pydna/README.md).
+Two other libraries are ported too, and counted separately: see the [pydna](../parity-pydna/README.md) and [seguid](../parity-seguid/README.md) checklists.
 
 | Section | Verified | Applicable |
 |---|---|---|

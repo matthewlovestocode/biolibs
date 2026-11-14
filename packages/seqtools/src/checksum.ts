@@ -3,7 +3,7 @@
 import { MutableSeq, Seq } from "@biolibs/seq";
 import { ValueError, pyTypeName } from "@biolibs/core";
 import { asText } from "./args.js";
-import { base64, sha1 } from "./sha1.js";
+import { base64, sha1 } from "@biolibs/core";
 
 const encoder = new TextEncoder();
 

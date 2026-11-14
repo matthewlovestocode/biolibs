@@ -1,0 +1,3681 @@
+{
+"checksums": [
+{
+"kind": "seguid",
+"args": [
+"GATTACA",
+"{DNA}",
+"long"
+],
+"value": "seguid=tp2jzeCM2e3W4yxtrrx09CMKa/8"
+},
+{
+"kind": "lsseguid",
+"args": [
+"GATTACA",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=tp2jzeCM2e3W4yxtrrx09CMKa_8"
+},
+{
+"kind": "csseguid",
+"args": [
+"GATTACA",
+"{DNA}",
+"long"
+],
+"value": "csseguid=mtrvbtuwr6_MoBxvtm4BEpv-jKQ"
+},
+{
+"kind": "seguid",
+"args": [
+"GATTACA",
+"{DNA}",
+"short"
+],
+"value": "tp2jze"
+},
+{
+"kind": "lsseguid",
+"args": [
+"GATTACA",
+"{DNA}",
+"short"
+],
+"value": "tp2jze"
+},
+{
+"kind": "csseguid",
+"args": [
+"GATTACA",
+"{DNA}",
+"short"
+],
+"value": "mtrvbt"
+},
+{
+"kind": "seguid",
+"args": [
+"GATTACA",
+"{DNA}",
+"both"
+],
+"value": [
+"tp2jze",
+"seguid=tp2jzeCM2e3W4yxtrrx09CMKa/8"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"GATTACA",
+"{DNA}",
+"both"
+],
+"value": [
+"tp2jze",
+"lsseguid=tp2jzeCM2e3W4yxtrrx09CMKa_8"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"GATTACA",
+"{DNA}",
+"both"
+],
+"value": [
+"mtrvbt",
+"csseguid=mtrvbtuwr6_MoBxvtm4BEpv-jKQ"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"gattaca",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'a c g t' not in the 'alphabet'"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"gattaca",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'a c g t' not in the 'alphabet'"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"gattaca",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'a c g t' not in the 'alphabet'"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"gattaca",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'a c g t' not in the 'alphabet'"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"gattaca",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'a c g t' not in the 'alphabet'"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"gattaca",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'a c g t' not in the 'alphabet'"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"gattaca",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'a c g t' not in the 'alphabet'"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"gattaca",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'a c g t' not in the 'alphabet'"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"gattaca",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'a c g t' not in the 'alphabet'"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"A",
+"{DNA}",
+"long"
+],
+"value": "seguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs"
+},
+{
+"kind": "lsseguid",
+"args": [
+"A",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs"
+},
+{
+"kind": "csseguid",
+"args": [
+"A",
+"{DNA}",
+"long"
+],
+"value": "csseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs"
+},
+{
+"kind": "seguid",
+"args": [
+"A",
+"{DNA}",
+"short"
+],
+"value": "bc1M4j"
+},
+{
+"kind": "lsseguid",
+"args": [
+"A",
+"{DNA}",
+"short"
+],
+"value": "bc1M4j"
+},
+{
+"kind": "csseguid",
+"args": [
+"A",
+"{DNA}",
+"short"
+],
+"value": "bc1M4j"
+},
+{
+"kind": "seguid",
+"args": [
+"A",
+"{DNA}",
+"both"
+],
+"value": [
+"bc1M4j",
+"seguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"A",
+"{DNA}",
+"both"
+],
+"value": [
+"bc1M4j",
+"lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"A",
+"{DNA}",
+"both"
+],
+"value": [
+"bc1M4j",
+"csseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"GAATTC",
+"{DNA}",
+"long"
+],
+"value": "seguid=TiMmIVurBcG3hdNWi3yGJGcqmk8"
+},
+{
+"kind": "lsseguid",
+"args": [
+"GAATTC",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=TiMmIVurBcG3hdNWi3yGJGcqmk8"
+},
+{
+"kind": "csseguid",
+"args": [
+"GAATTC",
+"{DNA}",
+"long"
+],
+"value": "csseguid=RQo9FO-svC689YbCTiAyze_iMCw"
+},
+{
+"kind": "seguid",
+"args": [
+"GAATTC",
+"{DNA}",
+"short"
+],
+"value": "TiMmIV"
+},
+{
+"kind": "lsseguid",
+"args": [
+"GAATTC",
+"{DNA}",
+"short"
+],
+"value": "TiMmIV"
+},
+{
+"kind": "csseguid",
+"args": [
+"GAATTC",
+"{DNA}",
+"short"
+],
+"value": "RQo9FO"
+},
+{
+"kind": "seguid",
+"args": [
+"GAATTC",
+"{DNA}",
+"both"
+],
+"value": [
+"TiMmIV",
+"seguid=TiMmIVurBcG3hdNWi3yGJGcqmk8"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"GAATTC",
+"{DNA}",
+"both"
+],
+"value": [
+"TiMmIV",
+"lsseguid=TiMmIVurBcG3hdNWi3yGJGcqmk8"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"GAATTC",
+"{DNA}",
+"both"
+],
+"value": [
+"RQo9FO",
+"csseguid=RQo9FO-svC689YbCTiAyze_iMCw"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"AAAA",
+"{DNA}",
+"long"
+],
+"value": "seguid=4lEhcqv4zJ9n/dSetsrPLfcbutM"
+},
+{
+"kind": "lsseguid",
+"args": [
+"AAAA",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=4lEhcqv4zJ9n_dSetsrPLfcbutM"
+},
+{
+"kind": "csseguid",
+"args": [
+"AAAA",
+"{DNA}",
+"long"
+],
+"value": "csseguid=4lEhcqv4zJ9n_dSetsrPLfcbutM"
+},
+{
+"kind": "seguid",
+"args": [
+"AAAA",
+"{DNA}",
+"short"
+],
+"value": "4lEhcq"
+},
+{
+"kind": "lsseguid",
+"args": [
+"AAAA",
+"{DNA}",
+"short"
+],
+"value": "4lEhcq"
+},
+{
+"kind": "csseguid",
+"args": [
+"AAAA",
+"{DNA}",
+"short"
+],
+"value": "4lEhcq"
+},
+{
+"kind": "seguid",
+"args": [
+"AAAA",
+"{DNA}",
+"both"
+],
+"value": [
+"4lEhcq",
+"seguid=4lEhcqv4zJ9n/dSetsrPLfcbutM"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"AAAA",
+"{DNA}",
+"both"
+],
+"value": [
+"4lEhcq",
+"lsseguid=4lEhcqv4zJ9n_dSetsrPLfcbutM"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"AAAA",
+"{DNA}",
+"both"
+],
+"value": [
+"4lEhcq",
+"csseguid=4lEhcqv4zJ9n_dSetsrPLfcbutM"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"ACGTACGT",
+"{DNA}",
+"long"
+],
+"value": "seguid=gIgjSRnzDdXWG2IiYAGNyyu+nP4"
+},
+{
+"kind": "lsseguid",
+"args": [
+"ACGTACGT",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=gIgjSRnzDdXWG2IiYAGNyyu-nP4"
+},
+{
+"kind": "csseguid",
+"args": [
+"ACGTACGT",
+"{DNA}",
+"long"
+],
+"value": "csseguid=gIgjSRnzDdXWG2IiYAGNyyu-nP4"
+},
+{
+"kind": "seguid",
+"args": [
+"ACGTACGT",
+"{DNA}",
+"short"
+],
+"value": "gIgjSR"
+},
+{
+"kind": "lsseguid",
+"args": [
+"ACGTACGT",
+"{DNA}",
+"short"
+],
+"value": "gIgjSR"
+},
+{
+"kind": "csseguid",
+"args": [
+"ACGTACGT",
+"{DNA}",
+"short"
+],
+"value": "gIgjSR"
+},
+{
+"kind": "seguid",
+"args": [
+"ACGTACGT",
+"{DNA}",
+"both"
+],
+"value": [
+"gIgjSR",
+"seguid=gIgjSRnzDdXWG2IiYAGNyyu+nP4"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"ACGTACGT",
+"{DNA}",
+"both"
+],
+"value": [
+"gIgjSR",
+"lsseguid=gIgjSRnzDdXWG2IiYAGNyyu-nP4"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"ACGTACGT",
+"{DNA}",
+"both"
+],
+"value": [
+"gIgjSR",
+"csseguid=gIgjSRnzDdXWG2IiYAGNyyu-nP4"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"GAUUACA",
+"{RNA}",
+"long"
+],
+"value": "seguid=NTXSpBPMp73fAKo85eV+5P1lO2k"
+},
+{
+"kind": "lsseguid",
+"args": [
+"GAUUACA",
+"{RNA}",
+"long"
+],
+"value": "lsseguid=NTXSpBPMp73fAKo85eV-5P1lO2k"
+},
+{
+"kind": "csseguid",
+"args": [
+"GAUUACA",
+"{RNA}",
+"long"
+],
+"value": "csseguid=pR1uu6FZTbY0EGZ7K8knQbD9OU4"
+},
+{
+"kind": "seguid",
+"args": [
+"GAUUACA",
+"{RNA}",
+"short"
+],
+"value": "NTXSpB"
+},
+{
+"kind": "lsseguid",
+"args": [
+"GAUUACA",
+"{RNA}",
+"short"
+],
+"value": "NTXSpB"
+},
+{
+"kind": "csseguid",
+"args": [
+"GAUUACA",
+"{RNA}",
+"short"
+],
+"value": "pR1uu6"
+},
+{
+"kind": "seguid",
+"args": [
+"GAUUACA",
+"{RNA}",
+"both"
+],
+"value": [
+"NTXSpB",
+"seguid=NTXSpBPMp73fAKo85eV+5P1lO2k"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"GAUUACA",
+"{RNA}",
+"both"
+],
+"value": [
+"NTXSpB",
+"lsseguid=NTXSpBPMp73fAKo85eV-5P1lO2k"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"GAUUACA",
+"{RNA}",
+"both"
+],
+"value": [
+"pR1uu6",
+"csseguid=pR1uu6FZTbY0EGZ7K8knQbD9OU4"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"RYMKSWHBVDN",
+"{DNA-extended}",
+"long"
+],
+"value": "seguid=shPmoqDEctEQZ8PhfiNs1qkvVfw"
+},
+{
+"kind": "lsseguid",
+"args": [
+"RYMKSWHBVDN",
+"{DNA-extended}",
+"long"
+],
+"value": "lsseguid=shPmoqDEctEQZ8PhfiNs1qkvVfw"
+},
+{
+"kind": "csseguid",
+"args": [
+"RYMKSWHBVDN",
+"{DNA-extended}",
+"long"
+],
+"value": "csseguid=ifj14_7SuOzS5yCMq-BFL51JyJ4"
+},
+{
+"kind": "seguid",
+"args": [
+"RYMKSWHBVDN",
+"{DNA-extended}",
+"short"
+],
+"value": "shPmoq"
+},
+{
+"kind": "lsseguid",
+"args": [
+"RYMKSWHBVDN",
+"{DNA-extended}",
+"short"
+],
+"value": "shPmoq"
+},
+{
+"kind": "csseguid",
+"args": [
+"RYMKSWHBVDN",
+"{DNA-extended}",
+"short"
+],
+"value": "ifj14_"
+},
+{
+"kind": "seguid",
+"args": [
+"RYMKSWHBVDN",
+"{DNA-extended}",
+"both"
+],
+"value": [
+"shPmoq",
+"seguid=shPmoqDEctEQZ8PhfiNs1qkvVfw"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"RYMKSWHBVDN",
+"{DNA-extended}",
+"both"
+],
+"value": [
+"shPmoq",
+"lsseguid=shPmoqDEctEQZ8PhfiNs1qkvVfw"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"RYMKSWHBVDN",
+"{DNA-extended}",
+"both"
+],
+"value": [
+"ifj14_",
+"csseguid=ifj14_7SuOzS5yCMq-BFL51JyJ4"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"MKVLATWY",
+"{protein}",
+"long"
+],
+"value": "seguid=G3MBzjlKTF/XW67px2uXTY3ys2Y"
+},
+{
+"kind": "lsseguid",
+"args": [
+"MKVLATWY",
+"{protein}",
+"long"
+],
+"value": "lsseguid=G3MBzjlKTF_XW67px2uXTY3ys2Y"
+},
+{
+"kind": "csseguid",
+"args": [
+"MKVLATWY",
+"{protein}",
+"long"
+],
+"value": "csseguid=jDyyYgydTaVlfNwTls0pjtUIzAs"
+},
+{
+"kind": "seguid",
+"args": [
+"MKVLATWY",
+"{protein}",
+"short"
+],
+"value": "G3MBzj"
+},
+{
+"kind": "lsseguid",
+"args": [
+"MKVLATWY",
+"{protein}",
+"short"
+],
+"value": "G3MBzj"
+},
+{
+"kind": "csseguid",
+"args": [
+"MKVLATWY",
+"{protein}",
+"short"
+],
+"value": "jDyyYg"
+},
+{
+"kind": "seguid",
+"args": [
+"MKVLATWY",
+"{protein}",
+"both"
+],
+"value": [
+"G3MBzj",
+"seguid=G3MBzjlKTF/XW67px2uXTY3ys2Y"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"MKVLATWY",
+"{protein}",
+"both"
+],
+"value": [
+"G3MBzj",
+"lsseguid=G3MBzjlKTF_XW67px2uXTY3ys2Y"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"MKVLATWY",
+"{protein}",
+"both"
+],
+"value": [
+"jDyyYg",
+"csseguid=jDyyYgydTaVlfNwTls0pjtUIzAs"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"MKVLATWYBJXZ",
+"{protein-extended}",
+"long"
+],
+"value": "seguid=SF6XZsOop23OljZTFhMGXZYuXGU"
+},
+{
+"kind": "lsseguid",
+"args": [
+"MKVLATWYBJXZ",
+"{protein-extended}",
+"long"
+],
+"value": "lsseguid=SF6XZsOop23OljZTFhMGXZYuXGU"
+},
+{
+"kind": "csseguid",
+"args": [
+"MKVLATWYBJXZ",
+"{protein-extended}",
+"long"
+],
+"value": "csseguid=aMTOuc5sk6hcP2zaE1geJwg9MRA"
+},
+{
+"kind": "seguid",
+"args": [
+"MKVLATWYBJXZ",
+"{protein-extended}",
+"short"
+],
+"value": "SF6XZs"
+},
+{
+"kind": "lsseguid",
+"args": [
+"MKVLATWYBJXZ",
+"{protein-extended}",
+"short"
+],
+"value": "SF6XZs"
+},
+{
+"kind": "csseguid",
+"args": [
+"MKVLATWYBJXZ",
+"{protein-extended}",
+"short"
+],
+"value": "aMTOuc"
+},
+{
+"kind": "seguid",
+"args": [
+"MKVLATWYBJXZ",
+"{protein-extended}",
+"both"
+],
+"value": [
+"SF6XZs",
+"seguid=SF6XZsOop23OljZTFhMGXZYuXGU"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"MKVLATWYBJXZ",
+"{protein-extended}",
+"both"
+],
+"value": [
+"SF6XZs",
+"lsseguid=SF6XZsOop23OljZTFhMGXZYuXGU"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"MKVLATWYBJXZ",
+"{protein-extended}",
+"both"
+],
+"value": [
+"aMTOuc",
+"csseguid=aMTOuc5sk6hcP2zaE1geJwg9MRA"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"GATTACA",
+"{RNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'T' not in the 'alphabet'"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"GATTACA",
+"{RNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'T' not in the 'alphabet'"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"GATTACA",
+"{RNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'T' not in the 'alphabet'"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"GATTACA",
+"{RNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'T' not in the 'alphabet'"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"GATTACA",
+"{RNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'T' not in the 'alphabet'"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"GATTACA",
+"{RNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'T' not in the 'alphabet'"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"GATTACA",
+"{RNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'T' not in the 'alphabet'"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"GATTACA",
+"{RNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'T' not in the 'alphabet'"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"GATTACA",
+"{RNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'T' not in the 'alphabet'"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"GATTACAX",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'X' not in the 'alphabet'"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"GATTACAX",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'X' not in the 'alphabet'"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"GATTACAX",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'X' not in the 'alphabet'"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"GATTACAX",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'X' not in the 'alphabet'"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"GATTACAX",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'X' not in the 'alphabet'"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"GATTACAX",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'X' not in the 'alphabet'"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"GATTACAX",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'X' not in the 'alphabet'"
+}
+},
+{
+"kind": "lsseguid",
+"args": [
+"GATTACAX",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'X' not in the 'alphabet'"
+}
+},
+{
+"kind": "csseguid",
+"args": [
+"GATTACAX",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'X' not in the 'alphabet'"
+}
+},
+{
+"kind": "seguid",
+"args": [
+"TTTTTTTT",
+"{DNA}",
+"long"
+],
+"value": "seguid=BcRWclHihttLyvwG7bZAvhiyDMY"
+},
+{
+"kind": "lsseguid",
+"args": [
+"TTTTTTTT",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=BcRWclHihttLyvwG7bZAvhiyDMY"
+},
+{
+"kind": "csseguid",
+"args": [
+"TTTTTTTT",
+"{DNA}",
+"long"
+],
+"value": "csseguid=BcRWclHihttLyvwG7bZAvhiyDMY"
+},
+{
+"kind": "seguid",
+"args": [
+"TTTTTTTT",
+"{DNA}",
+"short"
+],
+"value": "BcRWcl"
+},
+{
+"kind": "lsseguid",
+"args": [
+"TTTTTTTT",
+"{DNA}",
+"short"
+],
+"value": "BcRWcl"
+},
+{
+"kind": "csseguid",
+"args": [
+"TTTTTTTT",
+"{DNA}",
+"short"
+],
+"value": "BcRWcl"
+},
+{
+"kind": "seguid",
+"args": [
+"TTTTTTTT",
+"{DNA}",
+"both"
+],
+"value": [
+"BcRWcl",
+"seguid=BcRWclHihttLyvwG7bZAvhiyDMY"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"TTTTTTTT",
+"{DNA}",
+"both"
+],
+"value": [
+"BcRWcl",
+"lsseguid=BcRWclHihttLyvwG7bZAvhiyDMY"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"TTTTTTTT",
+"{DNA}",
+"both"
+],
+"value": [
+"BcRWcl",
+"csseguid=BcRWclHihttLyvwG7bZAvhiyDMY"
+]
+},
+{
+"kind": "seguid",
+"args": [
+"ACGTACGTACGTACGT",
+"{DNA}",
+"long"
+],
+"value": "seguid=QwRwT2siagv8ynsDaUedUu48QjM"
+},
+{
+"kind": "lsseguid",
+"args": [
+"ACGTACGTACGTACGT",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=QwRwT2siagv8ynsDaUedUu48QjM"
+},
+{
+"kind": "csseguid",
+"args": [
+"ACGTACGTACGTACGT",
+"{DNA}",
+"long"
+],
+"value": "csseguid=QwRwT2siagv8ynsDaUedUu48QjM"
+},
+{
+"kind": "seguid",
+"args": [
+"ACGTACGTACGTACGT",
+"{DNA}",
+"short"
+],
+"value": "QwRwT2"
+},
+{
+"kind": "lsseguid",
+"args": [
+"ACGTACGTACGTACGT",
+"{DNA}",
+"short"
+],
+"value": "QwRwT2"
+},
+{
+"kind": "csseguid",
+"args": [
+"ACGTACGTACGTACGT",
+"{DNA}",
+"short"
+],
+"value": "QwRwT2"
+},
+{
+"kind": "seguid",
+"args": [
+"ACGTACGTACGTACGT",
+"{DNA}",
+"both"
+],
+"value": [
+"QwRwT2",
+"seguid=QwRwT2siagv8ynsDaUedUu48QjM"
+]
+},
+{
+"kind": "lsseguid",
+"args": [
+"ACGTACGTACGTACGT",
+"{DNA}",
+"both"
+],
+"value": [
+"QwRwT2",
+"lsseguid=QwRwT2siagv8ynsDaUedUu48QjM"
+]
+},
+{
+"kind": "csseguid",
+"args": [
+"ACGTACGTACGTACGT",
+"{DNA}",
+"both"
+],
+"value": [
+"QwRwT2",
+"csseguid=QwRwT2siagv8ynsDaUedUu48QjM"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=zDq4dp6G3AIsldhPDDL8S5A0BKk"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=z7GBDOjQuqwVpDiiC_CEJkmOKZo"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{DNA}",
+"short"
+],
+"value": "zDq4dp"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{DNA}",
+"short"
+],
+"value": "z7GBDO"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{DNA}",
+"both"
+],
+"value": [
+"zDq4dp",
+"ldseguid=zDq4dp6G3AIsldhPDDL8S5A0BKk"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{DNA}",
+"both"
+],
+"value": [
+"z7GBDO",
+"cdseguid=z7GBDOjQuqwVpDiiC_CEJkmOKZo"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"GAATTC",
+"GAATTC",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=KWz6XOz6bn0wUrIPaoy6_CGGPeo"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GAATTC",
+"GAATTC",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=nqNI8kElPdaPzZm2S4AOFSfp9YY"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GAATTC",
+"GAATTC",
+"{DNA}",
+"short"
+],
+"value": "KWz6XO"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GAATTC",
+"GAATTC",
+"{DNA}",
+"short"
+],
+"value": "nqNI8k"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GAATTC",
+"GAATTC",
+"{DNA}",
+"both"
+],
+"value": [
+"KWz6XO",
+"ldseguid=KWz6XOz6bn0wUrIPaoy6_CGGPeo"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"GAATTC",
+"GAATTC",
+"{DNA}",
+"both"
+],
+"value": [
+"nqNI8k",
+"cdseguid=nqNI8kElPdaPzZm2S4AOFSfp9YY"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"AAAA",
+"TTTT",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=voi1KAExfCxhEQX4mEKuzuaAxvI"
+},
+{
+"kind": "cdseguid",
+"args": [
+"AAAA",
+"TTTT",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=voi1KAExfCxhEQX4mEKuzuaAxvI"
+},
+{
+"kind": "ldseguid",
+"args": [
+"AAAA",
+"TTTT",
+"{DNA}",
+"short"
+],
+"value": "voi1KA"
+},
+{
+"kind": "cdseguid",
+"args": [
+"AAAA",
+"TTTT",
+"{DNA}",
+"short"
+],
+"value": "voi1KA"
+},
+{
+"kind": "ldseguid",
+"args": [
+"AAAA",
+"TTTT",
+"{DNA}",
+"both"
+],
+"value": [
+"voi1KA",
+"ldseguid=voi1KAExfCxhEQX4mEKuzuaAxvI"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"AAAA",
+"TTTT",
+"{DNA}",
+"both"
+],
+"value": [
+"voi1KA",
+"cdseguid=voi1KAExfCxhEQX4mEKuzuaAxvI"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"ACGTACGT",
+"ACGTACGT",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=9zv91yCsmXnaJwxd_XNrXNubnJQ"
+},
+{
+"kind": "cdseguid",
+"args": [
+"ACGTACGT",
+"ACGTACGT",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=9zv91yCsmXnaJwxd_XNrXNubnJQ"
+},
+{
+"kind": "ldseguid",
+"args": [
+"ACGTACGT",
+"ACGTACGT",
+"{DNA}",
+"short"
+],
+"value": "9zv91y"
+},
+{
+"kind": "cdseguid",
+"args": [
+"ACGTACGT",
+"ACGTACGT",
+"{DNA}",
+"short"
+],
+"value": "9zv91y"
+},
+{
+"kind": "ldseguid",
+"args": [
+"ACGTACGT",
+"ACGTACGT",
+"{DNA}",
+"both"
+],
+"value": [
+"9zv91y",
+"ldseguid=9zv91yCsmXnaJwxd_XNrXNubnJQ"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"ACGTACGT",
+"ACGTACGT",
+"{DNA}",
+"both"
+],
+"value": [
+"9zv91y",
+"cdseguid=9zv91yCsmXnaJwxd_XNrXNubnJQ"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATCA",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATCA",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATCA",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATCA",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATCA",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATCA",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": ""
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATG",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Non-complementary basepair (G,G) detected at position 1"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATG",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Non-complementary basepair (G,G) detected at position 1"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATG",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Non-complementary basepair (G,G) detected at position 1"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATG",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Non-complementary basepair (G,G) detected at position 1"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATG",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Non-complementary basepair (G,G) detected at position 1"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATG",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "ValueError",
+"msg": "Non-complementary basepair (G,G) detected at position 1"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{protein}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Was a single-stranded alphabet used by mistake?"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{protein}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Was a single-stranded alphabet used by mistake?"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{protein}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Was a single-stranded alphabet used by mistake?"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{protein}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Was a single-stranded alphabet used by mistake?"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{protein}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Was a single-stranded alphabet used by mistake?"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{protein}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Was a single-stranded alphabet used by mistake?"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"-ATTACA",
+"TGTAAT-",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=XnuOMauXZIYRrxcC2TQnOIgawJ4"
+},
+{
+"kind": "cdseguid",
+"args": [
+"-ATTACA",
+"TGTAAT-",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=XnuOMauXZIYRrxcC2TQnOIgawJ4"
+},
+{
+"kind": "ldseguid",
+"args": [
+"-ATTACA",
+"TGTAAT-",
+"{DNA}",
+"short"
+],
+"value": "XnuOMa"
+},
+{
+"kind": "cdseguid",
+"args": [
+"-ATTACA",
+"TGTAAT-",
+"{DNA}",
+"short"
+],
+"value": "XnuOMa"
+},
+{
+"kind": "ldseguid",
+"args": [
+"-ATTACA",
+"TGTAAT-",
+"{DNA}",
+"both"
+],
+"value": [
+"XnuOMa",
+"ldseguid=XnuOMauXZIYRrxcC2TQnOIgawJ4"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"-ATTACA",
+"TGTAAT-",
+"{DNA}",
+"both"
+],
+"value": [
+"XnuOMa",
+"cdseguid=XnuOMauXZIYRrxcC2TQnOIgawJ4"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"--TTACA",
+"TGTAA--",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=AkonDJJvrMVNv2gFG4ZhAv2nyf4"
+},
+{
+"kind": "cdseguid",
+"args": [
+"--TTACA",
+"TGTAA--",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=bcYJxaayA0mv_pVZFmDgZrDfNxw"
+},
+{
+"kind": "ldseguid",
+"args": [
+"--TTACA",
+"TGTAA--",
+"{DNA}",
+"short"
+],
+"value": "AkonDJ"
+},
+{
+"kind": "cdseguid",
+"args": [
+"--TTACA",
+"TGTAA--",
+"{DNA}",
+"short"
+],
+"value": "bcYJxa"
+},
+{
+"kind": "ldseguid",
+"args": [
+"--TTACA",
+"TGTAA--",
+"{DNA}",
+"both"
+],
+"value": [
+"AkonDJ",
+"ldseguid=AkonDJJvrMVNv2gFG4ZhAv2nyf4"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"--TTACA",
+"TGTAA--",
+"{DNA}",
+"both"
+],
+"value": [
+"bcYJxa",
+"cdseguid=bcYJxaayA0mv_pVZFmDgZrDfNxw"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"GAUUACA",
+"UGUAAUC",
+"{RNA}",
+"long"
+],
+"value": "ldseguid=KpsvZrF54xdaaA-Mxzlyv-BVYSw"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GAUUACA",
+"UGUAAUC",
+"{RNA}",
+"long"
+],
+"value": "cdseguid=Df8rAhdR3frJPsyeR6kXhBAqJQ0"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GAUUACA",
+"UGUAAUC",
+"{RNA}",
+"short"
+],
+"value": "KpsvZr"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GAUUACA",
+"UGUAAUC",
+"{RNA}",
+"short"
+],
+"value": "Df8rAh"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GAUUACA",
+"UGUAAUC",
+"{RNA}",
+"both"
+],
+"value": [
+"KpsvZr",
+"ldseguid=KpsvZrF54xdaaA-Mxzlyv-BVYSw"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"GAUUACA",
+"UGUAAUC",
+"{RNA}",
+"both"
+],
+"value": [
+"Df8rAh",
+"cdseguid=Df8rAhdR3frJPsyeR6kXhBAqJQ0"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{RNA-extended}",
+"long"
+],
+"value": "ldseguid=4PZCZWGsbac0l5dBJjo3bWUFfNE"
+},
+{
+"kind": "cdseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{RNA-extended}",
+"long"
+],
+"value": "cdseguid=MvAuVY0lE1llLZ6j2zjYdiFF6nY"
+},
+{
+"kind": "ldseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{RNA-extended}",
+"short"
+],
+"value": "4PZCZW"
+},
+{
+"kind": "cdseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{RNA-extended}",
+"short"
+],
+"value": "MvAuVY"
+},
+{
+"kind": "ldseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{RNA-extended}",
+"both"
+],
+"value": [
+"4PZCZW",
+"ldseguid=4PZCZWGsbac0l5dBJjo3bWUFfNE"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{RNA-extended}",
+"both"
+],
+"value": [
+"MvAuVY",
+"cdseguid=MvAuVY0lE1llLZ6j2zjYdiFF6nY"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{DNA-extended}",
+"long"
+],
+"value": "ldseguid=4PZCZWGsbac0l5dBJjo3bWUFfNE"
+},
+{
+"kind": "cdseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{DNA-extended}",
+"long"
+],
+"value": "cdseguid=MvAuVY0lE1llLZ6j2zjYdiFF6nY"
+},
+{
+"kind": "ldseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{DNA-extended}",
+"short"
+],
+"value": "4PZCZW"
+},
+{
+"kind": "cdseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{DNA-extended}",
+"short"
+],
+"value": "MvAuVY"
+},
+{
+"kind": "ldseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{DNA-extended}",
+"both"
+],
+"value": [
+"4PZCZW",
+"ldseguid=4PZCZWGsbac0l5dBJjo3bWUFfNE"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"RYMKSWHBVDN",
+"NHBVDWSMKRY",
+"{DNA-extended}",
+"both"
+],
+"value": [
+"MvAuVY",
+"cdseguid=MvAuVY0lE1llLZ6j2zjYdiFF6nY"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"",
+"TGTAATC",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Watson sequence must not be empty"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"",
+"TGTAATC",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Watson sequence must not be empty"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"",
+"TGTAATC",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Watson sequence must not be empty"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"",
+"TGTAATC",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Watson sequence must not be empty"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"",
+"TGTAATC",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Watson sequence must not be empty"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"",
+"TGTAATC",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Watson sequence must not be empty"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Crick sequence must not be empty"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"",
+"{DNA}",
+"long"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Crick sequence must not be empty"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Crick sequence must not be empty"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"",
+"{DNA}",
+"short"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Crick sequence must not be empty"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Crick sequence must not be empty"
+}
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"",
+"{DNA}",
+"both"
+],
+"exc": {
+"type": "AssertionError",
+"msg": "Crick sequence must not be empty"
+}
+},
+{
+"kind": "ldseguid",
+"args": [
+"GGGGGGGG",
+"CCCCCCCC",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=0JH7sRMMpjkKy8_Dyjoie8MU8vs"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GGGGGGGG",
+"CCCCCCCC",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=0JH7sRMMpjkKy8_Dyjoie8MU8vs"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GGGGGGGG",
+"CCCCCCCC",
+"{DNA}",
+"short"
+],
+"value": "0JH7sR"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GGGGGGGG",
+"CCCCCCCC",
+"{DNA}",
+"short"
+],
+"value": "0JH7sR"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GGGGGGGG",
+"CCCCCCCC",
+"{DNA}",
+"both"
+],
+"value": [
+"0JH7sR",
+"ldseguid=0JH7sRMMpjkKy8_Dyjoie8MU8vs"
+]
+},
+{
+"kind": "cdseguid",
+"args": [
+"GGGGGGGG",
+"CCCCCCCC",
+"{DNA}",
+"both"
+],
+"value": [
+"0JH7sR",
+"cdseguid=0JH7sRMMpjkKy8_Dyjoie8MU8vs"
+]
+},
+{
+"kind": "ldseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{DNA-extended},AU",
+"long"
+],
+"value": "ldseguid=zDq4dp6G3AIsldhPDDL8S5A0BKk"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GATTACA",
+"TGTAATC",
+"{DNA-extended}",
+"long"
+],
+"value": "cdseguid=z7GBDOjQuqwVpDiiC_CEJkmOKZo"
+},
+{
+"kind": "ldseguid",
+"args": [
+"-ATTACA",
+"TGTAAT-",
+"{DNA-extended},AU",
+"long"
+],
+"value": "ldseguid=XnuOMauXZIYRrxcC2TQnOIgawJ4"
+},
+{
+"kind": "cdseguid",
+"args": [
+"-ATTACA",
+"TGTAAT-",
+"{DNA-extended}",
+"long"
+],
+"value": "cdseguid=XnuOMauXZIYRrxcC2TQnOIgawJ4"
+},
+{
+"kind": "lsseguid",
+"args": [
+"ACGGGTGAGGCCGAGCGGAGCGAGATCA",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=1Mf-ETpjxKX2mWf2xnS2kmK5NDE"
+},
+{
+"kind": "csseguid",
+"args": [
+"ACGGGTGAGGCCGAGCGGAGCGAGATCA",
+"{DNA}",
+"long"
+],
+"value": "csseguid=St2mEU6NNN-9BaoilmPxPjzWo2c"
+},
+{
+"kind": "ldseguid",
+"args": [
+"ACGGGTGAGGCCGAGCGGAGCGAGATCA",
+"TGATCTCGCTCCGCTCGGCCTCACCCGT",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=vEMJfRQ9WajKNHBn3QGNmzewOpw"
+},
+{
+"kind": "cdseguid",
+"args": [
+"ACGGGTGAGGCCGAGCGGAGCGAGATCA",
+"TGATCTCGCTCCGCTCGGCCTCACCCGT",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=_9iwfAVLPsvsjWbbbHEFi0xEi20"
+},
+{
+"kind": "lsseguid",
+"args": [
+"TAGATGGGACCTCCT",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=Ns05vkB7j5HwaYAwYamCOiaykKM"
+},
+{
+"kind": "csseguid",
+"args": [
+"TAGATGGGACCTCCT",
+"{DNA}",
+"long"
+],
+"value": "csseguid=_faLYVG8GuBwZjw2YeYXzfMDj14"
+},
+{
+"kind": "ldseguid",
+"args": [
+"TAGATGGGACCTCCT",
+"AGGAGGTCCCATCTA",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=tGhQECY20gS_7B4PWyUby1O8uUw"
+},
+{
+"kind": "cdseguid",
+"args": [
+"TAGATGGGACCTCCT",
+"AGGAGGTCCCATCTA",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=IxFjq8Jaeb6xj5ayQpOXh13-Qz4"
+},
+{
+"kind": "lsseguid",
+"args": [
+"AAAGTCTCTGGCATACCGGTTTCCGGT",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=Z2CmWYtrknzSxOOeAQ7jTljmTfs"
+},
+{
+"kind": "csseguid",
+"args": [
+"AAAGTCTCTGGCATACCGGTTTCCGGT",
+"{DNA}",
+"long"
+],
+"value": "csseguid=Z2CmWYtrknzSxOOeAQ7jTljmTfs"
+},
+{
+"kind": "ldseguid",
+"args": [
+"AAAGTCTCTGGCATACCGGTTTCCGGT",
+"ACCGGAAACCGGTATGCCAGAGACTTT",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=nZaEHE4DxUKH5ZVpClmM-jpeqo0"
+},
+{
+"kind": "cdseguid",
+"args": [
+"AAAGTCTCTGGCATACCGGTTTCCGGT",
+"ACCGGAAACCGGTATGCCAGAGACTTT",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=RPxxnh51vjGG6jTY1cngXomUL7g"
+},
+{
+"kind": "lsseguid",
+"args": [
+"GGTCTCTGCTAGCGATAACCCGACCTACTCTCAAGAAA",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=j0paEZd5Q7GmJUyuHXxyI2J7Ruk"
+},
+{
+"kind": "csseguid",
+"args": [
+"GGTCTCTGCTAGCGATAACCCGACCTACTCTCAAGAAA",
+"{DNA}",
+"long"
+],
+"value": "csseguid=0GcIYz4dvgHmfhfXx2gqrlkL9Tc"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GGTCTCTGCTAGCGATAACCCGACCTACTCTCAAGAAA",
+"TTTCTTGAGAGTAGGTCGGGTTATCGCTAGCAGAGACC",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=Hfbyj9DwEgwPiXUgz6kmOBkArAE"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GGTCTCTGCTAGCGATAACCCGACCTACTCTCAAGAAA",
+"TTTCTTGAGAGTAGGTCGGGTTATCGCTAGCAGAGACC",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=ZDtDQ570VS1pt4TYQSsp-Hxg_K0"
+},
+{
+"kind": "lsseguid",
+"args": [
+"GCATTGACTTAGCCCCCGCCGA",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=iHT-CNf__okaX06U0tmhP5DQdqM"
+},
+{
+"kind": "csseguid",
+"args": [
+"GCATTGACTTAGCCCCCGCCGA",
+"{DNA}",
+"long"
+],
+"value": "csseguid=Gu34HRLErxBJJzmG3kTvh95ICRU"
+},
+{
+"kind": "ldseguid",
+"args": [
+"GCATTGACTTAGCCCCCGCCGA",
+"TCGGCGGGGGCTAAGTCAATGC",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=aia_1Wt7B8o84fBGwHXVXrZ77Rc"
+},
+{
+"kind": "cdseguid",
+"args": [
+"GCATTGACTTAGCCCCCGCCGA",
+"TCGGCGGGGGCTAAGTCAATGC",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=pb5BznJ_Jnfi_NuJrqDDMP5v8Q8"
+},
+{
+"kind": "lsseguid",
+"args": [
+"ACAGTGGGAGTG",
+"{DNA}",
+"long"
+],
+"value": "lsseguid=WylTehZRMrJ8DhELCTw2WV2mfrM"
+},
+{
+"kind": "csseguid",
+"args": [
+"ACAGTGGGAGTG",
+"{DNA}",
+"long"
+],
+"value": "csseguid=WylTehZRMrJ8DhELCTw2WV2mfrM"
+},
+{
+"kind": "ldseguid",
+"args": [
+"ACAGTGGGAGTG",
+"CACTCCCACTGT",
+"{DNA}",
+"long"
+],
+"value": "ldseguid=URJKKEKjxFYn5sWtFBNctllHZ2I"
+},
+{
+"kind": "cdseguid",
+"args": [
+"ACAGTGGGAGTG",
+"CACTCCCACTGT",
+"{DNA}",
+"long"
+],
+"value": "cdseguid=URJKKEKjxFYn5sWtFBNctllHZ2I"
+}
+],
+"rotations": [
+{
+"seq": "",
+"min_rotation": {
+"value": 0
+},
+"rotate_to_min": {
+"value": ""
+},
+"rotations": [
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+},
+{
+"value": ""
+}
+]
+},
+{
+"seq": "A",
+"min_rotation": {
+"value": 0
+},
+"rotate_to_min": {
+"value": "A"
+},
+"rotations": [
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+},
+{
+"value": "A"
+}
+]
+},
+{
+"seq": "AA",
+"min_rotation": {
+"value": -1
+},
+"rotate_to_min": {
+"value": "AA"
+},
+"rotations": [
+{
+"value": "AA"
+},
+{
+"value": "AA"
+},
+{
+"value": "AA"
+},
+{
+"value": "AA"
+},
+{
+"value": "AA"
+}
+]
+},
+{
+"seq": "GATTACA",
+"min_rotation": {
+"value": 4
+},
+"rotate_to_min": {
+"value": "ACAGATT"
+},
+"rotations": [
+{
+"value": "GATTACA"
+},
+{
+"value": "ATTACAG"
+},
+{
+"value": "TACAGAT"
+},
+{
+"value": "AGATTAC"
+},
+{
+"value": "GATTACA"
+}
+]
+},
+{
+"seq": "TACAGAT",
+"min_rotation": {
+"value": 1
+},
+"rotate_to_min": {
+"value": "ACAGATT"
+},
+"rotations": [
+{
+"value": "TACAGAT"
+},
+{
+"value": "ACAGATT"
+},
+{
+"value": "AGATTAC"
+},
+{
+"value": "TTACAGA"
+},
+{
+"value": "TACAGAT"
+}
+]
+},
+{
+"seq": "ACAGATT",
+"min_rotation": {
+"value": 0
+},
+"rotate_to_min": {
+"value": "ACAGATT"
+},
+"rotations": [
+{
+"value": "ACAGATT"
+},
+{
+"value": "CAGATTA"
+},
+{
+"value": "GATTACA"
+},
+{
+"value": "TACAGAT"
+},
+{
+"value": "ACAGATT"
+}
+]
+},
+{
+"seq": "AAAA",
+"min_rotation": {
+"value": -3
+},
+"rotate_to_min": {
+"value": "AAAA"
+},
+"rotations": [
+{
+"value": "AAAA"
+},
+{
+"value": "AAAA"
+},
+{
+"value": "AAAA"
+},
+{
+"value": "AAAA"
+},
+{
+"value": "AAAA"
+}
+]
+},
+{
+"seq": "ABABAB",
+"min_rotation": {
+"value": -4
+},
+"rotate_to_min": {
+"value": "ABABAB"
+},
+"rotations": [
+{
+"value": "ABABAB"
+},
+{
+"value": "BABABA"
+},
+{
+"value": "BABABA"
+},
+{
+"value": "BABABA"
+},
+{
+"value": "BABABA"
+}
+]
+},
+{
+"seq": "BABABA",
+"min_rotation": {
+"value": -3
+},
+"rotate_to_min": {
+"value": "ABABAB"
+},
+"rotations": [
+{
+"value": "BABABA"
+},
+{
+"value": "ABABAB"
+},
+{
+"value": "ABABAB"
+},
+{
+"value": "ABABAB"
+},
+{
+"value": "ABABAB"
+}
+]
+},
+{
+"seq": "CBA",
+"min_rotation": {
+"value": 2
+},
+"rotate_to_min": {
+"value": "ACB"
+},
+"rotations": [
+{
+"value": "CBA"
+},
+{
+"value": "BAC"
+},
+{
+"value": "CBA"
+},
+{
+"value": "ACB"
+},
+{
+"value": "BAC"
+}
+]
+},
+{
+"seq": "ACGTACGTACGT",
+"min_rotation": {
+"value": -8
+},
+"rotate_to_min": {
+"value": "ACGTACGTACGT"
+},
+"rotations": [
+{
+"value": "ACGTACGTACGT"
+},
+{
+"value": "CGTACGTACGTA"
+},
+{
+"value": "TACGTACGTACG"
+},
+{
+"value": "TACGTACGTACG"
+},
+{
+"value": "TACGTACGTACG"
+}
+]
+},
+{
+"seq": "TTTTTTTTA",
+"min_rotation": {
+"value": 8
+},
+"rotate_to_min": {
+"value": "ATTTTTTTT"
+},
+"rotations": [
+{
+"value": "TTTTTTTTA"
+},
+{
+"value": "TTTTTTTAT"
+},
+{
+"value": "TTTTTATTT"
+},
+{
+"value": "ATTTTTTTT"
+},
+{
+"value": "TATTTTTTT"
+}
+]
+},
+{
+"seq": "ATTTTTTTT",
+"min_rotation": {
+"value": 0
+},
+"rotate_to_min": {
+"value": "ATTTTTTTT"
+},
+"rotations": [
+{
+"value": "ATTTTTTTT"
+},
+{
+"value": "TTTTTTTTA"
+},
+{
+"value": "TTTTTTATT"
+},
+{
+"value": "TATTTTTTT"
+},
+{
+"value": "TTATTTTTT"
+}
+]
+},
+{
+"seq": "ZZZAAA",
+"min_rotation": {
+"value": 3
+},
+"rotate_to_min": {
+"value": "AAAZZZ"
+},
+"rotations": [
+{
+"value": "ZZZAAA"
+},
+{
+"value": "ZZAAAZ"
+},
+{
+"value": "AAAZZZ"
+},
+{
+"value": "AZZZAA"
+},
+{
+"value": "ZZAAAZ"
+}
+]
+},
+{
+"seq": "aAaA",
+"min_rotation": {
+"value": -1
+},
+"rotate_to_min": {
+"value": "AaAa"
+},
+"rotations": [
+{
+"value": "aAaA"
+},
+{
+"value": "AaAa"
+},
+{
+"value": "AaAa"
+},
+{
+"value": "AaAa"
+},
+{
+"value": "AaAa"
+}
+]
+}
+],
+"tables": [
+{
+"spec": "{DNA}",
+"table": {
+"value": [
+[
+"G",
+"C"
+],
+[
+"C",
+"G"
+],
+[
+"A",
+"T"
+],
+[
+"T",
+"A"
+]
+]
+}
+},
+{
+"spec": "{RNA}",
+"table": {
+"value": [
+[
+"G",
+"C"
+],
+[
+"C",
+"G"
+],
+[
+"A",
+"U"
+],
+[
+"U",
+"A"
+]
+]
+}
+},
+{
+"spec": "{DNA-extended}",
+"table": {
+"value": [
+[
+"G",
+"C"
+],
+[
+"C",
+"G"
+],
+[
+"A",
+"T"
+],
+[
+"T",
+"A"
+],
+[
+"B",
+"V"
+],
+[
+"V",
+"B"
+],
+[
+"D",
+"H"
+],
+[
+"H",
+"D"
+],
+[
+"K",
+"M"
+],
+[
+"M",
+"K"
+],
+[
+"S",
+"SS"
+],
+[
+"R",
+"Y"
+],
+[
+"Y",
+"R"
+],
+[
+"W",
+"WW"
+],
+[
+"N",
+"NN"
+]
+]
+}
+},
+{
+"spec": "{RNA-extended}",
+"table": {
+"value": [
+[
+"G",
+"C"
+],
+[
+"C",
+"G"
+],
+[
+"A",
+"U"
+],
+[
+"U",
+"A"
+],
+[
+"B",
+"V"
+],
+[
+"V",
+"B"
+],
+[
+"D",
+"H"
+],
+[
+"H",
+"D"
+],
+[
+"K",
+"M"
+],
+[
+"M",
+"K"
+],
+[
+"S",
+"SS"
+],
+[
+"R",
+"Y"
+],
+[
+"Y",
+"R"
+],
+[
+"W",
+"WW"
+],
+[
+"N",
+"NN"
+]
+]
+}
+},
+{
+"spec": "{protein}",
+"table": {
+"value": [
+[
+"A",
+""
+],
+[
+"C",
+""
+],
+[
+"D",
+""
+],
+[
+"E",
+""
+],
+[
+"F",
+""
+],
+[
+"G",
+""
+],
+[
+"H",
+""
+],
+[
+"I",
+""
+],
+[
+"K",
+""
+],
+[
+"L",
+""
+],
+[
+"M",
+""
+],
+[
+"N",
+""
+],
+[
+"P",
+""
+],
+[
+"Q",
+""
+],
+[
+"R",
+""
+],
+[
+"S",
+""
+],
+[
+"T",
+""
+],
+[
+"V",
+""
+],
+[
+"W",
+""
+],
+[
+"Y",
+""
+],
+[
+"O",
+""
+],
+[
+"U",
+""
+]
+]
+}
+},
+{
+"spec": "{protein-extended}",
+"table": {
+"value": [
+[
+"A",
+""
+],
+[
+"C",
+""
+],
+[
+"D",
+""
+],
+[
+"E",
+""
+],
+[
+"F",
+""
+],
+[
+"G",
+""
+],
+[
+"H",
+""
+],
+[
+"I",
+""
+],
+[
+"K",
+""
+],
+[
+"L",
+""
+],
+[
+"M",
+""
+],
+[
+"N",
+""
+],
+[
+"P",
+""
+],
+[
+"Q",
+""
+],
+[
+"R",
+""
+],
+[
+"S",
+""
+],
+[
+"T",
+""
+],
+[
+"V",
+""
+],
+[
+"W",
+""
+],
+[
+"Y",
+""
+],
+[
+"O",
+""
+],
+[
+"U",
+""
+],
+[
+"B",
+""
+],
+[
+"J",
+""
+],
+[
+"X",
+""
+],
+[
+"Z",
+""
+]
+]
+}
+},
+{
+"spec": "{DNA},--,;;",
+"table": {
+"value": [
+[
+"G",
+"C"
+],
+[
+"C",
+"G"
+],
+[
+"A",
+"T"
+],
+[
+"T",
+"A"
+],
+[
+"-",
+"--"
+],
+[
+";",
+";;"
+]
+]
+}
+},
+{
+"spec": "{DNA-extended},AU",
+"table": {
+"value": [
+[
+"G",
+"C"
+],
+[
+"C",
+"G"
+],
+[
+"A",
+"TU"
+],
+[
+"T",
+"A"
+],
+[
+"B",
+"V"
+],
+[
+"V",
+"B"
+],
+[
+"D",
+"H"
+],
+[
+"H",
+"D"
+],
+[
+"K",
+"M"
+],
+[
+"M",
+"K"
+],
+[
+"S",
+"SS"
+],
+[
+"R",
+"Y"
+],
+[
+"Y",
+"R"
+],
+[
+"W",
+"WW"
+],
+[
+"N",
+"NN"
+],
+[
+"U",
+"A"
+]
+]
+}
+},
+{
+"spec": "GC,AT",
+"table": {
+"value": [
+[
+"G",
+"C"
+],
+[
+"C",
+"G"
+],
+[
+"A",
+"T"
+],
+[
+"T",
+"A"
+]
+]
+}
+},
+{
+"spec": "A,C,G,T",
+"table": {
+"value": [
+[
+"A",
+""
+],
+[
+"C",
+""
+],
+[
+"G",
+""
+],
+[
+"T",
+""
+]
+]
+}
+},
+{
+"spec": "GCA",
+"table": {
+"exc": {
+"type": "ValueError",
+"msg": "Unknown alphabet specification: GCA"
+}
+}
+}
+]
+}

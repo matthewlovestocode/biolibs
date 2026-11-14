@@ -13,6 +13,8 @@
  * - `cut.ts` — cutting with restriction enzymes, and the fragments that come out.
  * - `enzymes.ts` — the enzymes that change an end: filling in, blunting, chewing back, tailing.
  * - `melt.ts` — where a duplex comes apart when it is heated, and what is left when it does.
+ * - `search.ts` — looking inside a molecule, and joining molecules up.
+ * - `identity.ts` — the molecule's SEGUID checksum.
  */
 
 export * from "./alphabet.js";
@@ -21,5 +23,7 @@ export * from "./cut.js";
 export * from "./dseq.js";
 export * from "./dseq-util.js";
 export * from "./enzymes.js";
+export * from "./identity.js";
 export * from "./melt.js";
+export * from "./search.js";
 export * as dscode from "./data/dscode.js";

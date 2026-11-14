@@ -66,6 +66,10 @@ Dseq.fromRepresentation("GAATTC\n  TAA").crick;   // "AATTC"
 | `d.melt(n)`, `d.melt_ss_dna(n)`, `d.shed_ss_dna(w, c)` | `melt(d, n)`, `meltSsDna(d, n)`, `shedSsDna(d, w, c)` |
 | `d.get_ss_meltsites(n)`, `d.get_ds_meltsites(n)` | `getSsMeltsites(d, n)`, `getDsMeltsites(d, n)` |
 | `d.shift_melt_cutsite(c, isRight)` | `shiftMeltCutsite(d, c, isRight)` (and `shiftMeltCutsitePairs`) |
+| `d.seguid()` | `seguidOf(d)` |
+| `d.find(s)`, `s in d`, `d.join(parts)` | `find(d, s)`, `contains(d, s)`, `join(d, parts)` |
+| `parts` iterated, indexed, compared, printed | `partsList`, `partAt`, `partsEqual`, `partsRepr` |
+| `anneal_strands(a, b)` | `annealStrands(a, b)` |
 
 Cutting is free functions rather than methods so that `Dseq` itself does not have to know about enzymes,
 which keeps the two modules from importing each other. The enzymes are `@biolibs/restriction`'s, so a
@@ -105,9 +109,14 @@ is left at each site, widening every cut over the single-stranded stretch beside
 keeps it. `getSsMeltsites`, `getDsMeltsites`, `meltSsDna`, `shedSsDna`, `shiftMeltCutsite` and
 `shiftMeltCutsitePairs` are the steps, available on their own.
 
-Not yet: `seguid` (which needs the separate `seguid` package's checksums for linear and circular
-double-stranded molecules), `join`, `find`, `__contains__` and `__hash__`. `docs/parity-pydna/` is the
-current list.
+`seguidOf` gives the molecule its SEGUID — `cdseguid` for a circle, so the origin does not matter, and
+`ldseguid` for a linear one with the overhangs written out as gaps so that a sticky end is part of what is
+identified. The checksums themselves are in [@biolibs/seguid](seguid.md).
+
+That completes `pydna.dseq` and `pydna.alphabet`: [the checklist](parity-pydna/README.md) is 102 of 102,
+with `__hash__` on both classes marked not applicable, since Python sets it to `None` wherever `__eq__` is
+defined without it and JavaScript has no hashing protocol to port. `Assembly` is the next piece of pydna
+and is not started.
 
 Quirks kept because pydna has them, each pinned by a golden case:
 
@@ -139,6 +148,15 @@ Quirks kept because pydna has them, each pinned by a golden case:
 - `fillIn` on a single strand throws `TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'`,
   because it adds the length it filled to an overhang that is not there. `t4` on the same molecule works,
   since it never looks at the overhang.
+- A molecule cannot be hashed: Python sets `__hash__` to `None` because `__eq__` is defined without it,
+  so `hash(d)` raises `TypeError: unhashable type: 'Dseq'`. A golden case records that refusal; nothing
+  in the port answers it, because a JavaScript object is always usable as a `Map` key.
+- `find` searches the dscode string rather than either strand, which is what pydna searches: for a fully
+  double-stranded molecule that reads as a search of the upper strand, and for one with overhangs it is a
+  search of the code. `find` also takes an `end` argument that pydna computes and then never uses, so
+  neither does this.
+- `seguidOf` on a single strand throws `TypeError: can't multiply sequence by non-int of type 'NoneType'`,
+  from writing an overhang that is not there out as gaps.
 - Melting at a length below one builds the quantifier `{1,0}`, which no regular expression engine will
   take, so `getSsMeltsites` and anything that goes through it throw `PatternError: min repeat greater
   than max repeat at position 68` — Python's own complaint, position and all. `getDsMeltsites` and `melt`
