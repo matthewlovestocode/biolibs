@@ -20,6 +20,7 @@ def mark(key, value="done"):
 ds = json.load(open(f"{here}/../packages/dseq/test/golden/dseq.json"))
 cuts = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-cut.json"))
 ends = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-ends.json"))
+melts = json.load(open(f"{here}/../packages/dseq/test/golden/dseq-melt.json"))
 built = [c for c in ds if "snap" in c]
 ops = {op[0] for c in ds for op in c["ops"]}
 kinds = {c["kind"] for c in ds}
@@ -87,6 +88,14 @@ if cuts["circular"]:
 end_ops = {op[0] for c in ends for op in c["ops"]}
 for op in end_ops:
     mark(f"pydna.dseq.Dseq.{op}")
+# Melting: every case records both searches, the shedding, the widened cuts and the pieces, at eight
+# lengths including the one that makes the pattern itself impossible.
+if any("rounds" in c for c in melts):
+    for member in ("melt", "melt_ss_dna", "get_ss_meltsites", "get_ds_meltsites", "shed_ss_dna",
+                   "shift_melt_cutsite", "shift_melt_cutsite_pairs"):
+        mark(f"pydna.dseq.Dseq.{member}")
+    mark("pydna.alphabet.regex_ss_melt_factory")
+    mark("pydna.alphabet.regex_ds_melt_factory")
 
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

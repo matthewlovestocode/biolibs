@@ -3,8 +3,8 @@
 - [ ] `anneal_strands(strand_a: str, strand_b: str) -> bool`
 - [x] `dsbreaks(datastring: str) -> list[str]`
 - [x] `get_parts(datastring: str) -> pydna.alphabet.DseqParts`
-- [ ] `regex_ds_melt_factory(length: int, circular: bool) -> re.Pattern`
-- [ ] `regex_ss_melt_factory(length: int) -> re.Pattern`
+- [x] `regex_ds_melt_factory(length: int, circular: bool) -> re.Pattern`
+- [x] `regex_ss_melt_factory(length: int) -> re.Pattern`
 - [x] `representation_tuple(datastring: str = '', length_limit_for_repr: int = 30, chunk: int = 4)`
 
 ### pydna.alphabet.DseqParts

@@ -32,19 +32,19 @@
 - [x] `get_cut_parameters(self, cut: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas] | None, is_left: bool) -> Tuple[int, int, int]`
 - [x] `get_cutsite_pairs(self, cutsites: List[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]) -> List[Tuple[None | Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], None | Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]`
 - [x] `get_cutsites(self: ~DseqType, *enzymes: ~EnzymesType) -> List[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]`
-- [ ] `get_ds_meltsites(self: ~DseqType, length: int) -> List[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]`
+- [x] `get_ds_meltsites(self: ~DseqType, length: int) -> List[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]`
 - [x] `get_left_end_as_cutsite(self) -> Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]`
 - [x] `get_parts(self)`
 - [x] `get_right_end_as_cutsite(self) -> Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]`
-- [ ] `get_ss_meltsites(self: ~DseqType, length: int) -> tuple[int, int]`
+- [x] `get_ss_meltsites(self: ~DseqType, length: int) -> tuple[int, int]`
 - [x] `isblunt(self) -> bool`
 - [ ] `join(self, fragments)`
 - [x] `klenow(self, nucleotides: None | str = None) -> ~DseqType`
 - [x] `left_end_position(self) -> Tuple[int, int]`
 - [x] `left_ovhg(self) -> int`
 - [x] `looped(self: ~DseqType) -> ~DseqType`
-- [ ] `melt(self, length)`
-- [ ] `melt_ss_dna(self, length) -> tuple['Dseq', list['Dseq']]`
+- [x] `melt(self, length)`
+- [x] `melt_ss_dna(self, length) -> tuple['Dseq', list['Dseq']]`
 - [x] `mung(self) -> ~DseqType`
 - [x] `mw(self) -> float`
 - [x] `n_cutters(self, n=3, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
@@ -62,9 +62,9 @@
 - [x] `right_end_position(self) -> Tuple[int, int]`
 - [x] `right_ovhg(self) -> int`
 - [ ] `seguid(self) -> str`
-- [ ] `shed_ss_dna(self, watson_cutpairs: list[tuple[int, int]] = None, crick_cutpairs: list[tuple[int, int]] = None)`
-- [ ] `shift_melt_cutsite(self, cutsite: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], is_right: bool) -> Tuple[int, int]`
-- [ ] `shift_melt_cutsite_pairs(self, cutsite_pairs: List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]) -> List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]`
+- [x] `shed_ss_dna(self, watson_cutpairs: list[tuple[int, int]] = None, crick_cutpairs: list[tuple[int, int]] = None)`
+- [x] `shift_melt_cutsite(self, cutsite: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], is_right: bool) -> Tuple[int, int]`
+- [x] `shift_melt_cutsite_pairs(self, cutsite_pairs: List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]) -> List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]`
 - [x] `shifted(self: ~DseqType, shift: int) -> ~DseqType`
 - [x] `t4(self, nucleotides=None) -> ~DseqType`
 - [x] `terminal_transferase(self, nucleotides: str = 'a') -> ~DseqType`

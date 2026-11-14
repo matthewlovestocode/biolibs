@@ -63,6 +63,9 @@ Dseq.fromRepresentation("GAATTC\n  TAA").crick;   // "AATTC"
 | `d.nibble_five_prime_left(n)` and the other three | `nibbleFivePrimeLeft(d, n)` and the other three |
 | `d.exo1_front(n)`, `d.exo1_end(n)` | `exo1Front(d, n)`, `exo1End(d, n)` |
 | `d.terminal_transferase(n)`, `d.user()` | `terminalTransferase(d, n)`, `user(d)` |
+| `d.melt(n)`, `d.melt_ss_dna(n)`, `d.shed_ss_dna(w, c)` | `melt(d, n)`, `meltSsDna(d, n)`, `shedSsDna(d, w, c)` |
+| `d.get_ss_meltsites(n)`, `d.get_ds_meltsites(n)` | `getSsMeltsites(d, n)`, `getDsMeltsites(d, n)` |
+| `d.shift_melt_cutsite(c, isRight)` | `shiftMeltCutsite(d, c, isRight)` (and `shiftMeltCutsitePairs`) |
 
 Cutting is free functions rather than methods so that `Dseq` itself does not have to know about enzymes,
 which keeps the two modules from importing each other. The enzymes are `@biolibs/restriction`'s, so a
@@ -94,8 +97,17 @@ single-stranded ends away (`mung`, `nibbleToBlunt`), chewing one strand back fro
 (`terminalTransferase`, one A by default, which is what readies a fragment for TA cloning) and excising
 uracils (`user`).
 
-Not yet: melting (`melt`, `melt_ss_dna`, the `*_meltsites` family, `shed_ss_dna`), `seguid`, `join`,
-`find`, `__contains__` and `__hash__`. `docs/parity-pydna/` is the current list.
+Melting is here as well. A short double-stranded stretch held between single-stranded ones lets go before
+a long one does, so `melt(d, length)` finds every stretch of up to `length` base pairs that would come
+apart — with one pattern over the dscode string for a stretch that comes away as a single strand and
+another for one whose two sides stay double stranded — sheds the single strands first, then breaks what
+is left at each site, widening every cut over the single-stranded stretch beside it so that the fragment
+keeps it. `getSsMeltsites`, `getDsMeltsites`, `meltSsDna`, `shedSsDna`, `shiftMeltCutsite` and
+`shiftMeltCutsitePairs` are the steps, available on their own.
+
+Not yet: `seguid` (which needs the separate `seguid` package's checksums for linear and circular
+double-stranded molecules), `join`, `find`, `__contains__` and `__hash__`. `docs/parity-pydna/` is the
+current list.
 
 Quirks kept because pydna has them, each pinned by a golden case:
 
@@ -127,3 +139,7 @@ Quirks kept because pydna has them, each pinned by a golden case:
 - `fillIn` on a single strand throws `TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'`,
   because it adds the length it filled to an overhang that is not there. `t4` on the same molecule works,
   since it never looks at the overhang.
+- Melting at a length below one builds the quantifier `{1,0}`, which no regular expression engine will
+  take, so `getSsMeltsites` and anything that goes through it throw `PatternError: min repeat greater
+  than max repeat at position 68` — Python's own complaint, position and all. `getDsMeltsites` and `melt`
+  check the length first and answer with nothing instead.

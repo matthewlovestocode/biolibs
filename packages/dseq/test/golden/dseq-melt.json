@@ -1,0 +1,13313 @@
+[
+{
+"data": "GAATTC",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEEXXI",
+"watson": "GAATTC",
+"crick": "",
+"len": 6,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTC",
+"circular": false
+},
+{
+"data": "QFFZZJ",
+"watson": "",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEEXXI",
+"watson": "GAATTC",
+"crick": "",
+"len": 6,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTC",
+"circular": false
+},
+{
+"data": "QFFZZJ",
+"watson": "",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEEXXI",
+"watson": "GAATTC",
+"crick": "",
+"len": 6,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTC",
+"circular": false
+},
+{
+"data": "QFFZZJ",
+"watson": "",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 6,
+"ovhg": 6,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEEXXI",
+"watson": "GAATTC",
+"crick": "",
+"len": 6,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTC",
+"circular": false
+},
+{
+"data": "QFFZZJ",
+"watson": "",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTC",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "GAATTC",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAATTC",
+"watson": "GAATTC",
+"crick": "GAATTC",
+"len": 6,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAATTC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "PPPPGAATTCQQQQ",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "PPPPGAATTCQQQQ",
+"watson": "GGGGGAATTC",
+"crick": "CCCCGAATTC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGAATTCQQQQ",
+"watson": "GGGGGAATTC",
+"crick": "CCCCGAATTC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGAATTCQQQQ",
+"watson": "GGGGGAATTC",
+"crick": "CCCCGAATTC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGAATTCQQQQ",
+"watson": "GGGGGAATTC",
+"crick": "CCCCGAATTC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGAATTCQQQQ",
+"watson": "GGGGGAATTC",
+"crick": "CCCCGAATTC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 10,
+"ovhg": 10,
+"enzyme": null
+}
+],
+[
+{
+"watson": 14,
+"ovhg": 10,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PPPPPEEXXI",
+"watson": "GGGGGAATTC",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGAATTC",
+"circular": false
+},
+{
+"data": "QFFZZJQQQQ",
+"watson": "",
+"crick": "CCCCGAATTC",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGAATTCQQQQ",
+"watson": "GGGGGAATTC",
+"crick": "CCCCGAATTC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 10,
+"ovhg": 10,
+"enzyme": null
+}
+],
+[
+{
+"watson": 14,
+"ovhg": 10,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PPPPPEEXXI",
+"watson": "GGGGGAATTC",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGAATTC",
+"circular": false
+},
+{
+"data": "QFFZZJQQQQ",
+"watson": "",
+"crick": "CCCCGAATTC",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGAATTCQQQQ",
+"watson": "GGGGGAATTC",
+"crick": "CCCCGAATTC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 10,
+"ovhg": 10,
+"enzyme": null
+}
+],
+[
+{
+"watson": 14,
+"ovhg": 10,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PPPPPEEXXI",
+"watson": "GGGGGAATTC",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGAATTC",
+"circular": false
+},
+{
+"data": "QFFZZJQQQQ",
+"watson": "",
+"crick": "CCCCGAATTC",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGAATTCQQQQ",
+"watson": "GGGGGAATTC",
+"crick": "CCCCGAATTC",
+"len": 14,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 10,
+"ovhg": 10,
+"enzyme": null
+}
+],
+[
+{
+"watson": 14,
+"ovhg": 10,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PPPPPEEXXI",
+"watson": "GGGGGAATTC",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGAATTC",
+"circular": false
+},
+{
+"data": "QFFZZJQQQQ",
+"watson": "",
+"crick": "CCCCGAATTC",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTCGGGG",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "PPPPGAATTCQQQQ",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"exc": {
+"type": "ValueError",
+"msg": "Molecule is internally split in 1 location(s):\n\n[10:15]\n\nCCCC"
+}
+},
+{
+"data": "QQQQGAATTCPPPP",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "QQQQGAATTCPPPP",
+"watson": "GAATTCGGGG",
+"crick": "GAATTCCCCC",
+"len": 14,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGAATTCPPPP",
+"watson": "GAATTCGGGG",
+"crick": "GAATTCCCCC",
+"len": 14,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGAATTCPPPP",
+"watson": "GAATTCGGGG",
+"crick": "GAATTCCCCC",
+"len": 14,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGAATTCPPPP",
+"watson": "GAATTCGGGG",
+"crick": "GAATTCCCCC",
+"len": 14,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": -6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGAATTCPPPP",
+"watson": "GAATTCGGGG",
+"crick": "GAATTCCCCC",
+"len": 14,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -10,
+"enzyme": null
+}
+],
+[
+{
+"watson": 4,
+"ovhg": -10,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QQQQQFFZZJ",
+"watson": "",
+"crick": "GAATTCCCCC",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGAATTC",
+"circular": false
+},
+{
+"data": "PEEXXIPPPP",
+"watson": "GAATTCGGGG",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": -6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGAATTCPPPP",
+"watson": "GAATTCGGGG",
+"crick": "GAATTCCCCC",
+"len": 14,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -10,
+"enzyme": null
+}
+],
+[
+{
+"watson": 4,
+"ovhg": -10,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QQQQQFFZZJ",
+"watson": "",
+"crick": "GAATTCCCCC",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGAATTC",
+"circular": false
+},
+{
+"data": "PEEXXIPPPP",
+"watson": "GAATTCGGGG",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": -6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGAATTCPPPP",
+"watson": "GAATTCGGGG",
+"crick": "GAATTCCCCC",
+"len": 14,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -10,
+"enzyme": null
+}
+],
+[
+{
+"watson": 4,
+"ovhg": -10,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QQQQQFFZZJ",
+"watson": "",
+"crick": "GAATTCCCCC",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGAATTC",
+"circular": false
+},
+{
+"data": "PEEXXIPPPP",
+"watson": "GAATTCGGGG",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": -6,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGAATTCPPPP",
+"watson": "GAATTCGGGG",
+"crick": "GAATTCCCCC",
+"len": 14,
+"ovhg": 4,
+"right_ovhg": 4,
+"str": "GGGGGAATTCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -10,
+"enzyme": null
+}
+],
+[
+{
+"watson": 4,
+"ovhg": -10,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QQQQQFFZZJ",
+"watson": "",
+"crick": "GAATTCCCCC",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGAATTC",
+"circular": false
+},
+{
+"data": "PEEXXIPPPP",
+"watson": "GAATTCGGGG",
+"crick": "",
+"len": 10,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAATTCGGGG",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "QQQQGAATTCPPPP",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"exc": {
+"type": "ValueError",
+"msg": "Molecule is internally split in 1 location(s):\n\n[10:15]\nGGGG"
+}
+},
+{
+"data": "GATCQQQQGATC",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "GATCQQQQGATC",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[
+[
+8,
+16
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": [
+{
+"data": "PEXIPEXI",
+"watson": "GATCGATC",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PEXIPEXI",
+"watson": "GATCGATC",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": true
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[
+[
+4,
+12
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQQFZJ",
+"watson": "GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": -8,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": [
+{
+"data": "QQQQPEXI",
+"watson": "GATC",
+"crick": "CCCC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QQQQPEXI",
+"watson": "GATC",
+"crick": "CCCC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATC",
+"circular": false
+},
+{
+"data": "GATCQQQQQFZJ",
+"watson": "GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": -8,
+"str": "GATCGGGGGATC",
+"circular": true
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATC",
+"watson": "GATC    GATC",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "GATCPPPPGATC",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "GATCPPPPGATC",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[
+[
+8,
+16
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": [
+{
+"data": "QFZJQFZJ",
+"watson": "",
+"crick": "GATCGATC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QFZJQFZJ",
+"watson": "",
+"crick": "GATCGATC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": true
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[
+[
+4,
+12
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 8,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": [
+{
+"data": "PPPPQFZJ",
+"watson": "GGGG",
+"crick": "GATC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PPPPQFZJ",
+"watson": "GGGG",
+"crick": "GATC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATC",
+"circular": false
+},
+{
+"data": "GATCPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 8,
+"str": "GATCGGGGGATC",
+"circular": true
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCPPPPGATC",
+"watson": "GATCGGGGGATC",
+"crick": "GATC    GATC",
+"len": 12,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "PPPPGATCPPPP",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "PPPPGATCPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "GATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGATCPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "GATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGATCPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "GATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[
+[
+4,
+8
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[
+[
+4,
+8
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[
+[
+4,
+8
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[
+[
+4,
+8
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[
+[
+4,
+8
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "PPPPGATCPPPP",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "PPPPGATCPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "GATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGATCPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "GATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGATCPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "GATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[
+[
+4,
+8
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[
+[
+4,
+8
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[
+[
+4,
+8
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "PPPPPEXIPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[
+[
+0,
+4
+],
+[
+12,
+16
+]
+]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGATCPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "GATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": [
+{
+"data": "PPPP",
+"watson": "GGGG",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+},
+{
+"data": "PPPP",
+"watson": "GGGG",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PPPP",
+"watson": "GGGG",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+},
+{
+"data": "PPPP",
+"watson": "GGGG",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+},
+{
+"data": "PPPPGATCPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "GATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GGGGGATCGGGG",
+"circular": true
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPPPGATCPPPP",
+"watson": "GGGGGATCGGGG",
+"crick": "GATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": 4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "QQQQGATCQQQQ",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "QQQQGATCQQQQ",
+"watson": "GATC",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGATCQQQQ",
+"watson": "GATC",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGATCQQQQ",
+"watson": "GATC",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[
+[
+4,
+8
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[
+[
+4,
+8
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[
+[
+4,
+8
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[
+[
+4,
+8
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[
+[
+4,
+8
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+},
+"strands": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "QQQQGATCQQQQ",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "QQQQGATCQQQQ",
+"watson": "GATC",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGATCQQQQ",
+"watson": "GATC",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGATCQQQQ",
+"watson": "GATC",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[
+[
+4,
+8
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[
+[
+4,
+8
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[
+[
+4,
+8
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QQQQQFZJQQQQ",
+"watson": "",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGATCGGGG",
+"circular": true
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[
+[
+0,
+4
+],
+[
+12,
+16
+]
+],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGATCQQQQ",
+"watson": "GATC",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": [
+{
+"data": "QQQQ",
+"watson": "",
+"crick": "CCCC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+},
+{
+"data": "QQQQ",
+"watson": "",
+"crick": "CCCC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+}
+]
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": [
+{
+"data": "QQQQ",
+"watson": "",
+"crick": "CCCC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+},
+{
+"data": "QQQQ",
+"watson": "",
+"crick": "CCCC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGG",
+"circular": false
+},
+{
+"data": "QQQQGATCQQQQ",
+"watson": "GATC",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGATCGGGG",
+"circular": true
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "QQQQGATCQQQQ",
+"watson": "GATC",
+"crick": "CCCCGATCCCCC",
+"len": 12,
+"ovhg": 4,
+"right_ovhg": -4,
+"str": "GGGGGATCGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "GAEEGaGJJJg",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "GAEEGaGJJJq",
+"watson": "GAAAGaG",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": -4,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QF",
+"watson": "",
+"crick": "TC",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GA",
+"circular": false
+},
+{
+"data": "PEEEGaGJJJq",
+"watson": "GAAAGaG",
+"crick": "cGGGCtC",
+"len": 11,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QF",
+"watson": "",
+"crick": "TC",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GA",
+"circular": false
+},
+{
+"data": "PEEEPeP",
+"watson": "GAAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QF",
+"watson": "",
+"crick": "TC",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GA",
+"circular": false
+},
+{
+"data": "PEEEPeP",
+"watson": "GAAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QF",
+"watson": "",
+"crick": "TC",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GA",
+"circular": false
+},
+{
+"data": "PEEEPeP",
+"watson": "GAAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QF",
+"watson": "",
+"crick": "TC",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GA",
+"circular": false
+},
+{
+"data": "PEEEPeP",
+"watson": "GAAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QF",
+"watson": "",
+"crick": "TC",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GA",
+"circular": false
+},
+{
+"data": "PEEEPeP",
+"watson": "GAAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GAAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "GAEEGaGJJJg",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -3,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -5,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QfQJJJqQF",
+"watson": "",
+"crick": "TCcGGGCtC",
+"len": 9,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCgGA",
+"circular": false
+},
+{
+"data": "pPEEEPeP",
+"watson": "gGAAAGaG",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "gGAAAGaG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -3,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -5,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QfQJJJqQF",
+"watson": "",
+"crick": "TCcGGGCtC",
+"len": 9,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCgGA",
+"circular": false
+},
+{
+"data": "pPEEEPeP",
+"watson": "gGAAAGaG",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "gGAAAGaG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -3,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -5,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QfQJJJqQF",
+"watson": "",
+"crick": "TCcGGGCtC",
+"len": 9,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCgGA",
+"circular": false
+},
+{
+"data": "pPEEEPeP",
+"watson": "gGAAAGaG",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "gGAAAGaG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 2,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 5,
+"ovhg": -3,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 2,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 5,
+"ovhg": -3,
+"enzyme": null
+}
+],
+[
+{
+"watson": 5,
+"ovhg": -3,
+"enzyme": null
+},
+{
+"watson": 2,
+"ovhg": 3,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"exc": {
+"type": "ValueError",
+"msg": "Molecule is internally split in 1 location(s):\n\n[0:7]\n\ncCT"
+}
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GAEEGaGJJJg",
+"watson": "GAAAGaG   g",
+"crick": "cGGGCtC  TC",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GAAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "AGEEGaGJJJg",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "AGEEGaGJJJq",
+"watson": "AGAAGaG",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": -4,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "FQ",
+"watson": "",
+"crick": "CT",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AG",
+"circular": false
+},
+{
+"data": "EPEEGaGJJJq",
+"watson": "AGAAGaG",
+"crick": "cGGGCtC",
+"len": 11,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "FQ",
+"watson": "",
+"crick": "CT",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AG",
+"circular": false
+},
+{
+"data": "EPEEPeP",
+"watson": "AGAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AGAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "FQ",
+"watson": "",
+"crick": "CT",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AG",
+"circular": false
+},
+{
+"data": "EPEEPeP",
+"watson": "AGAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AGAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "FQ",
+"watson": "",
+"crick": "CT",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AG",
+"circular": false
+},
+{
+"data": "EPEEPeP",
+"watson": "AGAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AGAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "FQ",
+"watson": "",
+"crick": "CT",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AG",
+"circular": false
+},
+{
+"data": "EPEEPeP",
+"watson": "AGAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AGAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 0,
+"ovhg": -2,
+"enzyme": null
+}
+],
+[
+{
+"watson": 0,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "FQ",
+"watson": "",
+"crick": "CT",
+"len": 2,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AG",
+"circular": false
+},
+{
+"data": "EPEEPeP",
+"watson": "AGAAGaG",
+"crick": "",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "AGAAGaG",
+"circular": false
+},
+{
+"data": "QfQJJJq",
+"watson": "",
+"crick": "cGGGCtC",
+"len": 7,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCg",
+"circular": false
+},
+{
+"data": "p",
+"watson": "g",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "g",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "AGEEGaGJJJg",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -3,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -5,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QfQJJJqFQ",
+"watson": "",
+"crick": "CTcGGGCtC",
+"len": 9,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCgAG",
+"circular": false
+},
+{
+"data": "pEPEEPeP",
+"watson": "gAGAAGaG",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "gAGAAGaG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -3,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -5,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QfQJJJqFQ",
+"watson": "",
+"crick": "CTcGGGCtC",
+"len": 9,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCgAG",
+"circular": false
+},
+{
+"data": "pEPEEPeP",
+"watson": "gAGAAGaG",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "gAGAAGaG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 7,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 10,
+"ovhg": -3,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 10,
+"ovhg": 6,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": -6,
+"enzyme": null
+}
+],
+[
+{
+"watson": 10,
+"ovhg": -5,
+"enzyme": null
+},
+{
+"watson": 7,
+"ovhg": 5,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QfQJJJqFQ",
+"watson": "",
+"crick": "CTcGGGCtC",
+"len": 9,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GaGCCCgAG",
+"circular": false
+},
+{
+"data": "pEPEEPeP",
+"watson": "gAGAAGaG",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "gAGAAGaG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 2,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 5,
+"ovhg": -3,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 2,
+"ovhg": 3,
+"enzyme": null
+},
+{
+"watson": 5,
+"ovhg": -3,
+"enzyme": null
+}
+],
+[
+{
+"watson": 5,
+"ovhg": -3,
+"enzyme": null
+},
+{
+"watson": 2,
+"ovhg": 3,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"exc": {
+"type": "ValueError",
+"msg": "Molecule is internally split in 1 location(s):\n\n[0:7]\n\ncTC"
+}
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "AGEEGaGJJJg",
+"watson": "AGAAGaG   g",
+"crick": "cGGGCtC  CT",
+"len": 11,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "AGAAGaGCCCg",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "GATCQQQQGATCPPPPGATC",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 4,
+"ovhg": 4,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 20,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 20,
+"ovhg": 4,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXI",
+"watson": "GATC",
+"crick": "",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+},
+{
+"data": "QFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATC",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXI",
+"watson": "GATCGGGGGATC",
+"crick": "",
+"len": 12,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATC",
+"circular": false
+},
+{
+"data": "QFZJ",
+"watson": "",
+"crick": "GATC",
+"len": 4,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATC",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "GATCQQQQGATCPPPPGATC",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXIPPPPGATCGATCQQQQQFZJ",
+"watson": "GATCGGGGGATCGATC",
+"crick": "GATCCCCCGATCGATC",
+"len": 24,
+"ovhg": -8,
+"right_ovhg": -8,
+"str": "GATCGGGGGATCGATCGGGGGATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXIPPPPGATCGATCQQQQQFZJ",
+"watson": "GATCGGGGGATCGATC",
+"crick": "GATCCCCCGATCGATC",
+"len": 24,
+"ovhg": -8,
+"right_ovhg": -8,
+"str": "GATCGGGGGATCGATCGGGGGATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 8,
+"ovhg": 12,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": 12,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QFZJQFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATCGATC",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXIPEXI",
+"watson": "GATCGGGGGATCGATC",
+"crick": "",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATCGATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 8,
+"ovhg": 12,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": 12,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QFZJQFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATCGATC",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXIPEXI",
+"watson": "GATCGGGGGATCGATC",
+"crick": "",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATCGATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 4,
+"ovhg": 8,
+"enzyme": null
+},
+{
+"watson": 8,
+"ovhg": -4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GATCQQQQGATCPPPPGATC",
+"watson": "GATC    GATCGGGGGATC",
+"crick": "GATC    GATCCCCCGATC",
+"len": 20,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GATCGGGGGATCGGGGGATC",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+{
+"watson": 8,
+"ovhg": 12,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": -8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": -8,
+"enzyme": null
+},
+{
+"watson": 4,
+"ovhg": 12,
+"enzyme": null
+}
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "QFZJQFZJQQQQQFZJ",
+"watson": "",
+"crick": "GATCCCCCGATCGATC",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATCGGGGGATC",
+"circular": false
+},
+{
+"data": "PEXIPPPPPEXIPEXI",
+"watson": "GATCGGGGGATCGATC",
+"crick": "",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGGGGGATCGATC",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "PEXIGATCQFZJ",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "PEXIGATCQFZJ",
+"watson": "GATCGATC",
+"crick": "GATCGATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCGATCGATC",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PEXIGATCQFZJ",
+"watson": "GATCGATC",
+"crick": "GATCGATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCGATCGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PEXIGATCQFZJ",
+"watson": "GATCGATC",
+"crick": "GATCGATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCGATCGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PEXIGATCQFZJ",
+"watson": "GATCGATC",
+"crick": "GATCGATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCGATCGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXIPEXI",
+"watson": "GATCGATC",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+},
+{
+"data": "QFZJQFZJ",
+"watson": "",
+"crick": "GATCGATC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PEXIGATCQFZJ",
+"watson": "GATCGATC",
+"crick": "GATCGATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCGATCGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXIPEXI",
+"watson": "GATCGATC",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+},
+{
+"data": "QFZJQFZJ",
+"watson": "",
+"crick": "GATCGATC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PEXIGATCQFZJ",
+"watson": "GATCGATC",
+"crick": "GATCGATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCGATCGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXIPEXI",
+"watson": "GATCGATC",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+},
+{
+"data": "QFZJQFZJ",
+"watson": "",
+"crick": "GATCGATC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PEXIGATCQFZJ",
+"watson": "GATCGATC",
+"crick": "GATCGATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCGATCGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXIPEXI",
+"watson": "GATCGATC",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+},
+{
+"data": "QFZJQFZJ",
+"watson": "",
+"crick": "GATCGATC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": 4,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PEXIGATCQFZJ",
+"watson": "GATCGATC",
+"crick": "GATCGATC",
+"len": 12,
+"ovhg": -4,
+"right_ovhg": -4,
+"str": "GATCGATCGATC",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 12,
+"ovhg": 8,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PEXIPEXI",
+"watson": "GATCGATC",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+},
+{
+"data": "QFZJQFZJ",
+"watson": "",
+"crick": "GATCGATC",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GATCGATC",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "PEXIGATCQFZJ",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"exc": {
+"type": "ValueError",
+"msg": "Molecule is internally split in 1 location(s):\n\n[8:13]\n\nCTAG"
+}
+},
+{
+"data": "GGGGGGGGGGGGGGGG",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 16,
+"ovhg": 16,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 16,
+"ovhg": 16,
+"enzyme": null
+}
+],
+[
+{
+"watson": 16,
+"ovhg": 16,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PPPPPPPPPPPPPPPP",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+{
+"data": "QQQQQQQQQQQQQQQQ",
+"watson": "",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 16,
+"ovhg": 16,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 16,
+"ovhg": 16,
+"enzyme": null
+}
+],
+[
+{
+"watson": 16,
+"ovhg": 16,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PPPPPPPPPPPPPPPP",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+{
+"data": "QQQQQQQQQQQQQQQQ",
+"watson": "",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "GGGGGGGGGGGGGGGG",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "GGGGGGGGGGGGGGGG",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "PPGGGGGGGGGGGGGGQQ",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "PPGGGGGGGGGGGGGGQQ",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 18,
+"ovhg": -2,
+"right_ovhg": -2,
+"str": "GGGGGGGGGGGGGGGGGG",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPGGGGGGGGGGGGGGQQ",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 18,
+"ovhg": -2,
+"right_ovhg": -2,
+"str": "GGGGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPGGGGGGGGGGGGGGQQ",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 18,
+"ovhg": -2,
+"right_ovhg": -2,
+"str": "GGGGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPGGGGGGGGGGGGGGQQ",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 18,
+"ovhg": -2,
+"right_ovhg": -2,
+"str": "GGGGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPGGGGGGGGGGGGGGQQ",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 18,
+"ovhg": -2,
+"right_ovhg": -2,
+"str": "GGGGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPGGGGGGGGGGGGGGQQ",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 18,
+"ovhg": -2,
+"right_ovhg": -2,
+"str": "GGGGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 16,
+"ovhg": 14,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPGGGGGGGGGGGGGGQQ",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 18,
+"ovhg": -2,
+"right_ovhg": -2,
+"str": "GGGGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 16,
+"ovhg": 16,
+"enzyme": null
+}
+],
+[
+{
+"watson": 18,
+"ovhg": 16,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PPPPPPPPPPPPPPPP",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+{
+"data": "QQQQQQQQQQQQQQQQ",
+"watson": "",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 16,
+"ovhg": 14,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "PPGGGGGGGGGGGGGGQQ",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 18,
+"ovhg": -2,
+"right_ovhg": -2,
+"str": "GGGGGGGGGGGGGGGGGG",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 16,
+"ovhg": 16,
+"enzyme": null
+}
+],
+[
+{
+"watson": 18,
+"ovhg": 16,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "PPPPPPPPPPPPPPPP",
+"watson": "GGGGGGGGGGGGGGGG",
+"crick": "",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+},
+{
+"data": "QQQQQQQQQQQQQQQQ",
+"watson": "",
+"crick": "CCCCCCCCCCCCCCCC",
+"len": 16,
+"ovhg": null,
+"right_ovhg": null,
+"str": "GGGGGGGGGGGGGGGG",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "PPGGGGGGGGGGGGGGQQ",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"exc": {
+"type": "ValueError",
+"msg": "Molecule is internally split in 1 location(s):\n\n[14:19]\nGG\nCCCC"
+}
+},
+{
+"data": "UUGGAAUU",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "$$PPEE$$",
+"watson": "UUGGAAUU",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "uuGGAAuu",
+"circular": false
+},
+{
+"data": "ZZQQFFZZ",
+"watson": "",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "TTGGAATT",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "$$PPEE$$",
+"watson": "UUGGAAUU",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "uuGGAAuu",
+"circular": false
+},
+{
+"data": "ZZQQFFZZ",
+"watson": "",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "TTGGAATT",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+}
+],
+[
+{
+"watson": 8,
+"ovhg": 8,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "$$PPEE$$",
+"watson": "UUGGAAUU",
+"crick": "",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "uuGGAAuu",
+"circular": false
+},
+{
+"data": "ZZQQFFZZ",
+"watson": "",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": null,
+"right_ovhg": null,
+"str": "TTGGAATT",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "UUGGAAUU",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "UUGGAAUU",
+"watson": "UUGGAAUU",
+"crick": "AATTCCAA",
+"len": 8,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "UUGGAAUU",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "G",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+],
+[
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "P",
+"watson": "G",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+},
+{
+"data": "Q",
+"watson": "",
+"crick": "C",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+}
+]
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+],
+[
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "P",
+"watson": "G",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+},
+{
+"data": "Q",
+"watson": "",
+"crick": "C",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+}
+]
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+],
+[
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "P",
+"watson": "G",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+},
+{
+"data": "Q",
+"watson": "",
+"crick": "C",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+}
+]
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+],
+[
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "P",
+"watson": "G",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+},
+{
+"data": "Q",
+"watson": "",
+"crick": "C",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+}
+]
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+],
+[
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "P",
+"watson": "G",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+},
+{
+"data": "Q",
+"watson": "",
+"crick": "C",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+}
+]
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+],
+[
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "P",
+"watson": "G",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+},
+{
+"data": "Q",
+"watson": "",
+"crick": "C",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+}
+]
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": [
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+]
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": [
+[
+null,
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+}
+],
+[
+{
+"watson": 1,
+"ovhg": 1,
+"enzyme": null
+},
+null
+]
+]
+},
+"melted": {
+"value": [
+{
+"data": "P",
+"watson": "G",
+"crick": "",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+},
+{
+"data": "Q",
+"watson": "",
+"crick": "C",
+"len": 1,
+"ovhg": null,
+"right_ovhg": null,
+"str": "G",
+"circular": false
+}
+]
+}
+}
+]
+},
+{
+"data": "G",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "G",
+"watson": "G",
+"crick": "C",
+"len": 1,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "G",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "",
+"circular": false,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": false
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+},
+{
+"data": "",
+"circular": true,
+"lengths": [
+0,
+1,
+2,
+4,
+6,
+8,
+16,
+40
+],
+"snap": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": true
+},
+"rounds": [
+{
+"length": 0,
+"ss_sites": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"pairs": {
+"exc": {
+"type": "PatternError",
+"msg": "min repeat greater than max repeat at position 68"
+}
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 1,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 2,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 4,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 6,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 8,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 16,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+},
+{
+"length": 40,
+"ss_sites": {
+"value": [
+[],
+[]
+]
+},
+"ds_sites": {
+"value": []
+},
+"shed": {
+"value": {
+"rest": {
+"data": "",
+"watson": "",
+"crick": "",
+"len": 0,
+"ovhg": 0,
+"right_ovhg": 0,
+"str": "",
+"circular": true
+},
+"strands": []
+}
+},
+"pairs": {
+"value": []
+},
+"melted": {
+"value": []
+}
+}
+]
+}
+]
