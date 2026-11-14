@@ -19,8 +19,10 @@
  */
 
 import { pyClassRepr, pyRepr, ValueError, warn, ZeroDivisionError } from "@biolibs/core";
-import { applyCut, type CutSite, Dseq, getCutParameters, seguidOf, terminalTransferase }
-  from "@biolibs/dseq";
+import { applyCut, cuttersBy, type CutSite, Dseq, type Enzymes, enzymeList, getCutParameters,
+  getCutsitePairs, getCutsites, seguidOf, terminalTransferase } from "@biolibs/dseq";
+import { CommOnly, type RestrictionBatch } from "@biolibs/restriction";
+import { commonSubStrings } from "@biolibs/assembly";
 import { Seq as BioSeq } from "@biolibs/seq";
 import { CompoundLocation, SeqFeature, SimpleLocation, type Strand } from "@biolibs/seqfeature";
 import type { SeqRecord as BioSeqRecord } from "@biolibs/seqrecord";
@@ -552,6 +554,136 @@ export class Dseqrecord extends PydnaSeqRecord {
       result = (result.add(this) as unknown as Dseqrecord).add(x) as unknown as Dseqrecord;
     }
     return result;
+  }
+
+  /**
+   * Digest the molecule with one or more restriction enzymes.
+   *
+   * @param enzymes - One enzyme, a batch, or any mixture of those.
+   * @returns One record per fragment, in the order they lie along the molecule, each carrying the
+   *   features that fall inside it. An enzyme that does not cut gives nothing back.
+   */
+  cut(...enzymes: Enzymes[]): Dseqrecord[] {
+    const cutsites = getCutsites(this.dseq, ...enzymes);
+    return getCutsitePairs(this.dseq, cutsites).map(([left, right]) => this.applyCut(left, right));
+  }
+
+  /**
+   * Open a circular molecule at the one place an enzyme cuts it.
+   *
+   * @param enzymes - The enzymes to try.
+   * @returns The opened molecule, named after this one with `_lin` appended.
+   * @throws TypeError for a linear molecule, for enzymes that do not cut, and for enzymes that cut more
+   *   than once — the point of the method is that there is exactly one answer.
+   */
+  linearize(...enzymes: Enzymes[]): Dseqrecord {
+    if (!this.circular) throw new TypeError("Can only linearize circular molecules!");
+    const fragments = this.cut(...enzymes);
+    if (fragments.length > 1) throw new TypeError("More than one fragment is formed!");
+    if (fragments.length === 0) throw new TypeError("The enzyme(s) do not cut!");
+    const answer = fragments[0]!;
+    answer.id = `${this.name}_lin`;
+    answer.name = answer.id.slice(0, 16);
+    return answer;
+  }
+
+  /**
+   * How many times a set of enzymes cuts.
+   *
+   * Counted by searching for each enzyme's site, so this counts *sites* rather than fragments: it does
+   * not care whether a site falls somewhere the molecule can actually be broken. Repeats are not dropped
+   * either — pydna flattens the arguments without de-duplicating them here, where finding the cut sites
+   * does de-duplicate, so naming one enzyme twice counts its sites twice.
+   *
+   * @param enzymes - The enzymes to count.
+   * @returns The total number of sites.
+   */
+  numberOfCuts(...enzymes: Enzymes[]): number {
+    let total = 0;
+    for (const enzyme of enzymeList(enzymes, false)) {
+      total += enzyme.search(new BioSeq(this.dseq.toString())).length;
+    }
+    return total;
+  }
+
+  /**
+   * @param batch - Which enzymes to consider; the commercially available ones by default, as pydna picks.
+   * @returns Those of them that do not cut this molecule at all.
+   */
+  noCutters(batch: RestrictionBatch | null = null): RestrictionBatch {
+    return cuttersBy(this.dseq, batch ?? CommOnly, 0);
+  }
+
+  /** @param batch - Which enzymes to consider. @returns Those that cut exactly once. */
+  uniqueCutters(batch: RestrictionBatch | null = null): RestrictionBatch {
+    return cuttersBy(this.dseq, batch ?? CommOnly, 1);
+  }
+
+  /** @param batch - Which enzymes to consider. @returns Those that cut exactly once; pydna's other name. */
+  onceCutters(batch: RestrictionBatch | null = null): RestrictionBatch {
+    return cuttersBy(this.dseq, batch ?? CommOnly, 1);
+  }
+
+  /** @param batch - Which enzymes to consider. @returns Those that cut exactly twice. */
+  twiceCutters(batch: RestrictionBatch | null = null): RestrictionBatch {
+    return cuttersBy(this.dseq, batch ?? CommOnly, 2);
+  }
+
+  /**
+   * @param n - How many times. @param batch - Which enzymes to consider.
+   * @returns Those that cut exactly `n` times.
+   */
+  nCutters(n = 3, batch: RestrictionBatch | null = null): RestrictionBatch {
+    return cuttersBy(this.dseq, batch ?? CommOnly, n);
+  }
+
+  /** @param batch - Which enzymes to consider. @returns Those that cut at least once. */
+  cutters(batch: RestrictionBatch | null = null): RestrictionBatch {
+    return cuttersBy(this.dseq, batch ?? CommOnly, null);
+  }
+
+  /**
+   * The same circle rotated so that it lines up with another sequence.
+   *
+   * Cloning a plasmid leaves the product starting wherever the assembly happened to begin, which makes
+   * two versions of the same construct look different. This rotates one to match the other: the molecule
+   * is doubled, the longest stretch it shares with the reference *starting at the reference's own
+   * beginning* is found, and the origin is moved there. The reverse complement is searched too, and wins
+   * if it matches better, in which case the answer is complemented as well as rotated.
+   *
+   * @param ref - What to line up with: a string, a sequence or a record.
+   * @param limit - The shortest shared stretch worth using.
+   * @returns The rotated molecule.
+   * @throws TypeError for a linear molecule, and for a reference with nothing in common with this one.
+   */
+  synced(ref: unknown, limit = 25): Dseqrecord {
+    if (!this.circular) throw new TypeError("Only circular DNA can be synced!");
+    const s = this.dseq.watson.toLowerCase();
+    const sRc = this.dseq.crick.toLowerCase();
+    const holder = ref as { seq?: { watson?: unknown } };
+    let r: string;
+    if (holder?.seq !== undefined) {
+      const inner = holder.seq;
+      r = String(inner?.watson !== undefined ? inner.watson : inner).toLowerCase();
+    } else {
+      r = String(ref).toLowerCase();
+    }
+    // pydna caps the limit at something the molecule can actually hold a whole number of times, plus one.
+    const lim = Math.min(limit, limit * Math.floor(s.length / limit) + 1);
+    // Only the matches that begin at the reference's own start count, which is what makes this a
+    // "where does the reference begin in me" search rather than a general overlap.
+    const c = commonSubStrings(s + s, r, lim).filter(([, y]) => y === 0).map(([x, , n]) => [x, n]);
+    const d = commonSubStrings(sRc + sRc, r, lim).filter(([, y]) => y === 0).map(([x, , n]) => [x, n]);
+    if (c.length === 0 && d.length === 0) throw new TypeError("There is no overlap between sequences!");
+    const [start, length] = c[0] ?? [0, 0];
+    const [startRc, lengthRc] = d[0] ?? [0, 0];
+    let newseq: Dseqrecord = this.copyRecord();
+    let at = start!;
+    if (lengthRc! > length!) {
+      at = startRc!;
+      newseq = newseq.rc();
+    }
+    return at === 0 ? newseq : newseq.shifted(at);
   }
 
   /**

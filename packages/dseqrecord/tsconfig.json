@@ -4,6 +4,6 @@
   "include": ["src"],
   "references": [
     { "path": "../core" }, { "path": "../seq" }, { "path": "../seqfeature" },
-    { "path": "../seqrecord" }, { "path": "../dseq" }, { "path": "../assembly" }
+    { "path": "../seqrecord" }, { "path": "../dseq" }, { "path": "../assembly" }, { "path": "../restriction" }
   ]
 }

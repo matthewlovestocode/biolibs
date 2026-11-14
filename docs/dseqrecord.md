@@ -176,9 +176,48 @@ Six behaviours are reproduced rather than tidied up:
   at the back, so the two read different frames. They are not two spellings of one search.
 - **`shifted` on a circle of no length raises `ZeroDivisionError: division by zero`**, from `shift % 0`.
 
-Not in this slice, and unchecked in [docs/parity-pydna/](parity-pydna/README.md) — 212 of 225: cutting with
-enzymes (`cut`, `linearize`, `number_of_cuts` and the six cutter queries), `synced`, and the output formats
-(`format`, `write`, `figure`).
+## Cutting
+
+Cutting a record is cutting a molecule and then deciding, for every feature, which fragment it belongs to.
+`Dseq` already knows where the enzymes break the strands; the second half of the job is the bookkeeping,
+so the parity cases put features deliberately across the cut sites — inside a fragment, over a cut, and
+through the origin of a circle.
+
+```ts
+import { Dseqrecord } from "@biolibs/dseqrecord";
+import { enzymes } from "@biolibs/restriction";
+
+const EcoRI = enzymes.EcoRI;               // enzymes are looked up, not named exports
+new Dseqrecord("aaaGAATTCttt").cut(EcoRI).map((f) => f.repr());  // ["Dseqrecord(-7)", "Dseqrecord(-9)"]
+new Dseqrecord("aaaGAATTCttt", true).linearize(EcoRI).name;      // "name_lin"
+[...new Dseqrecord("aaaGAATTCttt").cutters()].length;            // enzymes that cut it, from CommOnly
+```
+
+| Python | biolibs | What it does |
+|---|---|---|
+| `cut(*enzymes)` | `cut(...enzymes)` | the fragments, each with its own features |
+| `linearize(*enzymes)` | `linearize(...enzymes)` | open a circle at the one place an enzyme cuts |
+| `number_of_cuts(*enzymes)` | `numberOfCuts(...enzymes)` | how many sites, counting repeats |
+| `cutters`, `no_cutters`, `unique_cutters`, `once_cutters`, `twice_cutters`, `n_cutters(n)` | same, camelCased | which enzymes cut, and how often |
+| `synced(ref, limit=25)` | `synced(ref, limit)` | rotate a circle to line up with another sequence |
+
+Three things worth knowing:
+
+- **`numberOfCuts` does not de-duplicate its arguments, where `cut` does.** pydna flattens the enzymes with
+  `flatten` for counting and through `dict.fromkeys` for finding the sites, so `numberOfCuts(EcoRI, EcoRI)`
+  is twice `numberOfCuts(EcoRI)` while `cut(EcoRI, EcoRI)` is the same as `cut(EcoRI)`. It counts *sites*
+  rather than fragments, too, so it does not care whether the molecule can actually be broken there.
+- **The cutter queries search the molecule as linear even when it is a circle**, because pydna hands the
+  sequence to `RestrictionBatch.search` without saying otherwise. A site spanning the origin is therefore
+  not counted. Their default batch is `CommOnly`, the commercially available enzymes.
+- **`synced` looks for stretches that begin at the *reference's* own start**, not just any overlap: it
+  doubles the molecule, finds the longest such stretch, and moves the origin there. It searches the reverse
+  complement too and complements the answer if that matches better. A reference with nothing in common
+  raises `TypeError: There is no overlap between sequences!`, and `linearize` refuses three ways — a linear
+  molecule, enzymes that do not cut, and enzymes that cut more than once.
+
+Not in this slice, and unchecked in [docs/parity-pydna/](parity-pydna/README.md) — 222 of 225: the output
+formats, `format`, `write` and `figure`.
 
 **Not portable, and marked as such:** `history`, `source`, `validate_history`, `normalize_history` and
 `is_amplicon` need `pydna.opencloning_models` — 1,421 lines of pydantic describing a provenance interchange

@@ -21,8 +21,8 @@
 - [x] `circular(self)`
 - [-] `copy_fasta_to_clipboard(self)`
 - [-] `copy_gb_to_clipboard(self)`
-- [ ] `cut(self, *enzymes)`
-- [ ] `cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [x] `cut(self, *enzymes)`
+- [x] `cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
 - [x] `extract_feature(self, n)`
 - [ ] `figure(self, feature=0, highlight='\x1b[48;5;11m', plain='\x1b[0m', fig_type=None)`
 - [x] `find(self, other)`
@@ -34,27 +34,27 @@
 - [-] `history(self)`
 - [-] `is_amplicon(self)`
 - [x] `join(self, fragments)`
-- [ ] `linearize(self, *enzymes)`
+- [x] `linearize(self, *enzymes)`
 - [x] `looped(self)`
 - [x] `lower(self)`
 - [x] `m(self)`
 - [-] `map_trace_files(self, pth, limit=25)`
-- [ ] `n_cutters(self, n=3, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
-- [ ] `no_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [x] `n_cutters(self, n=3, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [x] `no_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
 - [-] `normalize_history(self) -> 'Dseqrecord'`
-- [ ] `number_of_cuts(self, *enzymes)`
-- [ ] `once_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [x] `number_of_cuts(self, *enzymes)`
+- [x] `once_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
 - [x] `orfs(self, minsize=300)`
 - [x] `orfs_to_features(self, minsize=300)`
 - [x] `rc(self)`
 - [x] `reverse_complement(self)`
 - [x] `seguid(self)`
 - [x] `shifted(self, shift)`
-- [ ] `synced(self, ref, limit=25)`
+- [x] `synced(self, ref, limit=25)`
 - [x] `terminal_transferase(self, nucleotides='a')`
 - [x] `tolinear(self)`
-- [ ] `twice_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
-- [ ] `unique_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [x] `twice_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [x] `unique_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
 - [x] `upper(self)`
 - [-] `validate_history(self, recursive: bool = True) -> None`
 - [ ] `write(self, filename=None, f='gb')`

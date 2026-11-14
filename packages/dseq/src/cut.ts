@@ -34,20 +34,22 @@ export interface CutSite {
 export type Enzymes = RestrictionType | RestrictionBatch | readonly (RestrictionType | RestrictionBatch)[];
 
 /**
- * Flatten the enzyme arguments, as pydna's `flatten` does, and drop any repeats.
+ * Flatten the enzyme arguments, as pydna's `flatten` does: one enzyme, a batch, or any nesting of either.
  *
  * @param enzymes - What the caller passed.
- * @returns The enzymes, in the order they were first seen.
+ * @param dedupe - Drop repeats, keeping the first of each. True for finding cut sites, where pydna passes
+ *   the list through `dict.fromkeys`; **false** for counting them, where `number_of_cuts` uses the flat
+ *   list as it comes, so naming an enzyme twice counts its sites twice.
+ * @returns The enzymes, in the order they were seen.
  */
-function enzymeList(enzymes: readonly Enzymes[]): RestrictionType[] {
+export function enzymeList(enzymes: readonly Enzymes[], dedupe = true): RestrictionType[] {
   const out: RestrictionType[] = [];
   const walk = (item: Enzymes): void => {
     if (item instanceof RestrictionType) out.push(item);
     else for (const inner of item as Iterable<RestrictionType | RestrictionBatch>) walk(inner);
   };
   for (const item of enzymes) walk(item);
-  // `dict.fromkeys` keeps the first of each.
-  return out.filter((e, i) => out.indexOf(e) === i);
+  return dedupe ? out.filter((e, i) => out.indexOf(e) === i) : out;
 }
 
 /**

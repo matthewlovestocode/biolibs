@@ -1,0 +1,9469 @@
+{
+"pydna": "5.5.16",
+"cases": [
+{
+"data": "aaaGAATTCttt",
+"circular": false,
+"spans": [
+[
+0,
+3
+],
+[
+4,
+8
+],
+[
+9,
+12
+]
+],
+"built": {
+"value": {
+"code": "aaaGAATTCttt",
+"watson": "aaaGAATTCttt",
+"crick": "aaaGAATTCttt",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[9:12](+)",
+"parts": [
+[
+9,
+12,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "aaaGFFZZ",
+"watson": "aaaG",
+"crick": "AATTCttt",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-8)"
+},
+{
+"code": "EEXXCttt",
+"watson": "AATTCttt",
+"crick": "aaaG",
+"circular": false,
+"len": 8,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:4](+)",
+"parts": [
+[
+0,
+4,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-8)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "aaaGFFZZ",
+"watson": "aaaG",
+"crick": "AATTCttt",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-8)"
+},
+{
+"code": "EEXXCttt",
+"watson": "AATTCttt",
+"crick": "aaaG",
+"circular": false,
+"len": 8,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:4](+)",
+"parts": [
+[
+0,
+4,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-8)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "aaaGFFZZ",
+"watson": "aaaG",
+"crick": "AATTCttt",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-8)"
+},
+{
+"code": "EEXXCttt",
+"watson": "AATTCttt",
+"crick": "aaaG",
+"circular": false,
+"len": 8,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:4](+)",
+"parts": [
+[
+0,
+4,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-8)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"once_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"EcoRI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+7,
+616,
+623
+]
+}
+},
+{
+"data": "aaaGAATTCttt",
+"circular": true,
+"spans": [
+[
+0,
+3
+],
+[
+4,
+8
+],
+[
+9,
+12
+]
+],
+"built": {
+"value": {
+"code": "aaaGAATTCttt",
+"watson": "aaaGAATTCttt",
+"crick": "aaaGAATTCttt",
+"circular": true,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[9:12](+)",
+"parts": [
+[
+9,
+12,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(o12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCtttaaaGFFZZ",
+"watson": "AATTCtttaaaG",
+"crick": "AATTCtttaaaG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:4](+)",
+"parts": [
+[
+0,
+4,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[8:11](+)",
+"parts": [
+[
+8,
+11,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[12:16](+)",
+"parts": [
+[
+12,
+16,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "EEXXCtttaaaGFFZZ",
+"watson": "AATTCtttaaaG",
+"crick": "AATTCtttaaaG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[0:4](+)",
+"parts": [
+[
+0,
+4,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[8:11](+)",
+"parts": [
+[
+8,
+11,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[12:16](+)",
+"parts": [
+[
+12,
+16,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCtttaaaGFFZZ",
+"watson": "AATTCtttaaaG",
+"crick": "AATTCtttaaaG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:4](+)",
+"parts": [
+[
+0,
+4,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[8:11](+)",
+"parts": [
+[
+8,
+11,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[12:16](+)",
+"parts": [
+[
+12,
+16,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "EEXXCtttaaaGFFZZ",
+"watson": "AATTCtttaaaG",
+"crick": "AATTCtttaaaG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[0:4](+)",
+"parts": [
+[
+0,
+4,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[8:11](+)",
+"parts": [
+[
+8,
+11,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[12:16](+)",
+"parts": [
+[
+12,
+16,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCtttaaaGFFZZ",
+"watson": "AATTCtttaaaG",
+"crick": "AATTCtttaaaG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:4](+)",
+"parts": [
+[
+0,
+4,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[8:11](+)",
+"parts": [
+[
+8,
+11,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[12:16](+)",
+"parts": [
+[
+12,
+16,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"value": {
+"code": "EEXXCtttaaaGFFZZ",
+"watson": "AATTCtttaaaG",
+"crick": "AATTCtttaaaG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[0:4](+)",
+"parts": [
+[
+0,
+4,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[8:11](+)",
+"parts": [
+[
+8,
+11,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[12:16](+)",
+"parts": [
+[
+12,
+16,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"once_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"EcoRI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+7,
+616,
+623
+]
+}
+},
+{
+"data": "aaGAATTCaaGAATTCaa",
+"circular": false,
+"spans": [
+[
+0,
+2
+],
+[
+6,
+12
+],
+[
+16,
+18
+]
+],
+"built": {
+"value": {
+"code": "aaGAATTCaaGAATTCaa",
+"watson": "aaGAATTCaaGAATTCaa",
+"crick": "ttGAATTCttGAATTCtt",
+"circular": false,
+"len": 18,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[6:12](+)",
+"parts": [
+[
+6,
+12,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[16:18](+)",
+"parts": [
+[
+16,
+18,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-18)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "aaGFFZZ",
+"watson": "aaG",
+"crick": "AATTCtt",
+"circular": false,
+"len": 7,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+},
+{
+"code": "EEXXCaaGFFZZ",
+"watson": "AATTCaaG",
+"crick": "AATTCttG",
+"circular": false,
+"len": 12,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+},
+{
+"code": "EEXXCaa",
+"watson": "AATTCaa",
+"crick": "ttG",
+"circular": false,
+"len": 7,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "aaGFFZZ",
+"watson": "aaG",
+"crick": "AATTCtt",
+"circular": false,
+"len": 7,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+},
+{
+"code": "EEXXCaaGFFZZ",
+"watson": "AATTCaaG",
+"crick": "AATTCttG",
+"circular": false,
+"len": 12,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+},
+{
+"code": "EEXXCaa",
+"watson": "AATTCaa",
+"crick": "ttG",
+"circular": false,
+"len": 7,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "aaGFFZZ",
+"watson": "aaG",
+"crick": "AATTCtt",
+"circular": false,
+"len": 7,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+},
+{
+"code": "EEXXCaaGFFZZ",
+"watson": "AATTCaaG",
+"crick": "AATTCttG",
+"circular": false,
+"len": 12,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+},
+{
+"code": "EEXXCaa",
+"watson": "AATTCaa",
+"crick": "ttG",
+"circular": false,
+"len": 7,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+}
+]
+},
+"number_of_cuts": {
+"value": 4
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"once_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"cutters": {
+"value": [
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": []
+},
+"2": {
+"value": [
+"EcoRI"
+]
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+9,
+614,
+623
+]
+}
+},
+{
+"data": "aaGAATTCaaGAATTCaa",
+"circular": true,
+"spans": [
+[
+0,
+2
+],
+[
+6,
+12
+],
+[
+16,
+18
+]
+],
+"built": {
+"value": {
+"code": "aaGAATTCaaGAATTCaa",
+"watson": "aaGAATTCaaGAATTCaa",
+"crick": "ttGAATTCttGAATTCtt",
+"circular": true,
+"len": 18,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[6:12](+)",
+"parts": [
+[
+6,
+12,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[16:18](+)",
+"parts": [
+[
+16,
+18,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(o18)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaGFFZZ",
+"watson": "AATTCaaG",
+"crick": "AATTCttG",
+"circular": false,
+"len": 12,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+},
+{
+"code": "EEXXCaaaaGFFZZ",
+"watson": "AATTCaaaaG",
+"crick": "AATTCttttG",
+"circular": false,
+"len": 14,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[7:9](+)",
+"parts": [
+[
+7,
+9,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-14)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "More than one fragment is formed!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaGFFZZ",
+"watson": "AATTCaaG",
+"crick": "AATTCttG",
+"circular": false,
+"len": 12,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+},
+{
+"code": "EEXXCaaaaGFFZZ",
+"watson": "AATTCaaaaG",
+"crick": "AATTCttttG",
+"circular": false,
+"len": 14,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[7:9](+)",
+"parts": [
+[
+7,
+9,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-14)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "More than one fragment is formed!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaGFFZZ",
+"watson": "AATTCaaG",
+"crick": "AATTCttG",
+"circular": false,
+"len": 12,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+},
+{
+"code": "EEXXCaaaaGFFZZ",
+"watson": "AATTCaaaaG",
+"crick": "AATTCttttG",
+"circular": false,
+"len": 14,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[7:9](+)",
+"parts": [
+[
+7,
+9,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-14)"
+}
+]
+},
+"number_of_cuts": {
+"value": 4
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "More than one fragment is formed!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"once_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"cutters": {
+"value": [
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": []
+},
+"2": {
+"value": [
+"EcoRI"
+]
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+9,
+614,
+623
+]
+}
+},
+{
+"data": "aaGAATTCaaGGATCCaa",
+"circular": false,
+"spans": [
+[
+0,
+2
+],
+[
+6,
+12
+],
+[
+16,
+18
+]
+],
+"built": {
+"value": {
+"code": "aaGAATTCaaGGATCCaa",
+"watson": "aaGAATTCaaGGATCCaa",
+"crick": "ttGGATCCttGAATTCtt",
+"circular": false,
+"len": 18,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[6:12](+)",
+"parts": [
+[
+6,
+12,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[16:18](+)",
+"parts": [
+[
+16,
+18,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-18)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "aaGFFZZ",
+"watson": "aaG",
+"crick": "AATTCtt",
+"circular": false,
+"len": 7,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+},
+{
+"code": "EEXXCaaGGATCCaa",
+"watson": "AATTCaaGGATCCaa",
+"crick": "ttGGATCCttG",
+"circular": false,
+"len": 15,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[13:15](+)",
+"parts": [
+[
+13,
+15,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-15)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": [
+{
+"code": "aaGAATTCaaGQFZJ",
+"watson": "aaGAATTCaaG",
+"crick": "GATCCttGAATTCtt",
+"circular": false,
+"len": 15,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[6:12](+)",
+"parts": [
+[
+6,
+12,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-15)"
+},
+{
+"code": "PEXICaa",
+"watson": "GATCCaa",
+"crick": "ttG",
+"circular": false,
+"len": 7,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "aaGFFZZ",
+"watson": "aaG",
+"crick": "AATTCtt",
+"circular": false,
+"len": 7,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+},
+{
+"code": "EEXXCaaGQFZJ",
+"watson": "AATTCaaG",
+"crick": "GATCCttG",
+"circular": false,
+"len": 12,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+},
+{
+"code": "PEXICaa",
+"watson": "GATCCaa",
+"crick": "ttG",
+"circular": false,
+"len": 7,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "aaGFFZZ",
+"watson": "aaG",
+"crick": "AATTCtt",
+"circular": false,
+"len": 7,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-7)"
+},
+{
+"code": "EEXXCaaGGATCCaa",
+"watson": "AATTCaaGGATCCaa",
+"crick": "ttGGATCCttG",
+"circular": false,
+"len": 15,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[13:15](+)",
+"parts": [
+[
+13,
+15,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-15)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"once_cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+31,
+592,
+623
+]
+}
+},
+{
+"data": "aaGAATTCaaGGATCCaa",
+"circular": true,
+"spans": [
+[
+0,
+2
+],
+[
+6,
+12
+],
+[
+16,
+18
+]
+],
+"built": {
+"value": {
+"code": "aaGAATTCaaGGATCCaa",
+"watson": "aaGAATTCaaGGATCCaa",
+"crick": "ttGGATCCttGAATTCtt",
+"circular": true,
+"len": 18,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:2](+)",
+"parts": [
+[
+0,
+2,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[6:12](+)",
+"parts": [
+[
+6,
+12,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[16:18](+)",
+"parts": [
+[
+16,
+18,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(o18)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaGGATCCaaaaGFFZZ",
+"watson": "AATTCaaGGATCCaaaaG",
+"crick": "AATTCttttGGATCCttG",
+"circular": false,
+"len": 22,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[13:15](+)",
+"parts": [
+[
+13,
+15,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[15:17](+)",
+"parts": [
+[
+15,
+17,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-22)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaGGATCCaaaaGFFZZ",
+"watson": "AATTCaaGGATCCaaaaG",
+"crick": "AATTCttttGGATCCttG",
+"circular": false,
+"len": 22,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[13:15](+)",
+"parts": [
+[
+13,
+15,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[15:17](+)",
+"parts": [
+[
+15,
+17,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-22)"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": [
+{
+"code": "PEXICaaaaGAATTCaaGQFZJ",
+"watson": "GATCCaaaaGAATTCaaG",
+"crick": "GATCCttGAATTCttttG",
+"circular": false,
+"len": 22,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[7:9](+)",
+"parts": [
+[
+7,
+9,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[13:19](+)",
+"parts": [
+[
+13,
+19,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-22)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "PEXICaaaaGAATTCaaGQFZJ",
+"watson": "GATCCaaaaGAATTCaaG",
+"crick": "GATCCttGAATTCttttG",
+"circular": false,
+"len": 22,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[7:9](+)",
+"parts": [
+[
+7,
+9,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[13:19](+)",
+"parts": [
+[
+13,
+19,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-22)"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaGQFZJ",
+"watson": "AATTCaaG",
+"crick": "GATCCttG",
+"circular": false,
+"len": 12,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+},
+{
+"code": "PEXICaaaaGFFZZ",
+"watson": "GATCCaaaaG",
+"crick": "AATTCttttG",
+"circular": false,
+"len": 14,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:7](+)",
+"parts": [
+[
+5,
+7,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[7:9](+)",
+"parts": [
+[
+7,
+9,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-14)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "More than one fragment is formed!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaGGATCCaaaaGFFZZ",
+"watson": "AATTCaaGGATCCaaaaG",
+"crick": "AATTCttttGGATCCttG",
+"circular": false,
+"len": 22,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[13:15](+)",
+"parts": [
+[
+13,
+15,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[15:17](+)",
+"parts": [
+[
+15,
+17,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-22)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaGGATCCaaaaGFFZZ",
+"watson": "AATTCaaGGATCCaaaaG",
+"crick": "AATTCttttGGATCCttG",
+"circular": false,
+"len": 22,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[3:9](+)",
+"parts": [
+[
+3,
+9,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[13:15](+)",
+"parts": [
+[
+13,
+15,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[15:17](+)",
+"parts": [
+[
+15,
+17,
+1
+]
+],
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-22)"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"once_cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"BamHI",
+"EcoRI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+31,
+592,
+623
+]
+}
+},
+{
+"data": "aaaGATATCttt",
+"circular": false,
+"spans": [
+[
+0,
+3
+],
+[
+4,
+8
+],
+[
+9,
+12
+]
+],
+"built": {
+"value": {
+"code": "aaaGATATCttt",
+"watson": "aaaGATATCttt",
+"crick": "aaaGATATCttt",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[9:12](+)",
+"parts": [
+[
+9,
+12,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": [
+{
+"code": "aaaGAT",
+"watson": "aaaGAT",
+"crick": "ATCttt",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-6)"
+},
+{
+"code": "ATCttt",
+"watson": "ATCttt",
+"crick": "aaaGAT",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:6](+)",
+"parts": [
+[
+3,
+6,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-6)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRV"
+]
+},
+"once_cutters": {
+"value": [
+"EcoRV"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"EcoRV"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"EcoRV"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+2,
+621,
+623
+]
+}
+},
+{
+"data": "aaaGATATCttt",
+"circular": true,
+"spans": [
+[
+0,
+3
+],
+[
+4,
+8
+],
+[
+9,
+12
+]
+],
+"built": {
+"value": {
+"code": "aaaGATATCttt",
+"watson": "aaaGATATCttt",
+"crick": "aaaGATATCttt",
+"circular": true,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[9:12](+)",
+"parts": [
+[
+9,
+12,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(o12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": [
+{
+"code": "ATCtttaaaGAT",
+"watson": "ATCtttaaaGAT",
+"crick": "ATCtttaaaGAT",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:6](+)",
+"parts": [
+[
+3,
+6,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[6:9](+)",
+"parts": [
+[
+6,
+9,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "ATCtttaaaGAT",
+"watson": "ATCtttaaaGAT",
+"crick": "ATCtttaaaGAT",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[3:6](+)",
+"parts": [
+[
+3,
+6,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[6:9](+)",
+"parts": [
+[
+6,
+9,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRV"
+]
+},
+"once_cutters": {
+"value": [
+"EcoRV"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"EcoRV"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRI",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"EcoRV"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+2,
+621,
+623
+]
+}
+},
+{
+"data": "aaaCCCGGGttt",
+"circular": false,
+"spans": [
+[
+0,
+3
+],
+[
+4,
+8
+],
+[
+9,
+12
+]
+],
+"built": {
+"value": {
+"code": "aaaCCCGGGttt",
+"watson": "aaaCCCGGGttt",
+"crick": "aaaCCCGGGttt",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[9:12](+)",
+"parts": [
+[
+9,
+12,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": [
+{
+"code": "aaaCCC",
+"watson": "aaaCCC",
+"crick": "GGGttt",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-6)"
+},
+{
+"code": "GGGttt",
+"watson": "GGGttt",
+"crick": "aaaCCC",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:6](+)",
+"parts": [
+[
+3,
+6,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-6)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI"
+]
+},
+"unique_cutters": {
+"value": [
+"SmaI"
+]
+},
+"once_cutters": {
+"value": [
+"SmaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"SmaI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI"
+]
+},
+"1": {
+"value": [
+"SmaI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+27,
+596,
+623
+]
+}
+},
+{
+"data": "aaaCCCGGGttt",
+"circular": true,
+"spans": [
+[
+0,
+3
+],
+[
+4,
+8
+],
+[
+9,
+12
+]
+],
+"built": {
+"value": {
+"code": "aaaCCCGGGttt",
+"watson": "aaaCCCGGGttt",
+"crick": "aaaCCCGGGttt",
+"circular": true,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[9:12](+)",
+"parts": [
+[
+9,
+12,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(o12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": [
+{
+"code": "GGGtttaaaCCC",
+"watson": "GGGtttaaaCCC",
+"crick": "GGGtttaaaCCC",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[3:6](+)",
+"parts": [
+[
+3,
+6,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[6:9](+)",
+"parts": [
+[
+6,
+9,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "GGGtttaaaCCC",
+"watson": "GGGtttaaaCCC",
+"crick": "GGGtttaaaCCC",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[3:6](+)",
+"parts": [
+[
+3,
+6,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[6:9](+)",
+"parts": [
+[
+6,
+9,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI"
+]
+},
+"unique_cutters": {
+"value": [
+"SmaI"
+]
+},
+"once_cutters": {
+"value": [
+"SmaI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"SmaI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI"
+]
+},
+"1": {
+"value": [
+"SmaI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+27,
+596,
+623
+]
+}
+},
+{
+"data": "TTCaaaaaaaGAA",
+"circular": false,
+"spans": [
+[
+0,
+3
+],
+[
+10,
+13
+],
+[
+5,
+8
+]
+],
+"built": {
+"value": {
+"code": "TTCaaaaaaaGAA",
+"watson": "TTCaaaaaaaGAA",
+"crick": "TTCtttttttGAA",
+"circular": false,
+"len": 13,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[10:13](+)",
+"parts": [
+[
+10,
+13,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(-13)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"once_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": []
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+1,
+622,
+623
+]
+}
+},
+{
+"data": "TTCaaaaaaaGAA",
+"circular": true,
+"spans": [
+[
+0,
+3
+],
+[
+10,
+13
+],
+[
+5,
+8
+]
+],
+"built": {
+"value": {
+"code": "TTCaaaaaaaGAA",
+"watson": "TTCaaaaaaaGAA",
+"crick": "TTCtttttttGAA",
+"circular": true,
+"len": 13,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[10:13](+)",
+"parts": [
+[
+10,
+13,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+},
+{
+"str": "[5:8](+)",
+"parts": [
+[
+5,
+8,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+}
+],
+"repr": "Dseqrecord(o13)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaaG",
+"crick": "AATTCtttttttG",
+"circular": false,
+"len": 17,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[2:5](+)",
+"parts": [
+[
+2,
+5,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[7:10](+)",
+"parts": [
+[
+7,
+10,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[12:15](+)",
+"parts": [
+[
+12,
+15,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-17)"
+}
+]
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaaG",
+"crick": "AATTCtttttttG",
+"circular": false,
+"len": 17,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[2:5](+)",
+"parts": [
+[
+2,
+5,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[7:10](+)",
+"parts": [
+[
+7,
+10,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[12:15](+)",
+"parts": [
+[
+12,
+15,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-17)"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaaG",
+"crick": "AATTCtttttttG",
+"circular": false,
+"len": 17,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[2:5](+)",
+"parts": [
+[
+2,
+5,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[7:10](+)",
+"parts": [
+[
+7,
+10,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[12:15](+)",
+"parts": [
+[
+12,
+15,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-17)"
+}
+]
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaaG",
+"crick": "AATTCtttttttG",
+"circular": false,
+"len": 17,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[2:5](+)",
+"parts": [
+[
+2,
+5,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[7:10](+)",
+"parts": [
+[
+7,
+10,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[12:15](+)",
+"parts": [
+[
+12,
+15,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-17)"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaaG",
+"crick": "AATTCtttttttG",
+"circular": false,
+"len": 17,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[2:5](+)",
+"parts": [
+[
+2,
+5,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[7:10](+)",
+"parts": [
+[
+7,
+10,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[12:15](+)",
+"parts": [
+[
+12,
+15,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-17)"
+}
+]
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaaG",
+"crick": "AATTCtttttttG",
+"circular": false,
+"len": 17,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[2:5](+)",
+"parts": [
+[
+2,
+5,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[7:10](+)",
+"parts": [
+[
+7,
+10,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f2"
+]
+}
+},
+{
+"str": "[12:15](+)",
+"parts": [
+[
+12,
+15,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-17)"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"once_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": []
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+1,
+622,
+623
+]
+}
+},
+{
+"data": "aaaaaaaaaaaa",
+"circular": false,
+"spans": [
+[
+0,
+3
+],
+[
+4,
+8
+]
+],
+"built": {
+"value": {
+"code": "aaaaaaaaaaaa",
+"watson": "aaaaaaaaaaaa",
+"crick": "tttttttttttt",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"once_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": []
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+0,
+623,
+623
+]
+}
+},
+{
+"data": "aaaaaaaaaaaa",
+"circular": true,
+"spans": [
+[
+0,
+3
+],
+[
+4,
+8
+]
+],
+"built": {
+"value": {
+"code": "aaaaaaaaaaaa",
+"watson": "aaaaaaaaaaaa",
+"crick": "tttttttttttt",
+"circular": true,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:3](+)",
+"parts": [
+[
+0,
+3,
+1
+]
+],
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[4:8](+)",
+"parts": [
+[
+4,
+8,
+1
+]
+],
+"type": "misc",
+"len": 4,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(o12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": []
+},
+"once_cutters": {
+"value": []
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": []
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+0,
+623,
+623
+]
+}
+},
+{
+"data": "GAATTCaaaaaa",
+"circular": false,
+"spans": [
+[
+0,
+6
+],
+[
+6,
+12
+]
+],
+"built": {
+"value": {
+"code": "GAATTCaaaaaa",
+"watson": "GAATTCaaaaaa",
+"crick": "ttttttGAATTC",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:6](+)",
+"parts": [
+[
+0,
+6,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[6:12](+)",
+"parts": [
+[
+6,
+12,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "GFFZZ",
+"watson": "G",
+"crick": "AATTC",
+"circular": false,
+"len": 5,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(-5)"
+},
+{
+"code": "EEXXCaaaaaa",
+"watson": "AATTCaaaaaa",
+"crick": "ttttttG",
+"circular": false,
+"len": 11,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-11)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "GFFZZ",
+"watson": "G",
+"crick": "AATTC",
+"circular": false,
+"len": 5,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(-5)"
+},
+{
+"code": "EEXXCaaaaaa",
+"watson": "AATTCaaaaaa",
+"crick": "ttttttG",
+"circular": false,
+"len": 11,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-11)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "GFFZZ",
+"watson": "G",
+"crick": "AATTC",
+"circular": false,
+"len": 5,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(-5)"
+},
+{
+"code": "EEXXCaaaaaa",
+"watson": "AATTCaaaaaa",
+"crick": "ttttttG",
+"circular": false,
+"len": 11,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-11)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"once_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"EcoRI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+8,
+615,
+623
+]
+}
+},
+{
+"data": "GAATTCaaaaaa",
+"circular": true,
+"spans": [
+[
+0,
+6
+],
+[
+6,
+12
+]
+],
+"built": {
+"value": {
+"code": "GAATTCaaaaaa",
+"watson": "GAATTCaaaaaa",
+"crick": "ttttttGAATTC",
+"circular": true,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:6](+)",
+"parts": [
+[
+0,
+6,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[6:12](+)",
+"parts": [
+[
+6,
+12,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(o12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"once_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"EcoRI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+8,
+615,
+623
+]
+}
+},
+{
+"data": "aaaaaaGAATTC",
+"circular": false,
+"spans": [
+[
+0,
+6
+],
+[
+6,
+12
+]
+],
+"built": {
+"value": {
+"code": "aaaaaaGAATTC",
+"watson": "aaaaaaGAATTC",
+"crick": "GAATTCtttttt",
+"circular": false,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:6](+)",
+"parts": [
+[
+0,
+6,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[6:12](+)",
+"parts": [
+[
+6,
+12,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(-12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "aaaaaaGFFZZ",
+"watson": "aaaaaaG",
+"crick": "AATTCtttttt",
+"circular": false,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:6](+)",
+"parts": [
+[
+0,
+6,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-11)"
+},
+{
+"code": "EEXXC",
+"watson": "AATTC",
+"crick": "G",
+"circular": false,
+"len": 5,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(-5)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "aaaaaaGFFZZ",
+"watson": "aaaaaaG",
+"crick": "AATTCtttttt",
+"circular": false,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:6](+)",
+"parts": [
+[
+0,
+6,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-11)"
+},
+{
+"code": "EEXXC",
+"watson": "AATTC",
+"crick": "G",
+"circular": false,
+"len": 5,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(-5)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "aaaaaaGFFZZ",
+"watson": "aaaaaaG",
+"crick": "AATTCtttttt",
+"circular": false,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:6](+)",
+"parts": [
+[
+0,
+6,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-11)"
+},
+{
+"code": "EEXXC",
+"watson": "AATTC",
+"crick": "G",
+"circular": false,
+"len": 5,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(-5)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "Can only linearize circular molecules!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"once_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"EcoRI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+7,
+616,
+623
+]
+}
+},
+{
+"data": "aaaaaaGAATTC",
+"circular": true,
+"spans": [
+[
+0,
+6
+],
+[
+6,
+12
+]
+],
+"built": {
+"value": {
+"code": "aaaaaaGAATTC",
+"watson": "aaaaaaGAATTC",
+"crick": "GAATTCtttttt",
+"circular": true,
+"len": 12,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[0:6](+)",
+"parts": [
+[
+0,
+6,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+},
+{
+"str": "[6:12](+)",
+"parts": [
+[
+6,
+12,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f1"
+]
+}
+}
+],
+"repr": "Dseqrecord(o12)"
+}
+},
+"cuts": {
+"EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+}
+},
+"BamHI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+BamHI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+]
+},
+"number_of_cuts": {
+"value": 1
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+}
+},
+"HindIII": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRV": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"SmaI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"NotI": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+},
+"EcoRI+EcoRI": {
+"fragments": {
+"value": [
+{
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "id",
+"name": "name",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+]
+},
+"number_of_cuts": {
+"value": 2
+},
+"linearize": {
+"value": {
+"code": "EEXXCaaaaaaGFFZZ",
+"watson": "AATTCaaaaaaG",
+"crick": "AATTCttttttG",
+"circular": false,
+"len": 16,
+"ovhg": -4,
+"id": "name_lin",
+"name": "name_lin",
+"features": [
+{
+"str": "[5:11](+)",
+"parts": [
+[
+5,
+11,
+1
+]
+],
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"f0"
+]
+}
+}
+],
+"repr": "Dseqrecord(-16)"
+}
+}
+},
+"none": {
+"fragments": {
+"value": []
+},
+"number_of_cuts": {
+"value": 0
+},
+"linearize": {
+"exc": {
+"type": "TypeError",
+"msg": "The enzyme(s) do not cut!"
+}
+}
+}
+},
+"queries": {
+"no_cutters": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"unique_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"once_cutters": {
+"value": [
+"EcoRI"
+]
+},
+"twice_cutters": {
+"value": []
+},
+"cutters": {
+"value": [
+"EcoRI"
+]
+}
+},
+"n_cutters": {
+"0": {
+"value": [
+"BamHI",
+"EcoRV",
+"HindIII",
+"NotI",
+"SmaI"
+]
+},
+"1": {
+"value": [
+"EcoRI"
+]
+},
+"2": {
+"value": []
+},
+"3": {
+"value": []
+}
+},
+"default_batch_sizes": {
+"value": [
+7,
+616,
+623
+]
+}
+}
+],
+"synced": [
+{
+"data": "gaattcaaaaa",
+"ref": "gaattc",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "gaattcaaaaa",
+"watson": "gaattcaaaaa",
+"crick": "tttttgaattc",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "gaattc",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "gaattc",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "gaattcaaaaa",
+"watson": "gaattcaaaaa",
+"crick": "tttttgaattc",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "gaattc",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "gaattc",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "gaattcaaaaa",
+"watson": "gaattcaaaaa",
+"crick": "tttttgaattc",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "gaattc",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaagaattc",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaaagaattc",
+"watson": "aaaaagaattc",
+"crick": "gaattcttttt",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaagaattc",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaagaattc",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaaagaattc",
+"watson": "aaaaagaattc",
+"crick": "gaattcttttt",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaagaattc",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaagaattc",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaaagaattc",
+"watson": "aaaaagaattc",
+"crick": "gaattcttttt",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaagaattc",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaa",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaaagaattc",
+"watson": "aaaaagaattc",
+"crick": "gaattcttttt",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaa",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaa",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaaagaattc",
+"watson": "aaaaagaattc",
+"crick": "gaattcttttt",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaa",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaa",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaaagaattc",
+"watson": "aaaaagaattc",
+"crick": "gaattcttttt",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "aaaaa",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "ttcaaaaagaa",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "ttcaaaaagaa",
+"watson": "ttcaaaaagaa",
+"crick": "ttctttttgaa",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "ttcaaaaagaa",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "ttcaaaaagaa",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "ttcaaaaagaa",
+"watson": "ttcaaaaagaa",
+"crick": "ttctttttgaa",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "ttcaaaaagaa",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "ttcaaaaagaa",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "ttcaaaaagaa",
+"watson": "ttcaaaaagaa",
+"crick": "ttctttttgaa",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "ttcaaaaagaa",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "zzzzz",
+"limit": 3,
+"circular": true,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "There is no overlap between sequences!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "zzzzz",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "zzzzz",
+"limit": 4,
+"circular": true,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "There is no overlap between sequences!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "zzzzz",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "zzzzz",
+"limit": 25,
+"circular": true,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "There is no overlap between sequences!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "zzzzz",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "",
+"limit": 3,
+"circular": true,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "",
+"limit": 4,
+"circular": true,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "",
+"limit": 25,
+"circular": true,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": "",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "gaattcaaaaa",
+"ref": {
+"record": "gaattcaaaaa"
+},
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "gaattcaaaaa",
+"watson": "gaattcaaaaa",
+"crick": "tttttgaattc",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "atga",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "atgaCCCgggt",
+"watson": "atgaCCCgggt",
+"crick": "acccGGGtcat",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "atga",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "atga",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "atgaCCCgggt",
+"watson": "atgaCCCgggt",
+"crick": "acccGGGtcat",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "atga",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "atga",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "atgaCCCgggt",
+"watson": "atgaCCCgggt",
+"crick": "acccGGGtcat",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "atga",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "CCCggg",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "CCCgggtatga",
+"watson": "CCCgggtatga",
+"crick": "tcatacccGGG",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "CCCggg",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "CCCggg",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "CCCgggtatga",
+"watson": "CCCgggtatga",
+"crick": "tcatacccGGG",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "CCCggg",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "CCCggg",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "CCCgggtatga",
+"watson": "CCCgggtatga",
+"crick": "tcatacccGGG",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "CCCggg",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "gggtatga",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "gggtatgaCCC",
+"watson": "gggtatgaCCC",
+"crick": "GGGtcataccc",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "gggtatga",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "gggtatga",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "gggtatgaCCC",
+"watson": "gggtatgaCCC",
+"crick": "GGGtcataccc",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "gggtatga",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "gggtatga",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "gggtatgaCCC",
+"watson": "gggtatgaCCC",
+"crick": "GGGtcataccc",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "gggtatga",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "tacg",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "tacccGGGtca",
+"watson": "tacccGGGtca",
+"crick": "tgaCCCgggta",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id_rc",
+"name": "name_rc",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "tacg",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "tacg",
+"limit": 4,
+"circular": true,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "There is no overlap between sequences!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "tacg",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "tacg",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "tacccGGGtca",
+"watson": "tacccGGGtca",
+"crick": "tgaCCCgggta",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id_rc",
+"name": "name_rc",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "tacg",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "",
+"limit": 3,
+"circular": true,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "",
+"limit": 4,
+"circular": true,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "",
+"limit": 25,
+"circular": true,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": "",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "atgaCCCgggt",
+"ref": {
+"record": "atgaCCCgggt"
+},
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "atgaCCCgggt",
+"watson": "atgaCCCgggt",
+"crick": "acccGGGtcat",
+"circular": true,
+"len": 11,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o11)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaa",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaatttt",
+"watson": "aaaatttt",
+"crick": "aaaatttt",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaa",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaa",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaatttt",
+"watson": "aaaatttt",
+"crick": "aaaatttt",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaa",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaa",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaatttt",
+"watson": "aaaatttt",
+"crick": "aaaatttt",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaa",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "tttt",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "ttttaaaa",
+"watson": "ttttaaaa",
+"crick": "ttttaaaa",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "tttt",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "tttt",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "ttttaaaa",
+"watson": "ttttaaaa",
+"crick": "ttttaaaa",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "tttt",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "tttt",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "ttttaaaa",
+"watson": "ttttaaaa",
+"crick": "ttttaaaa",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "tttt",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "ttttaaaa",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "ttttaaaa",
+"watson": "ttttaaaa",
+"crick": "ttttaaaa",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "ttttaaaa",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "ttttaaaa",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "ttttaaaa",
+"watson": "ttttaaaa",
+"crick": "ttttaaaa",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "ttttaaaa",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "ttttaaaa",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "ttttaaaa",
+"watson": "ttttaaaa",
+"crick": "ttttaaaa",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "ttttaaaa",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaatttt",
+"limit": 3,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaatttt",
+"watson": "aaaatttt",
+"crick": "aaaatttt",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaatttt",
+"limit": 3,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaatttt",
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaatttt",
+"watson": "aaaatttt",
+"crick": "aaaatttt",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaatttt",
+"limit": 4,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaatttt",
+"limit": 25,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaatttt",
+"watson": "aaaatttt",
+"crick": "aaaatttt",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": "aaaatttt",
+"limit": 25,
+"circular": false,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Only circular DNA can be synced!"
+}
+}
+},
+{
+"data": "aaaatttt",
+"ref": {
+"record": "aaaatttt"
+},
+"limit": 4,
+"circular": true,
+"result": {
+"value": {
+"code": "aaaatttt",
+"watson": "aaaatttt",
+"crick": "aaaatttt",
+"circular": true,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"features": [],
+"repr": "Dseqrecord(o8)"
+}
+}
+}
+]
+}

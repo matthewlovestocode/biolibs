@@ -265,7 +265,7 @@
     "reverse_complement": "(self, *args, **kwargs)",
     "seguid": "(self)",
     "sorted_features": "(self)",
-    "stamp": "(self, now=<function SeqRecord.datefunction at 0x1093b3320>, tool='pydna', separator=' ', comment='')",
+    "stamp": "(self, now=<function SeqRecord.datefunction at 0x10b7b7320>, tool='pydna', separator=' ', comment='')",
     "startcodon": "(self, organism='sce')",
     "stopcodon": "(self, organism='sce')",
     "translate": "(self)"

@@ -214,6 +214,17 @@ mark("pydna.dseqrecord.display_html", "na")
 if any("value" in b["result"] for b in pdr["builds"]):
     mark("pydna.dseqrecord.Dseqrecord.from_string")
     mark("pydna.dseqrecord.Dseqrecord.from_SeqRecord")
+
+# Cutting a record, which is cutting a molecule and then deciding which fragment each feature belongs to.
+# The cases put features deliberately across the cut sites, including through the origin of a circle.
+pdc = json.load(open(f"{here}/../packages/dseqrecord/test/golden/dseqrecord-cut.json"))
+built_cut = [c for c in pdc["cases"] if "value" in c["built"]]
+if built_cut:
+    for member in ("cut", "linearize", "number_of_cuts", "cutters", "no_cutters", "n_cutters",
+                   "once_cutters", "twice_cutters", "unique_cutters"):
+        mark(f"pydna.dseqrecord.Dseqrecord.{member}")
+if any("value" in c["result"] for c in pdc["synced"]):
+    mark("pydna.dseqrecord.Dseqrecord.synced")
 if pseq["proteins"]:
     for member in ("__getitem__", "back_transcribe", "complement", "complement_rna", "instability_index",
                    "molecular_weight", "pI", "rc", "reverse_complement", "reverse_complement_rna",

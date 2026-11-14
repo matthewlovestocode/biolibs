@@ -37,7 +37,7 @@
 - [x] `reverse_complement(self, *args, **kwargs)`
 - [x] `seguid(self)`
 - [x] `sorted_features(self)`
-- [x] `stamp(self, now=<function SeqRecord.datefunction at 0x1093b3320>, tool='pydna', separator=' ', comment='')`
+- [x] `stamp(self, now=<function SeqRecord.datefunction at 0x10b7b7320>, tool='pydna', separator=' ', comment='')`
 - [x] `startcodon(self, organism='sce')`
 - [x] `stopcodon(self, organism='sce')`
 - [x] `translate(self)`
