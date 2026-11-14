@@ -163,9 +163,9 @@ def run(case):
                     except Exception as e:
                         out["result"].append({"exc": {"type": tname(e), "msg": emsg(e)}})
             elif k == "bbwrite":
-                # Both sides start from the same BED text, whose reader is verified already, and write it out as
-                # a bigBed file. An uncompressed file is compared byte for byte; a compressed one cannot be,
-                # since the compressed form is zlib's own, so it is read back and compared as a whole.
+                # Both sides start from the same BED text, whose reader is verified already, and write it out
+                # as a bigBed file, which is then compared byte for byte -- compressed or not, since the port's
+                # compressor produces zlib's own bytes. A file is read back as well, as a second check.
                 import tempfile
                 alns = Align.Alignments(list(Align.parse(io.StringIO(case["bed"]), "bed")))
                 targets = [SeqRecord(Seq(None, length=n), id=i) for i, n in case["targets"]]
@@ -184,7 +184,7 @@ def run(case):
                         n = bigbed.AlignmentWriter(f, **opts).write(alns)
                     with open(path, "rb") as f:
                         data = f.read()
-                byte_exact = opts.get("compress") is False and case.get("bytes") is not False
+                byte_exact = case.get("bytes") is not False
                 out["result"] = {"n": n, "size": len(data) if byte_exact else None,
                                  "hex": data.hex() if byte_exact else None}
                 back = Align.parse(io.BytesIO(data), "bigbed")

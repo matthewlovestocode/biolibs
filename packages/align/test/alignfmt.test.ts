@@ -136,9 +136,9 @@ describe("Bio.Align file formats", () => {
           const n = write(alns, out, "bigbed", c.no_targets === true ? opts : { ...opts, targets }) as number | undefined;
           const data = out.toBytes();
           const it = parse(data, "bigbed") as unknown as BigBedIterator;
-          // Only an uncompressed file can be compared byte for byte: the compressed form is zlib's own. A file
-          // whose scores are whole numbers cannot either, since Python writes those as floats ("100.0").
-          const byteExact = c.opts?.["compress"] === false && c.bytes !== false;
+          // A file whose scores are whole numbers cannot be compared byte for byte, since Python writes those
+          // as floats ("100.0"); everything else can, compressed or not.
+          const byteExact = c.bytes !== false;
           return {
             n: n === undefined ? null : n,
             size: byteExact ? data.length : null,

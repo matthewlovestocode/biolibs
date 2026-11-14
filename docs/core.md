@@ -49,14 +49,25 @@ Small functions that let ports reproduce Biopython's behaviour and messages exac
 
 ## DEFLATE (`zlib/`)
 
-`inflate(bytes)` is Python's `zlib.decompress` and `inflateRaw(bytes)` its `wbits=-15` form, with `adler32` for
-the checksum a zlib stream ends with and `ZlibError` (Python's `zlib.error`, whose name is `error`) for data that
-is not valid. Written out here rather than taken from the host, so that the readers that need it work the same
-under Node, a browser and a bundler; `Bio.Align.bigbed` is the first of them. `deflateStored(bytes)` goes the other way, but only as far as a valid zlib stream of *stored* blocks: nothing
-here squeezes anything, because matching `zlib.compress` byte for byte would mean porting zlib's own match
-finder. A writer that needs its output to match Biopython's exactly has to write uncompressed. Decompression is
-verified against Python's own `zlib.compress` at every level, including the
-stored blocks level 0 produces, incompressible data, and payloads longer than one window.
+`inflate(bytes)` is Python's `zlib.decompress` and `inflateRaw(bytes)` its `wbits=-15` form; `deflate(bytes,
+level)` is `zlib.compress` and `deflateRaw` its raw form, with `adler32` for the checksum a zlib stream ends
+with and `ZlibError` (Python's `zlib.error`, whose name is `error`) for data that is not valid. Written out here
+rather than taken from the host, so that the readers and writers that need it work the same under Node, a
+browser and a bundler; `Bio.Align.bigbed` is the first of them.
+
+The compressor is **zlib 1.2.12's own algorithm, not merely a valid one**: the hash chains and their blind spot
+at position zero (zlib's `NIL` is `0`, so it never matches the first byte of the input), the lazy matching of
+`deflate_slow`, the configuration table that gives each level its search limits, where the blocks end, how the
+three block types are costed and how ties between them are broken, and the Huffman trees down to the order the
+code-length tree is sent in. The point of all that is that the bytes come out the same, which is what lets a
+written file be compared with Biopython's: 370 golden cases hold Python's own `zlib.compress` output at every
+level from 0 to 9, over payloads chosen to reach the awkward paths — longer than the 32 KiB window, deeply
+overlapping, incompressible, a Huffman tree deep enough to need capping, matches at the very edge of the window,
+and lengths either side of the symbol-buffer boundary.
+
+One thing is not reproduced: how zlib splits the stored blocks of a **level 0** stream longer than 64 KiB. It
+fits each block to whatever output buffer the caller gave it, so the split points are a property of Python's
+buffering rather than of the format, and those streams are only checked for being valid.
 
 ## `assert(cond, message)`
 

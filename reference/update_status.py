@@ -532,11 +532,9 @@ for c in afm:
     # format means; `bbsearch` exercises the same reader through its index.
     if c["kind"] in ("parse", "read", "bbparse") and _ok(c): mark(f"Bio.Align.parse:{f}")
     if c["kind"] in ("format", "write") and _ok(c): mark(f"Bio.Align.write:{f}")
-    # `bbwrite` writes a bigBed file and compares it with the one Biopython writes. It is marked partial, not
-    # done: an uncompressed file matches byte for byte, but a compressed one cannot, because the port has no
-    # zlib-compatible compressor -- it wraps each block in stored DEFLATE blocks instead. The data is the same
-    # (both readers give back the same alignments) but the bytes are not, and compression is the default.
-    if c["kind"] == "bbwrite" and _ok(c): mark(f"Bio.Align.write:{f}", "partial")
+    # `bbwrite` writes a bigBed file and compares it with the one Biopython writes, byte for byte, compressed
+    # or not: the port's DEFLATE compressor produces zlib's own output.
+    if c["kind"] == "bbwrite" and _ok(c): mark(f"Bio.Align.write:{f}")
 for f in ("emboss", "hhr", "msf", "tabular"): mark(f"Bio.Align.write:{f}", "na")   # Biopython has no writer for these formats
 for fn, kind in (("parse", "parse"), ("read", "read"), ("write", "write")):
     if any(c["kind"] == kind and _ok(c) for c in afm): mark(f"Bio.Align.{fn}")

@@ -182,21 +182,18 @@ windows of a fixed width, and then summarised again at four times the width unti
 summaries than the one before. Those figures are 32-bit floats in Biopython, so the arithmetic rounds through
 `Math.fround` at each step.
 
-**An uncompressed file matches Biopython's byte for byte**, which is what the golden cases compare — across
-`bedN` 3 to 12, several `itemsPerSlot` and `blockSize` combinations, an extended declaration, extra indexes over
-two columns, a 120-item file with several blocks and index levels, and a pile of 300 overlapping alignments.
-A **compressed** file cannot be: `@biolibs/core` has no zlib-compatible compressor, so it wraps each block in
-stored DEFLATE blocks instead. The file is valid and both readers give back the same alignments — the cases
-check exactly that — but the bytes differ, and compression is the default, which is why `write: bigbed` is
-marked partial rather than done. Making it `[x]` means porting zlib's own match finder.
+**The file matches Biopython's byte for byte**, compressed or not, which is what the golden cases compare —
+across `bedN` 3 to 12, several `itemsPerSlot` and `blockSize` combinations, an extended declaration, extra
+indexes over two columns, a 120-item file with several blocks and index levels, 260 overlapping alignments of
+varied lengths, and a pile of 300 covering one stretch. Compressed files match because `@biolibs/core`'s
+`deflate` reproduces zlib's own output, not merely a valid stream; see `docs/core.md`.
 
-Two more differences the cases pin down. A score that is a whole number is written `100.0` by Biopython, whose
+One difference the cases pin down rather than hide. A score that is a whole number is written `100.0` by Biopython, whose
 BED reader makes every score a `float`, and `100` here, where a JavaScript number that happens to be whole is
 an `int`; the byte-compared cases therefore use fractional scores, and an integer-score file is compared by
 reading it back. And three combinations of `blockSize` and `itemsPerSlot` make Biopython's own R tree writer
 notice that its offsets do not add up and raise `RuntimeError: Internal error: offset mismatch (1839 vs 1891)`
-— the port raises the same error with the same numbers, which is the strongest check there is that the layout
-agrees up to that point.
+— the port raises the same error with the same numbers.
 
 Writing bigPsl and bigMaf is not ported. Biopython's own writer needs a real file — it puts its index out with
 `numpy.ndarray.tofile` — and it raises on an empty alignment list, so the golden files are written to a

@@ -1,6 +1,6 @@
 /** Writing bigBed files (`Bio.Align.bigbed.AlignmentWriter`). */
 
-import { AssertionError, KeyError, ValueError, deflateStored, pyInt } from "@biolibs/core";
+import { AssertionError, KeyError, ValueError, deflate, pyInt } from "@biolibs/core";
 import type { SeqRecord } from "@biolibs/seqrecord";
 import { Alignment } from "../../alignment/alignment.js";
 import { ByteWriter } from "../byte-writer.js";
@@ -85,7 +85,7 @@ class BufferedStream {
     const whole = new Uint8Array(this.length);
     let at = 0;
     for (const part of this.parts) { whole.set(part, at); at += part.length; }
-    this.output.write(this.compress ? deflateStored(whole) : whole);
+    this.output.write(this.compress ? deflate(whole) : whole);
     this.parts = [];
     this.length = 0;
   }
@@ -381,7 +381,7 @@ export class BigBedWriter {
         const whole = new Uint8Array(buffered);
         let at = 0;
         for (const part of buffer) { whole.set(part, at); at += part.length; }
-        output.write(this.compress ? deflateStored(whole) : whole);
+        output.write(this.compress ? deflate(whole) : whole);
         buffer = [];
         buffered = 0;
         if (extraIndices.list.length > 0) {

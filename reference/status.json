@@ -195,7 +195,7 @@
  "Bio.Align.write": "done",
  "Bio.Align.write:a2m": "done",
  "Bio.Align.write:bed": "done",
- "Bio.Align.write:bigbed": "partial",
+ "Bio.Align.write:bigbed": "done",
  "Bio.Align.write:chain": "done",
  "Bio.Align.write:clustal": "done",
  "Bio.Align.write:emboss": "na",
