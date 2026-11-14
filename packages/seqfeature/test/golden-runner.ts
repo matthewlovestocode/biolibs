@@ -69,6 +69,13 @@ const PROP: Record<string, string> = { ref_db: "refDb", position_choices: "posit
 const camel = (s: string) => s.replace(/^_/, "").replace(/_([a-z])/g, (_, c: string) => c.toUpperCase());
 
 function apply(c: Case, recv: any, args: any[]): unknown {
+  // The three INSDC writers, which are module functions rather than methods: the other direction from
+  // `Location.fromstring`, and the only part of the port a GenBank writer needs.
+  if (c.insdc) {
+    if (c.insdc === "position") return SF.insdcFeaturePositionString(args[0], args[1]);
+    if (c.insdc === "plain") return SF.insdcLocationStringIgnoringStrandAndSubfeatures(args[0], args[1]);
+    return SF.insdcLocationString(args[0], args[1]);
+  }
   if (c.static) {
     const [cls, fn] = c.static.split(".") as [string, string];
     return (cls === "Position" ? SF.Position : cls === "Location" ? SF.Location : SF.SimpleLocation).fromstring(...(args as [any, any, any, any]));
@@ -100,7 +107,7 @@ function apply(c: Case, recv: any, args: any[]): unknown {
 }
 
 export interface Case {
-  op?: string; static?: string; ctor?: string; recv?: unknown; args?: unknown[];
+  op?: string; static?: string; ctor?: string; insdc?: string; recv?: unknown; args?: unknown[];
   result?: J; exc?: { type: string; msg: string | null }; warnings: string[]; after?: J;
 }
 

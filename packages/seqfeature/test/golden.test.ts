@@ -7,7 +7,7 @@ const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/seqfeatur
 // Group by operation so a failure names the method that diverges.
 const groups = new Map<string, Case[]>();
 for (const c of cases) {
-  const key = c.static ? c.static : c.ctor ? `${c.ctor}()` : (c.op as string);
+  const key = c.static ? c.static : c.ctor ? `${c.ctor}()` : c.insdc ? `insdc:${c.insdc}` : (c.op as string);
   (groups.get(key) ?? groups.set(key, []).get(key)!).push(c);
 }
 

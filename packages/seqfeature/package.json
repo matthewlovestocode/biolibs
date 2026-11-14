@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/seqfeature",
   "version": "0.1.0",
-  "description": "Sequence features and locations (Biopython Bio.SeqFeature)",
+  "description": "Where a feature is on a sequence, verified against Biopython: simple and compound locations, eight kinds of fuzzy position, the GenBank/EMBL location grammar both ways, SeqFeature and Reference (Bio.SeqFeature)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

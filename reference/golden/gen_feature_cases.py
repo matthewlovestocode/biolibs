@@ -1,4 +1,5 @@
-"""Golden cases for Bio.SeqFeature (positions, locations, SeqFeature, Reference).
+"""Golden cases for Bio.SeqFeature (positions, locations, SeqFeature, Reference) and the INSDC
+location-string writers that turn a location back into GenBank/EMBL text.
 
 Output: packages/seqfeature/test/golden/seqfeature.json
 Same case shape as gen_seq_cases.py; see codec_feature.py for the encoding.
@@ -9,6 +10,11 @@ import Bio
 from Bio import SeqFeature as SF
 from codec import S, M, B, LST, SL as SLICE, TUP
 from codec_feature import enc, dec, pos, X, SL, CL, FEAT
+from Bio.SeqIO.InsdcIO import (
+    _insdc_feature_position_string as insdc_pos,
+    _insdc_location_string as insdc_loc,
+    _insdc_location_string_ignoring_strand_and_subfeatures as insdc_loc_plain,
+)
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "seqfeature", "test", "golden", "seqfeature.json")
 rnd = random.Random(424242)
@@ -19,10 +25,16 @@ def emsg(e):
     if type(e).__name__ == "AttributeError": return None
     return str(e.args[0]) if isinstance(e, KeyError) and e.args else str(e)
 
+#: The three module-level writers in `Bio.SeqIO.InsdcIO`. They are the other direction from
+#: `Location.fromstring`: zero-based half-open positions back to one-based inclusive GenBank text, where
+#: a fuzzy position prints differently again and `UnknownPosition` becomes a `>` or `<` bound.
+INSDC = {"position": insdc_pos, "location": insdc_loc, "plain": insdc_loc_plain}
+
 STATIC = {"Position.fromstring": SF.Position.fromstring, "Location.fromstring": SF.Location.fromstring, "SimpleLocation.fromstring": SF.SimpleLocation.fromstring}
 
 def apply(case, recv, args):
     op = case.get("op")
+    if "insdc" in case: return INSDC[case["insdc"]](*args)
     if "static" in case: return STATIC[case["static"]](*args)
     if "ctor" in case: return getattr(SF, case["ctor"])(*args)
     if op == "__str__": return str(recv)
@@ -185,6 +197,19 @@ for r in REFS_:
     for op in ("__str__", "__repr__"): add({"op": op, "recv": r, "args": []})
     for o in REFS_: add({"op": "__eq__", "recv": r, "args": [o]})
 add({"ctor": "Reference", "args": []})
+
+# ------------------------------------------------------------------------------- INSDC location strings
+# Ported but, until these cases, only exercised indirectly through the GenBank writer in another package.
+for l in ALL:
+    for n in (100, 15, 10):
+        add({"insdc": "location", "args": [l, n]})
+        add({"insdc": "plain", "args": [l, n]})
+for q in P:
+    for off in (0, 1, -1):
+        add({"insdc": "position", "args": [q, off]})
+# A plain integer is not a position object, which is the one refusal the writer has of its own.
+for bad in (5, "5", None):
+    add({"insdc": "position", "args": [bad, 0]})
 
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
 print(f"{len(cases)} cases, {sum('exc' in c for c in cases)} raise, {sum(bool(c['warnings']) for c in cases)} warn -> {os.path.relpath(OUT)} ({os.path.getsize(OUT)/1e6:.1f} MB)")

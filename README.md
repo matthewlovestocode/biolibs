@@ -5,7 +5,7 @@ few packages that have no Python equivalent.
 
 - **23 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,590 API items at parity** across three upstream libraries
-- **17,452 tests**, replaying answers recorded from the real Python libraries
+- **17,475 tests**, replaying answers recorded from the real Python libraries
 
 > **Not published to npm yet.** Clone and build; see [Building](#building).
 
@@ -34,7 +34,7 @@ uninitialised memory, say — are marked rather than claimed; each checklist say
 | Package | Replaces | At parity | Notes |
 |---|---|---|---|
 | [`@biolibs/seq`](packages/seq) | `Bio.Seq`, `Bio.Data.CodonTable`, `Bio.Data.IUPACData` | 219 | `Seq`, `MutableSeq`, all 27 genetic codes, the IUPAC tables, undefined and partially defined content. [README](packages/seq/README.md) |
-| [`@biolibs/seqfeature`](packages/seqfeature) | `Bio.SeqFeature` | 163 | positions, `SimpleLocation`, `CompoundLocation`, `Location.fromstring`, `SeqFeature`, `Reference` |
+| [`@biolibs/seqfeature`](packages/seqfeature) | `Bio.SeqFeature` | 163 | eight kinds of fuzzy position, `SimpleLocation`, `CompoundLocation`, the GenBank/EMBL location grammar both ways, `SeqFeature`, `Reference`. [README](packages/seqfeature/README.md) |
 | [`@biolibs/seqrecord`](packages/seqrecord) | `Bio.SeqRecord` | 25 | slicing, `+`, `reverseComplement`, `translate`, per-letter annotations |
 | [`@biolibs/seqio`](packages/seqio) | `Bio.SeqIO` | 81 | every format Biopython reads, text and binary, including SFF; `index` too. `index_db` is not ported — its index lives in an SQLite file |
 | [`@biolibs/align`](packages/align) | `Bio.Align` | 175 | `PairwiseAligner` with scoring and alignment, `Alignment`, `MultipleSeqAlignment`, the substitution matrices, `CodonAligner`, dN/dS, and every alignment file format Biopython reads or writes. [README](packages/align/README.md) |
@@ -85,7 +85,7 @@ Biopython checklist, because it is a port of CPython itself: 1,253 recorded case
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 17,452 tests
+npm test           # vitest — 17,475 tests
 npm run coverage   # per-file coverage
 ```
 

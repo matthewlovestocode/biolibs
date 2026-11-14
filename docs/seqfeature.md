@@ -1,6 +1,9 @@
 # @biolibs/seqfeature
 
-A TypeScript port of Biopython's `Bio.SeqFeature`: positions, locations, features and references. Verified against Biopython 1.88 with about 5,900 recorded calls (results, exception types and messages, warnings and state after mutation); see [PARITY.md](../PARITY.md).
+A TypeScript port of Biopython's `Bio.SeqFeature`: positions, locations, features and references. Verified against Biopython 1.88 with **6,060 recorded calls** (results, exception types and messages,
+warnings and state after mutation), of which **1,291 record a refusal** — a location string out of a real
+file is as often malformed as not. All 163 items are at parity; see [PARITY.md](../PARITY.md), and
+[the package README](../packages/seqfeature/README.md) for the API with worked examples.
 
 ```ts
 import { Seq } from "@biolibs/seq";
@@ -39,10 +42,10 @@ Positions are `int` subclasses in Biopython. Here they have `valueOf()`, so `<`,
 | Class | GenBank text | Notes |
 |---|---|---|
 | `ExactPosition(5)` | `6` | exactly known (text is one-based) |
-| `UncertainPosition(5)` | `?6` | |
+| `UncertainPosition(5)` | `?6` | parsed from `?6`, but written back without the `?` — as Biopython writes it |
 | `BeforePosition(5)` / `AfterPosition(5)` | `<6` / `>6` | `flip` swaps them |
 | `WithinPosition(5, left=3, right=5)` | `(4.6)` | `position` must be one of the bounds |
-| `BetweenPosition(5, left=5, right=6)` | `(5^6)` | |
+| `BetweenPosition(5, left=5, right=6)` | — | `str()` is `(5^6)`, but the position parser never produces one: `6^7` in a location is a site between bases, which becomes a zero-length `SimpleLocation` |
 | `OneOfPosition(5, choices)` | `one-of(6,8)` | |
 | `UnknownPosition()` | `?` | no integer value |
 
@@ -55,6 +58,18 @@ Each has `repr()`, `toString()`, `add(offset)` and `flip(length)`. `Position.fro
 - **`Location.fromstring(text, length?, circular?, stranded?)`**: parses GenBank/EMBL text: `1..10`, `complement(...)`, `join(...)`, `order(...)`, `bond(...)`, `<5..>10`, `(3.5)..9`, `one-of(3,4)..9`, `5^6`, `NC_1.1:5..10`. With `length` and `circular`, a feature wrapping the origin (`1000..10` on a 1010-base circle) is repaired into a two-part join with a `BiopythonParserWarning`; without `circular` it is an error. Malformed text throws `LocationParserError`.
 
 `SimpleLocation + SimpleLocation` gives a `CompoundLocation`; `+ number` shifts. `FeatureLocation` is the older name for `SimpleLocation`.
+
+## The INSDC writers
+
+The other direction, for a GenBank or EMBL writer: `insdcLocationString(location, recLength)` gives
+one-based inclusive text with `complement()` and the operators rebuilt,
+`insdcLocationStringIgnoringStrandAndSubfeatures` gives the bare `start..end`, and
+`insdcFeaturePositionString(pos, offset)` one position. The round trip is lossy in the places Biopython's
+is: an `UncertainPosition` loses its `?`, and an `UnknownPosition` end becomes a `>` bound.
+
+```ts
+insdcLocationString(new SimpleLocation(5, 10, -1), 100);   // "complement(6..10)"
+```
 
 ## SeqFeature
 
@@ -73,7 +88,6 @@ Each has `repr()`, `toString()`, `add(offset)` and `flip(length)`. `Position.fro
 - Positions are not numbers. Use `Number(pos)`; Python's inherited `int` methods (`bit_length`, `to_bytes`, ...) are not provided.
 - `bool(location)` and `hash(...)` have no equivalent. (In Python a zero-length `SimpleLocation` is falsy; check `length` instead.)
 - Python `float` values that are whole numbers (`5.0`) are indistinguishable from integers in JavaScript.
-- `int()` of non-ASCII Unicode digits is not supported when parsing location text.
 - Where Python raises `AttributeError` for a wrong argument type, TypeScript throws `TypeError`.
 
 ## Source layout
@@ -81,8 +95,7 @@ Each has `repr()`, `toString()`, `add(offset)` and `flip(length)`. `Position.fro
 ```
 packages/seqfeature/src/
   position/   base, exact, unknown, range (within/between), before-after, one-of, parse, index
-  location/   base, simple, compound, patterns (regexes), parse, extract-util, index
-  py/         Python-compatible int(), repr() and type names (internal)
+  location/   base, simple, compound, patterns (regexes), parse, extract-util, insdc-string, index
   seq-feature.ts  reference.ts  errors.ts  index.ts
 ```
 
