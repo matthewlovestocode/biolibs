@@ -5,9 +5,11 @@
  * - `matrix-files.ts`: the 30 bundled matrix files (generated from Biopython)
  * - `array.ts`: `SubstitutionArray`
  * - `read.ts`: `readMatrix`, `loadMatrix`, `loadNames`
+ * - `ufunc.ts`: `arrayUfunc`, Biopython's `Array.__array_ufunc__`
  * - `percent.ts`, `py-errors.ts`: Python `%` formatting and error helpers
  */
 
 export * from "./array.js";
 export * from "./read.js";
+export * from "./ufunc.js";
 export { MATRIX_NAMES } from "./matrix-files.js";

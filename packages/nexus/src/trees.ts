@@ -1,6 +1,6 @@
 /** Phylogenetic trees as read from NEXUS files (a port of Biopython's `Bio.Nexus.Trees`). */
 
-import { AssertionError, IndexError, ValueError, pyFloat, pyFloatRepr, pyFormatFixed, pyStrip } from "@biolibs/core";
+import { AssertionError, IndexError, pyFloat, pyFloatRepr, pyFormatFixed, pyRandom, pyStrip, ValueError } from "@biolibs/core";
 import { Chain, Node } from "./nodes.js";
 import { TreeError } from "./errors.js";
 
@@ -56,7 +56,8 @@ export class Tree extends Chain<NodeData> {
   rooted: boolean;
   name: string;
   root: number;
-  private readonly valuesAreSupport: boolean;
+  /** Not readonly: `randomize` reinitialises the tree, which resets this along with everything else. */
+  private valuesAreSupport: boolean;
   /** Branches `[from, to, branchlength, support]` recorded by {@link Tree.unroot}. */
   unrooted: [number, number, number | null, number | null][] = [];
 
@@ -286,6 +287,62 @@ export class Tree extends Chain<NodeData> {
 
   isTerminal(node: number): boolean { return this.node(node).succ.length === 0; }
   isInternal(node: number): boolean { return this.node(node).succ.length > 0; }
+
+  /**
+   * Replace this tree with a random one of `ntax` taxa.
+   *
+   * The shape is built by splitting a randomly chosen leaf until there are enough of them, and the labels
+   * are then dealt out in a shuffled order — both from Python's shared generator, so seeding
+   * {@link pyRandom} fixes the result. A standard deviation gives each new branch a length drawn from
+   * `random.gauss`, with negative draws flattened to zero.
+   *
+   * Biopython starts by calling its own `__init__` with no arguments, which throws away not only the
+   * nodes but the weight, name, rooted flag and node-data class as well; that is reproduced here.
+   *
+   * @param ntax - How many taxa, or null to take it from `taxonList`.
+   * @param taxonList - The labels, **shuffled in place**, or null to generate `taxon1`, `taxon2` and so on.
+   * @param branchlength - The length each new branch gets.
+   * @param branchlengthSd - A standard deviation for that length, or null to leave it exact.
+   * @param bifurcate - Accepted and ignored, as Biopython ignores it: polytomies are not supported.
+   * @throws {@link TreeError} when neither argument says how many taxa there are, or when they disagree.
+   */
+  randomize(ntax: number | null = null, taxonList: string[] | null = null, branchlength = 1.0,
+    branchlengthSd: number | null = null, bifurcate = true): void {
+    void bifurcate;
+    if (!ntax && taxonList && taxonList.length > 0) ntax = taxonList.length;
+    else if ((!taxonList || taxonList.length === 0) && ntax) taxonList = Array.from({ length: ntax }, (_, i) => `taxon${i + 1}`);
+    else if (!ntax && (!taxonList || taxonList.length === 0)) throw new TreeError("Either number of taxa or list of taxa must be specified.");
+    else if (ntax !== taxonList!.length) throw new TreeError("Length of taxon list must correspond to ntax.");
+    // `self.__init__()`: back to one empty root and to every default the constructor sets.
+    this.chain = new Map();
+    this.id = -1;
+    this.dataclass = NodeData;
+    this.valuesAreSupport = false;
+    this.maxSupport = 1.0;
+    this.weight = 1.0;
+    this.rooted = false;
+    this.name = "";
+    this.unrooted = [];
+    this.root = this.add(new Node<NodeData>(new NodeData()));
+    const terminals = this.getTerminals();
+    while (terminals.length < ntax!) {
+      const newsplit = pyRandom.choice(terminals);
+      const added = this.split(newsplit, 2, branchlength);
+      if (branchlengthSd) {
+        for (const nt of added) {
+          let bl = pyRandom.gauss(branchlength, branchlengthSd);
+          if (bl < 0) bl = 0;
+          this.node(nt).data!.branchlength = bl;
+        }
+      }
+      terminals.push(...added);
+      terminals.splice(terminals.indexOf(newsplit), 1);
+    }
+    pyRandom.shuffle(taxonList!);
+    terminals.forEach((node, i) => {
+      if (i < taxonList!.length) this.node(node).data!.taxon = taxonList![i]!;
+    });
+  }
 
   /**
    * Whether all children are leaves. Biopython's test is inverted (a quirk kept here): it is true for a *leaf*, which has

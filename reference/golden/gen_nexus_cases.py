@@ -5,6 +5,8 @@ Case kinds:
   nexus - parse "text" with Nexus.Nexus, run "ops" ([name, kwargs]) in order, record each result plus a final state snapshot.
   combine - Nexus.combine over the "texts"; the result's state snapshot.
   tree - build Tree(newick) and run "ops" ([name, args]); records str(tree) after each op.
+A case may carry "seed", which seeds the shared `random` generator before its ops run: `Tree.randomize`
+and `Nexus.bootstrap` draw from it, so that is what makes their output comparable.
 The SeqIO side of Bio.Nexus (parse/write of "nexus") is covered by seqio-nexus.json.
 """
 import contextlib, io, json, os, random, sys, tempfile, warnings
@@ -84,6 +86,7 @@ def run_nexus_op(n, name, kw):
     if name == "invert": return n.invert(**kw)
     if name == "gaponly": return n.gaponly(**kw)
     if name == "terminal_gap_to_missing": return n.terminal_gap_to_missing(**kw)
+    if name == "bootstrap": return n.bootstrap(**kw)
     raise KeyError(name)
 
 def run(case):
@@ -93,6 +96,7 @@ def run(case):
         try:
             if case["kind"] == "nexus":
                 n = Nexus.Nexus(case["text"]); res = []
+                if case.get("seed") is not None: random.seed(case["seed"])
                 out["ops_out"] = res
                 for name, kw in case["ops"]:
                     try: res.append({"result": conv(run_nexus_op(n, name, kw))})
@@ -117,6 +121,7 @@ def run(case):
                 out["result"] = str(c) if c is not None else None
             elif case["kind"] == "tree":
                 t = Trees.Tree(case["newick"], **case.get("kw", {})); res = []
+                if case.get("seed") is not None: random.seed(case["seed"])
                 out["ops_out"] = res
                 out["initial"] = str(t)
                 for name, args in case["ops"]:
@@ -134,6 +139,15 @@ def run(case):
                         elif name == "node_call":
                             r = getattr(t.node(args[0]), args[1])(*args[2:])
                         elif name == "is_identical": r = t.is_identical(Trees.Tree(args[0]))
+                        elif name == "randomize":
+                            r = t.randomize(*args)
+                            # the Newick text alone would hide the shape when labels repeat, so the chain goes too
+                            # Branch lengths from random.gauss go through the platform's sin and cos, whose
+                            # last bit the port cannot promise to match, so they are recorded to twelve
+                            # significant digits. Everything else here is exact.
+                            r = {"chain": [[i, t.node(i).prev, list(t.node(i).succ), t.node(i).data.taxon,
+                                            float("%.12g" % t.node(i).data.branchlength)] for i in sorted(t.all_ids())],
+                                 "taxon_list": args[1] if len(args) > 1 else None}
                         else: r = getattr(t, name)(*args)
                         res.append({"result": conv(r), "tree": str(t)})
                     except Exception as e: res.append({"exc": {"type": tname(e), "msg": emsg(e)}})
@@ -143,11 +157,14 @@ def run(case):
     return out
 
 def add(c):
-    c = json.loads(json.dumps(c))     # the methods mutate list arguments (exclude.append ...); keep the stored case pristine
+    c = json.loads(json.dumps(c))
     key = json.dumps(c, sort_keys=True)
     if key in seen: return
     seen.add(key)
-    cases.append({**c, **run(c)})
+    # The methods mutate list arguments in place (`exclude.append(...)`, and `randomize` shuffles the taxon
+    # list it is handed), so the case is stored as it was written and `run` works on a copy of its own.
+    pristine = json.loads(json.dumps(c))
+    cases.append({**pristine, **run(c)})
 
 def nexus_text(rnd, datatype="dna", n=None, L=None, sets=True, labels=True, gaps=True):
     n = n or rnd.randint(2, 5); L = L or rnd.randint(4, 24)
@@ -251,6 +268,49 @@ def tree_cases():
     for nw in ["(a,b);", "(a:0.1,b:0.2);", "((a,b),c);", "(a,(b,c)d);", "((a,b)90:0.1,c);", "(a[&x=1]:1,b);", "('a b',c);", "(a,b,c,d);", "((a,b),(c,d),(e,f));", "(a,b", "a,b)", "((a,b)", "()", "", "(a,b);;", "(a:x,b);", "((a,b)c:0.1[comment],d);", "(a,b)c;", "x", "(a b,c);", "(a,'b c':0.5);", "((a,b)[note],c);"]:
         add({"kind": "tree", "newick": nw, "kw": {}, "ops": [["str", []], ["get_taxa", []], ["count_terminals", []], ["is_bifurcating", []], ["has_support", []], ["unroot", []], ["to_string", [{"plain": False}]]]})
 
+def random_cases():
+    """`Tree.randomize` and `Nexus.bootstrap`: both draw from the shared `random` generator, so each case
+    carries the seed to set before its ops run."""
+    for seed in (1, 7, 88, 12345):
+        for ntax in (1, 2, 3, 4, 5, 8, 13):
+            add({"kind": "tree", "newick": "(A,B);", "seed": seed, "ops": [["randomize", [ntax]]]})
+        add({"kind": "tree", "newick": "(A,(B,C));", "seed": seed,
+             "ops": [["randomize", [None, ["alpha", "beta", "gamma", "delta", "epsilon"]]]]})
+        add({"kind": "tree", "newick": "(A,B);", "seed": seed, "ops": [["randomize", [6, None, 2.5]]]})
+        # a standard deviation gives every new branch a length from random.gauss
+        add({"kind": "tree", "newick": "(A,B);", "seed": seed, "ops": [["randomize", [6, None, 1.0, 0.3]]]})
+        add({"kind": "tree", "newick": "(A,B);", "seed": seed, "ops": [["randomize", [8, None, 1.0, 0.5, False]]]})
+        # twice over, to show the second call carries on from where the first left the generator
+        add({"kind": "tree", "newick": "(A,B);", "seed": seed,
+             "ops": [["randomize", [5]], ["randomize", [5]]]})
+    # the argument checks
+    add({"kind": "tree", "newick": "(A,B);", "seed": 1, "ops": [["randomize", []]]})
+    add({"kind": "tree", "newick": "(A,B);", "seed": 1, "ops": [["randomize", [0, []]]]})
+    add({"kind": "tree", "newick": "(A,B);", "seed": 1, "ops": [["randomize", [3, ["a", "b"]]]]})
+    add({"kind": "tree", "newick": "(A,B);", "seed": 1, "ops": [["randomize", [2, ["a", "b", "c"]]]]})
+
+    dna = ("#NEXUS\nbegin data;\ndimensions ntax=4 nchar=10;\nformat datatype=dna missing=? gap=-;\nmatrix\n"
+           "alpha ACGTACGTAC\nbeta ACGTTCGTAC\ngamma AC-TACGAAC\ndelta ACGTACG?AC\n;\nend;\n")
+    standard = ("#NEXUS\nbegin data;\ndimensions ntax=3 nchar=4;\nformat datatype=standard symbols=\"012\";\nmatrix\n"
+                "a 0120\nb 0110\nc 2010\n;\nend;\n")
+    for seed in (1, 7, 88, 12345):
+        add({"kind": "nexus", "text": dna, "seed": seed, "ops": [["bootstrap", {}]]})
+        add({"kind": "nexus", "text": dna, "seed": seed, "ops": [["bootstrap", {}], ["bootstrap", {}]]})
+        add({"kind": "nexus", "text": dna, "seed": seed, "ops": [["bootstrap", {"delete": ["beta"]}]]})
+        add({"kind": "nexus", "text": dna, "seed": seed, "ops": [["bootstrap", {"exclude": [0, 1, 2]}]]})
+        add({"kind": "nexus", "text": dna, "seed": seed,
+             "ops": [["bootstrap", {"delete": ["alpha", "delta"], "exclude": [5, 6, 7, 8, 9]}]]})
+        # every taxon deleted, then every site excluded
+        add({"kind": "nexus", "text": dna, "seed": seed,
+             "ops": [["bootstrap", {"delete": ["alpha", "beta", "gamma", "delta"]}]]})
+        add({"kind": "nexus", "text": dna, "seed": seed, "ops": [["bootstrap", {"exclude": list(range(10))}]]})
+        # a standard-datatype matrix, whose rows are not Seq objects
+        add({"kind": "nexus", "text": standard, "seed": seed, "ops": [["bootstrap", {}]]})
+    add({"kind": "nexus", "text": dna, "seed": 1, "ops": [["bootstrap", {"delete": ["nosuchtaxon"]}]]})
+    add({"kind": "nexus", "text": "#NEXUS\nbegin taxa;\ndimensions ntax=2;\ntaxlabels a b;\nend;\n",
+         "seed": 1, "ops": [["bootstrap", {}]]})
+
+
 def func_cases():
     names = ["a", "a b", "it's", "x-y", "a(b)", "", "ünï", "a_b", "1", "a.b", "a;b", "'q'", '"d"', "a,b", "a=b", "[x]", "a\tb", "n:1", "*", "a/b", "{x}", "a'b c"]
     for nm in names:
@@ -293,6 +353,7 @@ def main():
     add({"kind": "combine", "texts": [["m1", nexus_text(rnd, "dna", 3, 6, sets=False)], ["m2", nexus_text(rnd, "protein", 3, 6, sets=True)], ["m3", nexus_text(rnd, "dna", 2, 4, sets=True)]]})
     add({"kind": "combine", "texts": []})
     tree_cases()
+    random_cases()
     func_cases()
     standard_cases()
     compat_cases()

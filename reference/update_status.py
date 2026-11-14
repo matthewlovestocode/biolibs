@@ -476,7 +476,10 @@ for op in sm_ops:
     for m in SM_USED.get(op, ()): mark(f"Bio.Align.substitution_matrices.Array.{m}")
 if any(c["kind"] == "array" and "array" in c for c in sm): mark("Bio.Align.substitution_matrices.Array.__new__")
 for m in ("__array_finalize__", "__array_prepare__", "__array_wrap__", "__reduce__", "__setstate__", "__repr__"):
-    mark(f"Bio.Align.substitution_matrices.Array.{m}", "na")      # numpy / pickle protocol hooks; arithmetic (__array_ufunc__) is not ported yet
+    mark(f"Bio.Align.substitution_matrices.Array.{m}", "na")      # numpy / pickle protocol hooks
+uf = json.load(open(f"{here}/../packages/align/test/golden/ufunc.json"))
+if any("result" in c for c in uf) and any("exc" in c for c in uf):
+    mark("Bio.Align.substitution_matrices.Array.__array_ufunc__")
 
 # ---- Bio.Align.PairwiseAligner (packages/align/test/golden/aligner.json) ----
 al = json.load(open(f"{here}/../packages/align/test/golden/aligner.json"))["cases"]

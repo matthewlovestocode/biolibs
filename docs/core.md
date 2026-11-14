@@ -47,6 +47,18 @@ warnings[0].message; // "Partial codon, len(sequence) not a multiple of three. .
 
 Small functions that let ports reproduce Biopython's behaviour and messages exactly: `pyInt` (Python's `int(str)`), `pyRepr` and `pyStr` (`repr`/`str` of `None`, bools, lists, dicts, and objects with `repr()`), `pyTypeName`/`pyClassRepr` (type names for error messages; `registerPythonClasses(module, names)` teaches it `<class 'Bio.X.Y'>`), `pyEquals` (`==` for plain data), `pyTruthy` and `pyContains` (`in`), `PyTuple` (an array that prints as a Python tuple), `pyPercent` (Python's `format % args`) and `PyFloat` (a float that holds a whole number), `pyFormatG` (`%g` / `format(x, "g")`), `pyTextwrapFill` (`textwrap.fill`: tab expansion, breaking after hyphens, `width`, indents and `breakLongWords`).
 
+## Python's `random` (`py/random.ts`)
+
+`PyRandom` is MT19937 and the `Random` methods Biopython draws from, ported from `Modules/_randommodule.c`
+and `random.py`: `seed` (an integer, split into 32-bit words and fed to `init_by_array`, or `null` for
+system randomness as Python's own default does), `random`, `getrandbits` (and `getrandbitsBig` for more
+than the 53 bits a double holds), `randbelow` with its rejection loop, `choice`, `shuffle`, `randrange`,
+`randint` and `gauss`, which keeps the second value of each pair for the next call exactly as Python does.
+`pyRandom` is the one shared instance that Python's module-level `random.choice` and friends use, so
+seeding it is what makes `Bio.Nexus`'s `Tree.randomize` and `Nexus.bootstrap` reproducible. The stream
+matches Python's bit for bit; only `gauss` can differ in the last bit, because its `sin` and `cos` come
+from the engine rather than the platform's C library.
+
 ## DEFLATE (`zlib/`)
 
 `inflate(bytes)` is Python's `zlib.decompress` and `inflateRaw(bytes)` its `wbits=-15` form; `deflate(bytes,

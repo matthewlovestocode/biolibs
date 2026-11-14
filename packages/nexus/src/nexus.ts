@@ -1,7 +1,7 @@
 /** The `Nexus` class: reading, editing and writing NEXUS data (a port of Biopython's `Bio.Nexus.Nexus.Nexus`). */
 
 import { Seq } from "@biolibs/seq";
-import { IndexError, RuntimeError, ValueError } from "@biolibs/core";
+import { IndexError, pyRandom, RuntimeError, ValueError } from "@biolibs/core";
 import { NexusError, PyAttributeError } from "./errors.js";
 import { StepMatrix, compact4nexus, getStartEnd, makeUnique, safename, sortKeysByValues, uniqueLabel } from "./helpers.js";
 import { CODONPOSITIONS, NexusParser, type MatrixRow } from "./nexus-parser.js";
@@ -111,10 +111,47 @@ export function exportedName(filename: string, extension: string): string {
  * ```
  * Writing to a file by name is not supported: {@link Nexus.writeNexusData}, {@link Nexus.exportFasta},
  * {@link Nexus.exportPhylip} and {@link Nexus.writeNexusDataPartitions} all take an object with a `write(text)`
- * method instead, and return the name Biopython would have derived. `bootstrap` is not ported: it resamples sites
- * with Python's `random`, so nothing here could reproduce its output to compare against.
+ * method instead, and return the name Biopython would have derived.
  */
 export class Nexus extends NexusParser {
+  /**
+   * A bootstrapped matrix: the same number of sites, drawn from this one with replacement.
+   *
+   * Each site is picked with `random.randint`, so seeding {@link pyRandom} fixes the result exactly as
+   * seeding Python's shared generator fixes Biopython's.
+   *
+   * @param matrix - The matrix to resample, or null for this object's own.
+   * @param deleteTaxa - Taxa to leave out. @param exclude - Character positions to leave out.
+   * @returns The resampled rows, in `taxlabels` order, as {@link Seq} objects when the matrix held them.
+   * @throws IndexError with Python's wording when there is no row to look at.
+   */
+  bootstrap(matrix: Map<string, MatrixRow> | null = null, deleteTaxa: string[] = [], exclude: number[] | null = null):
+  Map<string, MatrixRow | string> {
+    if (!matrix || matrix.size === 0) matrix = this.matrix;
+    // `matrix[list(matrix.keys())[0]]`: a Nexus holding no matrix at all fails on `None.keys()`, which
+    // Python reports as an AttributeError, while an empty matrix gets as far as indexing an empty list.
+    if (matrix === null) throw new TypeError("'NoneType' object has no attribute 'keys'");
+    const firstKey = [...matrix.keys()][0];
+    if (firstKey === undefined) throw new IndexError("list index out of range");
+    const seqobjects = matrix!.get(firstKey) instanceof Seq;
+    const cm = this.cropMatrix(matrix, deleteTaxa, exclude);
+    if (cm.size === 0) return new Map();
+    const cmFirst = [...cm.keys()][0]!;
+    if (text(cm.get(cmFirst)!).length === 0) return cm;
+    const undelete = this.taxlabels.filter((t) => cm.has(t));
+    const rows = undelete.map((t) => text(cm.get(t)!));
+    const nsites = rows.length === 0 ? 0 : rows[0]!.length;
+    // One index per site, drawn with replacement, then the columns are read back out in that order.
+    const picks = Array.from({ length: nsites }, () => pyRandom.randint(0, nsites - 1));
+    const out = new Map<string, MatrixRow | string>();
+    undelete.forEach((taxon, i) => {
+      const letters = picks.map((site) => rows[i]![site]!);
+      const sequence = letters.join("");
+      out.set(taxon, seqobjects ? new Seq(sequence) : sequence);
+    });
+    return out;
+  }
+
   /** The sub-matrix without excluded characters and deleted taxa (rebuilt even for an empty exclusion, as Biopython does for its default). */
   cropMatrix(matrix: Map<string, MatrixRow> | null = null, deleteTaxa: string[] = [], exclude: number[] | null = null): Map<string, MatrixRow> {
     if (!matrix || matrix.size === 0) matrix = this.matrix;

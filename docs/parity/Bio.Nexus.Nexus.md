@@ -18,7 +18,7 @@
 - [-] `__str__(self, /)`
 - [x] `add_sequence(self, name, sequence)`
 - [x] `append_sets(self, exclude=(), delete=(), mrbayes=False, include_codons=True, codons_only=False)`
-- [ ] `bootstrap(self, matrix=None, delete=(), exclude=())`
+- [x] `bootstrap(self, matrix=None, delete=(), exclude=())`
 - [x] `constant(self, matrix=None, delete=(), exclude=())`
 - [x] `crop_matrix(self, matrix=None, delete=(), exclude=())`
 - [x] `cstatus(self, site, delete=(), narrow=True)`

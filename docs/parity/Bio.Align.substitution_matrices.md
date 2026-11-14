@@ -12,7 +12,7 @@
 - [x] `__contains__(self, key)`
 - [-] `__array_prepare__(self, out_arr, context=None)`
 - [-] `__array_wrap__(self, out_arr, context=None)`
-- [ ] `__array_ufunc__(self, ufunc, method, *inputs, **kwargs)`
+- [x] `__array_ufunc__(self, ufunc, method, *inputs, **kwargs)`
 - [-] `__reduce__(self)`
 - [-] `__setstate__(self, state)`
 - [x] `get(self, key, value=None)`

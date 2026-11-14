@@ -39,7 +39,7 @@
 - [x] `merge_with_support(self, bstrees=None, constree=None, threshold=0.5, outgroup=None)`
 - [x] `node(self, node_id)`
 - [x] `prune(self, taxon)`
-- [ ] `randomize(self, ntax=None, taxon_list=None, branchlength=1.0, branchlength_sd=None, bifurcate=True)`
+- [x] `randomize(self, ntax=None, taxon_list=None, branchlength=1.0, branchlength_sd=None, bifurcate=True)`
 - [x] `root_with_outgroup(self, outgroup=None)`
 - [x] `search_taxon(self, taxon)`
 - [x] `set_subtree(self, node)`

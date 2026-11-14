@@ -7,3 +7,4 @@ export * from "./str.js";
 export * from "./num.js";
 export * from "./textwrap.js";
 export * from "./percent.js";
+export * from "./random.js";

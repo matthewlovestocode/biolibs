@@ -1,0 +1,8634 @@
+[
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+4.0
+],
+[
+6.0,
+8.0,
+10.0
+],
+[
+12.0,
+14.0,
+16.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+3.0,
+4.0
+],
+[
+5.0,
+6.0,
+7.0
+],
+[
+8.0,
+9.0,
+10.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+3.0,
+4.0
+],
+[
+5.0,
+6.0,
+7.0
+],
+[
+8.0,
+9.0,
+10.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+2.0,
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+3.0,
+4.0
+],
+[
+5.0,
+6.0,
+7.0
+],
+[
+8.0,
+9.0,
+10.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+2.0,
+4.0,
+6.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+3.0,
+5.0
+],
+[
+4.0,
+6.0,
+8.0
+],
+[
+7.0,
+9.0,
+11.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+[
+10.0,
+20.0,
+30.0
+]
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+11.0,
+22.0,
+33.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+4.0
+],
+[
+6.0,
+8.0,
+10.0
+],
+[
+12.0,
+14.0,
+16.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+3.0,
+4.0
+],
+[
+5.0,
+6.0,
+7.0
+],
+[
+8.0,
+9.0,
+10.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+3.0,
+4.0
+],
+[
+5.0,
+6.0,
+7.0
+],
+[
+8.0,
+9.0,
+10.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+2.0,
+4.0,
+6.0
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+]
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+-2.0,
+-1.0,
+0.0
+],
+[
+1.0,
+2.0,
+3.0
+],
+[
+4.0,
+5.0,
+6.0
+]
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+-2.0,
+-1.0,
+0.0
+],
+[
+1.0,
+2.0,
+3.0
+],
+[
+4.0,
+5.0,
+6.0
+]
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+2.0,
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+1.0,
+0.0
+],
+[
+-1.0,
+-2.0,
+-3.0
+],
+[
+-4.0,
+-5.0,
+-6.0
+]
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.0,
+0.0
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+-1.0,
+-1.0,
+-1.0
+],
+[
+2.0,
+2.0,
+2.0
+],
+[
+5.0,
+5.0,
+5.0
+]
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+[
+10.0,
+20.0,
+30.0
+]
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+-9.0,
+-18.0,
+-27.0
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+]
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+-2.0,
+-1.0,
+0.0
+],
+[
+1.0,
+2.0,
+3.0
+],
+[
+4.0,
+5.0,
+6.0
+]
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+-2.0,
+-1.0,
+0.0
+],
+[
+1.0,
+2.0,
+3.0
+],
+[
+4.0,
+5.0,
+6.0
+]
+]
+}
+},
+{
+"ufunc": "subtract",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.0,
+0.0
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+4.0
+],
+[
+9.0,
+16.0,
+25.0
+],
+[
+36.0,
+49.0,
+64.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+4.0
+],
+[
+6.0,
+8.0,
+10.0
+],
+[
+12.0,
+14.0,
+16.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+4.0
+],
+[
+6.0,
+8.0,
+10.0
+],
+[
+12.0,
+14.0,
+16.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+2.0,
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+4.0
+],
+[
+6.0,
+8.0,
+10.0
+],
+[
+12.0,
+14.0,
+16.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+4.0,
+9.0
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+6.0
+],
+[
+3.0,
+8.0,
+15.0
+],
+[
+6.0,
+14.0,
+24.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+[
+10.0,
+20.0,
+30.0
+]
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+10.0,
+40.0,
+90.0
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+4.0
+],
+[
+9.0,
+16.0,
+25.0
+],
+[
+36.0,
+49.0,
+64.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+4.0
+],
+[
+6.0,
+8.0,
+10.0
+],
+[
+12.0,
+14.0,
+16.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+4.0
+],
+[
+6.0,
+8.0,
+10.0
+],
+[
+12.0,
+14.0,
+16.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+1.0,
+4.0,
+9.0
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"nan",
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+]
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.5,
+1.0
+],
+[
+1.5,
+2.0,
+2.5
+],
+[
+3.0,
+3.5,
+4.0
+]
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.5,
+1.0
+],
+[
+1.5,
+2.0,
+2.5
+],
+[
+3.0,
+3.5,
+4.0
+]
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+2.0,
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"inf",
+2.0,
+1.0
+],
+[
+0.6666666666666666,
+0.5,
+0.4
+],
+[
+0.3333333333333333,
+0.2857142857142857,
+0.25
+]
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+1.0,
+1.0
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.5,
+0.6666666666666666
+],
+[
+3.0,
+2.0,
+1.6666666666666667
+],
+[
+6.0,
+3.5,
+2.6666666666666665
+]
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+[
+10.0,
+20.0,
+30.0
+]
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.1,
+0.1,
+0.1
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"nan",
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+]
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.5,
+1.0
+],
+[
+1.5,
+2.0,
+2.5
+],
+[
+3.0,
+3.5,
+4.0
+]
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.5,
+1.0
+],
+[
+1.5,
+2.0,
+2.5
+],
+[
+3.0,
+3.5,
+4.0
+]
+]
+}
+},
+{
+"ufunc": "true_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+1.0,
+1.0
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"nan",
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+]
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+2.0,
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"inf",
+2.0,
+1.0
+],
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+]
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+1.0,
+1.0
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+0.0
+],
+[
+3.0,
+2.0,
+1.0
+],
+[
+6.0,
+3.0,
+2.0
+]
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+[
+10.0,
+20.0,
+30.0
+]
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.0,
+0.0
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+]
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+}
+},
+{
+"ufunc": "floor_divide",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+1.0,
+1.0,
+1.0
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"nan",
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+]
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+2.0,
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"nan",
+0.0,
+0.0
+],
+[
+2.0,
+2.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+]
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.0,
+0.0
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+0.0,
+0.0,
+2.0
+],
+[
+0.0,
+1.0,
+2.0
+]
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+[
+10.0,
+20.0,
+30.0
+]
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+]
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+},
+{
+"ufunc": "remainder",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.0,
+0.0
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+2.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+2.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+2.0,
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+2.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+2.0,
+3.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+[
+10.0,
+20.0,
+30.0
+]
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+10.0,
+20.0,
+30.0
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+2.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+2.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+2.0,
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+1.0,
+2.0,
+3.0
+],
+[
+1.0,
+2.0,
+3.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+[
+10.0,
+20.0,
+30.0
+]
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+2.0
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"nan",
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"nan",
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+]
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+2.0,
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"inf",
+2.0,
+1.0
+],
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"nan",
+0.0,
+0.0
+],
+[
+2.0,
+2.0,
+2.0
+],
+[
+2.0,
+2.0,
+2.0
+]
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+1.0,
+1.0
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.0,
+0.0
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+0.0
+],
+[
+3.0,
+2.0,
+1.0
+],
+[
+6.0,
+3.0,
+2.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+0.0,
+0.0,
+2.0
+],
+[
+0.0,
+1.0,
+2.0
+]
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+[
+10.0,
+20.0,
+30.0
+]
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.0,
+0.0
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+}
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+],
+[
+1.0,
+1.0,
+1.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+],
+[
+0.0,
+0.0,
+0.0
+]
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+{
+"int": 2
+}
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"dtype": "int",
+"data": [
+[
+0,
+1,
+2
+],
+[
+3,
+4,
+5
+],
+[
+6,
+7,
+8
+]
+]
+},
+2.0
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+1.0,
+1.0,
+1.0
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.0,
+0.0
+]
+}
+]
+},
+{
+"ufunc": "exp",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+2.718281828459045,
+7.38905609893065,
+20.085536923187668
+]
+}
+},
+{
+"ufunc": "exp",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+-1.5,
+0.0,
+4.25
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.22313016014842982,
+1.0,
+70.10541234668786
+]
+}
+},
+{
+"ufunc": "exp",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+2.718281828459045,
+7.38905609893065
+],
+[
+20.085536923187668,
+54.598150033144236,
+148.4131591025766
+],
+[
+403.4287934927351,
+1096.6331584284585,
+2980.9579870417283
+]
+]
+}
+},
+{
+"ufunc": "exp",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+2.718281828459045,
+7.38905609893065,
+20.085536923187668
+]
+}
+},
+{
+"ufunc": "log",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.6931471805599453,
+1.0986122886681098
+]
+}
+},
+{
+"ufunc": "log",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+-1.5,
+0.0,
+4.25
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+"nan",
+"-inf",
+1.4469189829363254
+]
+}
+},
+{
+"ufunc": "log",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+"-inf",
+0.0,
+0.6931471805599453
+],
+[
+1.0986122886681098,
+1.3862943611198906,
+1.6094379124341003
+],
+[
+1.791759469228055,
+1.9459101490553132,
+2.0794415416798357
+]
+]
+}
+},
+{
+"ufunc": "log",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+0.6931471805599453,
+1.0986122886681098
+]
+}
+},
+{
+"ufunc": "sqrt",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+1.4142135623730951,
+1.7320508075688772
+]
+}
+},
+{
+"ufunc": "sqrt",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+-1.5,
+0.0,
+4.25
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+"nan",
+0.0,
+2.0615528128088303
+]
+}
+},
+{
+"ufunc": "sqrt",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+1.4142135623730951
+],
+[
+1.7320508075688772,
+2.0,
+2.23606797749979
+],
+[
+2.449489742783178,
+2.6457513110645907,
+2.8284271247461903
+]
+]
+}
+},
+{
+"ufunc": "sqrt",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+1.4142135623730951,
+1.7320508075688772
+]
+}
+},
+{
+"ufunc": "negative",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+-1.0,
+-2.0,
+-3.0
+]
+}
+},
+{
+"ufunc": "negative",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+-1.5,
+0.0,
+4.25
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.5,
+-0.0,
+-4.25
+]
+}
+},
+{
+"ufunc": "negative",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+-0.0,
+-1.0,
+-2.0
+],
+[
+-3.0,
+-4.0,
+-5.0
+],
+[
+-6.0,
+-7.0,
+-8.0
+]
+]
+}
+},
+{
+"ufunc": "negative",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+-1.0,
+-2.0,
+-3.0
+]
+}
+},
+{
+"ufunc": "absolute",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "absolute",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+-1.5,
+0.0,
+4.25
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.5,
+0.0,
+4.25
+]
+}
+},
+{
+"ufunc": "absolute",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "absolute",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": [
+"Ala",
+"Bet",
+"Cys"
+],
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": [
+"Ala",
+"Bet",
+"Cys"
+],
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": [
+"Ala",
+"Bet",
+"Cys"
+],
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+2.0,
+4.0,
+6.0
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": [
+"Ala",
+"Bet",
+"Cys"
+],
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+3.0
+],
+"result": {
+"array": true,
+"alphabet": [
+"Ala",
+"Bet",
+"Cys"
+],
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+3.0,
+6.0,
+9.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"out": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+4.0
+],
+[
+6.0,
+8.0,
+10.0
+],
+[
+12.0,
+14.0,
+16.0
+]
+]
+},
+"out_after": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+2.0,
+4.0
+],
+[
+6.0,
+8.0,
+10.0
+],
+[
+12.0,
+14.0,
+16.0
+]
+]
+}
+]
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"out": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+2.0,
+4.0,
+6.0
+]
+},
+"out_after": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+2.0,
+4.0,
+6.0
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"out": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+],
+"out_after": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+]
+},
+{
+"ufunc": "divmod",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+2.0
+],
+"out": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+null
+],
+"result": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+},
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+0.0
+],
+[
+1.0,
+0.0,
+1.0
+],
+[
+0.0,
+1.0,
+0.0
+]
+]
+}
+],
+"out_after": [
+{
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+3.0,
+3.0,
+4.0
+]
+]
+},
+null
+]
+},
+{
+"ufunc": "add",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+9.0,
+12.0,
+15.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"axis": 1,
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+3.0,
+12.0,
+21.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"scalar": 6.0
+}
+},
+{
+"ufunc": "add",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+3.0,
+6.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+5.0,
+7.0
+],
+[
+9.0,
+12.0,
+15.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"axis": 1,
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+3.0
+],
+[
+3.0,
+7.0,
+12.0
+],
+[
+6.0,
+13.0,
+21.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "outer",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+3.0,
+4.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+4.0,
+5.0,
+6.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "outer",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+2.0,
+3.0,
+4.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+4.0,
+5.0,
+6.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+28.0,
+80.0
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"axis": 1,
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+60.0,
+336.0
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"scalar": 6.0
+}
+},
+{
+"ufunc": "multiply",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+6.0
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+0.0,
+4.0,
+10.0
+],
+[
+0.0,
+28.0,
+80.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"axis": 1,
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+0.0
+],
+[
+3.0,
+12.0,
+60.0
+],
+[
+6.0,
+42.0,
+336.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "outer",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+2.0,
+3.0
+],
+[
+2.0,
+4.0,
+6.0
+],
+[
+3.0,
+6.0,
+9.0
+]
+]
+}
+},
+{
+"ufunc": "multiply",
+"method": "outer",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+2.0,
+3.0
+],
+[
+2.0,
+4.0,
+6.0
+],
+[
+3.0,
+6.0,
+9.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+6.0,
+7.0,
+8.0
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"axis": 1,
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+2.0,
+5.0,
+8.0
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"scalar": 3.0
+}
+},
+{
+"ufunc": "maximum",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"axis": 1,
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "outer",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+2.0,
+3.0
+],
+[
+2.0,
+2.0,
+3.0
+],
+[
+3.0,
+3.0,
+3.0
+]
+]
+}
+},
+{
+"ufunc": "maximum",
+"method": "outer",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+2.0,
+3.0
+],
+[
+2.0,
+2.0,
+3.0
+],
+[
+3.0,
+3.0,
+3.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+1.0,
+2.0
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"axis": 1,
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+0.0,
+3.0,
+6.0
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "reduce",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"scalar": 1.0
+}
+},
+{
+"ufunc": "minimum",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+1.0,
+1.0
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+0.0,
+1.0,
+2.0
+],
+[
+0.0,
+1.0,
+2.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "accumulate",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"axis": 1,
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+0.0,
+0.0,
+0.0
+],
+[
+3.0,
+3.0,
+3.0
+],
+[
+6.0,
+6.0,
+6.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "outer",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+1.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+1.0,
+2.0,
+3.0
+]
+]
+}
+},
+{
+"ufunc": "minimum",
+"method": "outer",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+},
+{
+"alphabet": "ABC",
+"dims": 1,
+"dtype": "int",
+"data": [
+1,
+2,
+3
+]
+}
+],
+"result": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "int",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+1.0,
+1.0
+],
+[
+1.0,
+2.0,
+2.0
+],
+[
+1.0,
+2.0,
+3.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "at",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+5.0
+],
+"indices": [
+0
+],
+"result": null,
+"after": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+6.0,
+2.0,
+3.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "at",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+5.0
+],
+"indices": [
+0,
+2,
+2
+],
+"result": null,
+"after": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+6.0,
+2.0,
+13.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "at",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+1.0
+],
+"indices": [
+0,
+2
+],
+"result": null,
+"after": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3,
+3
+],
+"values": [
+[
+1.0,
+2.0,
+3.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+7.0,
+8.0,
+9.0
+]
+]
+}
+},
+{
+"ufunc": "add",
+"method": "at",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+1.0
+],
+"indices": [
+0,
+4
+],
+"exc": {
+"type": "IndexError",
+"msg": "index 4 is out of bounds for axis 0 with size 3"
+}
+},
+{
+"ufunc": "multiply",
+"method": "at",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+},
+3.0
+],
+"indices": [
+1
+],
+"result": null,
+"after": {
+"array": true,
+"alphabet": "ABC",
+"dtype": "float",
+"shape": [
+3
+],
+"values": [
+1.0,
+6.0,
+3.0
+]
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABD",
+"dims": 2,
+"data": [
+[
+1.0,
+0.0,
+0.0
+],
+[
+0.0,
+1.0,
+0.0
+],
+[
+0.0,
+0.0,
+1.0
+]
+]
+}
+],
+"exc": {
+"type": "ValueError",
+"msg": "alphabets are inconsistent"
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+}
+],
+"out": [
+{
+"alphabet": "ABD",
+"dims": 2,
+"data": [
+[
+1.0,
+0.0,
+0.0
+],
+[
+0.0,
+1.0,
+0.0
+],
+[
+0.0,
+0.0,
+1.0
+]
+]
+}
+],
+"exc": {
+"type": "ValueError",
+"msg": "alphabets are inconsistent"
+}
+},
+{
+"ufunc": "add",
+"method": "__call__",
+"inputs": [
+{
+"alphabet": "ABC",
+"dims": 2,
+"data": [
+[
+0.0,
+1.0,
+2.0
+],
+[
+3.0,
+4.0,
+5.0
+],
+[
+6.0,
+7.0,
+8.0
+]
+]
+},
+{
+"alphabet": [
+"Ala",
+"Bet",
+"Cys"
+],
+"dims": 1,
+"data": [
+1.0,
+2.0,
+3.0
+]
+}
+],
+"exc": {
+"type": "ValueError",
+"msg": "alphabets are inconsistent"
+}
+}
+]

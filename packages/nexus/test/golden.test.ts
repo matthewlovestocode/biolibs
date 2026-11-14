@@ -5,7 +5,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { Seq } from "@biolibs/seq";
-import { captureWarnings } from "@biolibs/core";
+import { captureWarnings, pyRandom } from "@biolibs/core";
 import { Node, Nexus, Tree, StandardData, combine, consensus, getStartEnd, quotestrip, safename } from "@biolibs/nexus";
 
 const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/nexus.json", import.meta.url), "utf8")) as { biopython: string; cases: any[] };
@@ -83,6 +83,8 @@ function nexusOp(n: Nexus, name: string, kw: Record<string, any>): unknown {
     case "invert": return n.invert(k.charlist);
     case "gaponly": return n.gaponly(k.includeMissing);
     case "terminal_gap_to_missing": return n.terminalGapToMissing(k.missing, k.skipN);
+    // `exclude` left out means Python's own default of `()`, which `cropMatrix` takes as null.
+    case "bootstrap": return n.bootstrap(null, k.delete, k.exclude ?? null);
   }
   throw new Error(name);
 }
@@ -110,6 +112,16 @@ function treeOp(t: Tree, name: string, args: any[]): unknown {
       }
       throw new Error(method);
     }
+    case "randomize": {
+      (t as any).randomize(...args);
+      // The Newick text alone would hide the shape when labels repeat, so the chain goes too.
+      // Branch lengths from `gauss` go through the engine's sin and cos rather than the C library's, so
+      // they are compared at twelve significant digits, as the generator records them.
+      const chain = [...t.allIds()].sort((a, b) => a - b)
+        .map((i) => [i, t.node(i).prev, [...t.node(i).succ], t.node(i).data!.taxon,
+          Number(t.node(i).data!.branchlength!.toPrecision(12))]);
+      return new Map<string, unknown>([["chain", chain], ["taxon_list", args.length > 1 ? args[1] : null]]);
+    }
     default: return (t as any)[camel(name)](...args);
   }
 }
@@ -120,6 +132,8 @@ function run(c: any): Record<string, unknown> {
     try {
       if (c.kind === "nexus") {
         const n = new Nexus(c.text);
+        // A seeded case draws from the shared generator, exactly as Biopython draws from Python's.
+        if (c.seed !== undefined && c.seed !== null) pyRandom.seed(c.seed);
         const res: unknown[] = [];
         out["ops_out"] = res;
         for (const [name, kw] of c.ops) {
@@ -144,8 +158,9 @@ function run(c: any): Record<string, unknown> {
         const r = consensus(c.trees.map((t: string) => new Tree(t, 1.0, true)), ...c.args);
         out["result"] = r === null ? null : r.toString();
       } else {
-        const kw = c.kw;
+        const kw = c.kw ?? {};
         const t = new Tree(c.newick, kw.weight ?? 1.0, kw.rooted ?? false, kw.name ?? "", undefined, kw.values_are_support ?? false, kw.max_support ?? 1.0);
+        if (c.seed !== undefined && c.seed !== null) pyRandom.seed(c.seed);
         const res: unknown[] = [];
         out["ops_out"] = res;
         out["initial"] = t.toString();
