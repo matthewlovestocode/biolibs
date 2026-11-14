@@ -41,6 +41,9 @@
       "path": "packages/motifs"
     },
     {
+      "path": "packages/dseq"
+    },
+    {
       "path": "packages/gel"
     },
     {

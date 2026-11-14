@@ -6,11 +6,17 @@ Parity with Biopython is measured, not claimed. This directory runs the real Bio
 
 ```bash
 python3 -m venv reference/.venv
-reference/.venv/bin/pip install biopython scipy
+reference/.venv/bin/pip install biopython scipy pydna
 ```
 
 `scipy` is only needed by `Bio.Align.analysis`'s YN00 and ML methods, which import `scipy.linalg.expm` and
 `scipy.optimize.minimize`; without it those generators cannot run.
+
+`pydna` is the second upstream library this repo ports, for `@biolibs/dseq`. It has its own inventory,
+status file and checklist — `inventory_pydna.py`, `status-pydna.json`, `gen_checklist_pydna.py` and
+`update_status_pydna.py` — writing to `docs/parity-pydna/`, so that Biopython's progress count stays a
+number about Biopython. Installing it does not change the pinned Biopython, which the golden files depend
+on; check with `pip list` if in doubt.
 
 ## Files
 

@@ -1,0 +1,86 @@
+## pydna.dseq
+
+
+### pydna.dseq.Dseq
+
+- [ ] `T4(self, nucleotides=None) -> ~DseqType`
+- [x] `__add__(self: ~DseqType, other: [~DseqType, <class 'str'>, <class 'bytes'>]) -> ~DseqType`
+- [x] `__bytes__(self) -> bytes`
+- [ ] `__contains__(self, sub: [<class 'str'>, <class 'bytes'>]) -> bool`
+- [x] `__eq__(self, other: ~DseqType) -> bool`
+- [~] `__getitem__(self, sl: [<class 'slice'>, <class 'int'>]) -> ~DseqType`
+- [ ] `__hash__`
+- [x] `__init__(self, watson: str | bytes, crick: str | bytes | None = None, ovhg=None, circular=False, pos=0)`
+- [x] `__mul__(self: ~DseqType, number: int) -> ~DseqType`
+- [x] `__repr__(self, lim: int = 30) -> pydna._pretty.pretty_str`
+- [x] `__str__(self) -> str`
+- [ ] `apply_cut(self, left_cut: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], right_cut: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], allow_overlap: bool = False) -> 'Dseq'`
+- [x] `cast_to_ds(self)`
+- [x] `cast_to_ds_left(self)`
+- [x] `cast_to_ds_right(self)`
+- [x] `crick(self) -> str`
+- [ ] `cut(self: ~DseqType, *enzymes: ~EnzymesType) -> Tuple[~DseqType, ...]`
+- [ ] `cutsite_is_valid(self, cutsite: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]) -> bool`
+- [ ] `cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
+- [ ] `exo1_end(self: ~DseqType, n: int = 1) -> ~DseqType`
+- [ ] `exo1_front(self: ~DseqType, n: int = 1) -> ~DseqType`
+- [ ] `fill_in(self, nucleotides: None | str = None) -> ~DseqType`
+- [ ] `find(self, sub: Bio.Seq._SeqAbstractBaseClass | str | bytes, start=0, end=9223372036854775807) -> int`
+- [x] `five_prime_end(self) -> Tuple[str, str]`
+- [x] `from_full_sequence_and_overhangs(cls, full_sequence: str, crick_ovhg: int, watson_ovhg: int)`
+- [x] `from_representation(cls, dsdna: str, *args, **kwargs)`
+- [ ] `get_cut_parameters(self, cut: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas] | None, is_left: bool) -> Tuple[int, int, int]`
+- [ ] `get_cutsite_pairs(self, cutsites: List[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]) -> List[Tuple[None | Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], None | Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]`
+- [ ] `get_cutsites(self: ~DseqType, *enzymes: ~EnzymesType) -> List[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]`
+- [ ] `get_ds_meltsites(self: ~DseqType, length: int) -> List[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]`
+- [ ] `get_left_end_as_cutsite(self) -> Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]`
+- [x] `get_parts(self)`
+- [ ] `get_right_end_as_cutsite(self) -> Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]`
+- [ ] `get_ss_meltsites(self: ~DseqType, length: int) -> tuple[int, int]`
+- [x] `isblunt(self) -> bool`
+- [ ] `join(self, fragments)`
+- [ ] `klenow(self, nucleotides: None | str = None) -> ~DseqType`
+- [ ] `left_end_position(self) -> Tuple[int, int]`
+- [x] `left_ovhg(self) -> int`
+- [x] `looped(self: ~DseqType) -> ~DseqType`
+- [ ] `melt(self, length)`
+- [ ] `melt_ss_dna(self, length) -> tuple['Dseq', list['Dseq']]`
+- [ ] `mung(self) -> ~DseqType`
+- [x] `mw(self) -> float`
+- [ ] `n_cutters(self, n=3, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
+- [ ] `nibble_five_prime_left(self: ~DseqType, n: int = 1) -> ~DseqType`
+- [ ] `nibble_five_prime_right(self: ~DseqType, n: int = 1) -> ~DseqType`
+- [ ] `nibble_three_prime_left(self: ~DseqType, n=1) -> ~DseqType`
+- [ ] `nibble_three_prime_right(self: ~DseqType, n=1) -> ~DseqType`
+- [ ] `nibble_to_blunt(self) -> ~DseqType`
+- [ ] `no_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
+- [ ] `once_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
+- [x] `ovhg(self) -> int`
+- [x] `quick(cls, data: bytes, *args, circular=False, pos=0, **kwargs)`
+- [x] `rc(self) -> 'Dseq'`
+- [x] `reverse_complement(self) -> 'Dseq'`
+- [ ] `right_end_position(self) -> Tuple[int, int]`
+- [x] `right_ovhg(self) -> int`
+- [ ] `seguid(self) -> str`
+- [ ] `shed_ss_dna(self, watson_cutpairs: list[tuple[int, int]] = None, crick_cutpairs: list[tuple[int, int]] = None)`
+- [ ] `shift_melt_cutsite(self, cutsite: Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], is_right: bool) -> Tuple[int, int]`
+- [ ] `shift_melt_cutsite_pairs(self, cutsite_pairs: List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]) -> List[Tuple[Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas], Tuple[Tuple[int, int], Bio.Restriction.Restriction.AbstractCut | None | pydna.crispr._cas]]]`
+- [x] `shifted(self: ~DseqType, shift: int) -> ~DseqType`
+- [ ] `t4(self, nucleotides=None) -> ~DseqType`
+- [ ] `terminal_transferase(self, nucleotides: str = 'a') -> ~DseqType`
+- [x] `three_prime_end(self) -> Tuple[str, str]`
+- [x] `to_blunt_string(self) -> str`
+- [ ] `twice_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
+- [ ] `unique_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch | None = None) -> Bio.Restriction.Restriction.RestrictionBatch`
+- [ ] `user(self) -> ~DseqType`
+- [x] `watson(self) -> str`
+- [x] `watson_ovhg(self) -> int`
+
+### pydna.dseq.CircularBytes
+
+- [ ] `__getitem__(self, key)`
+- [ ] `__new__(cls, value: bytes | bytearray | memoryview)`
+- [ ] `cutaround(self, start: int, length: int) -> bytes`
+- [ ] `find(self, sub: bytes | bytearray | memoryview | str, start: int = 0, end: int | None = None) -> int`
+- [ ] `replace_with(self, start, end, replacement) -> 'CircularBytes'`
+- [ ] `shifted(self, shift: int) -> 'CircularBytes'`
