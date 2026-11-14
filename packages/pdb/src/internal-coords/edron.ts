@@ -13,10 +13,66 @@
  * chain will satisfy when that part of the port lands.
  */
 
-import { pyFloatRepr } from "@biolibs/core";
-import { primaryAngles } from "./ic-data.js";
+import { pyFloatRepr, pyFormatFixed } from "@biolibs/core";
+import { icDataSidechains, primaryAngles } from "./ic-data.js";
 import { AtomKey, FIELDS } from "./atom-key.js";
 import type { Matrix } from "../vectors.js";
+
+/**
+ * Python's `%` on two floats, which keeps the sign of the divisor where JavaScript's keeps the dividend.
+ *
+ * {@link Dihedron.angleDif} depends on this: `(180 - a2 + a1) % 360` has to land in [0, 360) for a negative
+ * numerator too, or angles on opposite sides of the wrap come out with the wrong sign.
+ *
+ * @param a - The dividend. @param b - The divisor.
+ * @returns `a mod b`, with the sign of `b`.
+ */
+function pyMod(a: number, b: number): number {
+  return a >= 0 ? a % b : ((a % b) + b) % b;
+}
+
+/**
+ * The bitmasks `Bio.PDB.PICIO.write_PIC` uses to say which classes of value to default.
+ *
+ * The names and the bit positions are Biopython's `IC_Residue.pic_flags`, reproduced here because
+ * {@link Dihedron.bits} returns them and a caller has to be able to test the result.
+ */
+export const PIC_FLAGS = {
+  /** The psi backbone angle. */ psi: 1 << 0,
+  /** The omega backbone angle. */ omg: 1 << 1,
+  /** The phi backbone angle. */ phi: 1 << 2,
+  /** The tau angle (N-CA-C). */ tau: 1 << 3,
+  /** The first side-chain angle; the rest follow it, so `chi1 << 1` is `chi2`. */ chi1: 1 << 4,
+  /** The second. */ chi2: 1 << 5,
+  /** The third. */ chi3: 1 << 6,
+  /** The fourth. */ chi4: 1 << 7,
+  /** The fifth. */ chi5: 1 << 8,
+  /** A proline's preceding omega. */ pomg: 1 << 9,
+  /** Every chi angle. */ chi: (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7) | (1 << 8),
+  /** psi, phi, tau and pomg. */ classic_b: (1 << 0) | (1 << 2) | (1 << 3) | (1 << 9),
+  /** Those four and every chi. */ classic: (1 << 0) | (1 << 2) | (1 << 3) | (1 << 9)
+    | (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7) | (1 << 8),
+  /** Every hedron. */ hedra: 1 << 10,
+  /** Every primary dihedron. */ primary: 1 << 11,
+  /** Every secondary dihedron. */ secondary: 1 << 12,
+  /** Hedra and both kinds of dihedra. */ all: (1 << 10) | (1 << 11) | (1 << 12),
+  /** The coordinates of the initial N-CA-C. */ initAtoms: 1 << 13,
+  /** The B-factors. */ bFactors: 1 << 14,
+} as const;
+
+/**
+ * Python's `str()` of a tuple of {@link AtomKey}s, which is what Biopython's two `set_length` complaints quote.
+ *
+ * `str` of a tuple calls `repr` on its elements, and an AtomKey's repr is its id, so there are no quotes — and a
+ * one-element tuple keeps Python's trailing comma.
+ *
+ * @param keys - The keys to print.
+ * @returns `(a, b)`, or `(a,)` for one.
+ */
+function pyTupleStr(keys: readonly AtomKey[]): string {
+  const inner = keys.map((k) => k.id).join(", ");
+  return keys.length === 1 ? `(${inner},)` : `(${inner})`;
+}
 
 /**
  * What a hedron reads from the chain that holds it.
@@ -128,6 +184,18 @@ export class Edron {
     return this.atomkeys.every((k) => k.isBackbone());
   }
 
+  /**
+   * A string that stands in for Python's `hash()` of this edron, which is its atomkeys tuple's.
+   *
+   * CPython's hash of a tuple of strings is salted per process, so the *number* cannot be reproduced and is
+   * not worth trying to; what a port has to match is which edra collapse together in a set or a dict. Two
+   * edra share this key exactly when Python would hash them alike, and {@link Edron.equals} agrees with it,
+   * which is the invariant a hash has to keep.
+   *
+   * @returns The key, for use with a `Map` or a `Set`.
+   */
+  get hashKey(): string { return this.atomkeys.map((k) => k.hashKey).join("\u0000"); }
+
   /** @returns Python's `repr`: the tuple of atom keys. */
   repr(): string {
     return this.atomkeys.length === 1
@@ -212,6 +280,42 @@ export class Hedron extends Edron {
   /** The length between the second and third atoms; 0 while no chain holds it. */
   get len23(): number { return this.cic?.hedraL23 === undefined ? 0 : this.cic.hedraL23[this.ndx]!; }
 
+  /**
+   * The bond length between a pair of this hedron's atoms, whichever way round the pair is given.
+   *
+   * @param akTpl - Two of this hedron's keys. The order does not matter, but which *pair* does: the first two
+   *   atoms give `len12` and the last two `len23`.
+   * @returns The length, or null when the pair is not a bonded pair of this hedron — including a tuple of fewer
+   *   than two keys, and the first-to-third pair, which is not a bond at all.
+   */
+  getLength(akTpl: readonly AtomKey[]): number | null {
+    if (akTpl.length < 2) return null;
+    const inFirst = akTpl.every((ak) => this.atomkeys.slice(0, 2).some((k) => k.equals(ak)));
+    if (inFirst) return this.len12;
+    const inLast = akTpl.every((ak) => this.atomkeys.slice(1).some((k) => k.equals(ak)));
+    if (inLast) return this.len23;
+    return null;
+  }
+
+  /**
+   * Set the bond length between a pair of this hedron's atoms, and mark the hedron for recomputation.
+   *
+   * @param akTpl - Two of this hedron's keys, as {@link Hedron.getLength} takes them.
+   * @param newLength - The length to store on the chain.
+   * @throws TypeError for fewer than two keys, or for a pair this hedron does not bond — Biopython's two
+   *   messages, which differ: the first quotes the tuple, the second quotes the tuple *and* the hedron.
+   */
+  setLength(akTpl: readonly AtomKey[], newLength: number): void {
+    if (akTpl.length < 2) throw new TypeError(`Require exactly 2 AtomKeys: ${pyTupleStr(akTpl)}`);
+    const write = (a: ArrayLike<number> | undefined): void => {
+      if (a !== undefined) (a as unknown as number[])[this.ndx] = newLength;
+      this.needsUpdate = true;
+    };
+    if (akTpl.every((ak) => this.atomkeys.slice(0, 2).some((k) => k.equals(ak)))) write(this.cic?.hedraL12);
+    else if (akTpl.every((ak) => this.atomkeys.slice(1).some((k) => k.equals(ak)))) write(this.cic?.hedraL23);
+    else throw new TypeError(`${pyTupleStr(akTpl)} not found in ${this.repr()}`);
+  }
+
   /** @returns Python's `repr`: `3-` then the id, the classification and the three values. */
   override repr(): string {
     // The values are Python floats, so `0` prints as `0.0`.
@@ -277,6 +381,89 @@ export class Dihedron extends Edron {
   get angle(): number {
     if (this.cic?.dihedraAngle !== undefined) return this.cic.dihedraAngle[this.ndx]!;
     return this.dihedralValue ?? 360;
+  }
+
+  /**
+   * The signed difference between two angles that each wrap at ±180°.
+   *
+   * @param a1 - The first angle, in degrees. @param a2 - The second.
+   * @returns `a2 - a1` taken the short way round, so that 170° and −170° are 20° apart rather than 340°.
+   */
+  static angleDif(a1: number, a2: number): number {
+    // Biopython's one-liner, kept as it is: the modulus has to act on the sum, not on the difference.
+    return 180.0 - pyMod(180.0 - a2 + a1, 360.0);
+  }
+
+  /**
+   * The circular mean of a list of angles.
+   *
+   * A plain average of 170° and −170° is 0°, which is the opposite side of the circle from the answer. This
+   * averages the unit vectors instead, as Biopython does.
+   *
+   * @param alst - The angles. @param options - `inRads` if they are radians, `outRads` for a radian answer.
+   * @returns The mean angle, in degrees unless `outRads`.
+   */
+  static angleAvg(alst: readonly number[], options: { inRads?: boolean; outRads?: boolean } = {}): number {
+    const w = options.inRads === true ? alst : alst.map((a) => (a * Math.PI) / 180);
+    let sin = 0;
+    let cos = 0;
+    for (const a of w) { sin += Math.sin(a); cos += Math.cos(a); }
+    const ravg = Math.atan2(sin, cos);
+    return options.outRads === true ? ravg : (ravg * 180) / Math.PI;
+  }
+
+  /**
+   * The population standard deviation of a list of angles about a given mean, measured the short way round.
+   *
+   * @param alst - The angles in degrees. @param avg - The mean to measure against, as from {@link
+   *   Dihedron.angleAvg}.
+   * @returns The deviation in degrees. Biopython divides by the count rather than count − 1 — a population
+   *   rather than a sample standard deviation — to avoid dividing by zero for a single angle.
+   */
+  static anglePopSd(alst: readonly number[], avg: number): number {
+    let sum = 0;
+    for (const a of alst) { const d = Dihedron.angleDif(a, avg); sum += d * d; }
+    return Math.sqrt(sum / alst.length);
+  }
+
+  /**
+   * The difference between this dihedral angle and another's, the short way round.
+   *
+   * @param other - The dihedron to compare with.
+   * @returns The signed difference in degrees.
+   */
+  difference(other: Dihedron): number {
+    return Dihedron.angleDif(this.angle, other.angle);
+  }
+
+  /**
+   * Which of {@link PIC_FLAGS} this dihedron is, as a bitmask.
+   *
+   * @returns The flag for `psi`, `omg`, `phi`, a proline's `omg | pomg`, or the right `chiN` — and 0 for a
+   *   dihedron that is none of them, which is most of the hydrogens.
+   */
+  bits(): number {
+    if (this.eClass === "NCACN") return PIC_FLAGS.psi;
+    // A proline's preceding omega counts as both: `omg` because it is one, and `pomg` so that the PIC writer
+    // can default prolines separately.
+    if (this.pclass === "XCAXCPNPCA") return PIC_FLAGS.omg | PIC_FLAGS.pomg;
+    if (this.eClass === "CACNCA") return PIC_FLAGS.omg;
+    if (this.eClass === "CNCAC") return PIC_FLAGS.phi;
+    // Whatever is left is a chi angle, so the residue's side-chain table decides which. A residue with no
+    // table at all -- glycine and alanine have none -- makes Biopython iterate `None` and raise, and that is
+    // reproduced rather than smoothed over: a backbone dihedron of an alanine reaches here.
+    const ric = this.ric as { lc?: string } | undefined;
+    const scList = ric?.lc === undefined ? undefined : icDataSidechains[ric.lc];
+    if (scList === undefined) throw new TypeError("'NoneType' object is not iterable");
+    const names = this.atomkeys.map((ak) => ak.akl[FIELDS.atm] as string);
+    for (const e of scList) {
+      // Only a chi entry carries its label in the fifth slot; the rest are hedra and hydrogen dihedra.
+      if (e.length !== 5) continue;
+      if (e.slice(0, 4).every((n, i) => n === names[i])) {
+        return PIC_FLAGS.chi1 << (Number(e[4]!.slice(-1)) - 1);
+      }
+    }
+    return 0;
   }
 
   /**

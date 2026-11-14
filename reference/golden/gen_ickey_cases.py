@@ -128,8 +128,8 @@ for keys in GROUPS:
         cases.append({"kind": "sort", "keys": shuffled})
 
 # ---------------- Edron, Hedron and Dihedron ----------------
-# Their lengths and angle values live on IC_Chain, which is not ported yet; without a chain Biopython reads 0.0 for
-# a hedron and raises for a dihedron's repr, and both are recorded as they come.
+# Their lengths and angle values live on IC_Chain, so an edron built on its own has no chain to read them from:
+# Biopython reports 0.0 for a hedron and raises for a dihedron's repr, and both are recorded as they come.
 def build_edron(spec):
     from Bio.PDB.internal_coords import Edron, Hedron, Dihedron
     cls = {"edron": Edron, "hedron": Hedron, "dihedron": Dihedron}[spec["cls"]]
@@ -650,8 +650,115 @@ for i, text in enumerate(GEOM):
         for reset in (False, True):
             cases.append({"kind": "assemble", "text": text, "how": how, "reset": reset})
 
+
+# ---------------- the free functions and the angle statistics ----------------
+# `set_accuracy_95` is `float(f"{num:9.5f}")`, so it is as much a test of the format as of the rounding;
+# the three angle statistics are circular, which is the whole reason they exist rather than a plain mean.
+def run_accuracy(case):
+    from Bio.PDB.internal_coords import set_accuracy_95
+    out = attempt(lambda: enc6(set_accuracy_95(case["num"])))
+    out["warnings"] = []
+    return out
+
+def run_angle_stat(case):
+    from Bio.PDB.internal_coords import Dihedron
+    def one():
+        if case["fn"] == "angle_dif": return enc6(Dihedron.angle_dif(case["a"], case["b"]))
+        if case["fn"] == "angle_avg":
+            return enc6(Dihedron.angle_avg(case["angles"], in_rads=case.get("in_rads", False),
+                                           out_rads=case.get("out_rads", False)))
+        # `angle_pop_sd` only works on an ndarray: it passes the whole list to `angle_dif`, which adds it to
+        # a float, so a plain Python list raises `float + list`. The array form is the one a port can mean.
+        import numpy as np
+        return enc6(Dihedron.angle_pop_sd(np.array(case["angles"]), case["avg"]))
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+for num in (0.0, 1.0, -1.0, 0.123456789, -0.123456789, 1.5, 2.5, 0.000005, 0.0000049, 1234.567891,
+            -1234.567891, 99999.999999, 1e-9, -1e-9, 180.0, -180.0, 123.456785, 123.456775):
+    cases.append({"kind": "accuracy", "num": num})
+ANGLE_PAIRS = [(0.0, 0.0), (10.0, 20.0), (20.0, 10.0), (-170.0, 170.0), (170.0, -170.0), (180.0, -180.0),
+               (0.0, 180.0), (0.0, -180.0), (90.0, -90.0), (-90.0, 90.0), (359.0, 1.0), (1.0, 359.0),
+               (45.5, -44.5), (-179.9, 179.9)]
+for a, b in ANGLE_PAIRS:
+    cases.append({"kind": "angle_stat", "fn": "angle_dif", "a": a, "b": b})
+ANGLE_LISTS = [[0.0], [180.0], [-180.0], [0.0, 90.0], [10.0, -10.0], [170.0, -170.0], [179.0, -179.0],
+               [0.0, 120.0, -120.0], [90.0, 90.0, 90.0], [-60.0, -62.0, -58.0], [0.0, 180.0],
+               [45.0, 135.0, -135.0, -45.0]]
+for angles in ANGLE_LISTS:
+    for in_rads, out_rads in ((False, False), (False, True), (True, False), (True, True)):
+        cases.append({"kind": "angle_stat", "fn": "angle_avg", "angles": angles,
+                      "in_rads": in_rads, "out_rads": out_rads})
+    for avg in (0.0, 90.0, -90.0, 180.0):
+        cases.append({"kind": "angle_stat", "fn": "angle_pop_sd", "angles": angles, "avg": avg})
+
+# ---------------- bond lengths, dihedral differences and the pic_flags bits ----------------
+# These need a measured chain: `get_length` reads the chain's L12/L23 arrays, `bits` asks the dihedron's own
+# residue which chi it is, and `difference` compares two measured angles.
+def run_edra_access(case):
+    import io, warnings as w2
+    from Bio.PDB import PDBParser
+    from Bio.PDB.internal_coords import Edron, IC_Residue
+    def one():
+        with w2.catch_warnings():
+            w2.simplefilter("ignore")
+            s = PDBParser(PERMISSIVE=True, QUIET=True).get_structure("x", io.StringIO(case["text"]))
+            s.atom_to_internal_coordinates()
+        chain = next(s.get_chains())
+        cic = chain.internal_coord
+        hedra = [cic.hedra[k] for k in sorted(cic.hedra, key=lambda t: Edron.gen_key(list(t)))]
+        dihedra = [cic.dihedra[k] for k in sorted(cic.dihedra, key=lambda t: Edron.gen_key(list(t)))]
+        out = {}
+        # get_length over every pair of the hedron's own keys, plus a pair from another hedron and a short tuple.
+        if case["what"] == "lengths":
+            rows = []
+            for h in hedra[:6]:
+                ak = list(h.atomkeys)
+                probes = [(ak[0], ak[1]), (ak[1], ak[0]), (ak[1], ak[2]), (ak[2], ak[1]), (ak[0], ak[2]),
+                          (ak[0],), (), (ak[0], ak[1], ak[2])]
+                rows.append({"id": h.id,
+                             "get": [attempt(lambda p=p: enc6(h.get_length(p))
+                                             if h.get_length(p) is not None else None) for p in probes],
+                             "set12": attempt(lambda h=h, ak=ak: (h.set_length((ak[0], ak[1]), 1.75),
+                                                                  enc6(h.len12), h.needs_update)[1:]),
+                             "set23": attempt(lambda h=h, ak=ak: (h.set_length((ak[1], ak[2]), 1.25),
+                                                                  enc6(h.len23), h.needs_update)[1:]),
+                             "set_bad": attempt(lambda h=h, ak=ak: h.set_length((ak[0],), 1.0)),
+                             # The complaint quotes the hedron's repr, which carries its *measured* angle at
+                             # full precision -- a number the two implementations agree on to about twelve
+                             # places, not to the last bit. The angle is pinned first so the message is about
+                             # the message.
+                             "set_absent": attempt(lambda h=h: (
+                                 cic.hedraAngle.__setitem__(h.ndx, 100.5),
+                                 h.set_length((hedra[-1].atomkeys[0], hedra[-1].atomkeys[2]), 1.0))[1])})
+            out["hedra"] = rows
+        # bits() and difference() over the dihedra, and the flag table they are compared against.
+        if case["what"] == "bits":
+            out["flags"] = dict(IC_Residue.picFlagsDict)
+            out["dihedra"] = [{"id": d.id, "bits": attempt(lambda d=d: d.bits()),
+                               "angle": attempt(lambda d=d: enc6(d.angle))} for d in dihedra]
+            out["difference"] = [attempt(lambda a=a, b=b: enc6(a.difference(b)))
+                                 for a, b in zip(dihedra, dihedra[1:] + dihedra[:1])]
+        # Python's hash() of an edron is its atomkeys tuple's, so what a *set* of them does is the behaviour
+        # a port has to match: how many survive, and which.
+        if case["what"] == "hash":
+            out["hedra_set"] = sorted(h.id for h in set(hedra + hedra))
+            out["dihedra_set"] = sorted(d.id for d in set(dihedra + dihedra))
+            out["mixed_set_len"] = len(set(hedra + dihedra))
+            out["dict_round_trip"] = sorted(k.id for k in {h: h.id for h in hedra})
+        return out
+    out = attempt(one)
+    out["warnings"] = []
+    return out
+
+for text in GEOM[:3]:
+    for what in ("lengths", "bits", "hash"):
+        cases.append({"kind": "edra_access", "text": text, "what": what})
+
 RUNNERS = {"key": run_key, "pair": run_pair, "sort": run_sort, "edron": run_edron, "epair": run_epair,
-           "residue": run_residue, "edra_build": run_edra_build, "split": run_split, "a2ic": run_a2ic, "i2a": run_i2a, "i2a_unset": run_i2a_unset, "i2a_ser": run_i2a_ser, "assemble": run_assemble}
+           "residue": run_residue, "edra_build": run_edra_build, "split": run_split, "a2ic": run_a2ic, "i2a": run_i2a, "i2a_unset": run_i2a_unset, "i2a_ser": run_i2a_ser, "assemble": run_assemble,
+           "accuracy": run_accuracy, "angle_stat": run_angle_stat, "edra_access": run_edra_access}
 kept = []
 for c in cases:
     res = run_isolated(RUNNERS[c["kind"]], c)

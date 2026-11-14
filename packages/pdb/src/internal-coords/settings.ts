@@ -6,6 +6,8 @@
  * import one another.
  */
 
+import { pyFormatFixed } from "@biolibs/core";
+
 /** How internal coordinates read a structure; Biopython's `IC_Residue` class attributes. */
 export const icSettings = {
   /**
@@ -23,3 +25,20 @@ export const icSettings = {
   /** The format Biopython writes internal-coordinate values with in a `.pic` file. */
   picAccuracy: "17.13f",
 };
+
+/**
+ * Reduce a number to the accuracy a PIC or SCAD file carries: five decimal places, nine columns wide.
+ *
+ * This is Biopython's `set_accuracy_95`, and it is a formatting round rather than an arithmetic one —
+ * `float(f"{num:9.5f}")` — so it rounds half to even on the decimal, exactly as writing the file would.
+ *
+ * @param num - The number to reduce.
+ * @returns The same number with no more than five decimal places.
+ * @example
+ * ```ts
+ * setAccuracy95(0.123456789);   // 0.12346
+ * ```
+ */
+export function setAccuracy95(num: number): number {
+  return Number(pyFormatFixed(num, 5));
+}

@@ -1,7 +1,7 @@
 /** Replays the Bio.PDB.internal_coords.AtomKey golden cases (reference/golden/gen_ickey_cases.py). */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { AtomKey, Dihedron, Edron, FIELDS, Hedron, IC_Chain, IC_Residue, PDBParser } from "@biolibs/pdb";
+import { AtomKey, Dihedron, Edron, FIELDS, Hedron, IC_Chain, IC_Residue, PDBParser, PIC_FLAGS, setAccuracy95 } from "@biolibs/pdb";
 import { captureWarnings } from "@biolibs/core";
 import { assembleResidue, defaultStartpos, getStartpos, icSettings } from "@biolibs/pdb";
 
@@ -9,7 +9,7 @@ type Exc = { type: string; msg: string | null };
 type Out = { result?: unknown; exc?: Exc };
 interface Spec { how: string; value: unknown }
 interface Spec2 { cls: string; how: string; keys: string[] }
-interface Case { kind: string; text?: string; entry?: string; how?: string; twice?: boolean; start?: number; fin?: number; serial_flag?: boolean; reset?: boolean; spec?: Spec | Spec2; a?: Spec | Spec2; b?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
+interface Case { kind: string; num?: number; fn?: string; a?: Spec | Spec2 | number; b?: Spec | Spec2 | number; angles?: number[]; avg?: number; in_rads?: boolean; out_rads?: boolean; what?: string; text?: string; entry?: string; how?: string; twice?: boolean; start?: number; fin?: number; serial_flag?: boolean; reset?: boolean; spec?: Spec | Spec2; keys?: string[]; result?: unknown; exc?: Exc; warnings: string[] }
 
 /** AttributeError is a TypeError here, with no message to compare. */
 const excOk = (want?: Exc, got?: Exc): boolean => {
@@ -488,13 +488,94 @@ function firstDiff(a: unknown, b: unknown, path = ""): string {
     const keys = [...new Set([...Object.keys(ao), ...Object.keys(bo)])];
     for (const k of keys) if (!same(ao[k], bo[k])) return firstDiff(ao[k], bo[k], `${path}.${k}`);
   }
-  return `${path} ${JSON.stringify(a).slice(0, 200)} vs ${JSON.stringify(b).slice(0, 200)}`;
+  // `JSON.stringify(undefined)` is undefined, not "undefined", so an absent value has to be spelled out:
+  // a case that returns nothing where Python returned something used to crash the reporter.
+  const show = (x: unknown): string => (x === undefined ? "undefined" : JSON.stringify(x).slice(0, 200));
+  return `${path} ${show(a)} vs ${show(b)}`;
+}
+
+
+/** `set_accuracy_95`, which is a formatting round rather than an arithmetic one. */
+function runAccuracy(c: Case): Out {
+  const out = attempt(() => enc6(setAccuracy95(c.num!)));
+  return out;
+}
+
+/** The three circular angle statistics, each a static on `Dihedron`. */
+function runAngleStat(c: Case): Out {
+  return attempt(() => {
+    if (c.fn === "angle_dif") return enc6(Dihedron.angleDif(c.a as number, c.b as number));
+    if (c.fn === "angle_avg") {
+      return enc6(Dihedron.angleAvg(c.angles!, { inRads: c.in_rads === true, outRads: c.out_rads === true }));
+    }
+    return enc6(Dihedron.anglePopSd(c.angles!, c.avg!));
+  });
+}
+
+/**
+ * The accessors that need a measured chain: a hedron's bond lengths, a dihedron's `bits` and `difference`,
+ * and what a set or a map keyed by edra does.
+ */
+function runEdraAccess(c: Case): Out {
+  return attempt(() => {
+    const parsed = captureWarnings(() => {
+      const s = new PDBParser({ PERMISSIVE: true, QUIET: true }).getStructure("x", c.text!);
+      s.atomToInternalCoordinates();
+      return s;
+    });
+    if (parsed.error !== undefined) throw parsed.error;
+    const chain = [...parsed.result!.getChains()][0]!;
+    const cic = chain.internalCoord!;
+    // The generator sorts by `gen_key`, which is the id, so sorting by id gives the same order.
+    const hedra = [...cic.hedra.values()].sort((x, y) => (x.id < y.id ? -1 : x.id > y.id ? 1 : 0));
+    const dihedra = [...cic.dihedra.values()].sort((x, y) => (x.id < y.id ? -1 : x.id > y.id ? 1 : 0));
+    const out: Record<string, unknown> = {};
+    if (c.what === "lengths") {
+      out.hedra = hedra.slice(0, 6).map((h) => {
+        const ak = h.atomkeys;
+        const probes: AtomKey[][] = [[ak[0]!, ak[1]!], [ak[1]!, ak[0]!], [ak[1]!, ak[2]!], [ak[2]!, ak[1]!],
+                                     [ak[0]!, ak[2]!], [ak[0]!], [], [ak[0]!, ak[1]!, ak[2]!]];
+        return {
+          id: h.id,
+          get: probes.map((pr) => attempt(() => { const v = h.getLength(pr); return v === null ? null : enc6(v); })),
+          set12: attempt(() => { h.setLength([ak[0]!, ak[1]!], 1.75); return [enc6(h.len12), h.needsUpdate]; }),
+          set23: attempt(() => { h.setLength([ak[1]!, ak[2]!], 1.25); return [enc6(h.len23), h.needsUpdate]; }),
+          set_bad: attempt(() => h.setLength([ak[0]!], 1.0)),
+          // The angle is pinned first, as the generator pins it: the message quotes the hedron's repr, and
+          // the measured angle agrees to about twelve places rather than to the last bit.
+          set_absent: attempt(() => {
+            (cic.hedraAngle as unknown as number[])[h.ndx] = 100.5;
+            return h.setLength(
+              [hedra[hedra.length - 1]!.atomkeys[0]!, hedra[hedra.length - 1]!.atomkeys[2]!], 1.0);
+          }),
+        };
+      });
+    }
+    if (c.what === "bits") {
+      out.flags = Object.fromEntries(Object.entries(PIC_FLAGS));
+      out.dihedra = dihedra.map((d) => ({ id: d.id, bits: attempt(() => d.bits()),
+                                          angle: attempt(() => enc6(d.angle)) }));
+      out.difference = dihedra.map((d, i) =>
+        attempt(() => enc6(d.difference(dihedra[(i + 1) % dihedra.length]!))));
+    }
+    if (c.what === "hash") {
+      // A Map keyed by `hashKey` is what a Python set of edra is: duplicates collapse, and the survivors
+      // are the equality classes.
+      const setOf = (es: Edron[]): string[] =>
+        [...new Map(es.concat(es).map((e) => [e.hashKey, e.id])).values()].sort();
+      out.hedra_set = setOf(hedra);
+      out.dihedra_set = setOf(dihedra);
+      out.mixed_set_len = new Map([...hedra, ...dihedra].map((e) => [e.hashKey, e])).size;
+      out.dict_round_trip = [...new Map(hedra.map((h) => [h.hashKey, h.id])).values()].sort();
+    }
+    return out;
+  });
 }
 
 describe("Bio.PDB.internal_coords: parity with Biopython", () => {
   const { biopython, cases } = JSON.parse(readFileSync(new URL("./golden/ickey.json", import.meta.url), "utf8")) as { biopython: string; cases: Case[] };
-  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic, i2a: runI2a, i2a_unset: runI2aUnset, i2a_ser: runI2aSer, assemble: runAssemble };
-  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic", "i2a", "i2a_unset", "i2a_ser", "assemble"]) {
+  const runners: Record<string, (c: Case) => Out> = { key: runKey, pair: runPair, sort: runSort, edron: runEdron, epair: runEpair, residue: runResidue, edra_build: runEdraBuild, split: runSplit, a2ic: runA2ic, i2a: runI2a, i2a_unset: runI2aUnset, i2a_ser: runI2aSer, assemble: runAssemble, accuracy: runAccuracy, angle_stat: runAngleStat, edra_access: runEdraAccess };
+  for (const kind of ["key", "pair", "sort", "edron", "epair", "residue", "split", "edra_build", "a2ic", "i2a", "i2a_unset", "i2a_ser", "assemble", "accuracy", "angle_stat", "edra_access"]) {
     const list = cases.filter((c) => c.kind === kind);
     it(`${kind} (${list.length} cases, Biopython ${biopython})`, () => {
       const bad: string[] = [];

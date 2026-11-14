@@ -1,6 +1,6 @@
 ## Bio.PDB.internal_coords
 
-- [ ] `set_accuracy_95(num: float) -> float`
+- [x] `set_accuracy_95(num: float) -> float`
 
 ### Bio.PDB.internal_coords.AtomKey
 
@@ -24,7 +24,7 @@
 - [x] `__eq__(self, other: object) -> bool`
 - [x] `__ge__(self, other: object) -> bool`
 - [x] `__gt__(self, other: object) -> bool`
-- [ ] `__hash__(self) -> int`
+- [x] `__hash__(self) -> int`
 - [x] `__init__(self, *args: list['AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'], **kwargs: str) -> None`
 - [x] `__le__(self, other: object) -> bool`
 - [x] `__lt__(self, other: object) -> bool`
@@ -40,7 +40,7 @@
 - [x] `__eq__(self, other: object) -> bool`
 - [x] `__ge__(self, other: object) -> bool`
 - [x] `__gt__(self, other: object) -> bool`
-- [ ] `__hash__(self) -> int`
+- [x] `__hash__(self) -> int`
 - [x] `__init__(self, *args: list['AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey'], **kwargs: str) -> None`
 - [x] `__le__(self, other: object) -> bool`
 - [x] `__lt__(self, other: object) -> bool`
@@ -49,11 +49,11 @@
 - [x] `angle`
 - [x] `gen_key(lst: list['AtomKey']) -> str`
 - [x] `gen_tuple(akstr: str) -> tuple`
-- [ ] `get_length(self, ak_tpl: tuple['AtomKey', 'AtomKey']) -> float | None`
+- [x] `get_length(self, ak_tpl: tuple['AtomKey', 'AtomKey']) -> float | None`
 - [x] `is_backbone(self) -> bool`
 - [x] `len12`
 - [x] `len23`
-- [ ] `set_length(self, ak_tpl: tuple['AtomKey', 'AtomKey'], newLength: float)`
+- [x] `set_length(self, ak_tpl: tuple['AtomKey', 'AtomKey'], newLength: float)`
 
 ### Bio.PDB.internal_coords.Dihedron
 
@@ -61,18 +61,18 @@
 - [x] `__eq__(self, other: object) -> bool`
 - [x] `__ge__(self, other: object) -> bool`
 - [x] `__gt__(self, other: object) -> bool`
-- [ ] `__hash__(self) -> int`
+- [x] `__hash__(self) -> int`
 - [x] `__init__(self, *args: list['AtomKey'] | tuple['AtomKey', 'AtomKey', 'AtomKey', 'AtomKey'], **kwargs: str) -> None`
 - [x] `__le__(self, other: object) -> bool`
 - [x] `__lt__(self, other: object) -> bool`
 - [x] `__repr__(self) -> str`
 - [x] `__str__(self, /)`
 - [x] `angle`
-- [ ] `angle_avg(alst: list, in_rads: bool = False, out_rads: bool = False)`
-- [ ] `angle_dif(a1: float | numpy.ndarray, a2: float | numpy.ndarray)`
-- [ ] `angle_pop_sd(alst: list, avg: float)`
-- [ ] `bits(self) -> int`
-- [ ] `difference(self, other: 'Dihedron') -> float`
+- [x] `angle_avg(alst: list, in_rads: bool = False, out_rads: bool = False)`
+- [x] `angle_dif(a1: float | numpy.ndarray, a2: float | numpy.ndarray)`
+- [x] `angle_pop_sd(alst: list, avg: float)`
+- [x] `bits(self) -> int`
+- [x] `difference(self, other: 'Dihedron') -> float`
 - [x] `gen_key(lst: list['AtomKey']) -> str`
 - [x] `gen_tuple(akstr: str) -> tuple`
 - [x] `is_backbone(self) -> bool`

@@ -284,6 +284,22 @@ if rebuilt:
         mark(f"{IC}.IC_Chain.{n}")
 if any(c["kind"] == "i2a_ser" for c in ick): mark(f"{IC}.IC_Chain.assemble_residues_ser")
 
+# The free function, the circular angle statistics, the bond-length accessors and the hashes: each marked by
+# the case kind that compares its own answer.
+if any(c["kind"] == "accuracy" for c in ick): mark(f"{IC}.set_accuracy_95")
+stat_fns = {c["fn"] for c in ick if c["kind"] == "angle_stat"}
+for fn in ("angle_dif", "angle_avg", "angle_pop_sd"):
+    if fn in stat_fns: mark(f"{IC}.Dihedron.{fn}")
+access = {c["what"] for c in ick if c["kind"] == "edra_access"}
+if "lengths" in access:
+    for n in ("get_length", "set_length"): mark(f"{IC}.Hedron.{n}")
+if "bits" in access:
+    for n in ("bits", "difference"): mark(f"{IC}.Dihedron.{n}")
+# A recorded Python *set* of edra agreeing on its membership is what the hash has to reproduce; the number
+# itself is salted per process and not a thing to match.
+if "hash" in access:
+    for name in ("Edron", "Hedron", "Dihedron"): mark(f"{IC}.{name}.__hash__")
+
 # `HedronMatchError` and `MissingAtomError` are bare `class X(Exception): pass`, so every member they
 # report is BaseException machinery rather than Biopython API -- the same rule applied to
 # `Bio.Seq.UndefinedSequenceError` above.
