@@ -15,6 +15,15 @@
     "dist"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/phylo"
+  },
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/phylo#readme",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
   "dependencies": {
     "@biolibs/core": "0.1.0",
     "@biolibs/seqfeature": "0.1.0",
