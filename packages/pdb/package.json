@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/pdb",
   "version": "0.1.0",
-  "description": "Port of Biopython Bio.PDB: macromolecular structures (PDB files, the Structure/Model/Chain/Residue/Atom hierarchy)",
+  "description": "Macromolecular structures, verified against Biopython: the Structure/Model/Chain/Residue/Atom hierarchy, PDB and mmCIF both ways, polypeptides, neighbour search, surface area, superimposition, internal coordinates (Bio.PDB)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
