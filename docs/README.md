@@ -26,6 +26,7 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 |---|---|---|
 | `@biolibs/dseq` | [pydna](https://github.com/BjornFJohansson/pydna)'s `Dseq`: double-stranded DNA whose sticky ends, nicks and circularity are part of the molecule. `pydna.dseq` and `pydna.alphabet` are at parity — see [docs/parity-pydna/](parity-pydna/README.md) | [dseq.md](dseq.md) |
 | `@biolibs/seguid` | [SEGUID v2](https://github.com/seguid/seguid-python) checksums: stable identifiers for a sequence, single- or double-stranded, linear or circular. At parity — see [docs/parity-seguid/](parity-seguid/README.md) | [seguid.md](seguid.md) |
+| `@biolibs/dseqrecord` | pydna's record layer: a sequence with a name, features and annotations, and the methods pydna adds to it. At parity — see [docs/parity-pydna/](parity-pydna/README.md) | [dseqrecord.md](dseqrecord.md) |
 | `@biolibs/assembly` | Joining DNA fragments by shared homology. `pydna.common_sub_strings`, the matcher Gibson assembly and homologous recombination both start from, is at parity; `Assembly` itself waits on pydna's record layer | [assembly.md](assembly.md) |
 
 ### Bioengineering packages (no Biopython counterpart)

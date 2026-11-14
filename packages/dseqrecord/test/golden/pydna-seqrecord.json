@@ -1,0 +1,15188 @@
+{
+"pydna": "5.5.16",
+"cases": [
+{
+"data": "atgtaa",
+"snap": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": true
+},
+"2": {
+"value": true
+},
+"11": {
+"value": true
+}
+},
+"seguid": {
+"value": "lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY"
+},
+"gc": {
+"value": 0.167
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('atgtaa')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('atgtaa'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"M*",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "ttacat",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\natgtaa\n"
+},
+"primer": {
+"value": ">id 6-merdescription\natgtaa\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"value": 1.0
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+2.0,
+1.0,
+0.167,
+1.0,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+2.0,
+1.0,
+0.167,
+1.0,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:3](+)",
+"start": 0,
+"end": 3,
+"strand": 1,
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"ft3"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "at",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "gt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "atgta",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "tg",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "gt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY",
+"pydna lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY NOW",
+"lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "atgtaatt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 8,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "atgtaa",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "atgtaa",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "ATGTAA",
+"snap": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": true
+},
+"2": {
+"value": true
+},
+"11": {
+"value": true
+}
+},
+"seguid": {
+"value": "lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY"
+},
+"gc": {
+"value": 0.167
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('ATGTAA')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('ATGTAA'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"M*",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "TTACAT",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\nATGTAA\n"
+},
+"primer": {
+"value": ">id 6-merdescription\nATGTAA\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"value": 1.0
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+2.0,
+1.0,
+0.167,
+1.0,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+2.0,
+1.0,
+0.167,
+1.0,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:3](+)",
+"start": 0,
+"end": 3,
+"strand": 1,
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"ft3"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "AT",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "GT",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "A",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "ATGTA",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "TG",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "ATGTAA",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "GT",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY",
+"pydna lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY NOW",
+"lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "ATGTAAtt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 8,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "ATGTAA",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "ATGTAA",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "ATGTAA",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "atgaaa",
+"snap": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"value": "lsseguid=669rVSnKseKiSYLat2m0U3i5CCw"
+},
+"gc": {
+"value": 0.167
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('atgaaa')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('atgaaa'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"MK",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "tttcat",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\natgaaa\n"
+},
+"primer": {
+"value": ">id 6-merdescription\natgaaa\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"value": 1.0
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...AAA",
+2.0,
+1.0,
+0.167,
+1.0,
+null,
+"3 min",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...AAA",
+2.0,
+1.0,
+0.167,
+1.0,
+null,
+"3 min",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find gt"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:3](+)",
+"start": 0,
+"end": 3,
+"strand": 1,
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"ft3"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "at",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "ga",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "atgaa",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "tg",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "atgaaa",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "ga",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=669rVSnKseKiSYLat2m0U3i5CCw",
+"pydna lsseguid=669rVSnKseKiSYLat2m0U3i5CCw NOW",
+"lsseguid=669rVSnKseKiSYLat2m0U3i5CCw"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=669rVSnKseKiSYLat2m0U3i5CCw",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=669rVSnKseKiSYLat2m0U3i5CCw NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=669rVSnKseKiSYLat2m0U3i5CCw\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "atgaaatt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 8,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "atgaaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "atgaaa",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "atgaaa",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "atttaa",
+"snap": {
+"value": {
+"seq": "atttaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"value": "lsseguid=HIeD6Sr68MN5Jf765XMxeUweB6k"
+},
+"gc": {
+"value": 0.0
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('atttaa')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('atttaa'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"I*",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "ttaaat",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\natttaa\n"
+},
+"primer": {
+"value": ">id 6-merdescription\natttaa\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"value": 1.0
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATT...TAA",
+2.0,
+1.0,
+0.0,
+null,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATT...TAA",
+2.0,
+1.0,
+0.0,
+null,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "atttaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "atttaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "atttaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "atttaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "atttaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find gt"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find atg"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "atttaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "atttaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "at",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "tt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "attta",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "tt",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "atttaa",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "tt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=HIeD6Sr68MN5Jf765XMxeUweB6k",
+"pydna lsseguid=HIeD6Sr68MN5Jf765XMxeUweB6k NOW",
+"lsseguid=HIeD6Sr68MN5Jf765XMxeUweB6k"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=HIeD6Sr68MN5Jf765XMxeUweB6k",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=HIeD6Sr68MN5Jf765XMxeUweB6k NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=HIeD6Sr68MN5Jf765XMxeUweB6k\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "atttaatt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 8,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "atttaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "atttaa",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "atttaa",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "at g\ntaa",
+"snap": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": true
+},
+"2": {
+"value": true
+},
+"11": {
+"value": true
+}
+},
+"seguid": {
+"value": "lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY"
+},
+"gc": {
+"value": 0.167
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('atgtaa')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('atgtaa'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"M*",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "ttacat",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\natgtaa\n"
+},
+"primer": {
+"value": ">id 6-merdescription\natgtaa\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"value": 1.0
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+2.0,
+1.0,
+0.167,
+1.0,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+2.0,
+1.0,
+0.167,
+1.0,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:3](+)",
+"start": 0,
+"end": 3,
+"strand": 1,
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"ft3"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "at",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "gt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "atgta",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "tg",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "atgtaa",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "gt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY",
+"pydna lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY NOW",
+"lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "atgtaatt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 8,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "atgtaa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "atgtaa",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "atgtaa",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "",
+"snap": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+"gc": {
+"value": 0
+},
+"bool": {
+"value": false
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq(''), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\n"
+},
+"primer": {
+"value": ">id 0-merdescription\n\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Sequence cannot be empty"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Sequence cannot be empty"
+}
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Sequence cannot be empty"
+}
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:0](+)",
+"start": 0,
+"end": 0,
+"strand": 1,
+"type": "misc",
+"len": 0,
+"qualifiers": {
+"label": [
+"ft0"
+]
+}
+}
+],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find gt"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find atg"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:0](+)",
+"start": 0,
+"end": 0,
+"strand": 1,
+"type": "misc",
+"len": 0,
+"qualifiers": {
+"label": [
+"ft0"
+]
+}
+}
+],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 0,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+},
+{
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+"stamp_changed": {
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+},
+"add": {
+"value": {
+"seq": "tt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "a",
+"snap": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"value": "lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs"
+},
+"gc": {
+"value": 0.0
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('a')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('a'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"",
+"ProteinSeqRecord"
+],
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+],
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": {
+"seq": "t",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\na\n"
+},
+"primer": {
+"value": ">id 1-merdescription\na\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:1](+)",
+"start": 0,
+"end": 1,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find gt"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find atg"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:1](+)",
+"start": 0,
+"end": 1,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 1,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+},
+{
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs",
+"pydna lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs NOW",
+"lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "att",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 3,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "a",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "a",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "atgtaataa",
+"snap": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 9,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"value": "lsseguid=dkiQoJaPx89BqDapeeoIveCb1eY"
+},
+"gc": {
+"value": 0.111
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('atgtaataa')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('atgtaataa'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"M**",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "ttattacat",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 9,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\natgtaataa\n"
+},
+"primer": {
+"value": ">id 9-merdescription\natgtaataa\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"value": 1.0
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+3.0,
+1.0,
+0.111,
+1.0,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+3.0,
+1.0,
+0.111,
+1.0,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"orf6"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:9](+)",
+"start": 0,
+"end": 9,
+"strand": 1,
+"type": "misc",
+"len": 9,
+"qualifiers": {
+"label": [
+"ft9"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:3](+)",
+"start": 0,
+"end": 3,
+"strand": 1,
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"ft3"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:9](+)",
+"start": 0,
+"end": 9,
+"strand": 1,
+"type": "misc",
+"len": 9,
+"qualifiers": {
+"label": [
+"ft9"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "at",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "gt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "atgta",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "tg",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "atgtaataa",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "gt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=dkiQoJaPx89BqDapeeoIveCb1eY",
+"pydna lsseguid=dkiQoJaPx89BqDapeeoIveCb1eY NOW",
+"lsseguid=dkiQoJaPx89BqDapeeoIveCb1eY"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=dkiQoJaPx89BqDapeeoIveCb1eY",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=dkiQoJaPx89BqDapeeoIveCb1eY NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=dkiQoJaPx89BqDapeeoIveCb1eY\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "atgtaataatt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 11,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "atgtaataa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 9,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "atgtaataa",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 9,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "atgtaataa",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 9,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "CGACGG",
+"snap": {
+"value": {
+"seq": "CGACGG",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"value": "lsseguid=jJyc4yCP33P9RBI0my9kwfG56oQ"
+},
+"gc": {
+"value": 0.833
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('CGACGG')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('CGACGG'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"RR",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "CCGTCG",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\nCGACGG\n"
+},
+"primer": {
+"value": ">id 6-merdescription\nCGACGG\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"value": 0.108
+},
+"rarecodons": {
+"value": [
+{
+"str": "[0:3]",
+"start": 0,
+"end": 3,
+"strand": null,
+"type": "rare_codon_sce",
+"len": 3,
+"qualifiers": {
+"label": [
+"CGA"
+]
+}
+},
+{
+"str": "[3:6]",
+"start": 3,
+"end": 6,
+"strand": null,
+"type": "rare_codon_sce",
+"len": 3,
+"qualifiers": {
+"label": [
+"CGG"
+]
+}
+}
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"CGA...CGG",
+2.0,
+0.108,
+0.833,
+null,
+null,
+"2 min",
+1,
+1,
+0,
+0,
+0,
+0,
+1.0
+]
+]
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": [
+{
+"str": "[0:3]",
+"start": 0,
+"end": 3,
+"strand": null,
+"type": "rare_codon_eco",
+"len": 3,
+"qualifiers": {
+"label": [
+"CGA"
+]
+}
+},
+{
+"str": "[3:6]",
+"start": 3,
+"end": 6,
+"strand": null,
+"type": "rare_codon_eco",
+"len": 3,
+"qualifiers": {
+"label": [
+"CGG"
+]
+}
+}
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"CGA...CGG",
+2.0,
+0.108,
+0.833,
+null,
+null,
+"2 min",
+1,
+1,
+0,
+0,
+0,
+0,
+1.0
+]
+]
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "CGACGG",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "CGACGG",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "CGACGG",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "CGACGG",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "CGACGG",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find gt"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find atg"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "CGACGG",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "CGACGG",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "CG",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "AC",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "C",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "CGACG",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "GA",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "CGACGG",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "AC",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=jJyc4yCP33P9RBI0my9kwfG56oQ",
+"pydna lsseguid=jJyc4yCP33P9RBI0my9kwfG56oQ NOW",
+"lsseguid=jJyc4yCP33P9RBI0my9kwfG56oQ"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=jJyc4yCP33P9RBI0my9kwfG56oQ",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=jJyc4yCP33P9RBI0my9kwfG56oQ NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=jJyc4yCP33P9RBI0my9kwfG56oQ\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "CGACGGtt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 8,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "CGACGG",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "CGACGG",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "CGACGG",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "atggcctttaaatttgggtgctga",
+"snap": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 24,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": true
+},
+"2": {
+"value": true
+},
+"11": {
+"value": true
+}
+},
+"seguid": {
+"value": "lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc"
+},
+"gc": {
+"value": 0.417
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('atggcctttaaatttgggtgctga')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('atggcctttaaatttgggtgctga'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"MAFKFGC*",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "tcagcacccaaatttaaaggccat",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 24,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\natggcctttaaatttgggtgctga\n"
+},
+"primer": {
+"value": ">id 24-merdescription\natggcctttaaatttgggtgctga\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"value": 0.664
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.3
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TGA",
+8.0,
+0.664,
+0.417,
+1.0,
+0.3,
+">30 h",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.3
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TGA",
+8.0,
+0.664,
+0.417,
+1.0,
+0.3,
+">30 h",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:24](+)",
+"start": 0,
+"end": 24,
+"strand": 1,
+"type": "misc",
+"len": 24,
+"qualifiers": {
+"label": [
+"orf24"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[17:19](+)",
+"start": 17,
+"end": 19,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:3](+)",
+"start": 0,
+"end": 3,
+"strand": 1,
+"type": "misc",
+"len": 3,
+"qualifiers": {
+"label": [
+"ft3"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:24](+)",
+"start": 0,
+"end": 24,
+"strand": 1,
+"type": "misc",
+"len": 24,
+"qualifiers": {
+"label": [
+"orf24"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "at",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "gg",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "atggc",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "tg",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "gg",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc",
+"pydna lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc NOW",
+"lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "atggcctttaaatttgggtgctgatt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 26,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 24,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 24,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "atggcctttaaatttgggtgctga",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 24,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "GGATCC",
+"snap": {
+"value": {
+"seq": "GGATCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"value": "lsseguid=ea0rpopuGZ2LrziXjGL5UxGD2T8"
+},
+"gc": {
+"value": 0.667
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('GGATCC')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('GGATCC'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"GS",
+"ProteinSeqRecord"
+]
+},
+"rc": {
+"value": {
+"seq": "GGATCC",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\nGGATCC\n"
+},
+"primer": {
+"value": ">id 6-merdescription\nGGATCC\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"value": 0.525
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"GGA...TCC",
+2.0,
+0.525,
+0.667,
+null,
+null,
+">30 h",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"GGA...TCC",
+2.0,
+0.525,
+0.667,
+null,
+null,
+">30 h",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "GGATCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "GGATCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "GGATCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "GGATCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "GGATCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find gt"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find atg"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "GGATCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "GGATCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "GG",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "AT",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "G",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "GGATC",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "GA",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "GGATCC",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "AT",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=ea0rpopuGZ2LrziXjGL5UxGD2T8",
+"pydna lsseguid=ea0rpopuGZ2LrziXjGL5UxGD2T8 NOW",
+"lsseguid=ea0rpopuGZ2LrziXjGL5UxGD2T8"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=ea0rpopuGZ2LrziXjGL5UxGD2T8",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=ea0rpopuGZ2LrziXjGL5UxGD2T8 NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=ea0rpopuGZ2LrziXjGL5UxGD2T8\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"value": {
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "read",
+"len": 6,
+"qualifiers": {
+"ApEinfo_fwdcolor": [
+"#DAFFCF"
+],
+"ApEinfo_revcolor": [
+"#DFFDFF"
+],
+"label": [
+"sequence"
+]
+}
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"value": {
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "read",
+"len": 6,
+"qualifiers": {
+"ApEinfo_fwdcolor": [
+"#DAFFCF"
+],
+"ApEinfo_revcolor": [
+"#DFFDFF"
+],
+"label": [
+"sequence"
+]
+}
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"value": {
+"str": "[1:5](+)",
+"start": 1,
+"end": 5,
+"strand": 1,
+"type": "read",
+"len": 4,
+"qualifiers": {
+"ApEinfo_fwdcolor": [
+"#DAFFCF"
+],
+"ApEinfo_revcolor": [
+"#DFFDFF"
+],
+"label": [
+"sequence"
+]
+}
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"value": {
+"str": "[1:5](+)",
+"start": 1,
+"end": 5,
+"strand": 1,
+"type": "read",
+"len": 4,
+"qualifiers": {
+"ApEinfo_fwdcolor": [
+"#DAFFCF"
+],
+"ApEinfo_revcolor": [
+"#DFFDFF"
+],
+"label": [
+"sequence"
+]
+}
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"value": {
+"str": "[1:5](+)",
+"start": 1,
+"end": 5,
+"strand": 1,
+"type": "read",
+"len": 4,
+"qualifiers": {
+"ApEinfo_fwdcolor": [
+"#DAFFCF"
+],
+"ApEinfo_revcolor": [
+"#DFFDFF"
+],
+"label": [
+"theread"
+]
+}
+}
+},
+"lcs_type": {
+"value": {
+"str": "[1:5](+)",
+"start": 1,
+"end": 5,
+"strand": 1,
+"type": "mapped",
+"len": 4,
+"qualifiers": {
+"ApEinfo_fwdcolor": [
+"#DAFFCF"
+],
+"ApEinfo_revcolor": [
+"#DFFDFF"
+],
+"label": [
+"mylabel"
+]
+}
+}
+},
+"add": {
+"value": {
+"seq": "GGATCCtt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 8,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "GGATCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "GGATCC",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "GGATCC",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 6,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "CCCCC",
+"snap": {
+"value": {
+"seq": "CCCCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 5,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"value": "lsseguid=2L_CzLnuOlGGTOvUDcDqLP-lKLk"
+},
+"gc": {
+"value": 1.0
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('CCCCC')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('CCCCC'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"P",
+"ProteinSeqRecord"
+],
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+],
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": {
+"seq": "GGGGG",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 5,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\nCCCCC\n"
+},
+"primer": {
+"value": ">id 5-merdescription\nCCCCC\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": [
+{
+"str": "[0:3]",
+"start": 0,
+"end": 3,
+"strand": null,
+"type": "rare_codon_eco",
+"len": 3,
+"qualifiers": {
+"label": [
+"CCC"
+]
+}
+}
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "CCCCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "CCCCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "CCCCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:5](+)",
+"start": 0,
+"end": 5,
+"strand": 1,
+"type": "misc",
+"len": 5,
+"qualifiers": {
+"label": [
+"ft5"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "CCCCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "CCCCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find gt"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find atg"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "CCCCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:5](+)",
+"start": 0,
+"end": 5,
+"strand": 1,
+"type": "misc",
+"len": 5,
+"qualifiers": {
+"label": [
+"ft5"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "CCCCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "CC",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "CC",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "C",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "CCCCC",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "CC",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "CCCCC",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "CC",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=2L_CzLnuOlGGTOvUDcDqLP-lKLk",
+"pydna lsseguid=2L_CzLnuOlGGTOvUDcDqLP-lKLk NOW",
+"lsseguid=2L_CzLnuOlGGTOvUDcDqLP-lKLk"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=2L_CzLnuOlGGTOvUDcDqLP-lKLk",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=2L_CzLnuOlGGTOvUDcDqLP-lKLk NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=2L_CzLnuOlGGTOvUDcDqLP-lKLk\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"value": {
+"str": "[0:5](+)",
+"start": 0,
+"end": 5,
+"strand": 1,
+"type": "read",
+"len": 5,
+"qualifiers": {
+"ApEinfo_fwdcolor": [
+"#DAFFCF"
+],
+"ApEinfo_revcolor": [
+"#DFFDFF"
+],
+"label": [
+"sequence"
+]
+}
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "CCCCCtt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 7,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "CCCCC",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 5,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "CCCCC",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 5,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "CCCCC",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "gattaca",
+"snap": {
+"value": {
+"seq": "gattaca",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 7,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"value": "lsseguid=tp2jzeCM2e3W4yxtrrx09CMKa_8"
+},
+"gc": {
+"value": 0.286
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('gattaca')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('gattaca'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"DY",
+"ProteinSeqRecord"
+],
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+],
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": {
+"seq": "tgtaatc",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 7,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\ngattaca\n"
+},
+"primer": {
+"value": ">id 7-merdescription\ngattaca\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "gattaca",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 7,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "gattaca",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 7,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "gattaca",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:7](+)",
+"start": 0,
+"end": 7,
+"strand": 1,
+"type": "misc",
+"len": 7,
+"qualifiers": {
+"label": [
+"ft7"
+]
+}
+}
+],
+"len": 7,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "gattaca",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 7,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "gattaca",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 7,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find gt"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find atg"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "gattaca",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:7](+)",
+"start": 0,
+"end": 7,
+"strand": 1,
+"type": "misc",
+"len": 7,
+"qualifiers": {
+"label": [
+"ft7"
+]
+}
+}
+],
+"len": 7,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "gattaca",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 7,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "ga",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "tt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "g",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "gatta",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 5,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "at",
+"id": "part_id",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "gattaca",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 7,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "tt",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=tp2jzeCM2e3W4yxtrrx09CMKa_8",
+"pydna lsseguid=tp2jzeCM2e3W4yxtrrx09CMKa_8 NOW",
+"lsseguid=tp2jzeCM2e3W4yxtrrx09CMKa_8"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=tp2jzeCM2e3W4yxtrrx09CMKa_8",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=tp2jzeCM2e3W4yxtrrx09CMKa_8 NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=tp2jzeCM2e3W4yxtrrx09CMKa_8\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "gattacatt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 9,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "gattaca",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 7,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "gattaca",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 7,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "gattaca",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 7,
+"seq_class": "Seq"
+}
+}
+},
+{
+"data": "aa",
+"snap": {
+"value": {
+"seq": "aa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+},
+"aliases": {
+"value": [
+"name",
+"id",
+"description"
+]
+},
+"isorf": {
+"1": {
+"value": false
+},
+"2": {
+"value": false
+},
+"11": {
+"value": false
+}
+},
+"seguid": {
+"value": "lsseguid=gBw0Jp907Tg_yX3jNgS4qQWttjU"
+},
+"gc": {
+"value": 0.0
+},
+"bool": {
+"value": true
+},
+"str": {
+"value": "ID: id\nName: name\nDescription: description\nNumber of features: 0\n/molecule_type=DNA\nSeq('aa')"
+},
+"repr": {
+"value": "SeqRecord(seq=Seq('aa'), id='id', name='name', description='description', dbxrefs=[])"
+},
+"translate": {
+"value": [
+"",
+"ProteinSeqRecord"
+],
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+],
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": {
+"seq": "tt",
+"id": "<unknown id>",
+"name": "<unknown name>",
+"description": "<unknown description>",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+},
+"formats": {
+"fasta": {
+"value": ">id description\naa\n"
+},
+"primer": {
+"value": ">id 2-merdescription\naa\n"
+},
+"pydnafasta": {
+"exc": {
+"type": "AttributeError",
+"msg": "'Seq' object has no attribute 'circular'"
+}
+}
+},
+"by_organism": {
+"sce": {
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+}
+},
+"eco": {
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+}
+}
+},
+"add_feature": [
+{
+"x": 2,
+"y": 4,
+"result": {
+"value": {
+"seq": "aa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 0,
+"y": 6,
+"result": {
+"value": {
+"seq": "aa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:6](+)",
+"start": 0,
+"end": 6,
+"strand": 1,
+"type": "misc",
+"len": 6,
+"qualifiers": {
+"label": [
+"ft6"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": null,
+"y": null,
+"result": {
+"value": {
+"seq": "aa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 3,
+"y": 4,
+"result": {
+"value": {
+"seq": "aa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"x": 5,
+"y": 2,
+"result": {
+"exc": {
+"type": "AttributeError",
+"msg": "'SeqRecord' object has no attribute 'circular'"
+}
+}
+},
+{
+"x": 0,
+"y": 2,
+"result": {
+"value": {
+"seq": "aa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"add_feature_seq": [
+{
+"seq": "gt",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find gt"
+}
+}
+},
+{
+"seq": "ATG",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find atg"
+}
+}
+},
+{
+"seq": "zzz",
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "Could not find zzz"
+}
+}
+},
+{
+"seq": "",
+"result": {
+"value": {
+"seq": "aa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"two_features": {
+"value": {
+"seq": "aa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+},
+"list_features": {
+"value": [
+[
+"Ft#",
+"Label or Note",
+"Dir",
+"Sta",
+"End",
+"Len",
+"type",
+"orf?"
+],
+[
+"0",
+"L:ft2",
+"-->",
+"0",
+"2",
+"2",
+"misc",
+"no"
+],
+[
+"1",
+"L:ft2",
+"-->",
+"2",
+"4",
+"2",
+"misc",
+"no"
+]
+]
+},
+"extract_feature": {
+"value": [
+{
+"seq": "aa",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+},
+{
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+]
+},
+"extract_feature_bad": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+},
+"sorted_features": {
+"value": [
+{
+"str": "[2:4](+)",
+"start": 2,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+},
+{
+"str": "[3:4](+)",
+"start": 3,
+"end": 4,
+"strand": 1,
+"type": "misc",
+"len": 1,
+"qualifiers": {
+"label": [
+"ft1"
+]
+}
+}
+]
+},
+"colors": {
+"value": [
+[
+[
+"#66ffa3"
+],
+[
+"#66ffff"
+]
+],
+[
+[
+"#84ff66"
+],
+[
+"#66a3ff"
+]
+]
+]
+},
+"slices": [
+{
+"start": 0,
+"stop": 1,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": 5,
+"result": {
+"value": {
+"seq": "aa",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 1,
+"stop": 3,
+"result": {
+"value": {
+"seq": "a",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 0,
+"stop": null,
+"result": {
+"value": {
+"seq": "aa",
+"id": "ft2",
+"name": "part_name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [
+{
+"str": "[0:2](+)",
+"start": 0,
+"end": 2,
+"strand": 1,
+"type": "misc",
+"len": 2,
+"qualifiers": {
+"label": [
+"ft2"
+]
+}
+}
+],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+},
+{
+"start": 2,
+"stop": 4,
+"result": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+}
+}
+],
+"comment": {
+"value": [
+"",
+"hello",
+"hello",
+"hello\nagain"
+]
+},
+"stamp": {
+"value": [
+"lsseguid=gBw0Jp907Tg_yX3jNgS4qQWttjU",
+"pydna lsseguid=gBw0Jp907Tg_yX3jNgS4qQWttjU NOW",
+"lsseguid=gBw0Jp907Tg_yX3jNgS4qQWttjU"
+]
+},
+"stamp_changed": {
+"value": [
+"lsseguid=gBw0Jp907Tg_yX3jNgS4qQWttjU",
+"lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx\npydna lsseguid=gBw0Jp907Tg_yX3jNgS4qQWttjU NOW"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"Stamp change.\nNew: lsseguid=gBw0Jp907Tg_yX3jNgS4qQWttjU\nOld: lsseguid=xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+]
+]
+},
+"lcs": [
+{
+"other": "GGATCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GGATCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "GATC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "gatc",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 4,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 6,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "CCCCC",
+"limit": 25,
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+}
+},
+{
+"other": "",
+"limit": 4,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 6,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+},
+{
+"other": "",
+"limit": 25,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "zero-size array to reduction operation maximum which has no identity"
+}
+}
+}
+],
+"lcs_record": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"lcs_type": {
+"exc": {
+"type": "TypeError",
+"msg": "object of type 'NoneType' has no len()"
+}
+},
+"add": {
+"value": {
+"seq": "aatt",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 4,
+"seq_class": "Seq"
+}
+},
+"eq": {
+"value": [
+true,
+false,
+false,
+false
+]
+},
+"order": {
+"value": [
+true,
+false,
+true
+]
+},
+"copy": {
+"value": {
+"seq": "aa",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+},
+"from_bio": {
+"value": {
+"seq": "aa",
+"id": "bio",
+"name": "bioname",
+"description": "biodesc",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+},
+"locus_long": {
+"value": [
+"xxxxxxxxxxxxxxxx",
+"xxxxxxxxxxxxxxxx"
+],
+"warnings": [
+[
+"_PydnaWarning",
+"locus property xxxxxxxxxxxxxxxxxxxx truncatedto 16 chars xxxxxxxxxxxxxxxx"
+]
+]
+},
+"set_aliases": {
+"value": {
+"seq": "aa",
+"id": "ACC1",
+"name": "short",
+"description": "a definition",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 2,
+"seq_class": "Seq"
+}
+}
+}
+],
+"proteins": [
+{
+"data": "MAFK",
+"snap": {
+"value": {
+"seq": "MAFK",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 4,
+"seq_class": "Seq"
+}
+},
+"format": {
+"value": ">id description\nMAFK\n"
+},
+"seguid": {
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'F' not in the 'alphabet'"
+}
+},
+"refusals": {
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"isorf": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"gc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"cai": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rarecodons": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"startcodon": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"stopcodon": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"express": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "M",
+"snap": {
+"value": {
+"seq": "M",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 1,
+"seq_class": "Seq"
+}
+},
+"format": {
+"value": ">id description\nM\n"
+},
+"seguid": {
+"value": "lsseguid=xjrm3U_J-d2maXDoJ9E_fHP-hBw"
+},
+"refusals": {
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"isorf": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"gc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"cai": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rarecodons": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"startcodon": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"stopcodon": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"express": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "",
+"snap": {
+"value": {
+"seq": "",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 0,
+"seq_class": "Seq"
+}
+},
+"format": {
+"value": ">id description\n"
+},
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+"refusals": {
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"isorf": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"gc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"cai": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rarecodons": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"startcodon": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"stopcodon": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"express": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "MAFKFGC*",
+"snap": {
+"value": {
+"seq": "MAFKFGC*",
+"id": "id",
+"name": "name",
+"description": "description",
+"dbxrefs": [],
+"annotations": {
+"molecule_type": "DNA"
+},
+"features": [],
+"len": 8,
+"seq_class": "Seq"
+}
+},
+"format": {
+"value": ">id description\nMAFKFGC*\n"
+},
+"seguid": {
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols '* F' not in the 'alphabet'"
+}
+},
+"refusals": {
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"isorf": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"gc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"cai": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rarecodons": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"startcodon": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"stopcodon": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"express": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+}
+],
+"identifiers": {
+"hello": {
+"value": "hello"
+},
+" a b ": {
+"value": "a_b"
+},
+"a-b": {
+"value": "ab"
+},
+"ab-cd": {
+"value": "abcd"
+},
+"1abc": {
+"value": "_1abc"
+},
+"class": {
+"value": "_class"
+},
+"match": {
+"value": "match"
+},
+"": {
+"value": ""
+},
+"x!y": {
+"value": "xy"
+},
+"a_b": {
+"value": "a_b"
+},
+"---": {
+"value": ""
+},
+"  spaced  out  ": {
+"value": "spaced_out"
+},
+"_private": {
+"value": "_private"
+},
+"True": {
+"value": "_True"
+},
+"None": {
+"value": "_None"
+},
+"\u00fcn\u00efcode": {
+"value": "ncode"
+},
+"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa": {
+"value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}
+}
+}

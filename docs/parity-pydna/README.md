@@ -2,7 +2,7 @@
 
 Generated from pydna 5.5.16 by `reference/gen_checklist_lib.py pydna`. The marks mean what they mean in [the Biopython checklist](../parity/README.md), and each library is counted separately: this one says nothing about parity with any other. Only what pydna defines itself is listed, so a class it inherits from Biopython is measured under [docs/parity/](../parity/README.md) instead. Edit `reference/status-pydna.json`, then re-run the script.
 
-**Progress: 130 / 130 applicable items verified against pydna.**
+**Progress: 176 / 176 applicable items verified against pydna.**
 
 | Section | Verified | Applicable |
 |---|---|---|
@@ -10,6 +10,8 @@ Generated from pydna 5.5.16 by `reference/gen_checklist_lib.py pydna`. The marks
 | [pydna.dseq](pydna.dseq.md) | 77 | 77 |
 | [pydna.common_sub_strings](pydna.common_sub_strings.md) | 2 | 2 |
 | [pydna.seq](pydna.seq.md) | 26 | 26 |
+| [pydna.seqrecord](pydna.seqrecord.md) | 45 | 45 |
+| [pydna.utils](pydna.utils.md) | 1 | 1 |
 
-**Total: 130 / 130**
+**Total: 176 / 176**
 

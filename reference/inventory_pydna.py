@@ -9,12 +9,12 @@ listed: the inherited `Bio.Seq` API is already measured under `docs/parity/Bio.S
 """
 import inspect, json
 import pydna
-from pydna import alphabet, common_sub_strings, dseq, seq as pydna_seq
+from pydna import alphabet, common_sub_strings, dseq, seq as pydna_seq, seqrecord, utils
 
 #: Dunder members a port has to provide even though their names are private.
 DUNDERS = ("__init__", "__len__", "__getitem__", "__setitem__", "__iter__", "__next__", "__str__",
-           "__repr__", "__eq__", "__hash__", "__add__", "__radd__", "__mul__", "__rmul__",
-           "__contains__", "__bytes__", "__new__")
+           "__repr__", "__eq__", "__ne__", "__lt__", "__gt__", "__hash__", "__add__", "__radd__",
+           "__mul__", "__rmul__", "__contains__", "__bytes__", "__bool__", "__format__", "__new__")
 
 
 def sig(value):
@@ -74,6 +74,17 @@ inv = {
     "pydna.seq": {
         "functions": funcs(pydna_seq),
         "classes": {"Seq": members(pydna_seq.Seq), "ProteinSeq": members(pydna_seq.ProteinSeq)},
+    },
+    # The record layer: a sequence with a name, features and annotations, which Dseqrecord builds on.
+    "pydna.seqrecord": {
+        "functions": funcs(seqrecord),
+        "classes": {"SeqRecord": members(seqrecord.SeqRecord),
+                    "ProteinSeqRecord": members(seqrecord.ProteinSeqRecord)},
+    },
+    # Only the one helper from pydna.utils that the record layer uses; the rest of that module belongs
+    # with Dseqrecord and is listed when it is ported.
+    "pydna.utils": {
+        "functions": {"identifier_from_string": sig(utils.identifier_from_string)},
     },
 }
 

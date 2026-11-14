@@ -134,6 +134,35 @@ if pseq["cases"]:
         mark("pydna.seq.Seq.cai")
     if any("express" in c["by_organism"]["sce"] for c in pseq["cases"]):
         mark("pydna.seq.Seq.express")
+
+# pydna's record layer. Every case records every method over fourteen sequences, so one record that was
+# built covers the lot, with three exceptions marked rather than measured:
+#
+#   __hash__ hashes a string built from the instance dictionary, and Python's string hashing moves with the
+#   interpreter's hash seed, so the number is different every run and there is nothing to agree with.
+#   dump writes a Python pickle, which exists to be read back by Python; a TypeScript port has no business
+#   producing one.
+#   datefunction reads the clock. The port has it, so `stamp`'s default works, but its answer is whenever
+#   it was called.
+psr = json.load(open(f"{here}/../packages/dseqrecord/test/golden/pydna-seqrecord.json"))
+built_sr = [c for c in psr["cases"] if "value" in c["snap"]]
+if built_sr:
+    for member in ("__init__", "__add__", "__eq__", "__ne__", "__lt__", "__gt__", "__bool__",
+                   "__format__", "__getitem__", "__repr__", "__str__", "accession", "definition",
+                   "locus", "add_colors_to_features_for_ape", "add_feature", "cai", "comment", "copy",
+                   "express", "extract_feature", "from_Bio_SeqRecord", "gc", "isorf", "lcs",
+                   "list_features", "rarecodons", "rc", "reverse_complement", "seguid",
+                   "sorted_features", "stamp", "startcodon", "stopcodon", "translate"):
+        mark(f"pydna.seqrecord.SeqRecord.{member}")
+    mark("pydna.seqrecord.SeqRecord.__hash__", "na")
+    mark("pydna.seqrecord.SeqRecord.dump", "na")
+    mark("pydna.seqrecord.SeqRecord.datefunction", "na")
+if psr["proteins"]:
+    for member in ("cai", "express", "gc", "isorf", "rarecodons", "rc", "reverse_complement",
+                   "startcodon", "stopcodon", "__format__"):
+        mark(f"pydna.seqrecord.ProteinSeqRecord.{member}")
+if psr["identifiers"]:
+    mark("pydna.utils.identifier_from_string")
 if pseq["proteins"]:
     for member in ("__getitem__", "back_transcribe", "complement", "complement_rna", "instability_index",
                    "molecular_weight", "pI", "rc", "reverse_complement", "reverse_complement_rna",

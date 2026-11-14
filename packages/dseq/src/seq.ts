@@ -65,7 +65,7 @@ function forOrganism<T>(table: ReadonlyMap<string, T>, organism: string): T {
  * s.seguid();        // "lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc"
  * ```
  */
-export class PydnaSeq extends BioSeq {
+class Seq extends BioSeq {
   /**
    * Translate into protein, which comes back as a {@link ProteinSeq} rather than a plain sequence.
    *
@@ -94,7 +94,7 @@ export class PydnaSeq extends BioSeq {
    * @returns The RNA.
    */
   override transcribe(_inplace = false): this {
-    return new PydnaSeq(new BioSeq(this.toString()).transcribe().toString()) as this;
+    return new Seq(new BioSeq(this.toString()).transcribe().toString()) as this;
   }
 
   /**
@@ -131,7 +131,7 @@ export class PydnaSeq extends BioSeq {
    * @param organism - Whose tables to read.
    * @returns The summary.
    * @throws KeyError for an organism with no codon weights, which is every one but `"sce"`, and what
-   *   {@link PydnaSeq.cai} throws — which is why a sequence shorter than a codon never reaches the
+   *   {@link Seq.cai} throws — which is why a sequence shorter than a codon never reaches the
    *   division at the end: `cai` has already refused it.
    */
   express(organism = DEFAULT_ORGANISM): ExpressionTable {
@@ -242,7 +242,7 @@ export class PydnaSeq extends BioSeq {
    * @param minsize - The fewest codons between start and stop; 30 by default.
    * @returns The readings, longest first, each cut from this sequence and so keeping its case.
    */
-  orfs2(minsize = 30): PydnaSeq[] {
+  orfs2(minsize = 30): Seq[] {
     const orf = new RegExp(`ATG(?:...){${minsize},}?(?:TAG|TAA|TGA)`, "i");
     const s = this.toString();
     const found: Array<[number, number]> = [];
@@ -256,7 +256,7 @@ export class PydnaSeq extends BioSeq {
       found.push([at, at + match[0].length]);
       start = at + 1;
     }
-    const pieces = found.map(([x, y]) => new PydnaSeq(s.slice(x, y)));
+    const pieces = found.map(([x, y]) => new Seq(s.slice(x, y)));
     // Longest first. Python's sort is stable, so readings of one length keep the order they were found in.
     return pieces.sort((a, b) => b.length - a.length);
   }
@@ -295,9 +295,14 @@ export class PydnaSeq extends BioSeq {
    * @param data - The derived sequence's content. @returns It, as a `PydnaSeq`.
    */
   protected override make(data: ConstructorParameters<typeof BioSeq>[0]): this {
-    return new PydnaSeq(data) as this;
+    return new Seq(data) as this;
   }
 }
+
+// pydna's class is called `Seq`, and its own `repr` prints that name, so the declaration above has to
+// carry it. The export is renamed because `@biolibs/seq` already has a `Seq`: same class, a name that can
+// sit beside it.
+export { Seq as PydnaSeq };
 
 /**
  * A protein, which refuses the questions that only make sense for nucleotides.

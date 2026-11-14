@@ -62,6 +62,21 @@ export class KeyError extends BioError {
   }
 }
 
+/**
+ * Mirrors Python's `AttributeError`: something was asked of an object that does not have it.
+ *
+ * Ports raise this where the upstream library reaches for an attribute a class does not define — which in a
+ * dynamic language is sometimes the documented behaviour of a method rather than a bug, and so is part of
+ * what a port has to reproduce.
+ */
+export class AttributeError extends BioError {
+  /** @param message - Python's text, e.g. `'Seq' object has no attribute 'circular'`. */
+  constructor(message: string) {
+    super(message);
+    this.name = "AttributeError";
+  }
+}
+
 /** Mirrors Python's `OverflowError`: a numeric result is too large to represent (for example `10 ** 400.0`). */
 export class OverflowError extends BioError {
   /** @param message - Python's text, e.g. `(34, 'Result too large')`. */

@@ -295,9 +295,11 @@ export class SeqRecord {
   /** Records cannot be ordered. @throws {@link NotImplementedError} always. */
   le(_other: unknown): never { throw new NotImplementedError(NO_COMPARISON); }
   /** Records have no equality; compare attributes instead. @throws {@link NotImplementedError} always. */
-  equals(_other: unknown): never { throw new NotImplementedError(NO_COMPARISON); }
+  // Typed `boolean` rather than `never` even though it always throws, so that a subclass which does
+  // define equality -- pydna's record does -- can override it.
+  equals(_other: unknown): boolean { throw new NotImplementedError(NO_COMPARISON); }
   /** Records have no inequality; compare attributes instead. @throws {@link NotImplementedError} always. */
-  ne(_other: unknown): never { throw new NotImplementedError(NO_COMPARISON); }
+  ne(_other: unknown): boolean { throw new NotImplementedError(NO_COMPARISON); }
   /** Records cannot be ordered. @throws {@link NotImplementedError} always. */
   gt(_other: unknown): never { throw new NotImplementedError(NO_COMPARISON); }
   /** Records cannot be ordered. @throws {@link NotImplementedError} always. */

@@ -226,5 +226,67 @@
     "translate": "(self)"
    }
   }
+ },
+ "pydna.seqrecord": {
+  "functions": {},
+  "classes": {
+   "SeqRecord": {
+    "__add__": "(self, other)",
+    "__bool__": "(self)",
+    "__eq__": "(self, other)",
+    "__format__": "(self, format)",
+    "__getitem__": "(self, index)",
+    "__gt__": "(self, other)",
+    "__hash__": "(self)",
+    "__init__": "(self, seq, id='id', name='name', description='description', dbxrefs=None, features=None, annotations=None, letter_annotations=None)",
+    "__lt__": "(self, other)",
+    "__ne__": "(self, other)",
+    "__repr__": "(self)",
+    "__str__": "(self)",
+    "accession": "(self)",
+    "add_colors_to_features_for_ape": "(self)",
+    "add_feature": "(self, x=None, y=None, seq=None, type_='misc', strand=1, *args, **kwargs)",
+    "cai": "(self, organism='sce')",
+    "comment": "(self, newcomment='')",
+    "copy": "(self)",
+    "datefunction": "()",
+    "definition": "(self)",
+    "dump": "(self, filename, protocol=None)",
+    "express": "(self, organism='sce')",
+    "extract_feature": "(self, n)",
+    "from_Bio_SeqRecord": "(clc, sr: Bio.SeqRecord.SeqRecord)",
+    "gc": "(self)",
+    "isorf": "(self, table=1)",
+    "lcs": "(self, other, *args, limit=25, **kwargs)",
+    "list_features": "(self)",
+    "locus": "(self)",
+    "rarecodons": "(self, organism='sce')",
+    "rc": "(self, *args, **kwargs)",
+    "reverse_complement": "(self, *args, **kwargs)",
+    "seguid": "(self)",
+    "sorted_features": "(self)",
+    "stamp": "(self, now=<function SeqRecord.datefunction at 0x10a7d0250>, tool='pydna', separator=' ', comment='')",
+    "startcodon": "(self, organism='sce')",
+    "stopcodon": "(self, organism='sce')",
+    "translate": "(self)"
+   },
+   "ProteinSeqRecord": {
+    "__format__": "(self, format)",
+    "cai": "(self, *args, **kwargs)",
+    "express": "(self, *args, **kwargs)",
+    "gc": "(self)",
+    "isorf": "(self, *args, **kwargs)",
+    "rarecodons": "(self, *args, **kwargs)",
+    "rc": "(self, *args, **kwargs)",
+    "reverse_complement": "(self, *args, **kwargs)",
+    "startcodon": "(self, *args, **kwargs)",
+    "stopcodon": "(self, *args, **kwargs)"
+   }
+  }
+ },
+ "pydna.utils": {
+  "functions": {
+   "identifier_from_string": "(s: str) -> str"
+  }
  }
 }

@@ -1,0 +1,19 @@
+{
+  "name": "@biolibs/dseqrecord",
+  "version": "0.1.0",
+  "description": "pydna's record layer: a sequence with a name, features and annotations, and the methods pydna adds to it",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" } },
+  "files": ["dist"],
+  "license": "MIT",
+  "dependencies": {
+    "@biolibs/core": "0.1.0",
+    "@biolibs/seq": "0.1.0",
+    "@biolibs/seqfeature": "0.1.0",
+    "@biolibs/seqrecord": "0.1.0",
+    "@biolibs/dseq": "0.1.0",
+    "@biolibs/assembly": "0.1.0"
+  }
+}
