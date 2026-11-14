@@ -16,8 +16,9 @@
 import { lsseguid } from "@biolibs/seguid";
 import { Seq as BioSeq, type TableArg } from "@biolibs/seq";
 import { gcFraction, ProteinAnalysis, seq3 } from "@biolibs/seqtools";
-import { KeyError, NotImplementedError } from "@biolibs/core";
+import { KeyError, NotImplementedError, pyRoundTo } from "@biolibs/core";
 import { reverseComplementCode } from "./alphabet.js";
+import { cai, type ExpressionTable, weightsFor } from "./cai.js";
 import { N_END, RARE_CODONS, START_CODONS, STOP_CODONS } from "./data/codon.js";
 import { type Orf, threeFrameOrfs } from "./orfs.js";
 
@@ -102,7 +103,60 @@ export class PydnaSeq extends BioSeq {
    * @returns That fraction, which is 0 for an empty sequence.
    */
   gc(): number {
-    return Math.round(gcFraction(this.toString().toUpperCase()) * 1000) / 1000;
+    return pyRoundTo(gcFraction(this.toString().toUpperCase()), 3);
+  }
+
+  /**
+   * The codon adaptation index: how close this sequence's codons are to the organism's preferred ones.
+   *
+   * @param organism - Whose weights to use; `"sce"` by default and the only one that has any.
+   * @returns The index to three decimals, or NaN when every codon was one without synonyms.
+   * @throws KeyError for an organism with no weights, and what {@link cai} throws for the sequence.
+   */
+  cai(organism = DEFAULT_ORGANISM): number {
+    return cai(this.toString().toUpperCase(), weightsFor(organism));
+  }
+
+  /**
+   * How well this sequence would be expressed, as one row of numbers.
+   *
+   * The columns are the first and last codons, the length in codons, the adaptation index, the GC
+   * fraction, the start and stop codon strengths, the N-end half-life, a count for each of the organism's
+   * rare codons, and the fraction of the sequence those make up.
+   *
+   * Upstream the row comes back inside a `prettytable` table; this gives the cells, since the rendering is
+   * that library's rather than pydna's. Note that the start and stop strengths are the default organism's
+   * however this is called, because pydna asks for them without passing the organism on.
+   *
+   * @param organism - Whose tables to read.
+   * @returns The summary.
+   * @throws KeyError for an organism with no codon weights, which is every one but `"sce"`, and what
+   *   {@link PydnaSeq.cai} throws — which is why a sequence shorter than a codon never reaches the
+   *   division at the end: `cai` has already refused it.
+   */
+  express(organism = DEFAULT_ORGANISM): ExpressionTable {
+    const rare = forOrganism(RARE_CODONS, organism);
+    const s = this.toString().toUpperCase();
+    const row: Array<string | number | null> = [
+      `${s.slice(0, 3)}...${s.slice(-3)}`,
+      this.length / 3,
+      this.cai(organism),
+      this.gc(),
+      // Without the organism, as pydna calls them.
+      this.startcodon(),
+      this.stopcodon(),
+      this.nEnd(organism),
+    ];
+    const codons: string[] = [];
+    for (let i = 0; i < Math.floor(s.length / 3); i++) codons.push(s.slice(i * 3, i * 3 + 3));
+    let total = 0;
+    for (const codon of rare) {
+      const count = codons.filter((c) => c === codon).length;
+      total += count;
+      row.push(count);
+    }
+    row.push(pyRoundTo(total / codons.length, 3));
+    return { fieldNames: ["cds", "len", "cai", "gc", "sta", "stp", "n-end", ...rare, "rare"], row };
   }
 
   /**

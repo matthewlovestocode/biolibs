@@ -218,11 +218,47 @@ Several things here are pydna's rather than Biopython's, and are reproduced rath
 The per-organism numbers are generated from pydna by `reference/gen_pydna_codon_data.py` into
 `src/data/codon.ts`; never edit that file by hand.
 
-**Two methods are not ported: `cai` and `express`.** `cai` is the codon adaptation index, and upstream it
-imports `cai2`, an optional package that is not installed in `reference/.venv`; `express` calls `cai` and
-also returns a `prettytable` table, so porting it means porting that library's layout as well. Both raise
-`ModuleNotFoundError` in the reference environment, which is a fact about the environment rather than about
-pydna, so neither is recorded as behaviour and both are left unchecked in
-[docs/parity-pydna/](parity-pydna/README.md) — 128 of 130. The one piece of `express` that can be measured
-is the N-end rule lookup, which is here as `nEnd` and is compared against the expression pydna composes it
-from.
+## `cai` and `express`, and the fourth upstream under them
+
+`cai` is Sharp and Li's codon adaptation index: every codon carries a weight saying how close it is to the
+organism's preferred synonym, and the score is the geometric mean of those weights, so a sequence of
+entirely preferred codons scores 1 however long it is. pydna does not compute it — it calls the `cai2`
+package, which asks SciPy for the mean — so what is ported here is that package, in `cai.ts`.
+
+```ts
+new PydnaSeq("ATGGCCTTTAAATTTGGGTGCTGA").cai();   // 0.664
+new PydnaSeq("CGACGGCCG").cai();                  // 0.15 — three of yeast's rarest codons
+```
+
+Three of its habits are worth knowing, because none of them is obvious from the outside:
+
+- **`ATG` and `TGG` are dropped, not scored.** They have no synonyms, so their weight is fixed at 1 and
+  counting them would only pull every score towards 1. A sequence of nothing but those codons therefore
+  has an empty list to average, and SciPy answers `NaN` while emitting `SmallSampleWarning: One or more
+  sample arguments is too small; ...`. `cai("ATG")` is NaN, not 1.
+- **A stop codon missing from the weights is skipped; any other missing codon raises** `KeyError: Bad
+  weights dictionary passed: missing weight for codon X.`
+- **Only `sce` has weights at all.** `cai("eco")` raises `KeyError: 'eco'`, even though `rarecodons`,
+  `startcodon`, `stopcodon` and `nEnd` all accept `"eco"` happily.
+
+`express` is the one-row summary built on it: the first and last codons, the length in codons, the index,
+the GC fraction, the start and stop strengths, the N-end half-life, a count per rare codon, and the
+fraction of the sequence those make up. Note that it asks for the start and stop strengths *without*
+passing the organism on, so those two columns are always `sce`'s however it is called.
+
+```ts
+const t = new PydnaSeq("ATGGCCTTTAAATTTGGGTGCTGA").express();
+lol(t);
+// [["cds", "len", "cai", "gc", "sta", "stp", "n-end", "CGA", "CGG", "CGC", "CCG", "CTC", "GCG", "rare"],
+//  ["ATG...TGA", 8, 0.664, 0.417, 1.0, 0.3, ">30 h", 0, 0, 0, 0, 0, 0, 0]]
+```
+
+Upstream the row comes back inside a `prettytable` table. **That layout is not ported**: the cells are what
+pydna computes, and `lol` gives them back the way pydna's own `lol()` does, so the parity cases compare the
+cells and claim nothing about the rendering. A sequence shorter than one codon never reaches the division
+at the end of `express`, because `cai` has already refused it.
+
+One thing this turned up elsewhere: `round(x, 3)` is not `Math.round(x * 1000) / 1000`. Python rounds a tie
+to the nearest *even* digit and decides what a tie is from the double's exact decimal value rather than from
+the scaled-up one, so `round(0.0625, 3)` is 0.062 for two separate reasons. `pyRoundTo` in `@biolibs/core`
+does it properly, and `gc` uses it now too.

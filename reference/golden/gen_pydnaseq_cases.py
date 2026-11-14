@@ -5,11 +5,15 @@ Biopython's `Seq` is a handful of questions about a coding sequence -- GC conten
 stop strength, open reading frames, a checksum -- and `ProteinSeq`, which refuses the ones that only make
 sense for nucleotides.
 
-Two of its methods cannot be measured here. `cai` imports `cai2`, an optional dependency that is not
-installed in `reference/.venv`, and `express` calls `cai`, so both raise `ModuleNotFoundError` in this
-environment and that is a fact about the environment rather than about pydna. They are left unmarked in
-`status-pydna.json` instead of being recorded. `n_end`, which `express` would also use, is measured on its
-own through the pieces pydna composes it from, so that one is ready when the rest is.
+`cai` and `express` reach further than pydna: `cai` calls the `cai2` package, which asks SciPy for a
+geometric mean, so what those cases pin is a fourth library's behaviour. Three parts of it are worth having
+recorded rather than reasoned about -- a sequence of nothing but `ATG` and `TGG` has no scorable codon and
+comes back NaN with SciPy's own warning; a stop codon missing from the weights is skipped while any other
+missing codon raises; and `express` asks for the start and stop strengths without passing the organism on,
+so those columns are always the default organism's.
+
+What `express` returns is a `prettytable` table, and that library's rendering is not pydna's, so only the
+cells are recorded -- `lol()`, the way pydna itself reads them back.
 """
 import json, os, re, warnings
 from Bio.SeqUtils import seq3
@@ -108,6 +112,17 @@ for data in DNA:
             # pydna composes this inside `express`; measured here from the same pieces so that the port's
             # helper has something to agree with while `express` itself waits on cai2.
             "n_end": guard(lambda o=organism: _n_end[o].get(seq3(s[3:6].translate()))),
+            # NaN is not JSON, so it is recorded as null with `cai_nan` saying which it was.
+            "cai": guard(lambda o=organism: None if (v := s.cai(o)) != v else v),
+            # The cells only: the table around them is prettytable's work, not pydna's.
+            "express": guard(lambda o=organism: [[None if isinstance(v, float) and v != v else v
+                                                  for v in rowx] for rowx in s.express(o).lol()]),
+            # NaN does not survive JSON, so it is recorded as a flag beside the row.
+            "express_nan": guard(lambda o=organism: [i for i, v in enumerate(s.express(o).lol()[1])
+                                                     if isinstance(v, float) and v != v]),
+            # Called once, so the warning it emits is recorded once: calling twice to compare a value
+            # with itself would record two.
+            "cai_nan": guard(lambda o=organism: (v := s.cai(o)) != v),
         }
     cases.append(case)
 
@@ -129,5 +144,5 @@ for data in PROTEINS:
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump({"pydna": __import__("pydna").__version__, "cases": cases, "proteins": proteins},
-          open(OUT, "w"), indent=0)
+          open(OUT, "w"), indent=0, allow_nan=False)
 print(len(cases), "sequences,", len(proteins), "proteins ->", os.path.relpath(OUT))

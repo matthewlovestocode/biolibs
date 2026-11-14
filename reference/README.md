@@ -6,17 +6,15 @@ Parity with Biopython is measured, not claimed. This directory runs the real Bio
 
 ```bash
 python3 -m venv reference/.venv
-reference/.venv/bin/pip install biopython scipy pydna seguid
+reference/.venv/bin/pip install biopython scipy pydna seguid cai2
 ```
 
 `scipy` is only needed by `Bio.Align.analysis`'s YN00 and ML methods, which import `scipy.linalg.expm` and
 `scipy.optimize.minimize`; without it those generators cannot run.
 
-One optional dependency is deliberately **not** installed: `cai2`, which `pydna.utils.cai` imports. Two
-members of `pydna.seq` need it — `cai` itself and `express`, which calls it — so both raise
-`ModuleNotFoundError` here and are left unverified in `docs/parity-pydna/` rather than having that recorded
-as pydna's behaviour. Installing it would make them measurable; `express` would still need a port of the
-third-party `prettytable` layout its return value is rendered by.
+`cai2` is needed by `pydna.utils.cai`, which `pydna.seq`'s `cai` and `express` both go through. It is an
+optional dependency of pydna rather than a required one, so without it those two raise
+`ModuleNotFoundError` and cannot be measured at all.
 
 `pydna` and `seguid` are the second and third upstream libraries this repo ports, for `@biolibs/dseq` and
 `@biolibs/seguid`. Each has its own inventory and status file — `inventory_<library>.py`,

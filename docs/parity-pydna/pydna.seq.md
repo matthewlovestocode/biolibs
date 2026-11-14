@@ -3,8 +3,8 @@
 
 ### pydna.seq.Seq
 
-- [ ] `cai(self, organism: str = 'sce') -> float`
-- [ ] `express(self, organism: str = 'sce') -> pydna._pretty.PrettyTable`
+- [x] `cai(self, organism: str = 'sce') -> float`
+- [x] `express(self, organism: str = 'sce') -> pydna._pretty.PrettyTable`
 - [x] `gc(self) -> float`
 - [x] `orfs(self, minsize: int = 100) -> List[Tuple[int, int]]`
 - [x] `orfs2(self, minsize: int = 30) -> List[str]`

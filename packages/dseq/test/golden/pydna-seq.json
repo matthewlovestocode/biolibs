@@ -85,6 +85,51 @@
 },
 "n_end": {
 "value": ">30 h"
+},
+"cai": {
+"value": 0.664
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TGA",
+8.0,
+0.664,
+0.417,
+1.0,
+0.3,
+">30 h",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -99,6 +144,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -121,6 +190,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -213,6 +306,51 @@
 },
 "n_end": {
 "value": ">30 h"
+},
+"cai": {
+"value": 0.664
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TGA",
+8.0,
+0.664,
+0.417,
+1.0,
+0.3,
+">30 h",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -227,6 +365,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -249,6 +411,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -353,6 +539,51 @@
 },
 "n_end": {
 "value": "2 min"
+},
+"cai": {
+"value": 0.196
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"CGA...GCG",
+6.0,
+0.196,
+0.889,
+null,
+null,
+"2 min",
+1,
+1,
+0,
+2,
+1,
+1,
+1.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -378,6 +609,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -400,6 +655,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -503,6 +782,51 @@
 },
 "n_end": {
 "value": "2 min"
+},
+"cai": {
+"value": 0.226
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+4.0,
+0.226,
+0.5,
+1.0,
+0.47,
+"2 min",
+1,
+1,
+0,
+0,
+0,
+0,
+0.5
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -528,6 +852,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -550,6 +898,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -623,6 +995,51 @@
 },
 "n_end": {
 "value": "2 min"
+},
+"cai": {
+"value": 0.433
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"AGG...AGG",
+3.0,
+0.433,
+0.667,
+null,
+null,
+"2 min",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -653,6 +1070,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -675,6 +1116,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -748,6 +1213,77 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": null,
+"warnings": [
+[
+"SmallSampleWarning",
+"One or more sample arguments is too small; all returned values will be NaN. See documentation for sample size requirements."
+]
+]
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...ATG",
+1.0,
+null,
+0.333,
+1.0,
+null,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+],
+"warnings": [
+[
+"SmallSampleWarning",
+"One or more sample arguments is too small; all returned values will be NaN. See documentation for sample size requirements."
+]
+]
+},
+"express_nan": {
+"value": [
+2
+],
+"warnings": [
+[
+"SmallSampleWarning",
+"One or more sample arguments is too small; all returned values will be NaN. See documentation for sample size requirements."
+]
+]
+},
+"cai_nan": {
+"value": true,
+"warnings": [
+[
+"SmallSampleWarning",
+"One or more sample arguments is too small; all returned values will be NaN. See documentation for sample size requirements."
+]
+]
 }
 },
 "eco": {
@@ -762,6 +1298,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -784,6 +1344,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -857,6 +1441,51 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": 1.0
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"TTG...TTG",
+1.0,
+1.0,
+0.333,
+0.069,
+null,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -871,6 +1500,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -893,6 +1546,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -966,6 +1643,51 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": 0.59
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATA...ATA",
+1.0,
+0.59,
+0.0,
+0.005,
+null,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -986,6 +1708,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -1008,6 +1754,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -1081,6 +1851,51 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": 1.0
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"AAA...AAA",
+1.0,
+1.0,
+0.0,
+null,
+null,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -1095,6 +1910,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -1117,6 +1956,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -1190,6 +2053,51 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": 1.0
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"TAA...TAA",
+1.0,
+1.0,
+0.0,
+null,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -1204,6 +2112,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -1226,6 +2158,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -1299,6 +2255,51 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": 0.479
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"TAG...TAG",
+1.0,
+0.479,
+0.333,
+null,
+0.23,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -1313,6 +2314,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -1335,6 +2360,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -1408,6 +2457,51 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": 0.643
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"TGA...TGA",
+1.0,
+0.643,
+0.333,
+null,
+0.3,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -1422,6 +2516,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -1444,6 +2562,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -1532,6 +2674,51 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": 1.0
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+2.0,
+1.0,
+0.167,
+1.0,
+0.47,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -1546,6 +2733,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -1568,6 +2779,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -1641,6 +2876,51 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": 0.692
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"TTG...TAG",
+2.0,
+0.692,
+0.333,
+0.069,
+0.23,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -1655,6 +2935,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -1677,6 +2981,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -1782,6 +3110,51 @@
 },
 "n_end": {
 "value": "3 min"
+},
+"cai": {
+"value": 0.895
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+6.0,
+0.895,
+0.167,
+1.0,
+0.47,
+"3 min",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -1796,6 +3169,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -1818,6 +3215,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -1935,6 +3356,51 @@
 },
 "n_end": {
 "value": ">30 h"
+},
+"cai": {
+"value": 1.0
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TAA",
+4.0,
+1.0,
+0.25,
+1.0,
+0.47,
+">30 h",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -1949,6 +3415,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -1971,6 +3461,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -2044,6 +3558,51 @@
 },
 "n_end": {
 "value": "3 min"
+},
+"cai": {
+"value": 1.0
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...AAA",
+4.0,
+1.0,
+0.083,
+1.0,
+null,
+"3 min",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -2058,6 +3617,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -2080,6 +3663,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -2212,6 +3819,51 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"value": 0.643
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"ATG...TGA",
+8.0,
+0.643,
+0.333,
+1.0,
+0.3,
+null,
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -2226,6 +3878,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -2248,6 +3924,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -2363,6 +4063,30 @@
 },
 "n_end": {
 "value": "30 min"
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -2383,6 +4107,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -2405,6 +4153,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -2522,6 +4294,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -2536,6 +4332,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -2558,6 +4378,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -2643,6 +4487,30 @@
 },
 "n_end": {
 "value": ">30 h"
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -2657,6 +4525,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -2679,6 +4571,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -2764,6 +4680,30 @@
 },
 "n_end": {
 "value": ">30 h"
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -2778,6 +4718,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -2800,6 +4764,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -2885,6 +4873,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -2899,6 +4911,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -2921,6 +4957,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -3006,6 +5066,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -3020,6 +5104,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -3042,6 +5150,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -3115,6 +5247,30 @@
 },
 "n_end": {
 "value": ">30 h"
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon AUG."
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon AUG."
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon AUG."
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon AUG."
+}
 }
 },
 "eco": {
@@ -3129,6 +5285,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -3151,6 +5331,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -3224,6 +5428,30 @@
 },
 "n_end": {
 "value": ">30 h"
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon AUG."
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon AUG."
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon AUG."
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon AUG."
+}
 }
 },
 "eco": {
@@ -3238,6 +5466,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -3260,6 +5512,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -3333,6 +5609,30 @@
 },
 "n_end": {
 "value": ">30 h"
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon UUU."
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon UUU."
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon UUU."
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon UUU."
+}
 }
 },
 "eco": {
@@ -3347,6 +5647,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -3369,6 +5693,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -3451,6 +5799,30 @@
 },
 "n_end": {
 "value": "30 min"
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon PQG."
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon PQG."
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon PQG."
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon PQG."
+}
 }
 },
 "eco": {
@@ -3465,6 +5837,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -3487,6 +5883,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -3572,6 +5992,30 @@
 "type": "TranslationError",
 "msg": "Codon 'CIJ' is invalid"
 }
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon CIJ."
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon CIJ."
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon CIJ."
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon CIJ."
+}
 }
 },
 "eco": {
@@ -3588,6 +6032,30 @@
 "exc": {
 "type": "TranslationError",
 "msg": "Codon 'CIJ' is invalid"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
 }
 }
 },
@@ -3611,6 +6079,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -3687,6 +6179,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Sequence cannot be empty"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Sequence cannot be empty"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Sequence cannot be empty"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Sequence cannot be empty"
+}
 }
 },
 "eco": {
@@ -3701,6 +6217,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -3723,6 +6263,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -3819,6 +6383,30 @@
 },
 "n_end": {
 "value": "2 min"
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -3833,6 +6421,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -3855,6 +6467,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -3940,6 +6576,30 @@
 },
 "n_end": {
 "value": "10 min"
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -3960,6 +6620,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -3982,6 +6666,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -4055,6 +6763,51 @@
 },
 "n_end": {
 "value": ">5 h"
+},
+"cai": {
+"value": 0.453
+},
+"express": {
+"value": [
+[
+"cds",
+"len",
+"cai",
+"gc",
+"sta",
+"stp",
+"n-end",
+"CGA",
+"CGG",
+"CGC",
+"CCG",
+"CTC",
+"GCG",
+"rare"
+],
+[
+"GGG...AAA",
+3.0,
+0.453,
+0.667,
+null,
+null,
+">5 h",
+0,
+0,
+0,
+0,
+0,
+0,
+0.0
+]
+]
+},
+"express_nan": {
+"value": []
+},
+"cai_nan": {
+"value": false
 }
 },
 "eco": {
@@ -4075,6 +6828,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -4097,6 +6874,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -4182,6 +6983,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -4196,6 +7021,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -4218,6 +7067,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -4309,6 +7182,30 @@
 "Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
 ]
 ]
+},
+"cai": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"express_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "ValueError",
+"msg": "Input sequence not divisible by three"
+}
 }
 },
 "eco": {
@@ -4329,6 +7226,30 @@
 "Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
 ]
 ]
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -4351,6 +7272,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"
@@ -4424,6 +7369,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon TRY."
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon TRY."
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon TRY."
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "Bad weights dictionary passed: missing weight for codon TRY."
+}
 }
 },
 "eco": {
@@ -4438,6 +7407,30 @@
 },
 "n_end": {
 "value": null
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
+},
+"cai_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "eco"
+}
 }
 },
 "xxx": {
@@ -4460,6 +7453,30 @@
 }
 },
 "n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"express_nan": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"cai_nan": {
 "exc": {
 "type": "KeyError",
 "msg": "xxx"

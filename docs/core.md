@@ -45,7 +45,9 @@ warnings[0].message; // "Partial codon, len(sequence) not a multiple of three. .
 
 ## Python-compatible helpers (`py/`)
 
-Small functions that let ports reproduce Biopython's behaviour and messages exactly: `pyInt` (Python's `int(str)`), `pyRepr` and `pyStr` (`repr`/`str` of `None`, bools, lists, dicts, and objects with `repr()`), `pyTypeName`/`pyClassRepr` (type names for error messages; `registerPythonClasses(module, names)` teaches it `<class 'Bio.X.Y'>`), `pyEquals` (`==` for plain data), `pyTruthy` and `pyContains` (`in`), `PyTuple` (an array that prints as a Python tuple), `pyPercent` (Python's `format % args`) and `PyFloat` (a float that holds a whole number), `pyFormatG` (`%g` / `format(x, "g")`), `pyTextwrapFill` (`textwrap.fill`: tab expansion, breaking after hyphens, `width`, indents and `breakLongWords`).
+Small functions that let ports reproduce Biopython's behaviour and messages exactly: `pyInt` (Python's `int(str)`), `pyRepr` and `pyStr` (`repr`/`str` of `None`, bools, lists, dicts, and objects with `repr()`), `pyTypeName`/`pyClassRepr` (type names for error messages; `registerPythonClasses(module, names)` teaches it `<class 'Bio.X.Y'>`), `pyEquals` (`==` for plain data), `pyTruthy` and `pyContains` (`in`), `PyTuple` (an array that prints as a Python tuple), `pyPercent` (Python's `format % args`) and `PyFloat` (a float that holds a whole number), `pyFormatG` (`%g` / `format(x, "g")`), `pyTextwrapFill` (`textwrap.fill`: tab expansion, breaking after hyphens, `width`, indents and `breakLongWords`), `pyRound` (`round(x)`) and `pyRoundTo` (`round(x, ndigits)`).
+
+`pyRoundTo` is worth a note, because `Math.round(x * 10 ** n) / 10 ** n` gets ties wrong twice over: Python rounds a tie to the nearest *even* digit, and it decides what a tie is from the double's exact decimal value rather than from the scaled-up one. `round(0.0625, 3)` is 0.062 for the first reason and `round(0.4165, 3)` is 0.416 for the second — as a double, 0.4165 sits just below the midpoint.
 
 ## Python's `random` (`py/random.ts`)
 

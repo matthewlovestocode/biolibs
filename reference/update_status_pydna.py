@@ -122,16 +122,18 @@ if any("value" in c["css"] for c in subs["cases"]):
 if any("value" in c["terminal"] for c in subs["cases"]):
     mark("pydna.common_sub_strings.terminal_overlap")
 
-# pydna's own Seq and ProteinSeq. Every case records every method, so one sequence that was built covers
-# the lot -- except `cai` and `express`, which import the optional `cai2` package. It is not installed in
-# reference/.venv, so both raise ModuleNotFoundError there, which is a fact about this environment and not
-# about pydna; they stay unmarked rather than being recorded as behaviour. `express` also needs a port of
-# the third-party `prettytable` layout its return value is rendered by.
+# pydna's own Seq and ProteinSeq. Every case records every method at every organism, so one sequence that
+# was built covers the lot. `express` is marked on its cells: what it returns is a prettytable table, and
+# that library's rendering is not pydna's, so the layout is neither ported nor claimed.
 pseq = json.load(open(f"{here}/../packages/dseq/test/golden/pydna-seq.json"))
 if pseq["cases"]:
     for member in ("gc", "orfs", "orfs2", "rarecodons", "rc", "reverse_complement", "seguid",
                    "startcodon", "stopcodon", "transcribe", "translate"):
         mark(f"pydna.seq.Seq.{member}")
+    if any("cai" in c["by_organism"]["sce"] for c in pseq["cases"]):
+        mark("pydna.seq.Seq.cai")
+    if any("express" in c["by_organism"]["sce"] for c in pseq["cases"]):
+        mark("pydna.seq.Seq.express")
 if pseq["proteins"]:
     for member in ("__getitem__", "back_transcribe", "complement", "complement_rna", "instability_index",
                    "molecular_weight", "pI", "rc", "reverse_complement", "reverse_complement_rna",

@@ -17,6 +17,42 @@ export function pyRound(x: number): number {
 }
 
 /**
+ * Python's `round(x, ndigits)` for floats.
+ *
+ * Not `Math.round(x * 10 ** n) / 10 ** n`, which gets ties wrong twice over: Python rounds a tie to the
+ * nearest *even* digit, and it decides what a tie is from the double's exact decimal value rather than
+ * from the value scaled up. `round(0.0625, 3)` is 0.062 for both reasons.
+ *
+ * @param x - The value; a non-finite one comes back unchanged, as Python's does.
+ * @param ndigits - How many decimal places to keep.
+ * @returns The rounded value.
+ */
+export function pyRoundTo(x: number, ndigits: number): number {
+  if (!Number.isFinite(x)) return x;
+  // `toFixed` is correctly rounded, and seventeen places past the cut is further than a double can reach,
+  // so what it gives decides every tie the way the exact value would.
+  const text = x.toFixed(Math.min(20, ndigits + 17));
+  const negative = text.startsWith("-");
+  const body = negative ? text.slice(1) : text;
+  const dot = body.indexOf(".");
+  const digits = body.slice(0, dot) + body.slice(dot + 1);
+  const cut = dot + ndigits;
+  const kept = digits.slice(0, cut);
+  const rest = digits.slice(cut);
+  let up = false;
+  if (rest !== "") {
+    const first = rest[0]!;
+    if (first > "5") up = true;
+    // A tie goes up only when something follows the 5, or when the digit before it is odd.
+    else if (first === "5") {
+      up = /[1-9]/.test(rest.slice(1)) || (kept !== "" && Number(kept[kept.length - 1]) % 2 === 1);
+    }
+  }
+  const out = Number(BigInt(kept === "" ? "0" : kept) + (up ? 1n : 0n)) / 10 ** ndigits;
+  return negative ? -out : out;
+}
+
+/**
  * Python's `chr(n)`.
  *
  * @throws {@link ValueError} ("chr() arg not in range(0x110000)") for values outside the Unicode range.

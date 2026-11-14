@@ -1,22 +1,28 @@
 /**
  * Replays the pydna.seq golden cases (reference/golden/gen_pydnaseq_cases.py).
  *
- * `cai` and `express` are absent on purpose: both need the optional `cai2` package, which is not installed
- * in `reference/.venv`, so what they do there is a fact about the environment and not about pydna. The piece
- * of `express` that can be measured — the N-end rule lookup — is here under `n_end`.
+ * `cai` and `express` reach past pydna into the `cai2` package and SciPy, so those cases pin a fourth
+ * library's behaviour; `express` is compared by its cells, since the table around them is `prettytable`'s
+ * rendering rather than anything pydna computes. NaN cannot be written to JSON, so wherever one is the
+ * answer the golden records null and a companion flag says so.
  */
 import { readFileSync } from "node:fs";
-import { ProteinSeq, PydnaSeq } from "@biolibs/dseq";
+import { lol, ProteinSeq, PydnaSeq } from "@biolibs/dseq";
 import { captureWarnings } from "@biolibs/core";
 import { describe, expect, it } from "vitest";
 
 type Guarded<T> = ({ value: T } | { exc: { type: string; msg: string } }) &
   { warnings?: Array<[string, string]> };
+type Cell = string | number | null;
 interface ByOrganism {
   rarecodons: Guarded<Array<[number, number, number]>>;
   startcodon: Guarded<number | null>;
   stopcodon: Guarded<number | null>;
   n_end: Guarded<string | null>;
+  cai: Guarded<number | null>;
+  cai_nan: Guarded<boolean>;
+  express: Guarded<Cell[][]>;
+  express_nan: Guarded<number[]>;
 }
 interface Case {
   data: string;
@@ -97,6 +103,16 @@ describe(`pydna.seq.Seq: parity with pydna ${golden.pydna}`, () => {
         same(want.startcodon, () => s.startcodon(organism), `startcodon ${organism}`);
         same(want.stopcodon, () => s.stopcodon(organism), `stopcodon ${organism}`);
         same(want.n_end, () => s.nEnd(organism), `nEnd ${organism}`);
+        // NaN is recorded as null, so the port's NaN is turned into null the same way before comparing.
+        same(want.cai, () => { const v = s.cai(organism); return Number.isNaN(v) ? null : v; },
+             `cai ${organism}`);
+        same(want.cai_nan, () => Number.isNaN(s.cai(organism)), `cai NaN ${organism}`);
+        same(want.express, () => lol(s.express(organism)).map((row) =>
+          row.map((v) => (typeof v === "number" && Number.isNaN(v) ? null : v))) as Cell[][],
+             `express ${organism}`);
+        same(want.express_nan, () => lol(s.express(organism))[1]!
+          .flatMap((v, i) => (typeof v === "number" && Number.isNaN(v) ? [i] : [])),
+             `express NaN ${organism}`);
       }
     });
   });

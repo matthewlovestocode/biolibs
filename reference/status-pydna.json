@@ -118,6 +118,8 @@
  "pydna.seq.ProteinSeq.seguid": "done",
  "pydna.seq.ProteinSeq.transcribe": "done",
  "pydna.seq.ProteinSeq.translate": "done",
+ "pydna.seq.Seq.cai": "done",
+ "pydna.seq.Seq.express": "done",
  "pydna.seq.Seq.gc": "done",
  "pydna.seq.Seq.orfs": "done",
  "pydna.seq.Seq.orfs2": "done",
