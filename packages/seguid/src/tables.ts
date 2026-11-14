@@ -56,9 +56,10 @@ export function assertInAlphabet(seq: string, alphabet: Iterable<string>): void 
   const allowed = new Set(alphabet);
   if (allowed.size === 0) throw new AssertionError("Argument 'alphabet' must not be empty");
   if (seq.length === 0) return;
-  // The order the unknown symbols are reported in is the order a Python set iterates them, which for
-  // single characters is their hash order; a port cannot reproduce that, so one symbol is reported.
-  const unknown = [...new Set([...seq].filter((c) => !allowed.has(c)))];
+  // Python reports these in the order a set iterates them, which is their hash order and so changes with
+  // the interpreter's hash seed from one run to the next. There is no order here to reproduce, so they are
+  // sorted; every golden case that records this message sorts them the same way.
+  const unknown = [...new Set([...seq].filter((c) => !allowed.has(c)))].sort();
   if (unknown.length > 0) {
     throw new ValueError(`Detected symbols ${JSON.stringify(unknown.join(" ")).replace(/"/g, "'")} not in the 'alphabet'`);
   }

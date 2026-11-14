@@ -9,7 +9,7 @@ listed: the inherited `Bio.Seq` API is already measured under `docs/parity/Bio.S
 """
 import inspect, json
 import pydna
-from pydna import alphabet, common_sub_strings, dseq
+from pydna import alphabet, common_sub_strings, dseq, seq as pydna_seq
 
 #: Dunder members a port has to provide even though their names are private.
 DUNDERS = ("__init__", "__len__", "__getitem__", "__setitem__", "__iter__", "__next__", "__str__",
@@ -68,6 +68,12 @@ inv = {
     # rather than a class, so there is nothing to list for it beyond the two functions.
     "pydna.common_sub_strings": {
         "functions": funcs(common_sub_strings),
+    },
+    # The sequence `Dseqrecord` and the assembly stack are built on. Only what these two classes define
+    # themselves is listed; the Biopython `Seq` behaviour underneath is measured under docs/parity/.
+    "pydna.seq": {
+        "functions": funcs(pydna_seq),
+        "classes": {"Seq": members(pydna_seq.Seq), "ProteinSeq": members(pydna_seq.ProteinSeq)},
     },
 }
 

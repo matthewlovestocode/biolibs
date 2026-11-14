@@ -191,5 +191,40 @@
    "common_sub_strings": "(stringx: str, stringy: str, limit: int = 25) -> List[Tuple[int, int, int]]",
    "terminal_overlap": "(stringx: str, stringy: str, limit: int = 15) -> List[Tuple[int, int, int]]"
   }
+ },
+ "pydna.seq": {
+  "functions": {},
+  "classes": {
+   "Seq": {
+    "cai": "(self, organism: str = 'sce') -> float",
+    "express": "(self, organism: str = 'sce') -> pydna._pretty.PrettyTable",
+    "gc": "(self) -> float",
+    "orfs": "(self, minsize: int = 100) -> List[Tuple[int, int]]",
+    "orfs2": "(self, minsize: int = 30) -> List[str]",
+    "rarecodons": "(self, organism: str = 'sce') -> List[slice]",
+    "rc": "(self)",
+    "reverse_complement": "(self)",
+    "seguid": "(self) -> str",
+    "startcodon": "(self, organism: str = 'sce') -> float | None",
+    "stopcodon": "(self, organism: str = 'sce') -> float | None",
+    "transcribe": "(self) -> Bio.Seq.Seq",
+    "translate": "(self, table: [<class 'str'>, <class 'int'>] = 'Standard', stop_symbol: [<class 'str'>] = '*', to_stop: bool = False, cds: bool = False, gap: str = '-') -> Bio.Seq.Seq"
+   },
+   "ProteinSeq": {
+    "__getitem__": "(self, key)",
+    "back_transcribe": "(self)",
+    "complement": "(self)",
+    "complement_rna": "(self)",
+    "instability_index": "(self) -> float",
+    "molecular_weight": "(self) -> float",
+    "pI": "(self) -> float",
+    "rc": "(self)",
+    "reverse_complement": "(self)",
+    "reverse_complement_rna": "(self)",
+    "seguid": "(self) -> str",
+    "transcribe": "(self)",
+    "translate": "(self)"
+   }
+  }
  }
 }

@@ -122,5 +122,21 @@ if any("value" in c["css"] for c in subs["cases"]):
 if any("value" in c["terminal"] for c in subs["cases"]):
     mark("pydna.common_sub_strings.terminal_overlap")
 
+# pydna's own Seq and ProteinSeq. Every case records every method, so one sequence that was built covers
+# the lot -- except `cai` and `express`, which import the optional `cai2` package. It is not installed in
+# reference/.venv, so both raise ModuleNotFoundError there, which is a fact about this environment and not
+# about pydna; they stay unmarked rather than being recorded as behaviour. `express` also needs a port of
+# the third-party `prettytable` layout its return value is rendered by.
+pseq = json.load(open(f"{here}/../packages/dseq/test/golden/pydna-seq.json"))
+if pseq["cases"]:
+    for member in ("gc", "orfs", "orfs2", "rarecodons", "rc", "reverse_complement", "seguid",
+                   "startcodon", "stopcodon", "transcribe", "translate"):
+        mark(f"pydna.seq.Seq.{member}")
+if pseq["proteins"]:
+    for member in ("__getitem__", "back_transcribe", "complement", "complement_rna", "instability_index",
+                   "molecular_weight", "pI", "rc", "reverse_complement", "reverse_complement_rna",
+                   "seguid", "transcribe", "translate"):
+        mark(f"pydna.seq.ProteinSeq.{member}")
+
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

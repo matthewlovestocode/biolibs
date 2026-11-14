@@ -12,6 +12,12 @@ reference/.venv/bin/pip install biopython scipy pydna seguid
 `scipy` is only needed by `Bio.Align.analysis`'s YN00 and ML methods, which import `scipy.linalg.expm` and
 `scipy.optimize.minimize`; without it those generators cannot run.
 
+One optional dependency is deliberately **not** installed: `cai2`, which `pydna.utils.cai` imports. Two
+members of `pydna.seq` need it — `cai` itself and `express`, which calls it — so both raise
+`ModuleNotFoundError` here and are left unverified in `docs/parity-pydna/` rather than having that recorded
+as pydna's behaviour. Installing it would make them measurable; `express` would still need a port of the
+third-party `prettytable` layout its return value is rendered by.
+
 `pydna` and `seguid` are the second and third upstream libraries this repo ports, for `@biolibs/dseq` and
 `@biolibs/seguid`. Each has its own inventory and status file — `inventory_<library>.py`,
 `status-<library>.json`, `update_status_<library>.py` — and `gen_checklist_lib.py <library>` renders them

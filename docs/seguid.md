@@ -44,7 +44,8 @@ strands of different lengths, a single-stranded alphabet handed to a double-stra
 throws `AssertionError`, and where it raises a `ValueError` — a symbol outside the alphabet, a
 non-complementary pair, an alphabet specification it cannot read — so does this. And the complaint about
 unknown symbols lists them in the order a Python set iterates, which depends on the interpreter's hash
-seed and is not reproducible; the golden cases sort them, and so does the test.
+seed and is not reproducible. There is no order there to port, so this sorts them, and every golden case
+that records the message sorts them the same way.
 
 `minRotation` is Booth's algorithm in the form the reference implements it, including its answer of `-1`
 for `"AA"` — the repetition shortcut returns a negative offset there, which `rotate` then takes modulo

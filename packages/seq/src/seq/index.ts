@@ -37,6 +37,6 @@ export { Seq } from "./seq.js";
 export { MutableSeq } from "./mutable-seq.js";
 export { SeqAbstractBaseClass } from "./base/index.js";
 export type { SubLike } from "./args.js";
-export { translateStr, type TranslateOptions } from "./translate.js";
+export { translateStr, type TableArg, type TranslateOptions } from "./translate.js";
 export { SEQ_RECORD_BRAND } from "./seq-record-brand.js";
 export * from "./functions.js";

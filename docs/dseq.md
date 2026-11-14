@@ -161,3 +161,68 @@ Quirks kept because pydna has them, each pinned by a golden case:
   take, so `getSsMeltsites` and anything that goes through it throw `PatternError: min repeat greater
   than max repeat at position 68` — Python's own complaint, position and all. `getDsMeltsites` and `melt`
   check the length first and answer with nothing instead.
+
+## pydna's own single strand: `PydnaSeq` and `ProteinSeq`
+
+Under `Dseq` sits `pydna.seq`, the class `Dseqrecord` and the whole assembly stack are built on. It is a
+Biopython `Seq` with a handful of extra questions about a coding sequence, and it is exported here as
+`PydnaSeq` because `@biolibs/seq` already has a `Seq` of its own — the same class, under a name that can
+sit beside it.
+
+| Python | biolibs | What it answers |
+|---|---|---|
+| `Seq.gc()` | `gc()` | the G+C fraction, to three decimals |
+| `Seq.rarecodons(organism)` | `rarecodons(organism)` | where the organism's rare codons are |
+| `Seq.startcodon()`, `stopcodon()` | same | how strong the first and last codons are |
+| `Seq.orfs(minsize)` | `orfs(minsize)` | open reading frames in all three forward frames |
+| `Seq.orfs2(minsize)` | `orfs2(minsize)` | the readings in frame 0, longest first |
+| `Seq.seguid()` | `seguid()` | the SEGUID v2 checksum |
+| `Seq.translate()` | `translate()` | the protein, as a `ProteinSeq` |
+| `Seq.transcribe()`, `rc()` | same | RNA, and the reverse complement |
+| `ProteinSeq.molecular_weight()`, `pI()`, `instability_index()` | `molecularWeight()`, `pI()`, `instabilityIndex()` | `Bio.SeqUtils.ProtParam`'s three measurements |
+
+```ts
+import { ProteinSeq, PydnaSeq } from "@biolibs/dseq";
+
+const s = new PydnaSeq("ATGGCCTTTAAATTTGGGTGCTGA");
+s.gc();                       // 0.417
+s.startcodon();               // 1.0  — ATG, the strongest start in yeast
+s.orfs(1);                    // [[0, 24]]
+s.translate().toString();     // "MAFKFGC*"
+new ProteinSeq("MAFKFGC").molecularWeight();   // 803.0033
+```
+
+Several things here are pydna's rather than Biopython's, and are reproduced rather than tidied up:
+
+- `rc` and `reverseComplement` go through pydna's **dscode** table, not Biopython's, so a mixed DNA/RNA
+  sequence is complemented instead of refused — `U` comes back as `O`, and dscode letters complement to
+  their own partners (`PQGATC` → `GATCIJ`).
+- `translate` accepts a `table` argument and then ignores it: upstream builds a fresh Biopython `Seq` and
+  passes everything *except* the table through, so asking for another genetic code silently gets the
+  standard one. The port does the same, so the same call gives the same wrong answer in both.
+- `orfs` and `orfs2` are two different searches, not two spellings of one. `orfs` reads all three forward
+  frames and reports positions; `orfs2` is a regular expression over frame 0 alone, restarted one
+  character past each hit, and reports the sequences. They disagree about what `minsize` means too:
+  `orfs` turns it into a codon count as `ceil(minsize / 3) - 1`, so a limit of 3 asks for no codons at all
+  between start and stop, while `orfs2` counts codons directly.
+- `startcodon("eco")` is null for an ordinary gene, because pydna's `eco` start table does not list `ATG`.
+  Only `sce` has codon weights at all; `rare_codons`, `start`, `stop` and the N-end rule have both. An
+  organism with no table at all raises `KeyError` naming it, and for `nEnd` that happens *before* the
+  translation, because Python evaluates the dict subscript before the argument.
+- `ProteinSeq` refuses `translate`, `complement`, `complementRna`, `reverseComplement`,
+  `reverseComplementRna`, `transcribe`, `backTranscribe` and `rc` with
+  `NotImplementedError: Not defined for protein.`, and `pI` on an empty protein raises `IndexError:
+  string index out of range` from reading a terminal residue that is not there. Slicing either class keeps
+  its own class, as Biopython's `__getitem__` does.
+
+The per-organism numbers are generated from pydna by `reference/gen_pydna_codon_data.py` into
+`src/data/codon.ts`; never edit that file by hand.
+
+**Two methods are not ported: `cai` and `express`.** `cai` is the codon adaptation index, and upstream it
+imports `cai2`, an optional package that is not installed in `reference/.venv`; `express` calls `cai` and
+also returns a `prettytable` table, so porting it means porting that library's layout as well. Both raise
+`ModuleNotFoundError` in the reference environment, which is a fact about the environment rather than about
+pydna, so neither is recorded as behaviour and both are left unchecked in
+[docs/parity-pydna/](parity-pydna/README.md) — 128 of 130. The one piece of `express` that can be measured
+is the N-end rule lookup, which is here as `nEnd` and is compared against the expression pydna composes it
+from.

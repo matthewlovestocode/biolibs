@@ -1,0 +1,5074 @@
+{
+"pydna": "5.5.16",
+"cases": [
+{
+"data": "ATGGCCTTTAAATTTGGGTGCTGA",
+"len": 24,
+"gc": {
+"value": 0.417
+},
+"seguid": {
+"value": "lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc"
+},
+"transcribe": {
+"value": "AUGGCCUUUAAAUUUGGGUGCUGA"
+},
+"translate": {
+"value": "MAFKFGC*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TCAGCACCCAAATTTAAAGGCCAT"
+},
+"reverse_complement": {
+"value": "TCAGCACCCAAATTTAAAGGCCAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": [
+"ATGGCCTTTAAATTTGGGTGCTGA"
+]
+},
+"2": {
+"value": [
+"ATGGCCTTTAAATTTGGGTGCTGA"
+]
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": [
+[
+0,
+24
+]
+]
+},
+"3": {
+"value": [
+[
+0,
+24
+]
+]
+},
+"6": {
+"value": [
+[
+0,
+24
+]
+]
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.3
+},
+"n_end": {
+"value": ">30 h"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "atgGCCtttaaatttgggTGCtga",
+"len": 24,
+"gc": {
+"value": 0.417
+},
+"seguid": {
+"value": "lsseguid=KHB8bb5NZYekmpEs-1GI0bktMYc"
+},
+"transcribe": {
+"value": "augGCCuuuaaauuugggUGCuga"
+},
+"translate": {
+"value": "MAFKFGC*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "tcaGCAcccaaatttaaaGGCcat"
+},
+"reverse_complement": {
+"value": "tcaGCAcccaaatttaaaGGCcat"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": [
+"atgGCCtttaaatttgggTGCtga"
+]
+},
+"2": {
+"value": [
+"atgGCCtttaaatttgggTGCtga"
+]
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": [
+[
+0,
+24
+]
+]
+},
+"3": {
+"value": [
+[
+0,
+24
+]
+]
+},
+"6": {
+"value": [
+[
+0,
+24
+]
+]
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.3
+},
+"n_end": {
+"value": ">30 h"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "CGACGGCCGCCGCTCGCG",
+"len": 18,
+"gc": {
+"value": 0.889
+},
+"seguid": {
+"value": "lsseguid=2tDUvwvghCtnGPUVI_B4oLFrdi4"
+},
+"transcribe": {
+"value": "CGACGGCCGCCGCUCGCG"
+},
+"translate": {
+"value": "RRPPLA"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "CGCGAGCGGCGGCCGTCG"
+},
+"reverse_complement": {
+"value": "CGCGAGCGGCGGCCGTCG"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": [
+[
+0,
+3,
+1
+],
+[
+3,
+6,
+1
+],
+[
+6,
+9,
+1
+],
+[
+9,
+12,
+1
+],
+[
+12,
+15,
+1
+],
+[
+15,
+18,
+1
+]
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": "2 min"
+}
+},
+"eco": {
+"rarecodons": {
+"value": [
+[
+0,
+3,
+1
+],
+[
+3,
+6,
+1
+]
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATGCGACGGTAA",
+"len": 12,
+"gc": {
+"value": 0.5
+},
+"seguid": {
+"value": "lsseguid=GnMFDnbW6vFjqX6MzgDTnLRN058"
+},
+"transcribe": {
+"value": "AUGCGACGGUAA"
+},
+"translate": {
+"value": "MRR*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TTACCGTCGCAT"
+},
+"reverse_complement": {
+"value": "TTACCGTCGCAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": [
+"ATGCGACGGTAA"
+]
+},
+"2": {
+"value": [
+"ATGCGACGGTAA"
+]
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": [
+[
+0,
+12
+]
+]
+},
+"3": {
+"value": [
+[
+0,
+12
+]
+]
+},
+"6": {
+"value": [
+[
+0,
+12
+]
+]
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": [
+[
+3,
+6,
+1
+],
+[
+6,
+9,
+1
+]
+]
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"n_end": {
+"value": "2 min"
+}
+},
+"eco": {
+"rarecodons": {
+"value": [
+[
+3,
+6,
+1
+],
+[
+6,
+9,
+1
+]
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "AGGAGGAGG",
+"len": 9,
+"gc": {
+"value": 0.667
+},
+"seguid": {
+"value": "lsseguid=js7vAokSFNLMvUTDdeTNarlroCk"
+},
+"transcribe": {
+"value": "AGGAGGAGG"
+},
+"translate": {
+"value": "RRR"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "CCTCCTCCT"
+},
+"reverse_complement": {
+"value": "CCTCCTCCT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": "2 min"
+}
+},
+"eco": {
+"rarecodons": {
+"value": [
+[
+0,
+3,
+1
+],
+[
+3,
+6,
+1
+],
+[
+6,
+9,
+1
+]
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATG",
+"len": 3,
+"gc": {
+"value": 0.333
+},
+"seguid": {
+"value": "lsseguid=4xb4QOWFhDsKbhLyg1Z_DqS091A"
+},
+"transcribe": {
+"value": "AUG"
+},
+"translate": {
+"value": "M"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "CAT"
+},
+"reverse_complement": {
+"value": "CAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "TTG",
+"len": 3,
+"gc": {
+"value": 0.333
+},
+"seguid": {
+"value": "lsseguid=Zj4S8bCqOIdrj41w9jPro6NXpCc"
+},
+"transcribe": {
+"value": "UUG"
+},
+"translate": {
+"value": "L"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "CAA"
+},
+"reverse_complement": {
+"value": "CAA"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 0.069
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATA",
+"len": 3,
+"gc": {
+"value": 0.0
+},
+"seguid": {
+"value": "lsseguid=yL2dgJoCXp0V62ncqixyquE0g_A"
+},
+"transcribe": {
+"value": "AUA"
+},
+"translate": {
+"value": "I"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TAT"
+},
+"reverse_complement": {
+"value": "TAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 0.005
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": [
+[
+0,
+3,
+1
+]
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "AAA",
+"len": 3,
+"gc": {
+"value": 0.0
+},
+"seguid": {
+"value": "lsseguid=YG7G6b2Kj_KtFOX63j8mRHHoIlE"
+},
+"transcribe": {
+"value": "AAA"
+},
+"translate": {
+"value": "K"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TTT"
+},
+"reverse_complement": {
+"value": "TTT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "TAA",
+"len": 3,
+"gc": {
+"value": 0.0
+},
+"seguid": {
+"value": "lsseguid=xB9P-cH04YY69SF56HhACROagTs"
+},
+"transcribe": {
+"value": "UAA"
+},
+"translate": {
+"value": "*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TTA"
+},
+"reverse_complement": {
+"value": "TTA"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": 0.47
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "TAG",
+"len": 3,
+"gc": {
+"value": 0.333
+},
+"seguid": {
+"value": "lsseguid=QeqCCOH5-SrG3Ad9SBkgQIFlRL4"
+},
+"transcribe": {
+"value": "UAG"
+},
+"translate": {
+"value": "*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "CTA"
+},
+"reverse_complement": {
+"value": "CTA"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": 0.23
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "TGA",
+"len": 3,
+"gc": {
+"value": 0.333
+},
+"seguid": {
+"value": "lsseguid=BaJDwPb8SgOQX8lNL5daLJH2ua0"
+},
+"transcribe": {
+"value": "UGA"
+},
+"translate": {
+"value": "*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TCA"
+},
+"reverse_complement": {
+"value": "TCA"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": 0.3
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATGTAA",
+"len": 6,
+"gc": {
+"value": 0.167
+},
+"seguid": {
+"value": "lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY"
+},
+"transcribe": {
+"value": "AUGUAA"
+},
+"translate": {
+"value": "M*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TTACAT"
+},
+"reverse_complement": {
+"value": "TTACAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": [
+[
+0,
+6
+]
+]
+},
+"3": {
+"value": [
+[
+0,
+6
+]
+]
+},
+"6": {
+"value": [
+[
+0,
+6
+]
+]
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "TTGTAG",
+"len": 6,
+"gc": {
+"value": 0.333
+},
+"seguid": {
+"value": "lsseguid=2kCMkXO7P7hmSUlEAyl5XI0VdtE"
+},
+"transcribe": {
+"value": "UUGUAG"
+},
+"translate": {
+"value": "L*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "CTACAA"
+},
+"reverse_complement": {
+"value": "CTACAA"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 0.069
+},
+"stopcodon": {
+"value": 0.23
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATGAAATGAATGAAATAA",
+"len": 18,
+"gc": {
+"value": 0.167
+},
+"seguid": {
+"value": "lsseguid=uWJ4M-alWvhuKyvC6Hhgsh9fGNU"
+},
+"transcribe": {
+"value": "AUGAAAUGAAUGAAAUAA"
+},
+"translate": {
+"value": "MK*MK*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TTATTTCATTCATTTCAT"
+},
+"reverse_complement": {
+"value": "TTATTTCATTCATTTCAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": [
+"ATGAAATGA",
+"ATGAAATAA"
+]
+},
+"2": {
+"value": [
+"ATGAAATGAATGAAATAA"
+]
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": [
+[
+0,
+9
+],
+[
+9,
+18
+]
+]
+},
+"3": {
+"value": [
+[
+0,
+9
+],
+[
+9,
+18
+]
+]
+},
+"6": {
+"value": [
+[
+0,
+9
+],
+[
+9,
+18
+]
+]
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"n_end": {
+"value": "3 min"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATGATGATGTAA",
+"len": 12,
+"gc": {
+"value": 0.25
+},
+"seguid": {
+"value": "lsseguid=VXjyOtTrVtrgXJv_XlPMaIJ8LXo"
+},
+"transcribe": {
+"value": "AUGAUGAUGUAA"
+},
+"translate": {
+"value": "MMM*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TTACATCATCAT"
+},
+"reverse_complement": {
+"value": "TTACATCATCAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": [
+"ATGATGATGTAA",
+"ATGATGTAA"
+]
+},
+"2": {
+"value": [
+"ATGATGATGTAA"
+]
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": [
+[
+0,
+12
+],
+[
+3,
+12
+],
+[
+6,
+12
+]
+]
+},
+"3": {
+"value": [
+[
+0,
+12
+],
+[
+3,
+12
+],
+[
+6,
+12
+]
+]
+},
+"6": {
+"value": [
+[
+0,
+12
+],
+[
+3,
+12
+],
+[
+6,
+12
+]
+]
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.47
+},
+"n_end": {
+"value": ">30 h"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATGAAAAAAAAA",
+"len": 12,
+"gc": {
+"value": 0.083
+},
+"seguid": {
+"value": "lsseguid=3eE03xkLP5QepcwgfpkV5yqxK2I"
+},
+"transcribe": {
+"value": "AUGAAAAAAAAA"
+},
+"translate": {
+"value": "MKKK"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TTTTTTTTTCAT"
+},
+"reverse_complement": {
+"value": "TTTTTTTTTCAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": "3 min"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATGTGAATGTGAATGTGAATGTGA",
+"len": 24,
+"gc": {
+"value": 0.333
+},
+"seguid": {
+"value": "lsseguid=eBLKyc7zAD-mtCaKNJ58lAi7GyI"
+},
+"transcribe": {
+"value": "AUGUGAAUGUGAAUGUGAAUGUGA"
+},
+"translate": {
+"value": "M*M*M*M*"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TCACATTCACATTCACATTCACAT"
+},
+"reverse_complement": {
+"value": "TCACATTCACATTCACATTCACAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": [
+"ATGTGAATGTGA",
+"ATGTGAATGTGA",
+"ATGTGAATGTGA"
+]
+},
+"2": {
+"value": [
+"ATGTGAATGTGA",
+"ATGTGAATGTGA",
+"ATGTGAATGTGA"
+]
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": [
+[
+0,
+6
+],
+[
+6,
+12
+],
+[
+12,
+18
+],
+[
+18,
+24
+]
+]
+},
+"3": {
+"value": [
+[
+0,
+6
+],
+[
+6,
+12
+],
+[
+12,
+18
+],
+[
+18,
+24
+]
+]
+},
+"6": {
+"value": [
+[
+0,
+6
+],
+[
+6,
+12
+],
+[
+12,
+18
+],
+[
+18,
+24
+]
+]
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": 0.3
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "AATGAAATAACATGAAATAG",
+"len": 20,
+"gc": {
+"value": 0.2
+},
+"seguid": {
+"value": "lsseguid=qiyUZnDWMJYBYyA9TUlPyOcMjw8"
+},
+"transcribe": {
+"value": "AAUGAAAUAACAUGAAAUAG"
+},
+"translate": {
+"value": "NEIT*N",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "CTATTTCATGTTATTTCATT"
+},
+"reverse_complement": {
+"value": "CTATTTCATGTTATTTCATT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": [
+"ATGAAATAA",
+"ATGAAATAG"
+]
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": [
+[
+1,
+10
+],
+[
+11,
+20
+]
+]
+},
+"3": {
+"value": [
+[
+1,
+10
+],
+[
+11,
+20
+]
+]
+},
+"6": {
+"value": [
+[
+1,
+10
+],
+[
+11,
+20
+]
+]
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": 0.23
+},
+"n_end": {
+"value": "30 min"
+}
+},
+"eco": {
+"rarecodons": {
+"value": [
+[
+6,
+9,
+1
+]
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "CCATGAAATAACCATGAAATGA",
+"len": 22,
+"gc": {
+"value": 0.318
+},
+"seguid": {
+"value": "lsseguid=QMWnNzrdKzVe4H_CVFaao1JPQDw"
+},
+"transcribe": {
+"value": "CCAUGAAAUAACCAUGAAAUGA"
+},
+"translate": {
+"value": "P*NNHEM",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "TCATTTCATGGTTATTTCATGG"
+},
+"reverse_complement": {
+"value": "TCATTTCATGGTTATTTCATGG"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": [
+"ATGAAATAA",
+"ATGAAATGA"
+]
+},
+"2": {
+"value": [
+"ATGAAATAACCATGA"
+]
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": [
+[
+13,
+22
+],
+[
+2,
+11
+]
+]
+},
+"3": {
+"value": [
+[
+13,
+22
+],
+[
+2,
+11
+]
+]
+},
+"6": {
+"value": [
+[
+13,
+22
+],
+[
+2,
+11
+]
+]
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": 0.3
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATGGCCT",
+"len": 7,
+"gc": {
+"value": 0.571
+},
+"seguid": {
+"value": "lsseguid=EjjDiqmMUh-rjcNAaKxxkNnrWnE"
+},
+"transcribe": {
+"value": "AUGGCCU"
+},
+"translate": {
+"value": "MA",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "AGGCCAT"
+},
+"reverse_complement": {
+"value": "AGGCCAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": ">30 h"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATGGCCTT",
+"len": 8,
+"gc": {
+"value": 0.5
+},
+"seguid": {
+"value": "lsseguid=Wyzu-Pjq_wFQdRWpp0Hdl2P1SQQ"
+},
+"transcribe": {
+"value": "AUGGCCUU"
+},
+"translate": {
+"value": "MA",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "AAGGCCAT"
+},
+"reverse_complement": {
+"value": "AAGGCCAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": ">30 h"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "A",
+"len": 1,
+"gc": {
+"value": 0.0
+},
+"seguid": {
+"value": "lsseguid=bc1M4j2I4u6VaLpUbAB8Y9kTHBs"
+},
+"transcribe": {
+"value": "A"
+},
+"translate": {
+"value": "",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "T"
+},
+"reverse_complement": {
+"value": "T"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "AC",
+"len": 2,
+"gc": {
+"value": 0.5
+},
+"seguid": {
+"value": "lsseguid=sfs77G_bIuGalP5MbESBzLou6fA"
+},
+"transcribe": {
+"value": "AC"
+},
+"translate": {
+"value": "",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "GT"
+},
+"reverse_complement": {
+"value": "GT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "AUGGCCUUU",
+"len": 9,
+"gc": {
+"value": 0.444
+},
+"seguid": {
+"value": "lsseguid=SGlY8BUjsEnt9m3QWH-W1hXJH5k"
+},
+"transcribe": {
+"value": "AUGGCCUUU"
+},
+"translate": {
+"value": "MAF"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "OOOGGCCOT"
+},
+"reverse_complement": {
+"value": "OOOGGCCOT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": ">30 h"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "aUgGCc",
+"len": 6,
+"gc": {
+"value": 0.667
+},
+"seguid": {
+"value": "lsseguid=flR0A3gR-rMUJUqQ_NxIoXB3ORw"
+},
+"transcribe": {
+"value": "aUgGCc"
+},
+"translate": {
+"value": "MA"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "gGCcOt"
+},
+"reverse_complement": {
+"value": "gGCcOt"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": ">30 h"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATGGCCUUU",
+"len": 9,
+"gc": {
+"value": 0.444
+},
+"seguid": {
+"value": "lsseguid=7E0WX7Um2r4Okt6RsysxPZGppH0"
+},
+"transcribe": {
+"value": "AUGGCCUUU"
+},
+"translate": {
+"value": "MAF"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "OOOGGCCAT"
+},
+"reverse_complement": {
+"value": "OOOGGCCAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 1.0
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": ">30 h"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "PQGATC",
+"len": 6,
+"gc": {
+"value": 0.5
+},
+"seguid": {
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'P Q' not in the 'alphabet'"
+}
+},
+"transcribe": {
+"value": "PQGAUC"
+},
+"translate": {
+"exc": {
+"type": "TranslationError",
+"msg": "Codon 'PQG' is invalid"
+}
+},
+"translate_class": {
+"exc": {
+"type": "TranslationError",
+"msg": "Codon 'PQG' is invalid"
+}
+},
+"rc": {
+"value": "GATCIJ"
+},
+"reverse_complement": {
+"value": "GATCIJ"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": "30 min"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "GATCIJ",
+"len": 6,
+"gc": {
+"value": 0.5
+},
+"seguid": {
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols 'I J' not in the 'alphabet'"
+}
+},
+"transcribe": {
+"value": "GAUCIJ"
+},
+"translate": {
+"exc": {
+"type": "TranslationError",
+"msg": "Codon 'CIJ' is invalid"
+}
+},
+"translate_class": {
+"exc": {
+"type": "TranslationError",
+"msg": "Codon 'CIJ' is invalid"
+}
+},
+"rc": {
+"value": "PQGATC"
+},
+"reverse_complement": {
+"value": "PQGATC"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"exc": {
+"type": "TranslationError",
+"msg": "Codon 'CIJ' is invalid"
+}
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"exc": {
+"type": "TranslationError",
+"msg": "Codon 'CIJ' is invalid"
+}
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "",
+"len": 0,
+"gc": {
+"value": 0
+},
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+"transcribe": {
+"value": ""
+},
+"translate": {
+"value": ""
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": ""
+},
+"reverse_complement": {
+"value": ""
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "GCGCGCGC",
+"len": 8,
+"gc": {
+"value": 1.0
+},
+"seguid": {
+"value": "lsseguid=qCrdCnYiGgRKcygCSdzcxw1oyv4"
+},
+"transcribe": {
+"value": "GCGCGCGC"
+},
+"translate": {
+"value": "AR",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "GCGCGCGC"
+},
+"reverse_complement": {
+"value": "GCGCGCGC"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": [
+[
+0,
+3,
+1
+],
+[
+3,
+6,
+1
+]
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": "2 min"
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ATATATAT",
+"len": 8,
+"gc": {
+"value": 0.0
+},
+"seguid": {
+"value": "lsseguid=t_dfDu9gSrtWtulwpRvdW_yxSQY"
+},
+"transcribe": {
+"value": "AUAUAUAU"
+},
+"translate": {
+"value": "IY",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "ATATATAT"
+},
+"reverse_complement": {
+"value": "ATATATAT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": 0.005
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": "10 min"
+}
+},
+"eco": {
+"rarecodons": {
+"value": [
+[
+0,
+3,
+1
+]
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "GGGCCCAAA",
+"len": 9,
+"gc": {
+"value": 0.667
+},
+"seguid": {
+"value": "lsseguid=sdN3kb2c-rGQSbyj2J2mSjRiUQk"
+},
+"transcribe": {
+"value": "GGGCCCAAA"
+},
+"translate": {
+"value": "GPK"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "TTTGGGCCC"
+},
+"reverse_complement": {
+"value": "TTTGGGCCC"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": ">5 h"
+}
+},
+"eco": {
+"rarecodons": {
+"value": [
+[
+3,
+6,
+1
+]
+]
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "N",
+"len": 1,
+"gc": {
+"value": 0
+},
+"seguid": {
+"value": "lsseguid=tRpgc02mS-DmGLrL6ihlqKfc1mk"
+},
+"transcribe": {
+"value": "N"
+},
+"translate": {
+"value": "",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "N"
+},
+"reverse_complement": {
+"value": "N"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ACGTN",
+"len": 5,
+"gc": {
+"value": 0.5
+},
+"seguid": {
+"value": "lsseguid=T6Ui8Ob1p7E-Fhos2OgACs4YIqI"
+},
+"transcribe": {
+"value": "ACGUN"
+},
+"translate": {
+"value": "T",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"translate_class": {
+"value": "ProteinSeq",
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+},
+"rc": {
+"value": "NACGT"
+},
+"reverse_complement": {
+"value": "NACGT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null,
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null,
+"warnings": [
+[
+"BiopythonWarning",
+"Partial codon, len(sequence) not a multiple of three. Explicitly trim the sequence or add trailing N before translation. This may become an error in future."
+]
+]
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+},
+{
+"data": "ACGTRYMKSWHBVDN",
+"len": 15,
+"gc": {
+"value": 0.5
+},
+"seguid": {
+"value": "lsseguid=-OFDTxNj2M1-AYVl2YeLSuCo8UU"
+},
+"transcribe": {
+"value": "ACGURYMKSWHBVDN"
+},
+"translate": {
+"value": "TXXXX"
+},
+"translate_class": {
+"value": "ProteinSeq"
+},
+"rc": {
+"value": "NHBVDWSMKRYACGT"
+},
+"reverse_complement": {
+"value": "NHBVDWSMKRYACGT"
+},
+"rc_class": {
+"value": "Seq"
+},
+"orfs2": {
+"1": {
+"value": []
+},
+"2": {
+"value": []
+},
+"30": {
+"value": []
+}
+},
+"orfs": {
+"1": {
+"value": []
+},
+"3": {
+"value": []
+},
+"6": {
+"value": []
+},
+"100": {
+"value": []
+}
+},
+"by_organism": {
+"sce": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"eco": {
+"rarecodons": {
+"value": []
+},
+"startcodon": {
+"value": null
+},
+"stopcodon": {
+"value": null
+},
+"n_end": {
+"value": null
+}
+},
+"xxx": {
+"rarecodons": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"startcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"stopcodon": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+},
+"n_end": {
+"exc": {
+"type": "KeyError",
+"msg": "xxx"
+}
+}
+}
+}
+}
+],
+"proteins": [
+{
+"data": "MAFKFGC",
+"len": 7,
+"seguid": {
+"value": "lsseguid=SbqGNUem1srNaEpV_rEkqxLriPk"
+},
+"molecular_weight": {
+"value": 803.0033
+},
+"pI": {
+"value": 7.975528907775878
+},
+"instability_index": {
+"value": 4.7285714285714295
+},
+"getitem": {
+"value": [
+"AFK",
+"ProteinSeq"
+]
+},
+"refusals": {
+"translate": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"back_transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "M",
+"len": 1,
+"seguid": {
+"value": "lsseguid=xjrm3U_J-d2maXDoJ9E_fHP-hBw"
+},
+"molecular_weight": {
+"value": 149.2113
+},
+"pI": {
+"value": 5.275022315979004
+},
+"instability_index": {
+"value": 0.0
+},
+"getitem": {
+"value": [
+"",
+"ProteinSeq"
+]
+},
+"refusals": {
+"translate": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"back_transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "MA",
+"len": 2,
+"seguid": {
+"value": "lsseguid=gxJcyHp7R7x_bUkYXOuVhfQJvq0"
+},
+"molecular_weight": {
+"value": 220.2892
+},
+"pI": {
+"value": 5.275022315979004
+},
+"instability_index": {
+"value": 66.7
+},
+"getitem": {
+"value": [
+"A",
+"ProteinSeq"
+]
+},
+"refusals": {
+"translate": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"back_transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "MAFKFGC*",
+"len": 8,
+"seguid": {
+"exc": {
+"type": "ValueError",
+"msg": "Detected symbols '*' not in the 'alphabet'"
+}
+},
+"molecular_weight": {
+"exc": {
+"type": "ValueError",
+"msg": "''*'' is not a valid unambiguous letter for protein"
+}
+},
+"pI": {
+"value": 7.975528907775878
+},
+"instability_index": {
+"exc": {
+"type": "KeyError",
+"msg": "*"
+}
+},
+"getitem": {
+"value": [
+"AFK",
+"ProteinSeq"
+]
+},
+"refusals": {
+"translate": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"back_transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "ACDEFGHIKLMNPQRSTVWY",
+"len": 20,
+"seguid": {
+"value": "lsseguid=tRntFmqHM23Z-bMbNDfKXFC1-Es"
+},
+"molecular_weight": {
+"value": 2395.7134
+},
+"pI": {
+"value": 6.784552192687988
+},
+"instability_index": {
+"value": 84.74000000000001
+},
+"getitem": {
+"value": [
+"CDE",
+"ProteinSeq"
+]
+},
+"refusals": {
+"translate": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"back_transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "",
+"len": 0,
+"seguid": {
+"exc": {
+"type": "AssertionError",
+"msg": "A sequence must not be empty"
+}
+},
+"molecular_weight": {
+"value": 18.0153
+},
+"pI": {
+"exc": {
+"type": "IndexError",
+"msg": "string index out of range"
+}
+},
+"instability_index": {
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+"getitem": {
+"value": [
+"",
+"ProteinSeq"
+]
+},
+"refusals": {
+"translate": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"back_transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "MXZ",
+"len": 3,
+"seguid": {
+"value": "lsseguid=DqDeLDsq90RkYqscCx229C-ipTQ"
+},
+"molecular_weight": {
+"exc": {
+"type": "ValueError",
+"msg": "''X'' is not a valid unambiguous letter for protein"
+}
+},
+"pI": {
+"value": 5.275022315979004
+},
+"instability_index": {
+"exc": {
+"type": "KeyError",
+"msg": "X"
+}
+},
+"getitem": {
+"value": [
+"XZ",
+"ProteinSeq"
+]
+},
+"refusals": {
+"translate": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"back_transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+},
+{
+"data": "mafkfgc",
+"len": 7,
+"seguid": {
+"value": "lsseguid=SbqGNUem1srNaEpV_rEkqxLriPk"
+},
+"molecular_weight": {
+"value": 803.0033
+},
+"pI": {
+"value": 7.975528907775878
+},
+"instability_index": {
+"value": 4.7285714285714295
+},
+"getitem": {
+"value": [
+"afk",
+"ProteinSeq"
+]
+},
+"refusals": {
+"translate": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"reverse_complement_rna": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"back_transcribe": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+},
+"rc": {
+"exc": {
+"type": "NotImplementedError",
+"msg": "Not defined for protein."
+}
+}
+}
+}
+]
+}
