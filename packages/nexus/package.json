@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/nexus",
   "version": "0.1.0",
-  "description": "Port of Biopython Bio.Nexus: NEXUS file parsing and writing, trees",
+  "description": "NEXUS files, verified against Biopython: blocks, character matrices, character sets and trees, read and written, with the translate tables PAUP and MrBayes write (Bio.Nexus)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

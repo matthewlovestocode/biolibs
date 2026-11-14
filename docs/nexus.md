@@ -1,6 +1,11 @@
 # @biolibs/nexus
 
-A TypeScript port of Biopython's `Bio.Nexus`: read, edit and write NEXUS files, plus the tree classes it uses. Verified against Biopython 1.88: `packages/nexus/test/golden/nexus.json` (about 340 recorded sessions of operations on `Nexus`, `Tree`, `Node`, `StandardData`, `combine` and `consensus`) and `packages/seqio/test/golden/seqio-nexus.json` (about 700 parse, read, write and convert calls through `SeqIO`). See [PARITY.md](../PARITY.md).
+A TypeScript port of Biopython's `Bio.Nexus`: read, edit and write NEXUS files, plus the tree classes it uses. All **84 items** are at parity, verified against Biopython 1.88 by **425 recorded sessions**
+(`packages/nexus/test/golden/nexus.json`: 140 on trees, 119 on `Nexus`, 95 on the module functions, 28 on
+`combine`, 25 on `consensus`, 18 on `StandardData`) and a further **706 cases** reaching this package
+through `SeqIO`'s `nexus` format (`packages/seqio/test/golden/seqio-nexus.json`). See
+[PARITY.md](../PARITY.md), and [the package README](../packages/nexus/README.md) for the API with worked
+examples.
 
 ## Reading
 
@@ -34,6 +39,8 @@ Differences from Python:
 - `combine` raises `RuntimeError` ("dictionary keys changed during iteration") when the first matrix has character or taxon sets: Biopython renames them while iterating over the dictionary.
 - `constant` is checked against Biopython only for deterministic cases; with ambiguity codes Python builds sets whose order is not stable.
 - `Tree.isPreterminal` reproduces Biopython's inverted test (true for a leaf, false for any internal node).
+- A `taxa` block on its own may leave `taxlabels` empty, as it does in Biopython: the labels are kept only when a matrix or a `dimensions ntax=` in the same block gives them somewhere to go.
+- Most `Tree` methods take node **ids**, not taxon names (`searchTaxon` converts), and `isMonophyletic` returns the clade's node id or `-1` rather than a boolean.
 - A JavaScript stack overflow stands for Python's `RecursionError` on cyclic trees.
 
 ## Trees
