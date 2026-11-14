@@ -1,6 +1,10 @@
 # @biolibs/seqrecord
 
-A TypeScript port of Biopython's `Bio.SeqRecord`: a sequence together with its identifiers, annotations and features. Verified against Biopython 1.88 with about 6,100 recorded calls (results, exception types and messages, warnings, and the full state of the record after every call, including hidden side effects such as the lazy creation of `letterAnnotations`). See [PARITY.md](../PARITY.md).
+A TypeScript port of Biopython's `Bio.SeqRecord`: a sequence together with its identifiers, annotations and features. Verified against Biopython 1.88 with **6,773 recorded calls** (results, exception types and messages,
+warnings, and the full state of the record after every call, including hidden side effects such as the
+lazy creation of `letterAnnotations`). 1,857 of them record a refusal and 693 a warning; 3,150 are slices
+alone. All 25 items are at parity. See [PARITY.md](../PARITY.md), and
+[the package README](../packages/seqrecord/README.md) for the API with worked examples.
 
 ```ts
 import { Seq } from "@biolibs/seq";
@@ -88,7 +92,17 @@ rec.translate({ table: 11, cds: true, id: true });
 
 ## `format(fileFormat)`
 
-`rec.format("")` returns the same text as `toString()`. Other formats are produced by writers registered in `SeqRecord.writers` (a `Map<string, (record) => string>`); `@biolibs/seqio` will register `fasta`, `genbank`, and so on when it is ported. Until then an unknown format throws `KeyError`, as in Biopython.
+`rec.format("")` returns the same text as `toString()`. Other formats are produced by writers registered
+in `SeqRecord.writers` (a `Map<string, (record) => string>`). **Importing `@biolibs/seqio` registers 26
+of them** — `fasta`, `fasta-2line`, `genbank`, `gb`, `embl`, `imgt`, the four `fastq` flavours, `qual`,
+`clustal`, `maf`, `mauve`, `nexus`, `phylip` and its two variants, `stockholm`, `nib`, `phd`, `pir`,
+`seqxml`, `sff`, `tab` and `xdna`. A format with no writer registered throws `KeyError`, as Biopython
+raises for a format it does not know.
+
+```ts
+import "@biolibs/seqio";       // registers the writers
+rec.format("fasta");           // ">id1 desc1\nATGAAATAGCCC\n"
+```
 
 ## Intentional differences from Python
 
@@ -96,7 +110,6 @@ rec.translate({ table: 11, cds: true, id: true });
 - When joining records, Biopython prints "Failed while try to concatenate letter annotations" before re-raising the `TypeError`; we just re-raise.
 - Tuples and lists are both arrays, so per-letter annotations and annotation values do not distinguish them.
 - Where Python raises `AttributeError` for a wrong argument type, TypeScript throws `TypeError`.
-- `Bio.SeqIO` is not ported yet, so `format()` supports only the empty format.
 
 ## Source layout
 

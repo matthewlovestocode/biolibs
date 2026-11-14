@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/seqrecord",
   "version": "0.1.0",
-  "description": "Sequence records with annotations and features (Biopython Bio.SeqRecord)",
+  "description": "A sequence with everything a file knows about it, verified against Biopython: slicing that carries features and per-letter annotations, concatenation that merges metadata, reverseComplement and translate, 26 output formats (Bio.SeqRecord)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

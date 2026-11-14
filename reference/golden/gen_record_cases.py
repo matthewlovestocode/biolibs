@@ -76,6 +76,10 @@ REFF = FEAT(LOC(1, 3, 1, "NC_9.1"), "misc")
 EXON = FEAT(CL([LOC(0, 2, 1), LOC(5, 7, 1)]), "mRNA")
 FUZZ = FEAT(LOC({"$": "pos", "cls": "BeforePosition", "v": 1}, {"$": "pos", "cls": "AfterPosition", "v": 6}, 1), "region")
 UNK = FEAT(LOC({"$": "pos", "cls": "UnknownPosition"}, X(5), 1), "weird")
+# An unknown *end*, which is the case that makes reverse_complement fail: flipping turns it into an
+# unknown start, and sorting the flipped features then compares None with an int. An unknown start
+# (UNK above) flips to a known one, so it sorts fine -- the two are not symmetrical.
+UNKEND = FEAT(LOC(X(2), {"$": "pos", "cls": "UnknownPosition"}, 1), "weird")
 Q8 = [("quality", LST(*[40] * 8)), ("label", "abcdefgh")]
 R = {
  "full": REC(S("ACGTACGT"), "r1", "n1", "d1", ["DB:1", "DB:2"], [GENE, CDS], [("molecule_type", "DNA"), ("organism", "X y"), ("n", 5), ("tags", LST("a", "b"))], Q8),
@@ -95,6 +99,9 @@ R = {
  "unknownfeat2": REC(S("ACGTACGT"), "r15", "n15", "d15", [], [GENE, UNK]),
  "nummol": REC(S("ACGTACGT"), "r16", "n16", "d16", [], [], [("molecule_type", 5)]),
  "empty": REC(S(""), "r17", "n17", "d17"),
+ "unkendfeat": REC(S("ACGTACGT"), "r18", "n18", "d18", [], [UNKEND, GENE]),
+ "unkendfeat2": REC(S("ACGTACGT"), "r19", "n19", "d19", [], [GENE, UNKEND]),
+ "unkendonly": REC(S("ACGTACGT"), "r20", "n20", "d20", [], [UNKEND]),
 }
 RL = list(R.values())
 
