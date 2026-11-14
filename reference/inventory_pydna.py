@@ -81,10 +81,13 @@ inv = {
         "classes": {"SeqRecord": members(seqrecord.SeqRecord),
                     "ProteinSeqRecord": members(seqrecord.ProteinSeqRecord)},
     },
-    # Only the one helper from pydna.utils that the record layer uses; the rest of that module belongs
-    # with Dseqrecord and is listed when it is ported.
+    # Only what the record layer uses from pydna.utils: the label cleaner the slice naming needs, and the
+    # four location helpers Dseqrecord's feature handling rests on. The rest of that module is listed as
+    # the methods that call it are ported.
     "pydna.utils": {
-        "functions": {"identifier_from_string": sig(utils.identifier_from_string)},
+        "functions": {name: sig(getattr(utils, name)) for name in
+                      ("flatten", "identifier_from_string", "location_boundaries", "shift_feature",
+                       "shift_location")},
     },
 }
 

@@ -179,5 +179,9 @@
  "pydna.seqrecord.SeqRecord.startcodon": "done",
  "pydna.seqrecord.SeqRecord.stopcodon": "done",
  "pydna.seqrecord.SeqRecord.translate": "done",
- "pydna.utils.identifier_from_string": "done"
+ "pydna.utils.flatten": "done",
+ "pydna.utils.identifier_from_string": "done",
+ "pydna.utils.location_boundaries": "done",
+ "pydna.utils.shift_feature": "done",
+ "pydna.utils.shift_location": "done"
 }

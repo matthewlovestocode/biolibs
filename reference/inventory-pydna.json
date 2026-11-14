@@ -265,7 +265,7 @@
     "reverse_complement": "(self, *args, **kwargs)",
     "seguid": "(self)",
     "sorted_features": "(self)",
-    "stamp": "(self, now=<function SeqRecord.datefunction at 0x10a7d0250>, tool='pydna', separator=' ', comment='')",
+    "stamp": "(self, now=<function SeqRecord.datefunction at 0x1087c4250>, tool='pydna', separator=' ', comment='')",
     "startcodon": "(self, organism='sce')",
     "stopcodon": "(self, organism='sce')",
     "translate": "(self)"
@@ -286,7 +286,11 @@
  },
  "pydna.utils": {
   "functions": {
-   "identifier_from_string": "(s: str) -> str"
+   "flatten": "(*args) -> List",
+   "identifier_from_string": "(s: str) -> str",
+   "location_boundaries": "(loc: Bio.SeqFeature.SimpleLocation | Bio.SeqFeature.CompoundLocation)",
+   "shift_feature": "(feature, shift, lim)",
+   "shift_location": "(original_location, shift, lim)"
   }
  }
 }

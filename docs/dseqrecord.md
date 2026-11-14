@@ -83,3 +83,43 @@ a.comment();                // "pydna lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY 2026-
 `format("fasta")` and the other file formats come from `@biolibs/seqio`, which registers the writers when
 it is imported. This package does not depend on the IO layer, so a program that wants those formats imports
 `@biolibs/seqio` itself; `"primer"` and `"pydnafasta"` are pydna's own and need nothing.
+
+## Moving features around a circle
+
+`locations.ts` ports the four helpers from `pydna.utils` that the record layer rests on. One of them earns
+its own section.
+
+```ts
+import { locationBoundaries, shiftFeature, shiftLocation } from "@biolibs/dseqrecord";
+
+// A feature on a 10-base circle, written as two parts because it spans the origin.
+const spanning = new CompoundLocation([new SimpleLocation(8, 10, 1), new SimpleLocation(0, 2, 1)]);
+shiftLocation(spanning, 2, 10).toString();      // "[0:4](+)" — one stretch again under the new origin
+locationBoundaries(spanning);                   // [8, 2] — begin after end, which is how a wrap is spotted
+```
+
+`shiftLocation` is what rewrites every feature whenever a circular molecule's origin moves — and it moves
+whenever one is cut open, rotated or re-closed. A part that runs off the end is split in two; two parts that
+end up adjacent are joined back into one, which is how an origin-spanning feature becomes a single stretch
+and the other way round. A mistake here does not raise. It moves annotations onto the wrong bases, which is
+why it is measured on its own over 1,140 shift-and-limit combinations rather than only through the methods
+that call it.
+
+Three things it does that are worth knowing:
+
+- **`locationBoundaries` is not the lowest and highest base.** It is the first part's start and the last
+  part's end, reversed for the minus strand — so for a feature that spans the origin the pair comes back
+  the "wrong" way round, with the beginning numerically *after* the end. Callers rely on that: testing
+  `boundaries[0] < boundaries[1]` is how pydna finds the features that wrap.
+- **pydna's own assertion gives way more often than one might expect.** Any limit shorter than the location
+  wraps it onto itself and changes how many bases it covers, and `assert len(newloc) == len(original)` then
+  fails — a bare `assert`, so it carries no message, and neither does this. 283 of the recorded cases end
+  that way; they are recorded rather than avoided, because that is what the function does.
+- **A zero-length location with no limit raises `ValueError: min() iterable argument is empty`**, from
+  Python's `min` being handed a location covering no bases at all.
+
+One bug of my own, which only the `lim = null` cases caught. With no limit pydna wraps around `sys.maxsize`,
+and my Python-style modulo computed `((a % b) + b) % b` — but at that magnitude a double's neighbours are
+two thousand apart, so `(5 % maxsize) + maxsize` is just `maxsize` again and the 5 was lost. Every location
+on a linear sequence came out as the whole of it. The non-negative case now returns `a % b` directly, which
+is exact, and is the only path a linear sequence ever takes since the negative ones are refused earlier.

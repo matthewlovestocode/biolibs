@@ -163,6 +163,19 @@ if psr["proteins"]:
         mark(f"pydna.seqrecord.ProteinSeqRecord.{member}")
 if psr["identifiers"]:
     mark("pydna.utils.identifier_from_string")
+
+# The location helpers Dseqrecord's feature handling rests on. `shift_location` is measured over every
+# shape that makes it decide -- parts landing on the origin, parts that split, adjacent parts that join,
+# zero-length parts -- because a mistake there does not raise, it moves annotations onto the wrong bases.
+ploc = json.load(open(f"{here}/../packages/dseqrecord/test/golden/pydna-locations.json"))
+if any("value" in c["after"] for c in ploc["cases"]):
+    mark("pydna.utils.shift_location")
+if any("value" in c["boundaries"] for c in ploc["cases"]):
+    mark("pydna.utils.location_boundaries")
+if any("value" in c["result"] for c in ploc["features"]):
+    mark("pydna.utils.shift_feature")
+if ploc["flatten"]:
+    mark("pydna.utils.flatten")
 if pseq["proteins"]:
     for member in ("__getitem__", "back_transcribe", "complement", "complement_rna", "instability_index",
                    "molecular_weight", "pI", "rc", "reverse_complement", "reverse_complement_rna",
