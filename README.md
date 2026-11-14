@@ -5,7 +5,7 @@ few packages that have no Python equivalent.
 
 - **23 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,693 API items at parity** across three upstream libraries — every applicable item of all three
-- **17,561 tests**, replaying answers recorded from the real Python libraries
+- **17,578 tests**, replaying answers recorded from the real Python libraries
 
 > **Not published to npm yet.** Clone and build; see [Building](#building).
 
@@ -44,7 +44,7 @@ absent from the inventory the checklists are generated from until this was notic
 | [`@biolibs/align`](packages/align) | `Bio.Align` | 175 | `PairwiseAligner` with scoring and alignment, `Alignment`, `MultipleSeqAlignment`, the substitution matrices, `CodonAligner`, dN/dS, and every alignment file format Biopython reads or writes. [README](packages/align/README.md) |
 | [`@biolibs/phylo`](packages/phylo) | `Bio.Phylo` | 489 | `Tree`/`Clade` with search and editing, Newick, NEXUS and phyloXML both ways, consensus, UPGMA, neighbour joining, parsimony. NeXML, CDAO and drawing are not ported. [README](packages/phylo/README.md) |
 | [`@biolibs/pdb`](packages/pdb) | `Bio.PDB` | 502 | the structure hierarchy with disorder, `PDBParser`, `MMCIFParser`, `PDBIO`, `MMCIFIO`, header parsing, `Vector`, `Polypeptide`, `Superimposer`, `NeighborSearch`/`KDTree`, SASA — plus internal coordinates both ways. DSSP needs an external program. [README](packages/pdb/README.md) |
-| [`@biolibs/restriction`](packages/restriction) | `Bio.Restriction` | 491 | 1,088 enzymes: `search`, `catalyse`, `RestrictionBatch`, `Analysis` and its text layouts |
+| [`@biolibs/restriction`](packages/restriction) | `Bio.Restriction` | 491 | all 1,088 REBASE enzymes: `search`, `catalyse` linear or circular, `RestrictionBatch`, `Analysis` and its three text layouts. [README](packages/restriction/README.md) |
 | [`@biolibs/motifs`](packages/motifs) | `Bio.motifs` | 173 | `Motif`, position matrices, scoring, thresholds, and the JASPAR, TRANSFAC, Cluster-Buster, MEME, MAST, AlignACE, XMS and PFM readers |
 | [`@biolibs/nexus`](packages/nexus) | `Bio.Nexus` | 84 | the `Nexus` class, `Tree`, `Node`, `StandardData`, `StepMatrix`, `combine`, `consensus` — and `bootstrap`, `randomize` and `display`, which need Python's own random number generator |
 | [`@biolibs/seqtools`](packages/seqtools) | `Bio.SeqUtils` | 39 | GC content and skew, `nt_search`, `seq1`/`seq3`, molecular weight, six-frame translations, codon adaptation, checksums, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp` |
@@ -89,7 +89,7 @@ Biopython checklist, because it is a port of CPython itself: 1,253 recorded case
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 17,561 tests
+npm test           # vitest — 17,578 tests
 npm run coverage   # per-file coverage
 ```
 

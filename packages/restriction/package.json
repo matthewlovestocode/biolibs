@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/restriction",
   "version": "0.1.0",
-  "description": "Port of Biopython Bio.Restriction: restriction enzymes, cut sites, digests, batches and analysis",
+  "description": "All 1,088 REBASE restriction enzymes, verified against Biopython: where each cuts, digests linear or circular, batches with set arithmetic, and Analysis with its three text layouts (Bio.Restriction)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
