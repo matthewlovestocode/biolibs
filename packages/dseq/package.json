@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/dseq",
   "version": "0.1.0",
-  "description": "pydna's sequence layer: Dseq (double-stranded DNA with explicit ends) and pydna's own Seq and ProteinSeq",
+  "description": "Double-stranded DNA whose ends are part of the molecule, verified against pydna: sticky ends that refuse to ligate wrongly, cutting, end chemistry, melting, circles, and pydna's own Seq and ProteinSeq",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

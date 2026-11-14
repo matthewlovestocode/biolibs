@@ -84,7 +84,7 @@ getCutsites(plasmid, [enzymes.EcoRI]);      // [{ watson: 3, ovhg: -4, enzyme: E
 cut(plasmid, [enzymes.EcoRI, enzymes.BamHI]).map((f) => f.figure());
 ```
 
-## What this slice covers, and what it does not
+## What is covered, and what is not
 
 Ported and measured against pydna 5.5.16: construction from one strand, from two strands with an explicit
 or an inferred overhang, from a full sequence with overhangs and from a drawn representation; both
@@ -115,8 +115,14 @@ identified. The checksums themselves are in [@biolibs/seguid](seguid.md).
 
 That completes `pydna.dseq` and `pydna.alphabet`: [the checklist](parity-pydna/README.md) is 102 of 102,
 with `__hash__` on both classes marked not applicable, since Python sets it to `None` wherever `__eq__` is
-defined without it and JavaScript has no hashing protocol to port. `Assembly` is the next piece of pydna
-and is not started.
+defined without it and JavaScript has no hashing protocol to port. With `pydna.seq`'s 26 items this
+package is **128 of 128**, verified by 208 recorded sessions holding 1,717 operations.
+
+`pydna.common_sub_strings`, the homology matcher the assembly stack starts from, is
+[`@biolibs/assembly`](../packages/assembly). `pydna.assembly2` itself is not ported: it needs
+`pydna.contig` and a provenance model built on pydantic.
+
+See [the package README](../packages/dseq/README.md) for the API with worked examples.
 
 Quirks kept because pydna has them, each pinned by a golden case:
 

@@ -5,7 +5,7 @@ few packages that have no Python equivalent.
 
 - **23 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,693 API items at parity** across three upstream libraries — every applicable item of all three
-- **17,629 tests**, replaying answers recorded from the real Python libraries
+- **17,643 tests**, replaying answers recorded from the real Python libraries
 
 > **Not published to npm yet.** Clone and build; see [Building](#building).
 
@@ -54,7 +54,7 @@ absent from the inventory the checklists are generated from until this was notic
 
 | Package | Replaces | At parity | Notes |
 |---|---|---|---|
-| [`@biolibs/dseq`](packages/dseq) | `pydna.dseq`, `pydna.alphabet`, `pydna.seq` | 128 | double-stranded DNA whose sticky ends, nicks and circularity are part of the molecule, one letter per base *pair*; plus pydna's own `Seq` and `ProteinSeq` |
+| [`@biolibs/dseq`](packages/dseq) | `pydna.dseq`, `pydna.alphabet`, `pydna.seq` | 128 | double-stranded DNA whose sticky ends, nicks and circularity are part of the molecule, one letter per base *pair*, so a bad ligation is refused rather than joined; plus pydna's own `Seq` and `ProteinSeq`. [README](packages/dseq/README.md) |
 | [`@biolibs/dseqrecord`](packages/dseqrecord) | `pydna.seqrecord`, `pydna.dseqrecord`, part of `pydna.utils` | 92 / 95 | that molecule with a name, features and annotations; cutting, joining, rotating — every operation carrying the features with it |
 | [`@biolibs/assembly`](packages/assembly) | `pydna.common_sub_strings` | 2 | the shared-homology matcher Gibson assembly and homologous recombination both start from |
 | [`@biolibs/seguid`](packages/seguid) | [seguid](https://github.com/seguid/seguid-python) | 23 | SEGUID v2 checksums: one identifier for a sequence however it is rotated, and whichever strand you call watson |
@@ -89,7 +89,7 @@ Biopython checklist, because it is a port of CPython itself: 1,253 recorded case
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 17,629 tests
+npm test           # vitest — 17,643 tests
 npm run coverage   # per-file coverage
 ```
 
