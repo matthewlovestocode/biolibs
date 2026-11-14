@@ -59,7 +59,7 @@ def run(case):
 
 unrunnable, undefined = [], []
 def add(c):
-    res = run_isolated(run, c)
+    res = run_isolated(run, c, expect_death=True)
     if res is None: unrunnable.append(c); return          # the child died every time; `isolate` has named it
     r = res.get("result")
     # In rare cases Biopython's path generator keeps producing (undefined) paths beyond the number it counted: leave those out.

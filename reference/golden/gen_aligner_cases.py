@@ -121,7 +121,7 @@ def quiet_crashes():
 
 crashed = []
 def add(c):
-    res = run_isolated(run, c, in_child=quiet_crashes)
+    res = run_isolated(run, c, in_child=quiet_crashes, expect_death=True)   # FOGSAA segfaults on some inputs
     if res is None:
         crashed.append(c)
         return

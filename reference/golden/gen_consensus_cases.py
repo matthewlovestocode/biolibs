@@ -1,7 +1,21 @@
 """Golden cases for Bio.Phylo.Consensus -> packages/phylo/test/golden/consensus.json
 
-Set iteration order inside Biopython's Adam consensus depends on hashing, so every case is evaluated in two processes with different
-PYTHONHASHSEED values and kept only when the results agree.
+Two kinds of set iteration order leak into Biopython's Adam consensus, and neither is something a port could
+be asked to match.
+
+The first is ordinary string hashing: `_BitString` is a `str` subclass, and `_part` iterates a set of them.
+That depends on PYTHONHASHSEED, so every case is evaluated in two processes with different seeds and kept
+only when they agree.
+
+The second cannot be caught that way, and is why this file did not reproduce. `_sub_clade` builds
+`tc.clades` and `child_clade.clades` out of *sets of Clade objects*, which hash by identity -- that is, by
+address. PYTHONHASHSEED does not touch identity hashes, so both seeds agree with each other and the answer
+still changes whenever the objects land somewhere else, which a different Biopython, Python or machine is
+enough to do. What moves is only the order of a clade's children, never the topology: perturbing both the
+allocation pattern and `Clade.__hash__` itself leaves every one of the 83 Adam cases unchanged once the
+children are sorted. So the Adam cases are recorded with each clade's children in a canonical order, which
+is how `consensus.test.ts` has always compared them -- the port's own order differs for the same reason, and
+there is no order to agree on. Sorting at the point of recording rather than dropping the cases keeps all 956.
 """
 import io, json, os, random, subprocess, sys
 sys.path.insert(0, os.path.dirname(__file__))
@@ -13,7 +27,29 @@ OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "phylo", "
 
 def tree(text): return Phylo.read(io.StringIO(text), "newick")
 
+def canon_clade(c):
+    """One encoded clade with its children sorted by their own canonical form.
+
+    Adam consensus orders a clade's children by the identity hashes of Clade objects, so the order is the
+    order they happened to be allocated in. Sorting makes the record reproducible without touching the
+    topology, which is all the test compares anyway.
+    """
+    if not isinstance(c, dict): return c
+    kids = sorted((canon_clade(k) for k in c.get("clades", [])), key=lambda k: json.dumps(k, sort_keys=True))
+    return {**{k: v for k, v in c.items() if k != "clades"}, "clades": kids}
+
+def canon_answer(answer):
+    """An answer with its tree canonicalised, for the functions whose child order is not reproducible."""
+    result = answer.get("result")
+    if isinstance(result, dict) and isinstance(result.get("root"), dict):
+        return {**answer, "result": {**result, "root": canon_clade(result["root"])}}
+    return answer
+
 def run(case):
+    answer = _run(case)
+    return canon_answer(answer) if case["fn"] == "adam" else answer
+
+def _run(case):
     fn = case["fn"]
     try:
         if fn in ("strict", "majority", "adam"):
@@ -105,4 +141,4 @@ r1, r2 = evaluate(1), evaluate(2)
 kept = [dict(c, **a) for c, a, b in zip(cases, r1, r2) if a == b]
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(kept, open(OUT, "w"), indent=0)
-print(len(kept), "cases of", len(cases), "(the rest depend on set iteration order)")
+print(len(kept), "cases of", len(cases), "(the rest depend on string hash order; Adam's child order is sorted)")

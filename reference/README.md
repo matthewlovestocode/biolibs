@@ -41,11 +41,44 @@ npm test              # replay everything against the TypeScript implementation
 
 Golden JSON files live in `packages/<pkg>/test/golden/` and are committed, so the TypeScript tests run without Python.
 
-A regeneration must reproduce the committed files. Each generator seeds its own `random.Random`, so the cases it builds
-are fixed; what used to vary was which of them survived, because a case was dropped in silence whenever its forked
-child died — from a crash, or from the case's own code raising where nothing caught it. `golden/isolate.py` now retries
-a child that died without answering, raises a generator's own error instead of swallowing it, and prints any case it
-still cannot run, so a run that loses coverage says so rather than quietly committing a smaller suite.
+A regeneration must reproduce the committed files, and four of them did not. Each generator seeds its own
+`random.Random`, so the cases it builds are fixed; what varied was the answers, for three separate reasons, all of
+them now closed. Any new golden file should be checked against them, because none announces itself:
+
+**A set of strings decides something.** Python randomises string hashing per process, so a set iterates differently
+on every run. `gen_seqio_cases.py` picked the tag to rename out of `list(set(...))`, which is why the seqxml,
+snapgene and uniprot-xml files — all three of which mutate XML through the same helper — were different every time.
+Sorting the set fixed it. `gen_seguid_cases.py` had the same bug in the symbols it reported as unknown. The way to
+catch this one is to run the generator twice under different `PYTHONHASHSEED` values.
+
+**A set of objects decides something.** This one survives that check, which is why `consensus.json` took longest to
+explain: `Bio.Phylo.Consensus._sub_clade` builds a clade's children out of sets of `Clade` objects, and those hash
+by *identity*. `PYTHONHASHSEED` has no effect on identity hashes, so both seeds agreed and the answer still moved
+whenever the objects were allocated somewhere else — which a different Biopython, Python or machine is enough to do.
+Probing it by perturbing allocation works but only samples; the generator now detects the branch structurally and
+drops every case that reaches it.
+
+**A case died and was dropped.** `motifs.json` was none of the above, and the cause turned out to be `fork` itself.
+One of its cases dies of SIGSEGV or SIGABRT on *every* attempt in about one run in three, and comes through untouched
+in the others; the case was then dropped and the file came out a case shorter. The case is innocent — on its own in
+a fresh interpreter it survives two hundred forks out of two hundred — and so is every one of its operations. What
+kills it is the state three thousand earlier cases have left in the parent, which `fork` hands to the child whole.
+Retrying cannot help, since all ten attempts inherit the same thing, and nor can excluding the case: with it gone the
+failure rate fell from a third of runs to a twelfth, which is the next unlucky case taking its place.
+
+So `golden/isolate.py` gained a last resort that leaves the parent out of it. A generator calls `eval_entrypoint`
+once, after its runners are defined, and passes `fresh_eval=<runner name>` to `run_isolated`; when every fork has
+died, the case is tried once more in a new interpreter started on the generator's own file, which has run nothing
+and inherits nothing. Fifteen runs of `gen_motif_cases.py` then produced the same file fifteen times, where before
+four runs in fourteen could not finish. Only that generator needs it so far: for the ones whose inputs really do
+crash Biopython a fresh interpreter would crash too, and they would pay a subprocess for each of the 120 cases
+it cannot save.
+
+Two things back that up. `isolate.py` now *raises* when every attempt at a case dies, unless the generator passed
+`expect_death=True` — which only the generators built on the FOGSAA aligner do — so a run that cannot measure what
+the last run measured stops rather than writing a smaller file. And `gen_alignment_cases.py` pins the number of
+cases it cannot build at all, which is none: two used to be, and they were flakes as well, written off after three
+attempts where ten are now allowed.
 
 ## What counts as "done"
 

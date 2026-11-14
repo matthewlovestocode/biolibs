@@ -846,12 +846,15 @@ def mutate_xml(t, rnd):
         if not m: return t
         x = rnd.choice(m); return t[:x.start()] + t[x.end():]
     if k == "rename":
-        tags = list(set(re.findall(r"<([A-Za-z]+)[ />]", t)))
+        # Sorted, not just de-duplicated: a set of strings iterates in hash order, which Python randomises per
+        # process, so `rnd.choice` over `list(set(...))` picked a different tag on every run and the golden file
+        # it fed never matched the committed one.
+        tags = sorted(set(re.findall(r"<([A-Za-z]+)[ />]", t)))
         if not tags: return t
         a = rnd.choice(tags); b = rnd.choice(["entry", "species", "description", "DNAseq", "property", "foo", "DBRef", "AAseq"])
         return re.sub(r"<(/?)%s([ />])" % a, r"<\1%s\2" % b, t)
     if k == "renameopen":
-        tags = list(set(re.findall(r"<([A-Za-z]+)[ />]", t)))
+        tags = sorted(set(re.findall(r"<([A-Za-z]+)[ />]", t)))
         if not tags: return t
         a = rnd.choice(tags); return t.replace("<%s" % a, "<%sX" % a, 1)
     if k == "dropline" and len(lines) > 1: del lines[rnd.randrange(len(lines))]; return "\n".join(lines)

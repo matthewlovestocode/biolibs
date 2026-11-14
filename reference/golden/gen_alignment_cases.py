@@ -10,7 +10,7 @@ from Bio import Align
 from Bio.Align import Alignment, PairwiseAligner, substitution_matrices as SM
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
+from isolate import eval_entrypoint, run_isolated, report_skipped   # one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "align", "test", "golden", "alignment.json")
 rnd = random.Random(11)
@@ -157,20 +157,28 @@ def quiet_crashes():
     for sig in (4, 5, 6, 10, 11): libc.signal(sig, exit_ptr)      # SIGILL, SIGTRAP, SIGABRT, SIGBUS, SIGSEGV
 
 
-crashed = []
+#: How many cases cannot be built at all, which is none. Two used to be, and they were not crashing inputs
+#: after all: `fork` hands the child everything the parent has accumulated, and some of that is not safe to
+#: inherit, so a case can die on every attempt in one run and be fine in the next. Ten attempts were not
+#: enough on their own -- one run in several lost eight cases this way -- so a case whose forks all die gets
+#: one last attempt in a fresh interpreter, which has inherited nothing. The number is pinned because a
+#: dropped case does not show in the file's diff, only in its size.
+UNBUILDABLE = 0
+
+crashed, unbuildable = [], []
 def add(c):
-    res = run_isolated(run, c)
+    res = run_isolated(run, c, expect_death=True, fresh_eval="run")
     if res is None:
         # retry op by op to keep the cases that do not crash
         ops = c["ops"]; kept = []
         for i, op in enumerate(ops):
             single = dict(c, ops=[op])
-            r1 = run_isolated(run, single)
+            r1 = run_isolated(run, single, expect_death=True, fresh_eval="run")
             if r1 is not None: kept.append(op)
             else: crashed.append(op)
         c = dict(c, ops=kept)
-        res = run_isolated(run, c)
-        if res is None: return
+        res = run_isolated(run, c, expect_death=True, fresh_eval="run")
+        if res is None: unbuildable.append(c); return
     # A zero-width selection of three or more rows makes Biopython's printed-alignment parser read uninitialised
     # memory (its coordinate array comes back empty); that behaviour is undefined, so those operations are not recorded.
     if "ops_out" in res:
@@ -178,6 +186,10 @@ def add(c):
         res["ops_out"] = [res["ops_out"][i] for i in keep]
         c = dict(c, ops=[c["ops"][i] for i in keep])
     c.update(res); cases.append(c)
+
+# Nothing below this line runs when `isolate` started this process to evaluate a single case: it answers that
+# case with `run` and exits, so none of the forking that is the problem ever happens here.
+eval_entrypoint({"run": run})
 
 DNA, PROT = "ACGT", "ACDEFGHIKLMNPQRSTVWY"
 def rs(alpha, lo=1, hi=12): return "".join(rnd.choice(alpha) for _ in range(rnd.randint(lo, hi)))
@@ -413,5 +425,10 @@ for _ in range(200):
     lines = ["".join(rnd.choice("ACGT--" if rnd.random() < .7 else "ACGT") for _ in range(w)) for _ in range(n)]
     add({"kind": "alignment", "sequences": ["A"], "coordinates": None, "printed": [l for l in lines], "ops": [["parse_printed", lines]]})
 report_skipped()
+if len(unbuildable) != UNBUILDABLE:
+    raise SystemExit(f"{len(unbuildable)} case(s) could not be built, not the {UNBUILDABLE} this file is written "
+                     f"from. Nothing has been written: the file would be a different size for a reason it does not "
+                     f"record. Forking is not always safe here, so run it again before believing it.")
 json.dump({"biopython": Bio.__version__, "cases": cases}, open(OUT, "w"), separators=(",", ":"))
-print(len(crashed), "crashing ops dropped;", len(cases), "cases,", sum("exc" in c for c in cases), "raise ->", os.path.relpath(OUT))
+print(len(crashed), "crashing ops dropped;", len(unbuildable), "unbuildable;", len(cases), "cases,",
+      sum("exc" in c for c in cases), "raise ->", os.path.relpath(OUT))

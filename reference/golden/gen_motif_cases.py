@@ -9,7 +9,7 @@ from Bio import motifs
 from Bio.motifs import jaspar, transfac, matrix as M
 from Bio.motifs.thresholds import ScoreDistribution
 from Bio.Seq import Seq
-from isolate import run_isolated, report_skipped   # shared: one forked child per case, retried if it dies
+from isolate import eval_entrypoint, run_isolated, report_skipped   # one forked child per case, retried if it dies
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "motifs", "test", "golden", "motifs.json")
 rnd = random.Random(202)
@@ -50,9 +50,18 @@ def enc_motif(m):
     return out
 
 
+#: Set when this process was started by `isolate` to evaluate one case in a fresh interpreter. Everything below
+#: still runs -- building the cases is cheap and the runners are defined on the way down -- but nothing is
+#: measured, so the forks that are the whole problem never happen. `eval_entrypoint` at the foot of the file
+#: answers the one case it was given and exits before the golden file is written.
+EVALUATING = bool(os.environ.get("ISOLATE_EVAL"))
+
 def add(fn, c):
-    res = run_isolated(fn, c)
-    if res is None: return          # the case could not be run at all; `isolate` has said so
+    if EVALUATING: return
+    # `fresh_eval` names the runner for `eval_entrypoint`, so a case whose every forked child dies gets one last
+    # attempt somewhere that has inherited nothing. One case here needs it in about a third of runs.
+    res = run_isolated(fn, c, fresh_eval=fn.__name__)
+    if res is None: return          # unreachable: `isolate` raises instead, rather than write a shorter file
     c.update(res); cases.append(c)
 
 def attempt(f):
@@ -533,6 +542,8 @@ for cls in ("freq", "pwm", "pssm"):
     right = {"cls": "freq", "alphabet": "ACGT", "rows": [[k, [9.0, 9.0, 9.0]] for k in "ACGT"]}
     add(run_matrixcmp, {"kind": "matrixcmp", "left": left, "right": right, "ops": [[k, w] for k in CMP_OPS for w in WHATS]})
 
+eval_entrypoint({"run_matrix": run_matrix, "run_motif": run_motif, "run_io": run_io,
+                 "run_matrixcmp": run_matrixcmp})
 json.dump({"biopython": __import__("Bio").__version__, "cases": cases}, open(OUT, "w"))
 print(len(cases), "cases ->", OUT)
 report_skipped()

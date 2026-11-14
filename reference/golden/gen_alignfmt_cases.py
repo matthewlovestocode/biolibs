@@ -231,9 +231,9 @@ def run(case):
 
 cases = []
 def add(c):
-    res = run_isolated(run, c)
+    res = run_isolated(run, c, expect_death=True)
     if res is None: return
-    if run_isolated(run, c) != res: return        # a case whose result changes between runs depends on uninitialised memory
+    if run_isolated(run, c, expect_death=True) != res: return        # a case whose result changes between runs depends on uninitialised memory
     # Rows of unequal length make Biopython's printed-alignment parser return coordinates that depend on uninitialised memory
     for a in res.get("result", {}).get("alns", []) if isinstance(res.get("result"), dict) else []:
         if len({len(r) for r in a["rows"] if isinstance(r, str)}) > 1: return
