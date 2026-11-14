@@ -1,6 +1,17 @@
 # @biolibs/phylo
 
-`Bio.Phylo`: phylogenetic trees. This package replaces the earlier string-based scaffold (`TreeNode`, `parseNewick`) with a port of Biopython's classes, verified against Biopython 1.88 on about 800 tree cases (about 3,000 method calls, with the tree checked after each one), 950 consensus cases and 420 tree-construction cases. Ported: `BaseTree` (`Tree`, `Clade`, `TreeMixin`, `TreeElement`, `BranchColor`), the Newick `Tree`/`Clade` classes (exported as `Newick.Tree` and `Newick.Clade`), the Newick `Parser` and `Writer`, the nexus reader and writer, and `parse`, `read`, `write` and `convert`. `Consensus` and `TreeConstruction` are ported too (see below). `PhyloXML` and `PhyloXMLIO` are ported too, verified on about 1,100 more cases (see below). Not ported yet: NeXML, CDAO, drawing, and what uses Python's `random` (`Tree.randomized` and the bootstrap functions).
+`Bio.Phylo`: phylogenetic trees. All **489 items** are at parity, verified against Biopython 1.88 on
+**3,329 recorded cases**: 806 tree cases (driving some 3,000 method calls, with the whole tree compared
+after each one), 1,130 phyloXML cases, 956 consensus cases, 418 tree-construction cases and 19 dN/dS
+matrices.
+
+Ported: `BaseTree` (`Tree`, `Clade`, `TreeMixin`, `TreeElement`, `BranchColor`), the Newick `Tree`/`Clade`
+classes (exported as `Newick.Tree` and `Newick.Clade`), the Newick `Parser` and `Writer`, the nexus reader
+and writer, `parse`/`read`/`write`/`convert`, `Consensus`, `TreeConstruction`, `PhyloXML` and
+`PhyloXMLIO`. Not ported: NeXML, CDAO, drawing (`draw` and `draw_ascii` need matplotlib), and what uses
+Python's `random` — `Tree.randomized` and the three bootstrap functions.
+
+See [the package README](../packages/phylo/README.md) for the API with worked examples.
 
 ## Reading and writing
 
@@ -10,8 +21,13 @@ import { read, parse, write } from "@biolibs/phylo";
 const tree = read("((A:0.1,B:0.2)90:0.3,(C:0.4,D:0.5):0.6);", "newick");
 tree.getTerminals().map((c) => c.name);        // ["A", "B", "C", "D"]
 let out = "";
-write(tree, { write: (s) => { out += s; } }, "newick");   // "((A:0.1,B:0.2)90:0.3,(C:0.4,D:0.5):0.6);\n"
+write(tree, { write: (s) => { out += s; } }, "newick");
+// out === "((A:0.1,B:0.2)90.00:0.3,(C:0.4,D:0.5):0.6):0;\n"
 ```
+
+Reading and writing is **not** a round trip, in this port or in Biopython: the Newick writer formats a
+confidence with `"%1.2f"` by default, so `90` comes back as `90.00`, and it always writes a root branch
+length, so the tree gains a trailing `:0`. Pass `formatConfidence` or `plain` for something else.
 
 `parse(text, format, options)` yields each tree (even for one tree), `read` returns the only tree (`ValueError` for none or several), `write(trees, target, format, options)` writes to anything with `write(text)` and returns the number of trees, and `convert` does both. Formats: `"newick"`, `"nexus"` and `"phyloxml"`; an unknown name is a `KeyError`. Options use camel case: `valuesAreConfidence`, `commentsAreConfidence`, `rooted` for the Newick reader; `plain`, `confidenceAsBranchLength`, `branchLengthOnly`, `plainNewick`, `ladderize`, `maxConfidence`, `formatConfidence`, `formatBranchLength` for the writer (the two formats are Python `%` strings such as `"%1.2f"`).
 

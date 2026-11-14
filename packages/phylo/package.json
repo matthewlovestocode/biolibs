@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/phylo",
   "version": "0.1.0",
-  "description": "Phylogenetic trees (Biopython Bio.Phylo)",
+  "description": "Phylogenetic trees, verified against Biopython: Tree and Clade with search and editing, Newick, NEXUS and phyloXML both ways, strict/majority/Adam consensus, UPGMA, neighbour joining and parsimony (Bio.Phylo)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

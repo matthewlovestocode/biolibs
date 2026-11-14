@@ -5,7 +5,7 @@ few packages that have no Python equivalent.
 
 - **23 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,590 API items at parity** across three upstream libraries
-- **17,513 tests**, replaying answers recorded from the real Python libraries
+- **17,539 tests**, replaying answers recorded from the real Python libraries
 
 > **Not published to npm yet.** Clone and build; see [Building](#building).
 
@@ -38,7 +38,7 @@ uninitialised memory, say — are marked rather than claimed; each checklist say
 | [`@biolibs/seqrecord`](packages/seqrecord) | `Bio.SeqRecord` | 25 | slicing and concatenation that carry features and per-letter annotations, `reverseComplement`, `translate`, 26 output formats. [README](packages/seqrecord/README.md) |
 | [`@biolibs/seqio`](packages/seqio) | `Bio.SeqIO` | 81 | 49 formats in and 26 out — text, binary and XML — plus `index`. `index_db` is not ported: its index lives in an SQLite file. [README](packages/seqio/README.md) |
 | [`@biolibs/align`](packages/align) | `Bio.Align` | 175 | `PairwiseAligner` with scoring and alignment, `Alignment`, `MultipleSeqAlignment`, the substitution matrices, `CodonAligner`, dN/dS, and every alignment file format Biopython reads or writes. [README](packages/align/README.md) |
-| [`@biolibs/phylo`](packages/phylo) | `Bio.Phylo` | 489 | `Tree`/`Clade`, Newick, Nexus and PhyloXML I/O, consensus trees, tree construction. NeXML, CDAO and drawing are not ported |
+| [`@biolibs/phylo`](packages/phylo) | `Bio.Phylo` | 489 | `Tree`/`Clade` with search and editing, Newick, NEXUS and phyloXML both ways, consensus, UPGMA, neighbour joining, parsimony. NeXML, CDAO and drawing are not ported. [README](packages/phylo/README.md) |
 | [`@biolibs/pdb`](packages/pdb) | `Bio.PDB` | 399 | the structure hierarchy with disorder, `PDBParser`, `MMCIFParser`, `PDBIO`, `MMCIFIO`, header parsing, `Vector`, `Polypeptide`, `Superimposer`, `NeighborSearch`/`KDTree`, SASA. Internal coordinates and DSSP are not ported |
 | [`@biolibs/restriction`](packages/restriction) | `Bio.Restriction` | 491 | 1,088 enzymes: `search`, `catalyse`, `RestrictionBatch`, `Analysis` and its text layouts |
 | [`@biolibs/motifs`](packages/motifs) | `Bio.motifs` | 173 | `Motif`, position matrices, scoring, thresholds, and the JASPAR, TRANSFAC, Cluster-Buster, MEME, MAST, AlignACE, XMS and PFM readers |
@@ -85,7 +85,7 @@ Biopython checklist, because it is a port of CPython itself: 1,253 recorded case
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 17,513 tests
+npm test           # vitest — 17,539 tests
 npm run coverage   # per-file coverage
 ```
 
