@@ -123,3 +123,67 @@ and my Python-style modulo computed `((a % b) + b) % b` — but at that magnitud
 two thousand apart, so `(5 % maxsize) + maxsize` is just `maxsize` again and the 5 was lost. Every location
 on a linear sequence came out as the whole of it. The non-negative case now returns `a % b` directly, which
 is exact, and is the only path a linear sequence ever takes since the negative ones are refused earlier.
+
+## `Dseqrecord`: the molecule with its features
+
+`Dseqrecord` is where pydna's two halves meet. `Dseq` knows what is opposite every base — the sticky ends,
+the nicks, whether the molecule is closed — and the record knows what it is called and what is annotated on
+it. Together they are a plasmid or a fragment as somebody actually works with one.
+
+```ts
+import { Dseqrecord } from "@biolibs/dseqrecord";
+
+const p = new Dseqrecord("atgtaa", true);     // a tiny circular plasmid
+p.repr();                                      // "Dseqrecord(o6)"
+p.addFeature(5, 1);                            // a feature that runs through the origin
+p.shifted(2).features[0]!.location!.toString();  // the same feature, renumbered
+p.slice(4, 2).repr();                          // "Dseqrecord(-4)" — a piece through the origin
+```
+
+What makes this more than the sum of the two halves is that **every operation has to carry the features
+with it**, and nothing complains when that goes wrong — the annotations simply end up on the wrong bases.
+So:
+
+- **`looped` drops a feature that no longer fits.** Closing a molecule shortens it by its overhangs, and a
+  feature spanning both of them has nowhere to go.
+- **`shifted` renumbers every feature and re-sorts them** by where they now start.
+- **`slice` on a circle, where the end is before the start, rotates first** and then keeps only the
+  features that fit inside the piece and do not themselves wrap. A circular slice whose start equals its
+  stop asks for the whole circle opened at that point, which is a cut, so it goes through `applyCut`.
+- **`applyCut` carries a feature lying inside the overhang across to the far end** of the opened molecule,
+  because that is where those bases now are, and drops one that straddles the cut.
+- **`add` shifts the right-hand features twice**: Biopython moves them by the left molecule's length, and
+  pydna then applies a further, *negative* offset when the two ends overlap, because the joined molecule is
+  shorter than the sum of its parts.
+- **`reverseComplement` flips each part of a location where it stands** and sorts the features by their new
+  start. Flipping only the outer start and end would turn an origin-spanning feature into one covering the
+  whole molecule.
+
+Six behaviours are reproduced rather than tidied up:
+
+- **`upper` and `lower` lose circularity.** `Dseq.upper` builds a fresh sequence that knows nothing of
+  pydna's `circular` flag, and pydna does not put it back, so upper-casing a plasmid hands back a linear
+  molecule.
+- **`tolinear` does not linearise anything.** It warns that it is obsolete, then returns a copy: the line
+  that would open the molecule is commented out upstream.
+- **`addFeature`'s wrapping branch needs both positions to be *truthy*,** so a feature starting at base
+  zero never wraps however circular the molecule is. It also fills the label in *after* building the
+  feature, on the dictionary the feature already holds, and asks `isorf` before the label is there.
+- **`findAa` reads the overhang before checking whether it found anything**, so on a molecule whose `ovhg`
+  is None — one with single-stranded stretches at both ends — it raises `TypeError: '>' not supported
+  between instances of 'NoneType' and 'int'` even when the amino acids are simply absent.
+- **`contains` and `findAa` pad differently.** `contains` puts the padding `n`s at the front and `findAa`
+  at the back, so the two read different frames. They are not two spellings of one search.
+- **`shifted` on a circle of no length raises `ZeroDivisionError: division by zero`**, from `shift % 0`.
+
+Not in this slice, and unchecked in [docs/parity-pydna/](parity-pydna/README.md) — 212 of 225: cutting with
+enzymes (`cut`, `linearize`, `number_of_cuts` and the six cutter queries), `synced`, and the output formats
+(`format`, `write`, `figure`).
+
+**Not portable, and marked as such:** `history`, `source`, `validate_history`, `normalize_history` and
+`is_amplicon` need `pydna.opencloning_models` — 1,421 lines of pydantic describing a provenance interchange
+format, which is a port of its own rather than part of the molecule. Usefully, `__eq__` deletes `source`
+from both sides before comparing, so carrying it unset changes nothing a caller can observe.
+`copy_gb_to_clipboard` and `copy_fasta_to_clipboard` need a clipboard, `map_trace_files` reads ABI files off
+disk, `display_html` is for Jupyter, and `__hash__` hashes the instance dictionary and so moves with the
+interpreter's hash seed.

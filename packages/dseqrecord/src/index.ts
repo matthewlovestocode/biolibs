@@ -11,10 +11,12 @@
  * - `identifier.ts` — reducing a label to something that could be a Python name.
  * - `locations.ts` — moving a feature around a circle when the origin changes.
  * - `seqrecord.ts` — `PydnaSeqRecord` and `ProteinSeqRecord`.
+ * - `dseqrecord.ts` — `Dseqrecord`: the double-stranded molecule with its features.
  *
  * Measured against pydna the same way the other ports are measured: see `docs/parity-pydna/`.
  */
 
+export * from "./dseqrecord.js";
 export * from "./identifier.js";
 export * from "./locations.js";
 export * from "./seqrecord.js";

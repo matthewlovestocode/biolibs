@@ -1,0 +1,60 @@
+## pydna.dseqrecord
+
+- [-] `display_html(item, raw=None)`
+
+### pydna.dseqrecord.Dseqrecord
+
+- [x] `seq`
+- [-] `source`
+- [x] `__add__(self, other)`
+- [x] `__contains__(self, other)`
+- [x] `__eq__(self, other)`
+- [x] `__getitem__(self, sl)`
+- [-] `__hash__(self)`
+- [x] `__init__(self, record, *args, circular=None, n=5e-14, source=None, **kwargs)`
+- [x] `__mul__(self, number)`
+- [x] `__ne__(self, other)`
+- [x] `__repr__(self)`
+- [x] `__str__(self)`
+- [x] `add_feature(self, x=None, y=None, seq=None, type_='misc', strand=1, *args, **kwargs)`
+- [x] `apply_cut(self, left_cut, right_cut)`
+- [x] `circular(self)`
+- [-] `copy_fasta_to_clipboard(self)`
+- [-] `copy_gb_to_clipboard(self)`
+- [ ] `cut(self, *enzymes)`
+- [ ] `cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [x] `extract_feature(self, n)`
+- [ ] `figure(self, feature=0, highlight='\x1b[48;5;11m', plain='\x1b[0m', fig_type=None)`
+- [x] `find(self, other)`
+- [x] `find_aa(self, other)`
+- [x] `find_aminoacids(self, other)`
+- [ ] `format(self, format: str = 'gb')`
+- [x] `from_SeqRecord(cls, record: pydna.seqrecord.SeqRecord, *args, circular=None, n=5e-14, **kwargs)`
+- [x] `from_string(cls, record: str = '', *args, circular=False, n=5e-14, **kwargs)`
+- [-] `history(self)`
+- [-] `is_amplicon(self)`
+- [x] `join(self, fragments)`
+- [ ] `linearize(self, *enzymes)`
+- [x] `looped(self)`
+- [x] `lower(self)`
+- [x] `m(self)`
+- [-] `map_trace_files(self, pth, limit=25)`
+- [ ] `n_cutters(self, n=3, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [ ] `no_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [-] `normalize_history(self) -> 'Dseqrecord'`
+- [ ] `number_of_cuts(self, *enzymes)`
+- [ ] `once_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [x] `orfs(self, minsize=300)`
+- [x] `orfs_to_features(self, minsize=300)`
+- [x] `rc(self)`
+- [x] `reverse_complement(self)`
+- [x] `seguid(self)`
+- [x] `shifted(self, shift)`
+- [ ] `synced(self, ref, limit=25)`
+- [x] `terminal_transferase(self, nucleotides='a')`
+- [x] `tolinear(self)`
+- [ ] `twice_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [ ] `unique_cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
+- [x] `upper(self)`
+- [-] `validate_history(self, recursive: bool = True) -> None`
+- [ ] `write(self, filename=None, f='gb')`

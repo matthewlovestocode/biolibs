@@ -9,7 +9,7 @@ listed: the inherited `Bio.Seq` API is already measured under `docs/parity/Bio.S
 """
 import inspect, json
 import pydna
-from pydna import alphabet, common_sub_strings, dseq, seq as pydna_seq, seqrecord, utils
+from pydna import alphabet, common_sub_strings, dseq, dseqrecord, seq as pydna_seq, seqrecord, utils
 
 #: Dunder members a port has to provide even though their names are private.
 DUNDERS = ("__init__", "__len__", "__getitem__", "__setitem__", "__iter__", "__next__", "__str__",
@@ -80,6 +80,11 @@ inv = {
         "functions": funcs(seqrecord),
         "classes": {"SeqRecord": members(seqrecord.SeqRecord),
                     "ProteinSeqRecord": members(seqrecord.ProteinSeqRecord)},
+    },
+    # The double-stranded record: Dseq with a name and features. Only what the class defines itself.
+    "pydna.dseqrecord": {
+        "functions": funcs(dseqrecord),
+        "classes": {"Dseqrecord": members(dseqrecord.Dseqrecord)},
     },
     # Only what the record layer uses from pydna.utils: the label cleaner the slice naming needs, and the
     # four location helpers Dseqrecord's feature handling rests on. The rest of that module is listed as

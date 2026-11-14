@@ -176,6 +176,44 @@ if any("value" in c["result"] for c in ploc["features"]):
     mark("pydna.utils.shift_feature")
 if ploc["flatten"]:
     mark("pydna.utils.flatten")
+
+# Dseqrecord's molecule layer. Every case is run on a record carrying features, because that is where the
+# difficulty is: closing a molecule shortens it by its overhangs, moving the origin renumbers everything,
+# and a feature that no longer fits has to go.
+#
+# Left for the next slices, and so unmarked: cut, linearize, number_of_cuts, the cutter queries, synced,
+# format, write and figure.
+#
+# Marked `na` rather than measured:
+#   __hash__ hashes a string built from the instance dictionary, so it moves with the interpreter's hash
+#   seed, exactly as pydna.seqrecord's does.
+#   history, source, validate_history, normalize_history and is_amplicon need pydna.opencloning_models,
+#   1,421 lines of pydantic describing a provenance interchange format: a port of its own, not of the
+#   molecule. Note that __eq__ deletes `source` from both sides before comparing, so carrying it unset
+#   changes nothing observable.
+#   copy_gb_to_clipboard and copy_fasta_to_clipboard need a clipboard; map_trace_files reads ABI files
+#   off disk.
+pdr = json.load(open(f"{here}/../packages/dseqrecord/test/golden/dseqrecord.json"))
+built_dr = [c for c in pdr["cases"] if "value" in c["snap"]]
+if built_dr:
+    for member in ("__init__", "__add__", "__contains__", "__eq__", "__ne__", "__getitem__", "__mul__",
+                   "__repr__", "__str__", "add_feature", "apply_cut", "circular", "extract_feature",
+                   "find", "find_aa", "find_aminoacids", "join", "looped", "lower", "m",
+                   "orfs", "orfs_to_features", "rc", "reverse_complement", "seguid", "shifted",
+                   "terminal_transferase", "tolinear", "upper"):
+        mark(f"pydna.dseqrecord.Dseqrecord.{member}")
+    mark("pydna.dseqrecord.Dseqrecord.__hash__", "na")
+    for member in ("history", "source", "validate_history", "normalize_history", "is_amplicon"):
+        mark(f"pydna.dseqrecord.Dseqrecord.{member}", "na")
+    for member in ("copy_gb_to_clipboard", "copy_fasta_to_clipboard", "map_trace_files"):
+        mark(f"pydna.dseqrecord.Dseqrecord.{member}", "na")
+    # Every snapshot reads the molecule off `seq`: its code, both strands and the overhang.
+    mark("pydna.dseqrecord.Dseqrecord.seq")
+# A helper for showing a molecule in a Jupyter notebook, which has no counterpart here.
+mark("pydna.dseqrecord.display_html", "na")
+if any("value" in b["result"] for b in pdr["builds"]):
+    mark("pydna.dseqrecord.Dseqrecord.from_string")
+    mark("pydna.dseqrecord.Dseqrecord.from_SeqRecord")
 if pseq["proteins"]:
     for member in ("__getitem__", "back_transcribe", "complement", "complement_rna", "instability_index",
                    "molecular_weight", "pI", "rc", "reverse_complement", "reverse_complement_rna",

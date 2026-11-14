@@ -12,7 +12,9 @@ import { KeyError, ValueError } from "@biolibs/core";
 import { IUPACData } from "@biolibs/seq";
 import { getParts, type DseqParts, dsBreaks, pairToCode, representationTuple, reverseComplementCode, toCrick,
   toFull, toWatson } from "./alphabet.js";
+import { Seq as BioSeq } from "@biolibs/seq";
 import { circularSlice, pythonSlice } from "./circular.js";
+import { threeFrameOrfs } from "./orfs.js";
 import { cleandoc, type EndType, endOf, LENGTH_LIMIT_FOR_REPR, longestCommonSubstring, strip } from "./dseq-util.js";
 
 
@@ -177,6 +179,42 @@ export class Dseq {
     return `${header}\n${watson}\n${crick}`;
   }
 
+  /**
+   * Translate the molecule's code into protein.
+   *
+   * Read over the dscode string itself, as pydna does: a molecule whose positions are all double-stranded
+   * has a code that is its own sequence, but one with single-stranded stretches carries letters that are
+   * not bases, and they are translated as what they are rather than as the base underneath.
+   *
+   * @param table - Which genetic code. @param stopSymbol - What marks a stop.
+   * @param toStop - Stop at the first in-frame stop codon. @param cds - Check it is a coding sequence.
+   * @param gap - What counts as a gap.
+   * @returns The protein.
+   * @throws What the ported `Bio.Seq.translate` throws, including the `TranslationError` that `isorf`
+   *   relies on to answer false.
+   */
+  translate(table: string | number = "Standard", stopSymbol = "*", toStop = false, cds = false,
+            gap: string | null = "-"): BioSeq {
+    return new BioSeq(this.data).translate(table, stopSymbol, toStop, cds, gap);
+  }
+
+  /**
+   * @returns The same text as {@link Dseq.figure}, which is what pydna's `repr` of a molecule gives: the
+   *   header and the two strands, not a one-line constructor call. A record printing itself ends with
+   *   this, so it is the name the printing machinery looks for.
+   */
+  repr(): string { return this.figure(); }
+
+  /**
+   * @returns The dscode as bytes. pydna's `Dseq` is a Biopython sequence and so has this; the port's is a
+   *   class of its own, and record printing asks for it before deciding what to show.
+   */
+  toBytes(): Uint8Array {
+    const out = new Uint8Array(this.data.length);
+    for (let i = 0; i < this.data.length; i++) out[i] = this.data.charCodeAt(i);
+    return out;
+  }
+
   /** @returns What kind of end the left side is, and the overhang's bases in lower case. */
   fivePrimeEnd(): [EndType, string] {
     const parts = this.getParts();
@@ -318,6 +356,44 @@ export class Dseq {
     const by = ((shift % this.length) + this.length) % this.length;
     if (by === 0) return Dseq.quick(this.data, true, this.pos);
     return Dseq.quick(this.data.slice(by) + this.data.slice(0, by), true, this.pos);
+  }
+
+  /**
+   * The same molecule with its code in upper case.
+   *
+   * **This loses circularity.** pydna inherits `upper` from Biopython, which builds a fresh sequence from
+   * the upper-cased data and knows nothing about pydna's `circular` flag, so a closed circle comes back
+   * linear. Reproduced rather than corrected: a caller who upper-cases a plasmid gets a linear molecule
+   * from pydna too, and the port must not quietly disagree about what they are holding.
+   *
+   * @returns The upper-cased molecule, linear whatever this one was.
+   */
+  upper(): Dseq {
+    return Dseq.quick(this.data.toUpperCase(), false, this.pos);
+  }
+
+  /**
+   * The same molecule with its code in lower case, which loses circularity for the same reason as
+   * {@link Dseq.upper}.
+   *
+   * @returns The lower-cased molecule, linear whatever this one was.
+   */
+  lower(): Dseq {
+    return Dseq.quick(this.data.toLowerCase(), false, this.pos);
+  }
+
+  /**
+   * Every open reading frame in the three forward frames of the code.
+   *
+   * Read over the dscode string itself, so a position that is single-stranded or a mismatch carries a
+   * letter that is not a base and simply never matches a codon. The search does not wrap, even on a
+   * circle, because it is the same frame-by-frame scan pydna uses for a plain sequence.
+   *
+   * @param minsize - The shortest reading to report, in bases; pydna's own default of 100 applies here.
+   * @returns One `[start, stop]` per reading, with the frame dropped.
+   */
+  orfs(minsize = 100): Array<readonly [number, number]> {
+    return threeFrameOrfs(this.data, minsize).map(([, x, y]) => [x, y] as const);
   }
 
   /** @returns The molecular weight in g/mol, with a 5'-phosphate on each strand as a digest leaves it. */

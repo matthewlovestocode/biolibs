@@ -190,6 +190,27 @@ export class SeqRecord {
     return this.seqValue;
   }
 
+  /**
+   * Put a sequence in place without the type check, for a subclass whose sequence is not a Biopython one.
+   *
+   * pydna's `Dseqrecord` holds a `Dseq`, which in pydna is a `Bio.Seq.Seq` subclass and so passes the
+   * check above; in this port `Dseq` is a class of its own, because what it holds is one letter per base
+   * *pair* rather than a strand. Giving way here is better than loosening the check, which is itself
+   * measured against Biopython.
+   *
+   * The per-letter annotations are resized as the setter would, so a subclass does not have to.
+   *
+   * @param value - The sequence-like object to hold.
+   * @internal
+   */
+  protected setSeqUnchecked(value: unknown): void {
+    this.seqValue = value as Seq | MutableSeq | null;
+    const length = (value as { length?: number } | null)?.length ?? 0;
+    if (this._perLetterAnnotations === null || this._perLetterAnnotations.size === 0) {
+      this._perLetterAnnotations = new RestrictedDict(length);
+    }
+  }
+
   set seq(value: Seq | MutableSeq | null) {
     if (value !== null && !(value instanceof Seq) && !(value instanceof MutableSeq)) throw new TypeError("seq must be a Seq or MutableSeq object");
     if (this._perLetterAnnotations !== null && this._perLetterAnnotations.size > 0) {
