@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/seqtools",
   "version": "0.1.0",
-  "description": "Port of Biopython Bio.SeqUtils: GC content, molecular weight, translation views, codon adaptation index",
+  "description": "Sequence arithmetic, verified against Biopython: GC content three ways, molecular weight, melting temperatures with salt corrections, checksums, protein properties, isoelectric point and the codon adaptation index (Bio.SeqUtils)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

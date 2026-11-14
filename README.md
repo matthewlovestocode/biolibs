@@ -5,7 +5,7 @@ few packages that have no Python equivalent.
 
 - **23 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,693 API items at parity** across three upstream libraries — every applicable item of all three
-- **17,608 tests**, replaying answers recorded from the real Python libraries
+- **17,624 tests**, replaying answers recorded from the real Python libraries
 
 > **Not published to npm yet.** Clone and build; see [Building](#building).
 
@@ -47,7 +47,7 @@ absent from the inventory the checklists are generated from until this was notic
 | [`@biolibs/restriction`](packages/restriction) | `Bio.Restriction` | 491 | all 1,088 REBASE enzymes: `search`, `catalyse` linear or circular, `RestrictionBatch`, `Analysis` and its three text layouts. [README](packages/restriction/README.md) |
 | [`@biolibs/motifs`](packages/motifs) | `Bio.motifs` | 173 | `Motif`, the four position matrices, scanning both strands, score thresholds, eleven formats in and four out. [README](packages/motifs/README.md) |
 | [`@biolibs/nexus`](packages/nexus) | `Bio.Nexus` | 84 | the `Nexus` class with every block, `Tree`, `Node`, `StandardData`, `StepMatrix`, `combine`, `consensus` — `bootstrap` and `randomize` included, on `@biolibs/core`'s Mersenne Twister. [README](packages/nexus/README.md) |
-| [`@biolibs/seqtools`](packages/seqtools) | `Bio.SeqUtils` | 39 | GC content and skew, `nt_search`, `seq1`/`seq3`, molecular weight, six-frame translations, codon adaptation, checksums, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp` |
+| [`@biolibs/seqtools`](packages/seqtools) | `Bio.SeqUtils` | 39 | GC content and skew, `nt_search`, `seq1`/`seq3`, molecular weight, six-frame translations, codon adaptation, checksums, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp`. [README](packages/seqtools/README.md) |
 | [`@biolibs/svdsuperimposer`](packages/svdsuperimposer) | `Bio.SVDSuperimposer` | 7 | least-squares superposition by SVD |
 
 ## Ports of pydna and seguid
@@ -89,7 +89,7 @@ Biopython checklist, because it is a port of CPython itself: 1,253 recorded case
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 17,608 tests
+npm test           # vitest — 17,624 tests
 npm run coverage   # per-file coverage
 ```
 
