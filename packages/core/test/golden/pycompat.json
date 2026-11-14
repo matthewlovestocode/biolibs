@@ -1,0 +1,4623 @@
+{
+"python": "3.15.0",
+"cases": {
+"pyInt": [
+{
+"text": "0",
+"result": {
+"value": 0
+}
+},
+{
+"text": "7",
+"result": {
+"value": 7
+}
+},
+{
+"text": "-7",
+"result": {
+"value": -7
+}
+},
+{
+"text": "+7",
+"result": {
+"value": 7
+}
+},
+{
+"text": " 12 ",
+"result": {
+"value": 12
+}
+},
+{
+"text": "\t13\n",
+"result": {
+"value": 13
+}
+},
+{
+"text": "1_000",
+"result": {
+"value": 1000
+}
+},
+{
+"text": "1__0",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: '1__0'"
+}
+}
+},
+{
+"text": "_1",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: '_1'"
+}
+}
+},
+{
+"text": "1_",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: '1_'"
+}
+}
+},
+{
+"text": "",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: ''"
+}
+}
+},
+{
+"text": " ",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: ' '"
+}
+}
+},
+{
+"text": "x",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: 'x'"
+}
+}
+},
+{
+"text": "1.5",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: '1.5'"
+}
+}
+},
+{
+"text": "0x10",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: '0x10'"
+}
+}
+},
+{
+"text": "007",
+"result": {
+"value": 7
+}
+},
+{
+"text": "-0",
+"result": {
+"value": 0
+}
+},
+{
+"text": "99999999999999999999",
+"result": {
+"value": 99999999999999999999
+}
+},
+{
+"text": "\u0663",
+"result": {
+"value": 3
+}
+},
+{
+"text": "\u00bd",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: '\u00bd'"
+}
+}
+},
+{
+"text": "1 2",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: '1 2'"
+}
+}
+},
+{
+"text": "- 7",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: '- 7'"
+}
+}
+},
+{
+"text": "--7",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "invalid literal for int() with base 10: '--7'"
+}
+}
+}
+],
+"pyFloat": [
+{
+"text": "0",
+"result": {
+"value": "0.0"
+}
+},
+{
+"text": "1.5",
+"result": {
+"value": "1.5"
+}
+},
+{
+"text": "-1.5",
+"result": {
+"value": "-1.5"
+}
+},
+{
+"text": "+1.5",
+"result": {
+"value": "1.5"
+}
+},
+{
+"text": " 2.5 ",
+"result": {
+"value": "2.5"
+}
+},
+{
+"text": "1e3",
+"result": {
+"value": "1000.0"
+}
+},
+{
+"text": "1E-3",
+"result": {
+"value": "0.001"
+}
+},
+{
+"text": "1_000.5",
+"result": {
+"value": "1000.5"
+}
+},
+{
+"text": ".5",
+"result": {
+"value": "0.5"
+}
+},
+{
+"text": "5.",
+"result": {
+"value": "5.0"
+}
+},
+{
+"text": "inf",
+"result": {
+"value": "inf"
+}
+},
+{
+"text": "-inf",
+"result": {
+"value": "-inf"
+}
+},
+{
+"text": "Infinity",
+"result": {
+"value": "inf"
+}
+},
+{
+"text": "nan",
+"result": {
+"value": "nan"
+}
+},
+{
+"text": "NaN",
+"result": {
+"value": "nan"
+}
+},
+{
+"text": "",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "could not convert string to float: ''"
+}
+}
+},
+{
+"text": " ",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "could not convert string to float: ' '"
+}
+}
+},
+{
+"text": "x",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "could not convert string to float: 'x'"
+}
+}
+},
+{
+"text": "1.2.3",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "could not convert string to float: '1.2.3'"
+}
+}
+},
+{
+"text": "1_",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "could not convert string to float: '1_'"
+}
+}
+},
+{
+"text": "_1",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "could not convert string to float: '_1'"
+}
+}
+},
+{
+"text": "0x1p3",
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "could not convert string to float: '0x1p3'"
+}
+}
+}
+],
+"pyChr": [
+{
+"n": 0,
+"result": {
+"value": "\u0000"
+}
+},
+{
+"n": 65,
+"result": {
+"value": "A"
+}
+},
+{
+"n": 97,
+"result": {
+"value": "a"
+}
+},
+{
+"n": 127,
+"result": {
+"value": "\u007f"
+}
+},
+{
+"n": 128,
+"result": {
+"value": "\u0080"
+}
+},
+{
+"n": 255,
+"result": {
+"value": "\u00ff"
+}
+},
+{
+"n": 1114111,
+"result": {
+"value": "\udbff\udfff"
+}
+},
+{
+"n": 1114112,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "chr() arg not in range(0x110000)"
+}
+}
+},
+{
+"n": -1,
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "chr() arg not in range(0x110000)"
+}
+}
+},
+{
+"n": 55296,
+"result": {
+"value": "\ud800"
+}
+}
+],
+"pyFloatRepr": [
+{
+"repr_of": "0.0",
+"result": "0.0"
+},
+{
+"repr_of": "-0.0",
+"result": "-0.0"
+},
+{
+"repr_of": "1.0",
+"result": "1.0"
+},
+{
+"repr_of": "1.5",
+"result": "1.5"
+},
+{
+"repr_of": "0.1",
+"result": "0.1"
+},
+{
+"repr_of": "1e+16",
+"result": "1e+16"
+},
+{
+"repr_of": "1e+17",
+"result": "1e+17"
+},
+{
+"repr_of": "1e-05",
+"result": "1e-05"
+},
+{
+"repr_of": "0.0001",
+"result": "0.0001"
+},
+{
+"repr_of": "1.2345678901234568e+17",
+"result": "1.2345678901234568e+17"
+},
+{
+"repr_of": "2.675",
+"result": "2.675"
+},
+{
+"repr_of": "inf",
+"result": "inf"
+},
+{
+"repr_of": "-inf",
+"result": "-inf"
+},
+{
+"repr_of": "nan",
+"result": "nan"
+},
+{
+"repr_of": "0.3333333333333333",
+"result": "0.3333333333333333"
+},
+{
+"repr_of": "5e-324",
+"result": "5e-324"
+},
+{
+"repr_of": "1.7976931348623157e+308",
+"result": "1.7976931348623157e+308"
+}
+],
+"pyRound": [
+{
+"x": "0.5",
+"ndigits": null,
+"result": {
+"value": "0"
+}
+},
+{
+"x": "1.5",
+"ndigits": null,
+"result": {
+"value": "2"
+}
+},
+{
+"x": "2.5",
+"ndigits": null,
+"result": {
+"value": "2"
+}
+},
+{
+"x": "-0.5",
+"ndigits": null,
+"result": {
+"value": "0"
+}
+},
+{
+"x": "-1.5",
+"ndigits": null,
+"result": {
+"value": "-2"
+}
+},
+{
+"x": "2.675",
+"ndigits": 2,
+"result": {
+"value": "2.67"
+}
+},
+{
+"x": "0.0625",
+"ndigits": 3,
+"result": {
+"value": "0.062"
+}
+},
+{
+"x": "0.1875",
+"ndigits": 3,
+"result": {
+"value": "0.188"
+}
+},
+{
+"x": "0.4165",
+"ndigits": 3,
+"result": {
+"value": "0.416"
+}
+},
+{
+"x": "0.0005",
+"ndigits": 3,
+"result": {
+"value": "0.001"
+}
+},
+{
+"x": "123.4565",
+"ndigits": 3,
+"result": {
+"value": "123.457"
+}
+},
+{
+"x": "1e-09",
+"ndigits": 3,
+"result": {
+"value": "0.0"
+}
+},
+{
+"x": "0.0",
+"ndigits": 3,
+"result": {
+"value": "0.0"
+}
+},
+{
+"x": "-0.0625",
+"ndigits": 3,
+"result": {
+"value": "-0.062"
+}
+},
+{
+"x": "0.9995",
+"ndigits": 3,
+"result": {
+"value": "1.0"
+}
+}
+],
+"pyPercentSingle": [
+{
+"fmt": "%d",
+"arg": {
+"t": "int",
+"v": 7
+},
+"result": {
+"value": "7"
+}
+},
+{
+"fmt": "%5d",
+"arg": {
+"t": "int",
+"v": 7
+},
+"result": {
+"value": "    7"
+}
+},
+{
+"fmt": "%-5d|",
+"arg": {
+"t": "int",
+"v": 7
+},
+"result": {
+"value": "7    |"
+}
+},
+{
+"fmt": "%+d",
+"arg": {
+"t": "int",
+"v": 7
+},
+"result": {
+"value": "+7"
+}
+},
+{
+"fmt": "% d",
+"arg": {
+"t": "int",
+"v": 7
+},
+"result": {
+"value": " 7"
+}
+},
+{
+"fmt": "%05d",
+"arg": {
+"t": "int",
+"v": 7
+},
+"result": {
+"value": "00007"
+}
+},
+{
+"fmt": "%i",
+"arg": {
+"t": "int",
+"v": 7
+},
+"result": {
+"value": "7"
+}
+},
+{
+"fmt": "%u",
+"arg": {
+"t": "int",
+"v": 7
+},
+"result": {
+"value": "7"
+}
+},
+{
+"fmt": "%d",
+"arg": {
+"t": "int",
+"v": -7
+},
+"result": {
+"value": "-7"
+}
+},
+{
+"fmt": "%f",
+"arg": {
+"t": "float",
+"v": "1.5"
+},
+"result": {
+"value": "1.500000"
+}
+},
+{
+"fmt": "%.2f",
+"arg": {
+"t": "float",
+"v": "1.5"
+},
+"result": {
+"value": "1.50"
+}
+},
+{
+"fmt": "%10.2f",
+"arg": {
+"t": "float",
+"v": "1.5"
+},
+"result": {
+"value": "      1.50"
+}
+},
+{
+"fmt": "%-10.2f|",
+"arg": {
+"t": "float",
+"v": "1.5"
+},
+"result": {
+"value": "1.50      |"
+}
+},
+{
+"fmt": "%F",
+"arg": {
+"t": "float",
+"v": "1.5"
+},
+"result": {
+"value": "1.500000"
+}
+},
+{
+"fmt": "%e",
+"arg": {
+"t": "float",
+"v": "1234.5"
+},
+"result": {
+"value": "1.234500e+03"
+}
+},
+{
+"fmt": "%E",
+"arg": {
+"t": "float",
+"v": "1234.5"
+},
+"result": {
+"value": "1.234500E+03"
+}
+},
+{
+"fmt": "%.1e",
+"arg": {
+"t": "float",
+"v": "1234.5"
+},
+"result": {
+"value": "1.2e+03"
+}
+},
+{
+"fmt": "%g",
+"arg": {
+"t": "float",
+"v": "1234.5"
+},
+"result": {
+"value": "1234.5"
+}
+},
+{
+"fmt": "%G",
+"arg": {
+"t": "float",
+"v": "1234.5"
+},
+"result": {
+"value": "1234.5"
+}
+},
+{
+"fmt": "%.3g",
+"arg": {
+"t": "float",
+"v": "1234.5"
+},
+"result": {
+"value": "1.23e+03"
+}
+},
+{
+"fmt": "%g",
+"arg": {
+"t": "float",
+"v": "0.0001"
+},
+"result": {
+"value": "0.0001"
+}
+},
+{
+"fmt": "%g",
+"arg": {
+"t": "float",
+"v": "1e-05"
+},
+"result": {
+"value": "1e-05"
+}
+},
+{
+"fmt": "%g",
+"arg": {
+"t": "float",
+"v": "100000.0"
+},
+"result": {
+"value": "100000"
+}
+},
+{
+"fmt": "%g",
+"arg": {
+"t": "float",
+"v": "1000000.0"
+},
+"result": {
+"value": "1e+06"
+}
+},
+{
+"fmt": "%#g",
+"arg": {
+"t": "float",
+"v": "1.0"
+},
+"result": {
+"value": "1.00000"
+}
+},
+{
+"fmt": "%s",
+"arg": {
+"t": "str",
+"v": "ab"
+},
+"result": {
+"value": "ab"
+}
+},
+{
+"fmt": "%10s",
+"arg": {
+"t": "str",
+"v": "ab"
+},
+"result": {
+"value": "        ab"
+}
+},
+{
+"fmt": "%-10s|",
+"arg": {
+"t": "str",
+"v": "ab"
+},
+"result": {
+"value": "ab        |"
+}
+},
+{
+"fmt": "%.1s",
+"arg": {
+"t": "str",
+"v": "ab"
+},
+"result": {
+"value": "a"
+}
+},
+{
+"fmt": "%r",
+"arg": {
+"t": "str",
+"v": "ab"
+},
+"result": {
+"value": "'ab'"
+}
+},
+{
+"fmt": "%a",
+"arg": {
+"t": "str",
+"v": "ab"
+},
+"result": {
+"value": "'ab'"
+}
+},
+{
+"fmt": "%c",
+"arg": {
+"t": "int",
+"v": 65
+},
+"result": {
+"value": "A"
+}
+},
+{
+"fmt": "%c",
+"arg": {
+"t": "str",
+"v": "A"
+},
+"result": {
+"value": "A"
+}
+},
+{
+"fmt": "%d%%",
+"arg": {
+"t": "int",
+"v": 50
+},
+"result": {
+"value": "50%"
+}
+},
+{
+"fmt": "%d",
+"arg": {
+"t": "str",
+"v": "x"
+},
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "format argument: %d requires a real number, not str"
+}
+}
+},
+{
+"fmt": "%z",
+"arg": {
+"t": "int",
+"v": 1
+},
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "unsupported format %z at position 0"
+}
+}
+}
+],
+"pyPercentHashG": [
+{
+"fmt": "%#g",
+"args": [
+{
+"t": "float",
+"v": "1.0"
+}
+],
+"result": {
+"value": "1.00000"
+}
+},
+{
+"fmt": "%#g",
+"args": [
+{
+"t": "float",
+"v": "0.5"
+}
+],
+"result": {
+"value": "0.500000"
+}
+},
+{
+"fmt": "%#.3g",
+"args": [
+{
+"t": "float",
+"v": "1.0"
+}
+],
+"result": {
+"value": "1.00"
+}
+},
+{
+"fmt": "%#e",
+"args": [
+{
+"t": "float",
+"v": "1.0"
+}
+],
+"result": {
+"value": "1.000000e+00"
+}
+},
+{
+"fmt": "%#f",
+"args": [
+{
+"t": "float",
+"v": "1.0"
+}
+],
+"result": {
+"value": "1.000000"
+}
+},
+{
+"fmt": "%#d",
+"args": [
+{
+"t": "int",
+"v": 7
+}
+],
+"result": {
+"value": "7"
+}
+}
+],
+"pyFormatG": [
+{
+"x": "1234.5",
+"precision": 6,
+"result": {
+"value": "1234.5"
+}
+},
+{
+"x": "1234.5",
+"precision": 3,
+"result": {
+"value": "1.23e+03"
+}
+},
+{
+"x": "1234.5",
+"precision": 1,
+"result": {
+"value": "1e+03"
+}
+},
+{
+"x": "0.0001",
+"precision": 6,
+"result": {
+"value": "0.0001"
+}
+},
+{
+"x": "0.0001",
+"precision": 3,
+"result": {
+"value": "0.0001"
+}
+},
+{
+"x": "0.0001",
+"precision": 1,
+"result": {
+"value": "0.0001"
+}
+},
+{
+"x": "1e-05",
+"precision": 6,
+"result": {
+"value": "1e-05"
+}
+},
+{
+"x": "1e-05",
+"precision": 3,
+"result": {
+"value": "1e-05"
+}
+},
+{
+"x": "1e-05",
+"precision": 1,
+"result": {
+"value": "1e-05"
+}
+},
+{
+"x": "100000.0",
+"precision": 6,
+"result": {
+"value": "100000"
+}
+},
+{
+"x": "100000.0",
+"precision": 3,
+"result": {
+"value": "1e+05"
+}
+},
+{
+"x": "100000.0",
+"precision": 1,
+"result": {
+"value": "1e+05"
+}
+},
+{
+"x": "1000000.0",
+"precision": 6,
+"result": {
+"value": "1e+06"
+}
+},
+{
+"x": "1000000.0",
+"precision": 3,
+"result": {
+"value": "1e+06"
+}
+},
+{
+"x": "1000000.0",
+"precision": 1,
+"result": {
+"value": "1e+06"
+}
+},
+{
+"x": "1.0",
+"precision": 6,
+"result": {
+"value": "1"
+}
+},
+{
+"x": "1.0",
+"precision": 3,
+"result": {
+"value": "1"
+}
+},
+{
+"x": "1.0",
+"precision": 1,
+"result": {
+"value": "1"
+}
+},
+{
+"x": "0.0",
+"precision": 6,
+"result": {
+"value": "0"
+}
+},
+{
+"x": "0.0",
+"precision": 3,
+"result": {
+"value": "0"
+}
+},
+{
+"x": "0.0",
+"precision": 1,
+"result": {
+"value": "0"
+}
+},
+{
+"x": "-1.5",
+"precision": 6,
+"result": {
+"value": "-1.5"
+}
+},
+{
+"x": "-1.5",
+"precision": 3,
+"result": {
+"value": "-1.5"
+}
+},
+{
+"x": "-1.5",
+"precision": 1,
+"result": {
+"value": "-2"
+}
+}
+],
+"pyFormatFixed": [
+{
+"x": "1.5",
+"digits": 0,
+"result": {
+"value": "2"
+}
+},
+{
+"x": "1.5",
+"digits": 2,
+"result": {
+"value": "1.50"
+}
+},
+{
+"x": "1.5",
+"digits": 5,
+"result": {
+"value": "1.50000"
+}
+},
+{
+"x": "2.675",
+"digits": 0,
+"result": {
+"value": "3"
+}
+},
+{
+"x": "2.675",
+"digits": 2,
+"result": {
+"value": "2.67"
+}
+},
+{
+"x": "2.675",
+"digits": 5,
+"result": {
+"value": "2.67500"
+}
+},
+{
+"x": "0.0625",
+"digits": 0,
+"result": {
+"value": "0"
+}
+},
+{
+"x": "0.0625",
+"digits": 2,
+"result": {
+"value": "0.06"
+}
+},
+{
+"x": "0.0625",
+"digits": 5,
+"result": {
+"value": "0.06250"
+}
+},
+{
+"x": "-1.5",
+"digits": 0,
+"result": {
+"value": "-2"
+}
+},
+{
+"x": "-1.5",
+"digits": 2,
+"result": {
+"value": "-1.50"
+}
+},
+{
+"x": "-1.5",
+"digits": 5,
+"result": {
+"value": "-1.50000"
+}
+},
+{
+"x": "0.0",
+"digits": 0,
+"result": {
+"value": "0"
+}
+},
+{
+"x": "0.0",
+"digits": 2,
+"result": {
+"value": "0.00"
+}
+},
+{
+"x": "0.0",
+"digits": 5,
+"result": {
+"value": "0.00000"
+}
+},
+{
+"x": "1e+16",
+"digits": 0,
+"result": {
+"value": "10000000000000000"
+}
+},
+{
+"x": "1e+16",
+"digits": 2,
+"result": {
+"value": "10000000000000000.00"
+}
+},
+{
+"x": "1e+16",
+"digits": 5,
+"result": {
+"value": "10000000000000000.00000"
+}
+}
+],
+"pyPercent": [
+{
+"fmt": "%d",
+"args": [
+{
+"t": "int",
+"v": 7
+}
+],
+"result": {
+"value": "7"
+}
+},
+{
+"fmt": "%5d",
+"args": [
+{
+"t": "int",
+"v": 7
+}
+],
+"result": {
+"value": "    7"
+}
+},
+{
+"fmt": "%-5d|",
+"args": [
+{
+"t": "int",
+"v": 7
+}
+],
+"result": {
+"value": "7    |"
+}
+},
+{
+"fmt": "%+d",
+"args": [
+{
+"t": "int",
+"v": 7
+}
+],
+"result": {
+"value": "+7"
+}
+},
+{
+"fmt": "% d",
+"args": [
+{
+"t": "int",
+"v": 7
+}
+],
+"result": {
+"value": " 7"
+}
+},
+{
+"fmt": "%05d",
+"args": [
+{
+"t": "int",
+"v": 7
+}
+],
+"result": {
+"value": "00007"
+}
+},
+{
+"fmt": "%i",
+"args": [
+{
+"t": "int",
+"v": 7
+}
+],
+"result": {
+"value": "7"
+}
+},
+{
+"fmt": "%u",
+"args": [
+{
+"t": "int",
+"v": 7
+}
+],
+"result": {
+"value": "7"
+}
+},
+{
+"fmt": "%d",
+"args": [
+{
+"t": "int",
+"v": -7
+}
+],
+"result": {
+"value": "-7"
+}
+},
+{
+"fmt": "%f",
+"args": [
+{
+"t": "float",
+"v": "1.5"
+}
+],
+"result": {
+"value": "1.500000"
+}
+},
+{
+"fmt": "%.2f",
+"args": [
+{
+"t": "float",
+"v": "1.5"
+}
+],
+"result": {
+"value": "1.50"
+}
+},
+{
+"fmt": "%10.2f",
+"args": [
+{
+"t": "float",
+"v": "1.5"
+}
+],
+"result": {
+"value": "      1.50"
+}
+},
+{
+"fmt": "%-10.2f|",
+"args": [
+{
+"t": "float",
+"v": "1.5"
+}
+],
+"result": {
+"value": "1.50      |"
+}
+},
+{
+"fmt": "%F",
+"args": [
+{
+"t": "float",
+"v": "1.5"
+}
+],
+"result": {
+"value": "1.500000"
+}
+},
+{
+"fmt": "%e",
+"args": [
+{
+"t": "float",
+"v": "1234.5"
+}
+],
+"result": {
+"value": "1.234500e+03"
+}
+},
+{
+"fmt": "%E",
+"args": [
+{
+"t": "float",
+"v": "1234.5"
+}
+],
+"result": {
+"value": "1.234500E+03"
+}
+},
+{
+"fmt": "%.1e",
+"args": [
+{
+"t": "float",
+"v": "1234.5"
+}
+],
+"result": {
+"value": "1.2e+03"
+}
+},
+{
+"fmt": "%g",
+"args": [
+{
+"t": "float",
+"v": "1234.5"
+}
+],
+"result": {
+"value": "1234.5"
+}
+},
+{
+"fmt": "%G",
+"args": [
+{
+"t": "float",
+"v": "1234.5"
+}
+],
+"result": {
+"value": "1234.5"
+}
+},
+{
+"fmt": "%.3g",
+"args": [
+{
+"t": "float",
+"v": "1234.5"
+}
+],
+"result": {
+"value": "1.23e+03"
+}
+},
+{
+"fmt": "%g",
+"args": [
+{
+"t": "float",
+"v": "0.0001"
+}
+],
+"result": {
+"value": "0.0001"
+}
+},
+{
+"fmt": "%g",
+"args": [
+{
+"t": "float",
+"v": "1e-05"
+}
+],
+"result": {
+"value": "1e-05"
+}
+},
+{
+"fmt": "%g",
+"args": [
+{
+"t": "float",
+"v": "100000.0"
+}
+],
+"result": {
+"value": "100000"
+}
+},
+{
+"fmt": "%g",
+"args": [
+{
+"t": "float",
+"v": "1000000.0"
+}
+],
+"result": {
+"value": "1e+06"
+}
+},
+{
+"fmt": "%#g",
+"args": [
+{
+"t": "float",
+"v": "1.0"
+}
+],
+"result": {
+"value": "1.00000"
+}
+},
+{
+"fmt": "%s",
+"args": [
+{
+"t": "str",
+"v": "ab"
+}
+],
+"result": {
+"value": "ab"
+}
+},
+{
+"fmt": "%10s",
+"args": [
+{
+"t": "str",
+"v": "ab"
+}
+],
+"result": {
+"value": "        ab"
+}
+},
+{
+"fmt": "%-10s|",
+"args": [
+{
+"t": "str",
+"v": "ab"
+}
+],
+"result": {
+"value": "ab        |"
+}
+},
+{
+"fmt": "%.1s",
+"args": [
+{
+"t": "str",
+"v": "ab"
+}
+],
+"result": {
+"value": "a"
+}
+},
+{
+"fmt": "%r",
+"args": [
+{
+"t": "str",
+"v": "ab"
+}
+],
+"result": {
+"value": "'ab'"
+}
+},
+{
+"fmt": "%a",
+"args": [
+{
+"t": "str",
+"v": "ab"
+}
+],
+"result": {
+"value": "'ab'"
+}
+},
+{
+"fmt": "%c",
+"args": [
+{
+"t": "int",
+"v": 65
+}
+],
+"result": {
+"value": "A"
+}
+},
+{
+"fmt": "%c",
+"args": [
+{
+"t": "str",
+"v": "A"
+}
+],
+"result": {
+"value": "A"
+}
+},
+{
+"fmt": "%%",
+"args": [],
+"result": {
+"value": "%"
+}
+},
+{
+"fmt": "%s and %s",
+"args": [
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "str",
+"v": "b"
+}
+],
+"result": {
+"value": "a and b"
+}
+},
+{
+"fmt": "%d%%",
+"args": [
+{
+"t": "int",
+"v": 50
+}
+],
+"result": {
+"value": "50%"
+}
+},
+{
+"fmt": "no args",
+"args": [],
+"result": {
+"value": "no args"
+}
+},
+{
+"fmt": "%d",
+"args": [],
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "not enough arguments for format string (got 0)"
+}
+}
+},
+{
+"fmt": "%d",
+"args": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+],
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "not all arguments converted during string formatting (required 1, got 2)"
+}
+}
+},
+{
+"fmt": "%d",
+"args": [
+{
+"t": "str",
+"v": "x"
+}
+],
+"result": {
+"exc": {
+"type": "TypeError",
+"msg": "format argument 1: %d requires a real number, not str"
+}
+}
+},
+{
+"fmt": "%z",
+"args": [
+{
+"t": "int",
+"v": 1
+}
+],
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "unsupported format %z at position 0"
+}
+}
+},
+{
+"fmt": "%",
+"args": [],
+"result": {
+"exc": {
+"type": "ValueError",
+"msg": "stray % at position 0"
+}
+}
+}
+],
+"pyRepr": [
+{
+"value": {
+"t": "none"
+},
+"result": "None"
+},
+{
+"value": {
+"t": "bool",
+"v": true
+},
+"result": "True"
+},
+{
+"value": {
+"t": "bool",
+"v": false
+},
+"result": "False"
+},
+{
+"value": {
+"t": "int",
+"v": 0
+},
+"result": "0"
+},
+{
+"value": {
+"t": "int",
+"v": 1
+},
+"result": "1"
+},
+{
+"value": {
+"t": "int",
+"v": -1
+},
+"result": "-1"
+},
+{
+"value": {
+"t": "float",
+"v": "1.5"
+},
+"result": "1.5"
+},
+{
+"value": {
+"t": "str",
+"v": ""
+},
+"result": "''"
+},
+{
+"value": {
+"t": "str",
+"v": "a"
+},
+"result": "'a'"
+},
+{
+"value": {
+"t": "str",
+"v": "a'b"
+},
+"result": "\"a'b\""
+},
+{
+"value": {
+"t": "str",
+"v": "a\"b"
+},
+"result": "'a\"b'"
+},
+{
+"value": {
+"t": "str",
+"v": "a\\b"
+},
+"result": "'a\\\\b'"
+},
+{
+"value": {
+"t": "str",
+"v": "a\nb"
+},
+"result": "'a\\nb'"
+},
+{
+"value": {
+"t": "str",
+"v": "\t"
+},
+"result": "'\\t'"
+},
+{
+"value": {
+"t": "str",
+"v": "\u00e9"
+},
+"result": "'\u00e9'"
+},
+{
+"value": {
+"t": "str",
+"v": "\u0000"
+},
+"result": "'\\x00'"
+},
+{
+"value": {
+"t": "list",
+"v": []
+},
+"result": "[]"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": "[1, 2]"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "str",
+"v": "a"
+}
+]
+},
+"result": "['a']"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "none"
+},
+{
+"t": "bool",
+"v": true
+}
+]
+},
+"result": "[None, True]"
+},
+{
+"value": {
+"t": "dict",
+"v": []
+},
+"result": "{}"
+},
+{
+"value": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"result": "{'a': 1}"
+},
+{
+"value": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+}
+]
+]
+},
+"result": "{'a': [1, 2]}"
+},
+{
+"value": {
+"t": "tuple",
+"v": []
+},
+"result": "()"
+},
+{
+"value": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+}
+]
+},
+"result": "(1,)"
+},
+{
+"value": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": "(1, 2)"
+}
+],
+"pyStr": [
+{
+"value": {
+"t": "none"
+},
+"result": "None"
+},
+{
+"value": {
+"t": "bool",
+"v": true
+},
+"result": "True"
+},
+{
+"value": {
+"t": "bool",
+"v": false
+},
+"result": "False"
+},
+{
+"value": {
+"t": "int",
+"v": 0
+},
+"result": "0"
+},
+{
+"value": {
+"t": "int",
+"v": 1
+},
+"result": "1"
+},
+{
+"value": {
+"t": "int",
+"v": -1
+},
+"result": "-1"
+},
+{
+"value": {
+"t": "float",
+"v": "1.5"
+},
+"result": "1.5"
+},
+{
+"value": {
+"t": "str",
+"v": ""
+},
+"result": ""
+},
+{
+"value": {
+"t": "str",
+"v": "a"
+},
+"result": "a"
+},
+{
+"value": {
+"t": "str",
+"v": "a'b"
+},
+"result": "a'b"
+},
+{
+"value": {
+"t": "str",
+"v": "a\"b"
+},
+"result": "a\"b"
+},
+{
+"value": {
+"t": "str",
+"v": "a\\b"
+},
+"result": "a\\b"
+},
+{
+"value": {
+"t": "str",
+"v": "a\nb"
+},
+"result": "a\nb"
+},
+{
+"value": {
+"t": "str",
+"v": "\t"
+},
+"result": "\t"
+},
+{
+"value": {
+"t": "str",
+"v": "\u00e9"
+},
+"result": "\u00e9"
+},
+{
+"value": {
+"t": "str",
+"v": "\u0000"
+},
+"result": "\u0000"
+},
+{
+"value": {
+"t": "list",
+"v": []
+},
+"result": "[]"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": "[1, 2]"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "str",
+"v": "a"
+}
+]
+},
+"result": "['a']"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "none"
+},
+{
+"t": "bool",
+"v": true
+}
+]
+},
+"result": "[None, True]"
+},
+{
+"value": {
+"t": "dict",
+"v": []
+},
+"result": "{}"
+},
+{
+"value": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"result": "{'a': 1}"
+},
+{
+"value": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+}
+]
+]
+},
+"result": "{'a': [1, 2]}"
+},
+{
+"value": {
+"t": "tuple",
+"v": []
+},
+"result": "()"
+},
+{
+"value": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+}
+]
+},
+"result": "(1,)"
+},
+{
+"value": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": "(1, 2)"
+}
+],
+"pyTypeName": [
+{
+"value": {
+"t": "none"
+},
+"result": "NoneType"
+},
+{
+"value": {
+"t": "bool",
+"v": true
+},
+"result": "bool"
+},
+{
+"value": {
+"t": "bool",
+"v": false
+},
+"result": "bool"
+},
+{
+"value": {
+"t": "int",
+"v": 0
+},
+"result": "int"
+},
+{
+"value": {
+"t": "int",
+"v": 1
+},
+"result": "int"
+},
+{
+"value": {
+"t": "int",
+"v": -1
+},
+"result": "int"
+},
+{
+"value": {
+"t": "float",
+"v": "1.5"
+},
+"result": "float"
+},
+{
+"value": {
+"t": "str",
+"v": ""
+},
+"result": "str"
+},
+{
+"value": {
+"t": "str",
+"v": "a"
+},
+"result": "str"
+},
+{
+"value": {
+"t": "str",
+"v": "a'b"
+},
+"result": "str"
+},
+{
+"value": {
+"t": "str",
+"v": "a\"b"
+},
+"result": "str"
+},
+{
+"value": {
+"t": "str",
+"v": "a\\b"
+},
+"result": "str"
+},
+{
+"value": {
+"t": "str",
+"v": "a\nb"
+},
+"result": "str"
+},
+{
+"value": {
+"t": "str",
+"v": "\t"
+},
+"result": "str"
+},
+{
+"value": {
+"t": "str",
+"v": "\u00e9"
+},
+"result": "str"
+},
+{
+"value": {
+"t": "str",
+"v": "\u0000"
+},
+"result": "str"
+},
+{
+"value": {
+"t": "list",
+"v": []
+},
+"result": "list"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": "list"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "str",
+"v": "a"
+}
+]
+},
+"result": "list"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "none"
+},
+{
+"t": "bool",
+"v": true
+}
+]
+},
+"result": "list"
+},
+{
+"value": {
+"t": "dict",
+"v": []
+},
+"result": "dict"
+},
+{
+"value": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"result": "dict"
+},
+{
+"value": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+}
+]
+]
+},
+"result": "dict"
+},
+{
+"value": {
+"t": "tuple",
+"v": []
+},
+"result": "tuple"
+},
+{
+"value": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+}
+]
+},
+"result": "tuple"
+},
+{
+"value": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": "tuple"
+}
+],
+"pyClassRepr": [
+{
+"value": {
+"t": "none"
+},
+"result": "<class 'NoneType'>"
+},
+{
+"value": {
+"t": "bool",
+"v": true
+},
+"result": "<class 'bool'>"
+},
+{
+"value": {
+"t": "bool",
+"v": false
+},
+"result": "<class 'bool'>"
+},
+{
+"value": {
+"t": "int",
+"v": 0
+},
+"result": "<class 'int'>"
+},
+{
+"value": {
+"t": "int",
+"v": 1
+},
+"result": "<class 'int'>"
+},
+{
+"value": {
+"t": "int",
+"v": -1
+},
+"result": "<class 'int'>"
+},
+{
+"value": {
+"t": "float",
+"v": "1.5"
+},
+"result": "<class 'float'>"
+},
+{
+"value": {
+"t": "str",
+"v": ""
+},
+"result": "<class 'str'>"
+},
+{
+"value": {
+"t": "str",
+"v": "a"
+},
+"result": "<class 'str'>"
+},
+{
+"value": {
+"t": "str",
+"v": "a'b"
+},
+"result": "<class 'str'>"
+},
+{
+"value": {
+"t": "str",
+"v": "a\"b"
+},
+"result": "<class 'str'>"
+},
+{
+"value": {
+"t": "str",
+"v": "a\\b"
+},
+"result": "<class 'str'>"
+},
+{
+"value": {
+"t": "str",
+"v": "a\nb"
+},
+"result": "<class 'str'>"
+},
+{
+"value": {
+"t": "str",
+"v": "\t"
+},
+"result": "<class 'str'>"
+},
+{
+"value": {
+"t": "str",
+"v": "\u00e9"
+},
+"result": "<class 'str'>"
+},
+{
+"value": {
+"t": "str",
+"v": "\u0000"
+},
+"result": "<class 'str'>"
+},
+{
+"value": {
+"t": "list",
+"v": []
+},
+"result": "<class 'list'>"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": "<class 'list'>"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "str",
+"v": "a"
+}
+]
+},
+"result": "<class 'list'>"
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "none"
+},
+{
+"t": "bool",
+"v": true
+}
+]
+},
+"result": "<class 'list'>"
+},
+{
+"value": {
+"t": "dict",
+"v": []
+},
+"result": "<class 'dict'>"
+},
+{
+"value": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"result": "<class 'dict'>"
+},
+{
+"value": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+}
+]
+]
+},
+"result": "<class 'dict'>"
+},
+{
+"value": {
+"t": "tuple",
+"v": []
+},
+"result": "<class 'tuple'>"
+},
+{
+"value": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+}
+]
+},
+"result": "<class 'tuple'>"
+},
+{
+"value": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": "<class 'tuple'>"
+}
+],
+"pyEquals": [
+{
+"a": {
+"t": "int",
+"v": 1
+},
+"b": {
+"t": "int",
+"v": 1
+},
+"result": true
+},
+{
+"a": {
+"t": "int",
+"v": 1
+},
+"b": {
+"t": "float",
+"v": "1.0"
+},
+"result": true
+},
+{
+"a": {
+"t": "int",
+"v": 1
+},
+"b": {
+"t": "bool",
+"v": true
+},
+"result": true
+},
+{
+"a": {
+"t": "int",
+"v": 0
+},
+"b": {
+"t": "bool",
+"v": false
+},
+"result": true
+},
+{
+"a": {
+"t": "int",
+"v": 0
+},
+"b": {
+"t": "none"
+},
+"result": false
+},
+{
+"a": {
+"t": "str",
+"v": "a"
+},
+"b": {
+"t": "str",
+"v": "a"
+},
+"result": true
+},
+{
+"a": {
+"t": "str",
+"v": "a"
+},
+"b": {
+"t": "str",
+"v": "b"
+},
+"result": false
+},
+{
+"a": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"b": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": true
+},
+{
+"a": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"b": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 3
+}
+]
+},
+"result": false
+},
+{
+"a": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+}
+]
+},
+"b": {
+"t": "list",
+"v": [
+{
+"t": "float",
+"v": "1.0"
+}
+]
+},
+"result": true
+},
+{
+"a": {
+"t": "dict",
+"v": []
+},
+"b": {
+"t": "dict",
+"v": []
+},
+"result": true
+},
+{
+"a": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"b": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"result": true
+},
+{
+"a": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"b": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 2
+}
+]
+]
+},
+"result": false
+},
+{
+"a": {
+"t": "none"
+},
+"b": {
+"t": "none"
+},
+"result": true
+},
+{
+"a": {
+"t": "none"
+},
+"b": {
+"t": "bool",
+"v": false
+},
+"result": false
+},
+{
+"a": {
+"t": "list",
+"v": []
+},
+"b": {
+"t": "tuple",
+"v": []
+},
+"result": false
+},
+{
+"a": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"b": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": true
+}
+],
+"pyTruthy": [
+{
+"value": {
+"t": "none"
+},
+"result": false
+},
+{
+"value": {
+"t": "bool",
+"v": true
+},
+"result": true
+},
+{
+"value": {
+"t": "bool",
+"v": false
+},
+"result": false
+},
+{
+"value": {
+"t": "int",
+"v": 0
+},
+"result": false
+},
+{
+"value": {
+"t": "int",
+"v": 1
+},
+"result": true
+},
+{
+"value": {
+"t": "int",
+"v": -1
+},
+"result": true
+},
+{
+"value": {
+"t": "float",
+"v": "0.0"
+},
+"result": false
+},
+{
+"value": {
+"t": "float",
+"v": "0.5"
+},
+"result": true
+},
+{
+"value": {
+"t": "str",
+"v": ""
+},
+"result": false
+},
+{
+"value": {
+"t": "str",
+"v": "a"
+},
+"result": true
+},
+{
+"value": {
+"t": "str",
+"v": "0"
+},
+"result": true
+},
+{
+"value": {
+"t": "list",
+"v": []
+},
+"result": false
+},
+{
+"value": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 0
+}
+]
+},
+"result": true
+},
+{
+"value": {
+"t": "dict",
+"v": []
+},
+"result": false
+},
+{
+"value": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"result": true
+},
+{
+"value": {
+"t": "tuple",
+"v": []
+},
+"result": false
+},
+{
+"value": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 0
+}
+]
+},
+"result": true
+}
+],
+"pyContains": [
+{
+"needle": {
+"t": "str",
+"v": "a"
+},
+"haystack": {
+"t": "str",
+"v": "abc"
+},
+"result": true
+},
+{
+"needle": {
+"t": "str",
+"v": "d"
+},
+"haystack": {
+"t": "str",
+"v": "abc"
+},
+"result": false
+},
+{
+"needle": {
+"t": "str",
+"v": ""
+},
+"haystack": {
+"t": "str",
+"v": "abc"
+},
+"result": true
+},
+{
+"needle": {
+"t": "str",
+"v": "ab"
+},
+"haystack": {
+"t": "str",
+"v": "abc"
+},
+"result": true
+},
+{
+"needle": {
+"t": "str",
+"v": "ba"
+},
+"haystack": {
+"t": "str",
+"v": "abc"
+},
+"result": false
+},
+{
+"needle": {
+"t": "int",
+"v": 1
+},
+"haystack": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": true
+},
+{
+"needle": {
+"t": "int",
+"v": 3
+},
+"haystack": {
+"t": "list",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": false
+},
+{
+"needle": {
+"t": "str",
+"v": "a"
+},
+"haystack": {
+"t": "list",
+"v": [
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "str",
+"v": "b"
+}
+]
+},
+"result": true
+},
+{
+"needle": {
+"t": "str",
+"v": "a"
+},
+"haystack": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"result": true
+},
+{
+"needle": {
+"t": "str",
+"v": "b"
+},
+"haystack": {
+"t": "dict",
+"v": [
+[
+{
+"t": "str",
+"v": "a"
+},
+{
+"t": "int",
+"v": 1
+}
+]
+]
+},
+"result": false
+},
+{
+"needle": {
+"t": "int",
+"v": 1
+},
+"haystack": {
+"t": "tuple",
+"v": [
+{
+"t": "int",
+"v": 1
+},
+{
+"t": "int",
+"v": 2
+}
+]
+},
+"result": true
+}
+],
+"pyStrip": [
+{
+"s": "",
+"result": ""
+},
+{
+"s": " ",
+"result": ""
+},
+{
+"s": "  a  ",
+"result": "a"
+},
+{
+"s": "\t\na\r\u000b\f ",
+"result": "a"
+},
+{
+"s": "a",
+"result": "a"
+},
+{
+"s": "A",
+"result": "A"
+},
+{
+"s": "aA",
+"result": "aA"
+},
+{
+"s": "abc",
+"result": "abc"
+},
+{
+"s": "ABC",
+"result": "ABC"
+},
+{
+"s": "a b",
+"result": "a b"
+},
+{
+"s": " a b ",
+"result": "a b"
+},
+{
+"s": "a\u00a0b",
+"result": "a\u00a0b"
+},
+{
+"s": "\u00a0",
+"result": ""
+},
+{
+"s": "\u00e9",
+"result": "\u00e9"
+},
+{
+"s": "\u00c9\u00c9",
+"result": "\u00c9\u00c9"
+},
+{
+"s": "123",
+"result": "123"
+},
+{
+"s": "a1",
+"result": "a1"
+},
+{
+"s": "",
+"result": ""
+},
+{
+"s": "a\u0000b",
+"result": "a\u0000b"
+},
+{
+"s": "a\tb",
+"result": "a\tb"
+},
+{
+"s": "line one two",
+"result": "line one two"
+},
+{
+"s": "  leading",
+"result": "leading"
+},
+{
+"s": "trailing  ",
+"result": "trailing"
+},
+{
+"s": "\u2000a\u2000",
+"result": "a"
+}
+],
+"pyLstrip": [
+{
+"s": "",
+"result": ""
+},
+{
+"s": " ",
+"result": ""
+},
+{
+"s": "  a  ",
+"result": "a  "
+},
+{
+"s": "\t\na\r\u000b\f ",
+"result": "a\r\u000b\f "
+},
+{
+"s": "a",
+"result": "a"
+},
+{
+"s": "A",
+"result": "A"
+},
+{
+"s": "aA",
+"result": "aA"
+},
+{
+"s": "abc",
+"result": "abc"
+},
+{
+"s": "ABC",
+"result": "ABC"
+},
+{
+"s": "a b",
+"result": "a b"
+},
+{
+"s": " a b ",
+"result": "a b "
+},
+{
+"s": "a\u00a0b",
+"result": "a\u00a0b"
+},
+{
+"s": "\u00a0",
+"result": ""
+},
+{
+"s": "\u00e9",
+"result": "\u00e9"
+},
+{
+"s": "\u00c9\u00c9",
+"result": "\u00c9\u00c9"
+},
+{
+"s": "123",
+"result": "123"
+},
+{
+"s": "a1",
+"result": "a1"
+},
+{
+"s": "",
+"result": ""
+},
+{
+"s": "a\u0000b",
+"result": "a\u0000b"
+},
+{
+"s": "a\tb",
+"result": "a\tb"
+},
+{
+"s": "line one two",
+"result": "line one two"
+},
+{
+"s": "  leading",
+"result": "leading"
+},
+{
+"s": "trailing  ",
+"result": "trailing  "
+},
+{
+"s": "\u2000a\u2000",
+"result": "a\u2000"
+}
+],
+"pyRstrip": [
+{
+"s": "",
+"result": ""
+},
+{
+"s": " ",
+"result": ""
+},
+{
+"s": "  a  ",
+"result": "  a"
+},
+{
+"s": "\t\na\r\u000b\f ",
+"result": "\t\na"
+},
+{
+"s": "a",
+"result": "a"
+},
+{
+"s": "A",
+"result": "A"
+},
+{
+"s": "aA",
+"result": "aA"
+},
+{
+"s": "abc",
+"result": "abc"
+},
+{
+"s": "ABC",
+"result": "ABC"
+},
+{
+"s": "a b",
+"result": "a b"
+},
+{
+"s": " a b ",
+"result": " a b"
+},
+{
+"s": "a\u00a0b",
+"result": "a\u00a0b"
+},
+{
+"s": "\u00a0",
+"result": ""
+},
+{
+"s": "\u00e9",
+"result": "\u00e9"
+},
+{
+"s": "\u00c9\u00c9",
+"result": "\u00c9\u00c9"
+},
+{
+"s": "123",
+"result": "123"
+},
+{
+"s": "a1",
+"result": "a1"
+},
+{
+"s": "",
+"result": ""
+},
+{
+"s": "a\u0000b",
+"result": "a\u0000b"
+},
+{
+"s": "a\tb",
+"result": "a\tb"
+},
+{
+"s": "line one two",
+"result": "line one two"
+},
+{
+"s": "  leading",
+"result": "  leading"
+},
+{
+"s": "trailing  ",
+"result": "trailing"
+},
+{
+"s": "\u2000a\u2000",
+"result": "\u2000a"
+}
+],
+"pySplit": [
+{
+"s": "",
+"result": []
+},
+{
+"s": " ",
+"result": []
+},
+{
+"s": "  a  ",
+"result": [
+"a"
+]
+},
+{
+"s": "\t\na\r\u000b\f ",
+"result": [
+"a"
+]
+},
+{
+"s": "a",
+"result": [
+"a"
+]
+},
+{
+"s": "A",
+"result": [
+"A"
+]
+},
+{
+"s": "aA",
+"result": [
+"aA"
+]
+},
+{
+"s": "abc",
+"result": [
+"abc"
+]
+},
+{
+"s": "ABC",
+"result": [
+"ABC"
+]
+},
+{
+"s": "a b",
+"result": [
+"a",
+"b"
+]
+},
+{
+"s": " a b ",
+"result": [
+"a",
+"b"
+]
+},
+{
+"s": "a\u00a0b",
+"result": [
+"a",
+"b"
+]
+},
+{
+"s": "\u00a0",
+"result": []
+},
+{
+"s": "\u00e9",
+"result": [
+"\u00e9"
+]
+},
+{
+"s": "\u00c9\u00c9",
+"result": [
+"\u00c9\u00c9"
+]
+},
+{
+"s": "123",
+"result": [
+"123"
+]
+},
+{
+"s": "a1",
+"result": [
+"a1"
+]
+},
+{
+"s": "",
+"result": []
+},
+{
+"s": "a\u0000b",
+"result": [
+"a\u0000b"
+]
+},
+{
+"s": "a\tb",
+"result": [
+"a",
+"b"
+]
+},
+{
+"s": "line one two",
+"result": [
+"line",
+"one",
+"two"
+]
+},
+{
+"s": "  leading",
+"result": [
+"leading"
+]
+},
+{
+"s": "trailing  ",
+"result": [
+"trailing"
+]
+},
+{
+"s": "\u2000a\u2000",
+"result": [
+"a"
+]
+}
+],
+"pyIsAscii": [
+{
+"s": "",
+"result": true
+},
+{
+"s": " ",
+"result": true
+},
+{
+"s": "  a  ",
+"result": true
+},
+{
+"s": "\t\na\r\u000b\f ",
+"result": true
+},
+{
+"s": "a",
+"result": true
+},
+{
+"s": "A",
+"result": true
+},
+{
+"s": "aA",
+"result": true
+},
+{
+"s": "abc",
+"result": true
+},
+{
+"s": "ABC",
+"result": true
+},
+{
+"s": "a b",
+"result": true
+},
+{
+"s": " a b ",
+"result": true
+},
+{
+"s": "a\u00a0b",
+"result": false
+},
+{
+"s": "\u00a0",
+"result": false
+},
+{
+"s": "\u00e9",
+"result": false
+},
+{
+"s": "\u00c9\u00c9",
+"result": false
+},
+{
+"s": "123",
+"result": true
+},
+{
+"s": "a1",
+"result": true
+},
+{
+"s": "",
+"result": true
+},
+{
+"s": "a\u0000b",
+"result": true
+},
+{
+"s": "a\tb",
+"result": true
+},
+{
+"s": "line one two",
+"result": true
+},
+{
+"s": "  leading",
+"result": true
+},
+{
+"s": "trailing  ",
+"result": true
+},
+{
+"s": "\u2000a\u2000",
+"result": false
+}
+],
+"pyIsLower": [
+{
+"s": "",
+"result": false
+},
+{
+"s": " ",
+"result": false
+},
+{
+"s": "  a  ",
+"result": true
+},
+{
+"s": "\t\na\r\u000b\f ",
+"result": true
+},
+{
+"s": "a",
+"result": true
+},
+{
+"s": "A",
+"result": false
+},
+{
+"s": "aA",
+"result": false
+},
+{
+"s": "abc",
+"result": true
+},
+{
+"s": "ABC",
+"result": false
+},
+{
+"s": "a b",
+"result": true
+},
+{
+"s": " a b ",
+"result": true
+},
+{
+"s": "a\u00a0b",
+"result": true
+},
+{
+"s": "\u00a0",
+"result": false
+},
+{
+"s": "\u00e9",
+"result": true
+},
+{
+"s": "\u00c9\u00c9",
+"result": false
+},
+{
+"s": "123",
+"result": false
+},
+{
+"s": "a1",
+"result": true
+},
+{
+"s": "",
+"result": false
+},
+{
+"s": "a\u0000b",
+"result": true
+},
+{
+"s": "a\tb",
+"result": true
+},
+{
+"s": "line one two",
+"result": true
+},
+{
+"s": "  leading",
+"result": true
+},
+{
+"s": "trailing  ",
+"result": true
+},
+{
+"s": "\u2000a\u2000",
+"result": true
+}
+],
+"pyIsPrintable": [
+{
+"s": "",
+"result": true
+},
+{
+"s": " ",
+"result": true
+},
+{
+"s": "  a  ",
+"result": true
+},
+{
+"s": "\t\na\r\u000b\f ",
+"result": false
+},
+{
+"s": "a",
+"result": true
+},
+{
+"s": "A",
+"result": true
+},
+{
+"s": "aA",
+"result": true
+},
+{
+"s": "abc",
+"result": true
+},
+{
+"s": "ABC",
+"result": true
+},
+{
+"s": "a b",
+"result": true
+},
+{
+"s": " a b ",
+"result": true
+},
+{
+"s": "a\u00a0b",
+"result": false
+},
+{
+"s": "\u00a0",
+"result": false
+},
+{
+"s": "\u00e9",
+"result": true
+},
+{
+"s": "\u00c9\u00c9",
+"result": true
+},
+{
+"s": "123",
+"result": true
+},
+{
+"s": "a1",
+"result": true
+},
+{
+"s": "",
+"result": true
+},
+{
+"s": "a\u0000b",
+"result": false
+},
+{
+"s": "a\tb",
+"result": false
+},
+{
+"s": "line one two",
+"result": true
+},
+{
+"s": "  leading",
+"result": true
+},
+{
+"s": "trailing  ",
+"result": true
+},
+{
+"s": "\u2000a\u2000",
+"result": false
+}
+],
+"pyFirstWord": [
+{
+"s": "",
+"result": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+}
+},
+{
+"s": " ",
+"result": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+}
+},
+{
+"s": "  a  ",
+"result": {
+"value": "a"
+}
+},
+{
+"s": "\t\na\r\u000b\f ",
+"result": {
+"value": "a"
+}
+},
+{
+"s": "a",
+"result": {
+"value": "a"
+}
+},
+{
+"s": "A",
+"result": {
+"value": "A"
+}
+},
+{
+"s": "aA",
+"result": {
+"value": "aA"
+}
+},
+{
+"s": "abc",
+"result": {
+"value": "abc"
+}
+},
+{
+"s": "ABC",
+"result": {
+"value": "ABC"
+}
+},
+{
+"s": "a b",
+"result": {
+"value": "a"
+}
+},
+{
+"s": " a b ",
+"result": {
+"value": "a"
+}
+},
+{
+"s": "a\u00a0b",
+"result": {
+"value": "a"
+}
+},
+{
+"s": "\u00a0",
+"result": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+}
+},
+{
+"s": "\u00e9",
+"result": {
+"value": "\u00e9"
+}
+},
+{
+"s": "\u00c9\u00c9",
+"result": {
+"value": "\u00c9\u00c9"
+}
+},
+{
+"s": "123",
+"result": {
+"value": "123"
+}
+},
+{
+"s": "a1",
+"result": {
+"value": "a1"
+}
+},
+{
+"s": "",
+"result": {
+"exc": {
+"type": "IndexError",
+"msg": "list index out of range"
+}
+}
+},
+{
+"s": "a\u0000b",
+"result": {
+"value": "a\u0000b"
+}
+},
+{
+"s": "a\tb",
+"result": {
+"value": "a"
+}
+},
+{
+"s": "line one two",
+"result": {
+"value": "line"
+}
+},
+{
+"s": "  leading",
+"result": {
+"value": "leading"
+}
+},
+{
+"s": "trailing  ",
+"result": {
+"value": "trailing"
+}
+},
+{
+"s": "\u2000a\u2000",
+"result": {
+"value": "a"
+}
+}
+],
+"pySum": [
+{
+"values": [],
+"result": "0",
+"is_float": false
+},
+{
+"values": [
+1
+],
+"result": "1",
+"is_float": false
+},
+{
+"values": [
+1,
+2,
+3
+],
+"result": "6",
+"is_float": false
+},
+{
+"values": [
+0.1,
+0.2
+],
+"result": "0.30000000000000004",
+"is_float": true
+},
+{
+"values": [
+1e+16,
+1.0,
+-1e+16
+],
+"result": "1.0",
+"is_float": true
+},
+{
+"values": [
+-1,
+1
+],
+"result": "0",
+"is_float": false
+}
+],
+"pyTextwrapFill": [
+{
+"text": "the quick brown fox jumps over the lazy dog",
+"options": {},
+"result": "the quick brown fox jumps over the lazy dog"
+},
+{
+"text": "the quick brown fox jumps over the lazy dog",
+"options": {
+"width": 20
+},
+"result": "the quick brown fox\njumps over the lazy\ndog"
+},
+{
+"text": "the quick brown fox jumps over the lazy dog",
+"options": {
+"width": 10
+},
+"result": "the quick\nbrown fox\njumps over\nthe lazy\ndog"
+},
+{
+"text": "the quick brown fox",
+"options": {
+"width": 20,
+"initial_indent": ">> "
+},
+"result": ">> the quick brown\nfox"
+},
+{
+"text": "the quick brown fox",
+"options": {
+"width": 20,
+"subsequent_indent": "   "
+},
+"result": "the quick brown fox"
+},
+{
+"text": "the quick brown fox",
+"options": {
+"width": 20,
+"initial_indent": "A ",
+"subsequent_indent": "B "
+},
+"result": "A the quick brown\nB fox"
+},
+{
+"text": "supercalifragilisticexpialidocious",
+"options": {
+"width": 10
+},
+"result": "supercalif\nragilistic\nexpialidoc\nious"
+},
+{
+"text": "supercalifragilisticexpialidocious",
+"options": {
+"width": 10,
+"break_long_words": false
+},
+"result": "supercalifragilisticexpialidocious"
+},
+{
+"text": "well-known hyphen-separated words here",
+"options": {
+"width": 12
+},
+"result": "well-known\nhyphen-\nseparated\nwords here"
+},
+{
+"text": "a\tb\tc",
+"options": {
+"width": 20
+},
+"result": "a       b       c"
+},
+{
+"text": "",
+"options": {
+"width": 20
+},
+"result": ""
+},
+{
+"text": "   ",
+"options": {
+"width": 20
+},
+"result": ""
+},
+{
+"text": "one\n\ntwo",
+"options": {
+"width": 20
+},
+"result": "one  two"
+},
+{
+"text": "short",
+"options": {
+"width": 1
+},
+"result": "s\nh\no\nr\nt"
+},
+{
+"text": "a b c d e f g h",
+"options": {
+"width": 3
+},
+"result": "a b\nc d\ne f\ng h"
+}
+],
+"pyBytesRepr": [
+{
+"bytes": "",
+"result": "b''"
+},
+{
+"bytes": "A",
+"result": "b'A'"
+},
+{
+"bytes": "ABIF",
+"result": "b'ABIF'"
+},
+{
+"bytes": "it's",
+"result": "b\"it's\""
+},
+{
+"bytes": "say \"hi\"",
+"result": "b'say \"hi\"'"
+},
+{
+"bytes": "both ' and \" ",
+"result": "b'both \\' and \" '"
+},
+{
+"bytes": "a\\b",
+"result": "b'a\\\\b'"
+},
+{
+"bytes": "\u0000\u0001\u00ff",
+"result": "b'\\x00\\x01\\xff'"
+},
+{
+"bytes": "line\nbreak",
+"result": "b'line\\nbreak'"
+},
+{
+"bytes": "tab\there",
+"result": "b'tab\\there'"
+},
+{
+"bytes": "\u007f",
+"result": "b'\\x7f'"
+},
+{
+"bytes": "\u001f",
+"result": "b'\\x1f'"
+},
+{
+"bytes": " !\"#$%&'()*+,-./",
+"result": "b' !\"#$%&\\'()*+,-./'"
+}
+],
+"sha1": [
+{
+"bytes": "",
+"hex": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+"base64": "2jmj7l5rSw0yVb/vlWAYkK/YBwk="
+},
+{
+"bytes": "a",
+"hex": "86f7e437faa5a7fce15d1ddcb9eaeaea377667b8",
+"base64": "hvfkN/qlp/zhXR3cuerq6jd2Z7g="
+},
+{
+"bytes": "abc",
+"hex": "a9993e364706816aba3e25717850c26c9cd0d89d",
+"base64": "qZk+NkcGgWq6PiVxeFDCbJzQ2J0="
+},
+{
+"bytes": "GATTACA",
+"hex": "b69da3cde08cd9edd6e32c6daebc74f4230a6bff",
+"base64": "tp2jzeCM2e3W4yxtrrx09CMKa/8="
+},
+{
+"bytes": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+"hex": "291e9a6c66994949b57ba5e650361e98fc36b1ba",
+"base64": "KR6abGaZSUm1e6XmUDYemPw2sbo="
+},
+{
+"bytes": "\u0000\u0001\u00ff",
+"hex": "c63e8274458bc7501e7c981f6394ced6d4490fda",
+"base64": "xj6CdEWLx1AefJgfY5TO1tRJD9o="
+},
+{
+"bytes": "\u00e9",
+"hex": "1599e9fa41ec68c80230491902786bee889f5bcb",
+"base64": "FZnp+kHsaMgCMEkZAnhr7oifW8s="
+},
+{
+"bytes": "the quick brown fox",
+"hex": "ced71fa7235231bed383facfdc41c4ddcc22ecf1",
+"base64": "ztcfpyNSMb7Tg/rP3EHE3cwi7PE="
+}
+],
+"base64": [
+{
+"bytes": "",
+"result": ""
+},
+{
+"bytes": "a",
+"result": "YQ=="
+},
+{
+"bytes": "abc",
+"result": "YWJj"
+},
+{
+"bytes": "GATTACA",
+"result": "R0FUVEFDQQ=="
+},
+{
+"bytes": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+"result": "YWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYQ=="
+},
+{
+"bytes": "\u0000\u0001\u00ff",
+"result": "AAH/"
+},
+{
+"bytes": "\u00e9",
+"result": "6Q=="
+},
+{
+"bytes": "the quick brown fox",
+"result": "dGhlIHF1aWNrIGJyb3duIGZveA=="
+}
+]
+}
+}

@@ -160,17 +160,25 @@ export function pyFloatRepr(x: number): string {
  *
  * @param x - The number.
  * @param precision - Significant digits.
+ * @param alt - Python's `#` flag: keep the trailing zeros instead of stripping them, so `"%#g" % 1.0`
+ *   is `"1.00000"` where `"%g" % 1.0` is `"1"`.
  */
-export function pyFormatG(x: number, precision = 6): string {
+export function pyFormatG(x: number, precision = 6, alt = false): string {
   if (!Number.isFinite(x)) return Number.isNaN(x) ? "nan" : x < 0 ? "-inf" : "inf";
   const p = precision === 0 ? 1 : precision;
-  if (x === 0) return Object.is(x, -0) ? "-0" : "0";
+  // `#` keeps the significant digits that would otherwise be stripped, so zero becomes "0.00000" rather
+  // than "0" at the default precision.
+  if (x === 0) {
+    const zero = alt ? (0).toFixed(Math.max(0, p - 1)) : "0";
+    return Object.is(x, -0) ? `-${zero}` : zero;
+  }
   const [mant, e] = x.toExponential(p - 1).split("e") as [string, string];
   const exp = Number(e);
   if (exp < -4 || exp >= p) {
-    const m = mant.includes(".") ? mant.replace(/0+$/, "").replace(/\.$/, "") : mant;
+    const m = alt || !mant.includes(".") ? mant : mant.replace(/0+$/, "").replace(/\.$/, "");
     return `${m}e${exp < 0 ? "-" : "+"}${String(Math.abs(exp)).padStart(2, "0")}`;
   }
   const s = x.toFixed(Math.max(0, p - 1 - exp));
-  return s.includes(".") ? s.replace(/0+$/, "").replace(/\.$/, "") : s;
+  if (alt || !s.includes(".")) return s;
+  return s.replace(/0+$/, "").replace(/\.$/, "");
 }

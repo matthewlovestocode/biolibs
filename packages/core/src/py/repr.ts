@@ -18,6 +18,20 @@ function reprString(s: string): string {
 }
 
 /**
+ * A `PyFloat` reduced to its number, so that `==` and truthiness see the value rather than the wrapper.
+ *
+ * @param x - Any value. @returns Its number if it is a `PyFloat`, otherwise it unchanged.
+ */
+function unwrapFloat(x: unknown): unknown {
+  if (x !== null && typeof x === "object" && x.constructor?.name === "PyFloat") {
+    return (x as { value: number }).value;
+  }
+  // Python's bools *are* ints, so `1 == True` and `0 == False`, while `2 == True` is false.
+  if (typeof x === "boolean") return x ? 1 : 0;
+  return x;
+}
+
+/**
  * Python's `repr(x)`. Understands null (`None`), booleans, numbers, strings,
  * arrays (lists), `Map`s and plain objects (dicts), and any object with a
  * `repr()` method (positions, locations, features).
@@ -48,6 +62,8 @@ export function pyTypeName(x: unknown): string {
   if (typeof x === "boolean") return "bool";
   if (typeof x === "number") return Number.isInteger(x) ? "int" : "float";
   if (typeof x === "string") return "str";
+  // Before the Array check: a PyTuple *is* an Array subclass, so this order is what tells the two apart.
+  if (x instanceof PyTuple) return "tuple";
   if (Array.isArray(x)) return "list";
   if (x instanceof Map) return "dict";
   if (typeof x === "object") return (x as object).constructor.name;
@@ -80,7 +96,14 @@ export function pyClassRepr(x: unknown): string {
  * objects with an `equals()` method.
  */
 export function pyEquals(a: unknown, b: unknown): boolean {
+  // A PyFloat only exists to remember that a whole number came from a float; `1 == 1.0` in Python, so
+  // unwrap both sides before comparing.
+  a = unwrapFloat(a);
+  b = unwrapFloat(b);
   if (a === b) return true;
+  // A list and a tuple are never equal in Python, whatever they hold, and a PyTuple is an Array
+  // subclass -- so the kinds have to match before the contents are compared at all.
+  if (a instanceof PyTuple !== b instanceof PyTuple) return false;
   if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every((v, i) => pyEquals(v, b[i]));
   if (a instanceof Map && b instanceof Map) return a.size === b.size && [...a].every(([k, v]) => b.has(k) && pyEquals(v, b.get(k)));
   if (a !== null && typeof a === "object" && typeof (a as { equals?: unknown }).equals === "function") return (a as { equals(o: unknown): boolean }).equals(b);
@@ -89,6 +112,7 @@ export function pyEquals(a: unknown, b: unknown): boolean {
 
 /** Python truthiness: `None`, `0`, `""`, `[]` and empty dicts are false; everything else is true. */
 export function pyTruthy(x: unknown): boolean {
+  x = unwrapFloat(x);
   if (x === null || x === undefined) return false;
   if (typeof x === "boolean") return x;
   if (typeof x === "number") return x !== 0;

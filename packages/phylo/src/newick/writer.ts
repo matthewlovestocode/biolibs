@@ -1,6 +1,6 @@
 /** The Newick writer (Biopython's `Bio.Phylo.NewickIO.Writer`). */
 
-import { PyFloat, pyFloatRepr, pyPercent, pyStr } from "@biolibs/core";
+import { PyFloat, pyFloatRepr, pyPercent, pyStr, PyTuple } from "@biolibs/core";
 import type { Clade as BaseClade } from "../base-tree/clade.js";
 import type { Tree as BaseTree } from "../base-tree/tree.js";
 import type { Clade } from "./newick.js";
@@ -94,7 +94,14 @@ export class Writer {
     if (confAsLength) return (clade, terminal) => ":" + (terminal ? pyPercent(formatConfidence, new PyFloat(maxConfidence)) : pyPercent(formatConfidence, asNumber(clade.confidence))) + getComment(clade);
     if (lengthOnly) return (clade) => ":" + pyPercent(formatBranchLength, new PyFloat(clade.branchLength || 0.0)) + getComment(clade);
     return (clade, terminal) => {
-      if (terminal || !hasConfidence(clade)) return ":" + pyPercent(formatBranchLength, new PyFloat(clade.branchLength || 0.0)) + getComment(clade);
+      // Biopython writes `(":" + format_branch_length) % (...)`, with the colon *inside* the format
+      // string and a one-element tuple on the right -- so a complaint about the format names the colon's
+      // position too, and names the argument's index. Formatting first and prepending after would report
+      // a position one to the left.
+      if (terminal || !hasConfidence(clade)) {
+        return pyPercent(":" + formatBranchLength,
+                         PyTuple.from([new PyFloat(clade.branchLength || 0.0)])) + getComment(clade);
+      }
       return pyPercent(formatConfidence + ":" + formatBranchLength, asNumber(clade.confidence), new PyFloat(clade.branchLength || 0.0)) + getComment(clade);
     };
   }
