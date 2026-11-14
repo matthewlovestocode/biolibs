@@ -1,7 +1,7 @@
 ## Bio.SeqIO
 
 - [x] `convert(in_file, in_format, out_file, out_format, molecule_type=None)`
-- [~] `index(filename, format, alphabet=None, key_function=None)`
+- [x] `index(filename, format, alphabet=None, key_function=None)`
 - [-] `index_db(index_filename, filenames=None, format=None, alphabet=None, key_function=None)`
 - [x] `parse(handle, format, alphabet=None)`
 - [x] `read(handle, format, alphabet=None)`

@@ -4,6 +4,7 @@
  * unchanged in Node and the browser.
  */
 
+import { ValueError } from "@biolibs/core";
 import { StreamModeError } from "./errors.js";
 
 /**
@@ -110,8 +111,16 @@ export class BinaryStream {
   /** @param data - The full contents. */
   constructor(private readonly data: Uint8Array) {}
 
-  /** Read up to `size` bytes, or everything left if `size` is omitted or negative; empty at the end. */
+  /**
+   * Read up to `size` bytes, or everything left if `size` is omitted or negative; empty at the end.
+   *
+   * A read from beyond the end returns nothing and leaves the position where it was, as Python's does: a
+   * relative seek can put a file's position past its end, and reading there must not bring it back.
+   */
   read(size = -1): Uint8Array {
+    // Python allows -1 for "everything left" and refuses any other negative length.
+    if (size < -1) throw new ValueError("read length must be non-negative or -1");
+    if (this.pos >= this.data.length) return this.data.subarray(0, 0);
     const end = size < 0 ? this.data.length : Math.min(this.data.length, this.pos + size);
     const chunk = this.data.subarray(this.pos, end);
     this.pos = end;

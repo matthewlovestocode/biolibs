@@ -8,7 +8,7 @@
  * Ion Torrent's files carry none — and this does the same.
  */
 
-import { ValueError, warn } from "@biolibs/core";
+import { pyDecodeUtf8, pyBytesRepr, AssertionError, ValueError, warn } from "@biolibs/core";
 import { SeqFileRandomAccess, type Entry } from "../indexing/proxies.js";
 import type { SeqRecord } from "@biolibs/seqrecord";
 import { calcsize, unpack } from "../binary/struct.js";
@@ -76,7 +76,9 @@ export function* readRocheIndex(stream: BinaryStream): Generator<[string, number
       parts.push(more[0]!);
       if (more[0] === FLAG) break;
     }
-    const name = String.fromCharCode(...parts.slice(0, -6));
+    // Biopython decodes the name, and an invalid byte there is a UnicodeDecodeError -- a ValueError, so it
+    // sends the caller down the slow path like any other damaged index.
+    const name = pyDecodeUtf8(Uint8Array.from(parts.slice(0, -6)));
     const [off4, off3, off2, off1, off0] = parts.slice(-6, -1);
     if (off4) throw valueError("Expected a null terminator to the read name.");
     yield [name, off0! + 255 * off1! + 65025 * off2! + 16581375 * off3!];
@@ -96,9 +98,12 @@ export function* readRocheIndex(stream: BinaryStream): Generator<[string, number
  * @returns Each read's name and offset.
  * @throws {@link ValueError} for a read header whose length is impossible.
  */
-export function* slowIndex(stream: BinaryStream, header: SffHeader): Generator<[string, number]> {
+export function* slowIndex(stream: BinaryStream, _header: SffHeader): Generator<[string, number]> {
+  // The header is read again here, as Biopython reads it: a file whose padding or header length is wrong says so
+  // once more, and an impossible header length is an assertion rather than a complaint about the reads.
+  stream.seek(0);
+  const header = readFileHeader(stream);
   const readFlowSize = calcsize(`>${header.numberOfFlowsPerRead}H`);
-  stream.seek(header.headerLength);
   for (let read = 0; read < header.numberOfReads; read++) {
     let recordOffset = stream.tell();
     if (recordOffset === header.indexOffset) {
@@ -107,11 +112,18 @@ export function* slowIndex(stream: BinaryStream, header: SffHeader): Generator<[
       stream.seek(offset);
       recordOffset = offset;
     }
-    const [readHeaderLength, nameLength, seqLen] = unpack(READ_HEADER_FMT, stream.read(READ_HEADER_SIZE)) as number[];
-    if (readHeaderLength! < 10 || readHeaderLength! % 8 !== 0) throw new ValueError(`Malformed read header, says length is ${readHeaderLength}`);
-    const name = String.fromCharCode(...stream.read(nameLength!));
+    const raw = stream.read(READ_HEADER_SIZE);
+    const [readHeaderLength, nameLength, seqLen] = unpack(READ_HEADER_FMT, raw) as number[];
+    // The slow walk prints the bytes with its complaint, unlike the two readers that say only the length.
+    if (readHeaderLength! < 10 || readHeaderLength! % 8 !== 0) {
+      throw new ValueError(`Malformed read header, says length is ${readHeaderLength}:\n${pyBytesRepr(raw)}`);
+    }
+    // Biopython decodes the name, so an invalid byte here is a UnicodeDecodeError with Python's own wording.
+    const name = pyDecodeUtf8(stream.read(nameLength!));
     let padding = readHeaderLength! - READ_HEADER_SIZE - nameLength!;
     if (nullCount(stream.read(padding)) !== padding) warn(`Your SFF file is invalid, post name ${padding} byte padding region contained data`, PARSER);
+    // The header has to have taken exactly as many bytes as it said, which a truncated file breaks.
+    if (recordOffset + readHeaderLength! !== stream.tell()) throw new AssertionError();
     const size = readFlowSize + 3 * seqLen!;
     stream.seek(stream.tell() + size);
     padding = size % 8;
@@ -153,23 +165,34 @@ export class SffRandomAccess extends SeqFileRandomAccess {
    */
   *iterate(): Generator<Entry> {
     const stream = this.stream;
-    const { indexOffset, indexLength, numberOfReads } = this.header;
+    // Biopython reads the file header again here, and once more inside the index search, so a file whose header
+    // padding is not what it should be warns about it each time.
+    stream.seek(0);
+    const { indexOffset, indexLength, numberOfReads } = readFileHeader(stream);
     if (indexOffset && indexLength) {
-      const found: Entry[] = [];
+      // The entries go out as they are read, not once they are all in: whoever is building the index sees each
+      // one immediately, so a duplicate key is its complaint rather than this one's.
+      let count = 0;
+      let maxOffset = 0;
       try {
-        for (const [name, offset] of readRocheIndex(stream)) found.push([name, offset, 0]);
-        if (found.length !== numberOfReads) throw valueError(`Indexed ${found.length} records, expected ${numberOfReads}`);
+        for (const [name, offset] of readRocheIndex(stream)) {
+          maxOffset = Math.max(maxOffset, offset);
+          yield [name, offset, 0];
+          count += 1;
+        }
+        if (count !== numberOfReads) throw valueError(`Indexed ${count} records, expected ${numberOfReads}`);
       } catch (e) {
         if ((e as Error).name !== "ValueError") throw e;
         warn(`Could not parse the SFF index: ${(e as Error).message}`, PARSER);
-        if (found.length !== 0) throw new ValueError("Partially populated index");
+        // Entries already handed over cannot be taken back, and Biopython asserts rather than carrying on.
+        if (count !== 0) throw new AssertionError("Partially populated index");
+        // Only a seek here: the walk reads the header itself, which is what warns about it once more.
+        stream.seek(0);
         yield* this.scan(stream, numberOfReads);
         return;
       }
-      yield* found;
       // Biopython checks the end of the file even when the index spared it the walk: the last read has to be
       // stepped over first, since the index says where the reads start but not where they end.
-      const maxOffset = Math.max(0, ...found.map(([, offset]) => offset));
       if (indexOffset + indexLength <= maxOffset) {
         stream.seek(maxOffset);
         readRawRecord(stream, this.readFlowSize);

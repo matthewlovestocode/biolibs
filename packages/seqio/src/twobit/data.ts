@@ -29,7 +29,10 @@ export class TwoBitSequenceData extends SequenceDataAbstractBaseClass {
     const byteStart = Math.floor(start / 4);
     const byteEnd = Math.floor((end + 3) / 4);
     this.stream.seek(this.offset + byteStart);
-    const data = this.stream.read(byteEnd - byteStart);
+    // Biopython reads these bytes with `np.fromfile(..., count=byteSize)`, and a negative count there means
+    // "everything left" rather than being refused as a negative length would be.
+    const count = byteEnd - byteStart;
+    const data = this.stream.read(count < 0 ? -1 : count);
     return convert(data, start, end, step, this.nBlocks, this.maskBlocks);
   }
 

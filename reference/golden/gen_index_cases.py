@@ -81,13 +81,11 @@ for fname, formats in SOURCES.items():
 # SFF: binary, and the only format with an index block of its own, which `index` reads when the file has one and
 # falls back to scanning the reads when it does not.
 sff = json.load(open(os.path.join(GOLD, "seqio-sff.json")))["cases"]
-# Only files that parse cleanly: indexing a file whose Roche index block is damaged goes through Biopython's
-# warn-then-fall-back path, which this port does not reproduce yet (see docs/seqio.md), so those are left out
-# and `Bio.SeqIO.index` stays partial.
-sff_bytes = [(c["format"], c["bytes"]) for c in sff
-             if c["kind"] == "parse" and "bytes" in c and "exc" not in c and not c.get("warnings")]
+# Every file, damaged index blocks included: a Roche index that cannot be read makes Biopython warn and fall
+# back to walking the reads, and one that fails partway through leaves it asserting instead.
+sff_bytes = [(c["format"], c["bytes"]) for c in sff if c["kind"] == "parse" and "bytes" in c]
 rnd.shuffle(sff_bytes)
-for fmt, data in sff_bytes[:120]:
+for fmt, data in sff_bytes[:240]:
     case = {"format": fmt, "bytes": data, "keyfunc": rnd.choice(["none", "none", "none", "upper", "first4", "const"])}
     res = run_isolated(run, case)
     if res is not None: case.update(res); cases.append(case)

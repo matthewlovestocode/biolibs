@@ -2709,7 +2709,7 @@
  "Bio.SeqFeature.WithinPosition.is_integer": "na",
  "Bio.SeqFeature.WithinPosition.to_bytes": "na",
  "Bio.SeqIO.convert": "done",
- "Bio.SeqIO.index": "partial",
+ "Bio.SeqIO.index": "done",
  "Bio.SeqIO.index_db": "na",
  "Bio.SeqIO.parse": "done",
  "Bio.SeqIO.parse:abi": "done",

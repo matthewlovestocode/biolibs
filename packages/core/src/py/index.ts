@@ -1,6 +1,7 @@
 /** Python-compatible helpers (`int()`, `repr()`, `==`, type names) used to reproduce Biopython's behaviour and messages. */
 
 export * from "./int.js";
+export * from "./utf8.js";
 export * from "./repr.js";
 export * from "./str.js";
 export * from "./num.js";
