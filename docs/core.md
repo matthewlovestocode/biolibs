@@ -1,6 +1,13 @@
 # @biolibs/core
 
-Shared types, Python-style errors and warnings used by the other packages. No dependencies.
+Python's answers, in TypeScript: the Python-style errors and warnings, the compatibility helpers that let
+a port reproduce `int()`, `repr()`, `round()`, `%` and `random`, a zlib inflate *and* deflate, and SHA-1
+with base64. No dependencies, no I/O, no global state beyond the warning handler.
+
+Everything with a Python counterpart is **measured** rather than recalled: `reference/golden/
+gen_pycompat_cases.py` runs CPython and records the value, or the exception type *and* message, that each
+function has to reproduce — 656 cases over 32 functions, plus 227 for `random` and 370 for `zlib`. See
+[the package README](../packages/core/README.md) for the API with examples.
 
 ## Errors
 
@@ -12,8 +19,21 @@ All errors derive from `BioError`, so one `instanceof` check catches any biolibs
 | `ValueError` | `ValueError` | Right type, bad value (empty separator, negative length, non-ASCII text, unknown codon table name) |
 | `IndexError` | `IndexError` | Sequence index out of range |
 | `KeyError` | `KeyError` | Missing lookup key (genetic code id, codon). `message` is the key itself |
+| `AttributeError` | `AttributeError` | A name the object does not have, worded as Python words it: `'<class>' object has no attribute '<name>'` |
+| `OverflowError` | `OverflowError` | A value the operation cannot hold — `cannot convert float infinity to integer`, NumPy's unsigned conversions |
+| `RuntimeError` | `RuntimeError` | A state the format or algorithm forbids; used in 18 packages' parsers |
+| `AssertionError` | `AssertionError` | Where Biopython's own `assert` fires, message and all — including the bare `assert`, whose message is empty |
+| `NotImplementedError` | `NotImplementedError` | An abstract method, or a path Biopython leaves unwritten (`Method not implemented!`) |
+| `ZeroDivisionError` | `ZeroDivisionError` | `division by zero` reached through ported arithmetic |
+| `PySystemError` | `SystemError` | Prefixed because `SystemError` is not a JavaScript builtin to collide with; `name` is still `"SystemError"`. Raised by `KDTree`'s `repr`, which fails in Biopython too |
+| `UnboundLocalError` | `UnboundLocalError` | A variable Biopython reads before assigning: `cannot access local variable 'x' where it is not associated with a value` |
+| `MemoryError` | `MemoryError` | An allocation too large to attempt; `Bio.SeqIO`'s 2bit reader is where this surfaces |
+| `ZlibError` | `zlib.error` | Data that is not a valid zlib stream. A `ValueError` here, with zlib's own wording |
+| `PyIndexError` | `IndexError` | `random.choice` on an empty sequence, which Python reports as an `IndexError` |
 
-`@biolibs/seq` adds `UndefinedSequenceError` (a `ValueError`) and `CodonTable.TranslationError`.
+The `name` matters as much as the class: that is what a parity case compares against Python's exception
+type, which is why `PySystemError` reports `"SystemError"`. `@biolibs/seq` adds `UndefinedSequenceError`
+(a `ValueError`) and `CodonTable.TranslationError`.
 
 ```ts
 try {
@@ -45,7 +65,15 @@ warnings[0].message; // "Partial codon, len(sequence) not a multiple of three. .
 
 ## Python-compatible helpers (`py/`)
 
-Small functions that let ports reproduce Biopython's behaviour and messages exactly: `pyInt` (Python's `int(str)`), `pyRepr` and `pyStr` (`repr`/`str` of `None`, bools, lists, dicts, and objects with `repr()`), `pyTypeName`/`pyClassRepr` (type names for error messages; `registerPythonClasses(module, names)` teaches it `<class 'Bio.X.Y'>`), `pyEquals` (`==` for plain data), `pyTruthy` and `pyContains` (`in`), `PyTuple` (an array that prints as a Python tuple), `pyPercent` (Python's `format % args`) and `PyFloat` (a float that holds a whole number), `pyFormatG` (`%g` / `format(x, "g")`), `pyTextwrapFill` (`textwrap.fill`: tab expansion, breaking after hyphens, `width`, indents and `breakLongWords`), `pyRound` (`round(x)`) and `pyRoundTo` (`round(x, ndigits)`).
+Small functions that let ports reproduce Biopython's behaviour and messages exactly. Numbers: `pyInt`
+(Python's `int(str)`, which takes underscores, surrounding whitespace and any Unicode decimal digit, and
+refuses anything past 2^53 rather than rounding), `pyFloat` and `pyFloatRepr` (`float(str)` and the
+shortest round-trip `repr`), `pySum`, `pyChr`, `pyFormatFixed` (`format(x, ".Nf")`). Strings: `pyStrip`,
+`pyLstrip`, `pyRstrip` and `pySplit` (Python's wider whitespace, and the no-argument `split` that
+collapses runs), `pyFirstWord`, the `pyIsAscii`/`pyIsLower`/`pyIsPrintable` predicates. Bytes and text:
+`pyBytesRepr`, `pyDecodeUtf8` and `pyDecodeAscii` (strict, with Python's own `UnicodeDecodeError` wording,
+raised as the `ValueError` it is a subclass of; `utf8Fault` and `utf8ErrorMessage` expose the parts).
+And: `pyIter` (iterating a dict gives its keys), `pyRepr` and `pyStr` (`repr`/`str` of `None`, bools, lists, dicts, and objects with `repr()`), `pyTypeName`/`pyClassRepr` (type names for error messages; `registerPythonClasses(module, names)` teaches it `<class 'Bio.X.Y'>`), `pyEquals` (`==` for plain data), `pyTruthy` and `pyContains` (`in`), `PyTuple` (an array that prints as a Python tuple), `pyPercent` (Python's `format % args`) and `PyFloat` (a float that holds a whole number), `pyFormatG` (`%g` / `format(x, "g")`), `pyTextwrapFill` (`textwrap.fill`: tab expansion, breaking after hyphens, `width`, indents and `breakLongWords`), `pyRound` (`round(x)`) and `pyRoundTo` (`round(x, ndigits)`).
 
 `pyRoundTo` is worth a note, because `Math.round(x * 10 ** n) / 10 ** n` gets ties wrong twice over: Python rounds a tie to the nearest *even* digit, and it decides what a tie is from the double's exact decimal value rather than from the scaled-up one. `round(0.0625, 3)` is 0.062 for the first reason and `round(0.4165, 3)` is 0.416 for the second — as a double, 0.4165 sits just below the midpoint.
 
@@ -82,6 +110,12 @@ and lengths either side of the symbol-buffer boundary.
 One thing is not reproduced: how zlib splits the stored blocks of a **level 0** stream longer than 64 KiB. It
 fits each block to whatever output buffer the caller gave it, so the split points are a property of Python's
 buffering rather than of the format, and those streams are only checked for being valid.
+
+## Hashes (`hash/`)
+
+`sha1(bytes)` and `base64(bytes)`, written out here rather than taken from `node:crypto` so the same code
+runs in a browser bundle. They are what `@biolibs/seguid` and `@biolibs/seqtools`' checksums rest on, and
+both are recorded against `hashlib` and `base64.b64encode`.
 
 ## `assert(cond, message)`
 

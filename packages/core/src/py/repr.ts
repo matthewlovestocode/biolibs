@@ -52,7 +52,13 @@ export function pyRepr(x: unknown): string {
 /** Python's `str(x)`: strings as-is, everything else like {@link pyRepr} unless it defines `toString()`. */
 export function pyStr(x: unknown): string {
   if (typeof x === "string") return x;
-  if (x !== null && typeof x === "object" && !Array.isArray(x) && !(x instanceof Map) && x.toString !== Object.prototype.toString) return x.toString();
+  // An own `toString` is a port's way of saying how Python prints the object. The function check is not
+  // redundant: an object made with `Object.create(null)` has no `toString` at all, and calling the
+  // inherited one would throw while building an error message.
+  if (x !== null && typeof x === "object" && !Array.isArray(x) && !(x instanceof Map)
+      && typeof x.toString === "function" && x.toString !== Object.prototype.toString) {
+    return x.toString();
+  }
   return pyRepr(x);
 }
 

@@ -10,7 +10,7 @@ Python does -- they are what this interpreter did.
 
 Covered here: `int()`, `float()`, `chr()`, `repr()` of a float, `round()`, `%` formatting, `repr()` and
 `str()` of the values a port passes around, `==`, truthiness, `in`, the string predicates and strippers,
-`textwrap.fill`, and `hashlib.sha1` with `base64`.
+`textwrap.fill`, UTF-8 and ASCII decoding, and `hashlib.sha1` with `base64`.
 """
 import base64 as b64mod
 import hashlib
@@ -130,6 +130,14 @@ WRAP_CASES = [
 #: Byte strings for `repr(bytes)`, where the quote choice and the escapes both have rules.
 BYTES_REPRS = [b"", b"A", b"ABIF", b"it's", b'say "hi"', b"""both ' and " """, b"a\\b",
                b"\x00\x01\xff", b"line\nbreak", b"tab\there", b"\x7f", b"\x1f", bytes(range(32, 48))]
+#: Byte strings for `bytes.decode()`, where Python names either one byte or a range of them, and picks
+#: between three reasons. A truncated sequence, an overlong one, a surrogate and a value above U+10FFFF
+#: are all rejected at different bytes.
+DECODE_BYTES = [b"", b"A", b"ABC", b"GATTACA", b"\xc3\xa9", b"\xe2\x82\xac", b"\xf0\x9f\x98\x80",
+                b"A\xff", b"\xff", b"\x80", b"\xc0\xaf", b"\xc1\xbf", b"\xc2", b"\xc2A",
+                b"\xe0\x80\x80", b"\xe0\xa0", b"\xe2\x82", b"\xe2\x28\xa1", b"\xed\xa0\x80",
+                b"\xf0\x80\x80\x80", b"\xf4\x90\x80\x80", b"\xf5\x80\x80\x80",
+                b"ok\xe2\x82\xacthen", b"\x7f", b"\x00", b"caf\xc3\xa9 \xff"]
 #: Byte strings for SHA-1 and base64, which `seguid` and the checksums rest on.
 HASH_INPUTS = ["", "a", "abc", "GATTACA", "a" * 1000, "\x00\x01\xff", "é", "the quick brown fox"]
 
@@ -187,6 +195,12 @@ cases = {
                        for t, o in WRAP_CASES],
     # latin-1 both ways, so every byte value survives the JSON as a string and comes back unchanged.
     "pyBytesRepr": [{"bytes": b.decode("latin-1"), "result": repr(b)} for b in BYTES_REPRS],
+    # Both decoders, recorded with Python's own wording: `UnicodeDecodeError` is a `ValueError` there,
+    # which is what the port raises, so the type recorded here is the one it has to match.
+    "pyDecodeUtf8": [{"bytes": b.decode("latin-1"), "result": guard(lambda b=b: b.decode("utf-8"))}
+                     for b in DECODE_BYTES],
+    "pyDecodeAscii": [{"bytes": b.decode("latin-1"), "result": guard(lambda b=b: b.decode("ascii"))}
+                      for b in DECODE_BYTES],
     # latin-1 so that every byte value can be written as a JSON string and read back unchanged.
     "sha1": [{"bytes": s, "hex": hashlib.sha1(s.encode("latin-1")).hexdigest(),
               "base64": b64mod.b64encode(hashlib.sha1(s.encode("latin-1")).digest()).decode("ascii")}

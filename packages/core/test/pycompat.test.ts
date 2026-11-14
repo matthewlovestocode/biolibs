@@ -12,10 +12,11 @@
  */
 import { readFileSync } from "node:fs";
 import {
-  base64, pyBytesRepr, pyChr, pyClassRepr, pyContains, pyEquals, pyFirstWord, pyFloat, PyFloat, pyFloatRepr,
+  base64, pyBytesRepr, pyChr, pyClassRepr, pyContains, pyDecodeAscii, pyDecodeUtf8, pyEquals, pyFirstWord,
+  pyFloat, PyFloat, pyFloatRepr,
   pyFormatFixed, pyFormatG, pyInt, pyIsAscii, pyIsLower, pyIsPrintable, pyLstrip, pyPercent, pyRepr,
   pyRound, pyRoundTo, pyRstrip, pySplit, pyStr, pyStrip, pySum, pyTextwrapFill, pyTruthy, PyTuple,
-  pyTypeName, sha1,
+  pyTypeName, sha1, ValueError,
 } from "@biolibs/core";
 import { describe, expect, it } from "vitest";
 
@@ -223,6 +224,33 @@ describe(`py/: parity with CPython ${golden.python}`, () => {
            `${JSON.stringify(c.fmt)} % ${JSON.stringify(c.args)}`);
     }
   });
+
+  // Python's `UnicodeDecodeError` is a subclass of `ValueError`, and the port has no separate class for
+  // it, so the recorded type is checked as `ValueError` while the *message* is compared verbatim --
+  // the message is the part a reader of a parsing error actually sees.
+  const decoders: Array<[string, string, (b: Uint8Array) => string]> = [
+    ["pyDecodeUtf8", "utf-8", pyDecodeUtf8],
+    ["pyDecodeAscii", "ascii", pyDecodeAscii],
+  ];
+  for (const [name, codec, fn] of decoders) {
+    it(`${name} matches bytes.decode("${codec}"), message and all`, () => {
+      for (const c of group(name)) {
+        // latin-1 both ways: that is how every byte value survived the JSON.
+        const bytes = Uint8Array.from([...(c.bytes as string)].map((ch) => ch.charCodeAt(0)));
+        const want = c.result as Guarded<string>;
+        const where = `${name}(${pyBytesRepr(bytes)})`;
+        if ("exc" in want) {
+          expect(want.exc.type, where).toBe("UnicodeDecodeError");
+          let err: Error | undefined;
+          try { fn(bytes); } catch (e) { err = e as Error; }
+          expect(err, `${where}: expected it to raise`).toBeInstanceOf(ValueError);
+          expect(err?.message, where).toBe(want.exc.msg);
+        } else {
+          expect(fn(bytes), where).toBe(want.value);
+        }
+      }
+    });
+  }
 
   it("pyTextwrapFill matches textwrap.fill()", () => {
     for (const c of group("pyTextwrapFill")) {

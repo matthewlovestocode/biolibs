@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/core",
   "version": "0.1.0",
-  "description": "Shared types and errors for biolibs",
+  "description": "Python's answers in TypeScript: Python-style errors and warnings, CPython-compatible int/float/round/repr/%/random, zlib deflate and inflate, SHA-1 and base64",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

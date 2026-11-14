@@ -7,7 +7,8 @@
  * measured in `pycompat.test.ts`.
  */
 import {
-  PyFloat, pyClassRepr, pyIter, pyRepr, pyStr, PyTuple, pyTypeName, registerPythonClasses,
+  PyFloat, pyClassRepr, pyContains, pyIter, PyRandom, pyRepr, pyStr, pyTruthy, PyTuple, pyTypeName,
+  registerPythonClasses, ValueError,
 } from "@biolibs/core";
 import { describe, expect, it } from "vitest";
 
@@ -89,5 +90,45 @@ describe("pyStr and pyTypeName on objects", () => {
   it("treats a plain object as a dict when it has no repr", () => {
     expect(pyRepr({ a: 1 })).toBe("{'a': 1}");
     expect(pyTypeName(new Map())).toBe("dict");
+  });
+});
+
+describe("the container helpers on the types Python has no literal for", () => {
+  it("falls back to typeof for a primitive with no Python name", () => {
+    // Nothing in a port should reach this, but `pyTypeName` is the function that builds error messages,
+    // so it must not throw while doing so.
+    expect(pyTypeName(() => 0)).toBe("function");
+    expect(pyTypeName(Symbol("x") as unknown)).toBe("symbol");
+  });
+
+  it("gives str() of an object with neither repr nor toString", () => {
+    expect(pyStr(Object.create(null) as object)).toBe("{}");
+  });
+
+  it("judges truth as Python does for maps and for anything else", () => {
+    expect(pyTruthy(new Map())).toBe(false);
+    expect(pyTruthy(new Map([["a", 1]]))).toBe(true);
+    // An object with no length is true in Python unless it says otherwise, and so here.
+    expect(pyTruthy(new PyFloat(0.5))).toBe(true);
+    expect(pyTruthy({ a: 1 })).toBe(true);
+  });
+
+  it("looks a key up in a dict, and refuses what is not a container", () => {
+    expect(pyContains("a", new Map([["a", 1]]))).toBe(true);
+    expect(pyContains("b", new Map([["a", 1]]))).toBe(false);
+    // Python's own message, which is what a port's caller would see.
+    expect(() => pyContains(1, 2)).toThrowError(
+      "argument of type 'int' is not a container or iterable");
+  });
+});
+
+describe("PyRandom.randrange", () => {
+  it("refuses an empty range with Python's two different messages", () => {
+    const r = new PyRandom(1);
+    // One argument: Python names no bounds.
+    expect(() => r.randrange(0)).toThrowError(new ValueError("empty range for randrange()"));
+    // Two: it quotes them back.
+    expect(() => r.randrange(5, 5)).toThrowError(new ValueError("empty range in randrange(5, 5)"));
+    expect(() => r.randrange(5, 2)).toThrowError(new ValueError("empty range in randrange(5, 2)"));
   });
 });

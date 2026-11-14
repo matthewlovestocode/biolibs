@@ -5,7 +5,7 @@ few packages that have no Python equivalent.
 
 - **23 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,590 API items at parity** across three upstream libraries
-- **17,326 tests**, replaying answers recorded from the real Python libraries
+- **17,427 tests**, replaying answers recorded from the real Python libraries
 
 > **Not published to npm yet.** Clone and build; see [Building](#building).
 
@@ -74,16 +74,18 @@ Biopython's, that part is still recorded and replayed. See
 | [`@biolibs/gel`](packages/gel) | A virtual agarose gel: log-linear migration, four concentrations, ladders, band merging, fragment sizes from cut positions |
 | [`@biolibs/seqmap`](packages/seqmap) | Plasmid and linear map geometry: positions on a circle or line, feature arcs and arrows as SVG paths, round tick intervals, lane packing, label de-collision |
 
-[`@biolibs/core`](packages/core) underpins all of them: Python-style errors and warnings, the compatibility helpers that let
-a port reproduce Python's `int()`, `repr()`, `round()` and `random`, a zlib inflate *and* deflate that
-matches zlib's own bytes, and SHA-1 with base64.
+[`@biolibs/core`](packages/core) underpins all of them: Python-style errors and warnings, the
+compatibility helpers that let a port reproduce Python's `int()`, `repr()`, `round()`, `%` and `random`, a
+zlib inflate *and* deflate that matches zlib's own bytes, and SHA-1 with base64. It is not on the
+Biopython checklist, because it is a port of CPython itself: 1,253 recorded cases say so.
+[README](packages/core/README.md)
 
 ## Building
 
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 17,326 tests
+npm test           # vitest — 17,427 tests
 npm run coverage   # per-file coverage
 ```
 
