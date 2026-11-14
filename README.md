@@ -1,46 +1,108 @@
 # biolibs
 
-TypeScript libraries replacing common Python bioengineering tooling. The goal is full feature parity with each Python library, one at a time, verified against the real library. See [PARITY.md](PARITY.md) for progress. npm workspaces monorepo; each package is ESM with generated `.d.ts`.
+TypeScript ports of Python bioengineering libraries, verified case by case against the originals — plus a
+few packages that have no Python equivalent.
 
-Most packages are ports. The six listed under [Bioengineering packages](#bioengineering-packages) are not: they do things Biopython has no equivalent of, and are built on the ports rather than translated.
+- **23 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
+- **2,590 API items at parity** across three upstream libraries
+- **17,326 tests**, replaying answers recorded from the real Python libraries
 
-## Ports
+> **Not published to npm yet.** Clone and build; see [Building](#building).
 
-| Package | Replaces | Contents |
+## What "parity" means here
+
+Not "we think it behaves the same". A generator in [`reference/`](reference/README.md) drives the real
+Python library and records what it does — the return value, the exception type *and message*, the warnings,
+the order of evaluation — into a JSON file. The TypeScript tests replay those recordings. A case passes
+only if every one of those matches.
+
+So an item is ticked when a recorded case proves it, and the checklists below are generated from those
+cases rather than maintained by hand.
+
+| Upstream | Verified | Checklist |
 |---|---|---|
-| `@biolibs/core` | – | `SeqRecord`, `BioError` |
-| `@biolibs/seq` | Biopython `Bio.Seq`, `Bio.Data.CodonTable`, `Bio.Data.IUPACData` | **At parity**: `Seq`, `MutableSeq`, all 27 genetic codes, IUPAC data (verified against Biopython 1.88) |
-| `@biolibs/seqfeature` | Biopython `Bio.SeqFeature` | **At parity**: positions, `SimpleLocation`, `CompoundLocation`, `Location.fromstring`, `SeqFeature`, `Reference` |
-| `@biolibs/seqrecord` | Biopython `Bio.SeqRecord` | **At parity**: `SeqRecord`, slicing, `+`, `reverseComplement`, `translate`, per-letter annotations |
-| `@biolibs/seqio` | `Bio.SeqIO` | FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, the binary formats, the alignment formats, PDB and mmCIF sequences (SEQRES and atoms), GFA, UniProt XML and ACE done; `SeqIO.index` done except for SFF files; `index_db` not ported |
-| `@biolibs/nexus` | `Bio.Nexus` | NEXUS `Nexus` class (read, edit, write), `Tree`, `Node`, `Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus` done; `bootstrap`, `randomize`, `display`, file-name based `export_*` not ported |
-| `@biolibs/svdsuperimposer` | `Bio.SVDSuperimposer` | `SVDSuperimposer` (least-squares superposition by SVD) done |
-| `@biolibs/pdb` | `Bio.PDB` (first slice) | Structure hierarchy with disorder, `StructureBuilder`, `PDBParser`, header parsing, `MMCIF2Dict`, `MMCIFParser`, `PDBIO`, `MMCIFIO`, `Vector` and the rotation helpers, `Polypeptide`/`PPBuilder`, `Superimposer`, `NeighborSearch`/`KDTree`, `ShrakeRupley` (SASA) done; internal coordinates, DSSP not ported |
-| `@biolibs/align` | `Bio.Align` | `MultipleSeqAlignment`, the substitution matrices and `PairwiseAligner` scoring and alignment done; the `Alignment` file formats `fasta`, `a2m`, `clustal`, `phylip`, `nexus`, `msf`, `emboss`, `tabular`, `stockholm`, `psl`, `bed`, `chain`, `sam`, `maf`, `mauve`, `hhr` and `exonerate` done, plus `CodonAligner`, the rest not yet ported |
-| `@biolibs/motifs` | `Bio.motifs` | `Motif`, position matrices, scoring, thresholds, JASPAR/TRANSFAC/Cluster-Buster and the MEME, MAST, AlignACE, XMS and PFM readers done |
-| `@biolibs/restriction` | `Bio.Restriction` | 1,088 enzymes: `search`, `catalyse`, `RestrictionBatch`, `Analysis` and its text layouts done |
-| `@biolibs/phylo` | `Bio.Phylo` | `Tree`/`Clade` with the full search and editing API, Newick, Nexus and PhyloXML I/O, consensus trees, tree construction; NeXML and CDAO not yet ported |
-| `@biolibs/seqtools` | `Bio.SeqUtils` | `gc_fraction`, `GC123`, `GC_skew`, `nt_search`, `seq1`/`seq3`, `molecular_weight`, `six_frame_translations`, `CodonAdaptationIndex`, `CheckSum`, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp` done |
+| Biopython 1.88 | **2,345 / 2,345** | [docs/parity/](docs/parity/README.md) |
+| pydna 5.5.16 | **222 / 225** | [docs/parity-pydna/](docs/parity-pydna/README.md) |
+| seguid | **23 / 23** | [docs/parity-seguid/](docs/parity-seguid/README.md) |
 
-## Bioengineering packages
+The three unverified pydna items are `Dseqrecord.format`, `write` and `figure`. Items that exist only
+because Python inherits them, and behaviour that is genuinely undefined upstream — where Biopython reads
+uninitialised memory, say — are marked rather than claimed; each checklist says which and why.
 
-Not ports — Biopython has no equivalent of these, so they add nothing to `docs/parity/` and are tested against invariants, round trips and published figures instead of against a reference implementation. Where behaviour *does* overlap Biopython, it is still measured: see [docs/README.md](docs/README.md#testing-without-a-reference-implementation).
+## Ports of Biopython
 
-| Package | Contents |
+| Package | Replaces | At parity | Notes |
+|---|---|---|---|
+| [`@biolibs/seq`](packages/seq) | `Bio.Seq`, `Bio.Data.CodonTable`, `Bio.Data.IUPACData` | 219 | `Seq`, `MutableSeq`, all 27 genetic codes, the IUPAC tables |
+| [`@biolibs/seqfeature`](packages/seqfeature) | `Bio.SeqFeature` | 163 | positions, `SimpleLocation`, `CompoundLocation`, `Location.fromstring`, `SeqFeature`, `Reference` |
+| [`@biolibs/seqrecord`](packages/seqrecord) | `Bio.SeqRecord` | 25 | slicing, `+`, `reverseComplement`, `translate`, per-letter annotations |
+| [`@biolibs/seqio`](packages/seqio) | `Bio.SeqIO` | 81 | every format Biopython reads, text and binary, including SFF; `index` too. `index_db` is not ported — its index lives in an SQLite file |
+| [`@biolibs/align`](packages/align) | `Bio.Align` | 175 | `PairwiseAligner` with scoring and alignment, `Alignment`, `MultipleSeqAlignment`, the substitution matrices, `CodonAligner`, dN/dS, and every alignment file format Biopython reads or writes. [README](packages/align/README.md) |
+| [`@biolibs/phylo`](packages/phylo) | `Bio.Phylo` | 489 | `Tree`/`Clade`, Newick, Nexus and PhyloXML I/O, consensus trees, tree construction. NeXML, CDAO and drawing are not ported |
+| [`@biolibs/pdb`](packages/pdb) | `Bio.PDB` | 399 | the structure hierarchy with disorder, `PDBParser`, `MMCIFParser`, `PDBIO`, `MMCIFIO`, header parsing, `Vector`, `Polypeptide`, `Superimposer`, `NeighborSearch`/`KDTree`, SASA. Internal coordinates and DSSP are not ported |
+| [`@biolibs/restriction`](packages/restriction) | `Bio.Restriction` | 491 | 1,088 enzymes: `search`, `catalyse`, `RestrictionBatch`, `Analysis` and its text layouts |
+| [`@biolibs/motifs`](packages/motifs) | `Bio.motifs` | 173 | `Motif`, position matrices, scoring, thresholds, and the JASPAR, TRANSFAC, Cluster-Buster, MEME, MAST, AlignACE, XMS and PFM readers |
+| [`@biolibs/nexus`](packages/nexus) | `Bio.Nexus` | 84 | the `Nexus` class, `Tree`, `Node`, `StandardData`, `StepMatrix`, `combine`, `consensus` — and `bootstrap`, `randomize` and `display`, which need Python's own random number generator |
+| [`@biolibs/seqtools`](packages/seqtools) | `Bio.SeqUtils` | 39 | GC content and skew, `nt_search`, `seq1`/`seq3`, molecular weight, six-frame translations, codon adaptation, checksums, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp` |
+| [`@biolibs/svdsuperimposer`](packages/svdsuperimposer) | `Bio.SVDSuperimposer` | 7 | least-squares superposition by SVD |
+
+## Ports of pydna and seguid
+
+| Package | Replaces | At parity | Notes |
+|---|---|---|---|
+| [`@biolibs/dseq`](packages/dseq) | `pydna.dseq`, `pydna.alphabet`, `pydna.seq` | 128 | double-stranded DNA whose sticky ends, nicks and circularity are part of the molecule, one letter per base *pair*; plus pydna's own `Seq` and `ProteinSeq` |
+| [`@biolibs/dseqrecord`](packages/dseqrecord) | `pydna.seqrecord`, `pydna.dseqrecord`, part of `pydna.utils` | 92 / 95 | that molecule with a name, features and annotations; cutting, joining, rotating — every operation carrying the features with it |
+| [`@biolibs/assembly`](packages/assembly) | `pydna.common_sub_strings` | 2 | the shared-homology matcher Gibson assembly and homologous recombination both start from |
+| [`@biolibs/seguid`](packages/seguid) | [seguid](https://github.com/seguid/seguid-python) | 23 | SEGUID v2 checksums: one identifier for a sequence however it is rotated, and whichever strand you call watson |
+
+`pydna.assembly2` itself is not ported yet — it needs `pydna.contig` and a provenance model built on
+pydantic. See [docs/dseqrecord.md](docs/dseqrecord.md) for what remains.
+
+## Not ports
+
+Biopython has no equivalent of these, so they add nothing to the checklists. They are tested against
+invariants, round trips and published figures instead — and where their behaviour *does* overlap
+Biopython's, that part is still recorded and replayed. See
+[docs/README.md](docs/README.md#testing-without-a-reference-implementation).
+
+| Package | What it does |
 |---|---|
-| `@biolibs/seqedit` | Edit a `SeqRecord` keeping its features true: replace, insert, delete, extract a region (across a circular origin too), rotate, reverse complement, with every location moved, stretched or clipped. Golden-tested against Biopython's slicing, reverse complement and location arithmetic |
-| `@biolibs/pcr` | Primer quality and warnings, binding sites with mismatch tolerance, predicted products, primer design, 5' tails. Melting temperatures delegate to `@biolibs/seqtools` |
-| `@biolibs/cloning` | DNA ends and which ligate, digests into pieces, ligation and re-ligation, restriction cloning products; Gibson assembly and overlap primer design. Built on `@biolibs/restriction`, so all 1,088 enzymes are available |
-| `@biolibs/features` | Find known elements against a library of reference pieces, both strands, mismatch-tolerant, across a circular origin; turn hits into `SeqFeature`s and skip what is already annotated. No library is bundled — see [docs/features.md](docs/features.md) |
-| `@biolibs/gel` | Virtual agarose gel: log-linear migration, four concentrations, ladders, band merging, fragment sizes from cut positions |
-| `@biolibs/seqmap` | Plasmid and linear map geometry: positions on a circle or line, feature arcs and arrows as SVG paths, round tick intervals, lane packing, label de-collision |
+| [`@biolibs/seqedit`](packages/seqedit) | Edit a record and keep its features true: replace, insert, delete, extract, rotate, reverse complement — across a circular origin too, with every location moved, stretched or clipped |
+| [`@biolibs/pcr`](packages/pcr) | Primer quality and warnings, binding sites with mismatch tolerance, predicted products, primer design, 5' tails |
+| [`@biolibs/cloning`](packages/cloning) | DNA ends and which of them ligate, digests, ligation and re-ligation, restriction cloning products, Gibson assembly and overlap primer design |
+| [`@biolibs/features`](packages/features) | Find known elements against a library of reference pieces, both strands, mismatch-tolerant, across a circular origin; turn hits into features and skip what is already annotated. No library is bundled |
+| [`@biolibs/gel`](packages/gel) | A virtual agarose gel: log-linear migration, four concentrations, ladders, band merging, fragment sizes from cut positions |
+| [`@biolibs/seqmap`](packages/seqmap) | Plasmid and linear map geometry: positions on a circle or line, feature arcs and arrows as SVG paths, round tick intervals, lane packing, label de-collision |
 
-Full documentation (APIs, conventions, examples) is in [docs/](docs/README.md).
+[`@biolibs/core`](packages/core) underpins all of them: Python-style errors and warnings, the compatibility helpers that let
+a port reproduce Python's `int()`, `repr()`, `round()` and `random`, a zlib inflate *and* deflate that
+matches zlib's own bytes, and SHA-1 with base64.
+
+## Building
 
 ```bash
 npm install
-npm run build   # tsc -b
-npm test        # vitest
+npm run build      # tsc -b
+npm test           # vitest — 17,326 tests
+npm run coverage   # per-file coverage
 ```
 
-Roadmap ideas: k-mer indexing, BAM/VCF parsing, NCBI Entrez client, Golden Gate and Gateway cloning, sequencing-trace (AB1) display, SBOL import and export.
+Re-recording the parity cases needs Python and the real libraries:
+
+```bash
+python3 -m venv reference/.venv
+reference/.venv/bin/pip install biopython scipy pydna seguid cai2
+npm run golden     # re-record every case, then regenerate the checklists
+```
+
+A regeneration must reproduce the committed files byte for byte; one that does not is treated as a bug in
+the generator. [`reference/README.md`](reference/README.md) explains the three ways that has gone wrong and
+how each is now caught.
+
+## Documentation
+
+Per-package reference, conventions and examples: [docs/](docs/README.md).
+
+## Licence
+
+MIT — see [LICENSE](LICENSE).
