@@ -111,13 +111,10 @@ if {"parse", "read", "write", "to_dict"} <= kinds:
         for k in list(status):
             pass
         mark(f"Bio.SeqIO.{fn}")
-# The three XML readers: records, the timing of errors and handler errors are verified, and so is expat's own wording
-# for nine of its twelve reasons along with every position. What is left is the choice between "not well-formed
-# (invalid token)", "syntax error" and "junk after document element" in the prolog and the epilog, which needs
-# expat's tokenizer states; `packages/seqio/test/xml-errors.test.ts` counts the 39 cases that still differ.
-if "seqxml" in parsed: mark("Bio.SeqIO.parse:seqxml", "partial")
-if "uniprot-xml" in parsed: mark("Bio.SeqIO.parse:uniprot-xml", "partial")
-if "snapgene" in parsed: mark("Bio.SeqIO.parse:snapgene", "partial")
+# The three XML readers are complete: expat's prolog and epilog tokenizer is ported, so its choice between "not
+# well-formed (invalid token)", "syntax error", "junk after document element" and "unclosed token" comes out the
+# same, with the same column. `packages/seqio/test/golden/xmlerr.json` measures that directly, over every shape
+# of junk on both sides of the document element.
 # convert is complete once every direct fast path (fastq->fastq/fasta/qual..., genbank/embl->fasta) has a verified case
 direct = {("genbank", "fasta"), ("embl", "fasta"), ("fastq", "fasta")}
 mark("Bio.SeqIO.convert", "done" if direct <= conv else "partial")

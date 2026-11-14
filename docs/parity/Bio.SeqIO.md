@@ -49,15 +49,15 @@
 - [x] `parse: phylip-sequential`
 - [x] `parse: pir`
 - [x] `parse: qual`
-- [~] `parse: seqxml`
+- [x] `parse: seqxml`
 - [x] `parse: sff`
 - [x] `parse: sff-trim`
-- [~] `parse: snapgene`
+- [x] `parse: snapgene`
 - [x] `parse: stockholm`
 - [x] `parse: swiss`
 - [x] `parse: tab`
 - [x] `parse: twobit`
-- [~] `parse: uniprot-xml`
+- [x] `parse: uniprot-xml`
 - [x] `parse: xdna`
 
 ### Write formats

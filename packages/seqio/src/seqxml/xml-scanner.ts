@@ -5,6 +5,7 @@
  */
 
 import { NamespaceScope } from "./xml-names.js";
+import { nextPrologToken } from "./prolog-token.js";
 import { ENTITIES, decodeDocument, isNameChar, isNameStart, isSpace, isXmlChar } from "./xml-chars.js";
 import type { ScanOptions, XmlEvent, XmlName, XmlProblem, XmlScan } from "./xml-types.js";
 
@@ -40,7 +41,8 @@ class Scanner {
   private fail(message: string, at = this.i, atEnd = false): never {
     // Running out of input mid-token is not an error until the parser is closed.
     if (at >= this.s.length) atEnd = true;
-    const before = this.s.slice(0, Math.min(at, this.s.length));
+    // Expat normalises the line ends before it counts them, so a lone `\r` and a `\r\n` pair each end a line.
+    const before = this.s.slice(0, Math.min(at, this.s.length)).replace(/\r\n?/g, "\n");
     const line = before.split("\n").length;
     const column = before.length - (before.lastIndexOf("\n") + 1);
     const size = this.off[this.s.length]!;
@@ -52,7 +54,10 @@ class Scanner {
 
   /** Raise the problem for input that ends inside a construct. */
   private eof(message = "unclosed token"): never {
-    return this.fail(message, message === "unclosed token" ? this.tokenStart : this.s.length, true);
+    // A carriage return at the very end is not consumed: expat holds it back in case a newline follows, so the
+    // position it reports is the one before it.
+    const end = this.s.endsWith("\r") ? this.s.length - 1 : this.s.length;
+    return this.fail(message, message === "unclosed token" ? this.tokenStart : end, true);
   }
 
   private at(): string { return this.s[this.i] ?? ""; }
@@ -79,54 +84,91 @@ class Scanner {
   }
 
   /**
-   * Check the pseudo-attributes of an XML declaration: `version`, then optionally `encoding`, then optionally `standalone`.
-   * Expat reports the first one that is out of place at its own column (a missing `version` at column 0).
+   * Check the pseudo-attributes of an XML declaration: `version`, then optionally `encoding`, then optionally
+   * `standalone`.
    */
   private checkDeclaration(decl: string): void {
-    const attr = /\s+([A-Za-z]+)\s*=\s*("[^"]*"|'[^']*')/y;
-    let pos = 5;
+    // Expat points at whatever is wrong: the keyword that may not be there, the first character of a value it
+    // will not accept, or the end of `<?xml` when there is no attribute at all. The version's value is not
+    // checked -- `version=""` and `version="x"` are both accepted.
+    // `decl` is the body between `<?xml` and `?>`, which `skipPast` has already taken off.
+    const end = decl.length;
     const order = ["version", "encoding", "standalone"];
+    let pos = 5;
     let next = 0;
+    const bad = (at: number): never => this.fail("XML declaration not well-formed", at);
     for (;;) {
-      attr.lastIndex = pos;
-      const m = attr.exec(decl);
-      if (m === null) {
-        // Only whitespace may remain before `?>`; `version` is required.
-        if (next === 0) this.fail("XML declaration not well-formed", declarationFault(decl));
-        const rest = decl.slice(pos, decl.length - 2);
-        if (rest.trim() !== "") this.fail("XML declaration not well-formed", pos + rest.length - rest.trimStart().length);
+      const wsStart = pos;
+      while (pos < end && isSpace(decl[pos]!)) pos++;
+      if (pos >= end) {
+        if (next === 0) bad(5);
         return;
       }
-      const at = pos + m[0].length - m[0].trimStart().length;
-      const idx = next === 0 && m[1] !== "version" ? -1 : order.indexOf(m[1]!, next);
-      const value = m[2]!.slice(1, -1);
-      const valid = idx >= 0 && (idx === 0 ? value.length > 0 : idx === 1 ? /^[A-Za-z][A-Za-z0-9._-]*$/.test(value) : value === "yes" || value === "no");
-      if (!valid) this.fail("XML declaration not well-formed", next === 0 ? declarationFault(decl) : at);
+      if (pos === wsStart) bad(pos);
+      const nameStart = pos;
+      while (pos < end && /[A-Za-z]/.test(decl[pos]!)) pos++;
+      const name = decl.slice(nameStart, pos);
+      const idx = next === 0 && name !== "version" ? -1 : order.indexOf(name, next);
+      if (idx < 0) bad(nameStart);
+      while (pos < end && isSpace(decl[pos]!)) pos++;
+      if (decl[pos] !== "=") bad(pos);
+      pos++;
+      while (pos < end && isSpace(decl[pos]!)) pos++;
+      const quote = decl[pos] ?? "";
+      if (quote !== '"' && quote !== "'") bad(pos);
+      const close = decl.indexOf(quote, pos + 1);
+      if (close === -1 || close >= end) bad(pos);
+      const value = decl.slice(pos + 1, close);
+      const ok = idx === 0 || (idx === 1 ? /^[A-Za-z][A-Za-z0-9._-]*$/.test(value) : value === "yes" || value === "no");
+      if (!ok) bad(pos + 1);
       next = idx + 1;
-      pos += m[0].length;
+      pos = close + 1;
     }
   }
 
   /** Decode a reference starting at `&`; returns the text it stands for. */
-  private reference(): string {
+  private reference(entityAt?: number): string {
     const saved = this.tokenStart;
-    this.tokenStart = this.i;
-    const semi = this.s.indexOf(";", this.i);
-    if (semi < 0) return this.eof();
-    const body = this.s.slice(this.i + 1, semi);
+    const amp = this.i;
+    this.tokenStart = amp;
+    // Expat scans the reference itself and points at the first character that cannot be part of it, which is
+    // not the `&` and not some distant semicolon either.
+    let j = amp + 1;
+    const bad = (): never => this.fail("not well-formed (invalid token)", j);
+    if (this.s[j] === "#") {
+      j++;
+      const digits = this.s[j] === "x" ? (j++, /[0-9a-fA-F]/) : /[0-9]/;
+      const from = j;
+      while (j < this.s.length && digits.test(this.s[j]!)) j++;
+      if (j >= this.s.length) return this.eof();
+      if (j === from) bad();
+    } else {
+      const from = j;
+      if (j < this.s.length && isNameStart(this.s[j]!)) {
+        j++;
+        while (j < this.s.length && isNameChar(this.s[j]!)) j++;
+      }
+      if (j >= this.s.length) return this.eof();
+      if (j === from) bad();
+    }
+    if (j >= this.s.length) return this.eof();
+    if (this.s[j] !== ";") bad();
+    const body = this.s.slice(amp + 1, j);
     let out: string | undefined;
-    if (body.startsWith("#x") && /^#x[0-9a-fA-F]+$/.test(body)) out = String.fromCodePoint(Math.min(0x110000, parseInt(body.slice(2), 16)) % 0x110000);
-    else if (/^#[0-9]+$/.test(body)) out = String.fromCodePoint(Math.min(0x10ffff, parseInt(body.slice(1), 10)));
+    if (body.startsWith("#x")) out = String.fromCodePoint(Math.min(0x110000, parseInt(body.slice(2), 16)) % 0x110000);
+    else if (body.startsWith("#")) out = String.fromCodePoint(Math.min(0x10ffff, parseInt(body.slice(1), 10)));
     else if (Object.hasOwn(ENTITIES, body)) out = ENTITIES[body]!;
-    if (out === undefined) return this.fail(/^[A-Za-z_]/.test(body) ? "undefined entity" : "not well-formed (invalid token)");
+    if (out === undefined) return this.fail("undefined entity", entityAt ?? this.tokenStart);
     if (!isXmlChar(out.codePointAt(0)!)) return this.fail("reference to invalid character number");
-    this.i = semi + 1;
+    this.i = j + 1;
     this.tokenStart = saved;
     return out;
   }
 
   /** Read a quoted attribute value, normalising whitespace and expanding references. */
   private attributeValue(): string {
+    // A reference here is expanded once the tag is read, so expat reports an unknown entity at the tag itself.
+    const tag = this.tokenStart;
     const quote = this.at();
     if (quote === "") return this.eof();
     if (quote !== '"' && quote !== "'") return this.fail("not well-formed (invalid token)");
@@ -137,7 +179,7 @@ class Scanner {
       const c = this.s[this.i]!;
       if (c === quote) { this.i++; return out; }
       if (c === "<") return this.fail("not well-formed (invalid token)");
-      if (c === "&") { out += this.reference(); continue; }
+      if (c === "&") { out += this.reference(tag); continue; }
       if (c === "\r" && this.s[this.i + 1] === "\n") this.i++;
       out += isSpace(c) ? " " : c;
       if (!isXmlChar(c.codePointAt(0)!)) return this.fail("not well-formed (invalid token)");
@@ -234,6 +276,8 @@ class Scanner {
   /** Skip a processing instruction (positioned after `<?`). */
   private pi(): void {
     const start = this.i - 2;                // the `<?`, which is where expat puts this one
+    // Unclosed comes first: expat reads the whole instruction before it can object to its target.
+    if (this.s.indexOf("?>", this.i) === -1) { this.tokenStart = start; return this.eof(); }
     const target = this.name();
     if (target.toLowerCase() === "xml") this.fail("XML or text declaration not at start of entity", start);
     const data = this.skipPast("?>");
@@ -260,7 +304,8 @@ class Scanner {
     while (this.i < this.s.length && this.s[this.i] !== "<") {
       const c = this.s[this.i]!;
       if (c === "&") { out += this.reference(); continue; }
-      if (c === "]" && this.startsWith("]]>")) return this.fail("not well-formed (invalid token)");
+      // Expat points at the `>` of the `]]>` that may not appear in content.
+      if (c === "]" && this.startsWith("]]>")) return this.fail("not well-formed (invalid token)", this.i + 2);
       if (!isXmlChar(c.codePointAt(0)!)) return this.fail("not well-formed (invalid token)");
       if (c === "\r") { out += "\n"; if (this.s[this.i + 1] === "\n") this.i++; } else out += c;
       this.i++;
@@ -277,34 +322,42 @@ class Scanner {
       this.checkDeclaration(decl);
     }
     let seenRoot = false;
-    // Prolog and epilog: whitespace, comments, PIs and (before the root) one DOCTYPE.
+    // Outside the document element, expat's own prolog tokenizer decides what the next token is; which of its
+    // complaints follows depends only on that and on whether the document element has been seen.
     for (;;) {
-      this.skipSpace();
-      if (this.i >= this.s.length) break;
-      this.tokenStart = this.i;
-      if (this.startsWith("<!--")) { this.i += 4; this.comment(); continue; }
-      // Once the document element has closed, a declaration is simply junk: expat has stopped looking for one.
-      if (seenRoot && /^<\?xml($|[\s?])/i.test(this.s.slice(this.i, this.i + 7))) return this.fail("junk after document element");
-      if (this.startsWith("<?")) { this.i += 2; this.pi(); continue; }
+      const token = nextPrologToken(this.s, this.i);
+      this.i = token.start;
+      this.tokenStart = token.start;
+      if (token.kind === "eof") { this.i = this.s.length; break; }
+      if (token.kind === "comment" || token.kind === "pi") {
+        // Scanned again the long way, so that a malformed comment or processing instruction is reported as it
+        // always was. A declaration out here is not a processing instruction: before the document element it is
+        // one in the wrong place, and after it, expat has stopped looking for one and calls it junk.
+        if (token.kind === "comment") { this.i += 4; this.comment(); }
+        else if (seenRoot && /^<\?xml($|[\s?])/i.test(this.s.slice(this.i, this.i + 7))) {
+          return this.fail("junk after document element", token.start);
+        } else { this.i += 2; this.pi(); }
+        continue;
+      }
+      if (token.kind === "startTag") {
+        if (seenRoot) return this.fail("junk after document element", token.start);
+        seenRoot = true;
+        this.i = token.start + 1;
+        this.startTag();
+        this.content();
+        continue;
+      }
+      if (token.kind === "unclosed") return this.eof();
+      if (token.kind === "paramEntity") {
+        // A parameter entity reference belongs inside a declaration's internal subset, nowhere else.
+        if (!seenRoot) return this.fail("illegal parameter entity reference", token.start);
+        return this.fail("junk after document element", token.start);
+      }
+      if (token.kind === "invalid") return this.fail("not well-formed (invalid token)", token.at);
+      // A well-formed token in the wrong place: a declaration before the document element may still be the
+      // doctype, which is allowed there and has its own checks.
       if (!seenRoot && this.startsWith("<!DOCTYPE")) { this.i += 9; this.doctype(); continue; }
-      // `&` looks like the start of markup, so expat calls it an invalid token; other stray text is a syntax error.
-      if (this.at() !== "<") {
-        if (seenRoot) return this.fail("junk after document element");
-        return this.fail(this.at() === "&" ? "not well-formed (invalid token)" : "syntax error");
-      }
-      if (seenRoot) {
-        // Expat keeps tokenizing after the document element: `<` followed by something that cannot begin a tag is an
-        // invalid token at that character, while a second element is junk at the `<` itself.
-        const after = this.s[this.i + 1] ?? "";
-        if (after !== "" && !isNameStart(after) && after !== "!" && after !== "?") {
-          return this.fail("not well-formed (invalid token)", this.i + 1);
-        }
-        return this.fail("junk after document element");
-      }
-      seenRoot = true;
-      this.i++;
-      this.startTag();
-      this.content();
+      return this.fail(seenRoot ? "junk after document element" : "syntax error", token.start);
     }
     if (!seenRoot) this.eof("no element found");
   }
@@ -341,9 +394,15 @@ class Scanner {
  * ```
  */
 export function scanXml(bytes: Uint8Array, options: ScanOptions = {}): XmlScan {
-  const { text, offsets } = decodeDocument(bytes, options.ignoreDeclaredEncoding ?? false);
+  const { text, offsets, badAt } = decodeDocument(bytes, options.ignoreDeclaredEncoding ?? false);
   if (text === null) {
-    return { events: [], problem: { message: "<unknown>:1:0: not well-formed (invalid token)", reason: "not well-formed (invalid token)", line: 1, column: 0, at: 1, atEnd: false }, size: bytes.length };
+    // The bytes before the bad one decode, and counting the lines and characters in them is where expat points.
+    const good = badAt === undefined ? "" : new TextDecoder("utf-8").decode(bytes.subarray(0, badAt));
+    const nl = good.lastIndexOf("\n");
+    const line = badAt === undefined ? 1 : good.split("\n").length;
+    const column = badAt === undefined ? 0 : Array.from(good.slice(nl + 1)).length;
+    const reason = "not well-formed (invalid token)";
+    return { events: [], problem: { message: `<unknown>:${line}:${column}: ${reason}`, reason, line, column, at: badAt ?? 1, atEnd: false }, size: bytes.length };
   }
   const scanner = new Scanner(text, offsets, options.namespaces ?? true);
   let problem: XmlProblem | null = null;

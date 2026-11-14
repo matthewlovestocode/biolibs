@@ -9,7 +9,6 @@ import {
   convert, fastaTwoLineParser, fastqGeneralIterator, pairedFastaQualIterator, parse, read, simpleFastaParser, toDict, write,
 } from "@biolibs/seqio";
 import { dec, enc } from "../../seqrecord/test/golden-runner";
-import { xmlReason } from "../src/seqxml/xml-types.js";
 
 type J = null | boolean | number | string | { [k: string]: unknown };
 
@@ -160,7 +159,6 @@ export function diff(c: Case & Record<string, any>, got: Outcome): string | null
     if (!got.exc) return `expected ${wantExc.type}: ${wantExc.msg}, got no error`;
     if (wantExc.type !== got.exc.type) return `expected ${wantExc.type}: ${wantExc.msg}, got ${got.exc.type}: ${got.exc.msg}`;
     if (wantExc.msg !== null && wantExc.msg !== got.exc.msg) {
-      if (knownXmlDivergence(wantExc.msg, got.exc.msg)) return null;      // counted by xml-errors.test.ts
       return `message: expected ${JSON.stringify(wantExc.msg)}, got ${JSON.stringify(got.exc.msg)}`;
     }
   } else if (got.exc) {
@@ -168,28 +166,4 @@ export function diff(c: Case & Record<string, any>, got: Outcome): string | null
   }
   if (JSON.stringify(want.warnings) !== JSON.stringify(got.warnings)) return `warnings: expected ${JSON.stringify(want.warnings)}, got ${JSON.stringify(got.warnings)}`;
   return null;
-}
-
-/**
- * Whether a message mismatch is one of the expat behaviours this port does not reproduce yet.
- *
- * Expat's prolog and epilog tokenizers decide between "not well-formed (invalid token)", "syntax error" and "junk
- * after document element" by internal state that the scanner here does not model: `?xml…` with its `<` missing is
- * an invalid token while `<![CDATA[` in the prolog is a syntax error, and a stray tag after the document element is
- * an invalid token one character in rather than junk at the tag. Everything else about these messages — the other
- * nine reasons, and the positions — is compared exactly.
- *
- * The exemption exists so that the messages which *are* right cannot regress. `xml-errors.test.ts` counts what it
- * lets through and fails if that number grows, and the three seqXML/uniprot-xml/snapgene parity items stay partial
- * while it is above zero.
- *
- * @param want - Biopython's message.
- * @param got - This port's message.
- * @returns Whether the pair is a known, counted divergence.
- */
-export function knownXmlDivergence(want: string, got: string | null): boolean {
-  if (got === null) return false;
-  const PROLOG = ["not well-formed (invalid token)", "syntax error", "junk after document element", "no element found"];
-  const [a, b] = [xmlReason(want), xmlReason(got)];
-  return PROLOG.includes(a) && PROLOG.includes(b);
 }
