@@ -117,7 +117,7 @@ alignments.get(-1).coordinates;    // [[1, 2, 3, 5], [0, 1, 1, 3]]
 
 ### Alignment file formats (`formats/`)
 
-`parse`, `read` and `write` work over text instead of file handles, and `Alignment.format(fmt)` returns file text. Ported and verified against Biopython on about 7,800 cases (valid files, malformed files, odd identifiers, long alignments): `fasta`, `a2m`, `clustal`, `phylip`, `nexus`, `stockholm`, `psl`, `bed`, `chain`, `sam`, `maf`, `mauve` and `exonerate` (read and write; the writer takes an optional `interleave`) and `msf`, `emboss`, `tabular` and `hhr` (read only, as in Biopython; `hhr` reads HHsearch/HHblits output into one pairwise alignment per hit, with the per-hit scores in `annotations`, consensus and secondary-structure strings as letter annotations, and `No_of_seqs` as a tuple; `tabular` reads BLAST `-outfmt 7` and FASTA `-m 8CB`/`8CC` output and, as in Biopython, needs a `BTOP` or `aln_code` column to build coordinates; EMBOSS files keep their header in `metadata`, strand and start become partially defined sequences, and Biopython's `raise ValueError(...) % line` typo surfaces as the same `TypeError`). Reading `bigbed`, `bigpsl` and `bigmaf` is ported too, and writing `bigbed` (see below); writing the other two throws `NotImplementedError`; the error for an unknown name, a binary format written to text (`StreamModeError`) and a format without a writer (`ValueError`) match Biopython's.
+`parse`, `read` and `write` work over text instead of file handles, and `Alignment.format(fmt)` returns file text. Ported and verified against Biopython on about 7,800 cases (valid files, malformed files, odd identifiers, long alignments): `fasta`, `a2m`, `clustal`, `phylip`, `nexus`, `stockholm`, `psl`, `bed`, `chain`, `sam`, `maf`, `mauve` and `exonerate` (read and write; the writer takes an optional `interleave`) and `msf`, `emboss`, `tabular` and `hhr` (read only, as in Biopython; `hhr` reads HHsearch/HHblits output into one pairwise alignment per hit, with the per-hit scores in `annotations`, consensus and secondary-structure strings as letter annotations, and `No_of_seqs` as a tuple; `tabular` reads BLAST `-outfmt 7` and FASTA `-m 8CB`/`8CC` output and, as in Biopython, needs a `BTOP` or `aln_code` column to build coordinates; EMBOSS files keep their header in `metadata`, strand and start become partially defined sequences, and Biopython's `raise ValueError(...) % line` typo surfaces as the same `TypeError`). All three binary formats are ported both ways (see below); the error for an unknown name, a binary format written to text (`StreamModeError`) and a format without a writer (`ValueError`) match Biopython's.
 
 | Python | TypeScript |
 |---|---|
@@ -195,7 +195,25 @@ reading it back. And three combinations of `blockSize` and `itemsPerSlot` make B
 notice that its offsets do not add up and raise `RuntimeError: Internal error: offset mismatch (1839 vs 1891)`
 — the port raises the same error with the same numbers.
 
-Writing bigPsl and bigMaf is not ported. Biopython's own writer needs a real file — it puts its index out with
+Writing both is ported as well, in `bigpsl-write.ts` and `bigmaf-write.ts`, and each file matches Biopython's
+byte for byte. **bigMaf** formats every alignment as MAF, replaces its newlines with `;`, keeps the first two
+rows of the alignment, strips the species from the target's name and hands a three-column bigBed file to the
+bigBed writer. **bigPsl** works out what a PSL line holds — the match, mismatch, repeat and N counts over the
+aligned blocks, with `mask` moving matches in masked target regions into `repMatches` and `wildcard` counting
+Ns — and sets them, with the query's start, end, size, strand, block starts, sequence and CDS feature, as the
+alignment's annotations for the bigBed writer to read off. A translated alignment on the reverse strand is the
+awkward case: its query blocks are counted from the far end and its coordinates turned around.
+
+Three quirks of Biopython's own writers are reproduced rather than tidied up. Both accept arguments they then
+drop: `itemsPerSlot` and `blockSize` for bigMaf, `extraIndex` for bigPsl, none of which reach the bigBed writer
+they delegate to, so asking for them changes nothing (the cases record that). Both **mutate what they are
+given** — bigPsl leaves its annotations on the alignments and reverses the coordinates of a translated reverse
+alignment, bigMaf renames the targets — which is why each golden file is written from a freshly parsed copy.
+And writing a `CDS` feature in NCBI style needs the location writer that had lived in `@biolibs/seqio`; since
+`@biolibs/align` cannot reach that package, it moved to `@biolibs/seqfeature`, where the locations themselves
+are, and `@biolibs/seqio` re-exports it.
+
+Biopython's own writer needs a real file — it puts its index out with
 `numpy.ndarray.tofile` — and it raises on an empty alignment list, so the golden files are written to a
 temporary file with at least one alignment in them. The bigPsl writer also wants each alignment to carry an
 `annotations` dict already, and the bigMaf writer renames the targets of the alignments it is given, so each

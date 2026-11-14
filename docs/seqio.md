@@ -190,6 +190,6 @@ packages/seqio/src/
   uniprot/ etree.ts  tostring.ts  util.ts  errors.ts  comments.ts  references.ts  features.ts  entry.ts  iterator.ts  index.ts
   alignio/ interfaces.ts  bridge.ts  phylip.ts  clustal.ts  stockholm.ts  msf.ts  emboss.ts  fasta-m10.ts  mauve.ts  maf.ts  nexus.ts  index.ts
   insdc/   text.ts  cleaner.ts  consumer.ts  scanner.ts  genbank-scanner.ts  embl-scanner.ts  iterators.ts
-           location-string.ts  writer-base.ts  genbank-writer.ts  embl-writer.ts  converters.ts  index.ts
+           insdc-string.ts  writer-base.ts  genbank-writer.ts  embl-writer.ts  converters.ts  index.ts
 ```
 Each format family lives in its own directory and registers itself with `registry.ts`.

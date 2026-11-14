@@ -1,10 +1,14 @@
-/** Turning feature locations back into INSDC location text (`join(1..5,complement(8..9))`). */
+/**
+ * Turning feature locations back into INSDC location text (`join(1..5,complement(8..9))`).
+ *
+ * It lives here, with the locations themselves, rather than in `@biolibs/seqio` where INSDC files are written,
+ * because `Bio.Align.bigpsl` writes a location this way too and `@biolibs/align` cannot reach `@biolibs/seqio`.
+ */
 
 import { AssertionError, NotImplementedError, ValueError } from "@biolibs/core";
-import {
-  AfterPosition, BeforePosition, BetweenPosition, CompoundLocation, ExactPosition, OneOfPosition, Position, UnknownPosition, WithinPosition,
-  type SimpleLocation,
-} from "@biolibs/seqfeature";
+import { AfterPosition, BeforePosition, BetweenPosition, ExactPosition, OneOfPosition, Position, UnknownPosition, WithinPosition } from "../position/index.js";
+import { CompoundLocation } from "./compound.js";
+import type { SimpleLocation } from "./simple.js";
 
 /**
  * A position as INSDC text, shifted by `offset` (use +1 for start positions to go from zero-based to one-based).

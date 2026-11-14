@@ -6,6 +6,7 @@
  * - `simple.ts`, `compound.ts`: the two concrete kinds
  * - `patterns.ts`, `parse.ts`: GenBank/EMBL location-string parsing, installed as `Location.fromstring` and `SimpleLocation.fromstring` here
  * - `extract-util.ts`: helpers for taking sub-sequences
+ * - `insdc-string.ts`: the other direction, a location back to INSDC text
  */
 
 import { Location } from "./base.js";
@@ -20,3 +21,4 @@ export { Location, type ParentSequence, type References, type Strand } from "./b
 export { SimpleLocation, FeatureLocation } from "./simple.js";
 export { CompoundLocation } from "./compound.js";
 export { locationFromString, simpleLocationFromString } from "./parse.js";
+export { insdcFeaturePositionString, insdcLocationString, insdcLocationStringIgnoringStrandAndSubfeatures } from "./insdc-string.js";

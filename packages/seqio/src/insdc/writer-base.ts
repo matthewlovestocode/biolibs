@@ -4,7 +4,7 @@ import { AssertionError, ValueError, pyRepr, pyStr, warn } from "@biolibs/core";
 import { SequenceWriter } from "../interfaces.js";
 import type { SeqFeature } from "@biolibs/seqfeature";
 import type { SeqRecord } from "@biolibs/seqrecord";
-import { insdcLocationString } from "./location-string.js";
+import { insdcLocationString } from "@biolibs/seqfeature";
 
 /** Characters allowed in feature keys and qualifier names. */
 const ALLOWED = new Set([..."abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-'*"]);

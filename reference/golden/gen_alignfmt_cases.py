@@ -7,8 +7,7 @@ Case kinds (each forked so a crash cannot lose the rest):
   write  - Align.write([alignment...], StringIO, fmt) -> text and count
   other  - parse/read/format with an unknown or binary format name
   bbparse / bbsearch - a bigBed file built here by Biopython's own writer, then read back and searched
-  bbwrite - Align.write(..., "bigbed"): the file's bytes when it is written uncompressed, and what reading it
-          back gives either way
+  bbwrite - Align.write(..., "bigbed"/"bigpsl"/"bigmaf"): the file's bytes, and what reading it back gives
 """
 import io, json, os, warnings
 import numpy as np
@@ -162,6 +161,33 @@ def run(case):
                         out["result"].append({"hits": hits})
                     except Exception as e:
                         out["result"].append({"exc": {"type": tname(e), "msg": emsg(e)}})
+            elif k == "bigwrite":
+                # bigPsl and bigMaf, written from the PSL or MAF text both sides parse with their own readers.
+                import tempfile
+                module = bigpsl if case["fmt"] == "bigpsl" else bigmaf
+                alns = Align.Alignments(list(Align.parse(io.StringIO(case["text"]), case["source"])))
+                if case["fmt"] == "bigpsl":
+                    for a in alns: a.annotations = {}
+                if case.get("add_cds"):
+                    from Bio.SeqFeature import Location, SeqFeature
+                    for a in alns:
+                        loc = Location.fromstring(case["add_cds"], len(a.sequences[1]))
+                        a.sequences[1].features.append(SeqFeature(loc, type="CDS"))
+                targets = [SeqRecord(Seq(None, length=n), id=i) for i, n in case["targets"]]
+                alns.targets = targets
+                opts = dict(case.get("opts") or {})
+                with tempfile.TemporaryDirectory() as d:
+                    path = os.path.join(d, "out.bb")
+                    with open(path, "wb") as f:
+                        n = module.AlignmentWriter(f, targets=targets, **opts).write(alns)
+                    with open(path, "rb") as f:
+                        data = f.read()
+                out["result"] = {"n": n, "size": len(data), "hex": data.hex()}
+                back = Align.parse(io.BytesIO(data), case["fmt"])
+                out["result"]["logical"] = {
+                    "alns": [enc_aln(a) for a in back], "len": len(back),
+                    "declaration": str(back.declaration),
+                    "targets": [[t.id, len(t.seq)] for t in back.targets]}
             elif k == "bbwrite":
                 # Both sides start from the same BED text, whose reader is verified already, and write it out
                 # as a bigBed file, which is then compared byte for byte -- compressed or not, since the port's
@@ -1402,6 +1428,56 @@ add({"kind": "bbwrite", "fmt": "bigbed",
 # No targets at all, neither passed nor on the alignments.
 add({"kind": "bbwrite", "fmt": "bigbed", "bed": BBW_BED, "targets": BBW_TARGETS, "no_targets": True,
      "opts": {"compress": False}})
+
+# ---------------- writing bigPsl and bigMaf ----------------
+# The same shape as the bigBed write cases: both sides parse the PSL or MAF text with their own reader and write
+# it out, and the files are compared byte for byte. The inputs are the ones the read cases already use, since
+# those are the alignments both writers are known to accept.
+for _i, _a in enumerate(Align.parse(io.StringIO(PSL_TEXTS[0]), "psl")):
+    if _i >= 8: break
+    _t = _a.sequences[0]
+    _targets = [[f"{_t.id}_{_i:02d}", len(_t.seq)]]
+    _one = PSL_TEXTS[0].splitlines()[_i] + "\n"
+    _one = "\t".join(w if j != 13 else f"{w}_{_i:02d}" for j, w in enumerate(_one.rstrip("\n").split("\t"))) + "\n"
+    for _opts in ({}, {"compress": False}, {"cds": True}, {"mask": "lower"}, {"wildcard": None}):
+        add({"kind": "bigwrite", "fmt": "bigpsl", "source": "psl", "text": _one, "targets": _targets, "opts": _opts})
+
+# `itemsPerSlot`, `blockSize` (bigMaf) and `extraIndex` (bigPsl) are accepted and then dropped on the way to the
+# bigBed writer, so they make no difference to the file; the cases record that rather than leaving it untested.
+for _opts in ({}, {"compress": False}, {"itemsPerSlot": 1}, {"blockSize": 2}, {"itemsPerSlot": 4, "blockSize": 8}):
+    add({"kind": "bigwrite", "fmt": "bigmaf", "source": "maf", "text": BIG_MAF_TEXT,
+         "targets": [["hg38.chr1", 1000]], "opts": _opts})
+_one_psl = PSL_TEXTS[0].splitlines()[0] + "\n"
+_one_psl = "\t".join(w if j != 13 else f"{w}_00" for j, w in enumerate(_one_psl.rstrip("\n").split("\t"))) + "\n"
+_psl_t = [[f"{next(Align.parse(io.StringIO(_one_psl), 'psl')).sequences[0].id}", 0]]
+_psl_t[0][1] = len(next(Align.parse(io.StringIO(_one_psl), "psl")).sequences[0].seq)
+for _opts in ({"extraIndex": ["name"]}, {"extraIndex": ["chrom"], "compress": False}):
+    add({"kind": "bigwrite", "fmt": "bigpsl", "source": "psl", "text": _one_psl, "targets": _psl_t, "opts": _opts})
+
+# PSLX lines carry the sequences themselves, which is what makes the match counting do any work: with the
+# sequences unknown every aligned letter simply counts as a match. `mask` then moves the matches in lower-case
+# target regions into `repMatches`, and `wildcard` counts the Ns.
+# The first ten lines are plain DNA alignments; the ones from 12 on are translated (`dnax`), and those from 18
+# are translated *and* on the reverse strand, which is the one branch that counts the query's blocks from the
+# far end and turns the coordinates around.
+for _i, (_line, _sp) in enumerate(zip(PSL_LINES, PSL_SPECS)):
+    if _i >= 10 and not (12 <= _i < 24): continue
+    if _i >= 24: break
+    _x = pslx(_line, _sp)
+    _w = _x.split("\t")
+    _w[13] = f"{_w[13]}_{_i:02d}"
+    _x = "\t".join(_w) + "\n"
+    _a = next(iter(Align.parse(io.StringIO(_x), "psl")))
+    _targets = [[_a.sequences[0].id, len(_a.sequences[0].seq)]]
+    for _opts in ({}, {"compress": False}, {"mask": "lower"}, {"mask": "upper"}, {"wildcard": "A"},
+                  {"wildcard": None}, {"fa": True}):
+        add({"kind": "bigwrite", "fmt": "bigpsl", "source": "psl", "text": _x, "targets": _targets, "opts": _opts})
+    # A CDS feature on the query, written in NCBI style, with and without the option that asks for it.
+    for _loc in ("1..9", "complement(2..8)", "join(1..3,7..9)"):
+        add({"kind": "bigwrite", "fmt": "bigpsl", "source": "psl", "text": _x, "targets": _targets,
+             "add_cds": _loc, "opts": {"cds": True, "compress": False}})
+    add({"kind": "bigwrite", "fmt": "bigpsl", "source": "psl", "text": _x, "targets": _targets,
+         "opts": {"cds": True, "compress": False}})
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 report_skipped()

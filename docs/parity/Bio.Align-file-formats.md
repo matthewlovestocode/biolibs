@@ -10,9 +10,9 @@
 - [x] `parse: bigbed`
 - [x] `write: bigbed`
 - [x] `parse: bigmaf`
-- [ ] `write: bigmaf`
+- [x] `write: bigmaf`
 - [x] `parse: bigpsl`
-- [ ] `write: bigpsl`
+- [x] `write: bigpsl`
 - [x] `parse: chain`
 - [x] `write: chain`
 - [x] `parse: clustal`

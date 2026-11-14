@@ -5,9 +5,10 @@ import { Alignment, AutoSQLTable, type BigBedIterator, ByteWriter, MultipleSeqAl
 import { captureWarnings, pyStr } from "@biolibs/core";
 import { Seq } from "@biolibs/seq";
 import { SeqRecord } from "@biolibs/seqrecord";
+import { Location, SeqFeature, type SimpleLocation } from "@biolibs/seqfeature";
 
 type Spec = { recann?: (Record<string, unknown> | null)[]; qann?: Record<string, unknown>; tann?: Record<string, unknown>; qletter?: number[]; seqs?: string[]; coords?: number[][]; undef?: boolean[]; plain?: boolean[]; extra?: Record<string, number | string>; ann?: Record<string, unknown>; ops?: string; recinfo?: { desc?: string | null; dbx?: string[]; ann?: Record<string, unknown>; letter?: Record<string, string> }[]; ids: string[]; rows: string[]; colann?: Record<string, string>; mol?: string; mols?: (string | null)[] };
-interface Case { args?: unknown[]; kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; data?: string; bed?: string; targets?: [string, number][]; opts?: Record<string, unknown>; bytes?: boolean; no_targets?: boolean; queries?: [string | null, number | null, number | null][]; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
+interface Case { args?: unknown[]; kwargs?: Record<string, unknown>; rows?: string[]; ids?: string[]; cols?: number[]; wmsg?: string[]; wtext?: string[]; warnings?: string[]; kind: string; fmt: string; text?: string; data?: string; bed?: string; targets?: [string, number][]; opts?: Record<string, unknown>; bytes?: boolean; no_targets?: boolean; source?: string; add_cds?: string; queries?: [string | null, number | null, number | null][]; aln?: Spec; alns?: Spec[]; result?: any; exc?: { type: string; msg: string | null } }
 /** Python keyword arguments to the positional arguments of each writer. */
 const WRITER_PARAMS: Record<string, [string, unknown][]> = { nexus: [["interleave", null]], psl: [["header", true], ["mask", null], ["wildcard", "N"]], bed: [["bedN", 12]], sam: [["md", false]], exonerate: [["fmt", "vulgar"]], mauve: [["metadata", null], ["identifiers", null]] };
 const kwargArgs = (c: Case): unknown[] => {
@@ -125,6 +126,32 @@ describe("Bio.Align file formats", () => {
           return { alns, metadata: null, len: it.length, declaration: it.declaration.toString(), bedN: it.bedN,
             targets: it.targets.map((t) => [t.id, t.seq!.length]),
             fields: it.declaration.fields.map((f) => [f.asType, f.name, f.comment]) };
+        }
+        if (c.kind === "bigwrite") {
+          const alns = [...parse(c.text!, c.source!)];
+          if (c.fmt === "bigpsl") for (const a of alns) a.annotations = new Map();
+          if (c.add_cds !== undefined) {
+            for (const a of alns) {
+              const query = a.sequences[1] as SeqRecord;
+              const loc = Location.fromstring(c.add_cds, query.seq!.length) as SimpleLocation;
+              query.features.push(new SeqFeature(loc, "CDS"));
+            }
+          }
+          const targets = c.targets!.map(([id, length]) => new SeqRecord(new Seq(null, length), id));
+          const out = new ByteWriter();
+          const n = write(alns, out, c.fmt, { ...c.opts, targets }) as number | undefined;
+          const data = out.toBytes();
+          const it = parse(data, c.fmt) as unknown as BigBedIterator;
+          return {
+            n: n === undefined ? null : n,
+            size: data.length,
+            hex: [...data].map((b) => b.toString(16).padStart(2, "0")).join(""),
+            logical: {
+              alns: Array.from(it as Iterable<Alignment>).map(enc), len: it.length,
+              declaration: it.declaration.toString(),
+              targets: it.targets.map((t) => [t.id, t.seq!.length]),
+            },
+          };
         }
         if (c.kind === "bbwrite") {
           const alns = [...parse(c.bed!, "bed")];

@@ -535,6 +535,8 @@ for c in afm:
     # `bbwrite` writes a bigBed file and compares it with the one Biopython writes, byte for byte, compressed
     # or not: the port's DEFLATE compressor produces zlib's own output.
     if c["kind"] == "bbwrite" and _ok(c): mark(f"Bio.Align.write:{f}")
+    # `bigwrite` does the same for the two formats built on bigBed.
+    if c["kind"] == "bigwrite" and _ok(c): mark(f"Bio.Align.write:{f}")
 for f in ("emboss", "hhr", "msf", "tabular"): mark(f"Bio.Align.write:{f}", "na")   # Biopython has no writer for these formats
 for fn, kind in (("parse", "parse"), ("read", "read"), ("write", "write")):
     if any(c["kind"] == kind and _ok(c) for c in afm): mark(f"Bio.Align.{fn}")

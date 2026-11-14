@@ -6,7 +6,7 @@
  * - `scanner.ts`: `InsdcScanner` base (finding records, headers, feature tables)
  * - `genbank-scanner.ts`, `embl-scanner.ts`: GenBank and EMBL/IMGT specifics
  * - `consumer.ts`: builds the `SeqRecord` from scanner callbacks
- * - `genbank-writer.ts`, `embl-writer.ts`, `writer-base.ts`, `location-string.ts`: the writers
+ * - `genbank-writer.ts`, `embl-writer.ts`, `writer-base.ts`: the writers
  * - `converters.ts`: direct GenBank/EMBL to FASTA
  * - `cleaner.ts`, `text.ts`: value cleaning and Python-style string helpers
  * - `iterators.ts`: the registered readers
@@ -39,6 +39,7 @@ export * from "./embl-scanner.js";
 export * from "./genbank-writer.js";
 export * from "./embl-writer.js";
 export * from "./converters.js";
-export * from "./location-string.js";
+// The location-string writer moved to `@biolibs/seqfeature`, where `@biolibs/align` can reach it too.
+export { insdcFeaturePositionString, insdcLocationString, insdcLocationStringIgnoringStrandAndSubfeatures } from "@biolibs/seqfeature";
 export * from "./iterators.js";
 export { InsdcScanner, type FeatureTuple } from "./scanner.js";
