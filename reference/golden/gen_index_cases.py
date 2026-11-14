@@ -65,16 +65,21 @@ SOURCES = {"fasta": ["fasta"], "fastq": ["fastq", "fastq-sanger", "fastq-solexa"
            "tab": ["tab"], "ig": ["ig"], "pir": ["pir"], "phd": ["phd"], "ace": ["ace"], "uniprot-xml": ["uniprot-xml"]}
 for fname, formats in SOURCES.items():
     cs = json.load(open(os.path.join(GOLD, f"seqio-{fname}.json")))["cases"]
-    texts = [(c["format"], c["text"]) for c in cs if c["kind"] == "parse" and c.get("format") in formats and "text" in c]
+    # A byte format's parse cases carry `bytes` (latin-1) rather than `text`; UniProt XML is one, and
+    # taking only `text` left its indexer with a single case -- which is to say, untested.
+    texts = [(c["format"], "text" if "text" in c else "bytes", c.get("text", c.get("bytes")))
+             for c in cs if c["kind"] == "parse" and c.get("format") in formats
+             and ("text" in c or "bytes" in c)]
     rnd.shuffle(texts)
-    for fmt, text in texts[:140]:
-        try: text.encode("utf-8")
-        except UnicodeEncodeError: continue
-        case = {"format": fmt, "text": text, "keyfunc": rnd.choice(["none", "none", "none", "upper", "first4", "const"])}
+    for fmt, field, text in texts[:140]:
+        if field == "text":
+            try: text.encode("utf-8")
+            except UnicodeEncodeError: continue
+        case = {"format": fmt, field: text, "keyfunc": rnd.choice(["none", "none", "none", "upper", "first4", "const"])}
         res = run_isolated(run, case)
         if res is not None: case.update(res); cases.append(case)
     if fname == "fasta":   # QUAL files share the FASTA layout
-        for fmt, text in texts[:40]:
+        for fmt, _field, text in texts[:40]:
             case = {"format": "qual", "text": text, "keyfunc": "none"}
             res = run_isolated(run, case)
             if res is not None: case.update(res); cases.append(case)

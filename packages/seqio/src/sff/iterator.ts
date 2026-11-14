@@ -6,7 +6,7 @@ import { SeqRecord } from "@biolibs/seqrecord";
 import { calcsize, unpack } from "../binary/struct.js";
 import type { BinaryStream } from "../handles.js";
 import { SequenceIterator } from "../interfaces.js";
-import { READ_HEADER_FMT, READ_HEADER_SIZE, checkEof, nullCount, readFileHeader } from "./header.js";
+import { READ_HEADER_FMT, READ_HEADER_SIZE, checkEof, nullCount, readFileHeader, type SffHeader } from "./header.js";
 import { isUanName, readTime, readXY } from "./names.js";
 
 const PARSER = "BiopythonParserWarning";
@@ -48,12 +48,18 @@ export class SffIterator extends SequenceIterator {
   private readonly keySequence: string;
   private readCounter: number | null = 0;
 
-  /** @param source - The file's bytes. @param alphabet - Not supported. @param trim - Remove clipped regions. */
-  constructor(source: unknown, alphabet: null | undefined = null, trim = false) {
+  /**
+   * @param source - The file's bytes. @param alphabet - Not supported. @param trim - Remove clipped regions.
+   * @param header - A file header already read from `source`, to be used instead of reading it again.
+   *   `SffRandomAccess` passes the one it read in its own constructor: reading it afresh would re-emit any
+   *   warning about the header's padding, and Biopython's indexer emits none when it fetches a record.
+   */
+  constructor(source: unknown, alphabet: null | undefined = null, trim = false,
+              header: SffHeader | null = null) {
     if (alphabet !== null && alphabet !== undefined) throw new ValueError("The alphabet argument is no longer supported");
     super(source, null, "SFF");
     this.trim = trim;
-    const h = readFileHeader(this.bytes!);
+    const h = header ?? readFileHeader(this.bytes!);
     this.offset = h.headerLength;
     this.indexOffset = h.indexOffset;
     this.indexLength = h.indexLength;

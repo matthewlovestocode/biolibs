@@ -2,7 +2,7 @@
 
 import { SeqRecord } from "@biolibs/seqrecord";
 import { FORMAT_TO_ITERATOR } from "../registry.js";
-import { AssertionError, brstrip, bsplit, bstrip, decodeUtf8, firstToken, reprBytes } from "./bytes.js";
+import { AssertionError, brstrip, bsplit, bstrip, decodeUtf8, firstToken, reprBytes, toBytes } from "./bytes.js";
 import { SequentialSeqFileRandomAccess, type Entry } from "./proxies.js";
 
 /** Python's `ValueError`, as the indexers raise it. */
@@ -154,7 +154,9 @@ export class UniprotRandomAccess extends SequentialSeqFileRandomAccess {
         http://www.uniprot.org/support/docs/uniprot.xsd">
         `;
     const Cls = FORMAT_TO_ITERATOR.get("uniprot-xml")!;
-    const it = new Cls(decodeUtf8(wrapped + this.getRaw(offset) + "</uniprot>"));
+    // The UniProt reader is a binary one -- it takes the bytes, because an XML prolog may declare an
+    // encoding -- so the re-wrapped entry has to be handed over as bytes, not as decoded text.
+    const it = new Cls(toBytes(wrapped + this.getRaw(offset) + "</uniprot>"));
     const first = it.next();
     if (first.done) throw Object.assign(new Error(""), { name: "StopIteration" });
     return first.value;

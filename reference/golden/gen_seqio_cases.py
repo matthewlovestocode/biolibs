@@ -286,6 +286,35 @@ def fastq_cases():
     for x in (None, -10, -6, -5, -4.5, -3, -1, 0, 1, 5, 10, 20, 30, 40, 62, 100, 0.5, 2.5, 7.25): add({"kind": "func", "fn": "phred_quality_from_solexa", "args": [x]})
 
 GENBANK_HAND = [
+"""LOCUS       AAA98665                  10 aa            linear   PLN 21-JUN-1999
+DEFINITION  TCP1-beta.
+ACCESSION   AAA98665
+PID         g1293614
+VERSION     AAA98665.1  GI:1293614
+NID         g1293613
+DBSOURCE    locus SCU49845 accession U49845.1
+PROJECT     GenomeProject:10638
+SEGMENT     1 of 2
+KEYWORDS    .
+SOURCE      Saccharomyces cerevisiae (baker's yeast)
+  ORGANISM  Saccharomyces cerevisiae
+            Eukaryota; Fungi.
+REFERENCE   1  (residues 1 to 10)
+  AUTHORS   Torpey,L.E.
+  CONSRTM   The Yeast Genome Consortium
+  TITLE     Cloning and sequence of REV7
+  JOURNAL   Yeast 10 (11), 1503-1509 (1994)
+  MEDLINE   95003041
+   PUBMED   7871890
+  REMARK    Sequence from the author.
+COMMENT     Method: conceptual translation.
+FEATURES             Location/Qualifiers
+     source          1..10
+                     /organism="Saccharomyces cerevisiae"
+ORIGIN
+        1 mkvlaaccgg
+//
+""",
 """LOCUS       SCU49845     120 bp    DNA             PLN       21-JUN-1999
 DEFINITION  Saccharomyces cerevisiae TCP1-beta gene, partial cds; and Axl2p
             (AXL2) and Rev7p (REV7) genes, complete cds.

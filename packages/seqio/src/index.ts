@@ -1,17 +1,30 @@
 /**
  * @packageDocumentation
- * `@biolibs/seqio`: a TypeScript port of Biopython's `Bio.SeqIO`.
+ * `@biolibs/seqio`: a TypeScript port of Biopython's `Bio.SeqIO` — **49 formats readable, 26 writable**,
+ * verified against Biopython 1.88 by 37,552 recorded cases. Every checklist item is at parity except
+ * `index_db`, whose index lives in an SQLite file.
  *
- * Inputs are the *text contents* of a file (or a `LineStream`), outputs are any object with `write(text)`
- * (such as `StringHandle`); there is no file-system access, so it works in Node and in the browser.
+ * Inputs are the *text contents* of a file (or a `LineStream`) for a text format and a `Uint8Array` for a
+ * binary one; outputs are any object with `write(text)`, such as `StringHandle` or `BytesHandle`. There is
+ * no file-system access anywhere, which is what lets this run in a browser as well as in Node — and what
+ * makes `index_db` inapplicable.
+ *
+ * Importing this package registers every format, which also fills in `SeqRecord.format()` for the
+ * writable ones.
  *
  * - `api.ts`: `parse`, `read`, `write`, `toDict`, `convert`
- * - `handles.ts`: `LineStream`, `StringHandle`
- * - `interfaces.ts`, `registry.ts`: reader/writer base classes and the format registries
- * - `fasta/`: the FASTA family
- * - `fastq/`: FASTQ (three flavours) and QUAL
- * - `insdc/`: GenBank (more INSDC formats follow)
- * - `indexing/`: `index`, the dictionary-like access to the records of a file
+ * - `handles.ts`: `LineStream`, `StringHandle`, `BytesHandle`
+ * - `interfaces.ts`, `registry.ts`: reader/writer base classes, the format registries, and
+ *   `registerIterator` / `registerWriter` / `registerConverter` for a format of your own
+ * - `indexing/`: `index`, the dictionary-like access that parses a record only when asked
+ * - text formats: `fasta/` (four dialects), `fastq/` (three quality scales, and QUAL), `insdc/`
+ *   (GenBank, EMBL, IMGT and their `-cds` forms), `swiss/`, `pir/`, `ig/`, `phd/`, `ace/`, `tab/`
+ * - binary formats: `sff/`, `abi/`, `twobit/`, `nib/`, `gck/`, `xdna/`, `snapgene/`
+ * - XML: `seqxml/` and `uniprot/`, over a SAX parser written for the job (`seqxml/xml-sax.ts`)
+ * - `alignio/`: the `Bio.AlignIO` bridge — Clustal, Stockholm, PHYLIP and its variants, NEXUS, MSF, MAF,
+ *   Mauve, EMBOSS and FASTA-m10, as one record per alignment row
+ * - `pdb/`: sequences out of PDB and mmCIF files, from `SEQRES` or from the atoms
+ * - `binary/`: Python's `struct` and the ASCII helpers the binary readers share
  */
 
 import "./fasta/index.js"; // registers the formats

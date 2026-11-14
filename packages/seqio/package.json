@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/seqio",
   "version": "0.1.0",
-  "description": "Sequence file formats (Biopython Bio.SeqIO)",
+  "description": "Read and write sequence files, verified against Biopython: 49 formats in and 26 out, text, binary and XML, plus index for on-demand access. No file system, so it runs in the browser (Bio.SeqIO)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

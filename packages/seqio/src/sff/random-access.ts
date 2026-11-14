@@ -231,8 +231,15 @@ export class SffRandomAccess extends SeqFileRandomAccess {
    * @returns The record, with the clipped regions kept.
    */
   override get(offset: number): SeqRecord {
-    return new SffIterator(this.handle.bytes, null, this.trimmed).readAt(offset);
+    // The header this proxy read in its constructor is handed over rather than read again: a fresh read
+    // would re-emit any warning the header's padding deserves, and Biopython's indexer warns only while
+    // building the index, never while fetching a record from it.
+    this.reader ??= new SffIterator(this.handle.bytes, null, this.trimmed, this.header);
+    return this.reader.readAt(offset);
   }
+
+  /** The reader `get` reuses, built on first use from this proxy's own header. */
+  private reader: SffIterator | null = null;
 
   /** Whether this indexer trims the clipped regions, which `sff-trim` does. */
   protected get trimmed(): boolean { return false; }

@@ -1,6 +1,10 @@
 # @biolibs/seqio
 
-A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with about 31,000 recorded calls so far (FASTA, FASTQ/QUAL, GenBank, EMBL, IMGT, tab, PIR, SwissProt, PHD, IntelliGenetics, seqXML, the binary formats and the alignment formats below, nexus included); each further format is added and verified the same way. See [PARITY.md](../PARITY.md) for which formats are done.
+A TypeScript port of Biopython's `Bio.SeqIO`: read and write sequence files as `SeqRecord`s. Verified against Biopython 1.88 with **37,552 recorded cases**: 35,067 over the 38 format families,
+1,964 for `index`, and 521 malformed-XML cases. All 81 checklist items are at parity — **49 formats
+readable, 26 writable** — with `index_db` the one exception, since its index lives in an SQLite file and
+nothing here touches a file system. See [PARITY.md](../PARITY.md) for the item-by-item list, and
+[the package README](../packages/seqio/README.md) for the API with worked examples.
 
 ```ts
 import { parse, read, write, toDict, convert, StringHandle } from "@biolibs/seqio";
@@ -20,7 +24,7 @@ Unlike Python, nothing here opens files, so the library works in Node and in the
 
 - **Inputs are the file's contents** as a string (a string is *never* a file name), or a `LineStream` over it. In Node: `parse(fs.readFileSync(path, "utf8"), "fasta")`.
 - **Outputs are any object with `write(text)`**, such as `StringHandle` (like `io.StringIO`; call `.getvalue()`). A Node `fs.WriteStream` also works.
-- Binary formats (`seqxml`) take **bytes** (`fs.readFileSync(path)`, a `Uint8Array`) and write to a byte target such as `BytesHandle` (`.getvalue()` returns a `Uint8Array`). Text given to a binary format, or bytes to a text format, throws `StreamModeError`, as in Biopython.
+- Binary formats take **bytes** (`fs.readFileSync(path)`, a `Uint8Array`) and write to a byte target such as `BytesHandle` (`.getvalue()` returns a `Uint8Array`): `sff`, `sff-trim`, `abi`, `abi-trim`, `twobit`, `nib`, `gck`, `xdna`, `snapgene`, `seqxml` and `uniprot-xml`. Text given to a binary format, or bytes to a text format, throws `StreamModeError`, as in Biopython.
 - Binary data passed to a text format throws `StreamModeError("Fasta files must be opened in text mode.")`, as in Biopython.
 - Lines end at `"\n"` only (like `io.StringIO`); a `"\r"` stays in the text. Python's file objects translate `"\r\n"` for you; do that yourself if needed.
 
