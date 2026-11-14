@@ -1,7 +1,10 @@
-"""Golden cases for Bio.Align.analysis (dN/dS with NG86 and LWL85, the dN/dS matrices, mktest)
+"""Golden cases for Bio.Align.analysis (dN/dS with NG86, LWL85, YN00 and ML, the dN/dS matrices, mktest)
 -> packages/align/test/golden/analysis.json, packages/phylo/test/golden/dnds-matrix.json
 
-mktest's Prim step depends on set iteration order, so every case is evaluated in two processes with different hash seeds and kept when they agree.
+mktest's Prim step depends on set iteration order, so its cases are evaluated in six processes with
+different hash seeds and kept only where they all agree. The dN/dS cases go through dictionaries and
+counters rather than sets, so two seeds are enough to show they do not depend on the order, which matters
+here because YN00 and ML exponentiate a 61 by 61 matrix for every round of their iterations.
 """
 import json, os, random, subprocess, sys
 import numpy as np
@@ -81,14 +84,43 @@ for ncod in (3, 5, 8, 12, 20):
         for gapped in (False, True):
             if gapped and ncod < 3: continue
             sp = pair_spec(ncod, rate, gapped)
-            for method in ("NG86", "LWL85"):
+            for method in ("NG86", "LWL85", "YN00"):
                 cases.append({"kind": "dnds", "method": method, "aln": sp})
             cases.append({"kind": "dnds", "method": "NG86", "aln": sp, "k": 2.5})
             cases.append({"kind": "dnds", "method": "NG86", "aln": sp, "table": 2})
             cases.append({"kind": "dnds", "method": "LWL85", "aln": sp, "table": 11})
+            cases.append({"kind": "dnds", "method": "YN00", "aln": sp, "table": 2})
+# YN00 only reaches its numeric answer for longer sequences: with a handful of codons the two fold-class
+# dictionaries hold different bases and Biopython's own zip over them raises before any distance is computed.
+for ncod in (30, 50, 80):
+    for rate in (0.02, 0.05, 0.1, 0.2, 0.3):
+        sp = pair_spec(ncod, rate)
+        cases.append({"kind": "dnds", "method": "YN00", "aln": sp})
+        cases.append({"kind": "dnds", "method": "YN00", "aln": sp, "table": 2})
+        cases.append({"kind": "dnds", "method": "YN00", "aln": pair_spec(ncod, rate, True)})
+
+# ML: one fit of three parameters and one of two, each an L-BFGS-B run over a 61-codon matrix exponential,
+# so these are the slowest cases here and there are only a few of them.
+for ncod, rate in ((5, 0.1), (8, 0.05), (8, 0.3), (12, 0.15)):
+    mlsp = pair_spec(ncod, rate)
+    cases.append({"kind": "dnds", "method": "ML", "aln": mlsp})
+    cases.append({"kind": "dnds", "method": "ML", "aln": mlsp, "cfreq": "F3x4"})
+cases.append({"kind": "dnds", "method": "ML", "aln": pair_spec(6, 0.2, True)})
+cases.append({"kind": "dnds", "method": "ML", "aln": pair_spec(6, 0.2), "table": 2})
+cases.append({"kind": "dnds", "method": "ML", "aln": pair_spec(6, 0.2), "cfreq": "F1x4"})
+cases.append({"kind": "dnds", "method": "ML", "aln": pair_spec(6, 0.2), "cfreq": "F61"})
+cases.append({"kind": "dnds", "method": "ML", "aln": {"ids": ["t", "q"], "seqs": ["ATGAAA", "ATGAAA"], "coords": [[0, 6], [0, 6]]}})
+
 sp = pair_spec(6, 0.1)
 cases += [{"kind": "dnds", "method": "bogus", "aln": sp}, {"kind": "dnds", "method": "NG86", "aln": sp, "cfreq": "F1x4"}, {"kind": "dnds", "method": "ML", "aln": sp, "cfreq": "F2x"},
+          {"kind": "dnds", "method": "YN00", "aln": sp, "k": 2.5},
+          {"kind": "dnds", "method": "YN00", "aln": sp, "cfreq": "F1x4"},
           {"kind": "dnds", "method": "NG86", "aln": {"ids": ["t", "q"], "seqs": ["ATGNAA", "ATGAAA"], "coords": [[0, 6], [0, 6]]}},
+          {"kind": "dnds", "method": "YN00", "aln": {"ids": ["t", "q"], "seqs": ["ATGNAA", "ATGAAA"], "coords": [[0, 6], [0, 6]]}},
+          {"kind": "dnds", "method": "YN00", "aln": {"ids": ["t", "q"], "seqs": ["ATGTAA", "ATGAAA"], "coords": [[0, 6], [0, 6]]}},
+          {"kind": "dnds", "method": "YN00", "aln": {"ids": ["t", "q"], "seqs": ["ATGAAA", "ATGAAA"], "coords": [[0, 6], [0, 6]]}},
+          {"kind": "dnds", "method": "YN00", "aln": {"ids": ["t", "q"], "seqs": ["AAAAAA", "TTTTTT"], "coords": [[0, 6], [0, 6]]}},
+          {"kind": "dnds", "method": "YN00", "aln": {"ids": ["t", "q"], "seqs": ["AUGAAA", "AUGAAG"], "coords": [[0, 6], [0, 6]]}},
           {"kind": "dnds", "method": "NG86", "aln": {"ids": ["t", "q"], "seqs": ["ATGTAA", "ATGAAA"], "coords": [[0, 6], [0, 6]]}},
           {"kind": "dnds", "method": "LWL85", "aln": {"ids": ["t", "q"], "seqs": ["ATGTAA", "ATGAAA"], "coords": [[0, 6], [0, 6]]}},
           {"kind": "dnds", "method": "NG86", "aln": {"ids": ["t", "q"], "seqs": ["ATGAAA", "ATGAAA"], "coords": [[0, 6], [0, 6]]}},
@@ -108,6 +140,21 @@ for n in (2, 3, 4, 5):
 mcases.append({"kind": "matrix", "method": "NG86", "aln": {"ids": ["a", "b"], "seqs": ["AAAAAA", "TTTTTT"], "coords": [[0, 6], [0, 6]]}})
 mcases.append({"kind": "matrix", "method": "bogus", "aln": {"ids": ["a", "b"], "seqs": ["AAAAAA", "TTTTTT"], "coords": [[0, 6], [0, 6]]}})
 mcases.append({"kind": "matrix", "method": "NG86", "aln": {"ids": ["a"], "seqs": ["AAAAAA"], "coords": [[0, 6]]}})
+# YN00 and ML matrices. YN00 needs the longer sequences to reach a number at all; the ML matrix is kept to
+# one pair because each pair is two L-BFGS-B runs over a matrix exponential.
+long_base = rand_coding(40)
+long_spec = {"ids": ["s%d" % i for i in range(3)], "seqs": [mutate(long_base, 0.05 * (i + 1)) for i in range(3)],
+             "coords": [[0, 120]] * 3}
+mcases.append({"kind": "matrix", "method": "YN00", "aln": long_spec})
+mcases.append({"kind": "matrix", "method": "YN00", "aln": {"ids": ["a", "b"], "seqs": ["ATGAAA", "ATGAAG"], "coords": [[0, 6], [0, 6]]}})
+# The one pair YN00 is known to settle on, so that the matrix has numbers in it and not only an exception.
+# The matrix walks j < i and calls calculate_dn_ds(sequences[i], sequences[j]), so the pair reaches YN00 the
+# other way round from the order it is written in here -- and YN00 raises in that direction, which is why
+# this spec holds the two sequences the way it does.
+mcases.append({"kind": "matrix", "method": "YN00",
+               "aln": {"ids": ["b", "a"], "seqs": ["GGTTTGCTACTTATGTGGGCGTTCGATCGGAAACCGCGT", "GGTTTGATTATGTGGGCATTCGCTCGGAAACCTCGT"],
+                       "coords": [[0, 6, 9, 39], [0, 6, 6, 36]]}})
+mcases.append({"kind": "matrix", "method": "ML", "aln": {"ids": ["a", "b"], "seqs": ["ATGAAACCCTTTGGG", "ATGAAGCCATTTGGC"], "coords": [[0, 15], [0, 15]]}})
 # McDonald-Kreitman
 for nsp in (2, 3):
     for per in (2, 3):
@@ -131,11 +178,12 @@ def evaluate(items, seed):
     env = dict(os.environ, PYTHONHASHSEED=str(seed), EVAL_CASES="1")
     p = subprocess.run([sys.executable, __file__], input=json.dumps(items), env=env, capture_output=True, text=True, check=True)
     return json.loads(p.stdout)
-def keep(items):
-    runs = [evaluate(items, seed) for seed in (1, 2, 3, 4, 5, 6)]
+def keep(items, seeds=(1, 2, 3, 4, 5, 6)):
+    runs = [evaluate(items, seed) for seed in seeds]
     return [dict(c, **res[0]) for c, *res in zip(items, *runs) if all(r == res[0] for r in res)]
 
-k1, k2 = keep(cases), keep(mcases)
+k1 = keep([c for c in cases if c["kind"] != "mk"], (1, 2)) + keep([c for c in cases if c["kind"] == "mk"])
+k2 = keep(mcases, (1, 2))
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(k1, open(OUT, "w"), indent=0); json.dump(k2, open(OUT2, "w"), indent=0)
 print(len(k1), "of", len(cases), "analysis cases;", len(k2), "of", len(mcases), "matrix cases")

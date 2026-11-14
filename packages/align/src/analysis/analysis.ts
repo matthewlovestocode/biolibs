@@ -1,9 +1,11 @@
-/** `Bio.Align.analysis`: dN/dS (NG86 and LWL85) and the McDonald-Kreitman test. */
+/** `Bio.Align.analysis`: dN/dS (NG86, LWL85, YN00 and ML) and the McDonald-Kreitman test. */
 
-import { KeyError, NotImplementedError, ValueError, pyFloatRepr } from "@biolibs/core";
+import { KeyError, ValueError, pyFloatRepr } from "@biolibs/core";
 import { CodonTable } from "@biolibs/seq";
 import type { Alignment } from "../alignment/alignment.js";
 import { erfc } from "./erfc.js";
+import { ml } from "./ml.js";
+import { installYn00Helpers, yn00 } from "./yn00.js";
 
 /** Python's `ZeroDivisionError`. */
 class ZeroDivisionError extends Error { override name = "ZeroDivisionError"; }
@@ -34,7 +36,7 @@ const aminoAcid = (table: Table, codon: string): string => { const a = table.for
  * dN and dS of two aligned coding sequences.
  *
  * @param alignment - A pairwise alignment (target and query) whose aligned blocks are in frame.
- * @param method - `"NG86"` (default) or `"LWL85"`; `"ML"` and `"YN00"` need scipy in Biopython and are not ported.
+ * @param method - `"NG86"` (default), `"LWL85"`, `"YN00"` or `"ML"`.
  * @param codonTable - The genetic code (default: the standard code).
  * @param k - Transition/transversion rate ratio (NG86).
  * @param cfreq - Codon frequency model; only valid with `"ML"`.
@@ -61,7 +63,15 @@ export function calculateDnDs(alignment: Alignment, method = "NG86", codonTable:
   for (const c of codons2) if (![...c].every((n) => BASES.has(n))) throw new ValueError(`Unrecognized character in ${c} in the query sequence (Codons consist of A, T, C or G)`);
   if (method === "NG86") return ng86(codons1, codons2, k, table);
   if (method === "LWL85") return lwl85(codons1, codons2, table);
-  if (method === "ML" || method === "YN00") throw new NotImplementedError(`The ${method} method needs scipy (matrix exponentials and optimisation) and is not ported`);
+  if (method === "YN00") {
+    installYn00Helpers(getCodonFold, countDiffNG86);
+    const out = yn00(codons1, codons2, table);
+    // Twenty rounds without the iteration settling leaves Biopython's function returning nothing at all, and
+    // the caller's `dN, dS = _yn00(...)` then fails on unpacking that `None`.
+    if (out === undefined) throw new TypeError("cannot unpack non-iterable NoneType object");
+    return out;
+  }
+  if (method === "ML") return ml(codons1, codons2, cfreq, table);
   throw new ValueError(`Unknown method '${method}'`);
 }
 

@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Comparison, hash and string members that no class but `object` defines are marked `[-]` automatically, from `inventory.py`'s reading of Biopython; a golden case that pins such a member down wins over that and makes it `[x]`. Edit `reference/status.json`, then re-run the script.
 
-**Progress: 2340 / 2345 applicable items verified against Biopython.**
+**Progress: 2342 / 2345 applicable items verified against Biopython.**
 
 | Section | Verified | Applicable |
 |---|---|---|
@@ -15,7 +15,7 @@ Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started
 | [Bio.Align](Bio.Align.md) | 14 | 14 |
 | [Bio.Align file formats](Bio.Align-file-formats.md) | 39 | 39 |
 | [Bio.Align.CodonAligner](Bio.Align.CodonAligner.md) | 20 | 20 |
-| [Bio.Align.analysis](Bio.Align.analysis.md) | 1 | 3 |
+| [Bio.Align.analysis](Bio.Align.analysis.md) | 3 | 3 |
 | [Bio.Align.AlignInfo](Bio.Align.AlignInfo.md) | 3 | 3 |
 | [Bio.Align.AlignmentCounts](Bio.Align.AlignmentCounts.md) | 43 | 43 |
 | [Bio.Align.Alignment](Bio.Align.Alignment.md) | 27 | 27 |

@@ -623,9 +623,13 @@ for cls, mem in inv["Bio.Phylo.PhyloXMLIO"]["classes"].items():
 
 # ---- Bio.Align.analysis (packages/align/test/golden/analysis.json, packages/phylo/test/golden/dnds-matrix.json) ----
 an = json.load(open(f"{here}/../packages/align/test/golden/analysis.json"))
-if any(c["kind"] == "dnds" and "result" in c for c in an): mark("Bio.Align.analysis.calculate_dn_ds", "partial")       # NG86 and LWL85; ML and YN00 need scipy
+methods = {c["method"] for c in an if c["kind"] == "dnds" and "result" in c}
+if {"NG86", "LWL85", "YN00", "ML"} <= methods: mark("Bio.Align.analysis.calculate_dn_ds")
+elif methods: mark("Bio.Align.analysis.calculate_dn_ds", "partial")
 if any(c["kind"] == "mk" for c in an): mark("Bio.Align.analysis.mktest")
-mark("Bio.Align.analysis.calculate_dn_ds_matrix", "partial")                                                        # NG86 and LWL85 only
+dm = json.load(open(f"{here}/../packages/phylo/test/golden/dnds-matrix.json"))
+mmethods = {c["method"] for c in dm if "result" in c}
+mark("Bio.Align.analysis.calculate_dn_ds_matrix", "done" if {"NG86", "LWL85", "YN00", "ML"} <= mmethods else "partial")
 
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

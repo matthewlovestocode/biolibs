@@ -6,8 +6,11 @@ Parity with Biopython is measured, not claimed. This directory runs the real Bio
 
 ```bash
 python3 -m venv reference/.venv
-reference/.venv/bin/pip install biopython
+reference/.venv/bin/pip install biopython scipy
 ```
+
+`scipy` is only needed by `Bio.Align.analysis`'s YN00 and ML methods, which import `scipy.linalg.expm` and
+`scipy.optimize.minimize`; without it those generators cannot run.
 
 ## Files
 

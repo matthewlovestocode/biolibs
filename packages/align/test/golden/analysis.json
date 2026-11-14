@@ -65,6 +65,34 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCATACCC",
+"CGCATACCC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -164,6 +192,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCATACCC",
+"CGCATACCC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -233,6 +290,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAGCGAGT",
+"AGAGCGATGAGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -343,6 +432,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAGCGAGT",
+"AGAGCGATGAGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -376,6 +498,34 @@
 {
 "kind": "dnds",
 "method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTTTCAAA",
+"AGTTTTAAA"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
 "aln": {
 "ids": [
 "t",
@@ -498,6 +648,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTTTCAAA",
+"AGTTTTAAA"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -535,6 +714,38 @@
 {
 "kind": "dnds",
 "method": "LWL85",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACTTAGC",
+"ACACTCCGTAGC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
 "aln": {
 "ids": [
 "t",
@@ -673,6 +884,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACTTAGC",
+"ACACTCCGTAGC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -734,6 +978,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCTGAAAAC",
+"CCTGAAAAC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -836,6 +1108,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCTGAAAAC",
+"CCTGAAAAC"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -900,6 +1201,38 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -1.0"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCACCCCGG",
+"TCACCCGATGGG"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -1011,6 +1344,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCACCCCGG",
+"TCACCCGATGGG"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+9,
+12
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -1067,6 +1433,34 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -3.000000000000001"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AATGTTCAT",
+"GACGTTTCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -1166,6 +1560,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AATGTTCAT",
+"GACGTTTCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -1230,6 +1653,38 @@
 "exc": {
 "type": "ZeroDivisionError",
 "msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATTTACTG",
+"CCCGACGTTTTAAGT"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -1341,6 +1796,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATTTACTG",
+"CCCGACGTTTTAAGT"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -1397,6 +1885,34 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -1.0"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCGCAGTA",
+"CAGGCGTTT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -1496,6 +2012,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCGCAGTA",
+"CAGGCGTTT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -1560,6 +2105,38 @@
 "exc": {
 "type": "ZeroDivisionError",
 "msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGGCATATA",
+"CGTCGCGGTCATAGC"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -1667,6 +2244,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGGCATATA",
+"CGTCGCGGTCATAGC"
+],
+"coords": [
+[
+0,
+3,
+3,
+9
+],
+[
+0,
+3,
+9,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -1727,6 +2337,34 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CATATCTTC",
+"CCCCCACCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.7873015873015872"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -1822,6 +2460,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CATATCTTC",
+"CCCCCACCT"
+],
+"coords": [
+[
+0,
+9
+],
+[
+0,
+9
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.7873015873015872"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -1886,6 +2553,38 @@
 "exc": {
 "type": "ZeroDivisionError",
 "msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATTTCAT",
+"CTTTCACTAGTTACC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+12,
+15
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.4814814814814816"
 }
 },
 {
@@ -1997,6 +2696,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATTTCAT",
+"CTTTCACTAGTTACC"
+],
+"coords": [
+[
+0,
+6,
+6,
+9
+],
+[
+0,
+6,
+12,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.4814814814814816"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -2058,6 +2790,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCAGTGGGTCTATAT",
+"TCAGTGGGTCTATAT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -2160,6 +2920,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCAGTGGGTCTATAT",
+"TCAGTGGGTCTATAT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -2229,6 +3018,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGCGCCACATACC",
+"ATCGCGCCACATCCAACC"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -2343,6 +3164,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGCGCCACATACC",
+"ATCGCGCCACATCCAACC"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -2404,6 +3258,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAACCTCCCCATGCG",
+"AAACCTCCCCATGCG"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -2503,6 +3385,35 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAACCTCCCCATGCG",
+"AAACCTCCCCATGCG"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -2575,6 +3486,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGCGAGATAGAAGA",
+"AAGCGAGATGCCAGAAGA"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+12,
+18
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -2685,6 +3628,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGCGAGATAGAAGA",
+"AAGCGAGATGCCAGAAGA"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+12,
+18
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -2746,6 +3722,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCACCAGGCCCGGT",
+"ATCACCAGGCCCGGT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -2844,6 +3848,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCACCAGGCCCGGT",
+"ATCACCAGGCCCGGT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -2908,6 +3941,38 @@
 "exc": {
 "type": "ZeroDivisionError",
 "msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCTTTCTGAATTGT",
+"TTCTTTCTCAATGTTCTGTGT"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+18,
+21
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -3019,6 +4084,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCTTTCTGAATTGT",
+"TTCTTTCTCAATGTTCTGTGT"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+18,
+21
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -3080,6 +4178,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCGGCTGGCCCCAAC",
+"TCGGCTGGTTCCGAC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -3182,6 +4308,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCGGCTGGCCCCAAC",
+"TCGGCTGGTTCCGAC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -3251,6 +4406,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCCAACTTCATAAG",
+"GTTCCACTTCAATCCCATCAG"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -3365,6 +4552,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCCAACTTCATAAG",
+"GTTCCACTTCAATCCCATCAG"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -3426,6 +4646,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AACATGTCTCTAAAC",
+"ACCCAGCTTCTAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -3528,6 +4776,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AACATGTCTCTAAAC",
+"ACCCAGCTTCTAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.05090404273082294"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -3592,6 +4869,38 @@
 "exc": {
 "type": "ZeroDivisionError",
 "msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTCTGAACCTCGAG",
+"AGTGTGCACCCTGGTGAA"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -3703,6 +5012,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGTCTGAACCTCGAG",
+"AGTGTGCACCCTGGTGAA"
+],
+"coords": [
+[
+0,
+12,
+12,
+15
+],
+[
+0,
+12,
+15,
+18
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -3759,6 +5101,34 @@
 "exc": {
 "type": "ZeroDivisionError",
 "msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGCGTTCGCGCGTG",
+"AGTATGACTGGAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.6117216117216118"
 }
 },
 {
@@ -3858,6 +5228,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGCGTTCGCGCGTG",
+"AGTATGACTGGAAGC"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.5277777777777775"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -3922,6 +5321,38 @@
 "exc": {
 "type": "ZeroDivisionError",
 "msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGCGGAAGGATGGCC",
+"CTACCCTTGGAGGATAACTGC"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -4029,6 +5460,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGCGGAAGGATGGCC",
+"CTACCCTTGGAGGATAACTGC"
+],
+"coords": [
+[
+0,
+9,
+9,
+15
+],
+[
+0,
+9,
+15,
+21
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -4090,6 +5554,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATGTCAGTACGCCAAACGGTGG",
+"CAATGTCAGTACGCCAAACGGTGG"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -4192,6 +5684,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAATGTCAGTACGCCAAACGGTGG",
+"CAATGTCAGTACGCCAAACGGTGG"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -4261,6 +5782,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCTTCGGTCTGGACAAGCTTATAC",
+"GCTTCGGACGTCTGGACAAGCTTATAC"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -4372,6 +5925,39 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCTTCGGTCTGGACAAGCTTATAC",
+"GCTTCGGACGTCTGGACAAGCTTATAC"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -4436,6 +6022,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTAAGAGGGCTCACTCCGCACAC",
+"TCTAAGATGGCTCACTCCGCACAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -4534,6 +6148,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTAAGAGGGCTCACTCCGCACAC",
+"TCTAAGATGGCTCACTCCGCACAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -4603,6 +6246,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTAGACTAGATCGACTGGGAGAT",
+"CTTAGACTAGATCGACTGGGACAAACGGAT"
+],
+"coords": [
+[
+0,
+21,
+21,
+24
+],
+[
+0,
+21,
+27,
+30
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -4713,6 +6388,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTAGACTAGATCGACTGGGAGAT",
+"CTTAGACTAGATCGACTGGGACAAACGGAT"
+],
+"coords": [
+[
+0,
+21,
+21,
+24
+],
+[
+0,
+21,
+27,
+30
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -4774,6 +6482,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGGGGCGGGATTTCTACCAATGC",
+"TTGGGGCGAGTTTTCTTCCCATAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -1.1977252189598606"
+}
 },
 {
 "kind": "dnds",
@@ -4876,6 +6612,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGGGGCGGGATTTCTACCAATGC",
+"TTGGGGCGAGTTTTCTTCCCATAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -4945,6 +6710,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCGACGTTTTATGTTGGCCGTTA",
+"AGCGACGTTCCCTGTTGTTATCCGTTA"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -5059,6 +6856,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCGACGTTTTATGTTGGCCGTTA",
+"AGCGACGTTCCCTGTTGTTATCCGTTA"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -5120,6 +6950,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTCTCCCCCTGGATTGCATAAGG",
+"TCTCTACCCGTAGAATTGAGAAGA"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.04204620887888785"
+}
 },
 {
 "kind": "dnds",
@@ -5218,6 +7076,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCTCTCCCCCTGGATTGCATAAGG",
+"TCTCTACCCGTAGAATTGAGAAGA"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -5282,6 +7169,38 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -7.0000000000000036"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCCAGGACGTGGGCGTATGTCTAT",
+"TGCAGGACTTGGGCTAATATTGTCTGT"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -5389,6 +7308,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCCAGGACGTGGGCGTATGTCTAT",
+"TGCAGGACTTGGGCTAATATTGTCTGT"
+],
+"coords": [
+[
+0,
+18,
+18,
+24
+],
+[
+0,
+18,
+21,
+27
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -5450,6 +7402,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGAAACATCTCTTCTTTACGTGT",
+"GTGCGATCTGTTTTCTTGACCTGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
 },
 {
 "kind": "dnds",
@@ -5552,6 +7532,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGGAAACATCTCTTCTTTACGTGT",
+"GTGCGATCTGTTTTCTTGACCTGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -5621,6 +7630,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCCTTACGAAAAAGCCCAGTGCCA",
+"TCCTTACCACTGAGAAGCCCATGGCCA"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -5731,6 +7772,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCCTTACGAAAAAGCCCAGTGCCA",
+"TCCTTACCACTGAGAAGCCCATGGCCA"
+],
+"coords": [
+[
+0,
+6,
+6,
+24
+],
+[
+0,
+6,
+9,
+27
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -5787,6 +7861,34 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -2.0"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCAACCTGTACGATGGCCAAAAGT",
+"CCCTTCTTTCCCCACGCGATTCGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -5886,6 +7988,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCAACCTGTACGATGGCCAAAAGT",
+"CCCTTCTTTCCCCACGCGATTCGC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -5950,6 +8081,38 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -7.0000000000000036"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCACCACATGCCAGATCTCTCCGG",
+"AATCTCACCCGGCCCATTCCTAATGGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+24
+],
+[
+0,
+9,
+12,
+27
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.007757820892607149"
 }
 },
 {
@@ -6057,6 +8220,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCACCACATGCCAGATCTCTCCGG",
+"AATCTCACCCGGCCCATTCCTAATGGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+24
+],
+[
+0,
+9,
+12,
+27
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -6118,6 +8314,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG",
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -6216,6 +8440,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG",
+"CAAAGTTTTATACAAAGGAGTGCTCCCAGCTTGTTG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -6285,6 +8538,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTAAC",
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTTGGAAC"
+],
+"coords": [
+[
+0,
+33,
+33,
+36
+],
+[
+0,
+33,
+36,
+39
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -6392,6 +8677,39 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTAAC",
+"CTTGCGAATGTTGCAAGCAAGAGGACTCTCCCTTGGAAC"
+],
+"coords": [
+[
+0,
+33,
+33,
+36
+],
+[
+0,
+33,
+36,
+39
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
 },
 {
 "kind": "dnds",
@@ -6456,6 +8774,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGAGGAGAAGACGGCGACGAATTATGTCGAATCGGT",
+"CGAGGAGAAGACGTCGACGGATTATGTCGAATCGGT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
 },
 {
 "kind": "dnds",
@@ -6558,6 +8904,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGAGGAGAAGACGGCGACGAATTATGTCGAATCGGT",
+"CGAGGAGAAGACGTCGACGGATTATGTCGAATCGGT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -6627,6 +9002,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATCCCACTACCGTGATCCAGCTCAGTCGAGGCCTA",
+"TGTCCCACTACCGTGATCCAGAGTCTCAGTCGAGGCCTA"
+],
+"coords": [
+[
+0,
+21,
+21,
+36
+],
+[
+0,
+21,
+24,
+39
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -6741,6 +9148,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TATCCCACTACCGTGATCCAGCTCAGTCGAGGCCTA",
+"TGTCCCACTACCGTGATCCAGAGTCTCAGTCGAGGCCTA"
+],
+"coords": [
+[
+0,
+21,
+21,
+36
+],
+[
+0,
+21,
+24,
+39
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -6802,6 +9242,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCATCACTTCAACCCGGAAGTTTCTCGTTTAGAGGA",
+"GCATCACATCAACCCGGAAGTTTCCCGTTTAGAGGA"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -6900,6 +9368,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCATCACTTCAACCCGGAAGTTTCTCGTTTAGAGGA",
+"GCATCACATCAACCCGGAAGTTTCCCGTTTAGAGGA"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -6969,6 +9466,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACCTACATAGTATGCGGGCCGTTTTTGGGCTTTCG",
+"GACCTACATAGTATGCGGGCCGTTTTTTTCGGGTTTTCG"
+],
+"coords": [
+[
+0,
+27,
+27,
+36
+],
+[
+0,
+27,
+30,
+39
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -7083,6 +9612,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACCTACATAGTATGCGGGCCGTTTTTGGGCTTTCG",
+"GACCTACATAGTATGCGGGCCGTTTTTTTCGGGTTTTCG"
+],
+"coords": [
+[
+0,
+27,
+27,
+36
+],
+[
+0,
+27,
+30,
+39
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -7144,6 +9706,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGGCCAATTACTCAACATGGTGTCGGCAGATTAGAG",
+"TGGCCAATTACACCCTTTGGTGTCGGGGGCCTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
 },
 {
 "kind": "dnds",
@@ -7242,6 +9832,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGGCCAATTACTCAACATGGTGTCGGCAGATTAGAG",
+"TGGCCAATTACACCCTTTGGTGTCGGGGGCCTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -7306,6 +9925,42 @@
 "result": [
 0.07635949516568881,
 0.3359549004802602
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTTGATTATGTGGGCATTCGCTCGGAAACCTCGT",
+"GGTTTGCTACTTATGTGGGCGTTCGATCGGAAACCGCGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+36
+],
+[
+0,
+6,
+9,
+39
+]
+]
+},
+"result": [
+0.06717314229086266,
+0.5516823089906318
 ],
 "types": [
 "float",
@@ -7425,6 +10080,43 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTTGATTATGTGGGCATTCGCTCGGAAACCTCGT",
+"GGTTTGCTACTTATGTGGGCGTTCGATCGGAAACCGCGT"
+],
+"coords": [
+[
+0,
+6,
+6,
+36
+],
+[
+0,
+6,
+9,
+39
+]
+]
+},
+"table": 2,
+"result": [
+0.06714758751210065,
+0.5598639542056448
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -7481,6 +10173,34 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -8.999999999999996"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGGAATTAAAATATGAAAGGGCCGTTCAAGGCATT",
+"TTTCCAGATAAACAGTTAGGCCCCATTCCCGGCATT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -7576,6 +10296,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGGAATTAAAATATGAAAGGGCCGTTCAAGGCATT",
+"TTTCCAGATAAACAGTTAGGCCCCATTCCCGGCATT"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -7645,6 +10394,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCAAATGAGCACCAATTAAGCGATCGGAGCAGTTCG",
+"GCAATTGTGACCGAACAGGATCGCGAGAGAAGCAGTTGG"
+],
+"coords": [
+[
+0,
+12,
+12,
+36
+],
+[
+0,
+12,
+15,
+39
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
 },
 {
 "kind": "dnds",
@@ -7755,6 +10536,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCAAATGAGCACCAATTAAGCGATCGGAGCAGTTCG",
+"GCAATTGTGACCGAACAGGATCGCGAGAGAAGCAGTTGG"
+],
+"coords": [
+[
+0,
+12,
+12,
+36
+],
+[
+0,
+12,
+15,
+39
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -7811,6 +10625,34 @@
 "exc": {
 "type": "ZeroDivisionError",
 "msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATTGCCCATCGCTTGAACCCCTCATGCATCATCGGG",
+"ATTACCGGCCCGGGCGCGCATAAAAGTTGCTTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
 }
 },
 {
@@ -7910,6 +10752,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATTGCCCATCGCTTGAACCCCTCATGCATCATCGGG",
+"ATTACCGGCCCGGGCGCGCATAAAAGTTGCTTAGAG"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "RuntimeError",
+"msg": "dictionary changed size during iteration"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -7974,6 +10845,38 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -4.599999999999999"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTCCAGACTGGGCAAGTGGGGTTTTCACGCTGGT",
+"CCTGCATCATTTCTTTACAACAGCGCCGCAAAATTAATT"
+],
+"coords": [
+[
+0,
+18,
+18,
+36
+],
+[
+0,
+18,
+21,
+39
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.16887626262626276"
 }
 },
 {
@@ -8081,6 +10984,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTTCCAGACTGGGCAAGTGGGGTTTTCACGCTGGT",
+"CCTGCATCATTTCTTTACAACAGCGCCGCAAAATTAATT"
+],
+"coords": [
+[
+0,
+18,
+18,
+36
+],
+[
+0,
+18,
+21,
+39
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -8142,6 +11078,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA",
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -8244,6 +11208,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA",
+"TCATCGTCACTAAATATCTGGGTTCGGTACGAATACAGTCCACCTGGCGGTGCGCTAAAA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -8313,6 +11306,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCACCCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT",
+"GTCACCGAGCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT"
+],
+"coords": [
+[
+0,
+6,
+6,
+60
+],
+[
+0,
+6,
+9,
+63
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -8423,6 +11448,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCACCCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT",
+"GTCACCGAGCGACAGAGAATGTTTACGTCCTACAGCACCGCTTTAGATCAGTCATTCTTCATT"
+],
+"coords": [
+[
+0,
+6,
+6,
+60
+],
+[
+0,
+6,
+9,
+63
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -8484,6 +11542,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAGGGTTGAAAACCCCAAGGGGACTTTTCTAGTCTGCCAAAAATGCAAGACCAACCCA",
+"AAAAGGGTTGAAAACCCCAAGGGCACTTTTCTAGTCTGCCAAAAATGCAAAACCAACCCA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -8582,6 +11668,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAGGGTTGAAAACCCCAAGGGGACTTTTCTAGTCTGCCAAAAATGCAAGACCAACCCA",
+"AAAAGGGTTGAAAACCCCAAGGGCACTTTTCTAGTCTGCCAAAAATGCAAAACCAACCCA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -8651,6 +11766,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGGACGTG",
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGCCAGTAGACGTG"
+],
+"coords": [
+[
+0,
+54,
+54,
+60
+],
+[
+0,
+54,
+60,
+66
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -8765,6 +11912,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGGACGTG",
+"ACTGGGGCCGGAATGACCAAGGGGGTATTTGGCTGTTCTCTGCATGCCGGAGGGCCAGTAGACGTG"
+],
+"coords": [
+[
+0,
+54,
+54,
+60
+],
+[
+0,
+54,
+60,
+66
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -8826,6 +12006,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTAACTTTGGGACTCCATTCAACATTCAGATTAACACTCGTAATTTAATATCTGACAAT",
+"ACTCACTGTGGGACTCCATACAATATTCAGACCAACGATCGTAATTTAATATCTCACATT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -8928,6 +12136,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACTAACTTTGGGACTCCATTCAACATTCAGATTAACACTCGTAATTTAATATCTGACAAT",
+"ACTCACTGTGGGACTCCATACAATATTCAGACCAACGATCGTAATTTAATATCTCACATT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -8997,6 +12234,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGTGCCCATTGCTACTTCACCAAATAACAAGACACCCCGACTTACGCTTGAACCCTTTG",
+"AAGTGCCCATTGCTGCGTCACCGAATAATAAGACACCCCGACTTAAGCTTGAAACCTGGATTG"
+],
+"coords": [
+[
+0,
+57,
+57,
+60
+],
+[
+0,
+57,
+60,
+63
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
 },
 {
 "kind": "dnds",
@@ -9107,6 +12376,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAGTGCCCATTGCTACTTCACCAAATAACAAGACACCCCGACTTACGCTTGAACCCTTTG",
+"AAGTGCCCATTGCTGCGTCACCGAATAATAAGACACCCCGACTTAAGCTTGAAACCTGGATTG"
+],
+"coords": [
+[
+0,
+57,
+57,
+60
+],
+[
+0,
+57,
+60,
+63
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -9168,6 +12470,34 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGAGGCCACTCTACCGTCGCCTCGGGACGTTTCTAAAATTACACTCCTAGCTGCCCGT",
+"ATGGAGACGAATCTACCGTCGACTCTGGAGGTCTCTCAAATTACACTCGTAGCTGCCCGT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
 },
 {
 "kind": "dnds",
@@ -9270,6 +12600,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATCGAGGCCACTCTACCGTCGCCTCGGGACGTTTCTAAAATTACACTCCTAGCTGCCCGT",
+"ATGGAGACGAATCTACCGTCGACTCTGGAGGTCTCTCAAATTACACTCGTAGCTGCCCGT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -9339,6 +12698,38 @@
 "float",
 "float"
 ]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTCACTCCAAGGCTGATGTCTCAAACAATTGACGCCGATCCTCGGATGGCAACGTTATGC",
+"TTCAATCCTCCGTGCCTGATTTCTCAGGCCATTGACGCCGATCGTCGGATCGCGAGGTTATGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+12,
+63
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
 },
 {
 "kind": "dnds",
@@ -9449,6 +12840,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTCACTCCAAGGCTGATGTCTCAAACAATTGACGCCGATCCTCGGATGGCAACGTTATGC",
+"TTCAATCCTCCGTGCCTGATTTCTCAGGCCATTGACGCCGATCGTCGGATCGCGAGGTTATGT"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+12,
+63
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -9505,6 +12929,34 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -27.000000000000043"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGGCGCTCTACACGCTCTCGATCAGCTACGAAAAACGGGTCTGGTAGTGTCTCGGAGATT",
+"CCCCCCCCCACTTGCTGCCTATCGGCGACGATAAACTGGCGACGAAGGCCACCACACGAT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
 }
 },
 {
@@ -9600,6 +13052,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGGCGCTCTACACGCTCTCGATCAGCTACGAAAAACGGGTCTGGTAGTGTCTCGGAGATT",
+"CCCCCCCCCACTTGCTGCCTATCGGCGACGATAAACTGGCGACGAAGGCCACCACACGAT"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -9664,6 +13145,38 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -9.000000000000005"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTGTACGACGTCATGGCCTCACATTACTGTGGCGCAAAAGACGCTCAGCGACTTACAGCC",
+"GCAGCTTTTACTTTCCTTTGTGACCCACACTACATACGTGCAACCCCCCTTCATGAGCTACCTCCC"
+],
+"coords": [
+[
+0,
+15,
+15,
+60
+],
+[
+0,
+15,
+21,
+66
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
 }
 },
 {
@@ -9775,6 +13288,39 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTGTACGACGTCATGGCCTCACATTACTGTGGCGCAAAAGACGCTCAGCGACTTACAGCC",
+"GCAGCTTTTACTTTCCTTTGTGACCCACACTACATACGTGCAACCCCCCTTCATGAGCTACCTCCC"
+],
+"coords": [
+[
+0,
+15,
+15,
+60
+],
+[
+0,
+15,
+21,
+66
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -9831,6 +13377,34 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -7.0000000000000036"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACAATCTGGCTTGCATCATTGAGACCGTTAATGAACCGGCATCGTCCGTGCATATGTTA",
+"ATGCCCAGTCGATGTATCGTTTATGCAGATCCCCTCACTCGATGGCCCAATCAACCGGTA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
 }
 },
 {
@@ -9930,6 +13504,35 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACAATCTGGCTTGCATCATTGAGACCGTTAATGAACCGGCATCGTCCGTGCATATGTTA",
+"ATGCCCAGTCGATGTATCGTTTATGCAGATCCCCTCACTCGATGGCCCAATCAACCGGTA"
+],
+"coords": [
+[
+0,
+60
+],
+[
+0,
+60
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
 "method": "NG86",
 "aln": {
 "ids": [
@@ -9994,6 +13597,38 @@
 "exc": {
 "type": "ValueError",
 "msg": "expected a positive input, got -37.999999999999964"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACGTGTTCCCGGAAGAATCTCACCACACGAGCTTAGATCTGTCTGCGTTGACGCTGGC",
+"CTCGTGAATAATCTCGGCATATGCACTGTCCGGGGGGGCTATGGATTGAATCGTTTTGATCGTCTC"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+15,
+66
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "expected a positive input, got -0.03716479554279227"
 }
 },
 {
@@ -10101,6 +13736,1849 @@
 },
 {
 "kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACGTGTTCCCGGAAGAATCTCACCACACGAGCTTAGATCTGTCTGCGTTGACGCTGGC",
+"CTCGTGAATAATCTCGGCATATGCACTGTCCGGGGGGGCTATGGATTGAATCGTTTTGATCGTCTC"
+],
+"coords": [
+[
+0,
+9,
+9,
+60
+],
+[
+0,
+9,
+15,
+66
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CACGGCCGTACTAGGCGCGTTGCACATCTTTTCGCGTTTACTCGAGGTGCTATGATCCCCTGTCCGCCTGTCACGTCTTGTGCTCCACCG",
+"CACGGCCGTACTAGGCGCGTTGCACATCTTTCCGCGTTTACTCGAGGTGCTATGATCCCCTGTCCGCCTGTCACGTCTTGTGCTCCACCG"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CACGGCCGTACTAGGCGCGTTGCACATCTTTTCGCGTTTACTCGAGGTGCTATGATCCCCTGTCCGCCTGTCACGTCTTGTGCTCCACCG",
+"CACGGCCGTACTAGGCGCGTTGCACATCTTTCCGCGTTTACTCGAGGTGCTATGATCCCCTGTCCGCCTGTCACGTCTTGTGCTCCACCG"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGCTCACGGGATGCCGACTTCGACAGCTGGCGGCTCCAATGGAAAGGCGAACCCGCTTGTTCTGTAGACGATACAGATTCAAGCCCAACT",
+"TGCTCACGGGATGCCGACTTCGACAGCTGGCGGCTCCAATGGAAAGGCGAACCCGCTTATTCTGTAGAGGACGATACAGATTCAAGCCCAACT"
+],
+"coords": [
+[
+0,
+66,
+66,
+90
+],
+[
+0,
+66,
+69,
+93
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCACGGCTGAAGCGAGTACAGACCGTTTACTTACACTTTCATCACTGTCTGTCAAGATCCCGAATGTTCACGCGGGATACAGGAGTCATT",
+"CCACGGCTGAAGCGAGTACCCACCGTTTACTTACACTTTCGTCACTGTCTGTCAAGATCCCGAATGCTCACGCGGGATACAGGAGTCATT"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCACGGCTGAAGCGAGTACAGACCGTTTACTTACACTTTCATCACTGTCTGTCAAGATCCCGAATGTTCACGCGGGATACAGGAGTCATT",
+"CCACGGCTGAAGCGAGTACCCACCGTTTACTTACACTTTCGTCACTGTCTGTCAAGATCCCGAATGCTCACGCGGGATACAGGAGTCATT"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGGAGCTTTGTTACAATCCGTAATAGCCGCACTTCAAGTGCTTTCAACAGATTAGGATTAACAAAAGGCACGATTGCCGCTCCACAATAC",
+"GGGAGCTTTGTTACAATCCGTAATAGCCGCACTTCAAGTGCGCACGCTTTCAACCGATTCGGATTAACTAAAGGCACGATTGCCGCTCCACAATAC"
+],
+"coords": [
+[
+0,
+39,
+39,
+90
+],
+[
+0,
+39,
+45,
+96
+]
+]
+},
+"result": [
+0.013463133561079161,
+0.15017208493682527
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGAGGACACACCTGGGGTTAAAACATTATACTGAAGTGCTTGCCCTTAAGCTTTTCCTTCCCCATAGCGACAGCCAGGGGCCCAGGAGT",
+"TGGAGGACACACCTTGGGTTAAAACATTATACTCCCGTGCTTGTCCTTAAGCTTTTCCTTGCCCATAGCGACAGCCACGGGCCATGGAGT"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"result": [
+0.11062196925074895,
+0.19049558556812748
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGAGGACACACCTGGGGTTAAAACATTATACTGAAGTGCTTGCCCTTAAGCTTTTCCTTCCCCATAGCGACAGCCAGGGGCCCAGGAGT",
+"TGGAGGACACACCTTGGGTTAAAACATTATACTCCCGTGCTTGTCCTTAAGCTTTTCCTTGCCCATAGCGACAGCCACGGGCCATGGAGT"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAATGGCACAACGCTTCATCCTAGAATGAGTGTTAAAACACCAAGCTGCAGATCCTATCGGGTTATAGAGAACTGGGCGTTGATGTTT",
+"AAAAATGGCACAGCGCTTCATCCTAGAATGAGTGTTAAAGCAAAAGGGCCAAACTGCAGATCCTATCGGGTTATAGTGAACTGGGCGTTGATGTTT"
+],
+"coords": [
+[
+0,
+42,
+42,
+90
+],
+[
+0,
+42,
+48,
+96
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTACTTAGTACTCGCCGTTGGCTGAATGCGCACGTAGGCTACCAAAGACGAGCTCTCCTAGTTTCGAGTGGGTGCTGGCAGACGCGGAGA",
+"TTACTTAGTGGTCCCCGTTGGCTGAATGCGGACGTAGGCCCCCAAAACCAAGTTCACCCGGTATCGAGTGGGTTTTGGCAGACGCGTAGA"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTACTTAGTACTCGCCGTTGGCTGAATGCGCACGTAGGCTACCAAAGACGAGCTCTCCTAGTTTCGAGTGGGTGCTGGCAGACGCGGAGA",
+"TTACTTAGTGGTCCCCGTTGGCTGAATGCGGACGTAGGCCCCCAAAACCAAGTTCACCCGGTATCGAGTGGGTTTTGGCAGACGCGTAGA"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCCGCTGCGCTGGATGTTTACCTACGAACAGCTCCTTCTCCACAGTACAGGTGTCGGCTAAATGCACCCACATCCCTGGGATTTTCCGCC",
+"CCCGCTGAGCTGTATGTTTACCTACCAACAGCTCCTTCTCCAGAGTGCAGGTGGGGCTTTAATGCACCCACATCTTCTTCCGTGGGTTATTCCGCC"
+],
+"coords": [
+[
+0,
+72,
+72,
+90
+],
+[
+0,
+72,
+78,
+96
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAATTACCTACGAAAGCTTGCCGCCACTTAGAAATTGCCTTTCTCCTATTGCACCCTACTCCCTATACTCTCTCATCCAGACTTGACTTA",
+"ATATTATTTACAAAAGATTGCCCACAGATAGAATGTCCCTTGCTCCTCAGGCACCGTACACCCTATAATCTCTCTTCCAGACGTGCGCCC"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAATTACCTACGAAAGCTTGCCGCCACTTAGAAATTGCCTTTCTCCTATTGCACCCTACTCCCTATACTCTCTCATCCAGACTTGACTTA",
+"ATATTATTTACAAAAGATTGCCCACAGATAGAATGTCCCTTGCTCCTCAGGCACCGTACACCCTATAATCTCTCTTCCAGACGTGCGCCC"
+],
+"coords": [
+[
+0,
+90
+],
+[
+0,
+90
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTGTCAGTGACATATCTTGCACCATATCTGCTAATACCGCGATTAGCTCCGTGTCTAGTACTTTGCGGCCTAGAGCATTCGGATATCCTT",
+"CTGTCAGTACTAGATTGTCCCCCATCTATGCTAATACCACGCTTAGCGGGTGGTCTGCCCCTCGTACTGTGCCGCCTAGGGCCTTCGGATACCGTA"
+],
+"coords": [
+[
+0,
+48,
+48,
+90
+],
+[
+0,
+48,
+54,
+96
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTGAATGCTACCGCGCTTCTGTTTTCAAAGCGGACCCACACGGTGAATGTTTCTGGAGGCATGGAGCTGTTACGTCAGAAGTGCCCGGATCCTATGACCAGAATGCAAGCAGCGGAGTACTGTAGCAATATGGTACTCAGCAGCCGCCGC",
+"CTGAATTCTACCGCGCTTCTGTTTTCAAAGCGGACCCACACGGTGAATGTTTTTGGAGGCAGGGAGCTGCCCCGTCAGAAGAGCCCGGATCCTATGACCAGAATACAAGCAGCGGAGTACTGTAGCAATATGGTGCTCAGCAGCCGCCGC"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CTGAATGCTACCGCGCTTCTGTTTTCAAAGCGGACCCACACGGTGAATGTTTCTGGAGGCATGGAGCTGTTACGTCAGAAGTGCCCGGATCCTATGACCAGAATGCAAGCAGCGGAGTACTGTAGCAATATGGTACTCAGCAGCCGCCGC",
+"CTGAATTCTACCGCGCTTCTGTTTTCAAAGCGGACCCACACGGTGAATGTTTTTGGAGGCAGGGAGCTGCCCCGTCAGAAGAGCCCGGATCCTATGACCAGAATACAAGCAGCGGAGTACTGTAGCAATATGGTGCTCAGCAGCCGCCGC"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGGACTTCCTGGTGCCTCGGCTACATGGCGAGAGGTCAAAAATATGGCGTCTGCCCCTTATTAGCACGCTGACTCCGCTGAGGCGCCACCTTACGACTGAACGAGTTGATATTAGAGATATCGGGTTTGGCGACGAACCGATGCCGACT",
+"TTGGACTTCCTGGTGCCTCGGCTACATGGCGAGAGGTCAATAATATGGCGTCTGCCCCTTATTAGCCTTCCAACGCTGACTCCGCTGACGCGCCACCTTACGACTGAACGAGTTGATATTAGAGATATCGGGTTTGGCGACGAACCGATGCCGACT"
+],
+"coords": [
+[
+0,
+66,
+66,
+150
+],
+[
+0,
+66,
+72,
+156
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCCCCCGCCCTTCCTCCTGGGAGAGTCTGGACATGGAGGGTAGTCACTGTCTTTCAACGATGCTTGATCCTGAGAAGATCAGCAGGCATCAGTCTCCGGCTCGCGGTCGGGTCCCCCCCAAACAGCATATCTGCTGGAGAGCATACTCG",
+"AACCCCCGCCCTTCCTCCTGGGAGAGTCTGGACATGGAGGGTAGTCACTGTCTTCCCACGATGCTTGATCCTGAGATGATCAGCAGGCATCAGTCTCCGGCTCGCGGTCGGGTCCCCCCCAAACAGCATATCTGCTGCAGAGCATACTCG"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"result": [
+0.025515509787420038,
+0.07020303047476745
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCCCCCGCCCTTCCTCCTGGGAGAGTCTGGACATGGAGGGTAGTCACTGTCTTTCAACGATGCTTGATCCTGAGAAGATCAGCAGGCATCAGTCTCCGGCTCGCGGTCGGGTCCCCCCCAAACAGCATATCTGCTGGAGAGCATACTCG",
+"AACCCCCGCCCTTCCTCCTGGGAGAGTCTGGACATGGAGGGTAGTCACTGTCTTCCCACGATGCTTGATCCTGAGATGATCAGCAGGCATCAGTCTCCGGCTCGCGGTCGGGTCCCCCCCAAACAGCATATCTGCTGCAGAGCATACTCG"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGTAGCAAGTATGCCAAATGCGCGAATCCCGTGCTGAGCGCTGGTATCCATCTCTGGCTGAATGATGCTCAACCGCGAATAGGACGGGATAGACAGGAGCTACGAAGTGCACCTGCATGCCGGCGGTTTGTGGTTAGTAGTAGCCGCGCT",
+"GGTAGCAAGTATGCCAAATGCGCGAATCCCGTGCTGAGCGCTGGTATCCATCTCTGGCTGAATTATACTCAACCGCGAATAGGACGGGATAGACAGGAGCTACGAAGTGCACCTCCATGCCGGCGGTTTGTGGTTAGTAGTGCTACAAGCCGCGCT"
+],
+"coords": [
+[
+0,
+141,
+141,
+150
+],
+[
+0,
+141,
+147,
+156
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCATTGAACTGCATGACTAGATCTCGCCTGTGGAGGGTTCTATTTTCTGACCCTCGGGCAGACCGGAGAGATAAATACACTCTGCTTAAGTTAGATGATAATCGTCCTACGCACAATCGTGGAGATGACGAAGGCGTGTCACATTCACCT",
+"GCATTGAACTGCATGACTAGATCTCGCCTGTGGAGGGTACTATTTGCTGACCCTCGGGCAGACCGGAGAGATAAACACACTCTGCTTAAGTTAGATGATAATCGTCCTACGCACGCTCATGGAGATGACGAGTGCGTGTCACAGTCCCCT"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"result": [
+0.06685786013893125,
+0.07833496554363091
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GCATTGAACTGCATGACTAGATCTCGCCTGTGGAGGGTTCTATTTTCTGACCCTCGGGCAGACCGGAGAGATAAATACACTCTGCTTAAGTTAGATGATAATCGTCCTACGCACAATCGTGGAGATGACGAAGGCGTGTCACATTCACCT",
+"GCATTGAACTGCATGACTAGATCTCGCCTGTGGAGGGTACTATTTGCTGACCCTCGGGCAGACCGGAGAGATAAACACACTCTGCTTAAGTTAGATGATAATCGTCCTACGCACGCTCATGGAGATGACGAGTGCGTGTCACAGTCCCCT"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACCCAACTGCGTACCATTGGGGCGACATCTATCCGAGCGTGGAGGATTAGAATAGACACCTTTCGGGCGAATCATAACGCTAGCGTCCTGTCCCTACGAGCATTCACATGGTGTACTATCGAGATACAGTACCTGGACAAACACCTGGCG",
+"GCCCAACTGCGTACCATCGAGGCGACATGTGTCCGAGCGTGGAGGATCAGAATAGACACCTTTGTATGGGCGAATCATAACGCTAGCGTCCTGTCCCTACCAGCATTCACACCCTGTACTATCGAAATACAGAACCTGGACAAACACCTGGCG"
+],
+"coords": [
+[
+0,
+63,
+63,
+150
+],
+[
+0,
+63,
+66,
+153
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATTTCCATTTATATGTGTACGCTCTACGAGCAAGTATTTAAATACACACATAGTAAAGGAAGAACACGGTCGAGGTTTCCCCTGGACGGAGGAGTAAAATTGTCGTCCCACTGTAAATTTCCGCCTGGCCGAATGCATTGGCTATGTTTA",
+"ATTTCCATTTTTATGTGTACGATATACGACCATGTATTAAAATGCGCACCTAGTAAAGGACCCACACGGTCGCGCTTTCCCCTGGACGGACGCGTAGAACTATCGTCCCACTGTAATTGTCCGCCTAGGCGAATGCATAGACGATGTTCA"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATTTCCATTTATATGTGTACGCTCTACGAGCAAGTATTTAAATACACACATAGTAAAGGAAGAACACGGTCGAGGTTTCCCCTGGACGGAGGAGTAAAATTGTCGTCCCACTGTAAATTTCCGCCTGGCCGAATGCATTGGCTATGTTTA",
+"ATTTCCATTTTTATGTGTACGATATACGACCATGTATTAAAATGCGCACCTAGTAAAGGACCCACACGGTCGCGCTTTCCCCTGGACGGACGCGTAGAACTATCGTCCCACTGTAATTGTCCGCCTAGGCGAATGCATAGACGATGTTCA"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GAGCTGCCGAGATGGGCCGTGTATGTTTCAACGGAGAGATTTGTTGAAAGCATTACAGCATTGGTTTGTTATAAGCTTCAAATTCATTGCGAATATCGCGGTTGCTGTATGTATCCAAACCCCCTCACACAGGTACCTGACTCTGTAAAA",
+"GACCTGCCGAGATGGGCCTTGTATGTTTCTACGGATAGATTTGATGAAGGCATTACCGCTTTGGTTTTATATCCCCTGCACACTCATTCCGGATATCGCAGTTGCTTTATGTATCCAAACGCCTTCACCCCGGTTCCTGACTCTGGGTCCGTGCCC"
+],
+"coords": [
+[
+0,
+144,
+144,
+150
+],
+[
+0,
+144,
+150,
+156
+]
+]
+},
+"result": [
+0.18977131290788093,
+0.3952977908580332
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACATCCCTCTTATTCCATGCATCCCTGGATTCACACAGCAGCGTCAACACTGCACGGACTAAGGACAGATGGGAAACACATGCGCGAACGCGGAGATGGCCTATGGCTGGTCTTGTTGACTAATGGGTTTGGGCACTCACTTCGTAAG",
+"ACAAATCCCTCTCATACCCTGCATCCGTCGGTTGGCACAGCAGCGTCAACATCCGTCGGGACAAGGACTTATGGGAAACACATGCCTCAACGGGGAGAGGGTCTGTGCCTAGTCATGCTGAGTAATGTCTGTGACCACTCACTTCGTAAG"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"exc": {
+"type": "TypeError",
+"msg": "cannot unpack non-iterable NoneType object"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACACATCCCTCTTATTCCATGCATCCCTGGATTCACACAGCAGCGTCAACACTGCACGGACTAAGGACAGATGGGAAACACATGCGCGAACGCGGAGATGGCCTATGGCTGGTCTTGTTGACTAATGGGTTTGGGCACTCACTTCGTAAG",
+"ACAAATCCCTCTCATACCCTGCATCCGTCGGTTGGCACAGCAGCGTCAACATCCGTCGGGACAAGGACTTATGGGAAACACATGCCTCAACGGGGAGAGGGTCTGTGCCTAGTCATGCTGAGTAATGTCTGTGACCACTCACTTCGTAAG"
+],
+"coords": [
+[
+0,
+150
+],
+[
+0,
+150
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GACTCCTTTGAGTCTACGGTGAGTTCAGGACCAAGCCCAAAGATGCGGGAAGTGCGCGTCAATCTCGCCACCTGTAGGACGCCGAATTTAGGCGTCACATATGCTAATCGGTCATGGGGCAATCATTTGTACGGTGACTTTGAACACGTC",
+"GTCTTGTTTGAATTTACGTCGAGTTTAGGACAGAACCTACCCTTGCCGGAAGTGCGCGTTAATACCGCCACCCCCAGGAAGCCGAATCCCGTCCTCAGGTATGGTAATTGGCCCTGGCCAAGCAGTCAGTTTCCCGGTGACTTTAAACACTTC"
+],
+"coords": [
+[
+0,
+117,
+117,
+150
+],
+[
+0,
+117,
+120,
+153
+]
+]
+},
+"result": [
+0.3591930752237273,
+0.42426610828040323
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAAGTCCTCATCCGGTTTCGGCTGGTCATGTATACCACGCCCCACGTGTGCGCGTCGAAGAGATGTCAACCGTATGCAACTGGTCACGGGACCGACGACCTTCAAATCGTTTAGCTGTTATAGGGACGCGGGCAGCGCTTGCACACCCAACAATAGAACAACGTCCATGTGGTAATAGGACCACTTTAGTAGGAGCGACAGCTGAGCAAAGTTTCACGACTCGCCTACTCTGGGATCTG",
+"AGAAGTCCTCATCCGGTTTCGGCTGGTCATGTATACCACGCCCCACGTGTGCGCGTCGAAGAGATGTCAACCGTATGCAACTGGTCACGTGACCGACGACCTTCAAATCGTTTAGCTGTTATAGGGACGCGGGTAGCGCTTGCACACCCAACAATAGAACAACGTCCATGTGGTAATAGGACCACTTTAGTAGGAGCGACAGCTGAGCAAAGTTTCACGACTCGCCTACTCTGGGATCTG"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAAGTCCTCATCCGGTTTCGGCTGGTCATGTATACCACGCCCCACGTGTGCGCGTCGAAGAGATGTCAACCGTATGCAACTGGTCACGGGACCGACGACCTTCAAATCGTTTAGCTGTTATAGGGACGCGGGCAGCGCTTGCACACCCAACAATAGAACAACGTCCATGTGGTAATAGGACCACTTTAGTAGGAGCGACAGCTGAGCAAAGTTTCACGACTCGCCTACTCTGGGATCTG",
+"AGAAGTCCTCATCCGGTTTCGGCTGGTCATGTATACCACGCCCCACGTGTGCGCGTCGAAGAGATGTCAACCGTATGCAACTGGTCACGTGACCGACGACCTTCAAATCGTTTAGCTGTTATAGGGACGCGGGTAGCGCTTGCACACCCAACAATAGAACAACGTCCATGTGGTAATAGGACCACTTTAGTAGGAGCGACAGCTGAGCAAAGTTTCACGACTCGCCTACTCTGGGATCTG"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGCTGTGCCTATTCAGTCCATTCCGGCCGAGTCAGGCTCATAACTCAATACAAGTGTTTCACACCTTTGCGTGGCGATGACTCACCACGTGCGGTTAGTCCAATCCGGTTCCCGATACCACACGTTTTCGATGTCCCGTATGCCCTCTCTATCCCATGCGAAATAGATGCAATGGGGGGCCGCAGGCCAACGGCAACGACAAGGTCTGATTTGCGGCGCCGTGTCGCCTCGACGAATCTT",
+"AGCTGTGCCTATTCAGTCCATTCCGGCCGAGTCAGGCTCACAACTCAATACAAGTGTTGCACACCTTTGCGTGGCGATGACTCACCACGCGCGGTTAGTCCAATCCGGTTCCCGATACCACACGTTTTCGATGTCCCGTATGCCCTCTCTATCCCATGCGAAATATATAGGGATGCAATGGGGGGCCGCAGGCCAACGGCAACGACAAGGTCTGATTTGCAGCGCCGTGTCGCCTCGACGAATCTT"
+],
+"coords": [
+[
+0,
+165,
+165,
+240
+],
+[
+0,
+165,
+171,
+246
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GAATACGGGATGGTAACCTCCGCCGTCATCTTATTTGCTCTACAGCGCAAAACCTCACCAAAGGTGCTACTGAGCGTCGCTATTACACTACGCCAGCGAACGCCGCCCGAGCACCTCTTACTATACCCTAACGTTGGTTTCGGTGTAGTAATGTACATTAGTGCAGTCCAAAGGACTTTAAATGCAAGGACCTGTCAGTGTAGGTCTGCGAAATTCGGGATTGAGCTACCGTACCTCATC",
+"GAATACGGGATGGTAACCTCCGCCGTCCTCTTATTTGCTCTACAGCGCAAAACCTCACCAAAGGTGCTACTGAGCGTCGCTATTACACTGCGCAAGCGAACGTCGCCCGAGCACCTCTTACTATGCACTAACGTTGGTTTCGGTGTAGTAATGTACATTAGTGCAGTCCAAAGGACTCCCAATGCAAGGACTTGTCAGTGTAGGTCTGCGAAATTCGGGATTGAGCGACCGTACCTCATC"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"result": [
+0.04587946345727282,
+0.05142051114174297
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GAATACGGGATGGTAACCTCCGCCGTCATCTTATTTGCTCTACAGCGCAAAACCTCACCAAAGGTGCTACTGAGCGTCGCTATTACACTACGCCAGCGAACGCCGCCCGAGCACCTCTTACTATACCCTAACGTTGGTTTCGGTGTAGTAATGTACATTAGTGCAGTCCAAAGGACTTTAAATGCAAGGACCTGTCAGTGTAGGTCTGCGAAATTCGGGATTGAGCTACCGTACCTCATC",
+"GAATACGGGATGGTAACCTCCGCCGTCCTCTTATTTGCTCTACAGCGCAAAACCTCACCAAAGGTGCTACTGAGCGTCGCTATTACACTGCGCAAGCGAACGTCGCCCGAGCACCTCTTACTATGCACTAACGTTGGTTTCGGTGTAGTAATGTACATTAGTGCAGTCCAAAGGACTCCCAATGCAAGGACTTGTCAGTGTAGGTCTGCGAAATTCGGGATTGAGCGACCGTACCTCATC"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CCACCTTATGGCGAGGTCTACTCCTACAGGCGAGTAAGTGAACCGATAATTCGAGCGACCGGCGATGCTCGTGCATCCAGGCAGTCACTTAAGCAAAGGGAGACGGCGGGGCTTAAAAGCGAGAACTGTGACAACTGTGCATTACATACTACCTGCAACTACGGCGAGCTCATAGACGGTGTGTTATATAGCGAGAAGGAGCATCCTATTCCGGTGCGTAATAATCGAATTACTTGTCCT",
+"CCACCTTATGGCGAGGTCTACTCCTACAGGCTAGTAAGTGAACCGATAATTCGAGCGACCGGCGATGCTCGTGCATCGAGGCGGTCACTTAAGCAAAGGGAGACGGCGGGGCTTAAAGGCGAGAACTGTGACAACTGTGCATACGTTTTACATACTACCTGCAACTACTGCGAGCTCATAGACGATCTGGTATATAGCGAGAAGGAGCATCCTATTCCGGTGCGTAATAATCGAATTGCTTGTCCT"
+],
+"coords": [
+[
+0,
+141,
+141,
+240
+],
+[
+0,
+141,
+147,
+246
+]
+]
+},
+"result": [
+0.04408376267459409,
+0.019171646199905006
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GAGAGCGTAAGGATTCACACTATCCCCATCAACGAGTCAACAAGGGATTTAGGTTGCAGACTATCGAGGATAGCCTCCTTCCCAATACTGCCAGTCTACAATAAGTATGAGGTGTCCATAGTGTCTCAAGAGGTGCGTGCCATGGCGAAAATTCGCATGTATCAGGCCATTTGTGCGCGAGAGTCCGCAGTCCCACTTGCGCAGAACGTCATTCCTGACGTGCATGGGCTGGTGCTAGAC",
+"GAGTGCGTAATGATTCACACTATCCCCATCAACGACTCAACAAGGGATTTAGGCTGCAGAGTATCGAGAATCTCCTCCTTCACAATACGGCCAGTCTACAATAAGTATGAGGTTTCCATAGGGTCCCAAGAGGAGCGTGCCATGTCGAAAATTCGCATGTATCAAGCCAATGGTGCACGAGAGTCCGAACTCCCAATTGCACAGAACGTCATTCTTGACGTTAATGCGCTGGTGCTACAC"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"result": [
+0.11262159198861521,
+0.18120067624699987
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GAGAGCGTAAGGATTCACACTATCCCCATCAACGAGTCAACAAGGGATTTAGGTTGCAGACTATCGAGGATAGCCTCCTTCCCAATACTGCCAGTCTACAATAAGTATGAGGTGTCCATAGTGTCTCAAGAGGTGCGTGCCATGGCGAAAATTCGCATGTATCAGGCCATTTGTGCGCGAGAGTCCGCAGTCCCACTTGCGCAGAACGTCATTCCTGACGTGCATGGGCTGGTGCTAGAC",
+"GAGTGCGTAATGATTCACACTATCCCCATCAACGACTCAACAAGGGATTTAGGCTGCAGAGTATCGAGAATCTCCTCCTTCACAATACGGCCAGTCTACAATAAGTATGAGGTTTCCATAGGGTCCCAAGAGGAGCGTGCCATGTCGAAAATTCGCATGTATCAAGCCAATGGTGCACGAGAGTCCGAACTCCCAATTGCACAGAACGTCATTCTTGACGTTAATGCGCTGGTGCTACAC"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CAGGCATGTTACTTATCCCGTACACCCAAATGGCGGGGCCGTCTGAACCGGGCTCGTGGCCCAGCCAGAAAACTTCTAAAGATTGAAAAGAAGGGTCGACGCACAGGAGTGACGCCGGCTCCTCTGACTATGTCTAGAGCAAATCGCAGTTTTGTTCTTCTTACGTGCTGTCCACCCCTGCTCATGCATACACTTATGCGATTTGCATCTCTCCCAGCAGAACGTAACGGTACTGTGTAC",
+"CAGGCTTGGTACCAGTCCCGTACACCCAAATGGCGGGGCCCTCTGAACCGGGCTGGAGGACCGACCAGAAAACTACTAATGATTGAAAAAAAGGGTCGACGCACAGGAGTGACGCCGGCTCCTCTGACTATTGCTACCTCTAGAGCAAATCGCAGATTTGTTCTACTTACGTGCTGTCTACCCCTGCTCATGCATACACTTATGCGATTTGCATCTCTCCCAGCAGAACGTAACGGTACTGTGTAC"
+],
+"coords": [
+[
+0,
+132,
+132,
+240
+],
+[
+0,
+132,
+138,
+246
+]
+]
+},
+"result": [
+0.05628896956177435,
+0.13302146817525107
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCCCGAAAGTCCCAGGACACGTCCCTTTGACTTACAGAACTGACTCCTTCGCGGTGAGCTTATTGCAACCGATCAAAATCCGGGCGATAACGGCTTATCAACCAGTGGTTGTCGCTTCAGATACGTCCGTGGCACCTACTCTTGACGAGTGGGCCCCCGTGGCCCTCACTGCCTACGACCTCGCGGCAAGCTTCGTATTGAATGAACCCTGGGCTGCACCTAATGGTGCCAACAACTAT",
+"CGACGGAATCTCCTAGGACTCGTCCCTTTCACTTACAAGACCGATTCGTTCGCGGTGAGCATAATGCAACCGATTAAAATCCGGCCTATAACGGCTTATAAACCAATGAATGTCGCTCCCGATACGTCATTGGCACATACTCTCGACTGGGGGGCCCCCGTGGCCCTGACTGCCTACGCCCTCGCGGCAAGCTCCGTTTTGAATGAGCCCTGGGCTGCACCTACTGGTGCCAACAACTAT"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"result": [
+0.15708059189536558,
+0.19208585084633573
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGCCCGAAAGTCCCAGGACACGTCCCTTTGACTTACAGAACTGACTCCTTCGCGGTGAGCTTATTGCAACCGATCAAAATCCGGGCGATAACGGCTTATCAACCAGTGGTTGTCGCTTCAGATACGTCCGTGGCACCTACTCTTGACGAGTGGGCCCCCGTGGCCCTCACTGCCTACGACCTCGCGGCAAGCTTCGTATTGAATGAACCCTGGGCTGCACCTAATGGTGCCAACAACTAT",
+"CGACGGAATCTCCTAGGACTCGTCCCTTTCACTTACAAGACCGATTCGTTCGCGGTGAGCATAATGCAACCGATTAAAATCCGGCCTATAACGGCTTATAAACCAATGAATGTCGCTCCCGATACGTCATTGGCACATACTCTCGACTGGGGGGCCCCCGTGGCCCTGACTGCCTACGCCCTCGCGGCAAGCTCCGTTTTGAATGAGCCCTGGGCTGCACCTACTGGTGCCAACAACTAT"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CACAGAGCGCAAAGGGTAACGGATCGCTCGAAAGAAAGGCTTAAGGGAAGTCTCGAGTTGCGGGGAGGGGACCTGGGTTTCCGCGCTCTCCACAGAATGATTAACTCATTCCGGCACTTGAAGTATTACCCGAAGTGCATGAAAGAGGTTGGGCACAGAGATGAGTCTGTACCCCACTACGCATCCGTAGTTCATTGTCGATACCCTGACGAGACGTTAAACCTTAGGTCACAAGGGGCG",
+"CAAAGAGCGCAGGGGTTATCGGATCGCCCCAAAGCAAGGCTTAAGGGAAGTCATGAGTTGCGGGGACGGGGTCTGGGGTTCCCCGCTCTCCACAGAATGATAATTAACTCAGTCCGTCACATGAAGCATTATCCGAAGTACATGAAAGAGGTTGGGCACATAGATGCGGCTGTACCCAACTACGGCCCCGTAGCTTATTCTCGATACCCTGACGAGAGGTTAGATAGTAGGGTAGAAGGGCCG"
+],
+"coords": [
+[
+0,
+99,
+99,
+240
+],
+[
+0,
+99,
+102,
+243
+]
+]
+},
+"result": [
+0.20469410171337596,
+0.1372249978854191
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACCGGCTCATCGCTCATGTTTGAGTCACCTATGACGACTCTTTCTAATTTAATAAGGCTGAATCGCGTGGATATGCCCCTCCCTCAAAAACTTACAGGTCCGTGTTCATCGCGGGTCTTAGCATTCGGCCTACAGTTTAACGTGTGGGAAAACCCTTTCCTCACGACTGCGGTTGGGAACTGCGCGTATCTTACTCTGTTCCGTCTCACGGGAAGACCTAAGGCGAGTCTTGACAGACTG",
+"ACCGGCTCTTTGCGCATGATTGGGCCACCTATGACGGCTCTTTCCAATTTAATAACGCCGAACCGCATGGAAATGGCCCTACCTCAAAACCTTCCAGGTCCGCCCTCATCGTGGGACCTAGCACTCGGAGTACAGTTTATCGTGTGTGAAAAACCTTCTCTGACGCCTGCGGCCCTGAACACAGCGTATCTTAATCTCTTAAGTAGTAAGCGGAGACCTCAGGCGCCCCGTGCCAGACTG"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"result": [
+0.2841706185401837,
+0.27825738083613993
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ACCGGCTCATCGCTCATGTTTGAGTCACCTATGACGACTCTTTCTAATTTAATAAGGCTGAATCGCGTGGATATGCCCCTCCCTCAAAAACTTACAGGTCCGTGTTCATCGCGGGTCTTAGCATTCGGCCTACAGTTTAACGTGTGGGAAAACCCTTTCCTCACGACTGCGGTTGGGAACTGCGCGTATCTTACTCTGTTCCGTCTCACGGGAAGACCTAAGGCGAGTCTTGACAGACTG",
+"ACCGGCTCTTTGCGCATGATTGGGCCACCTATGACGGCTCTTTCCAATTTAATAACGCCGAACCGCATGGAAATGGCCCTACCTCAAAACCTTCCAGGTCCGCCCTCATCGTGGGACCTAGCACTCGGAGTACAGTTTATCGTGTGTGAAAAACCTTCTCTGACGCCTGCGGCCCTGAACACAGCGTATCTTAATCTCTTAAGTAGTAAGCGGAGACCTCAGGCGCCCCGTGCCAGACTG"
+],
+"coords": [
+[
+0,
+240
+],
+[
+0,
+240
+]
+]
+},
+"table": 2,
+"exc": {
+"type": "KeyError",
+"msg": "AGG"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGTCTAAGGATGGGCCGTGTGAGTAAGCCTGAGGCGCTAGAAGGTAATAAGATCAGCTATGTAAAGGGAGTGTATGCAAGCCCTCTACACTCAACTAGGAAGCTCACTGCAGAGCTACCTTCACGAGCGGTAAGGGTCTATGAGGGGAAGACAGGATGTGTGTCATACGCAGGCCCGCTAGGTTTGGATGCATGGCAGCACGTATCGGAGTTTTCTCCTAAAACTCGATGTCCCACGGTG",
+"CGTCTGAGGGGGGGCGTTGTGAGCATGACCCAGGCTCTAGGAAGTCATAAGACCAGCTATATAAAGAGAGTGTATGCTAACCCGACACAGTCAACCAAGAGGCTCAGTGCCGAGTTACCTTCACAAGAGCTAAGTCATGTCTGGGTGATTAACACAGGATGTGTGTCAGACGCAGGTCGGGTCGGTTTGGATGCAGGGCAGGACGTATCAGAGTTTTCGCCTAAAACTCGATCTCCCACGGTG"
+],
+"coords": [
+[
+0,
+135,
+135,
+240
+],
+[
+0,
+135,
+138,
+243
+]
+]
+},
+"result": [
+0.24347616087633003,
+0.24982343805437074
+],
+"types": [
+"float",
+"float"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCAAGACATCACAT",
+"GTCAAGACATCACAT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"result": [
+3.723909472395001e-11,
+1.858709134915313e-11
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GTCAAGACATCACAT",
+"GTCAAGACATCACAT"
+],
+"coords": [
+[
+0,
+15
+],
+[
+0,
+15
+]
+]
+},
+"cfreq": "F3x4",
+"result": [
+3.723909472395001e-11,
+1.858709134915313e-11
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGAGTCAATATTCGTGGCCTCGA",
+"TGGAGTCAATATTCGTGGCCTCGA"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.041504436373417726,
+0.020424609511277333
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TTGAGTCAATATTCGTGGCCTCGA",
+"TGGAGTCAATATTCGTGGCCTCGA"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"cfreq": "F3x4",
+"result": [
+0.041504436373417726,
+0.020424609511277333
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAATTCTGCTTTACGCGTGTGAC",
+"AGCTTCCCGCTTTTCGCGTGTGAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"result": [
+0.26608390701994344,
+0.1935378084723449
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AGAATTCTGCTTTACGCGTGTGAC",
+"AGCTTCCCGCTTTTCGCGTGTGAC"
+],
+"coords": [
+[
+0,
+24
+],
+[
+0,
+24
+]
+]
+},
+"cfreq": "F3x4",
+"result": [
+0.26608390701994344,
+0.1935378084723449
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TACATGCATAACGGAGAAGGATTCTCTGGAGATAAA",
+"TACATGCATAACGGAGAAGGATTCTCGGAAGATATA"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"result": [
+0.06467866242604628,
+0.2195603235772584
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TACATGCATAACGGAGAAGGATTCTCTGGAGATAAA",
+"TACATGCATAACGGAGAAGGATTCTCGGAAGATATA"
+],
+"coords": [
+[
+0,
+36
+],
+[
+0,
+36
+]
+]
+},
+"cfreq": "F3x4",
+"result": [
+0.06467866242604628,
+0.2195603235772584
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGCTTCCTCCTCCTTACT",
+"GTCTTCCTCCTCTTTCGTACT"
+],
+"coords": [
+[
+0,
+15,
+15,
+18
+],
+[
+0,
+15,
+18,
+21
+]
+]
+},
+"result": [
+0.14893085636670544,
+82764772.07092936
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAACTGTCCGACGTGTC",
+"AAAACTTTCCGACTTGTC"
+],
+"coords": [
+[
+0,
+18
+],
+[
+0,
+18
+]
+]
+},
+"table": 2,
+"result": [
+0.14907079131775028,
+0.01490707913177507
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"GGAAAGTCCCATCTCAAC",
+"GAAAAGTCCCATCTCAAG"
+],
+"coords": [
+[
+0,
+18
+],
+[
+0,
+18
+]
+]
+},
+"cfreq": "F1x4",
+"exc": {
+"type": "TypeError",
+"msg": "unsupported operand type(s) for +: 'dict_keys' and 'list'"
+}
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"CGTAAAGGGGTTGGATTA",
+"AGCAGAGGGCTTGGATTA"
+],
+"coords": [
+[
+0,
+18
+],
+[
+0,
+18
+]
+]
+},
+"cfreq": "F61",
+"exc": {
+"type": "TypeError",
+"msg": "unsupported operand type(s) for +: 'dict_keys' and 'list'"
+}
+},
+{
+"kind": "dnds",
+"method": "ML",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGAAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"result": [
+3.3333333334172794e-11,
+1.6544113260847133e-11
+],
+"types": [
+"float64",
+"float64"
+]
+},
+{
+"kind": "dnds",
 "method": "bogus",
 "aln": {
 "ids": [
@@ -10108,8 +15586,8 @@
 "q"
 ],
 "seqs": [
-"CACGGCCGTACTAGGCGC",
-"CACGGCCGTACTAGGCGC"
+"TGGCTTGGGCGAGTAGAA",
+"TGGATTGGGCGCGTAGAA"
 ],
 "coords": [
 [
@@ -10136,8 +15614,8 @@
 "q"
 ],
 "seqs": [
-"CACGGCCGTACTAGGCGC",
-"CACGGCCGTACTAGGCGC"
+"TGGCTTGGGCGAGTAGAA",
+"TGGATTGGGCGCGTAGAA"
 ],
 "coords": [
 [
@@ -10165,8 +15643,8 @@
 "q"
 ],
 "seqs": [
-"CACGGCCGTACTAGGCGC",
-"CACGGCCGTACTAGGCGC"
+"TGGCTTGGGCGAGTAGAA",
+"TGGATTGGGCGCGTAGAA"
 ],
 "coords": [
 [
@@ -10183,6 +15661,64 @@
 "exc": {
 "type": "ValueError",
 "msg": "cfreq must be 'F1x4', 'F3x4', or 'F61'"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGGCTTGGGCGAGTAGAA",
+"TGGATTGGGCGCGTAGAA"
+],
+"coords": [
+[
+0,
+18
+],
+[
+0,
+18
+]
+]
+},
+"k": 2.5,
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"TGGCTTGGGCGAGTAGAA",
+"TGGATTGGGCGCGTAGAA"
+],
+"coords": [
+[
+0,
+18
+],
+[
+0,
+18
+]
+]
+},
+"cfreq": "F1x4",
+"exc": {
+"type": "ValueError",
+"msg": "cfreq can only be specified when you are using ML method"
 }
 },
 {
@@ -10211,6 +15747,146 @@
 "exc": {
 "type": "ValueError",
 "msg": "Unrecognized character in NAA in the target sequence (Codons consist of A, T, C or G)"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGNAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "Unrecognized character in NAA in the target sequence (Codons consist of A, T, C or G)"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGTAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "KeyError",
+"msg": "TAA"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"ATGAAA",
+"ATGAAA"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AAAAAA",
+"TTTTTT"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "dnds",
+"method": "YN00",
+"aln": {
+"ids": [
+"t",
+"q"
+],
+"seqs": [
+"AUGAAA",
+"AUGAAG"
+],
+"coords": [
+[
+0,
+6
+],
+[
+0,
+6
+]
+]
+},
+"exc": {
+"type": "ValueError",
+"msg": "Unrecognized character in AUG in the target sequence (Codons consist of A, T, C or G)"
 }
 },
 {
@@ -10455,10 +16131,10 @@
 "x3"
 ],
 "seqs": [
-"TACTGTTCGCCGCCCGACAATCAGCTAGAC",
-"TACTGTTCGCCGCCCGACAATCAGCTAGAT",
-"TACTATTCGCCGCCCGACCTTCAGCTAGAC",
-"TACTGTTCGCCGCCCGACCTTCAGCTAGAC"
+"TATACGACGTTTAATAATGAGTACCATGCC",
+"TATACGACGTTTAATAATGAGTACCATGAC",
+"TTTAGGACGTTTAATAATAAGTATCATGCC",
+"TTTAAGACGTTTAATAATAAGGATCATGCC"
 ],
 "coords": [
 [
@@ -10500,10 +16176,10 @@
 "x3"
 ],
 "seqs": [
-"TACTGTTCGCCGCCCGACAATCAGCTAGAC",
-"TACTGTTCGCCGCCCGACAATCAGCTAGAT",
-"TACTATTCGCCGCCCGACCTTCAGCTAGAC",
-"TACTGTTCGCCGCCCGACCTTCAGCTAGAC"
+"TATACGACGTTTAATAATGAGTACCATGCC",
+"TATACGACGTTTAATAATGAGTACCATGAC",
+"TTTAGGACGTTTAATAATAAGTATCATGCC",
+"TTTAAGACGTTTAATAATAAGGATCATGCC"
 ],
 "coords": [
 [
@@ -10546,10 +16222,10 @@
 "x3"
 ],
 "seqs": [
-"TACTGTTCGCCGCCCGACAATCAGCTAGAC",
-"TACTGTTCGCCGCCCGACAATCAGCTAGAT",
-"TACTATTCGCCGCCCGACCTTCAGCTAGAC",
-"TACTGTTCGCCGCCCGACCTTCAGCTAGAC"
+"TATACGACGTTTAATAATGAGTACCATGCC",
+"TATACGACGTTTAATAATGAGTACCATGAC",
+"TTTAGGACGTTTAATAATAAGTATCATGCC",
+"TTTAAGACGTTTAATAATAAGGATCATGCC"
 ],
 "coords": [
 [
@@ -10591,10 +16267,10 @@
 "x3"
 ],
 "seqs": [
-"GCTAAAGACCGGGGCAACGTGTATTATGTG",
-"GCTAAAAACCGGGGCAACGTCTATTATGTG",
-"TTTCCCAACCCGGATAAAGGCTATTATCAG",
-"TTTCCCAACCCGGATAAAGGCTATTATCAG"
+"AGCGCTGCGACGATAGCCTATCCGGGGCTG",
+"AGCGCTGCGACGATAGCCTATCCGGGGCTG",
+"AGCTTTGCGAGGATAGCCCGTCCGGGGCTA",
+"GGCTTTGCGAGGATAGCCCGTTCGGGGCTA"
 ],
 "coords": [
 [
@@ -10616,112 +16292,8 @@
 ]
 },
 "species": [
-0,
-1,
-0,
-1
-],
-"exc": {
-"type": "ZeroDivisionError",
-"msg": "division by zero"
-}
-},
-{
-"kind": "mk",
-"aln": {
-"ids": [
-"x0",
-"x1",
-"x2",
-"x3"
-],
-"seqs": [
-"CATCCCAGACCTAAAGTCAATTACCTAGAT",
-"CATCCCAGACCTAAAGTCAATTACCTTGAT",
-"CGTAGCATATCTAGTCGCCCACCCCCGGCG",
-"CGTAGCATATCTAGTCTCGCACCCCCGGCG"
-],
-"coords": [
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-]
-]
-},
-"species": [
-0,
-1,
-0,
-1
-],
-"exc": {
-"type": "ZeroDivisionError",
-"msg": "division by zero"
-}
-},
-{
-"kind": "mk",
-"aln": {
-"ids": [
-"x0",
-"x1",
-"x2",
-"x3",
-"x4",
-"x5"
-],
-"seqs": [
-"ATGGGTGCGGCGCACGGTCGCTATGGTGTG",
-"ATGGGTACGGCGCACGGTCGCTATGGTGTG",
-"ATGGGTGCGGCGCACGGTCGATATGGTGTG",
-"ATCGGTGCGGTGCAGGGTCGCTATGGTGTG",
-"ATCGGTGCGGTGCAGGGTCGCTATGCTGTG",
-"AGCGGTGCGGTGCAGGGTCGCTATGGTGTG"
-],
-"coords": [
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-]
-]
-},
-"species": [
 "sp0",
 "sp0",
-"sp0",
-"sp1",
 "sp1",
 "sp1"
 ],
@@ -10737,27 +16309,15 @@
 "x0",
 "x1",
 "x2",
-"x3",
-"x4",
-"x5"
+"x3"
 ],
 "seqs": [
-"ATGGGTGCGGCGCACGGTCGCTATGGTGTG",
-"ATGGGTACGGCGCACGGTCGCTATGGTGTG",
-"ATGGGTGCGGCGCACGGTCGATATGGTGTG",
-"ATCGGTGCGGTGCAGGGTCGCTATGGTGTG",
-"ATCGGTGCGGTGCAGGGTCGCTATGCTGTG",
-"AGCGGTGCGGTGCAGGGTCGCTATGGTGTG"
+"AGCGCTGCGACGATAGCCTATCCGGGGCTG",
+"AGCGCTGCGACGATAGCCTATCCGGGGCTG",
+"AGCTTTGCGAGGATAGCCCGTCCGGGGCTA",
+"GGCTTTGCGAGGATAGCCCGTTCGGGGCTA"
 ],
 "coords": [
-[
-0,
-30
-],
-[
-0,
-30
-],
 [
 0,
 30
@@ -10779,8 +16339,6 @@
 "species": [
 "sp0",
 "sp0",
-"sp0",
-"sp1",
 "sp1",
 "sp1"
 ],
@@ -10797,27 +16355,15 @@
 "x0",
 "x1",
 "x2",
-"x3",
-"x4",
-"x5"
+"x3"
 ],
 "seqs": [
-"ATGGGTGCGGCGCACGGTCGCTATGGTGTG",
-"ATGGGTACGGCGCACGGTCGCTATGGTGTG",
-"ATGGGTGCGGCGCACGGTCGATATGGTGTG",
-"ATCGGTGCGGTGCAGGGTCGCTATGGTGTG",
-"ATCGGTGCGGTGCAGGGTCGCTATGCTGTG",
-"AGCGGTGCGGTGCAGGGTCGCTATGGTGTG"
+"AGCGCTGCGACGATAGCCTATCCGGGGCTG",
+"AGCGCTGCGACGATAGCCTATCCGGGGCTG",
+"AGCTTTGCGAGGATAGCCCGTCCGGGGCTA",
+"GGCTTTGCGAGGATAGCCCGTTCGGGGCTA"
 ],
 "coords": [
-[
-0,
-30
-],
-[
-0,
-30
-],
 [
 0,
 30
@@ -10840,6 +16386,49 @@
 0,
 1,
 0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3"
+],
+"seqs": [
+"GTTCTGGCAACCCCTTCGCAAACGGGACCT",
+"GTTCTGGCAACCCCTTCGCCAACGGGACCT",
+"ATTCTAGATCAACGGTCAGAGGCGCTACCG",
+"ATTCTAGATCAACGGTCAGAGGCGCTACCG"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
 1,
 0,
 1
@@ -10861,12 +16450,12 @@
 "x5"
 ],
 "seqs": [
-"CCTCACCCACGTCGAGATATTACGTTATTA",
-"CCTCACCCACGTCGAGATATAACGTTATTA",
-"CCTCACTCACGTCGAGATATAACGATATTA",
-"CGTCACCCACGTCGAGGTATAACGGATTTA",
-"CGTAACCCACGTCGAGGTATAACGTATTTA",
-"CGTAACCCACGTCGAGGTATAACGTATATA"
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CTTCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGGGCCTATCTCATT"
 ],
 "coords": [
 [
@@ -10904,8 +16493,8 @@
 "sp1"
 ],
 "exc": {
-"type": "ValueError",
-"msg": "expected a positive input, got 0.0"
+"type": "ZeroDivisionError",
+"msg": "division by zero"
 }
 },
 {
@@ -10920,12 +16509,12 @@
 "x5"
 ],
 "seqs": [
-"CCTCACCCACGTCGAGATATTACGTTATTA",
-"CCTCACCCACGTCGAGATATAACGTTATTA",
-"CCTCACTCACGTCGAGATATAACGATATTA",
-"CGTCACCCACGTCGAGGTATAACGGATTTA",
-"CGTAACCCACGTCGAGGTATAACGTATTTA",
-"CGTAACCCACGTCGAGGTATAACGTATATA"
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CTTCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGGGCCTATCTCATT"
 ],
 "coords": [
 [
@@ -10980,12 +16569,12 @@
 "x5"
 ],
 "seqs": [
-"CCTCACCCACGTCGAGATATTACGTTATTA",
-"CCTCACCCACGTCGAGATATAACGTTATTA",
-"CCTCACTCACGTCGAGATATAACGATATTA",
-"CGTCACCCACGTCGAGGTATAACGGATTTA",
-"CGTAACCCACGTCGAGGTATAACGTATTTA",
-"CGTAACCCACGTCGAGGTATAACGTATATA"
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CTTCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGTGCCTATCTCATT",
+"CATCCTATGGTCAGGAGGGCCTATCTCATT"
 ],
 "coords": [
 [
@@ -11039,131 +16628,12 @@
 "x5"
 ],
 "seqs": [
-"TATGCAAGACTCACGCAGTTGCCCCGCACT",
-"TATGCAAGACTCACGCAGTTGCCCCGCACT",
-"TATGCAAGACTCACGCAGTTGCCCCGCACT",
-"TTTGGCGGACACCCACTCACGATCGGCACG",
-"TTTGGCGGACACCCACTCACGATCGGCACG",
-"TTTGGCGGACACCCACTCACGATCGGCACG"
-],
-"coords": [
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-]
-]
-},
-"species": [
-"sp0",
-"sp0",
-"sp0",
-"sp1",
-"sp1",
-"sp1"
-],
-"exc": {
-"type": "ZeroDivisionError",
-"msg": "division by zero"
-}
-},
-{
-"kind": "mk",
-"aln": {
-"ids": [
-"x0",
-"x1",
-"x2",
-"x3",
-"x4",
-"x5"
-],
-"seqs": [
-"TATGCAAGACTCACGCAGTTGCCCCGCACT",
-"TATGCAAGACTCACGCAGTTGCCCCGCACT",
-"TATGCAAGACTCACGCAGTTGCCCCGCACT",
-"TTTGGCGGACACCCACTCACGATCGGCACG",
-"TTTGGCGGACACCCACTCACGATCGGCACG",
-"TTTGGCGGACACCCACTCACGATCGGCACG"
-],
-"coords": [
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-],
-[
-0,
-30
-]
-]
-},
-"species": [
-"sp0",
-"sp0",
-"sp0",
-"sp1",
-"sp1",
-"sp1"
-],
-"table": 2,
-"exc": {
-"type": "ZeroDivisionError",
-"msg": "division by zero"
-}
-},
-{
-"kind": "mk",
-"aln": {
-"ids": [
-"x0",
-"x1",
-"x2",
-"x3",
-"x4",
-"x5"
-],
-"seqs": [
-"TATGCAAGACTCACGCAGTTGCCCCGCACT",
-"TATGCAAGACTCACGCAGTTGCCCCGCACT",
-"TATGCAAGACTCACGCAGTTGCCCCGCACT",
-"TTTGGCGGACACCCACTCACGATCGGCACG",
-"TTTGGCGGACACCCACTCACGATCGGCACG",
-"TTTGGCGGACACCCACTCACGATCGGCACG"
+"ACCCGGAATGTGTGCTCGGCGCTTTTAGGA",
+"TCCCGGAATGTGTGCTCGGCGCGTTTAGGT",
+"TCCCGGAATGTGTGCTCGGCGCGTTTAGGA",
+"TGCCGAAATGTGAGCTCGGCGCGTTACTGT",
+"TGCCGAAATGTGAGCTCGGCGCGTTACTAT",
+"TGCCGACATGTGAGCTCGGCGCGTTACTGT"
 ],
 "coords": [
 [
@@ -11217,12 +16687,71 @@
 "x5"
 ],
 "seqs": [
-"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
-"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
-"ATATTTTTCAGGACGTTCCTACGGTCAGTC",
-"CTATTTTCCAGTACGTTCCTACGCTCAGTC",
-"AGATTTTCCAGTACGTTCATACGGTCAGTC",
-"AGCTTTTCCAGTACGTTCCTACGGTCAGTC"
+"ATGTGGGTTCTAGCGTGCCGCGACTCTCAG",
+"AGGTCGGTTCTAGCGTGCCGCGACTCTCAG",
+"AGGTGGGTTCTAGCGTGCCGCGACACTCAG",
+"TTGTTGGCTCTAAGGTGCGCCGCTTCGAAC",
+"TTGTTGGCTCTAAGGTGCGCTGCTTCGAAC",
+"TTGTTGGCTCTAAGGTGCGCCGCTTCGAAC"
+],
+"coords": [
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+],
+[
+0,
+30
+]
+]
+},
+"species": [
+0,
+1,
+0,
+1,
+0,
+1
+],
+"exc": {
+"type": "ZeroDivisionError",
+"msg": "division by zero"
+}
+},
+{
+"kind": "mk",
+"aln": {
+"ids": [
+"x0",
+"x1",
+"x2",
+"x3",
+"x4",
+"x5"
+],
+"seqs": [
+"TGCTTATCAATGCCTGGACATATTGACCTA",
+"TGCTTATCAATGCCTGGACATATTGACCTA",
+"AGCTTATCAATGCCTGGACATATTGACCTA",
+"AGCTTATCAATGCCTGGACATATTGACCTA",
+"ACCTTATCAACGCCTGGACATATTGACCTA",
+"AGCTTATCAACGCCTGGACATATTGACCTA"
 ],
 "coords": [
 [
@@ -11276,12 +16805,12 @@
 "x5"
 ],
 "seqs": [
-"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
-"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
-"ATATTTTTCAGGACGTTCCTACGGTCAGTC",
-"CTATTTTCCAGTACGTTCCTACGCTCAGTC",
-"AGATTTTCCAGTACGTTCATACGGTCAGTC",
-"AGCTTTTCCAGTACGTTCCTACGGTCAGTC"
+"TGCTTATCAATGCCTGGACATATTGACCTA",
+"TGCTTATCAATGCCTGGACATATTGACCTA",
+"AGCTTATCAATGCCTGGACATATTGACCTA",
+"AGCTTATCAATGCCTGGACATATTGACCTA",
+"ACCTTATCAACGCCTGGACATATTGACCTA",
+"AGCTTATCAACGCCTGGACATATTGACCTA"
 ],
 "coords": [
 [
@@ -11336,12 +16865,12 @@
 "x5"
 ],
 "seqs": [
-"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
-"AGATTTTCCAGTACGTTCCTACGGTCAGTC",
-"ATATTTTTCAGGACGTTCCTACGGTCAGTC",
-"CTATTTTCCAGTACGTTCCTACGCTCAGTC",
-"AGATTTTCCAGTACGTTCATACGGTCAGTC",
-"AGCTTTTCCAGTACGTTCCTACGGTCAGTC"
+"TGCTTATCAATGCCTGGACATATTGACCTA",
+"TGCTTATCAATGCCTGGACATATTGACCTA",
+"AGCTTATCAATGCCTGGACATATTGACCTA",
+"AGCTTATCAATGCCTGGACATATTGACCTA",
+"ACCTTATCAACGCCTGGACATATTGACCTA",
+"AGCTTATCAACGCCTGGACATATTGACCTA"
 ],
 "coords": [
 [
@@ -11395,12 +16924,12 @@
 "x5"
 ],
 "seqs": [
-"GCAACTGCCTGCCGCGCCGCACCGCGGGAC",
-"GCAACTGCCTGCCGCGGCGCACCGCGGGAC",
-"GCATGTGCCTCCAGCGCCGCGCAGTGGCAC",
-"GCATGTGCATCCAGCGCCGCGCAGTGGGAC",
-"GCATCAGCCTCCCCCGCGGGATCGTGCGAC",
-"GCATCAGCCTCCCCCGCGGGATCTTGGGAC"
+"CCGCGCGACACAGGTCCCCTTGCTGGCACA",
+"CCGCGCGACACAGGTCCCCTTGCTGGCACA",
+"CCGCGCGACCGATGCCCCCTGTATGTTATA",
+"CCGCGCGACCGAAGCGCCCTGTATGTTATA",
+"CCGTGCGAAACAAGTCCCCAGGCTGTCATA",
+"CCGCGCGAAACAAGTCCCCTGGCTGTCATA"
 ],
 "coords": [
 [
@@ -11454,12 +16983,12 @@
 "x5"
 ],
 "seqs": [
-"TCTAGAGGGAAGCAAGCGGAACTTGGATTG",
-"TCTAGAGGGAAGCAAGCGGAACTTGGATTA",
-"TCAACAGGGAAGGAATCGGTTCCTGCATTA",
-"TCAACAGGGAAGGAATCGGTTCCTGCATCA",
-"TCGAGAGTAATAGGAGCTGTACATGGATTA",
-"TCGAGAGCAATAGGAGCTGTATATGGATTA"
+"GACTTTCACACCGCACCCCGGCTCAGCCCA",
+"GACTTTCACACCGCACCCCGGCTCAGCCCA",
+"GACACACATACAGTACCCTGCCGCACTCCC",
+"GACACACATACAGTACCCTGCCGCACTCCC",
+"GACTTTGTTTCAGATTGCCGCTCCAGCCAT",
+"GACTTTGTTTCTGCTTCCCGCTCCAGCCAT"
 ],
 "coords": [
 [
@@ -11516,15 +17045,15 @@
 "x8"
 ],
 "seqs": [
-"ATCATACAAGTTTACGTTTCTATCAGCTTT",
-"ATCATACAAGTTTACGTTTCTGTCAGCTTT",
-"ATCATAAAAGTTTACGTTTCTATCATCTTT",
-"ATCATACAAGTTCACTTTTCGACCAGCATT",
-"ATCAGACAAGTTCACTTTTCGATCAGCATT",
-"ATCATACAAGTTCACTTTTCGATCAGCATT",
-"ATCATACAAGGTCACTTTTCGATCAGCTTT",
-"ATCATACAAGTTCACTTTTCGATCAGCTTT",
-"ATCATACAAGTTCACTTTTCGATCAGCTTT"
+"TGGGCTGTCTGTTGGCGACTTGGCGTGTGG",
+"TGCGCTGTCTGTTGGCTACTTGGCGTGTGG",
+"TGGGCTGTCTGTTGGCAACTTGGCGTGTGG",
+"AGGGCTGTCTGGTGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTTGTGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTGGTGGCGACTTGGCGTGCGG",
+"AGGGCAGTCTGTGGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTGTGGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTGTGGGCGACTTGGCGTGTGG"
 ],
 "coords": [
 [
@@ -11596,15 +17125,15 @@
 "x8"
 ],
 "seqs": [
-"ATCATACAAGTTTACGTTTCTATCAGCTTT",
-"ATCATACAAGTTTACGTTTCTGTCAGCTTT",
-"ATCATAAAAGTTTACGTTTCTATCATCTTT",
-"ATCATACAAGTTCACTTTTCGACCAGCATT",
-"ATCAGACAAGTTCACTTTTCGATCAGCATT",
-"ATCATACAAGTTCACTTTTCGATCAGCATT",
-"ATCATACAAGGTCACTTTTCGATCAGCTTT",
-"ATCATACAAGTTCACTTTTCGATCAGCTTT",
-"ATCATACAAGTTCACTTTTCGATCAGCTTT"
+"TGGGCTGTCTGTTGGCGACTTGGCGTGTGG",
+"TGCGCTGTCTGTTGGCTACTTGGCGTGTGG",
+"TGGGCTGTCTGTTGGCAACTTGGCGTGTGG",
+"AGGGCTGTCTGGTGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTTGTGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTGGTGGCGACTTGGCGTGCGG",
+"AGGGCAGTCTGTGGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTGTGGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTGTGGGCGACTTGGCGTGTGG"
 ],
 "coords": [
 [
@@ -11677,15 +17206,15 @@
 "x8"
 ],
 "seqs": [
-"ATCATACAAGTTTACGTTTCTATCAGCTTT",
-"ATCATACAAGTTTACGTTTCTGTCAGCTTT",
-"ATCATAAAAGTTTACGTTTCTATCATCTTT",
-"ATCATACAAGTTCACTTTTCGACCAGCATT",
-"ATCAGACAAGTTCACTTTTCGATCAGCATT",
-"ATCATACAAGTTCACTTTTCGATCAGCATT",
-"ATCATACAAGGTCACTTTTCGATCAGCTTT",
-"ATCATACAAGTTCACTTTTCGATCAGCTTT",
-"ATCATACAAGTTCACTTTTCGATCAGCTTT"
+"TGGGCTGTCTGTTGGCGACTTGGCGTGTGG",
+"TGCGCTGTCTGTTGGCTACTTGGCGTGTGG",
+"TGGGCTGTCTGTTGGCAACTTGGCGTGTGG",
+"AGGGCTGTCTGGTGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTTGTGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTGGTGGCGACTTGGCGTGCGG",
+"AGGGCAGTCTGTGGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTGTGGGCGACTTGGCGTGTGG",
+"AGGGCTGTCTGTGGGCGACTTGGCGTGTGG"
 ],
 "coords": [
 [
@@ -11757,15 +17286,15 @@
 "x8"
 ],
 "seqs": [
-"CTCTTGTTAGGAGTCTATGACCACGTCTTT",
-"CTCTTGTTTGGAGTCTTTGACCAGGTCTTT",
-"CTCTTGTTTGGAGTCTTTGACCACATCTTT",
-"CAGTTGCCCGGTAACCCCGAACACGTGTTT",
-"CATTTGCCCGGTAACCCCGAACACGTGTTT",
-"CATTTGCCCGGTAACCCCGAACACGTGTTT",
-"CATTTACCCAGTGGCGTAGAACTCGTCTTT",
-"CATTTGCCCAGTGGCGTAGAACTCGTCTTT",
-"CATTTGCCCAGTGGCGTAGAACTCGTCTTT"
+"CGGCAAGGCCAGAGCCCAGGCAATGAAGTC",
+"CGGCAAGGCCAGAGCCCAGGCAATGAAGTC",
+"CGGCAAGGCCAGAGCCCAGGCAATGAAGTC",
+"CGGCGAGGCCACAGCCCAGGCAATGATGTA",
+"CGGCGAGGCCACAGCCCAGGCAATGATGCA",
+"CGGCGAGGCCACAGCCCAGGCAATGATACA",
+"ATGCGATACCAGAGCCCAAGTAATGATGCA",
+"ATGCGATACCAGAGCCCAAGTAATGATGCA",
+"ATGCGATACCAGAGCCCAAGTAATGATGCA"
 ],
 "coords": [
 [
@@ -11837,15 +17366,15 @@
 "x8"
 ],
 "seqs": [
-"CGGTCTCATATTTTAAGTCGGTCTGGTTCC",
-"CGGTCTCATATTTTAAGTCGTTCGGGTTCC",
-"CGGTCTCATATTTTAAGTCGTTCGGGTTCC",
-"AGGTCTCCGAGTGTGTCTTGTTCGGTTCGT",
-"AGGTCTCCGAGTGTTCCTTGTTCGGTTCGT",
-"AGGTCTCCGAGTGTTTCTTGTTCGGTTGGT",
-"CGTAATCAGATTGGATCGCGCCCCACTCCC",
-"CGTAATCAGATTGGATCGCGCCCCACTCCC",
-"CGTAATCAGATTGGATCGCGCCCCCCTCCC"
+"GAGTCATCCTGTGTGCGGTGCTTCCTCGGC",
+"GAGTCATCCTGTGTGCGATGCTTCCTCGGC",
+"GAGTCATCCTGTGTGCGATGCTTCCTCGGC",
+"GCGGTGACCTTCGTGCGACACCTGGCTGCC",
+"GCGGTGACCTTCGTGCGACACCTGGCTGCC",
+"GCGGTGGCCTTCGTGCGACACCTGGCTGCC",
+"GGGTTGACCCGCCCGCGCCTCGTTAGCGGA",
+"GGGTTGACCCGCCCGCGCATCGTTAGCGGA",
+"GGGTTGACCCGCCCGGGCCTCGTTAGCGGA"
 ],
 "coords": [
 [
