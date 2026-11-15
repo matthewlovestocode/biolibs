@@ -59,7 +59,7 @@
 
 ### pydna.assembly2.Assembly
 
-- [x] `__init__(self, frags: list[pydna.dseqrecord.Dseqrecord], limit: int = 25, algorithm: Callable[[ForwardRef('Dseqrecord'), ForwardRef('Dseqrecord'), int], list[Tuple[int, int, int]]] = <function common_sub_strings at 0x1094f1dd0>, use_fragment_order: bool = True, use_all_fragments: bool = False)`
+- [x] `__init__(self, frags: list[pydna.dseqrecord.Dseqrecord], limit: int = 25, algorithm: Callable[[ForwardRef('Dseqrecord'), ForwardRef('Dseqrecord'), int], list[Tuple[int, int, int]]] = <function common_sub_strings at 0x10d371dd0>, use_fragment_order: bool = True, use_all_fragments: bool = False)`
 - [x] `__repr__(self)`
 - [x] `add_edges_from_match(self, match: Tuple[int, int, int], u: int, v: int, first: pydna.dseqrecord.Dseqrecord, secnd: pydna.dseqrecord.Dseqrecord)`
 - [x] `assemble_circular(self, only_adjacent_edges: bool = False, max_assemblies: int = 50) -> list[pydna.dseqrecord.Dseqrecord]`
@@ -88,7 +88,7 @@
 
 ### pydna.assembly2.SingleFragmentAssembly
 
-- [x] `__init__(self, frags: list[pydna.dseqrecord.Dseqrecord], limit=25, algorithm=<function common_sub_strings at 0x1094f1dd0>)`
+- [x] `__init__(self, frags: list[pydna.dseqrecord.Dseqrecord], limit=25, algorithm=<function common_sub_strings at 0x10d371dd0>)`
 - [x] `assemble_inversion(self, max_assemblies: int = 50) -> list[pydna.dseqrecord.Dseqrecord]`
 - [x] `get_circular_assemblies(self, only_adjacent_edges: bool = False, max_assemblies: int = 50) -> list[list[typing.Tuple[int, int, ForwardRef('Location | None'), ForwardRef('Location | None')]]]`
 - [x] `get_insertion_assemblies(self, only_adjacent_edges: bool = False, max_assemblies: int = 50) -> list[list[typing.Tuple[int, int, ForwardRef('Location | None'), ForwardRef('Location | None')]]]`

@@ -27,7 +27,7 @@ import { Seq as BioSeq } from "@biolibs/seq";
 import { CompoundLocation, SeqFeature, SimpleLocation, type Strand } from "@biolibs/seqfeature";
 import type { SeqRecord as BioSeqRecord } from "@biolibs/seqrecord";
 import { locationBoundaries, shiftFeature, shiftLocation } from "./locations.js";
-import { PydnaSeqRecord } from "./seqrecord.js";
+import { PydnaSeqRecord, pydnaAnnotations } from "./seqrecord.js";
 
 /** The default amount of substance a record carries, in moles: 0.05 pmol, as pydna picks. */
 const DEFAULT_N = 5e-14;
@@ -101,6 +101,11 @@ export class Dseqrecord extends PydnaSeqRecord {
           fromRecord && holder.annotations !== undefined ? new Map(holder.annotations) : null);
     this.setSeq(seq);
     this.n = n;
+    // A record built from another record is a copy: pydna copies the fields across rather than running
+    // the constructor that tidies them, so the annotations arrive as they were — a `keywords` that a
+    // GenBank file parsed into a list stays a list here, and only becomes text if this record is later
+    // joined to another.
+    if (fromRecord && holder.annotations !== undefined) this.annotations = new Map(holder.annotations);
     this.annotations.set("molecule_type", "DNA");
     if (!this.annotations.has("source")) this.annotations.set("source", "");
     if (!this.annotations.has("organism")) this.annotations.set("organism", ".");
@@ -366,7 +371,9 @@ export class Dseqrecord extends PydnaSeqRecord {
   override reverseComplement(): this {
     const answer = new Dseqrecord(this.dseq.reverseComplement(), null, this.n);
     answer.features = reverseFeatures(this.features, this.length);
-    answer.annotations = new Map(this.annotations);
+    // The annotations are not carried over: Biopython leaves them behind unless asked for them, so the
+    // complement keeps only the three a `Dseqrecord` always has. A `keywords` read out of a file is
+    // therefore gone, which is what decides whether it survives a later join.
     answer.name = `${this.name.slice(0, 13)}_rc`;
     answer.description = `${this.description}_rc`;
     answer.id = `${this.id}_rc`;
@@ -597,10 +604,29 @@ export class Dseqrecord extends PydnaSeqRecord {
     // otherwise; pydna fills its own defaults in for those. Adding plain text changes nothing.
     const them = other as { id?: string | null; name?: string; description?: string };
     const agreed = <T>(mine: T, theirs: T, fallback: T): T => (!isRecord || mine === theirs ? mine : fallback);
+    // Biopython keeps an annotation only where both records agree on it, and takes the union of the
+    // cross-references. Adding plain text leaves this record's own alone.
+    const theirs = other as { annotations?: Map<string, unknown>; dbxrefs?: string[] };
+    // The two are compared as they are, before any tidying. That matters once a record has been joined
+    // already: its `keywords` is text by then, while a record fresh from a file still has a list, so
+    // the two no longer agree and the annotation is dropped.
+    const mergedAnnotations = new Map(this.annotations);
+    if (isRecord) {
+      const from = theirs.annotations;
+      for (const [key, value] of [...mergedAnnotations]) {
+        if (from === undefined || !from.has(key) || !sameAnnotation(from.get(key), value)) mergedAnnotations.delete(key);
+      }
+    }
+    const mergedDbxrefs = [...this.dbxrefs];
+    if (isRecord) {
+      for (const ref of theirs.dbxrefs ?? []) {
+        if (!mergedDbxrefs.includes(ref)) mergedDbxrefs.push(ref);
+      }
+    }
     const answer = this.derive(newseq, agreed(this.id, them?.id ?? null, "id"),
                                agreed(this.name, them?.name ?? "", "name"),
                                agreed(this.description, them?.description ?? "", "description"),
-                               [...this.dbxrefs], [...this.features, ...shiftedFeatures], new Map(this.annotations));
+                               mergedDbxrefs, [...this.features, ...shiftedFeatures], mergedAnnotations);
     // pydna fills in its own defaults where Biopython's join leaves a placeholder.
     if (answer.name === "<unknown name>") answer.name = "name";
     if (answer.id === "<unknown id>") answer.id = "id";
@@ -636,7 +662,8 @@ export class Dseqrecord extends PydnaSeqRecord {
     out.dbxrefs = dbxrefs === undefined || dbxrefs === null ? [] : [...dbxrefs];
     out.features = features === undefined || features === null ? [] : [...features];
     if (annotations !== undefined && annotations !== null) {
-      out.annotations = new Map(annotations);
+      // The same tidying the constructor does, since this is the path pydna's own joining goes down.
+      out.annotations = pydnaAnnotations(annotations);
       out.annotations.set("molecule_type", "DNA");
       if (!out.annotations.has("source")) out.annotations.set("source", "");
       if (!out.annotations.has("organism")) out.annotations.set("organism", ".");
@@ -975,3 +1002,16 @@ function warnDeprecated(): void {
  *   `Bio.Seq.translate` that pydna itself calls here.
  */
 const translateCodons = (s: string): string => new BioSeq(s).translate().toString();
+
+/**
+ * Whether two annotation values are the same, as Python's `==` finds them.
+ *
+ * @param a - One value. @param b - The other.
+ * @returns Whether they are equal, comparing a list to a list by its items.
+ */
+function sameAnnotation(a: unknown, b: unknown): boolean {
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length === b.length && a.every((item, at) => sameAnnotation(item, b[at]));
+  }
+  return a === b;
+}

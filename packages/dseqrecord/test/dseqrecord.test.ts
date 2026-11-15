@@ -9,7 +9,7 @@
 import { readFileSync } from "node:fs";
 import { captureWarnings } from "@biolibs/core";
 import { Dseq } from "@biolibs/dseq";
-import { Dseqrecord } from "@biolibs/dseqrecord";
+import { Dseqrecord, pydnaAnnotations } from "@biolibs/dseqrecord";
 import { Seq as BioSeq } from "@biolibs/seq";
 import type { SeqFeature } from "@biolibs/seqfeature";
 import { SeqRecord as BioSeqRecord } from "@biolibs/seqrecord";
@@ -79,7 +79,8 @@ interface Case {
 
 const golden = JSON.parse(
   readFileSync(new URL("./golden/dseqrecord.json", import.meta.url), "utf8"),
-) as { pydna: string; cases: Case[]; builds: Array<{ label: string; result: Guarded<Snap> }> };
+) as { pydna: string; cases: Case[]; builds: Array<{ label: string; result: Guarded<Snap> }>;
+         joins: Array<{ label: string; result: Guarded<{ annotations: Record<string, string>; dbxrefs: string[]; genbank: string[] }> }> };
 
 /**
  * Compare one recorded answer with the port's, whichever of the two is an error.
@@ -263,4 +264,41 @@ describe(`pydna.dseqrecord.Dseqrecord: what the constructor accepts (pydna ${gol
       same(result, () => snap(makers[label]!()), label);
     });
   });
+});
+
+describe("joining two records", () => {
+  /** @param text - A record's bases. @param annotations - Its annotations. @param dbxrefs - Its cross-references. @returns The record. */
+  const made = (text: string, annotations: Record<string, unknown>, dbxrefs: string[]): Dseqrecord => {
+    const record = new Dseqrecord(text, null, undefined, "one", "first");
+    for (const [key, value] of Object.entries(annotations)) record.annotations.set(key, value);
+    // pydna takes these as constructor arguments, and its constructor turns every value into text;
+    // this port's `Dseqrecord` takes no annotations, so the same tidying is applied here.
+    record.annotations = pydnaAnnotations(record.annotations);
+    record.dbxrefs = [...dbxrefs];
+    return record;
+  };
+  const SIDES: Record<string, [Record<string, unknown>, string[], Record<string, unknown>, string[]]> = {
+    "same": [{ keywords: [""], note: "x" }, ["A:1"], { keywords: [""], note: "x" }, ["A:1"]],
+    "different keywords": [{ keywords: ["a"], note: "x" }, [], { keywords: ["b"], note: "x" }, []],
+    "keywords list vs text": [{ keywords: [""] }, [], { keywords: "['']" }, []],
+    "one has none": [{ keywords: [""] }, ["A:1"], {}, ["B:2"]],
+    "different dbxrefs": [{}, ["A:1", "B:2"], {}, ["B:2", "C:3"]],
+  };
+  for (const join of golden.joins) {
+    it(`keeps what both agree on: ${join.label}`, () => {
+      const [leftAnnotations, leftRefs, rightAnnotations, rightRefs] = SIDES[join.label]!;
+      same(join.result, () => {
+        // The annotations are set after construction here, so they are tidied the way pydna tidies
+        // them when the two records are joined.
+        const joined = made(" aaaa".trim(), leftAnnotations, leftRefs).add(made("tttt", rightAnnotations, rightRefs));
+        return {
+          annotations: Object.fromEntries([...joined.annotations.entries()]
+            .map(([key, value]) => [key, Array.isArray(value) ? `['${(value as string[]).join("', '")}']` : String(value)])
+            .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))),
+          dbxrefs: [...joined.dbxrefs],
+          genbank: joined.format("genbank").split("\n").filter((line) => line.startsWith("KEYWORDS") || line.startsWith("DBLINK")),
+        };
+      }, "join");
+    });
+  }
 });

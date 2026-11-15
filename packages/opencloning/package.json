@@ -1,0 +1,54 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.1.0",
+    "@biolibs/seqfeature": "^1.0.0",
+    "@biolibs/dseq": "^1.0.0",
+    "@biolibs/dseqrecord": "^1.0.0",
+    "@biolibs/restriction": "^1.0.0",
+    "@biolibs/seqio": "^1.1.1",
+    "@biolibs/assembly2": "^1.0.0"
+  },
+  "description": "Cloning plans in the OpenCloning data model, verified against pydna: write a plan, send it, and replay every step to check the molecules really follow from the parts (pydna.opencloning_models)",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/opencloning#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "typescript",
+    "pydna",
+    "opencloning",
+    "cloning",
+    "provenance",
+    "plasmid",
+    "reproducibility"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/opencloning",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/opencloning"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
+}

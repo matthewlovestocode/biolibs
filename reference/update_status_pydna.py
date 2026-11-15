@@ -304,5 +304,43 @@ for case_name, keys in BY_CASE.items():
         for key in keys:
             mark(key)
 
+# Writing a cloning plan down and running it again. A case is a whole plan — document, read-back,
+# replay and normalisation — so one that came out right exercises all of it at once.
+plans = json.load(open(f"{here}/../packages/opencloning/test/golden/opencloning.json"))
+if any("value" in p["result"] for p in plans["plans"]):
+    for member in ("add_dseqrecord", "add_primer", "from_dseqrecords", "get_ids_of_sequences_that_are_inputs",
+                   "get_ids_of_sequences_that_are_not_inputs", "model_dump", "model_dump_json", "normalize",
+                   "primers", "reassign_ids", "to_dseqrecords", "validate"):
+        mark(f"pydna.opencloning_models.CloningStrategy.{member}")
+    for member in ("validate", "normalize", "history_string", "add_to_history_graph", "input", "database_id",
+                   "to_unserialized_dict", "to_pydantic_model", "from_pydantic_model", "serialize_input"):
+        mark(f"pydna.opencloning_models.Source.{member}")
+    for member in ("circular", "input", "validate", "normalize", "from_subfragment_representation"):
+        mark(f"pydna.opencloning_models.AssemblySource.{member}")
+    mark("pydna.opencloning_models.TextFileSequence.from_dseqrecord")
+    mark("pydna.opencloning_models.PrimerModel.from_primer")
+    for member in ("sequence", "to_pydantic_model"):
+        mark(f"pydna.opencloning_models.SourceInput.{member}")
+    for member in ("left_location", "right_location", "reverse_complemented", "from_biopython_location",
+                   "to_pydantic_model"):
+        mark(f"pydna.opencloning_models.AssemblyFragment.{member}")
+    mark("pydna.opencloning_models.read_dseqrecord_from_text_file_sequence")
+if any("value" in one.get("text", {}) for one in plans["locations"]):
+    for member in ("from_biopython_location", "to_biopython_location", "field_validator", "from_start_and_end"):
+        mark(f"pydna.opencloning_models.SequenceLocationStr.{member}")
+
+# Pydantic's own plumbing, and Python's object identity, have nothing to be ported to: a port has no
+# `id()` to number sequences by, so it always works the way `id_mode(use_python_internal_id=False)` does.
+for key in ("pydna.opencloning_models.get_id", "pydna.opencloning_models.id_mode",
+            "pydna.opencloning_models.CloningStrategy.model_config",
+            "pydna.opencloning_models.Source.model_config", "pydna.opencloning_models.Source.TARGET_MODEL",
+            "pydna.opencloning_models.AssemblySource.model_config",
+            "pydna.opencloning_models.AssemblySource.TARGET_MODEL",
+            "pydna.opencloning_models.TextFileSequence.model_config",
+            "pydna.opencloning_models.PrimerModel.model_config",
+            "pydna.opencloning_models.SourceInput.model_config",
+            "pydna.opencloning_models.AssemblyFragment.model_config"):
+    mark(key, "na")
+
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

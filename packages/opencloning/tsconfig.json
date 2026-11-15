@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "rootDir": "src", "outDir": "dist" },
+  "include": ["src"],
+  "references": [ { "path": "../core" }, { "path": "../seqfeature" }, { "path": "../dseq" }, { "path": "../dseqrecord" }, { "path": "../restriction" }, { "path": "../seqio" }, { "path": "../assembly2" } ]
+}

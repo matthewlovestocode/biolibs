@@ -267,7 +267,7 @@ export class GenBankWriter extends InsdcWriter {
     this.writeMultiEntries("DBLINK", record.dbxrefs.map((x) => (x.includes(": ") ? x : x.replaceAll(":", ": "))));
     let keywords: string;
     if (record.annotations.has("keywords")) {
-      keywords = (record.annotations.get("keywords") as string[]).join("; ");
+      keywords = pyJoin("; ", record.annotations.get("keywords"));
       if (!keywords.endsWith(".")) keywords += ".";
     } else keywords = ".";
     this.writeMultiLine("KEYWORDS", keywords);
@@ -285,7 +285,7 @@ export class GenBankWriter extends InsdcWriter {
     this.writeSingleLine("  ORGANISM", org);
     let taxonomy: string;
     if (record.annotations.has("taxonomy")) {
-      taxonomy = (record.annotations.get("taxonomy") as string[]).join("; ");
+      taxonomy = pyJoin("; ", record.annotations.get("taxonomy"));
       if (!taxonomy.endsWith(".")) taxonomy += ".";
     } else taxonomy = ".";
     this.writeMultiLine("", taxonomy);
@@ -302,4 +302,19 @@ export class GenBankWriter extends InsdcWriter {
     this.writeSequence(record);
     handle.write("//\n");
   }
+}
+
+/**
+ * Python's `separator.join(value)`.
+ *
+ * An annotation that should hold a list of words sometimes holds one string instead — pydna, for one,
+ * turns every annotation into text as it builds a record. Python joins a string by its characters
+ * rather than refusing it, and the file it writes shows that; this does the same.
+ *
+ * @param separator - What to put between the parts. @param value - The list, or a string.
+ * @returns The parts joined.
+ */
+function pyJoin(separator: string, value: unknown): string {
+  if (typeof value === "string") return [...value].join(separator);
+  return (value as string[]).join(separator);
 }

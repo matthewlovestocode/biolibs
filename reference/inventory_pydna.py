@@ -9,7 +9,7 @@ listed: the inherited `Bio.Seq` API is already measured under `docs/parity/Bio.S
 """
 import inspect, json
 import pydna
-from pydna import alphabet, assembly2, common_sub_strings, dseq, dseqrecord, primer, seq as pydna_seq, seqrecord, utils
+from pydna import alphabet, assembly2, common_sub_strings, dseq, dseqrecord, opencloning_models, primer, seq as pydna_seq, seqrecord, utils
 
 #: Dunder members a port has to provide even though their names are private.
 DUNDERS = ("__init__", "__len__", "__getitem__", "__setitem__", "__iter__", "__next__", "__str__",
@@ -98,6 +98,23 @@ inv = {
         "classes": {"Assembly": members(assembly2.Assembly),
                     "PCRAssembly": members(assembly2.PCRAssembly),
                     "SingleFragmentAssembly": members(assembly2.SingleFragmentAssembly)},
+    },
+    # Writing a cloning plan down, and running it again. Only the classes a plan made of the assembly
+    # steps needs are listed: the many source types that stand for a sequence fetched from a repository
+    # — Addgene, Benchling, SnapGene, SEVA, iGEM, NCBI and the rest — and the recombination sources are
+    # left out, as the steps behind them are not ported either.
+    "pydna.opencloning_models": {
+        "functions": funcs(opencloning_models),
+        "classes": {
+            "CloningStrategy": members(opencloning_models.CloningStrategy),
+            "Source": members(opencloning_models.Source),
+            "AssemblySource": members(opencloning_models.AssemblySource),
+            "TextFileSequence": members(opencloning_models.TextFileSequence),
+            "PrimerModel": members(opencloning_models.PrimerModel),
+            "SourceInput": members(opencloning_models.SourceInput),
+            "AssemblyFragment": members(opencloning_models.AssemblyFragment),
+            "SequenceLocationStr": members(opencloning_models.SequenceLocationStr),
+        },
     },
     # Only what the record layer and the assembly engine use from pydna.utils: the label cleaner the slice
     # naming needs, the location helpers the feature handling rests on, and the few the engine calls. The

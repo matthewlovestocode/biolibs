@@ -39423,5 +39423,103 @@ false
 }
 }
 }
+],
+"joins": [
+{
+"label": "same",
+"result": {
+"value": {
+"annotations": {
+"keywords": "['']",
+"molecule_type": "DNA",
+"note": "x",
+"organism": ".",
+"source": ""
+},
+"dbxrefs": [
+"A:1"
+],
+"genbank": [
+"DBLINK      A: 1",
+"KEYWORDS    [; '; '; ]."
+]
+}
+}
+},
+{
+"label": "different keywords",
+"result": {
+"value": {
+"annotations": {
+"molecule_type": "DNA",
+"note": "x",
+"organism": ".",
+"source": ""
+},
+"dbxrefs": [],
+"genbank": [
+"KEYWORDS    ."
+]
+}
+}
+},
+{
+"label": "keywords list vs text",
+"result": {
+"value": {
+"annotations": {
+"keywords": "['']",
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"dbxrefs": [],
+"genbank": [
+"KEYWORDS    [; '; '; ]."
+]
+}
+}
+},
+{
+"label": "one has none",
+"result": {
+"value": {
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"dbxrefs": [
+"A:1",
+"B:2"
+],
+"genbank": [
+"DBLINK      A: 1",
+"KEYWORDS    ."
+]
+}
+}
+},
+{
+"label": "different dbxrefs",
+"result": {
+"value": {
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"dbxrefs": [
+"A:1",
+"B:2",
+"C:3"
+],
+"genbank": [
+"DBLINK      A: 1",
+"KEYWORDS    ."
+]
+}
+}
+}
 ]
 }

@@ -20,7 +20,7 @@ import { CodonTable } from "@biolibs/seq";
 import { CompoundLocation, SeqFeature, SimpleLocation, type Strand } from "@biolibs/seqfeature";
 import { SeqRecord as BioSeqRecord } from "@biolibs/seqrecord";
 import { type ExpressionTable, ProteinSeq, PydnaSeq } from "@biolibs/dseq";
-import { AttributeError, IndexError, NotImplementedError, pyRepr, warn } from "@biolibs/core";
+import { AttributeError, IndexError, NotImplementedError, pyRepr, warn, pyStr } from "@biolibs/core";
 import { identifierFromString } from "./identifier.js";
 
 /** The colours ApE paints features with, in the order pydna assigns them. */
@@ -70,6 +70,22 @@ export const featureLol = (table: FeatureTable): Array<readonly unknown[]> =>
  * a.seguid();              // "lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY"
  * ```
  */
+/**
+ * Every annotation as text, which is what pydna's `_fix_attributes` leaves behind.
+ *
+ * pydna runs each key and value through `pretty_str`, a `str` subclass, so a value that is not already
+ * text becomes text: a `keywords` of `[""]`, which is what a GenBank file parses to, comes out as the
+ * five characters `['']` and is written back into a file that way. It is a wart, but a visible one — it
+ * changes the file a record is written to — so it is kept.
+ *
+ * @param annotations - The annotations.
+ * @returns Them, as text.
+ */
+export function pydnaAnnotations(annotations: Map<string, unknown>): Map<string, unknown> {
+  return new Map([...annotations].map(([key, value]) =>
+    [typeof key === "string" ? key : pyStr(key), typeof value === "string" ? value : pyStr(value)]));
+}
+
 class SeqRecord extends BioSeqRecord {
   /** What a read mapped by {@link SeqRecord.lcs} was mapped against, which starts out unset. */
   mapTarget: SeqRecord | null = null;
@@ -106,6 +122,7 @@ class SeqRecord extends BioSeqRecord {
    */
   protected fixAttributes(): void {
     this.annotations.set("molecule_type", "DNA");
+    this.annotations = pydnaAnnotations(this.annotations);
     const current = this.seq;
     if (current !== null && !(current instanceof PydnaSeq) && !(current instanceof ProteinSeq)) {
       this.seq = new PydnaSeq(current.toString());

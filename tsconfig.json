@@ -78,6 +78,9 @@
     },
     {
       "path": "packages/assembly2"
+    },
+    {
+      "path": "packages/opencloning"
     }
   ]
 }

@@ -265,7 +265,7 @@
     "reverse_complement": "(self, *args, **kwargs)",
     "seguid": "(self)",
     "sorted_features": "(self)",
-    "stamp": "(self, now=<function SeqRecord.datefunction at 0x10896e6c0>, tool='pydna', separator=' ', comment='')",
+    "stamp": "(self, now=<function SeqRecord.datefunction at 0x10c7ee6c0>, tool='pydna', separator=' ', comment='')",
     "startcodon": "(self, organism='sce')",
     "stopcodon": "(self, organism='sce')",
     "translate": "(self)"
@@ -422,7 +422,7 @@
   },
   "classes": {
    "Assembly": {
-    "__init__": "(self, frags: list[pydna.dseqrecord.Dseqrecord], limit: int = 25, algorithm: Callable[[ForwardRef('Dseqrecord'), ForwardRef('Dseqrecord'), int], list[Tuple[int, int, int]]] = <function common_sub_strings at 0x1094f1dd0>, use_fragment_order: bool = True, use_all_fragments: bool = False)",
+    "__init__": "(self, frags: list[pydna.dseqrecord.Dseqrecord], limit: int = 25, algorithm: Callable[[ForwardRef('Dseqrecord'), ForwardRef('Dseqrecord'), int], list[Tuple[int, int, int]]] = <function common_sub_strings at 0x10d371dd0>, use_fragment_order: bool = True, use_all_fragments: bool = False)",
     "__repr__": "(self)",
     "add_edges_from_match": "(self, match: Tuple[int, int, int], u: int, v: int, first: pydna.dseqrecord.Dseqrecord, secnd: pydna.dseqrecord.Dseqrecord)",
     "assemble_circular": "(self, only_adjacent_edges: bool = False, max_assemblies: int = 50) -> list[pydna.dseqrecord.Dseqrecord]",
@@ -449,12 +449,89 @@
     "get_linear_assemblies": "(self, only_adjacent_edges: bool = False, max_assemblies: int = 50) -> list[list[typing.Tuple[int, int, ForwardRef('Location | None'), ForwardRef('Location | None')]]]"
    },
    "SingleFragmentAssembly": {
-    "__init__": "(self, frags: list[pydna.dseqrecord.Dseqrecord], limit=25, algorithm=<function common_sub_strings at 0x1094f1dd0>)",
+    "__init__": "(self, frags: list[pydna.dseqrecord.Dseqrecord], limit=25, algorithm=<function common_sub_strings at 0x10d371dd0>)",
     "assemble_inversion": "(self, max_assemblies: int = 50) -> list[pydna.dseqrecord.Dseqrecord]",
     "get_circular_assemblies": "(self, only_adjacent_edges: bool = False, max_assemblies: int = 50) -> list[list[typing.Tuple[int, int, ForwardRef('Location | None'), ForwardRef('Location | None')]]]",
     "get_insertion_assemblies": "(self, only_adjacent_edges: bool = False, max_assemblies: int = 50) -> list[list[typing.Tuple[int, int, ForwardRef('Location | None'), ForwardRef('Location | None')]]]",
     "get_inversion_assemblies": "(self, max_assemblies: int = 50) -> list[list[typing.Tuple[int, int, ForwardRef('Location | None'), ForwardRef('Location | None')]]]",
     "get_linear_assemblies": "(self)"
+   }
+  }
+ },
+ "pydna.opencloning_models": {
+  "functions": {
+   "get_id": "(obj: \"'Primer' | 'Dseqrecord'\") -> 'int'",
+   "id_mode": "(use_python_internal_id: 'bool' = True)",
+   "read_dseqrecord_from_text_file_sequence": "(seq: 'TextFileSequence') -> 'Dseqrecord'"
+  },
+  "classes": {
+   "CloningStrategy": {
+    "primers": "property",
+    "add_dseqrecord": "(self, dseqr: \"'Dseqrecord'\")",
+    "add_primer": "(self, primer: \"'Primer'\")",
+    "from_dseqrecords": "(cls, dseqrs: \"list['Dseqrecord']\", description: 'str' = '')",
+    "get_ids_of_sequences_that_are_inputs": "(self) -> 'list[int]'",
+    "get_ids_of_sequences_that_are_not_inputs": "(self) -> 'list[int]'",
+    "model_config": "property",
+    "model_dump": "(self, *args, **kwargs)",
+    "model_dump_json": "(self, *args, **kwargs)",
+    "normalize": "(self) -> \"'CloningStrategy'\"",
+    "reassign_ids": "(self)",
+    "to_dseqrecords": "(self) -> \"list['Dseqrecord']\"",
+    "validate": "(self) -> 'None'"
+   },
+   "Source": {
+    "TARGET_MODEL": "(*, id: int, type: Literal['Source'] = 'Source', output_name: str | None = None, database_id: int | None = None, input: list[opencloning_linkml.datamodel._models.SourceInput | opencloning_linkml.datamodel._models.AssemblyFragment] | None = <factory>) -> None",
+    "database_id": "property",
+    "input": "property",
+    "add_to_history_graph": "(self, history_graph: 'nx.DiGraph', seq: \"'Dseqrecord'\")",
+    "figure": "(self, fig_type=None)",
+    "from_pydantic_model": "(cls, model: '_Source', sequences: \"dict[int, 'Dseqrecord']\", primers: \"dict[int, 'Primer']\") -> \"'Source'\"",
+    "history_string": "(self, seq: \"'Dseqrecord'\")",
+    "model_config": "property",
+    "normalize": "(self, result: \"'Dseqrecord'\") -> \"'Dseqrecord'\"",
+    "serialize_input": "(self, input: 'list[Union[SourceInput, AssemblyFragment]]') -> 'list[_SourceInput | _AssemblyFragment]'",
+    "to_pydantic_model": "(self, seq_id: 'int')",
+    "to_unserialized_dict": "(self)",
+    "validate": "(self, result: \"'Dseqrecord'\") -> 'None'"
+   },
+   "AssemblySource": {
+    "TARGET_MODEL": "(*, id: int, type: Literal['AssemblySource'] = 'AssemblySource', output_name: str | None = None, database_id: int | None = None, input: list[opencloning_linkml.datamodel._models.SourceInput | opencloning_linkml.datamodel._models.AssemblyFragment] | None = <factory>, circular: bool | None = None) -> None",
+    "circular": "property",
+    "input": "property",
+    "figure": "(self, fig_type=None)",
+    "from_subfragment_representation": "(cls, assembly: 'SubFragmentRepresentationAssembly', fragments: \"list['Dseqrecord']\", is_circular: 'bool')",
+    "model_config": "property",
+    "normalize": "(self, result: \"'Dseqrecord'\") -> \"'Dseqrecord'\"",
+    "validate": "(self, result: \"'Dseqrecord'\") -> 'None'"
+   },
+   "TextFileSequence": {
+    "from_dseqrecord": "(cls, dseqr: \"'Dseqrecord'\")",
+    "model_config": "property"
+   },
+   "PrimerModel": {
+    "from_primer": "(cls, primer: \"'Primer'\")",
+    "model_config": "property"
+   },
+   "SourceInput": {
+    "sequence": "property",
+    "model_config": "property",
+    "to_pydantic_model": "(self) -> '_SourceInput'"
+   },
+   "AssemblyFragment": {
+    "left_location": "property",
+    "reverse_complemented": "property",
+    "right_location": "property",
+    "from_biopython_location": "(location: 'Location | None')",
+    "model_config": "property",
+    "to_pydantic_model": "(self) -> '_AssemblyFragment'"
+   },
+   "SequenceLocationStr": {
+    "field_validator": "(cls, v)",
+    "from_biopython_location": "(cls, location: 'Location')",
+    "from_start_and_end": "(cls, start: 'int', end: 'int', seq_len: 'int | None' = None, strand: 'int | None' = 1)",
+    "get_ncbi_format_coordinates": "(self) -> 'str'",
+    "to_biopython_location": "(self) -> 'Location'"
    }
   }
  },

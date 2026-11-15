@@ -24,6 +24,11 @@ export interface SourceInput {
   leftLocation: Location | null;
   /** The stretch shared with what came after, or null at the end of one. */
   rightLocation: Location | null;
+  /**
+   * Whether this input was joined at a place on itself, which every input of an assembly is. pydna has
+   * a class for each case rather than a flag; what is written down differs, so the difference is kept.
+   */
+  assemblyFragment: boolean;
 }
 
 /**
@@ -65,6 +70,7 @@ export class AssemblySource {
       reverseComplemented: node < 0,
       leftLocation: left,
       rightLocation: right,
+      assemblyFragment: true,
     }));
     return new AssemblySource(input, isCircular);
   }

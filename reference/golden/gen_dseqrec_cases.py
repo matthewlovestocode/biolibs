@@ -177,7 +177,29 @@ for label, make in [
 ]:
     builds.append({"label": label, "result": guard(lambda m=make: snap(m()))})
 
+# Joining two records: Biopython keeps an annotation only where both agree on it, takes the union of the
+# cross-references, and pydna then turns whatever is left into text. The three together decide what the
+# joined record writes into a GenBank file, which is what a cloning plan carries.
+joins = []
+for label, left_ann, left_db, right_ann, right_db in [
+    ("same", {"keywords": [""], "note": "x"}, ["A:1"], {"keywords": [""], "note": "x"}, ["A:1"]),
+    ("different keywords", {"keywords": ["a"], "note": "x"}, [], {"keywords": ["b"], "note": "x"}, []),
+    ("keywords list vs text", {"keywords": [""]}, [], {"keywords": "['']"}, []),
+    ("one has none", {"keywords": [""]}, ["A:1"], {}, ["B:2"]),
+    ("different dbxrefs", {}, ["A:1", "B:2"], {}, ["B:2", "C:3"]),
+]:
+    def join(left_ann=left_ann, left_db=left_db, right_ann=right_ann, right_db=right_db):
+        """Join two records that disagree, and say what the result carries."""
+        a = Dseqrecord("aaaa", id="one", name="first", annotations=dict(left_ann), dbxrefs=list(left_db))
+        b = Dseqrecord("tttt", id="one", name="first", annotations=dict(right_ann), dbxrefs=list(right_db))
+        joined = a + b
+        return {"annotations": {k: str(v) for k, v in sorted(joined.annotations.items())},
+                "dbxrefs": list(joined.dbxrefs),
+                "genbank": [line for line in joined.format("genbank").split("\n")
+                            if line.startswith("KEYWORDS") or line.startswith("DBLINK")]}
+    joins.append({"label": label, "result": guard(join)})
+
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
-json.dump({"pydna": __import__("pydna").__version__, "cases": cases, "builds": builds},
+json.dump({"pydna": __import__("pydna").__version__, "cases": cases, "builds": builds, "joins": joins},
           open(OUT, "w"), indent=0, allow_nan=False)
 print(len(cases), "records,", len(builds), "builds ->", os.path.relpath(OUT))
