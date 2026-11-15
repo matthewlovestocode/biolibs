@@ -6,9 +6,9 @@
     "@biolibs/core": "^1.1.0",
     "@biolibs/seqfeature": "^1.0.0",
     "@biolibs/dseq": "^1.0.0",
-    "@biolibs/dseqrecord": "^1.0.0",
+    "@biolibs/dseqrecord": "^1.1.0",
     "@biolibs/restriction": "^1.0.0",
-    "@biolibs/seqio": "^1.1.1",
+    "@biolibs/seqio": "^1.1.2",
     "@biolibs/assembly2": "^1.0.0"
   },
   "description": "Cloning plans in the OpenCloning data model, verified against pydna: write a plan, send it, and replay every step to check the molecules really follow from the parts (pydna.opencloning_models)",

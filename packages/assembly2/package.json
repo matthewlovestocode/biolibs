@@ -7,7 +7,7 @@
     "@biolibs/seq": "^1.0.0",
     "@biolibs/seqfeature": "^1.0.0",
     "@biolibs/dseq": "^1.0.0",
-    "@biolibs/dseqrecord": "^1.0.0",
+    "@biolibs/dseqrecord": "^1.1.0",
     "@biolibs/assembly": "^1.0.0"
   },
   "description": "The assembly engine of pydna, verified against it: Gibson, In-Fusion, fusion PCR, in-vivo assembly, ligation, Golden Gate and PCR, each product carrying a record of how it was made (pydna.assembly2)",
