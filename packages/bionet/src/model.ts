@@ -14,6 +14,9 @@
  * that key to `endylab.example` and to nothing else. There is no registry, no authority and nobody to
  * ask: you get a lab's key the way you got its web address, and what you can catch afterwards is the
  * key *changing*.
+ *
+ * An inventory may also point at other labs, which is the only way anyone is found without being told
+ * an address by a person. See `PeerModel` and `discover.ts`.
  */
 
 /** The version of this document these are written in. */
@@ -57,6 +60,36 @@ export interface InventoryPart {
   note: string | null;
 }
 
+/**
+ * Another lab, pointed at by this one.
+ *
+ * This is how labs are found at all. There is no index to look a lab up in, so the only way to reach
+ * one you have not been told about is to start from a lab you already know and follow what it points
+ * at — which is what `discover.ts` does.
+ *
+ * Pointing at a lab is **not** vouching for what that lab holds, and nothing here treats it as such.
+ * It says only: this address exists and publishes an inventory. A pointer does carry one useful
+ * thing, though. If the referring lab records the key it saw there, a crawler can compare that with
+ * the key actually answering, and a disagreement is worth a person's attention — without anyone
+ * having to be in charge.
+ */
+export interface PeerModel {
+  /** The peer's address, as an origin like `https://otherlab.example`. */
+  origin: string;
+  /** What the referring lab calls them. A label, not a verified name. */
+  name: string | null;
+  /**
+   * The fingerprint of the key the referring lab saw answering there, if they recorded one.
+   *
+   * A crawler compares this with the key it finds. Agreement is weak corroboration from somebody
+   * other than the lab itself; disagreement means one of them is looking at something the other is
+   * not, and only the labs can say which.
+   */
+  key: string | null;
+  /** Why they are pointed at, if the referring lab said. */
+  note: string | null;
+}
+
 /** A lab's inventory. */
 export interface InventoryDocument {
   /** Always `1`. */
@@ -65,6 +98,14 @@ export interface InventoryDocument {
   lab: LabModel;
   /** What they hold. */
   parts: InventoryPart[];
+  /**
+   * Other labs this one points at, if it points at any.
+   *
+   * Absent in inventories written before there was such a thing, which stay perfectly valid: a
+   * reader treats a missing list as an empty one and must not add the field, since the signature
+   * covers the document as it was written.
+   */
+  peers?: PeerModel[];
   /** When they say they published it, as an ISO 8601 instant. */
   published_at: string;
 }

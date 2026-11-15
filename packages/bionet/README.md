@@ -13,6 +13,7 @@ publishes it at a fixed path on its own web address. Then a plan's starting part
 - **Fetch one** and find out three separate things: that it is an inventory, that its signatures hold,
   and that it came from the address it claims
 - **Remember** which key answered last time, so a key that changes gets noticed
+- **Find labs you were never told about**, by walking the pointers from ones you were
 - **Ask who has** the parts a plan starts from, matched by checksum
 
 > **This is not a port.** Every other package in biolibs is measured against a Python library case by
@@ -117,6 +118,65 @@ console.log(remember(memory, found.origin, ["9999-aaaa-bbbb-cccc"]).how);   // "
 key, or it may be somebody standing where the lab used to be; only the lab can tell you which. The
 point is that the question gets asked rather than passed over.
 
+## How labs find each other
+
+There is no index of labs, and this does not build one. A lab is found the way a page was found on
+the early web: somebody you already know points at it. An inventory can therefore carry pointers to
+other labs, and `discover` walks them.
+
+```ts
+import { discover, peer, settledLabs } from "@biolibs/bionet";
+
+// pointing at somebody, in your own inventory
+const inventory = inventoryFrom(parts, lab, {
+  peers: [peer("otherlab.example", { name: "Other lab", key: "2f3f-fe1a-3d7d-c3b4" })],
+});
+
+// walking from a lab you were told about
+const walk = await discover(["endylab.example"], { maxDepth: 2 });
+
+console.log(walk.reached.map((one) => one.path.join(" → ")));
+// [ "https://endylab.example",
+//   "https://endylab.example → https://otherlab.example" ]
+console.log(walk.unreachable[0]?.why);      // why an address did not answer, and who pointed at it
+```
+
+So the answer to "how does a new lab get found" is: **publish, and tell one person.** Put a signed
+inventory at `/.well-known/bionet.json`, give the address to a lab that already has one, and when
+they add you to their `peers` everyone who walks through them reaches you. Nothing can automate that
+first introduction, and a design that claimed to would be inventing an authority.
+
+Three consequences, stated rather than glossed:
+
+- **What you find is what your seeds could reach.** There is no view of the whole network and no way
+  to know what you are missing. Two people starting from different labs find different sets, and
+  neither is "the network" — which is why `Discovery` records the `path` by which each lab was
+  reached, so a person can see how they came to be looking at it.
+- **A pointer is not an endorsement.** It says this address exists and publishes an inventory. It
+  says nothing about what that lab holds or who they are.
+- **Only a lab that checks out can introduce anyone.** If a document's signature fails, or it was
+  served from an address it does not claim, it is reported and then its pointers are discarded —
+  otherwise whoever could answer for one address could fill your walk with addresses of their
+  choosing.
+
+A pointer may record the key the referring lab saw. A walk compares it with the key actually
+answering and reports `agrees`, `differs` or `unsaid`:
+
+```ts
+import { introducedDifferently } from "@biolibs/bionet";
+
+for (const one of introducedDifferently(walk)) {
+  console.log(one.found.origin, "is not answering with the key", one.introducedBy, "recorded");
+}
+```
+
+Nothing is concluded from a disagreement. It is surfaced because it is the one contradiction a walk
+can notice without anybody being in charge: two parties describing the same address differently. One
+of them is looking at something the other is not, and only they can say which.
+
+Walks are bounded — 50 labs and 2 hops by default, `stoppedEarly` when it ran into that — and an
+address is visited once however many labs point at it, so a cycle is walked but not gone round.
+
 ## Asking who has the parts
 
 ```ts
@@ -148,6 +208,7 @@ npx vitest run packages/bionet/test
 | File | What it checks |
 |---|---|
 | `test/bionet.test.ts` | inventories, signing, addresses, fetching, remembering, matching |
+| `test/discover.test.ts` | walking the network, and everything a walk refuses to do |
 | `test/readme.test.ts` | every code block in this file |
 
 ## Things to know
@@ -159,6 +220,9 @@ npx vitest run packages/bionet/test
   found; a lab that lists the right name with the wrong molecule is not.
 - **An unsigned inventory is not a broken one**, it is one that claims nothing. It parses, it may be
   perfectly accurate, and `settled()` is false.
+- **An inventory written before there were peers is still valid.** A missing list of pointers reads
+  as an empty one, and nothing adds the field to a document it did not write — the signature covers
+  the document as the lab wrote it.
 - **Nothing here fetches a part.** Finding out who has a plasmid is as far as software goes; the rest
   is an email and a padded envelope.
 

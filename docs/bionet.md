@@ -36,6 +36,22 @@ Two edges stated plainly in `origin.ts`, and enforced:
 - **https, or nothing**, apart from a machine talking to itself. Over plain http anything in the middle can substitute the document, and the signature on the substitute verifies perfectly.
 - **First sight is a leap.** A convincing stand-in is indistinguishable from the real lab on the first visit. What is distinguishable is a key *changing*, which is the whole reason `trust.ts` writes the first one down. `"changed"` may mean a lab rotated its key or it may mean somebody is standing where the lab used to be; only the lab can say which. The value is that the question gets asked.
 
+## How labs find each other
+
+A lab that nobody can find may as well not have published. But an index of labs would be an authority, and the whole arrangement here is built on there not being one — so discovery works the way the early web's did: somebody you already know points at somebody you do not.
+
+An inventory can carry pointers to other labs, inside the signed document. `discover` walks them breadth-first from seeds a person gave it, and returns every lab it reached together with the `path` it took to get there. The path is not decoration. Since what you find is only what your seeds could reach, "I found this lab" means nothing on its own; "I found this lab two pointers along from the one you told me about" is something a person can weigh.
+
+The answer to *how does a new lab get found* is therefore: publish an inventory, and tell one person. When a lab that is already reachable adds you to its pointers, everyone walking through it reaches you. Nothing automates that first introduction. A design that claimed to would be smuggling in the registry this is trying to do without.
+
+Three rules the walk enforces, each of which exists because of a specific way it could otherwise be steered:
+
+- **Only a lab that checks out can introduce anyone.** A document whose signature fails, or which was served from an address it does not claim, is reported and then its pointers are dropped. Without this, anyone able to answer for a single address could fill a walk with addresses of their choosing, and the bounds would be all that stood in the way. The test for it removes the guard's effect by serving a document signed for a different address, and asserts the pointed-at address is never fetched.
+- **An address is visited once**, however many labs point at it, so a cycle is walked but not gone round.
+- **A walk is bounded** — fifty labs and two hops by default — and says `stoppedEarly` when it ran into that, rather than pretending it saw everything.
+
+A pointer may also record the key the referring lab saw there. The walk compares it with the key actually answering and reports `agrees`, `differs` or `unsaid`. Nothing is concluded from a disagreement: it is surfaced because it is the single contradiction this design can notice without anybody being in charge — two parties describing the same address differently. One of them is looking at something the other is not, and only they can say which. A pointer is not an endorsement either; it says the address exists and publishes an inventory, and nothing treats being pointed at as evidence about what a lab holds.
+
 ## Reading a stranger's document
 
 `readInventory` hands back the document **exactly as it arrived**, never a tidied copy. This is not fastidiousness: the signature covers the bytes the lab wrote, so trimming an over-long note or filling in a missing field would leave a document that no longer matches its own signature, and the thing verified would not be the thing used. Anything out of bounds is therefore refused rather than repaired, and over-long text is a display problem for whatever shows it.
@@ -50,6 +66,7 @@ packages/bionet/src/
   inventory.ts   writing one, signing one, reading a stranger's
   origin.ts      where one lives, and what fetching it proves
   fetch.ts       fetching and checking one
+  discover.ts    walking from labs you know to labs you do not
   trust.ts       remembering which key answered last time
   match.ts       what a plan needs, and who has it
 ```

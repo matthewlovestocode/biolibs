@@ -17,6 +17,7 @@
  * - `inventory.ts` — writing one, signing one, reading a stranger's
  * - `origin.ts` — where one lives, and what fetching it proves
  * - `fetch.ts` — fetching and checking one
+ * - `discover.ts` — finding labs you were never told about, by walking from ones you were
  * - `trust.ts` — remembering which key answered last time, so a change gets noticed
  * - `match.ts` — what a plan needs, and who has it
  *
@@ -37,5 +38,6 @@ export * from "./model.js";
 export * from "./inventory.js";
 export * from "./origin.js";
 export * from "./fetch.js";
+export * from "./discover.js";
 export * from "./trust.js";
 export * from "./match.js";

@@ -8,7 +8,8 @@
 import { Dseqrecord } from "@biolibs/dseqrecord";
 import { gibsonAssembly } from "@biolibs/assembly2";
 import { CloningStrategy, generateSigningKey, keyFingerprint } from "@biolibs/opencloning";
-import { fetchInventory, inventoryFrom, labMemory, partsNeeded, remember, settled, signInventory,
+import { discover, fetchInventory, introducedDifferently, inventoryFrom, labMemory, partsNeeded, peer,
+         remember, settled, settledLabs, signInventory,
          signingKeys, unsourced, whoHas, type SignedInventory } from "@biolibs/bionet";
 import { describe, expect, it } from "vitest";
 
@@ -22,8 +23,18 @@ const parts = (): Dseqrecord[] => [
   new Dseqrecord(F3, false, undefined, "3", "f3"),
 ];
 
-const serving = (signed: SignedInventory): typeof globalThis.fetch =>
-  (async () => ({ ok: true, status: 200, text: async () => JSON.stringify(signed) })) as unknown as typeof globalThis.fetch;
+/** @param labs - What each address serves. @returns Something to fetch with. */
+const serving = (labs: Record<string, SignedInventory>): typeof globalThis.fetch =>
+  (async (url: string) => {
+    const signed = labs[new URL(url).origin];
+    return signed === undefined
+      ? { ok: false, status: 404, text: async () => "" }
+      : { ok: true, status: 200, text: async () => JSON.stringify(signed) };
+  }) as unknown as typeof globalThis.fetch;
+
+/** @param signed - One lab's inventory. @returns A fetch serving it at the address it claims. */
+const servingOne = (signed: SignedInventory): typeof globalThis.fetch =>
+  serving({ [signed.inventory.lab.origin]: signed });
 
 describe("README: publishing what a lab holds", () => {
   it("lists each part by name and by checksum", async () => {
@@ -48,7 +59,7 @@ describe("README: reading somebody else's", () => {
       name: "Endy lab", origin: "https://endylab.example", contact: null, note: null,
     }), key, { signer: "Endy lab" });
 
-    const found = await fetchInventory("endylab.example", { fetch: serving(published) });
+    const found = await fetchInventory("endylab.example", { fetch: servingOne(published) });
     expect(found.checks[0]!.ok).toBe(true);
     expect(found.fromItsOwnAddress).toBe(true);
     expect(settled(found)).toBe(true);
@@ -62,12 +73,37 @@ describe("README: noticing when a key changes", () => {
     const published = await signInventory(inventoryFrom(parts(), {
       name: "Endy lab", origin: "https://endylab.example", contact: null, note: null,
     }), key);
-    const found = await fetchInventory("endylab.example", { fetch: serving(published) });
+    const found = await fetchInventory("endylab.example", { fetch: servingOne(published) });
 
     const memory = labMemory();
     expect(remember(memory, found.origin, signingKeys(found)).how).toBe("new");
     expect(remember(memory, found.origin, signingKeys(found)).how).toBe("known");
     expect(remember(memory, found.origin, ["9999-aaaa-bbbb-cccc"]).how).toBe("changed");
+  });
+});
+
+describe("README: how labs find each other", () => {
+  it("walks from a lab it was told about to one it was not", async () => {
+    const key = await generateSigningKey();
+    const lab = { name: "Endy lab", origin: "https://endylab.example", contact: null, note: null };
+    const other = await signInventory(inventoryFrom([parts()[2]!], {
+      ...lab, name: "Other lab", origin: "https://otherlab.example",
+    }), key);
+    const endy = await signInventory(inventoryFrom([parts()[0]!], lab, {
+      peers: [peer("otherlab.example", { name: "Other lab", key: await keyFingerprint(key.publicKey) })],
+    }), key);
+
+    const walk = await discover(["endylab.example"], {
+      maxDepth: 2,
+      fetch: serving({ "https://endylab.example": endy, "https://otherlab.example": other }),
+    });
+    expect(walk.reached.map((one) => one.path.join(" → "))).toEqual([
+      "https://endylab.example",
+      "https://endylab.example → https://otherlab.example",
+    ]);
+    expect(walk.reached[1]!.asIntroduced).toBe("agrees");
+    expect(introducedDifferently(walk)).toEqual([]);
+    expect(settledLabs(walk).length).toBe(2);
   });
 });
 
@@ -82,7 +118,7 @@ describe("README: asking who has the parts", () => {
     const published = await signInventory(inventoryFrom([parts()[0]!, parts()[1]!], {
       name: "Endy lab", origin: "https://endylab.example", contact: null, note: null,
     }), key);
-    const found = await fetchInventory("endylab.example", { fetch: serving(published) });
+    const found = await fetchInventory("endylab.example", { fetch: servingOne(published) });
 
     const needed = partsNeeded(plan.document);
     expect(needed.map((part) => part.name)).toEqual(["f1", "f2", "f3"]);

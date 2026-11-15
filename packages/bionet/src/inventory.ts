@@ -10,7 +10,8 @@ import type { Dseqrecord } from "@biolibs/dseqrecord";
 import { signUnder, verifyUnder, type SignatureCheck, type SignOptions,
          type SigningKey } from "@biolibs/opencloning";
 import { INVENTORY_VERSION, type InventoryDocument, type InventoryPart, type LabModel,
-         type SignedInventory } from "./model.js";
+         type PeerModel, type SignedInventory } from "./model.js";
+import { labOrigin } from "./origin.js";
 
 /** What the bytes of a signed inventory are for. */
 export const INVENTORY_DOMAIN = "biolibs/bionet signed inventory v1";
@@ -20,6 +21,9 @@ export const MOST_PARTS = 5_000;
 /** The longest an inventory may be, as text. */
 export const LONGEST = 4_000_000;
 
+/** How many labs one inventory may point at. */
+export const MOST_PEERS = 200;
+
 /** What `inventoryFrom` needs to know that the molecules cannot say. */
 export interface InventoryOptions {
   /** When to say it was published. Defaults to now. */
@@ -28,6 +32,13 @@ export interface InventoryOptions {
   available?: boolean;
   /** A note per part, by the part's name. */
   notes?: Record<string, string>;
+  /**
+   * Other labs to point at, so that whoever reads this can go on to find them.
+   *
+   * Left out, the inventory carries no list at all rather than an empty one, which is what every
+   * inventory written before there were peers looks like.
+   */
+  peers?: readonly PeerModel[];
 }
 
 /**
@@ -66,7 +77,25 @@ export function inventoryFrom(records: readonly Dseqrecord[], lab: LabModel,
     bionet_inventory_version: INVENTORY_VERSION,
     lab,
     parts,
+    ...(options.peers === undefined ? {} : { peers: [...options.peers] }),
     published_at: options.publishedAt ?? new Date().toISOString(),
+  };
+}
+
+/**
+ * Point at another lab, for an inventory's `peers`.
+ *
+ * @param address - Their address, however it was written.
+ * @param about - What to call them, the key you saw, and why you are pointing at them.
+ * @returns The pointer.
+ * @throws If the address is not one an inventory can be fetched from.
+ */
+export function peer(address: string, about: { name?: string; key?: string; note?: string } = {}): PeerModel {
+  return {
+    origin: labOrigin(address),
+    name: about.name ?? null,
+    key: about.key ?? null,
+    note: about.note ?? null,
   };
 }
 
@@ -145,6 +174,16 @@ export function readInventory(value: unknown): SignedInventory {
         || part.checksum.length > 120 || !sayable(part.id, 200) || !sayable(part.name, 200)
         || !sayable(part.note, 2_000)) {
       throw new Error("This inventory lists something that is not a part.");
+    }
+  }
+  if (held.peers !== undefined) {
+    if (!Array.isArray(held.peers)) throw new Error("This inventory's list of other labs is not a list.");
+    if (held.peers.length > MOST_PEERS) throw new Error(`An inventory may point at most ${MOST_PEERS} labs.`);
+    for (const one of held.peers as Partial<PeerModel>[]) {
+      if (typeof one?.origin !== "string" || one.origin.length > 500
+          || !sayable(one.name, 200) || !sayable(one.key, 120) || !sayable(one.note, 2_000)) {
+        throw new Error("This inventory points at something that is not a lab.");
+      }
     }
   }
   if (!sayable(held.published_at, 40)) throw new Error("This inventory's publication time is not a time.");
