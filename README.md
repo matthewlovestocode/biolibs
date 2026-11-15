@@ -5,9 +5,22 @@ few packages that have no Python equivalent.
 
 - **23 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,695 API items at parity** across three upstream libraries, of 2,696 applicable
-- **17,668 tests**, replaying answers recorded from the real Python libraries
+- **17,783 tests**, replaying answers recorded from the real Python libraries
 
-> **Not published to npm yet.** Clone and build; see [Building](#building).
+## Install
+
+Every package is published on npm under the [`@biolibs`](https://www.npmjs.com/org/biolibs) scope, so take
+only the ones you need:
+
+```bash
+npm install @biolibs/seq          # sequences and translation
+npm install @biolibs/seqio        # reading and writing 40-odd file formats
+npm install @biolibs/cloning      # digests, ligation, Gibson assembly
+```
+
+ESM only, Node 20 or later, TypeScript declarations included, and each package ships its source so
+breakpoints land in the TypeScript rather than the build output. Each package's own README has its API
+with worked examples; the table below links them.
 
 ## What "parity" means here
 
@@ -90,7 +103,7 @@ Biopython checklist, because it is a port of CPython itself: 1,253 recorded case
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 17,668 tests
+npm test           # vitest — 17,783 tests
 npm run coverage   # per-file coverage
 ```
 
