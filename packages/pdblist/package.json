@@ -1,0 +1,50 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.1.0",
+    "@biolibs/entrez": "^1.0.0"
+  },
+  "description": "Protein Data Bank downloads, verified against Biopython: structure and assembly files fetched and decompressed, and the archive's entry, obsolete and weekly-change lists (Bio.PDB.PDBList)",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/pdblist#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "typescript",
+    "biopython",
+    "pdb",
+    "protein-data-bank",
+    "wwpdb",
+    "rcsb",
+    "mmcif",
+    "structure"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/pdblist",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/pdblist"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
+}

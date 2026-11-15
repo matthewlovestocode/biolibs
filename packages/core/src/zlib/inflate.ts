@@ -244,6 +244,28 @@ export function inflateRaw(data: Uint8Array): Uint8Array {
 }
 
 /**
+ * Decompress raw DEFLATE data that something else may follow, and say where it ended.
+ *
+ * A container that puts its own trailer after the compressed data, as gzip does, has no other way to
+ * find that trailer: a DEFLATE stream does not say how long it is until it has been read.
+ *
+ * @param data - The compressed bytes, possibly followed by more.
+ * @returns The decompressed bytes, and how many bytes of `data` the stream occupied.
+ * @throws {@link ZlibError} for data that is not valid DEFLATE, or that stops before the stream does.
+ * @example
+ * ```ts
+ * const { data, consumed } = inflateRawPrefix(Uint8Array.of(0x4b, 0x04, 0x00, 0xff, 0xff));
+ * data;       // Uint8Array [ 97 ], the letter "a"
+ * consumed;   // 3, so two bytes follow the stream
+ * ```
+ */
+export function inflateRawPrefix(data: Uint8Array): { data: Uint8Array; consumed: number } {
+  const out = new Output();
+  const consumed = inflateInto(data, out);
+  return { data: out.done(), consumed };
+}
+
+/**
  * Adler-32, the checksum a zlib stream ends with.
  *
  * @param data - The bytes to sum.

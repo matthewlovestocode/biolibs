@@ -15,6 +15,7 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/nexus` | `Bio.Nexus`: NEXUS reader/writer and editor, `Tree`/`Node`/`Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus`. Powers the `nexus` format in `seqio` | [nexus.md](nexus.md) |
 | `@biolibs/svdsuperimposer` | `Bio.SVDSuperimposer`: least-squares superposition of two point sets | [svdsuperimposer.md](svdsuperimposer.md) |
 | `@biolibs/entrez` | `Bio.Entrez`: the eight NCBI E-utilities, with the requests, rate limit and retries Biopython uses. Fetches text for `seqio` to parse; `read` and `parse` not ported | [entrez.md](entrez.md) |
+| `@biolibs/pdblist` | `Bio.PDB.PDBList`: structure and assembly files fetched from the Protein Data Bank and unpacked, and the archive's lists of entries. Returns files for `pdb` to parse; the methods that keep a copy on disk are not applicable | [pdblist.md](pdblist.md) |
 | `@biolibs/pdb` | `Bio.PDB` first slice: `Structure`/`Model`/`Chain`/`Residue`/`Atom` (with disorder), `StructureBuilder`, PDB and mmCIF parsers (`PDBParser`, `MMCIFParser`, `MMCIF2Dict`), PDB header parsing, the `PDBIO`/`MMCIFIO` writers, `Vector`/rotation geometry, polypeptide building, superposition, neighbor search and surface areas | [pdb.md](pdb.md) |
 | `@biolibs/motifs` | `Bio.motifs`: motifs, position matrices, scoring and thresholds, JASPAR, TRANSFAC and Cluster-Buster formats | [motifs.md](motifs.md) |
 | `@biolibs/restriction` | `Bio.Restriction`: 1,088 enzymes, cut sites, digests, `RestrictionBatch` and `Analysis` | [restriction.md](restriction.md) |
@@ -58,7 +59,7 @@ core  <-- seq  <-- nexus  <-- seqio
   +---- motifs  (also uses seq, align)
   +---- gel
   +---- seqmap
-  +---- entrez
+  +---- entrez  <-- pdblist
 ```
 
 The bioengineering packages sit on top of the ports:
@@ -73,7 +74,7 @@ seq, restriction, seguid  <-- dseq
 core  <-- seguid
 ```
 
-Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none. Only `entrez` touches the network, and only through `settings.transport`, which can be replaced; no other package does any I/O.
+Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none. Only `entrez` and `pdblist` touch the network, each through one function that can be replaced (`settings.transport`, and the `fetcher` a `PDBList` is given); no other package does any I/O.
 
 ## Conventions
 

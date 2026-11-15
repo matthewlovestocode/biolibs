@@ -91,7 +91,8 @@ from the engine rather than the platform's C library.
 
 ## DEFLATE (`zlib/`)
 
-`inflate(bytes)` is Python's `zlib.decompress` and `inflateRaw(bytes)` its `wbits=-15` form; `deflate(bytes,
+`inflate(bytes)` is Python's `zlib.decompress` and `inflateRaw(bytes)` its `wbits=-15` form
+(`inflateRawPrefix(bytes)` also says where the stream ended, which is how gzip's trailer is found); `deflate(bytes,
 level)` is `zlib.compress` and `deflateRaw` its raw form, with `adler32` for the checksum a zlib stream ends
 with and `ZlibError` (Python's `zlib.error`, whose name is `error`) for data that is not valid. Written out here
 rather than taken from the host, so that the readers and writers that need it work the same under Node, a

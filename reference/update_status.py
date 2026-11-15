@@ -739,5 +739,17 @@ entrez = json.load(open(f"{here}/../packages/entrez/test/golden/entrez.json"))
 for fn in {c["fn"] for c in entrez["eutils"] if "value" in c or "exc" in c}:
     if fn in inv["Bio.Entrez"]["functions"]: mark(f"Bio.Entrez.{fn}")
 
+# Bio.PDB.PDBList: a method is done when the golden cases call it, with the network replaced so that
+# what is recorded is the address it asks for, what it prints and what it would have left on disk.
+# `__init__` is exercised by every one of them, with and without `server` and `verbose`. The methods
+# that maintain a copy of the archive in a directory have nothing to be ported to.
+pdblist = json.load(open(f"{here}/../packages/pdblist/test/golden/pdblist.json"))["cases"]
+pdblist_kinds = {c["kind"] for c in pdblist if "value" in c or "exc" in c}
+PDBLIST_DISK = {"update_pdb", "download_pdb_files", "download_all_assemblies", "download_entire_pdb", "download_obsolete_entries"}
+for m in inv["Bio.PDB.PDBList"]["classes"]["PDBList"]:
+    key = f"Bio.PDB.PDBList.PDBList.{m}"
+    if m in PDBLIST_DISK: mark(key, "na")
+    elif m in pdblist_kinds or (m == "__init__" and pdblist_kinds): mark(key)
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

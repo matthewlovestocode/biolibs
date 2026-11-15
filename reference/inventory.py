@@ -46,6 +46,7 @@ PPoly = importlib.import_module('Bio.PDB.Polypeptide')
 PVec = importlib.import_module('Bio.PDB.vectors')
 PHeader = importlib.import_module('Bio.PDB.parse_pdb_header')  # `import ... as` would give the shadowing function
 PICo = importlib.import_module('Bio.PDB.internal_coords')
+PList = importlib.import_module('Bio.PDB.PDBList')  # the module, not the shadowing class
 from Bio.Nexus import Nexus as NexusMod, Trees as TreesMod, Nodes as NodesMod, StandardData as StandardDataMod
 
 # Dunders that carry no Biopython meaning unless a class overrides them. `inspect.getmembers`
@@ -125,6 +126,9 @@ inv = {
   # The requests only: `read` and `parse` are listed because Biopython defines them, and stay unticked
   # until Bio.Entrez.Parser is ported.
   "Bio.Entrez": {"functions": funcs(Entrez)},
+  # Downloads from the Protein Data Bank. The methods that keep a copy of the archive on disk are listed
+  # because Biopython defines them, and are marked not applicable: there is no disk to keep it on.
+  "Bio.PDB.PDBList": {"classes": {"PDBList": members(PList.PDBList)}},
   "Bio.Nexus.Nexus": {"functions": funcs(NexusMod), "classes": {"Nexus": members(NexusMod.Nexus)}},
   "Bio.Nexus.Trees": {"functions": funcs(TreesMod), "classes": {"Tree": members(TreesMod.Tree)}},
   "Bio.Nexus.Nodes": {"classes": {"Chain": members(NodesMod.Chain), "Node": members(NodesMod.Node)}},

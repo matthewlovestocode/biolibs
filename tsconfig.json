@@ -72,6 +72,9 @@
     },
     {
       "path": "packages/entrez"
+    },
+    {
+      "path": "packages/pdblist"
     }
   ]
 }

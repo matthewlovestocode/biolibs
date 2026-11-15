@@ -269,7 +269,7 @@ console.log(pyRandom.random()); // 0.32383276483316237
 
 Also `randrange`, `randbelow`, `choice`, `shuffle`, `gauss`.
 
-### zlib: `deflate`, `inflate`, `deflateRaw`, `inflateRaw`, `adler32`
+### zlib: `deflate`, `inflate`, `deflateRaw`, `inflateRaw`, `inflateRawPrefix`, `adler32`
 
 A full deflate implementation, because the file formats need to *write* what zlib writes — not merely
 produce something zlib can read.

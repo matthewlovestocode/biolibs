@@ -42,7 +42,8 @@ Where the claim stops — which is now about modules the port leaves out, not it
   back to them, and from a distance plot alone. `ic_rebuild` with its PIC file format (`read_PIC`,
   `write_PIC`, `structure_rebuild_test`) is a separate module and not ported.
 - **`index_db`-style extras are out of scope**: `DSSP` and `NACCESS` run external programs,
-  and `PDBList` and `alphafold_db` download from the internet.
+  and `alphafold_db` downloads from the internet. `PDBList`, which also downloads, is its own package:
+  [`@biolibs/pdblist`](../pdblist).
 - **Not ported**: `HSExposure`, `ResidueDepth`, `FragmentMapper`, `StructureAlignment`/`cealign`,
   `PDBMLParser`, `PICIO`, `SCADIO`, `binary_cif`/MMTF.
 - **`PDBIO.save` returns the text** rather than writing to a handle — `save(select?, writeEnd?,

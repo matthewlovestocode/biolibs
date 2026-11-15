@@ -283,8 +283,8 @@ Details kept faithful to Biopython:
 `PICIO` and `SCADIO`, which write the same format and OpenSCAD. The per-angle accessors of `IC_Residue`
 (`get_angle`, `set_angle`, `pick_angle`) are not ported either; read the values off the hedra and dihedra.
 
-DSSP and NACCESS run external programs, and `PDBList` and `alphafold_db` download from the internet, so
-none of the four is in scope. Also not ported: `HSExposure`, `ResidueDepth`, `FragmentMapper`,
+DSSP and NACCESS run external programs and `alphafold_db` downloads from the internet, so none of the
+three is in scope. `PDBList`, which also downloads, is ported as its own package, [pdblist](pdblist.md). Also not ported: `HSExposure`, `ResidueDepth`, `FragmentMapper`,
 `StructureAlignment`/`cealign`, `PDBMLParser`, `binary_cif`/MMTF.
 
 The SeqIO formats `pdb-atom`, `cif-atom` and `cif-seqres` are in `@biolibs/seqio`.

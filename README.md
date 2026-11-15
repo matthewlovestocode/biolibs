@@ -3,9 +3,9 @@
 TypeScript ports of Python bioengineering libraries, verified case by case against the originals — plus a
 few packages that have no Python equivalent.
 
-- **24 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
-- **2,703 API items at parity** across three upstream libraries, of 2,706 applicable
-- **18,903 tests**, replaying answers recorded from the real Python libraries
+- **25 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
+- **2,712 API items at parity** across three upstream libraries, of 2,715 applicable
+- **18,938 tests**, replaying answers recorded from the real Python libraries
 
 ## Install
 
@@ -34,7 +34,7 @@ cases rather than maintained by hand.
 
 | Upstream | Verified | Checklist |
 |---|---|---|
-| Biopython 1.88 | **2,456 / 2,458** | [docs/parity/](docs/parity/README.md) |
+| Biopython 1.88 | **2,465 / 2,467** | [docs/parity/](docs/parity/README.md) |
 | pydna 5.5.16 | **224 / 225** | [docs/parity-pydna/](docs/parity-pydna/README.md) |
 | seguid | **23 / 23** | [docs/parity-seguid/](docs/parity-seguid/README.md) |
 
@@ -65,7 +65,8 @@ absent from the inventory the checklists are generated from until this was notic
 | [`@biolibs/nexus`](packages/nexus) | `Bio.Nexus` | 84 | the `Nexus` class with every block, `Tree`, `Node`, `StandardData`, `StepMatrix`, `combine`, `consensus` — `bootstrap` and `randomize` included, on `@biolibs/core`'s Mersenne Twister. [README](packages/nexus/README.md) |
 | [`@biolibs/seqtools`](packages/seqtools) | `Bio.SeqUtils` | 39 | GC content and skew, `nt_search`, `seq1`/`seq3`, molecular weight, six-frame translations, codon adaptation, checksums, `lcc`, `ProtParam`, `IsoelectricPoint`, `MeltingTemp`. [README](packages/seqtools/README.md) |
 | [`@biolibs/svdsuperimposer`](packages/svdsuperimposer) | `Bio.SVDSuperimposer` | 7 | least-squares superposition by SVD, in single or double precision, with no dependencies. [README](packages/svdsuperimposer/README.md) |
-| [`@biolibs/entrez`](packages/entrez) | `Bio.Entrez` | 8 / 10 | the eight NCBI E-utilities — `efetch`, `esearch`, `esummary`, `elink`, `epost`, `einfo`, `espell`, `ecitmatch` — building the same requests, with the same rate limit and retries. The one package that touches the network, through a single replaceable function. `Entrez.read` and `parse` are not ported. [README](packages/entrez/README.md) |
+| [`@biolibs/entrez`](packages/entrez) | `Bio.Entrez` | 8 / 10 | the eight NCBI E-utilities — `efetch`, `esearch`, `esummary`, `elink`, `epost`, `einfo`, `espell`, `ecitmatch` — building the same requests, with the same rate limit and retries. One of the two packages that touch the network, through a single replaceable function. `Entrez.read` and `parse` are not ported. [README](packages/entrez/README.md) |
+| [`@biolibs/pdblist`](packages/pdblist) | `Bio.PDB.PDBList` | 9 | structure files in five formats and biological assemblies, fetched from the Protein Data Bank and unpacked; the lists of entries, withdrawn entries, weekly changes and assemblies. Returns files, not paths; the methods that keep a copy on disk are not applicable. [README](packages/pdblist/README.md) |
 
 ## Ports of pydna and seguid
 
@@ -106,7 +107,7 @@ Biopython checklist, because it is a port of CPython itself: 1,253 recorded case
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 18,903 tests
+npm test           # vitest — 18,938 tests
 npm run coverage   # per-file coverage
 ```
 

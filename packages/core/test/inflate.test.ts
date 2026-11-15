@@ -1,7 +1,7 @@
 /** Replays the DEFLATE golden cases (reference/golden/gen_zlib_cases.py): Python compresses, the port inflates. */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { adler32, deflate, inflate, inflateRaw } from "../src/index.js";
+import { adler32, deflate, inflate, inflateRaw, inflateRawPrefix } from "../src/index.js";
 
 interface Case { level: number | null; raw: string | null; zlib: string; deflate: string | null; error?: string }
 
@@ -27,6 +27,26 @@ describe("zlib inflate", () => {
       if (adler32(want) === 0 && want.length > 0) bad.push("adler32 of non-empty data is zero");
     }
     expect(bad.length, bad.join("\n")).toBe(0);
+  });
+
+  it("says where a raw stream ends, whatever follows it", () => {
+    const bad: string[] = [];
+    const tail = Uint8Array.of(1, 2, 3, 4, 5, 6, 7, 8);
+    for (const c of cases) {
+      if (c.raw === null) continue;
+      const stream = bytes(c.deflate!);
+      const alone = inflateRawPrefix(stream);
+      const joined = new Uint8Array(stream.length + tail.length);
+      joined.set(stream);
+      joined.set(tail, stream.length);
+      const followed = inflateRawPrefix(joined);
+      if (alone.consumed !== stream.length || followed.consumed !== stream.length) bad.push(`level ${c.level}: consumed ${alone.consumed}/${followed.consumed} of ${stream.length}`);
+      if (hex(alone.data) !== c.raw || hex(followed.data) !== c.raw) bad.push(`level ${c.level}: wrong bytes`);
+    }
+    expect(bad.length, bad.join("\n")).toBe(0);
+    const one = inflateRawPrefix(Uint8Array.of(0x4b, 0x04, 0x00, 0xff, 0xff));
+    expect([...one.data]).toEqual([97]);
+    expect(one.consumed).toBe(3);
   });
 
   it("raises for data that is not a zlib stream", () => {
