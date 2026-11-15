@@ -573,6 +573,19 @@ describe("rotateCircular", () => {
     expect(locationLength(gene)).toBe(10);
   });
 
+  it("carries a feature with no location through, as applyEdit does", () => {
+    // extractRegion is the engine of rotateCircular, so dropping such a feature would lose annotation for
+    // nothing: rotating a circle changes no base. Biopython raises on one instead, which the golden file
+    // records as this package's one deliberate divergence.
+    const record = demo("circular");
+    record.features.push(new SeqFeature(null, "source", "s"));
+    expect(rotateCircular(record, 10).features.map((f) => f.type)).toEqual(["gene", "CDS", "source"]);
+    expect(locationOf(rotateCircular(record, 10), "s")).toBeNull();
+    expect(extractRegion(record, 10, 50).features.map((f) => f.type)).toEqual(["gene", "CDS", "source"]);
+    expect(extractRegion(record, 10, 50, { edgeFeatures: "drop" }).features.map((f) => f.type))
+      .toEqual(["gene", "CDS", "source"]);
+  });
+
   it("does nothing for an origin of zero", () => {
     expect(residuesOf(rotateCircular(demo("circular"), 0))).toBe(SEQ);
   });

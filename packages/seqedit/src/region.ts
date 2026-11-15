@@ -72,7 +72,13 @@ export function extractRegion(record: SeqRecord, start: number, end: number, opt
 
   const features: SeqFeature[] = [];
   for (const feature of record.features) {
-    if (feature.location === null) continue;
+    if (feature.location === null) {
+      // A feature with no location has nothing to be inside or outside the region, so it survives untouched, as it
+      // does through `applyEdit` and `reverseComplementRecord`. Dropping it would make `rotateCircular` — which is
+      // this function over the whole molecule — lose annotation for nothing.
+      features.push(new SeqFeature(null, feature.type, feature.id, new Map(feature.qualifiers)));
+      continue;
+    }
     const moved = wraps
       ? clipWrapped(feature.location as AnyLocation, start, end, length)
       : clipLocation(feature.location as AnyLocation, start, end);

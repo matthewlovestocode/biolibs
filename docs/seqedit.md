@@ -2,7 +2,7 @@
 
 Editing a `SeqRecord` while keeping its features true. Biopython can slice a record and add records together, but both are lossy for an editor: `record[a:b]` keeps only the features wholly inside the slice and drops the rest, and there is no operation for "replace these bases and move the annotations". This package supplies that.
 
-**Verified against Biopython 1.88 on 62 cases** (`packages/seqedit/test/golden/seqedit.json`, built by `reference/golden/gen_seqedit_cases.py`) at the three places the two overlap:
+**Verified against Biopython 1.88 on 62 cases** (`packages/seqedit/test/golden/seqedit.json`, built by `reference/golden/gen_seqedit_cases.py`) at the three places the two overlap, plus 90 unit tests over the behaviour Biopython has no counterpart for. See [the package README](../packages/seqedit/README.md) for the API with worked examples.
 
 | Biopython | biolibs |
 |---|---|
@@ -50,7 +50,7 @@ A `CompoundLocation` carries each part through and keeps its operator; one left 
 
 ## One measured divergence from Biopython
 
-Biopython reads `feature.location.ref` while slicing and `location.flip` while reverse-complementing, so a feature with **no location** makes it raise `AttributeError`. Here such a feature survives untouched, there being nothing in it to move — crashing on one would make the record uneditable. The golden file records Biopython's failure and the test asserts that this port succeeds where Biopython raises, so the divergence is measured rather than merely claimed, and cannot quietly spread to a case it was not claimed for.
+Biopython reads `feature.location.ref` while slicing and `location.flip` while reverse-complementing, so a feature with **no location** makes it raise `AttributeError`. Here such a feature survives untouched through every operation — `applyEdit`, `extractRegion`, `rotateCircular` and `reverseComplementRecord` alike — there being nothing in it to move, and crashing on one would make the record uneditable. The golden file records Biopython's failure and the test asserts that this port succeeds where Biopython raises, so the divergence is measured rather than merely claimed, and cannot quietly spread to a case it was not claimed for.
 
 ## Metadata
 
