@@ -164,7 +164,7 @@ altered.plan.sequences[0]!.file_content =
   altered.plan.sequences[0]!.file_content.replace("ggatcacagt", "ggatcacagc");
 
 const [spoiled] = await verifyPlan(altered);
-console.log(spoiled.ok, spoiled.problem);           // false "This plan is not what that key signed."
+console.log(spoiled.ok, spoiled.problem);           // false "This document is not what that key signed."
 ```
 
 A second key can countersign the same plan, which is how a lab that has run someone else's plan says so:
@@ -173,6 +173,14 @@ A second key can countersign the same plan, which is how a lab that has run some
 const countersigned = await signPlan(signed, await generateSigningKey(), { signer: "the lab down the hall" });
 console.log((await verifyPlan(countersigned)).map((one) => one.ok));   // [ true, true ]
 ```
+
+Signing is also available on its own, under a domain of your choosing, for documents that are not
+cloning plans — `signUnder` and `verifyUnder`. [`@biolibs/bionet`](../bionet) signs lab inventories
+with them.
+
+> **Version 2.0.0 changed the bytes a plan signature covers**, so signatures made by 1.1.0 do not
+> verify here. The domain string went from `v1` to `v2` with them, so an old signature fails plainly
+> instead of looking like a claim about something it is not. Nothing else about the package changed.
 
 **What a signature means, exactly:** whoever holds this key put their name to this plan. That is all. It
 does not say the key belongs to a lab, or that the lab did the work, or that the plan is any good — and

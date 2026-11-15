@@ -79,7 +79,7 @@ describe("README: signing one", () => {
     altered.plan.sequences[0]!.file_content =
       altered.plan.sequences[0]!.file_content.replace("ggatcacagt", "ggatcacagc");
     const [spoiled] = await verifyPlan(altered);
-    expect([spoiled!.ok, spoiled!.problem]).toEqual([false, "This plan is not what that key signed."]);
+    expect([spoiled!.ok, spoiled!.problem]).toEqual([false, "This document is not what that key signed."]);
 
     const countersigned = await signPlan(signed, await generateSigningKey(), { signer: "the lab down the hall" });
     expect((await verifyPlan(countersigned)).map((one) => one.ok)).toEqual([true, true]);

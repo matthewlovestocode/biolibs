@@ -1,5 +1,5 @@
 /**
- * Signing a plan, and checking a signature on one.
+ * Signing a cloning plan, and checking a signature on one.
  *
  * Nothing in this file is pydna's, and nothing in it is the OpenCloning data model's either. The data
  * model forbids fields it does not define, so a signature cannot be tucked inside a plan: instead the
@@ -18,30 +18,21 @@
  * be countersigned by another that has run it.
  */
 import type { CloningStrategyDocument } from "./model.js";
-import { canonicalJson, fromBase64Url, toBase64Url } from "./canonical.js";
-import { SIGNING_ALGORITHM, type SigningKey, importPublicKey, keyFingerprint } from "./keys.js";
+import { signUnder, verifyUnder, type DocumentSignature, type SignOptions } from "./sign.js";
+import type { SigningKey } from "./keys.js";
 
 /**
  * What the bytes being signed are for.
  *
  * It is prefixed to every signature so that a signature over a cloning plan can never be replayed as a
- * signature over something else that happened to serialise the same way.
+ * signature over something else that happened to serialise the same way. The `v2` is the wrapper this
+ * version signs: version 1 of this package wrote a different one, so its signatures fail here rather
+ * than quietly appearing to be about something they are not.
  */
-export const SIGNING_DOMAIN = "biolibs/opencloning signed plan v1";
+export const SIGNING_DOMAIN = "biolibs/opencloning signed plan v2";
 
 /** One key's signature over a plan. */
-export interface PlanSignature {
-  /** Always `"Ed25519"`. */
-  algorithm: string;
-  /** The signing key's public half, 32 bytes in base64url. */
-  public_key: string;
-  /** The signature itself, 64 bytes in base64url. */
-  signature: string;
-  /** What the signer chose to call themselves. Covered by the signature, but still only a claim. */
-  signer: string | null;
-  /** When they say they signed, as an ISO 8601 instant. Covered by the signature, but still a claim. */
-  signed_at: string;
-}
+export type PlanSignature = DocumentSignature;
 
 /** A plan with signatures beside it. Take `.plan` and you have an ordinary OpenCloning document. */
 export interface SignedPlan {
@@ -53,33 +44,7 @@ export interface SignedPlan {
   signatures: PlanSignature[];
 }
 
-/** What came of checking one signature. */
-export interface SignatureCheck {
-  /** Whether the signature is good: these bytes, this key. */
-  ok: boolean;
-  /** The key that signed, in base64url. */
-  public_key: string;
-  /** That key's fingerprint, for a person to compare. Empty if the key could not be read. */
-  fingerprint: string;
-  /** What the signer called themselves. A claim, and no more. */
-  signer: string | null;
-  /** When they say they signed. A claim, and no more. */
-  signed_at: string;
-  /** Why it failed, if it did. */
-  problem: string | null;
-}
-
-/** What one key signs: the plan, and that key's own note about signing it. */
-const statement = (plan: CloningStrategyDocument, signer: string | null, signedAt: string): Uint8Array =>
-  new TextEncoder().encode(`${SIGNING_DOMAIN}\n${canonicalJson({ plan, signer, signed_at: signedAt })}`);
-
-/** How a signature is asked for. */
-export interface SignOptions {
-  /** A name to sign under. It is covered by the signature, but nothing verifies that it is yours. */
-  signer?: string | null;
-  /** When to say it was signed. Defaults to now. */
-  signedAt?: string;
-}
+export type { SignatureCheck, SignOptions, DocumentSignature } from "./sign.js";
 
 /**
  * Sign a plan.
@@ -111,25 +76,10 @@ export async function signPlan(
 ): Promise<SignedPlan> {
   const held = isSignedPlan(plan) ? plan.plan : plan;
   const already = isSignedPlan(plan) ? plan.signatures : [];
-  const signer = options.signer ?? null;
-  const signedAt = options.signedAt ?? new Date().toISOString();
-  const bytes = statement(held, signer, signedAt);
-  const signature = new Uint8Array(
-    await (globalThis.crypto as Crypto).subtle.sign(SIGNING_ALGORITHM, key.privateKey, bytes as unknown as ArrayBuffer),
-  );
   return {
     signed_plan_version: 1,
     plan: held,
-    signatures: [
-      ...already,
-      {
-        algorithm: SIGNING_ALGORITHM,
-        public_key: key.publicKey,
-        signature: toBase64Url(signature),
-        signer,
-        signed_at: signedAt,
-      },
-    ],
+    signatures: [...already, await signUnder(SIGNING_DOMAIN, held, key, options)],
   };
 }
 
@@ -143,32 +93,8 @@ export async function signPlan(
  * @param signed - The signed plan.
  * @returns One check per signature, in the same order.
  */
-export async function verifyPlan(signed: SignedPlan): Promise<SignatureCheck[]> {
-  const checks: SignatureCheck[] = [];
-  for (const one of signed.signatures) {
-    const check: SignatureCheck = {
-      ok: false, public_key: one.public_key, fingerprint: "",
-      signer: one.signer ?? null, signed_at: one.signed_at, problem: null,
-    };
-    if (one.algorithm !== SIGNING_ALGORITHM) {
-      check.problem = `This signature is ${one.algorithm}, which is not checked here.`;
-      checks.push(check);
-      continue;
-    }
-    try {
-      check.fingerprint = await keyFingerprint(one.public_key);
-      const key = await importPublicKey(one.public_key);
-      const bytes = statement(signed.plan, one.signer ?? null, one.signed_at);
-      check.ok = await (globalThis.crypto as Crypto).subtle.verify(
-        SIGNING_ALGORITHM, key, fromBase64Url(one.signature) as unknown as ArrayBuffer, bytes as unknown as ArrayBuffer,
-      );
-      if (!check.ok) check.problem = "This plan is not what that key signed.";
-    } catch (cause) {
-      check.problem = String(cause instanceof Error ? cause.message : cause);
-    }
-    checks.push(check);
-  }
-  return checks;
+export async function verifyPlan(signed: SignedPlan): Promise<import("./sign.js").SignatureCheck[]> {
+  return verifyUnder(SIGNING_DOMAIN, signed.plan, signed.signatures);
 }
 
 /**

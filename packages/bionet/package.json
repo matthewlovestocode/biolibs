@@ -1,0 +1,49 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/dseqrecord": "^1.1.1",
+    "@biolibs/opencloning": "^2.0.0"
+  },
+  "description": "Lab inventories for a network of labs: what a lab holds, signed by its key and published at its own address, so a cloning plan can be checked against who actually has the parts",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/bionet#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "typescript",
+    "bionet",
+    "opencloning",
+    "inventory",
+    "provenance",
+    "signing",
+    "reproducibility"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/bionet",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/bionet"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
+}

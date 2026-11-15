@@ -81,6 +81,9 @@
     },
     {
       "path": "packages/opencloning"
+    },
+    {
+      "path": "packages/bionet"
     }
   ]
 }

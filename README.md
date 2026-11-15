@@ -100,6 +100,7 @@ Biopython's, that part is still recorded and replayed. See
 | [`@biolibs/features`](packages/features) | Find known elements against a library of reference pieces, both strands, mismatch-tolerant, across a circular origin; turn hits into features and skip what is already annotated. No library is bundled |
 | [`@biolibs/gel`](packages/gel) | A virtual agarose gel: log-linear migration, four concentrations, ladders, band merging, fragment sizes from cut positions |
 | [`@biolibs/seqmap`](packages/seqmap) | Plasmid and linear map geometry: positions on a circle or line, feature arcs and arrows as SVG paths, round tick intervals, lane packing, label de-collision |
+| [`@biolibs/bionet`](packages/bionet) | Lab inventories: what a lab holds, named by checksum, signed with its key and published at its own address — so the parts a cloning plan starts from can be looked up. Careful about what fetching one does *not* establish |
 
 [`@biolibs/core`](packages/core) underpins all of them: Python-style errors and warnings, the
 compatibility helpers that let a port reproduce Python's `int()`, `repr()`, `round()`, `%` and `random`, a

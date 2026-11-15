@@ -36,6 +36,7 @@
 export * from "./model.js";
 export * from "./canonical.js";
 export * from "./keys.js";
+export * from "./sign.js";
 export * from "./signature.js";
 export * from "./locations.js";
 export * from "./sequences.js";
