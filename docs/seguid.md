@@ -1,8 +1,11 @@
 # @biolibs/seguid
 
 SEGUID v2: checksums that identify a sequence rather than naming it. A port of the
-[seguid](https://github.com/seguid/seguid-python) package, measured against it in
-[docs/parity-seguid/](parity-seguid/README.md).
+[seguid](https://github.com/seguid/seguid-python) package. All **23 items** are at parity, verified
+against seguid 0.2.1 by **279 recorded cases** (`packages/seguid/test/golden/seguid.json`: 253
+checksums, of which 66 are refusals, 15 rotation cases and 11 alphabet tables). See
+[docs/parity-seguid/](parity-seguid/README.md), and [the package README](../packages/seguid/README.md)
+for the API with worked examples.
 
 A checksum is the base64 of a SHA-1 over the sequence with the `=` padding dropped, which gives 27
 characters. What makes the five variants differ is what goes into the hash:
