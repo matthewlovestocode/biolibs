@@ -22,6 +22,7 @@ from pydna.assembly2 import (fusion_pcr_assembly, gibson_assembly, in_fusion_ass
 from pydna.dseqrecord import Dseqrecord
 from pydna.primer import Primer
 from pydna.opencloning_models import CloningStrategy, SequenceLocationStr, id_mode
+from opencloning_linkml.datamodel import CloningStrategy as OfficialStrategy
 from pydna.utils import create_location
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "..", "packages", "opencloning", "test", "golden",
@@ -78,7 +79,7 @@ def document(records, description=""):
         return json.loads(CloningStrategy.from_dseqrecords(records, description=description).model_dump_json())
 
 
-cases = {"plans": [], "locations": [], "pieces": []}
+cases = {"plans": [], "locations": [], "pieces": [], "official": []}
 
 
 def plan(name, inputs, make, description="", wrong="ACGTACGTACGTACGTACGTAAAA"):
@@ -247,6 +248,25 @@ for name, inputs, make in (("gibson_three", THIRDS, lambda f: gibson_assembly(f,
                 "primers": [p.name for p in source._get_input_primers()],
                 "overlap": source._minimal_assembly_overlap()}
     cases["pieces"].append({"name": name, "result": guard(pieces)})
+
+# ------------------------------------------------------- the data model's own reading of a plan
+# A plan is only worth sending if the other end reads it with something other than this code. These
+# documents are handed to `opencloning_linkml`, the library the OpenCloning data model is defined by,
+# and written back out by it: what is recorded is what that library emits, so replaying one here shows
+# the two agree about the format rather than only about pydna.
+for name in ("gibson_three", "pcr", "pcr_then_gibson", "restriction_ligation"):
+    plan_case = next(c for c in cases["plans"] if c["name"] == name)
+    if "value" not in plan_case["result"] or not plan_case["result"]["value"].get("products"):
+        continue
+    ours = plan_case["result"]["value"]["document"]
+    official = OfficialStrategy.model_validate(ours)
+    emitted = json.loads(official.model_dump_json(exclude_none=False))
+    cases["official"].append({
+        "name": name,
+        "document": emitted,
+        "unchanged": emitted == ours,
+        "source_types": [type(s).__name__ for s in official.sources],
+    })
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 json.dump(cases, open(OUT, "w"), indent=0, sort_keys=True)

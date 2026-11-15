@@ -12,8 +12,8 @@ import { Dseqrecord } from "@biolibs/dseqrecord";
 import { enzymes } from "@biolibs/restriction";
 import { Primer, fusionPcrAssembly, gibsonAssembly, inFusionAssembly, inVivoAssembly, ligationAssembly,
          pcrAssembly, restrictionLigationAssembly, createLocation, type Fragment } from "@biolibs/assembly2";
-import { CloningStrategy, history, inputPrimers, inputSequences, locationText, minimalOverlap,
-         rangeText, textToLocation, validateHistory } from "@biolibs/opencloning";
+import { CloningStrategy, type CloningStrategyDocument, history, inputPrimers, inputSequences, locationText,
+         minimalOverlap, rangeText, textToLocation, validateHistory } from "@biolibs/opencloning";
 import type { SimpleLocation } from "@biolibs/seqfeature";
 import { describe, expect, it } from "vitest";
 
@@ -26,6 +26,7 @@ const golden = JSON.parse(readFileSync(new URL("./golden/opencloning.json", impo
   plans: { name: string; inputs: Spec[]; description: string; wrong: string; result: Guarded<Record<string, unknown>> }[];
   locations: Record<string, unknown>[];
   pieces: { name: string; result: Guarded<Record<string, unknown>> }[];
+  official: { name: string; document: CloningStrategyDocument; unchanged: boolean; source_types: string[] }[];
 };
 
 /** @param spec - An input. @returns The molecule or primer it stands for. */
@@ -198,6 +199,34 @@ describe("what a step hands its replay", () => {
         primers: inputPrimers(source).map((one) => one.name),
         overlap: minimalOverlap(source),
       }))).toEqual(piece.result);
+    });
+  }
+});
+
+describe("a plan written by the data model itself", () => {
+  for (const one of golden.official) {
+    it(`${one.name}: replays what opencloning_linkml emits`, () => {
+      // The document here was handed to the library the OpenCloning data model is defined by and
+      // written back out by it, so this is the format as that library understands it, not as this
+      // port or pydna happens to write it.
+      expect(one.unchanged, "the official library emitted it unchanged").toBe(true);
+      const plan = CloningStrategy.fromDocument(one.document);
+      expect(plan.sources.map((source) => source.type)).toEqual(one.source_types);
+      plan.validate();
+      expect(plan.toRecords().length).toBeGreaterThan(0);
+    });
+
+    it(`${one.name}: reads the same however the fields are ordered`, () => {
+      // Nothing may depend on where a key happens to sit, since another tool writes them in its own order.
+      const shuffle = (value: unknown): unknown => {
+        if (Array.isArray(value)) return value.map(shuffle);
+        if (value !== null && typeof value === "object") {
+          return Object.fromEntries([...Object.entries(value)].reverse().map(([k, v]) => [k, shuffle(v)]));
+        }
+        return value;
+      };
+      const plan = CloningStrategy.fromDocument(shuffle(one.document) as CloningStrategyDocument);
+      plan.validate();
     });
   }
 });

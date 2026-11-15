@@ -9,10 +9,11 @@ whole history down; hand that document to someone else and `validate()` replays 
 parts and fails if the molecule the plan claims does not come out.
 
 - **Write a plan** from the molecules at the end of it, history and all
-- **Read one back**, whether it came from here, from pydna, or from the OpenCloning web interface
+- **Read one back**, whether it came from here or from pydna — and whatever order a writer put the fields in
 - **Replay it** — every step, from the inputs, with the products matched to the claims
 - **Normalise it**, so that two labs' plans for the same construct can be compared
 - **Draw it**, as the tree pydna prints
+- **Sign it** — not pydna's: a plan signed with an Ed25519 key, checkable beside the replay
 - Molecules travel as **GenBank files**, with the overhangs GenBank cannot express kept beside them
 
 Steps that join DNA by recombination — Gateway, Cre-lox, the recombinases, CRISPR — cannot be replayed,
@@ -28,11 +29,20 @@ replayed — for a product that really follows from its inputs and for one that 
 |---|---|---|
 | `pydna.opencloning_models` | **41 / 44** | [pydna.opencloning_models.md](../../docs/parity-pydna/pydna.opencloning_models.md) |
 
-**14 whole plans and 16 locations** against pydna 5.5.16: Gibson with two and three fragments, In-Fusion,
+**14 whole plans, 16 locations and 4 documents handed through the data model itself** against pydna
+5.5.16 and `opencloning_linkml` 1.0.0: Gibson with two and three fragments, In-Fusion,
 fusion PCR, in-vivo assembly, ligation, restriction-ligation, Golden Gate, PCR with and without the
 primers marked, two multi-step plans, a renumbering, and a plan whose product does not follow from its
 steps. Each plan is compared as a document, as records read back, as a history, as a normalised
 document, and as a verdict.
+
+The interoperation is tested, not assumed. Four plans are handed to `opencloning_linkml` — the library
+the OpenCloning data model is defined by — and written back out by it; what that library emits is
+byte-identical to what this port writes, and replaying its output here gives the same molecules. Each
+is replayed again with its fields in a different order, since another writer will not use this one's.
+
+What that does **not** show is that the OpenCloning web application opens these documents. The data
+model agrees; the application has not been tried.
 
 Where the claim stops:
 
@@ -123,6 +133,54 @@ try {
 }
 ```
 
+## Signing one
+
+Replaying a plan tells you the molecules follow from the parts. It does not tell you who sent it. These
+four functions are **not** pydna's and not the data model's — they sign a plan and check a signature on
+one, with Ed25519 through Web Crypto, which works the same in Node and in a browser.
+
+The data model forbids fields it does not define, so a signature cannot go inside a plan. A signed plan
+wraps it: `signed.plan` is byte-for-byte the document `opencloning_linkml` accepts, and the signatures
+sit outside it, so signing costs nothing in interoperation.
+
+```ts
+import { generateSigningKey, keyFingerprint, signPlan, verifyPlan } from "@biolibs/opencloning";
+
+const key = await generateSigningKey();
+console.log(await keyFingerprint(key.publicKey));   // 1c99-04a7-... — how a person compares two keys
+
+const signed = await signPlan(plan.document, key, { signer: "Bench 4" });
+
+const [check] = await verifyPlan(signed);
+console.log(check.ok, check.signer);                // true "Bench 4"
+```
+
+Alter the plan afterwards — a base, or a claim about which step made what — and the signature fails
+along with the replay. `verifyPlan` reports rather than throws, so a bad signature is a verdict:
+
+```ts
+const altered = structuredClone(signed);
+altered.plan.sequences[0]!.file_content =
+  altered.plan.sequences[0]!.file_content.replace("ggatcacagt", "ggatcacagc");
+
+const [spoiled] = await verifyPlan(altered);
+console.log(spoiled.ok, spoiled.problem);           // false "This plan is not what that key signed."
+```
+
+A second key can countersign the same plan, which is how a lab that has run someone else's plan says so:
+
+```ts
+const countersigned = await signPlan(signed, await generateSigningKey(), { signer: "the lab down the hall" });
+console.log((await verifyPlan(countersigned)).map((one) => one.ok));   // [ true, true ]
+```
+
+**What a signature means, exactly:** whoever holds this key put their name to this plan. That is all. It
+does not say the key belongs to a lab, or that the lab did the work, or that the plan is any good — and
+`signer` is a label the holder chose, not a verified name. Tying a key to a lab means getting that key
+from somewhere you already trust the lab to speak from. Run both checks together: a signature without a
+replay is an accountable claim that may be wrong, and a replay without a signature is a sound plan from
+nobody.
+
 ## Drawing one
 
 ```ts
@@ -186,6 +244,7 @@ twoStep.validate();                     // replays the PCR, then the assembly
 | `SequenceLocationStr.from_biopython_location(loc)` | `locationText(location)` |
 | `id_mode(use_python_internal_id=False)` | always, since a port has no `id()` |
 | `source.figure()` | not ported |
+| — | `signPlan` / `verifyPlan` / `generateSigningKey`, which pydna has no equivalent of |
 
 ## Testing
 
@@ -197,6 +256,7 @@ npx vitest run packages/opencloning/test
 | File | What it checks |
 |---|---|
 | `test/opencloning.test.ts` | the recorded plans from pydna 5.5.16 |
+| `test/signature.test.ts` | signing and verification, which are not pydna's |
 | `test/readme.test.ts` | every code block in this file |
 
 ## Things to know

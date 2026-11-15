@@ -15,6 +15,10 @@
  * - `history.ts` — the plan drawn as a tree
  * - `model.ts` — the shape of the document itself
  *
+ * Three files are not pydna's and say so where they begin: `signature.ts` signs a plan and checks a
+ * signature on one, over the canonical bytes `canonical.ts` writes, with keys from `keys.ts`. Replaying
+ * a plan says the molecules follow from the parts; a signature says who put their name to it.
+ *
  * @example
  * ```ts
  * import { CloningStrategy } from "@biolibs/opencloning";
@@ -30,6 +34,9 @@
  */
 
 export * from "./model.js";
+export * from "./canonical.js";
+export * from "./keys.js";
+export * from "./signature.js";
 export * from "./locations.js";
 export * from "./sequences.js";
 export * from "./sources.js";

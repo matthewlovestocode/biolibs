@@ -6,7 +6,8 @@
 import { ValueError } from "@biolibs/core";
 import { Dseqrecord } from "@biolibs/dseqrecord";
 import { Primer, gibsonAssembly, pcrAssembly } from "@biolibs/assembly2";
-import { CloningStrategy, history } from "@biolibs/opencloning";
+import { CloningStrategy, generateSigningKey, history, keyFingerprint, signPlan,
+         verifyPlan } from "@biolibs/opencloning";
 import { describe, expect, it } from "vitest";
 
 const F1 = "GGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGA";
@@ -60,6 +61,28 @@ describe("README: checking one that arrives", () => {
     expect(caught).toBeInstanceOf(ValueError);
     expect((caught as Error).message)
       .toBe("Result sequence does not match any of the 1 product(s) from GibsonAssemblySource");
+  });
+});
+
+describe("README: signing one", () => {
+  it("signs a plan, and the signature follows the plan exactly", async () => {
+    const { plan } = example();
+    const key = await generateSigningKey();
+    expect(await keyFingerprint(key.publicKey)).toMatch(/^[0-9a-f]{4}(-[0-9a-f]{4}){3}$/);
+
+    const signed = await signPlan(plan.document, key, { signer: "Bench 4" });
+    const [check] = await verifyPlan(signed);
+    expect([check!.ok, check!.signer]).toEqual([true, "Bench 4"]);
+    expect(JSON.stringify(signed.plan)).toBe(JSON.stringify(plan.document));
+
+    const altered = structuredClone(signed);
+    altered.plan.sequences[0]!.file_content =
+      altered.plan.sequences[0]!.file_content.replace("ggatcacagt", "ggatcacagc");
+    const [spoiled] = await verifyPlan(altered);
+    expect([spoiled!.ok, spoiled!.problem]).toEqual([false, "This plan is not what that key signed."]);
+
+    const countersigned = await signPlan(signed, await generateSigningKey(), { signer: "the lab down the hall" });
+    expect((await verifyPlan(countersigned)).map((one) => one.ok)).toEqual([true, true]);
   });
 });
 

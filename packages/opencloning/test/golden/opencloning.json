@@ -152,6 +152,461 @@
 "text_in": "nonsense"
 }
 ],
+"official": [
+{
+"document": {
+"backend_version": null,
+"description": "three fragments into a plasmid",
+"files": null,
+"frontend_version": null,
+"primers": [],
+"schema_version": "1.0.0",
+"sequences": [
+{
+"file_content": "LOCUS       name                      75 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   100\nVERSION     100\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 cctggacagc tggactttat cccaacttcc ccctacactc tatacggtct tatagttctc\n       61 aaatcacacg gcgat\n//",
+"id": 100,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       f1                        50 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   1\nVERSION     1\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 cctggacagc tggactttat cccaacttcc ccctacactc tatacggtct\n//",
+"id": 1,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       f2                        50 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   2\nVERSION     2\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 cttcccccta cactctatac ggtcttatag ttctcaaatc acacggcgat\n//",
+"id": 2,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       f3                        50 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   3\nVERSION     3\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 tatagttctc aaatcacacg gcgatcctgg acagctggac tttatcccaa\n//",
+"id": 3,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+}
+],
+"sources": [
+{
+"circular": true,
+"database_id": null,
+"id": 100,
+"input": [
+{
+"left_location": "1..25",
+"reverse_complemented": false,
+"right_location": "26..50",
+"sequence": 1,
+"type": "AssemblyFragment"
+},
+{
+"left_location": "1..25",
+"reverse_complemented": false,
+"right_location": "26..50",
+"sequence": 2,
+"type": "AssemblyFragment"
+},
+{
+"left_location": "1..25",
+"reverse_complemented": false,
+"right_location": "26..50",
+"sequence": 3,
+"type": "AssemblyFragment"
+}
+],
+"output_name": null,
+"type": "GibsonAssemblySource"
+},
+{
+"database_id": null,
+"id": 1,
+"input": [],
+"output_name": null,
+"type": "ManuallyTypedSource"
+},
+{
+"database_id": null,
+"id": 2,
+"input": [],
+"output_name": null,
+"type": "ManuallyTypedSource"
+},
+{
+"database_id": null,
+"id": 3,
+"input": [],
+"output_name": null,
+"type": "ManuallyTypedSource"
+}
+]
+},
+"name": "gibson_three",
+"source_types": [
+"GibsonAssemblySource",
+"ManuallyTypedSource",
+"ManuallyTypedSource",
+"ManuallyTypedSource"
+],
+"unchanged": true
+},
+{
+"document": {
+"backend_version": null,
+"description": "a pcr",
+"files": null,
+"frontend_version": null,
+"primers": [
+{
+"database_id": null,
+"id": 2,
+"name": "fwd",
+"sequence": "gaattcGGATCCATTACGGTCAGC",
+"type": "Primer"
+},
+{
+"database_id": null,
+"id": 3,
+"name": "rvs",
+"sequence": "ATGGCAAACGTTACGGCTTAA",
+"type": "Primer"
+}
+],
+"schema_version": "1.0.0",
+"sequences": [
+{
+"file_content": "LOCUS       name                      75 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   100\nVERSION     100\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 gaattcggat ccattacggt cagcgacgag tcccattgaa ggatatgatc gactttaagc\n       61 cgtaacgttt gccat\n//",
+"id": 100,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       template                  89 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   1\nVERSION     1\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 ggccgtaata tcatcttaag ggatccatta cggtcagcga cgagtcccat tgaaggatat\n       61 gatcgacttt aagccgtaac gtttgccat\n//",
+"id": 1,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+}
+],
+"sources": [
+{
+"add_primer_features": false,
+"circular": false,
+"database_id": null,
+"id": 100,
+"input": [
+{
+"left_location": null,
+"reverse_complemented": false,
+"right_location": "7..24",
+"sequence": 2,
+"type": "AssemblyFragment"
+},
+{
+"left_location": "21..38",
+"reverse_complemented": false,
+"right_location": "69..89",
+"sequence": 1,
+"type": "AssemblyFragment"
+},
+{
+"left_location": "1..21",
+"reverse_complemented": true,
+"right_location": null,
+"sequence": 3,
+"type": "AssemblyFragment"
+}
+],
+"output_name": null,
+"type": "PCRSource"
+},
+{
+"database_id": null,
+"id": 1,
+"input": [],
+"output_name": null,
+"type": "ManuallyTypedSource"
+}
+]
+},
+"name": "pcr",
+"source_types": [
+"PCRSource",
+"ManuallyTypedSource"
+],
+"unchanged": true
+},
+{
+"document": {
+"backend_version": null,
+"description": "amplify, then assemble",
+"files": null,
+"frontend_version": null,
+"primers": [
+{
+"database_id": null,
+"id": 2,
+"name": "fwd",
+"sequence": "GGTTACTGGTGGAGCGGACAATGTC",
+"type": "Primer"
+},
+{
+"database_id": null,
+"id": 3,
+"name": "rvs",
+"sequence": "GGCTAATGCCGTAACCTAGG",
+"type": "Primer"
+}
+],
+"schema_version": "1.0.0",
+"sequences": [
+{
+"file_content": "LOCUS       name                     115 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   100\nVERSION     100\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 cctaggttac ggcattagcc tacgacgtat tagtaggctc ccccacatcg gagaggctaa\n       61 ggttactggt ggagcggaca atgtcaataa cggggatccc gaggatcact gcact\n//",
+"id": 100,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       backbone                  85 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   4\nVERSION     4\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 cctaggttac ggcattagcc tacgacgtat tagtaggctc ccccacatcg gagaggctaa\n       61 ggttactggt ggagcggaca atgtc\n//",
+"id": 4,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       amplicon                  75 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   50\nVERSION     50\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 ggttactggt ggagcggaca atgtcaataa cggggatccc gaggatcact gcactcctag\n       61 gttacggcat tagcc\n//",
+"id": 50,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       template                 105 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   1\nVERSION     1\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 cataagcata aacgcggtta ctggtggagc ggacaatgtc aataacgggg atcccgagga\n       61 tcactgcact cctaggttac ggcattagcc ttgccgcgat aacat\n//",
+"id": 1,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+}
+],
+"sources": [
+{
+"circular": true,
+"database_id": null,
+"id": 100,
+"input": [
+{
+"left_location": "1..20",
+"reverse_complemented": false,
+"right_location": "61..85",
+"sequence": 4,
+"type": "AssemblyFragment"
+},
+{
+"left_location": "1..25",
+"reverse_complemented": false,
+"right_location": "56..75",
+"sequence": 50,
+"type": "AssemblyFragment"
+}
+],
+"output_name": null,
+"type": "GibsonAssemblySource"
+},
+{
+"database_id": null,
+"id": 4,
+"input": [],
+"output_name": null,
+"type": "ManuallyTypedSource"
+},
+{
+"add_primer_features": false,
+"circular": false,
+"database_id": null,
+"id": 50,
+"input": [
+{
+"left_location": null,
+"reverse_complemented": false,
+"right_location": "1..25",
+"sequence": 2,
+"type": "AssemblyFragment"
+},
+{
+"left_location": "16..40",
+"reverse_complemented": false,
+"right_location": "71..90",
+"sequence": 1,
+"type": "AssemblyFragment"
+},
+{
+"left_location": "1..20",
+"reverse_complemented": true,
+"right_location": null,
+"sequence": 3,
+"type": "AssemblyFragment"
+}
+],
+"output_name": null,
+"type": "PCRSource"
+},
+{
+"database_id": null,
+"id": 1,
+"input": [],
+"output_name": null,
+"type": "ManuallyTypedSource"
+}
+]
+},
+"name": "pcr_then_gibson",
+"source_types": [
+"GibsonAssemblySource",
+"ManuallyTypedSource",
+"PCRSource",
+"ManuallyTypedSource"
+],
+"unchanged": true
+},
+{
+"document": {
+"backend_version": null,
+"description": "cut and joined in one pot",
+"files": null,
+"frontend_version": null,
+"primers": [],
+"schema_version": "1.0.0",
+"sequences": [
+{
+"file_content": "LOCUS       name                      82 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   100\nVERSION     100\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 gatcctgccc tccgttgcgg ccatgcgcac tcgatggtag tgagagaatt ccacgaagtt\n       61 gcgacgcctt tagaagtctg tg\n//",
+"id": 100,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       vector                    64 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   1\nVERSION     1\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 cgcactcgat ggtagtgaga gaattccgaa cgattaatgg atcctgccct ccgttgcggc\n       61 catg\n//",
+"id": 1,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       insert                    58 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   2\nVERSION     2\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 gcggatcaga attccacgaa gttgcgacgc ctttagaagt ctgtggatcc ttcgagta\n//",
+"id": 2,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+},
+{
+"file_content": "LOCUS       name                      54 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   101\nVERSION     101\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 aattccgaac gattaatgga tccacagact tctaaaggcg tcgcaacttc gtgg\n//",
+"id": 101,
+"overhang_crick_3prime": 0,
+"overhang_watson_3prime": 0,
+"sequence_file_format": "genbank",
+"type": "TextFileSequence"
+}
+],
+"sources": [
+{
+"circular": true,
+"database_id": null,
+"id": 100,
+"input": [
+{
+"left_location": "40..43",
+"reverse_complemented": false,
+"right_location": "22..25",
+"sequence": 1,
+"type": "AssemblyFragment"
+},
+{
+"left_location": "10..13",
+"reverse_complemented": false,
+"right_location": "46..49",
+"sequence": 2,
+"type": "AssemblyFragment"
+}
+],
+"output_name": null,
+"restriction_enzymes": [
+"EcoRI",
+"BamHI"
+],
+"type": "RestrictionAndLigationSource"
+},
+{
+"database_id": null,
+"id": 1,
+"input": [],
+"output_name": null,
+"type": "ManuallyTypedSource"
+},
+{
+"database_id": null,
+"id": 2,
+"input": [],
+"output_name": null,
+"type": "ManuallyTypedSource"
+},
+{
+"circular": true,
+"database_id": null,
+"id": 101,
+"input": [
+{
+"left_location": "22..25",
+"reverse_complemented": false,
+"right_location": "40..43",
+"sequence": 1,
+"type": "AssemblyFragment"
+},
+{
+"left_location": "10..13",
+"reverse_complemented": true,
+"right_location": "46..49",
+"sequence": 2,
+"type": "AssemblyFragment"
+}
+],
+"output_name": null,
+"restriction_enzymes": [
+"EcoRI",
+"BamHI"
+],
+"type": "RestrictionAndLigationSource"
+}
+]
+},
+"name": "restriction_ligation",
+"source_types": [
+"RestrictionAndLigationSource",
+"ManuallyTypedSource",
+"ManuallyTypedSource",
+"RestrictionAndLigationSource"
+],
+"unchanged": true
+}
+],
 "pieces": [
 {
 "name": "gibson_three",
