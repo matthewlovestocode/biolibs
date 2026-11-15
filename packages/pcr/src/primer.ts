@@ -113,7 +113,7 @@ export const DEFAULT_CONDITIONS: Required<Conditions> = {
  * @throws {@link ValueError} if the primer is not usable.
  * @example
  * ```ts
- * primerTm("GTAAAACGACGGCCAGT").toFixed(1); // "53.0"
+ * primerTm("GTAAAACGACGGCCAGT").toFixed(1); // "52.8"
  * ```
  */
 export function primerTm(primer: string, conditions: Conditions = {}): number {

@@ -6,7 +6,9 @@
  * primer's 5' end to the reverse primer's 5' end, because each primer is copied into the product whole — including
  * any 5' tail it carries, which is how assembly primers add overlaps.
  *
- * On a circular template a pair can amplify the long way round as well as the short way, so both are reported.
+ * One forward site and one reverse site give exactly one product, on a circle as on a line: a primer extends in one
+ * direction only. On a circle the product wraps the origin when the reverse site lies before the forward one, which
+ * is the only way a circular template differs here.
  */
 
 import { ValueError } from "@biolibs/core";

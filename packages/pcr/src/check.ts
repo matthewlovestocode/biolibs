@@ -129,9 +129,10 @@ export function selfComplementarity(sequence: string, mustIncludeEnd = false): n
  * @throws {@link ValueError} if the primer is not usable.
  * @example
  * ```ts
- * const report = checkPrimer("GTAAAACGACGGCCAGT");
- * report.gcClamp;   // true
- * report.warnings;  // ["the melting temperature is 53.0 °C, below 55 °C", ...]
+ * const report = checkPrimer("GTAAAACGACGGCCAGT");  // the M13 forward primer
+ * report.gcClamp;   // false — it ends in T
+ * report.warnings;  // ["the primer is 17 bases, shorter than 18",
+ *                   //  "the melting temperature is 52.8 °C, below 55 °C", ...]
  * ```
  */
 export function checkPrimer(primer: string, conditions: Conditions = {}, limits: PrimerLimits = PRIMER_LIMITS): PrimerReport {

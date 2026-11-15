@@ -2,7 +2,9 @@
 
 PCR in silico: primer quality, where a primer binds a template, what a pair amplifies, and primer design. Biopython has no counterpart — the usual Python answer is `primer3-py`, a wrapper round a C library.
 
-**Melting temperatures are not reimplemented here.** They come from `@biolibs/seqtools`, which is Biopython's `MeltingTemp` ported in full and verified against it, so every nearest-neighbour table and salt correction Biopython offers is reachable through `Conditions`.
+**Melting temperatures are not reimplemented here.** They come from `@biolibs/seqtools`, which is Biopython's `MeltingTemp` ported in full and verified against it, so every nearest-neighbour table and salt correction Biopython offers is reachable through `Conditions`. The M13 primers' values are pinned to Biopython's answers in the tests, so a change in the thermodynamics fails there.
+
+**94 unit tests** cover the rest. See [the package README](../packages/pcr/README.md) for the API worked through one 200-base template, every example executed by `packages/pcr/test/readme.test.ts`.
 
 ```ts
 import { checkPrimer, designPrimers, predictProducts, productWithTails, withTail } from "@biolibs/pcr";
@@ -14,12 +16,12 @@ report.gcClamp;   // false
 report.warnings;  // ["the primer is 17 bases, shorter than 18", ...]
 
 // Design a pair to amplify bases 100 to 600, then see what they would make.
-const pair = designPrimers(template, 100, 600);
+const pair = designPrimers(template, 100, 600);   // the product is exactly 100..600
 const products = predictProducts(template, "circular", [
   { name: "F", sequence: pair!.forward.sequence },
   { name: "R", sequence: pair!.reverse.sequence },
 ]);
-products[0]!.length; // 500
+products[0]!.length; // 500, for a template where neither primer binds anywhere else
 
 // A cloning primer carrying a 5' tail.
 productWithTails(template, products[0]!, withTail("GGAATTC", pair!.forward.sequence), pair!.reverse.sequence);
