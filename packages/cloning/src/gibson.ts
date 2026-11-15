@@ -129,6 +129,11 @@ function searchRings(count: number, pool: readonly Oriented[], o: Required<Gibso
  * @returns The reason.
  */
 function explainFailure(fragments: readonly GibsonFragment[], pool: readonly Oriented[], o: Required<GibsonOptions>): string {
+  // With one fragment there are no others to pair with, so the lonely test below would always fire and say so
+  // misleadingly: a single fragment assembles by closing on itself, and that is what failed.
+  if (fragments.length === 1) {
+    return `the ends of '${fragments[0]!.name}' do not overlap by at least ${o.minOverlap} bases, so it cannot close into a circle`;
+  }
   // A fragment with no partner at all is the usual cause, and the most useful thing to report.
   const lonely = fragments.filter((fragment) => {
     const mine = pool.filter((p) => p.name === fragment.name);
@@ -139,9 +144,6 @@ function explainFailure(fragments: readonly GibsonFragment[], pool: readonly Ori
   if (lonely.length > 0) {
     const names = lonely.map((f) => `'${f.name}'`).join(", ");
     return `no overlap of at least ${o.minOverlap} bases joins ${names} to any other fragment`;
-  }
-  if (fragments.length === 1) {
-    return `the ends of '${fragments[0]!.name}' do not overlap by at least ${o.minOverlap} bases, so it cannot close into a circle`;
   }
   return "the fragments overlap in pairs but cannot be arranged into a ring that uses each of them once";
 }

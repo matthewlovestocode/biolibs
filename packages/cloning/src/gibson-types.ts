@@ -87,18 +87,23 @@ export type GibsonResult =
  * @param min - Shortest overlap accepted.
  * @param max - Longest overlap looked for.
  * @returns The overlap length, or 0 when there is none in range. The longest is preferred, since that is the one the
- *   annealing would actually use.
+ *   annealing would actually use. An overlap can never be the whole of either sequence: a junction where one
+ *   fragment lies entirely inside the overlap contributes nothing to the ring, and taking it would also make every
+ *   sequence overlap itself completely.
  * @throws {@link ValueError} for a `min` above `max`, or a `min` below 1.
  * @example
  * ```ts
  * overlapLength("AAAGGTACC", "GGTACCTTT", 6, 60); // 6
  * overlapLength("CCCGGG", "AAACCC", 3, 60);       // 0 — not symmetric
+ * overlapLength("ACGTACGT", "ACGTACGT", 3, 60);   // 0 — not the whole of either sequence
  * ```
  */
 export function overlapLength(a: string, b: string, min: number, max: number): number {
   if (min < 1) throw new ValueError(`the shortest overlap must be at least 1, got ${min}`);
   if (min > max) throw new ValueError(`the shortest overlap ${min} is longer than the longest ${max}`);
-  const limit = Math.min(max, a.length, b.length);
+  // Stopping one short of each length is what keeps a sequence from overlapping itself end to end, which would
+  // make a single fragment close into a ring of nothing.
+  const limit = Math.min(max, a.length - 1, b.length - 1);
   for (let size = limit; size >= min; size--) {
     if (a.slice(a.length - size) === b.slice(0, size)) return size;
   }

@@ -461,8 +461,17 @@ describe("overlapLength", () => {
   });
 
   it("prefers the longest overlap in range", () => {
-    expect(overlapLength("AAAAAAAAAA", "AAAAAAAAAA", 2, 10)).toBe(10);
+    expect(overlapLength("AAAAAAAAAA", "AAAAAAAAAA", 2, 10)).toBe(9);
     expect(overlapLength("AAAAAAAAAA", "AAAAAAAAAA", 2, 4)).toBe(4);
+  });
+
+  it("never takes the whole of either sequence", () => {
+    // A junction where one fragment lies entirely inside the overlap contributes nothing to the ring, and
+    // allowing it would make every sequence overlap itself end to end: a single fragment would then always
+    // "close" into a circle of nothing.
+    expect(overlapLength("ACGTACGTACGT", "ACGTACGTACGT", 3, 60)).toBeLessThan(12);
+    expect(overlapLength("ACGT", "ACGT", 4, 60)).toBe(0);
+    expect(overlapLength("AAACCC", "AAACCCGGG", 6, 60)).toBe(0);
   });
 
   it("gives zero when there is none long enough", () => {
@@ -634,6 +643,16 @@ describe("assembleGibson", () => {
     const result = assembleGibson([annotated, b], { minOverlap: 15 });
     if (!result.ok) throw new Error(result.error);
     expect(result.products[0]!.record.features.map((f) => f.id)).toContain("inA");
+  });
+
+  it("says a lone fragment could not close, rather than naming absent partners", () => {
+    // The lonely-fragment test would always fire for a single fragment, since there are no others to pair
+    // with; a single fragment assembles by closing on itself, and that is what failed.
+    const result = assembleGibson([{ name: "solo", residues: "ACGTTAGCCATGGCTAGCTAGGCATCGATCGTGAGCAATCGG" }]);
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.error).toBe(
+      "the ends of 'solo' do not overlap by at least 15 bases, so it cannot close into a circle");
   });
 });
 

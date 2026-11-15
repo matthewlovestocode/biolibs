@@ -2,7 +2,9 @@
 
 Molecular cloning in silico: restriction digests and ligation, and Gibson assembly with overlap primer design.
 
-Biopython has no counterpart. `Bio.Restriction` says where enzymes cut and will hand back the fragments, but it has nothing about what the fragments' *ends* are, which of them will ligate, or what the product would be. This package builds on it and supplies the rest — all 1,088 REBASE enzymes are reachable, not a hand-written table of sixty.
+Biopython has no counterpart. `Bio.Restriction` says where enzymes cut and will hand back the fragments, but it has nothing about what the fragments' *ends* are, which of them will ligate, or what the product would be. This package builds on it and supplies the rest — all 1,088 REBASE enzymes are reachable, not a hand-written table of sixty, though only **754** of them can be simulated: for the other 334 REBASE does not say where the enzyme cuts, and `cutsIn` raises rather than guessing.
+
+**102 unit tests**, with the cut coordinates and melting temperatures coming from the verified ports. See [the package README](../packages/cloning/README.md) for the API worked through one small plasmid, every example executed by `packages/cloning/test/readme.test.ts`.
 
 ```ts
 import { assembleGibson, cloneProducts, designGibson, lookupEnzymes, piecesOf } from "@biolibs/cloning";
@@ -61,6 +63,8 @@ An exonuclease chews back each fragment's 5' ends, the overlaps anneal, and a po
 `assembleGibson` walks depth-first and only extends a chain when the next fragment's start overlaps the chain's end, which keeps it fast though the number of arrangements grows factorially. Products are deduplicated by the **molecule they are**, not the order the fragments were put in: a ring is the same ring whichever fragment you start at and whichever strand you read, so `canonicalCircular` (the alphabetically first rotation of the sequence or its reverse complement) collapses them. A two-fragment ring therefore appears once, not twice.
 
 Note that a ring of two fragments needs an overlap at **both** junctions, not just one. Each junction reports its overlap's melting temperature, from `@biolibs/pcr`, which is what decides whether it anneals.
+
+An overlap is never the whole of either fragment. A junction that swallowed one would leave it contributing nothing to the ring, and allowing it would make every sequence overlap itself end to end — a single fragment would then always "close" into a circle of nothing. A single fragment whose own two ends genuinely overlap does assemble, into a circle one overlap shorter than itself.
 
 ## Gibson design
 
