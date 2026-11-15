@@ -2,6 +2,7 @@
 import inspect, json
 import Bio
 from Bio import Seq, SeqRecord, SeqIO, SeqFeature, Align
+from Bio import Entrez
 from Bio.Data import CodonTable, IUPACData
 from Bio.SeqUtils import (gc_fraction, GC123, GC_skew, seq3, seq1, molecular_weight,
                           six_frame_translations, CodonAdaptationIndex)
@@ -121,6 +122,9 @@ inv = {
   "Bio.SeqUtils.IsoelectricPoint": {"classes": {"IsoelectricPoint": members(IsoelectricPoint.IsoelectricPoint)}},
   "Bio.SeqUtils.ProtParam": {"classes": {"ProteinAnalysis": members(ProtParam.ProteinAnalysis)}},
   "Bio.SeqUtils.MeltingTemp": {"functions": funcs(MeltingTemp)},
+  # The requests only: `read` and `parse` are listed because Biopython defines them, and stay unticked
+  # until Bio.Entrez.Parser is ported.
+  "Bio.Entrez": {"functions": funcs(Entrez)},
   "Bio.Nexus.Nexus": {"functions": funcs(NexusMod), "classes": {"Nexus": members(NexusMod.Nexus)}},
   "Bio.Nexus.Trees": {"functions": funcs(TreesMod), "classes": {"Tree": members(TreesMod.Tree)}},
   "Bio.Nexus.Nodes": {"classes": {"Chain": members(NodesMod.Chain), "Node": members(NodesMod.Node)}},

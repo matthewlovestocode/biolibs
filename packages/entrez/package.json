@@ -1,0 +1,49 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0"
+  },
+  "description": "NCBI E-utilities client, verified against Biopython: efetch, esearch, esummary, elink, epost, einfo, espell and ecitmatch build the same requests, with the same rate limit and retries (Bio.Entrez)",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/entrez#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "typescript",
+    "biopython",
+    "entrez",
+    "ncbi",
+    "e-utilities",
+    "eutils",
+    "genbank",
+    "pubmed"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/entrez",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/entrez"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
+}

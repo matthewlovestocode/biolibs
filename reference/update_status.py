@@ -733,5 +733,11 @@ dm = json.load(open(f"{here}/../packages/phylo/test/golden/dnds-matrix.json"))
 mmethods = {c["method"] for c in dm if "result" in c}
 mark("Bio.Align.analysis.calculate_dn_ds_matrix", "done" if {"NG86", "LWL85", "YN00", "ML"} <= mmethods else "partial")
 
+# Bio.Entrez: a function is done when the golden cases call it, with `_open` replaced so that what is
+# recorded is the request it builds. `read` and `parse` have no cases, and so stay unticked.
+entrez = json.load(open(f"{here}/../packages/entrez/test/golden/entrez.json"))
+for fn in {c["fn"] for c in entrez["eutils"] if "value" in c or "exc" in c}:
+    if fn in inv["Bio.Entrez"]["functions"]: mark(f"Bio.Entrez.{fn}")
+
 json.dump(status, open(f"{here}/status.json", "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

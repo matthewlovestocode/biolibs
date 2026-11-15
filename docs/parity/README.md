@@ -2,7 +2,7 @@
 
 Generated from Biopython 1.88 by `reference/gen_checklist.py`. `[ ]` not started, `[~]` partial (scaffold only), `[x]` verified against Biopython output, `[-]` not applicable (inherited Python/`object`/`BaseException` boilerplate). Comparison, hash and string members that no class but `object` defines are marked `[-]` automatically, from `inventory.py`'s reading of Biopython; a golden case that pins such a member down wins over that and makes it `[x]`. Edit `reference/status.json`, then re-run the script.
 
-**Progress: 2448 / 2448 applicable items verified against Biopython.**
+**Progress: 2456 / 2458 applicable items verified against Biopython.**
 
 Two other libraries are ported too, and counted separately: see the [pydna](../parity-pydna/README.md) and [seguid](../parity-seguid/README.md) checklists.
 
@@ -38,6 +38,7 @@ Two other libraries are ported too, and counted separately: see the [pydna](../p
 | [Bio.SeqUtils.IsoelectricPoint](Bio.SeqUtils.IsoelectricPoint.md) | 3 | 3 |
 | [Bio.SeqUtils.ProtParam](Bio.SeqUtils.ProtParam.md) | 12 | 12 |
 | [Bio.SeqUtils.MeltingTemp](Bio.SeqUtils.MeltingTemp.md) | 6 | 6 |
+| [Bio.Entrez](Bio.Entrez.md) | 8 | 10 |
 | [Bio.Nexus.Nexus](Bio.Nexus.Nexus.md) | 21 | 21 |
 | [Bio.Nexus.Trees](Bio.Nexus.Trees.md) | 39 | 39 |
 | [Bio.Nexus.Nodes](Bio.Nexus.Nodes.md) | 18 | 18 |

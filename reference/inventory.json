@@ -2169,6 +2169,20 @@
    "salt_correction": "(Na=0, K=0, Tris=0, Mg=0, dNTPs=0, method=1, seq=None)"
   }
  },
+ "Bio.Entrez": {
+  "functions": {
+   "ecitmatch": "(**keywds)",
+   "efetch": "(db, **keywords)",
+   "einfo": "(**keywds)",
+   "elink": "(**keywds)",
+   "epost": "(db, **keywds)",
+   "esearch": "(db, term, **keywds)",
+   "espell": "(**keywds)",
+   "esummary": "(**keywds)",
+   "parse": "(source, validate=True, escape=False, ignore_errors=False)",
+   "read": "(source, validate=True, escape=False, ignore_errors=False)"
+  }
+ },
  "Bio.Nexus.Nexus": {
   "functions": {
    "combine": "(matrices)",
