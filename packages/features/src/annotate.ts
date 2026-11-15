@@ -59,9 +59,9 @@ export function asFeature(hit: DetectedFeature, options: AnnotateOptions = {}): 
 /**
  * Whether a record already annotates what a hit found.
  *
- * A hit counts as already annotated when an existing feature has the same name (in `/gene`, `/label`, `/product` or
- * the feature's id), or when a feature of the same type covers at least `minCover` of the hit's bases. The second
- * test is what catches a curated annotation under a different name.
+ * A hit counts as already annotated when an existing feature has the same name (in `/gene`, `/label`, `/product`,
+ * `/standard_name` or the feature's id), or when a feature of the same type covers at least `minCover` of the hit's
+ * bases. The second test is what catches a curated annotation under a different name.
  *
  * @param hit - The hit.
  * @param features - The record's existing features.

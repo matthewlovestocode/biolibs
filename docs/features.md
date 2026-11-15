@@ -4,6 +4,8 @@ Find known elements in a DNA sequence by comparing it with a library of referenc
 
 Biopython has nothing equivalent — `Bio.Align` would align two sequences and `Bio.motifs` would score a position matrix, but neither answers "which of these 400 standard parts is in my plasmid".
 
+**58 unit tests** over every claim below, with the feature classes coming from the verified `@biolibs/seqfeature`, so a feature built here writes out through `seqio` the way Biopython would write it. See [the package README](../packages/features/README.md) for the API worked through one 229-base sequence, every example executed by `packages/features/test/readme.test.ts`.
+
 ```ts
 import { asFeature, bestHits, detectFeatures, newHits } from "@biolibs/features";
 
@@ -30,7 +32,9 @@ A piece matches where the sequence agrees with it base for base over the piece's
 
 Short pieces are held to a stricter standard than long ones, because a 20-base promoter with one base different is a different promoter while a 900-base gene with nine bases different is the same gene. By default pieces of 30 bases or fewer must match exactly (`exactBelow`), and longer ones tolerate 5% mismatches (`tolerance`); a piece may set its own `tolerance`, though it cannot escape the exact-match rule for short pieces. `mismatchBudget` exposes the arithmetic.
 
-Both strands are searched, and a circular sequence is searched across its origin — so a part straddling the origin of a plasmid is found, exactly once. Anything that is not an unambiguous base never matches, so a run of Ns is never a hit.
+Both strands are searched, and a circular sequence is searched across its origin — so a part straddling the origin of a plasmid is found, exactly once. A piece that is its own reverse complement is found twice at the same place, once per strand. Anything that is not an unambiguous base never matches, so a single N inside the window loses the hit however tolerant the piece is.
+
+What this is not: there is no alignment, so a part with bases inserted into it is not found; no statistical model, so no E-value or score; and `identity` is measured over the piece's length alone, saying nothing about what surrounds the hit. `bestHits` is a greedy pass rather than an optimum, and the thresholds are conventions that behave sensibly on real plasmids rather than derived quantities.
 
 ## Picking the best hits
 
