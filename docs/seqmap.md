@@ -25,9 +25,13 @@ Positions are **0-based base boundaries**: position 0 lies before the first base
 
 `angleAt` does not wrap a position past the end, which is what a feature crossing the origin needs — use `splitAtOrigin` to turn such a span into the one or two pieces a map can draw.
 
+**80 unit tests** over the geometry's own properties, since there is no reference renderer to compare with: a path starts where it should and closes, an arrowhead's tip lands exactly on the feature's own end angle, lanes never overlap, and every angle `spreadAround` returns sits in `[0, TAU)` with every circular gap satisfied. See [the package README](../packages/seqmap/README.md) for the API with worked examples, every one executed by `packages/seqmap/test/readme.test.ts`.
+
 ## Paths
 
 `ringPath` is the annular band a circular feature occupies and `blockPath` the rectangle a linear one occupies, each optionally drawn as an arrow to show its strand. An arrowhead is **taken out of the feature's own span** rather than added beyond it, so the shape never runs past the bounds given; a feature shorter than the head becomes a plain triangle. Paths use only `M`, `L`, `A` and `Z`, and coordinates are rounded to three decimals — well under one device pixel at any sensible size.
+
+A feature covering the **whole circle** — a GenBank `source` feature, most often — is a closed annulus. An SVG arc cannot turn a full circle in one command, since its start and end points would coincide and nothing would be drawn, so each edge takes two arcs; an arrowhead is left off, there being no end for it to point at. A span of more than a full turn is the whole circle too, rather than its remainder.
 
 ## Ticks
 

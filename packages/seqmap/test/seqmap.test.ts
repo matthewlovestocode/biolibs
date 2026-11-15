@@ -114,8 +114,21 @@ describe("ringPath", () => {
     expect(() => ringPath(0, 0, 90, 100, 1, 1, "end")).not.toThrow();
   });
 
-  it("accepts a span of more than a full turn, for a feature wrapping the origin", () => {
-    expect(() => ringPath(0, 0, 90, 100, 0, TAU * 1.2)).not.toThrow();
+  it("draws a feature covering the whole circle as a closed annulus", () => {
+    // An SVG arc whose start and end coincide draws nothing, so a full turn needs two arcs per edge. A
+    // GenBank `source` feature covers the whole plasmid, so this is the commonest shape of all.
+    const ring = ringPath(0, 0, 90, 100, 0, TAU);
+    expect(ring.match(/A/g)).toHaveLength(4);
+    expect(ring).toContain("M0,-100 A100,100 0 0 1 0,100 A100,100 0 0 1 0,-100");
+    // The inner edge sweeps the other way, so the shape fills as a band and not a disc.
+    expect(ring).toContain("M0,-90 A90,90 0 0 0 0,90 A90,90 0 0 0 0,-90");
+    expect(ring.endsWith("Z")).toBe(true);
+  });
+
+  it("treats a span over a full turn as the whole circle too, rather than its remainder", () => {
+    expect(ringPath(0, 0, 90, 100, 0, TAU * 1.2)).toBe(ringPath(0, 0, 90, 100, 0, TAU));
+    // An arrowhead has no end to point at on a closed ring, so it is left off.
+    expect(ringPath(0, 0, 90, 100, 0, TAU, "end")).toBe(ringPath(0, 0, 90, 100, 0, TAU));
   });
 
   it("rejects bad geometry", () => {

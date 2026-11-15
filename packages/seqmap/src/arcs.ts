@@ -36,7 +36,9 @@ const pt = (x: number, y: number): string => `${n(x)},${n(y)}`;
  * @param inner - Inner radius.
  * @param outer - Outer radius.
  * @param from - Start angle in radians (from the top, clockwise).
- * @param to - End angle in radians. Must not be less than `from`; a span over {@link TAU} is drawn as given.
+ * @param to - End angle in radians. Must not be less than `from`. A span of a full {@link TAU} or more covers the
+ *   whole circle, and is drawn as a closed annulus — SVG cannot express an arc of a full turn or more in one
+ *   command, so it takes two per edge — with any arrowhead left off, there being no end for it to point at.
  * @param arrow - Which end carries the arrowhead.
  * @param head - The arrowhead's angular length in radians, clamped to the feature's own span. Defaults to 0.06.
  * @returns A closed SVG path.
@@ -60,6 +62,11 @@ export function ringPath(
 
   const span = to - from;
   const middle = (inner + outer) / 2;
+
+  // A feature covering the whole circle — a GenBank `source` feature, most often — has no ends, so it is a closed
+  // ring. An SVG arc cannot turn a full circle in one command (its start and end points would coincide and nothing
+  // would be drawn), so each edge is drawn as two half turns, and an arrowhead has nowhere to point.
+  if (span >= TAU) return fullRing(cx, cy, inner, outer, from);
   // The head cannot be longer than the feature: a very short feature is all arrowhead.
   const headAngle = arrow ? Math.min(head, span) : 0;
   const bodyFrom = arrow === "start" ? from + headAngle : from;
@@ -97,6 +104,36 @@ export function ringPath(
   }
   parts.push("Z");
   return parts.join(" ");
+}
+
+/**
+ * The closed annulus a feature covering the whole circle occupies.
+ *
+ * Each edge is two half turns, because a single SVG arc command whose start and end coincide draws nothing. The
+ * inner edge is swept the other way so the ring is filled as a band rather than a disc under the usual fill rule.
+ *
+ * @param cx - Centre x.
+ * @param cy - Centre y.
+ * @param inner - Inner radius.
+ * @param outer - Outer radius.
+ * @param from - Where to start and finish the ring; only its direction shows, in where the seam falls.
+ * @returns A closed SVG path of four arcs.
+ */
+function fullRing(cx: number, cy: number, inner: number, outer: number, from: number): string {
+  const half = TAU / 2;
+  const outerStart = polar(cx, cy, outer, from);
+  const outerMid = polar(cx, cy, outer, from + half);
+  const innerStart = polar(cx, cy, inner, from);
+  const innerMid = polar(cx, cy, inner, from + half);
+  return [
+    `M${pt(outerStart.x, outerStart.y)}`,
+    `A${n(outer)},${n(outer)} 0 0 1 ${pt(outerMid.x, outerMid.y)}`,
+    `A${n(outer)},${n(outer)} 0 0 1 ${pt(outerStart.x, outerStart.y)}`,
+    `M${pt(innerStart.x, innerStart.y)}`,
+    `A${n(inner)},${n(inner)} 0 0 0 ${pt(innerMid.x, innerMid.y)}`,
+    `A${n(inner)},${n(inner)} 0 0 0 ${pt(innerStart.x, innerStart.y)}`,
+    "Z",
+  ].join(" ");
 }
 
 /**
