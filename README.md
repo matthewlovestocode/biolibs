@@ -5,7 +5,7 @@ few packages that have no Python equivalent.
 
 - **27 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,837 API items at parity** across three upstream libraries, of 2,859 applicable
-- **18,986 tests**, replaying answers recorded from the real Python libraries
+- **18,990 tests**, replaying answers recorded from the real Python libraries
 
 ## Install
 
@@ -112,7 +112,7 @@ Biopython checklist, because it is a port of CPython itself: 1,253 recorded case
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 18,986 tests
+npm test           # vitest — 18,990 tests
 npm run coverage   # per-file coverage
 ```
 

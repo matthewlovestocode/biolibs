@@ -18,7 +18,7 @@
  * `docs/dseqrecord.md`).
  */
 
-import { pyClassRepr, pyRepr, ValueError, warn, ZeroDivisionError } from "@biolibs/core";
+import { pyClassRepr, pyRepr, ValueError, warn, ZeroDivisionError, pyClassName } from "@biolibs/core";
 import { applyCut, cuttersBy, type CutSite, Dseq, type Enzymes, enzymeList, getCutParameters,
   getCutsitePairs, getCutsites, seguidOf, terminalTransferase } from "@biolibs/dseq";
 import { CommOnly, type RestrictionBatch } from "@biolibs/restriction";
@@ -62,6 +62,9 @@ function stripSpacesAndHyphens(s: string): string {
  * ```
  */
 export class Dseqrecord extends PydnaSeqRecord {
+  /** What Python calls this class, which a minifier cannot rewrite. A subclass declares its own. */
+  static override readonly typeName: string = "Dseqrecord";
+
   /** How much of the molecule there is, in moles. Only {@link Dseqrecord.m} reads it. */
   n: number;
 
@@ -287,7 +290,7 @@ export class Dseqrecord extends PydnaSeqRecord {
     between.push(marked.slice(parts[parts.length - 1]![1], this.length));
     const line = between.map((text, i) => text + (highlighted[i] ?? "")).join("");
     const topology = d.circular ? "o" : "-";
-    const head = `${this.constructor.name}(${topology}${this.length})`;
+    const head = `${pyClassName(this)}(${topology}${this.length})`;
     return strand === -1 ? `${head}\n${other}\n${line}` : `${head}\n${line}\n${other}`;
   }
 
@@ -405,7 +408,7 @@ export class Dseqrecord extends PydnaSeqRecord {
 
   /** @returns `Dseqrecord(-N)` for a linear molecule and `Dseqrecord(oN)` for a circle. */
   override repr(): string {
-    return `${this.constructor.name}(${this.circular ? "o" : "-"}${this.length})`;
+    return `${pyClassName(this)}(${this.circular ? "o" : "-"}${this.length})`;
   }
 
   /** @returns The record printed out, with its topology and size above what a plain record would show. */

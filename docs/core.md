@@ -65,6 +65,11 @@ warnings[0].message; // "Partial codon, len(sequence) not a multiple of three. .
 
 ## Python-compatible helpers (`py/`)
 
+`pyClassName(object)` is the name a class says it has — a static `typeName`, falling back to
+`constructor.name`. A port's `repr` and its `TypeError` messages go through it rather than reading the
+constructor's name directly, because a minifier rewrites class names and would otherwise change what
+those print, differently in each bundle.
+
 Small functions that let ports reproduce Biopython's behaviour and messages exactly. Numbers: `pyInt`
 (Python's `int(str)`, which takes underscores, surrounding whitespace and any Unicode decimal digit, and
 refuses anything past 2^53 rather than rounding), `pyFloat` and `pyFloatRepr` (`float(str)` and the

@@ -1,6 +1,6 @@
 /** `SeqRecord`: a sequence together with its identifiers, annotations and features. */
 
-import { KeyError, NotImplementedError, ValueError, pyRepr, pyStr } from "@biolibs/core";
+import { KeyError, NotImplementedError, ValueError, pyRepr, pyStr, pyClassName } from "@biolibs/core";
 import { MutableSeq, Seq, SEQ_RECORD_BRAND, UndefinedSequenceError, type PySlice } from "@biolibs/seq";
 import type { SeqFeature } from "@biolibs/seqfeature";
 import { addRecordToRight, addToRecord, type Addable } from "./concatenate.js";
@@ -38,6 +38,9 @@ export type RecordWriter = (record: SeqRecord) => string;
  * ```
  */
 export class SeqRecord {
+  /** What Python calls this class, which a minifier cannot rewrite. A subclass declares its own. */
+  static readonly typeName: string = "SeqRecord";
+
   /** Marks records so `Bio.Seq` functions such as `join` recognise them without importing this package. */
   readonly [SEQ_RECORD_BRAND] = true;
 
@@ -290,7 +293,7 @@ export class SeqRecord {
 
   /** `SeqRecord(seq=Seq('ACGT'), id='x', name='y', description='z', dbxrefs=[])`. */
   repr(): string {
-    return `${this.constructor.name}(seq=${pyRepr(this.seqValue)}, id=${pyRepr(this.id)}, name=${pyRepr(this.name)}, description=${pyRepr(this.description)}, dbxrefs=${pyRepr(this.dbxrefs)})`;
+    return `${pyClassName(this)}(seq=${pyRepr(this.seqValue)}, id=${pyRepr(this.id)}, name=${pyRepr(this.name)}, description=${pyRepr(this.description)}, dbxrefs=${pyRepr(this.dbxrefs)})`;
   }
 
   /**

@@ -87,6 +87,9 @@ export function pydnaAnnotations(annotations: Map<string, unknown>): Map<string,
 }
 
 class SeqRecord extends BioSeqRecord {
+  /** What Python calls this class. pydna's own `SeqRecord`, not Biopython's. */
+  static override readonly typeName: string = "SeqRecord";
+
   /** What a read mapped by {@link SeqRecord.lcs} was mapped against, which starts out unset. */
   mapTarget: SeqRecord | null = null;
 
@@ -606,6 +609,9 @@ export { SeqRecord as PydnaSeqRecord };
  * anything protein-specific; what it does on a protein is Biopython's business.
  */
 export class ProteinSeqRecord extends SeqRecord {
+  /** What Python calls this class. */
+  static override readonly typeName = "ProteinSeqRecord";
+
   /** The message every DNA-only method raises with. */
   static readonly NOT_PROTEIN = "Not defined for protein.";
 

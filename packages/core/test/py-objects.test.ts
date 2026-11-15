@@ -7,7 +7,7 @@
  * measured in `pycompat.test.ts`.
  */
 import {
-  PyFloat, pyClassRepr, pyContains, pyIter, PyRandom, pyRepr, pyStr, pyTruthy, PyTuple, pyTypeName,
+  PyFloat, pyClassName, pyClassRepr, pyContains, pyIter, PyRandom, pyRepr, pyStr, pyTruthy, PyTuple, pyTypeName,
   registerPythonClasses, ValueError,
 } from "@biolibs/core";
 import { describe, expect, it } from "vitest";
@@ -130,5 +130,31 @@ describe("PyRandom.randrange", () => {
     // Two: it quotes them back.
     expect(() => r.randrange(5, 5)).toThrowError(new ValueError("empty range in randrange(5, 5)"));
     expect(() => r.randrange(5, 2)).toThrowError(new ValueError("empty range in randrange(5, 2)"));
+  });
+});
+
+describe("pyClassName", () => {
+  it("takes the name a class declares", () => {
+    class Named {
+      static readonly typeName = "Seq";
+    }
+    expect(pyClassName(new Named())).toBe("Seq");
+    expect(pyTypeName(new Named())).toBe("Seq");
+  });
+
+  it("keeps that name where the class itself has been renamed", () => {
+    // What a bundler does: the class is still the same class, under a shorter name. Anything that
+    // printed `constructor.name` would print the shorter one, which is not what Python prints.
+    class Named {
+      static readonly typeName = "Seq";
+    }
+    Object.defineProperty(Named, "name", { value: "aD" });
+    expect(Named.name).toBe("aD");
+    expect(pyClassName(new Named())).toBe("Seq");
+  });
+
+  it("falls back to the constructor's name where a class declares nothing", () => {
+    class Plain {}
+    expect(pyClassName(new Plain())).toBe("Plain");
   });
 });

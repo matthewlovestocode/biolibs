@@ -62,6 +62,27 @@ export function pyStr(x: unknown): string {
   return pyRepr(x);
 }
 
+/**
+ * The name Python would give an object's class.
+ *
+ * A class may say what it is called by declaring a static `typeName`; otherwise the constructor's own
+ * name is used. The declaration matters once the code is bundled: a minifier rewrites class names, and
+ * anything that prints one — a `repr`, a `TypeError` — would otherwise print the rewritten name, which
+ * is not what Python prints and is not even the same from one bundle to the next.
+ *
+ * @param value - Any object.
+ * @returns The class's name.
+ * @example
+ * ```ts
+ * class Seq { static readonly typeName = "Seq"; }
+ * pyClassName(new Seq());   // "Seq", whatever a minifier calls the class
+ * ```
+ */
+export function pyClassName(value: object): string {
+  const declared = (value.constructor as { typeName?: unknown }).typeName;
+  return typeof declared === "string" ? declared : value.constructor.name;
+}
+
 /** Python's `type(x).__name__`. */
 export function pyTypeName(x: unknown): string {
   if (x === null || x === undefined) return "NoneType";
@@ -72,7 +93,7 @@ export function pyTypeName(x: unknown): string {
   if (x instanceof PyTuple) return "tuple";
   if (Array.isArray(x)) return "list";
   if (x instanceof Map) return "dict";
-  if (typeof x === "object") return (x as object).constructor.name;
+  if (typeof x === "object") return pyClassName(x as object);
   return typeof x;
 }
 

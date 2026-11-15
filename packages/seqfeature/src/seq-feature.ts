@@ -4,7 +4,7 @@ import { MutableSeq, Seq } from "@biolibs/seq";
 import type { ParentSequence, References } from "./location/index.js";
 import { CompoundLocation, SimpleLocation } from "./location/index.js";
 import type { Position } from "./position/index.js";
-import { ValueError, pyEquals, pyInt, pyRepr, pyStr } from "@biolibs/core";
+import { ValueError, pyEquals, pyInt, pyRepr, pyStr, pyClassName } from "@biolibs/core";
 
 /** Qualifiers of a feature: key to value, usually a list of strings (as in GenBank). */
 export type Qualifiers = Map<string, unknown>;
@@ -25,6 +25,9 @@ export type QualifiersInput = Map<string, unknown> | Record<string, unknown> | I
  * ```
  */
 export class SeqFeature {
+  /** What Python calls this class, which a minifier cannot rewrite. */
+  static readonly typeName = "SeqFeature";
+
   /** Where the feature is; may be null when unknown. */
   location: SimpleLocation | CompoundLocation | null;
   /** Feature type, e.g. `"CDS"`. */
@@ -70,7 +73,7 @@ export class SeqFeature {
 
   /** Short representation: `SeqFeature(SimpleLocation(...), type='CDS', id='x', qualifiers=...)`. */
   repr(): string {
-    let answer = `${this.constructor.name}(${pyRepr(this.location)}`;
+    let answer = `${pyClassName(this)}(${pyRepr(this.location)}`;
     if (this.type) answer += `, type=${pyRepr(this.type)}`;
     if (this.id && this.id !== "<unknown id>") answer += `, id=${pyRepr(this.id)}`;
     if (this.qualifiers.size) answer += ", qualifiers=...";

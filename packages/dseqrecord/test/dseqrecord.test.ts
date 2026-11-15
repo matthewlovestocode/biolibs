@@ -302,3 +302,16 @@ describe("joining two records", () => {
     });
   }
 });
+
+describe("what a record calls itself", () => {
+  it("is the same once a bundler has renamed the class", () => {
+    // A minifier rewrites class names, so a `repr` built from `constructor.name` would print the
+    // rewritten one — and a different one in each bundle, which is how this turned up: a page rendered
+    // `aD(o75)` on the server and `eN(o75)` in the browser.
+    class Renamed extends Dseqrecord {}
+    Object.defineProperty(Renamed, "name", { value: "aD" });
+    expect(Renamed.name).toBe("aD");
+    expect(new Renamed("acgt").repr()).toBe("Dseqrecord(-4)");
+    expect(new Renamed("acgt", true).figure().split("\n")[0]).toBe("Dseqrecord(o4)");
+  });
+});

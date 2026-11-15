@@ -1,10 +1,13 @@
 /** `Reference`: a literature reference attached to a record. */
 
 import type { Location } from "./location/index.js";
-import { pyRepr } from "@biolibs/core";
+import { pyRepr, pyClassName } from "@biolibs/core";
 
 /** Bibliographic reference from a GenBank record (Biopython's `Reference`). */
 export class Reference {
+  /** What Python calls this class, which a minifier cannot rewrite. */
+  static readonly typeName = "Reference";
+
   /** Parts of the sequence the reference applies to. */
   location: Location[] = [];
   /** Author list. */
@@ -38,7 +41,7 @@ export class Reference {
 
   /** `Reference(title='...', ...)`. */
   repr(): string {
-    return `${this.constructor.name}(title=${pyRepr(this.title)}, ...)`;
+    return `${pyClassName(this)}(title=${pyRepr(this.title)}, ...)`;
   }
 
   /** Field-by-field equality, including locations. */

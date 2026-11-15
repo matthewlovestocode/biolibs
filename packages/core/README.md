@@ -207,7 +207,7 @@ console.log(pyTextwrapFill("the quick brown fox jumps over the lazy dog", { widt
 
 Also `pyLstrip`, `pyRstrip`, `pyIsAscii`, `pyIsLower`.
 
-### Values: `pyRepr`, `pyStr`, `pyTypeName`, `pyEquals`, `pyTruthy`, `pyContains`
+### Values: `pyRepr`, `pyStr`, `pyTypeName`, `pyClassName`, `pyEquals`, `pyTruthy`, `pyContains`
 
 The functions that build Python's output and Python's error messages out of whatever a port is holding.
 
@@ -224,6 +224,22 @@ console.log(pyRepr(PyTuple.from([1])));           // "(1,)"   — Python's one-e
 console.log(pyStr(null), pyStr(new PyFloat(1)));  // "None" "1.0"
 console.log(pyTypeName(1), pyTypeName(1.5));      // "int" "float"
 console.log(pyClassRepr("a"));                    // "<class 'str'>"
+```
+
+**A class that prints its own name must say what it is called.** `pyClassName` takes a static
+`typeName` where the class declares one, and falls back to `constructor.name` where it does not:
+
+```ts
+class Seq {
+  static readonly typeName = "Seq";
+}
+console.log(pyClassName(new Seq()));              // "Seq"
+```
+
+That matters as soon as the code is bundled. A minifier rewrites class names, so anything built from
+`constructor.name` — a `repr`, a `TypeError` — prints the rewritten name instead of Python's, and a
+different one in each bundle. A page that rendered a record's `repr` once showed `aD(o75)` from the
+server and `eN(o75)` from the browser, which is where this came from.
 
 console.log(pyEquals(1, true));                   // true   — a bool is an int in Python
 console.log(pyEquals([], PyTuple.from([])));      // false  — a list is never a tuple
