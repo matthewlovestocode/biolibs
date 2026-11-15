@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/dseqrecord",
   "version": "0.1.0",
-  "description": "pydna's record layer: a sequence with a name, features and annotations, and the methods pydna adds to it",
+  "description": "A molecule with a name, features and annotations, verified against pydna: features added by position or by sequence, cutting and rotating that carry them along, synced, stamped checksums, GenBank and the dscode encoding",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

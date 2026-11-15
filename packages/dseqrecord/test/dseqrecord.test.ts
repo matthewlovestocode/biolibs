@@ -14,6 +14,9 @@ import { Seq as BioSeq } from "@biolibs/seq";
 import type { SeqFeature } from "@biolibs/seqfeature";
 import { SeqRecord as BioSeqRecord } from "@biolibs/seqrecord";
 import { describe, expect, it } from "vitest";
+// Registers the file-format writers `format` needs: this package does not depend on the IO layer,
+// so a caller that wants GenBank or FASTA imports it, exactly as the README says.
+import "@biolibs/seqio";
 
 type Guarded<T> = ({ value: T } | { exc: { type: string; msg: string } }) &
   { warnings?: Array<[string, string]> };
@@ -54,6 +57,9 @@ interface Case {
   lower?: Guarded<Snap>;
   terminal_transferase?: Record<string, Guarded<Snap>>;
   shifted?: Record<string, Guarded<Snap>>;
+  formats?: Record<string, Guarded<string>>;
+  format_leaks_topology?: Guarded<string>;
+  figure?: Record<string, Guarded<string>>;
   orfs?: Record<string, Guarded<Snap[]>>;
   orfs_to_features?: Record<string, Guarded<Feat[]>>;
   find?: Record<string, Guarded<number>>;
@@ -160,6 +166,20 @@ describe(`pydna.dseqrecord.Dseqrecord: parity with pydna ${golden.pydna}`, () =>
       same(c.lower!, () => snap(r.lower()), "lower");
       for (const [n, want] of Object.entries(c.terminal_transferase!)) {
         same(want, () => snap(r.terminalTransferase(n)), `terminalTransferase ${JSON.stringify(n)}`);
+      }
+      for (const [name, want] of Object.entries(c.formats!)) {
+        same(want, () => r.format(name), `format ${name}`);
+      }
+      // pydna's `format` deep-copies, so `topology` must not reach the record it was called on.
+      same(c.format_leaks_topology!, () => {
+        r.format("gb");
+        return (r.annotations.get("topology") as string | undefined) ?? "unset";
+      }, "format leaks topology");
+      for (const [name, want] of Object.entries(c.figure!)) {
+        const args: Record<string, Parameters<typeof r.figure>> = {
+          default: [], first: [0], plain: [0, "<", ">"], second: [1], negative: [-1],
+        };
+        same(want, () => r.figure(...args[name]!), `figure ${name}`);
       }
       for (const [shift, want] of Object.entries(c.shifted!)) {
         same(want, () => snap(r.shifted(Number(shift))), `shifted ${shift}`);

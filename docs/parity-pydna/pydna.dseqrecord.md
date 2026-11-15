@@ -24,11 +24,11 @@
 - [x] `cut(self, *enzymes)`
 - [x] `cutters(self, batch: Bio.Restriction.Restriction.RestrictionBatch = None)`
 - [x] `extract_feature(self, n)`
-- [ ] `figure(self, feature=0, highlight='\x1b[48;5;11m', plain='\x1b[0m', fig_type=None)`
+- [x] `figure(self, feature=0, highlight='\x1b[48;5;11m', plain='\x1b[0m', fig_type=None)`
 - [x] `find(self, other)`
 - [x] `find_aa(self, other)`
 - [x] `find_aminoacids(self, other)`
-- [ ] `format(self, format: str = 'gb')`
+- [x] `format(self, format: str = 'gb')`
 - [x] `from_SeqRecord(cls, record: pydna.seqrecord.SeqRecord, *args, circular=None, n=5e-14, **kwargs)`
 - [x] `from_string(cls, record: str = '', *args, circular=False, n=5e-14, **kwargs)`
 - [-] `history(self)`

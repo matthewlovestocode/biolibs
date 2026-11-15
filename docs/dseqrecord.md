@@ -39,7 +39,10 @@ a.comment();                // "pydna lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY 2026-
 
 ## Things that are reproduced rather than tidied up
 
-- **`addFeature` with a backwards span, and `format("pydnafasta")`, both fail with an `AttributeError`.**
+- **`addFeature` with a backwards span raises `ValueError`** — `End location (3) must be greater than or
+  equal to start location (9)` — from the location rather than from pydna, and `format("pydnafasta")`
+  raises `AttributeError` only on a record over a *plain* sequence: it asks the sequence whether the
+  molecule is circular, and only a `Dseq` can answer. On a `Dseqrecord` it works.
   Each asks whether something is circular — the record in one case, the sequence in the other — and
   neither a plain record nor a plain sequence has any such property. Only `Dseqrecord` and `Dseq` know,
   so on this layer the question itself is the error: `'SeqRecord' object has no attribute 'circular'`.
@@ -83,6 +86,18 @@ a.comment();                // "pydna lsseguid=4c-FaL3dvt8QXjvUyYHrJdVFNcY 2026-
 `format("fasta")` and the other file formats come from `@biolibs/seqio`, which registers the writers when
 it is imported. This package does not depend on the IO layer, so a program that wants those formats imports
 `@biolibs/seqio` itself; `"primer"` and `"pydnafasta"` are pydna's own and need nothing.
+
+`Dseqrecord.format` is pydna's own override and does four things its parent does not: a `dscode` anywhere
+in the format name writes the raw one-letter-per-base-pair encoding instead of the watson strand; the
+format name is stripped of spaces and hyphens; `topology` is set on a *deep* copy of the annotations
+(`circular` for GenBank on a circular molecule, `linear` otherwise, so calling it cannot leak into the
+record); and the trailing newline Biopython's writers add is taken off.
+
+`figure` draws both strands with one feature highlighted, each **part** of its location separately — which
+a feature spanning the origin needs — with the overhangs padded and the lower strand written as the crick
+strand reversed. A minus-strand feature is highlighted on the lower line and the lines swap. A molecule
+with loops or mismatches has no single overhang to name, so pydna's arithmetic on `None` raises
+`TypeError` before it draws anything, and so does this.
 
 ## Moving features around a circle
 
@@ -216,8 +231,10 @@ Three things worth knowing:
   raises `TypeError: There is no overlap between sequences!`, and `linearize` refuses three ways — a linear
   molecule, enzymes that do not cut, and enzymes that cut more than once.
 
-Not in this slice, and unchecked in [docs/parity-pydna/](parity-pydna/README.md) — 222 of 225: the output
-formats, `format`, `write` and `figure`.
+`format` and `figure` are ported and measured. **`write` is not**, and deliberately: it takes a *file
+name*, nothing here touches a file system, and what it would have written is exactly what `format`
+returns. That leaves [docs/parity-pydna/](parity-pydna/README.md) at 224 of 225, with `write` the only
+item outstanding across the whole pydna port.
 
 **Not portable, and marked as such:** `history`, `source`, `validate_history`, `normalize_history` and
 `is_amplicon` need `pydna.opencloning_models` — 1,421 lines of pydantic describing a provenance interchange

@@ -181,8 +181,8 @@ if ploc["flatten"]:
 # difficulty is: closing a molecule shortens it by its overhangs, moving the origin renumbers everything,
 # and a feature that no longer fits has to go.
 #
-# Left for the next slices, and so unmarked: cut, linearize, number_of_cuts, the cutter queries, synced,
-# format, write and figure.
+# `write` is the one member left unmarked, and deliberately: it takes a *file name*. Nothing in this
+# repository touches a file system, and the format it would have written is what `format` returns.
 #
 # Marked `na` rather than measured:
 #   __hash__ hashes a string built from the instance dictionary, so it moves with the interpreter's hash
@@ -202,6 +202,13 @@ if built_dr:
                    "orfs", "orfs_to_features", "rc", "reverse_complement", "seguid", "shifted",
                    "terminal_transferase", "tolinear", "upper"):
         mark(f"pydna.dseqrecord.Dseqrecord.{member}")
+    # `format` is pydna's own override -- the `dscode` modifier, the stripped name, `topology`, and the
+    # trailing newline taken off -- and `figure` draws the molecule with one feature's parts highlighted.
+    # Both are marked only where a case compared every variant, including the ones that raise.
+    if all(k in built_dr[0].get("formats", {}) for k in ("gb", "fasta-2line dscode", " gb ", "nope")):
+        mark("pydna.dseqrecord.Dseqrecord.format")
+    if all(k in built_dr[0].get("figure", {}) for k in ("default", "plain", "second", "negative")):
+        mark("pydna.dseqrecord.Dseqrecord.figure")
     mark("pydna.dseqrecord.Dseqrecord.__hash__", "na")
     for member in ("history", "source", "validate_history", "normalize_history", "is_amplicon"):
         mark(f"pydna.dseqrecord.Dseqrecord.{member}", "na")

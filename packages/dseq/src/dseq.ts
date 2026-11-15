@@ -167,6 +167,16 @@ export class Dseq {
   /** @returns The blunt, fully double-stranded reading of the molecule, which is what `str()` gives. */
   toString(): string { return toFull(this.data); }
 
+  /**
+   * The molecule's own storage: pydna's dscode, one letter per base *pair*.
+   *
+   * pydna reads this as `seq._data` from outside the class, and `Dseqrecord.format("… dscode")` is why —
+   * it writes the encoding itself into a file rather than the watson strand.
+   *
+   * @returns The dscode string.
+   */
+  get dscode(): string { return this.data; }
+
   /** @returns The same as {@link Dseq.toString}, under pydna's other name for it. */
   toBluntString(): string { return this.toString(); }
 

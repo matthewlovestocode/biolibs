@@ -528,6 +528,58 @@
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtaa\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtaa\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtaa\n//"
+},
+"fasta": {
+"value": ">id description\natgtaa"
+},
+"fasta-2line": {
+"value": ">id description\natgtaa"
+},
+"fasta-2line dscode": {
+"value": ">id description\natgtaa"
+},
+"gb dscode": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtaa\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 6 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 6 BP; 3 A; 0 C; 1 G; 2 T; 0 other;\n     atgtaa                                                                    6\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-6)\na\u001b[48;5;11mtg\u001b[0mtaa\ntacatt"
+},
+"first": {
+"value": "Dseqrecord(-6)\na\u001b[48;5;11mtg\u001b[0mtaa\ntacatt"
+},
+"plain": {
+"value": "Dseqrecord(-6)\na<tg>taa\ntacatt"
+},
+"second": {
+"value": "Dseqrecord(-6)\n\u001b[48;5;11mat\u001b[0mgtaa\ntacatt"
+},
+"negative": {
+"value": "Dseqrecord(-6)\n\u001b[48;5;11mat\u001b[0mgtaa\ntacatt"
+}
+},
 "shifted": {
 "0": {
 "exc": {
@@ -2271,6 +2323,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-6)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtaa\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtaa\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtaa\n//"
+},
+"fasta": {
+"value": ">id description\natgtaa"
+},
+"fasta-2line": {
+"value": ">id description\natgtaa"
+},
+"fasta-2line dscode": {
+"value": ">id description\natgtaa"
+},
+"gb dscode": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtaa\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 6 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nFT   misc            join(6,1)\nFT                   /label=\"wraps\"\nXX\nSQ   Sequence 6 BP; 3 A; 0 C; 1 G; 2 T; 0 other;\n     atgtaa                                                                    6\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o6)\na\u001b[48;5;11mtg\u001b[0mtaa\ntacatt"
+},
+"first": {
+"value": "Dseqrecord(o6)\na\u001b[48;5;11mtg\u001b[0mtaa\ntacatt"
+},
+"plain": {
+"value": "Dseqrecord(o6)\na<tg>taa\ntacatt"
+},
+"second": {
+"value": "Dseqrecord(o6)\n\u001b[48;5;11mat\u001b[0mgtaa\ntacatt"
+},
+"negative": {
+"value": "Dseqrecord(o6)\n\u001b[48;5;11ma\u001b[0mtgta\u001b[48;5;11ma\u001b[0m\ntacatt"
 }
 },
 "shifted": {
@@ -4185,6 +4289,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtaa\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtaa\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtaa\n//"
+},
+"fasta": {
+"value": ">id description\nATGTAA"
+},
+"fasta-2line": {
+"value": ">id description\nATGTAA"
+},
+"fasta-2line dscode": {
+"value": ">id description\nATGTAA"
+},
+"gb dscode": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtaa\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 6 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 6 BP; 3 A; 0 C; 1 G; 2 T; 0 other;\n     atgtaa                                                                    6\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-6)\nA\u001b[48;5;11mTG\u001b[0mTAA\nTACATT"
+},
+"first": {
+"value": "Dseqrecord(-6)\nA\u001b[48;5;11mTG\u001b[0mTAA\nTACATT"
+},
+"plain": {
+"value": "Dseqrecord(-6)\nA<TG>TAA\nTACATT"
+},
+"second": {
+"value": "Dseqrecord(-6)\n\u001b[48;5;11mAT\u001b[0mGTAA\nTACATT"
+},
+"negative": {
+"value": "Dseqrecord(-6)\n\u001b[48;5;11mAT\u001b[0mGTAA\nTACATT"
+}
+},
 "shifted": {
 "0": {
 "exc": {
@@ -5930,6 +6086,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtaa\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtaa\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtaa\n//"
+},
+"fasta": {
+"value": ">id description\nATGTAA"
+},
+"fasta-2line": {
+"value": ">id description\nATGTAA"
+},
+"fasta-2line dscode": {
+"value": ">id description\nATGTAA"
+},
+"gb dscode": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtaa\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 6 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nFT   misc            join(6,1)\nFT                   /label=\"wraps\"\nXX\nSQ   Sequence 6 BP; 3 A; 0 C; 1 G; 2 T; 0 other;\n     atgtaa                                                                    6\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o6)\nA\u001b[48;5;11mTG\u001b[0mTAA\nTACATT"
+},
+"first": {
+"value": "Dseqrecord(o6)\nA\u001b[48;5;11mTG\u001b[0mTAA\nTACATT"
+},
+"plain": {
+"value": "Dseqrecord(o6)\nA<TG>TAA\nTACATT"
+},
+"second": {
+"value": "Dseqrecord(o6)\n\u001b[48;5;11mAT\u001b[0mGTAA\nTACATT"
+},
+"negative": {
+"value": "Dseqrecord(o6)\n\u001b[48;5;11mA\u001b[0mTGTA\u001b[48;5;11mA\u001b[0m\nTACATT"
+}
+},
 "shifted": {
 "0": {
 "value": {
@@ -7527,6 +7735,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                       3 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 aaa\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       3 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 aaa\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       3 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 aaa\n//"
+},
+"fasta": {
+"value": ">id description\naAa"
+},
+"fasta-2line": {
+"value": ">id description\naAa"
+},
+"fasta-2line dscode": {
+"value": ">id description\naAa"
+},
+"gb dscode": {
+"value": "LOCUS       name                       3 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 aaa\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 3 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nXX\nSQ   Sequence 3 BP; 3 A; 0 C; 0 G; 0 T; 0 other;\n     aaa                                                                       3\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-3)\n\u001b[48;5;11m\u001b[0maAa\ntTt"
+},
+"first": {
+"value": "Dseqrecord(-3)\n\u001b[48;5;11m\u001b[0maAa\ntTt"
+},
+"plain": {
+"value": "Dseqrecord(-3)\n<>aAa\ntTt"
+},
+"second": {
+"value": "Dseqrecord(-3)\n\u001b[48;5;11m\u001b[0maAa\ntTt"
+},
+"negative": {
+"value": "Dseqrecord(-3)\n\u001b[48;5;11m\u001b[0maAa\ntTt"
+}
+},
 "shifted": {
 "0": {
 "exc": {
@@ -8310,6 +8570,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-3)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                       3 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 aaa\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       3 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 aaa\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       3 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 aaa\n//"
+},
+"fasta": {
+"value": ">id description\naAa"
+},
+"fasta-2line": {
+"value": ">id description\naAa"
+},
+"fasta-2line dscode": {
+"value": ">id description\naAa"
+},
+"gb dscode": {
+"value": "LOCUS       name                       3 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 aaa\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 3 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nXX\nSQ   Sequence 3 BP; 3 A; 0 C; 0 G; 0 T; 0 other;\n     aaa                                                                       3\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o3)\n\u001b[48;5;11m\u001b[0maAa\ntTt"
+},
+"first": {
+"value": "Dseqrecord(o3)\n\u001b[48;5;11m\u001b[0maAa\ntTt"
+},
+"plain": {
+"value": "Dseqrecord(o3)\n<>aAa\ntTt"
+},
+"second": {
+"value": "Dseqrecord(o3)\n\u001b[48;5;11m\u001b[0maAa\ntTt"
+},
+"negative": {
+"value": "Dseqrecord(o3)\n\u001b[48;5;11m\u001b[0maAa\ntTt"
 }
 },
 "shifted": {
@@ -9425,6 +9737,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-6)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gaattc\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gaattc\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gaattc\n//"
+},
+"fasta": {
+"value": ">id description\ngaattc"
+},
+"fasta-2line": {
+"value": ">id description\ngaattc"
+},
+"fasta-2line dscode": {
+"value": ">id description\ngaattc"
+},
+"gb dscode": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gaattc\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 6 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 6 BP; 2 A; 1 C; 1 G; 2 T; 0 other;\n     gaattc                                                                    6\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-6)\ng\u001b[48;5;11maa\u001b[0mttc\ncttaag"
+},
+"first": {
+"value": "Dseqrecord(-6)\ng\u001b[48;5;11maa\u001b[0mttc\ncttaag"
+},
+"plain": {
+"value": "Dseqrecord(-6)\ng<aa>ttc\ncttaag"
+},
+"second": {
+"value": "Dseqrecord(-6)\n\u001b[48;5;11mga\u001b[0mattc\ncttaag"
+},
+"negative": {
+"value": "Dseqrecord(-6)\n\u001b[48;5;11mga\u001b[0mattc\ncttaag"
 }
 },
 "shifted": {
@@ -11054,6 +11418,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-6)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gaattc\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gaattc\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gaattc\n//"
+},
+"fasta": {
+"value": ">id description\ngaattc"
+},
+"fasta-2line": {
+"value": ">id description\ngaattc"
+},
+"fasta-2line dscode": {
+"value": ">id description\ngaattc"
+},
+"gb dscode": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gaattc\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 6 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nFT   misc            join(6,1)\nFT                   /label=\"wraps\"\nXX\nSQ   Sequence 6 BP; 2 A; 1 C; 1 G; 2 T; 0 other;\n     gaattc                                                                    6\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o6)\ng\u001b[48;5;11maa\u001b[0mttc\ncttaag"
+},
+"first": {
+"value": "Dseqrecord(o6)\ng\u001b[48;5;11maa\u001b[0mttc\ncttaag"
+},
+"plain": {
+"value": "Dseqrecord(o6)\ng<aa>ttc\ncttaag"
+},
+"second": {
+"value": "Dseqrecord(o6)\n\u001b[48;5;11mga\u001b[0mattc\ncttaag"
+},
+"negative": {
+"value": "Dseqrecord(o6)\n\u001b[48;5;11mg\u001b[0maatt\u001b[48;5;11mc\u001b[0m\ncttaag"
 }
 },
 "shifted": {
@@ -12708,6 +13124,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                      10 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+"genbank": {
+"value": "LOCUS       name                      10 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+" gb ": {
+"value": "LOCUS       name                      10 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+"fasta": {
+"value": ">id description\nGGgaattcGG"
+},
+"fasta-2line": {
+"value": ">id description\nGGgaattcGG"
+},
+"fasta-2line dscode": {
+"value": ">id description\nPPgaattcQQ"
+},
+"gb dscode": {
+"value": "LOCUS       name                      10 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 ppgaattcqq\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 10 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 10 BP; 2 A; 1 C; 5 G; 2 T; 0 other;\n     gggaattcgg                                                               10\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-10)\nG\u001b[48;5;11mGg\u001b[0maattc  \n  cttaagCC"
+},
+"first": {
+"value": "Dseqrecord(-10)\nG\u001b[48;5;11mGg\u001b[0maattc  \n  cttaagCC"
+},
+"plain": {
+"value": "Dseqrecord(-10)\nG<Gg>aattc  \n  cttaagCC"
+},
+"second": {
+"value": "Dseqrecord(-10)\n\u001b[48;5;11mGG\u001b[0mgaattc  \n  cttaagCC"
+},
+"negative": {
+"value": "Dseqrecord(-10)\n\u001b[48;5;11mGG\u001b[0mgaattc  \n  cttaagCC"
+}
+},
 "shifted": {
 "0": {
 "exc": {
@@ -14179,6 +14647,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-10)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                      10 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(10,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+"genbank": {
+"value": "LOCUS       name                      10 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(10,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+" gb ": {
+"value": "LOCUS       name                      10 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(10,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+"fasta": {
+"value": ">id description\nGGgaattcGG"
+},
+"fasta-2line": {
+"value": ">id description\nGGgaattcGG"
+},
+"fasta-2line dscode": {
+"value": ">id description\nPPgaattcQQ"
+},
+"gb dscode": {
+"value": "LOCUS       name                      10 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(10,1)\n                     /label=\"wraps\"\nORIGIN\n        1 ppgaattcqq\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 10 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nFT   misc            join(10,1)\nFT                   /label=\"wraps\"\nXX\nSQ   Sequence 10 BP; 2 A; 1 C; 5 G; 2 T; 0 other;\n     gggaattcgg                                                               10\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o10)\nG\u001b[48;5;11mGg\u001b[0maattc  \n  cttaagCC"
+},
+"first": {
+"value": "Dseqrecord(o10)\nG\u001b[48;5;11mGg\u001b[0maattc  \n  cttaagCC"
+},
+"plain": {
+"value": "Dseqrecord(o10)\nG<Gg>aattc  \n  cttaagCC"
+},
+"second": {
+"value": "Dseqrecord(o10)\n\u001b[48;5;11mGG\u001b[0mgaattc  \n  cttaagCC"
+},
+"negative": {
+"value": "Dseqrecord(o10)\n\u001b[48;5;11mG\u001b[0mGgaattc \u001b[48;5;11m \u001b[0m\n  cttaagCC"
 }
 },
 "shifted": {
@@ -15716,6 +16236,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-10)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                      10 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+"genbank": {
+"value": "LOCUS       name                      10 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+" gb ": {
+"value": "LOCUS       name                      10 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+"fasta": {
+"value": ">id description\nGGgaattcGG"
+},
+"fasta-2line": {
+"value": ">id description\nGGgaattcGG"
+},
+"fasta-2line dscode": {
+"value": ">id description\nQQgaattcPP"
+},
+"gb dscode": {
+"value": "LOCUS       name                      10 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 qqgaattcpp\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 10 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 10 BP; 2 A; 1 C; 5 G; 2 T; 0 other;\n     gggaattcgg                                                               10\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-10)\n \u001b[48;5;11m g\u001b[0maattcGG\nCCcttaag  "
+},
+"first": {
+"value": "Dseqrecord(-10)\n \u001b[48;5;11m g\u001b[0maattcGG\nCCcttaag  "
+},
+"plain": {
+"value": "Dseqrecord(-10)\n < g>aattcGG\nCCcttaag  "
+},
+"second": {
+"value": "Dseqrecord(-10)\n\u001b[48;5;11m  \u001b[0mgaattcGG\nCCcttaag  "
+},
+"negative": {
+"value": "Dseqrecord(-10)\n\u001b[48;5;11m  \u001b[0mgaattcGG\nCCcttaag  "
 }
 },
 "shifted": {
@@ -17335,6 +17907,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                      10 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(10,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+"genbank": {
+"value": "LOCUS       name                      10 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(10,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+" gb ": {
+"value": "LOCUS       name                      10 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(10,1)\n                     /label=\"wraps\"\nORIGIN\n        1 gggaattcgg\n//"
+},
+"fasta": {
+"value": ">id description\nGGgaattcGG"
+},
+"fasta-2line": {
+"value": ">id description\nGGgaattcGG"
+},
+"fasta-2line dscode": {
+"value": ">id description\nQQgaattcPP"
+},
+"gb dscode": {
+"value": "LOCUS       name                      10 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(10,1)\n                     /label=\"wraps\"\nORIGIN\n        1 qqgaattcpp\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 10 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nFT   misc            join(10,1)\nFT                   /label=\"wraps\"\nXX\nSQ   Sequence 10 BP; 2 A; 1 C; 5 G; 2 T; 0 other;\n     gggaattcgg                                                               10\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o10)\n \u001b[48;5;11m g\u001b[0maattcGG\nCCcttaag  "
+},
+"first": {
+"value": "Dseqrecord(o10)\n \u001b[48;5;11m g\u001b[0maattcGG\nCCcttaag  "
+},
+"plain": {
+"value": "Dseqrecord(o10)\n < g>aattcGG\nCCcttaag  "
+},
+"second": {
+"value": "Dseqrecord(o10)\n\u001b[48;5;11m  \u001b[0mgaattcGG\nCCcttaag  "
+},
+"negative": {
+"value": "Dseqrecord(o10)\n\u001b[48;5;11m \u001b[0m gaattcG\u001b[48;5;11mG\u001b[0m\nCCcttaag  "
+}
+},
 "shifted": {
 "0": {
 "value": {
@@ -18870,6 +19494,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-24)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                      24 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atggccttta aatttgggtg ctga\n//"
+},
+"genbank": {
+"value": "LOCUS       name                      24 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atggccttta aatttgggtg ctga\n//"
+},
+" gb ": {
+"value": "LOCUS       name                      24 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atggccttta aatttgggtg ctga\n//"
+},
+"fasta": {
+"value": ">id description\natggcctttaaatttgggtgctga"
+},
+"fasta-2line": {
+"value": ">id description\natggcctttaaatttgggtgctga"
+},
+"fasta-2line dscode": {
+"value": ">id description\natggcctttaaatttgggtgctga"
+},
+"gb dscode": {
+"value": "LOCUS       name                      24 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atggccttta aatttgggtg ctga\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 24 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 24 BP; 5 A; 3 C; 7 G; 9 T; 0 other;\n     atggccttta aatttgggtg ctga                                               24\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-24)\na\u001b[48;5;11mtg\u001b[0mgcctttaaatttgggtgctga\ntaccggaaatttaaacccacgact"
+},
+"first": {
+"value": "Dseqrecord(-24)\na\u001b[48;5;11mtg\u001b[0mgcctttaaatttgggtgctga\ntaccggaaatttaaacccacgact"
+},
+"plain": {
+"value": "Dseqrecord(-24)\na<tg>gcctttaaatttgggtgctga\ntaccggaaatttaaacccacgact"
+},
+"second": {
+"value": "Dseqrecord(-24)\n\u001b[48;5;11mat\u001b[0mggcctttaaatttgggtgctga\ntaccggaaatttaaacccacgact"
+},
+"negative": {
+"value": "Dseqrecord(-24)\n\u001b[48;5;11mat\u001b[0mggcctttaaatttgggtgctga\ntaccggaaatttaaacccacgact"
 }
 },
 "shifted": {
@@ -20615,6 +21291,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-24)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                      24 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(24,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atggccttta aatttgggtg ctga\n//"
+},
+"genbank": {
+"value": "LOCUS       name                      24 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(24,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atggccttta aatttgggtg ctga\n//"
+},
+" gb ": {
+"value": "LOCUS       name                      24 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(24,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atggccttta aatttgggtg ctga\n//"
+},
+"fasta": {
+"value": ">id description\natggcctttaaatttgggtgctga"
+},
+"fasta-2line": {
+"value": ">id description\natggcctttaaatttgggtgctga"
+},
+"fasta-2line dscode": {
+"value": ">id description\natggcctttaaatttgggtgctga"
+},
+"gb dscode": {
+"value": "LOCUS       name                      24 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(24,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atggccttta aatttgggtg ctga\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 24 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nFT   misc            join(24,1)\nFT                   /label=\"wraps\"\nXX\nSQ   Sequence 24 BP; 5 A; 3 C; 7 G; 9 T; 0 other;\n     atggccttta aatttgggtg ctga                                               24\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o24)\na\u001b[48;5;11mtg\u001b[0mgcctttaaatttgggtgctga\ntaccggaaatttaaacccacgact"
+},
+"first": {
+"value": "Dseqrecord(o24)\na\u001b[48;5;11mtg\u001b[0mgcctttaaatttgggtgctga\ntaccggaaatttaaacccacgact"
+},
+"plain": {
+"value": "Dseqrecord(o24)\na<tg>gcctttaaatttgggtgctga\ntaccggaaatttaaacccacgact"
+},
+"second": {
+"value": "Dseqrecord(o24)\n\u001b[48;5;11mat\u001b[0mggcctttaaatttgggtgctga\ntaccggaaatttaaacccacgact"
+},
+"negative": {
+"value": "Dseqrecord(o24)\n\u001b[48;5;11ma\u001b[0mtggcctttaaatttgggtgctg\u001b[48;5;11ma\u001b[0m\ntaccggaaatttaaacccacgact"
 }
 },
 "shifted": {
@@ -22529,6 +23257,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                      30 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtacgatc gtatgctggt tatattttag\n//"
+},
+"genbank": {
+"value": "LOCUS       name                      30 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtacgatc gtatgctggt tatattttag\n//"
+},
+" gb ": {
+"value": "LOCUS       name                      30 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtacgatc gtatgctggt tatattttag\n//"
+},
+"fasta": {
+"value": ">id description\natgtacgatcgtatgctggttatattttag"
+},
+"fasta-2line": {
+"value": ">id description\natgtacgatcgtatgctggttatattttag"
+},
+"fasta-2line dscode": {
+"value": ">id description\natgtacgatcgtatgctggttatattttag"
+},
+"gb dscode": {
+"value": "LOCUS       name                      30 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 atgtacgatc gtatgctggt tatattttag\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 30 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 30 BP; 7 A; 3 C; 7 G; 13 T; 0 other;\n     atgtacgatc gtatgctggt tatattttag                                         30\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-30)\na\u001b[48;5;11mtg\u001b[0mtacgatcgtatgctggttatattttag\ntacatgctagcatacgaccaatataaaatc"
+},
+"first": {
+"value": "Dseqrecord(-30)\na\u001b[48;5;11mtg\u001b[0mtacgatcgtatgctggttatattttag\ntacatgctagcatacgaccaatataaaatc"
+},
+"plain": {
+"value": "Dseqrecord(-30)\na<tg>tacgatcgtatgctggttatattttag\ntacatgctagcatacgaccaatataaaatc"
+},
+"second": {
+"value": "Dseqrecord(-30)\n\u001b[48;5;11mat\u001b[0mgtacgatcgtatgctggttatattttag\ntacatgctagcatacgaccaatataaaatc"
+},
+"negative": {
+"value": "Dseqrecord(-30)\n\u001b[48;5;11mat\u001b[0mgtacgatcgtatgctggttatattttag\ntacatgctagcatacgaccaatataaaatc"
+}
+},
 "shifted": {
 "0": {
 "exc": {
@@ -24318,6 +25098,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                      30 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(30,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtacgatc gtatgctggt tatattttag\n//"
+},
+"genbank": {
+"value": "LOCUS       name                      30 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(30,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtacgatc gtatgctggt tatattttag\n//"
+},
+" gb ": {
+"value": "LOCUS       name                      30 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(30,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtacgatc gtatgctggt tatattttag\n//"
+},
+"fasta": {
+"value": ">id description\natgtacgatcgtatgctggttatattttag"
+},
+"fasta-2line": {
+"value": ">id description\natgtacgatcgtatgctggttatattttag"
+},
+"fasta-2line dscode": {
+"value": ">id description\natgtacgatcgtatgctggttatattttag"
+},
+"gb dscode": {
+"value": "LOCUS       name                      30 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(30,1)\n                     /label=\"wraps\"\nORIGIN\n        1 atgtacgatc gtatgctggt tatattttag\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 30 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nFT   misc            join(30,1)\nFT                   /label=\"wraps\"\nXX\nSQ   Sequence 30 BP; 7 A; 3 C; 7 G; 13 T; 0 other;\n     atgtacgatc gtatgctggt tatattttag                                         30\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o30)\na\u001b[48;5;11mtg\u001b[0mtacgatcgtatgctggttatattttag\ntacatgctagcatacgaccaatataaaatc"
+},
+"first": {
+"value": "Dseqrecord(o30)\na\u001b[48;5;11mtg\u001b[0mtacgatcgtatgctggttatattttag\ntacatgctagcatacgaccaatataaaatc"
+},
+"plain": {
+"value": "Dseqrecord(o30)\na<tg>tacgatcgtatgctggttatattttag\ntacatgctagcatacgaccaatataaaatc"
+},
+"second": {
+"value": "Dseqrecord(o30)\n\u001b[48;5;11mat\u001b[0mgtacgatcgtatgctggttatattttag\ntacatgctagcatacgaccaatataaaatc"
+},
+"negative": {
+"value": "Dseqrecord(o30)\n\u001b[48;5;11ma\u001b[0mtgtacgatcgtatgctggttatatttta\u001b[48;5;11mg\u001b[0m\ntacatgctagcatacgaccaatataaaatc"
+}
+},
 "shifted": {
 "0": {
 "value": {
@@ -25959,6 +26791,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                       1 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 a\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       1 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 a\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       1 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 a\n//"
+},
+"fasta": {
+"value": ">id description\na"
+},
+"fasta-2line": {
+"value": ">id description\na"
+},
+"fasta-2line dscode": {
+"value": ">id description\na"
+},
+"gb dscode": {
+"value": "LOCUS       name                       1 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 a\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 1 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nXX\nSQ   Sequence 1 BP; 1 A; 0 C; 0 G; 0 T; 0 other;\n     a                                                                         1\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-1)\n\u001b[48;5;11m\u001b[0ma\nt"
+},
+"first": {
+"value": "Dseqrecord(-1)\n\u001b[48;5;11m\u001b[0ma\nt"
+},
+"plain": {
+"value": "Dseqrecord(-1)\n<>a\nt"
+},
+"second": {
+"value": "Dseqrecord(-1)\n\u001b[48;5;11m\u001b[0ma\nt"
+},
+"negative": {
+"value": "Dseqrecord(-1)\n\u001b[48;5;11m\u001b[0ma\nt"
+}
+},
 "shifted": {
 "0": {
 "exc": {
@@ -26744,6 +27628,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                       1 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 a\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       1 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 a\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       1 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 a\n//"
+},
+"fasta": {
+"value": ">id description\na"
+},
+"fasta-2line": {
+"value": ">id description\na"
+},
+"fasta-2line dscode": {
+"value": ">id description\na"
+},
+"gb dscode": {
+"value": "LOCUS       name                       1 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n        1 a\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 1 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nXX\nSQ   Sequence 1 BP; 1 A; 0 C; 0 G; 0 T; 0 other;\n     a                                                                         1\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o1)\n\u001b[48;5;11m\u001b[0ma\nt"
+},
+"first": {
+"value": "Dseqrecord(o1)\n\u001b[48;5;11m\u001b[0ma\nt"
+},
+"plain": {
+"value": "Dseqrecord(o1)\n<>a\nt"
+},
+"second": {
+"value": "Dseqrecord(o1)\n\u001b[48;5;11m\u001b[0ma\nt"
+},
+"negative": {
+"value": "Dseqrecord(o1)\n\u001b[48;5;11m\u001b[0ma\nt"
+}
+},
 "shifted": {
 "0": {
 "value": {
@@ -27517,6 +28453,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                       0 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       0 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       0 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n//"
+},
+"fasta": {
+"value": ">id description"
+},
+"fasta-2line": {
+"value": ">id description"
+},
+"fasta-2line dscode": {
+"value": ">id description"
+},
+"gb dscode": {
+"value": "LOCUS       name                       0 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 0 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nXX\nSQ   Sequence 0 BP; 0 A; 0 C; 0 G; 0 T; 0 other;\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-0)\n\u001b[48;5;11m\u001b[0m\n"
+},
+"first": {
+"value": "Dseqrecord(-0)\n\u001b[48;5;11m\u001b[0m\n"
+},
+"plain": {
+"value": "Dseqrecord(-0)\n<>\n"
+},
+"second": {
+"value": "Dseqrecord(-0)\n\u001b[48;5;11m\u001b[0m\n"
+},
+"negative": {
+"value": "Dseqrecord(-0)\n\u001b[48;5;11m\u001b[0m\n"
+}
+},
 "shifted": {
 "0": {
 "exc": {
@@ -28258,6 +29246,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-0)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                       0 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       0 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       0 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n//"
+},
+"fasta": {
+"value": ">id description"
+},
+"fasta-2line": {
+"value": ">id description"
+},
+"fasta-2line dscode": {
+"value": ">id description"
+},
+"gb dscode": {
+"value": "LOCUS       name                       0 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\nORIGIN\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 0 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nXX\nSQ   Sequence 0 BP; 0 A; 0 C; 0 G; 0 T; 0 other;\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o0)\n\u001b[48;5;11m\u001b[0m\n"
+},
+"first": {
+"value": "Dseqrecord(o0)\n\u001b[48;5;11m\u001b[0m\n"
+},
+"plain": {
+"value": "Dseqrecord(o0)\n<>\n"
+},
+"second": {
+"value": "Dseqrecord(o0)\n\u001b[48;5;11m\u001b[0m\n"
+},
+"negative": {
+"value": "Dseqrecord(o0)\n\u001b[48;5;11m\u001b[0m\n"
 }
 },
 "shifted": {
@@ -29193,6 +30233,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-4)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                       4 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 aaaa\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       4 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 aaaa\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       4 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 aaaa\n//"
+},
+"fasta": {
+"value": ">id description\naaaa"
+},
+"fasta-2line": {
+"value": ">id description\naaaa"
+},
+"fasta-2line dscode": {
+"value": ">id description\naaaa"
+},
+"gb dscode": {
+"value": "LOCUS       name                       4 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 aaaa\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 4 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 4 BP; 4 A; 0 C; 0 G; 0 T; 0 other;\n     aaaa                                                                      4\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-4)\na\u001b[48;5;11maa\u001b[0ma\ntttt"
+},
+"first": {
+"value": "Dseqrecord(-4)\na\u001b[48;5;11maa\u001b[0ma\ntttt"
+},
+"plain": {
+"value": "Dseqrecord(-4)\na<aa>a\ntttt"
+},
+"second": {
+"value": "Dseqrecord(-4)\n\u001b[48;5;11maa\u001b[0maa\ntttt"
+},
+"negative": {
+"value": "Dseqrecord(-4)\n\u001b[48;5;11maa\u001b[0maa\ntttt"
 }
 },
 "shifted": {
@@ -30822,6 +31914,58 @@ false
 "n": 5e-14,
 "repr": "Dseqrecord(-4)"
 }
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                       4 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(4,1)\n                     /label=\"wraps\"\nORIGIN\n        1 aaaa\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       4 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(4,1)\n                     /label=\"wraps\"\nORIGIN\n        1 aaaa\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       4 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(4,1)\n                     /label=\"wraps\"\nORIGIN\n        1 aaaa\n//"
+},
+"fasta": {
+"value": ">id description\naaaa"
+},
+"fasta-2line": {
+"value": ">id description\naaaa"
+},
+"fasta-2line dscode": {
+"value": ">id description\naaaa"
+},
+"gb dscode": {
+"value": "LOCUS       name                       4 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(4,1)\n                     /label=\"wraps\"\nORIGIN\n        1 aaaa\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 4 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nFT   misc            join(4,1)\nFT                   /label=\"wraps\"\nXX\nSQ   Sequence 4 BP; 4 A; 0 C; 0 G; 0 T; 0 other;\n     aaaa                                                                      4\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o4)\na\u001b[48;5;11maa\u001b[0ma\ntttt"
+},
+"first": {
+"value": "Dseqrecord(o4)\na\u001b[48;5;11maa\u001b[0ma\ntttt"
+},
+"plain": {
+"value": "Dseqrecord(o4)\na<aa>a\ntttt"
+},
+"second": {
+"value": "Dseqrecord(o4)\n\u001b[48;5;11maa\u001b[0maa\ntttt"
+},
+"negative": {
+"value": "Dseqrecord(o4)\n\u001b[48;5;11ma\u001b[0maa\u001b[48;5;11ma\u001b[0m\ntttt"
 }
 },
 "shifted": {
@@ -32570,6 +33714,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 ggatcc\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 ggatcc\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 ggatcc\n//"
+},
+"fasta": {
+"value": ">id description\nGGATCC"
+},
+"fasta-2line": {
+"value": ">id description\nGGATCC"
+},
+"fasta-2line dscode": {
+"value": ">id description\nGGATCC"
+},
+"gb dscode": {
+"value": "LOCUS       name                       6 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 ggatcc\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 6 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 6 BP; 1 A; 2 C; 2 G; 1 T; 0 other;\n     ggatcc                                                                    6\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(-6)\nG\u001b[48;5;11mGA\u001b[0mTCC\nCCTAGG"
+},
+"first": {
+"value": "Dseqrecord(-6)\nG\u001b[48;5;11mGA\u001b[0mTCC\nCCTAGG"
+},
+"plain": {
+"value": "Dseqrecord(-6)\nG<GA>TCC\nCCTAGG"
+},
+"second": {
+"value": "Dseqrecord(-6)\n\u001b[48;5;11mGG\u001b[0mATCC\nCCTAGG"
+},
+"negative": {
+"value": "Dseqrecord(-6)\n\u001b[48;5;11mGG\u001b[0mATCC\nCCTAGG"
+}
+},
 "shifted": {
 "0": {
 "exc": {
@@ -34199,6 +35395,58 @@ false
 }
 }
 },
+"formats": {
+"gb": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 ggatcc\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 ggatcc\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 ggatcc\n//"
+},
+"fasta": {
+"value": ">id description\nGGATCC"
+},
+"fasta-2line": {
+"value": ">id description\nGGATCC"
+},
+"fasta-2line dscode": {
+"value": ">id description\nGGATCC"
+},
+"gb dscode": {
+"value": "LOCUS       name                       6 bp    DNA     circular UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\n     misc            join(6,1)\n                     /label=\"wraps\"\nORIGIN\n        1 ggatcc\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 6 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nFT   misc            join(6,1)\nFT                   /label=\"wraps\"\nXX\nSQ   Sequence 6 BP; 1 A; 2 C; 2 G; 1 T; 0 other;\n     ggatcc                                                                    6\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"value": "Dseqrecord(o6)\nG\u001b[48;5;11mGA\u001b[0mTCC\nCCTAGG"
+},
+"first": {
+"value": "Dseqrecord(o6)\nG\u001b[48;5;11mGA\u001b[0mTCC\nCCTAGG"
+},
+"plain": {
+"value": "Dseqrecord(o6)\nG<GA>TCC\nCCTAGG"
+},
+"second": {
+"value": "Dseqrecord(o6)\n\u001b[48;5;11mGG\u001b[0mATCC\nCCTAGG"
+},
+"negative": {
+"value": "Dseqrecord(o6)\n\u001b[48;5;11mG\u001b[0mGATC\u001b[48;5;11mC\u001b[0m\nCCTAGG"
+}
+},
 "shifted": {
 "0": {
 "value": {
@@ -35751,6 +36999,73 @@ false
 "exc": {
 "type": "TypeError",
 "msg": "'>=' not supported between instances of 'NoneType' and 'int'"
+}
+}
+},
+"formats": {
+"gb": {
+"value": "LOCUS       name                       4 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gatc\n//"
+},
+"genbank": {
+"value": "LOCUS       name                       4 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gatc\n//"
+},
+" gb ": {
+"value": "LOCUS       name                       4 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 gatc\n//"
+},
+"fasta": {
+"value": ">id description\nGATC"
+},
+"fasta-2line": {
+"value": ">id description\nGATC"
+},
+"fasta-2line dscode": {
+"value": ">id description\nPEXI"
+},
+"gb dscode": {
+"value": "LOCUS       name                       4 bp    DNA     linear   UNK 01-JAN-1980\nDEFINITION  description.\nACCESSION   id\nVERSION     id\nKEYWORDS    .\nSOURCE      \n  ORGANISM  .\n            .\nFEATURES             Location/Qualifiers\n     misc            2..3\n                     /label=\"inner\"\n     gene            1..2\n                     /label=\"head\"\nORIGIN\n        1 pexi\n//"
+},
+"embl": {
+"value": "ID   id; ; linear; DNA; ; UNC; 4 BP.\nXX\nAC   id;\nXX\nDE   description\nXX\nOS   .\nOC   .\nXX\nFH   Key             Location/Qualifiers\nFH\nFT   misc            2..3\nFT                   /label=\"inner\"\nFT   gene            1..2\nFT                   /label=\"head\"\nXX\nSQ   Sequence 4 BP; 1 A; 1 C; 1 G; 1 T; 0 other;\n     gatc                                                                      4\n//"
+},
+"nope": {
+"exc": {
+"type": "KeyError",
+"msg": "nope"
+}
+}
+},
+"format_leaks_topology": {
+"value": "unset"
+},
+"figure": {
+"default": {
+"exc": {
+"type": "TypeError",
+"msg": "unsupported operand type(s) for +: 'NoneType' and 'int'"
+}
+},
+"first": {
+"exc": {
+"type": "TypeError",
+"msg": "unsupported operand type(s) for +: 'NoneType' and 'int'"
+}
+},
+"plain": {
+"exc": {
+"type": "TypeError",
+"msg": "unsupported operand type(s) for +: 'NoneType' and 'int'"
+}
+},
+"second": {
+"exc": {
+"type": "TypeError",
+"msg": "unsupported operand type(s) for +: 'NoneType' and 'int'"
+}
+},
+"negative": {
+"exc": {
+"type": "TypeError",
+"msg": "unsupported operand type(s) for +: 'NoneType' and 'int'"
 }
 }
 },

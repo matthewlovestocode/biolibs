@@ -98,6 +98,18 @@ for data in MOLECULES:
         case["lower"] = guard(lambda: snap(r.lower()))
         case["terminal_transferase"] = {
             n: guard(lambda n=n: snap(r.terminal_transferase(n))) for n in ("a", "gg", "")}
+        # `format` is pydna's own override: a deep copy, a `dscode` modifier that writes the encoding
+        # itself instead of the watson strand, a stripped format name, `topology` set for GenBank, and
+        # the trailing newline taken off. `figure` draws both strands with one feature highlighted --
+        # and puts the highlight pair in emptily when there are no features at all.
+        case["formats"] = {f: guard(lambda f=f: r.format(f))
+                           for f in ("gb", "genbank", " gb ", "fasta", "fasta-2line",
+                                     "fasta-2line dscode", "gb dscode", "embl", "nope")}
+        case["format_leaks_topology"] = guard(
+            lambda: (r.format("gb"), r.annotations.get("topology", "unset"))[1])
+        case["figure"] = {name: guard(lambda a=a: r.figure(*a)) for name, a in
+                          (("default", ()), ("first", (0,)), ("plain", (0, "<", ">")),
+                           ("second", (1,)), ("negative", (-1,)))}
         case["shifted"] = {str(sh): guard(lambda sh=sh: snap(r.shifted(sh)))
                            for sh in (0, 1, 2, -1, 5, 100)}
         case["orfs"] = {str(ms): guard(lambda ms=ms: [snap(o) for o in r.orfs(minsize=ms)])

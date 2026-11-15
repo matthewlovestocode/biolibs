@@ -35,6 +35,21 @@ const DEFAULT_N = 5e-14;
 /** What `Dseqrecord` can be built from. */
 export type RecordLike = string | Dseq | { seq?: unknown; features?: unknown } | { toString(): string };
 
+
+/** Watson-to-crick for the figure's lower strand, which is printed in place rather than reversed. */
+const COMPLEMENT: Readonly<Record<string, string>> = {
+  A: "T", C: "G", G: "C", T: "A", a: "t", c: "g", g: "c", t: "a", N: "N", n: "n",
+};
+
+/**
+ * Python's `str.strip(" -")`: spaces and hyphens off both ends.
+ *
+ * @param s - The format name. @returns It trimmed.
+ */
+function stripSpacesAndHyphens(s: string): string {
+  return s.replace(/^[ -]+/, "").replace(/[ -]+$/, "");
+}
+
 /**
  * A double-stranded record.
  *
@@ -167,6 +182,110 @@ export class Dseqrecord extends PydnaSeqRecord {
 
   /** @returns The mass in grams: the molecular weight times how much of it there is. */
   m(): number { return (this.seq as unknown as Dseq).mw() * this.n; }
+
+  /**
+   * Format the molecule, through a writer from `@biolibs/seqio` or one of pydna's own.
+   *
+   * pydna overrides this to do four things its parent does not, and all four are visible in the output:
+   *
+   * - **`"dscode"` anywhere in the format name** writes the raw dscode string — one letter per base
+   *   *pair* — instead of the watson strand, and the word is then taken out of the format name. So
+   *   `format("fasta-2line dscode")` on `Dseqrecord("PEXIGATCQFZJ")` writes those twelve letters, while
+   *   `format("fasta-2line")` writes the `GATCGATCGATC` they stand for.
+   * - **The format name is stripped** of spaces and hyphens at either end, so `" gb "` works.
+   * - **`topology` is set** on a *deep* copy of the annotations -- `copy()` shares that map, and pydna
+   *   uses `copy.deepcopy` here for exactly this reason -- `circular` for a circular molecule written as
+   *   GenBank, and `linear` for everything else — including a circular molecule written as FASTA, which
+   *   has nowhere to say so.
+   * - **The result is trimmed.** Biopython's writers end with a newline and pydna takes it off.
+   *
+   * It works on a copy, so none of that reaches the record you called it on.
+   *
+   * @param format - A format name, optionally carrying `dscode`.
+   * @returns The formatted text, with no trailing newline.
+   * @throws {@link KeyError} for a format with no writer registered — importing `@biolibs/seqio`
+   *   registers them.
+   */
+  override format(format = "gb"): string {
+    const record = this.copy();
+    let name = format;
+    // pydna's `Dseq` subclasses Biopython's `Seq`, so its writers can take the molecule as it is. This
+    // one does not, so the copy is handed a plain `Seq` of whatever the molecule prints as -- which is
+    // what `str(record.seq)` gives the writer there.
+    const d = this.seq as unknown as Dseq;
+    let letters = d.toString();
+    if (name.includes("dscode")) {
+      name = name.replace("dscode", "");
+      letters = d.dscode;
+    }
+    // The substitute carries `circular`, because pydna's copy keeps a `Dseq` -- which has it -- and
+    // `PydnaSeqRecord.format`'s `"pydnafasta"` branch asks the *sequence* whether the molecule is closed.
+    const substitute = Object.assign(new BioSeq(letters), { circular: d.circular });
+    (record as unknown as { setSeqUnchecked(v: unknown): void }).setSeqUnchecked(substitute);
+    // `copy()` shares the annotations map -- as pydna's does -- but `format` uses a *deep* copy there,
+    // so setting `topology` below must not reach the record this was called on.
+    record.annotations = new Map(this.annotations);
+    name = stripSpacesAndHyphens(name);
+    const topology = (name === "genbank" || name === "gb") && this.circular ? "circular" : "linear";
+    record.annotations.set("topology", topology);
+    // Called on the copy, as pydna calls `SeqRecord.format(record, format)` rather than `record.format`.
+    return (super.format.call(record as never, name) as string).trim();
+  }
+
+  /**
+   * The molecule as pydna draws it: the length and topology, then both strands with one feature
+   * highlighted.
+   *
+   * The drawing is of the *molecule*, so the overhangs are padded with spaces and the lower strand is
+   * the crick strand reversed — not the complement in place, which only looks the same when the ends are
+   * blunt. A feature on the minus strand is highlighted on the lower line, and the two lines swap, so
+   * the highlighted strand is always the one printed first.
+   *
+   * Each **part** of the feature's location is highlighted separately, which is what a feature spanning
+   * the origin of a circle needs: `join{[5:6], [0:1]}` marks both ends rather than the whole molecule.
+   *
+   * @param feature - Which feature to highlight, by index; a negative index counts from the end, as
+   *   Python's list subscript does. Default 0.
+   * @param highlight - What to put before each part. Default is the ANSI code for a yellow background.
+   * @param plain - What to put after it. Default is the ANSI reset.
+   * @param figType - Accepted where pydna accepts it, and unused there as here.
+   * @returns The figure. A record with **no** features still gets the highlight pair, emptily, at the
+   *   very start — pydna stands an empty location in for the missing feature, and that is reproduced.
+   * @throws TypeError for a molecule whose dscode holds loops or mismatches, so that it has no single
+   *   overhang: pydna's arithmetic on `None` raises before it draws anything.
+   */
+  figure(feature = 0, highlight = "\u001b[48;5;11m", plain = "\u001b[0m",
+         figType: string | null = null): string {
+    void figType;
+    const d = this.seq as unknown as Dseq;
+    const feat = this.features[feature < 0 ? this.features.length + feature : feature];
+    const parts: Array<[number, number]> = feat === undefined
+      ? [[0, 0]]
+      : feat.location!.parts
+        .map((pt) => [Number(pt.start), Number(pt.end)] as [number, number])
+        .sort((a, b) => a[0] - b[0]);
+    const strand = feat === undefined ? 1 : feat.location!.strand;
+    // A molecule whose dscode holds loops or mismatches has no single overhang to name, and pydna's
+    // arithmetic on `None` raises before it draws anything. Reproduced, message and all.
+    if (d.ovhg === null) throw new TypeError("unsupported operand type(s) for +: 'NoneType' and 'int'");
+    const ovhg = d.ovhg;
+    // How far the watson strand runs past the crick one at the right-hand end.
+    const rightOvhg = ovhg + d.watson.length - d.crick.length;
+    const pad = (n: number): string => " ".repeat(Math.max(0, n));
+    const upper = pad(ovhg) + d.watson + pad(-rightOvhg);
+    const lower = pad(-ovhg) + [...d.crick].reverse().join("") + pad(rightOvhg);
+    const [marked, other] = strand === -1 ? [lower, upper] : [upper, lower];
+    // The highlighted slices, then the plain stretches between them, interleaved.
+    const highlighted = parts.map(([a, b]) => `${highlight}${marked.slice(a, b)}${plain}`).concat("");
+    const between = [marked.slice(0, parts[0]![0])];
+    for (let i = 0; i + 1 < parts.length; i++) between.push(marked.slice(parts[i]![1], parts[i + 1]![0]));
+    between.push(marked.slice(parts[parts.length - 1]![1], this.length));
+    const line = between.map((text, i) => text + (highlighted[i] ?? "")).join("");
+    const topology = d.circular ? "o" : "-";
+    const head = `${this.constructor.name}(${topology}${this.length})`;
+    return strand === -1 ? `${head}\n${other}\n${line}` : `${head}\n${line}\n${other}`;
+  }
+
 
   /** @returns The molecule, as a {@link Dseq} rather than the base class's sequence type. */
   get dseq(): Dseq { return this.seq as unknown as Dseq; }
