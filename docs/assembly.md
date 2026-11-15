@@ -57,7 +57,14 @@ of maximal stretches is itself quadratic and no algorithm escapes it.
 
 ## What is not here yet
 
-`Assembly` itself. It needs pydna's record layer (`Dseqrecord`, which wraps Biopython's `SeqRecord`, and
-`Contig`) before the graph of fragments and overlaps can be built, and pydna now has two of them —
-`pydna.assembly`, which warns that it is deprecated, and `pydna.assembly2`, which replaces it. Neither is
-ported. See `docs/dseq.md` for the double-stranded sequence this will be built on.
+`Assembly` itself. The record layer it would be built on is now here —
+[`@biolibs/dseq`](../packages/dseq) and [`@biolibs/dseqrecord`](../packages/dseqrecord), both at parity —
+but `Assembly` also needs pydna's `Contig`, and the current `pydna.assembly2` needs the provenance model
+in `pydna.opencloning_models`: 1,421 lines of pydantic, a port of its own. pydna has two versions,
+`pydna.assembly` (which warns that it is deprecated) and `pydna.assembly2` (which replaces it), and
+neither is ported.
+
+[`@biolibs/cloning`](../packages/cloning) does Gibson assembly and overlap primer design on this matcher
+directly, without pydna's graph.
+
+See [the package README](../packages/assembly/README.md) for the API with worked examples.

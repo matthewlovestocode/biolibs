@@ -1,7 +1,7 @@
 {
   "name": "@biolibs/assembly",
   "version": "0.1.0",
-  "description": "Assembly of DNA fragments by shared homology: the common-substring matcher pydna's Assembly rests on",
+  "description": "Where two sequences agree and for how long: the maximal-common-substring matcher Gibson assembly, fusion PCR and homologous recombination all start from, verified against pydna. No dependencies",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
