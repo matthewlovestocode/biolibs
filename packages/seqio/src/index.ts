@@ -25,6 +25,9 @@
  *   Mauve, EMBOSS and FASTA-m10, as one record per alignment row
  * - `pdb/`: sequences out of PDB and mmCIF files, from `SEQRES` or from the atoms
  * - `binary/`: Python's `struct` and the ASCII helpers the binary readers share
+ * - `range.ts`: `ByteSource` and `bytesSource`, `blobSource`, `urlSource`, `countingSource` — reading
+ *   part of a file, for a file too large to load. `TwoBitWindow` in `twobit/` reads a genome through
+ *   one. Neither has a Biopython counterpart.
  */
 
 import "./fasta/index.js"; // registers the formats
@@ -64,6 +67,7 @@ export * from "./phd/index.js";
 export * from "./ig/index.js";
 export * from "./seqxml/index.js";
 export * from "./nib/index.js";
+export * from "./range.js";
 export * from "./twobit/index.js";
 export * from "./gck/index.js";
 export * from "./pdb/index.js";

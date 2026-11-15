@@ -55,6 +55,12 @@ records.getRaw("b");           // the record's bytes exactly as in the file
 
 `index` keeps only keys and byte offsets and parses a record when asked, like Biopython. The source is the file's contents, as everywhere here (a string is encoded as UTF-8, so offsets are byte offsets; pass a `Uint8Array` for other encodings). Everything else follows Biopython: keys come from the first word after the record marker, except GenBank (LOCUS, replaced by ACCESSION, then by `VERSION` when it is `acc.n`), EMBL/IMGT (ID, replaced by AC or by `ID.version` from SV), Swiss-Prot (first accession), UniProt XML (first `<accession>`), IntelliGenetics and FASTQ (including line-wrapped records). A repeated key raises `ValueError("Duplicate key 'x'")`, a record whose parsed id differs from the indexed key raises `Key did not match`, and `has(key)` parses the record (as Python's `in` does), so it throws if that record is damaged. `size`, iteration and `getRaw` never parse. Indexing damaged files may succeed, with the error surfacing at `get`; the golden cases include such files. **Not ported:** `index_db`, which keeps its index in an SQLite file.
 
+## Reading part of a large file
+
+`TwoBitWindow` reads a twoBit genome a window at a time, through a `ByteSource`: `blobSource(file)` for a `File` or `Blob`, `urlSource(url)` for a server that supports HTTP range requests, `bytesSource(bytes)` for memory, and `countingSource(source)` to count what is read. `TwoBitWindow.open(source)` reads the first 4 kB (the header and the list of sequences); `lengthOf(name)` and `blocksOf(name)` read that sequence's block tables once; `fetch(name, start, end)` then reads one byte for every four bases and returns them with unknown runs as `N` and soft-masked runs in lower case.
+
+Neither exists in Biopython, so neither is on the checklist. The decoding is the ported `convert`, and `test/twobit-window.test.ts` compares every window with `TwoBitIterator` on the same bytes: over the golden twoBit files, and over a 310,000-base file with N and masked blocks in both byte orders. It differs from `TwoBitIterator` in one way, on purpose: a file that ends early is refused, with where it ended, where Biopython reads the missing numbers as zero.
+
 ## Formats
 
 | Format | Read | Write |
@@ -195,6 +201,7 @@ packages/seqio/src/
   seqxml/  xml-types.ts  xml-chars.ts  xml-names.ts  xml-scanner.ts  xml-sax.ts  content-handler.ts  iterator.ts  xml-generator.ts  writer.ts  index.ts
   binary/  struct.ts  ascii.ts
   nib/ twobit/ gck/ xdna/ abi/ snapgene/ sff/ pdb/ gfa/ ace/   (one directory per format)
+  range.ts                  ByteSource and its three sources, for reading part of a file; twobit/window.ts reads through one
   uniprot/ etree.ts  tostring.ts  util.ts  errors.ts  comments.ts  references.ts  features.ts  entry.ts  iterator.ts  index.ts
   alignio/ interfaces.ts  bridge.ts  phylip.ts  clustal.ts  stockholm.ts  msf.ts  emboss.ts  fasta-m10.ts  mauve.ts  maf.ts  nexus.ts  index.ts
   insdc/   text.ts  cleaner.ts  consumer.ts  scanner.ts  genbank-scanner.ts  embl-scanner.ts  iterators.ts

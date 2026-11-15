@@ -11,6 +11,7 @@ import {
   BytesHandle, FORMAT_TO_ITERATOR, FORMAT_TO_WRITER, LineStream, StringHandle, convert, index, parse,
   read, toDict, write,
 } from "@biolibs/seqio";
+import { TwoBitWindow, blobSource, countingSource } from "@biolibs/seqio";
 import { describe, expect, it } from "vitest";
 
 const FASTA = ">a desc one\nACGTACGT\n>b\nGGTT\n";
@@ -193,5 +194,49 @@ describe("README: things to know", () => {
     expect([...parse("CLUSTAL W (1.81) multiple sequence alignment\n\na    ACGT\nb    AC-T\n",
                      "clustal")].map((r) => [r.id, r.seq!.toString()]))
       .toEqual([["a", "ACGT"], ["b", "AC-T"]]);
+  });
+});
+
+describe("README: reading part of a large file", () => {
+  /** The file the README describes: chrA is a million bases, chrB ten with an N block and a masked block. @returns Its bytes. */
+  function twoBit(): Uint8Array {
+    const codes: Record<string, number> = { T: 0, C: 1, A: 2, G: 3 };
+    const entries = [
+      { name: "chrA", dna: "ACGT".repeat(250_000), n: [] as number[][], mask: [] as number[][] },
+      { name: "chrB", dna: "ACGTACGTAC", n: [[4, 2]], mask: [[6, 4]] },
+    ];
+    const words = (values: number[]) => values.flatMap((v) => [v & 255, (v >> 8) & 255, (v >> 16) & 255, (v >>> 24) & 255]);
+    const sizes = entries.map((e) => 4 * (4 + 2 * e.n.length + 2 * e.mask.length) + Math.ceil(e.dna.length / 4));
+    let offset = 16 + entries.reduce((sum, e) => sum + 5 + e.name.length, 0);
+    const head = words([0x1a412743, 0, entries.length, 0]);
+    entries.forEach((e, i) => {
+      head.push(e.name.length, ...[...e.name].map((c) => c.charCodeAt(0)), ...words([offset]));
+      offset += sizes[i]!;
+    });
+    const out = new Uint8Array(offset);
+    out.set(head, 0);
+    let at = head.length;
+    for (const e of entries) {
+      const header = words([e.dna.length, e.n.length, ...e.n.map((b) => b[0]!), ...e.n.map((b) => b[1]!),
+        e.mask.length, ...e.mask.map((b) => b[0]!), ...e.mask.map((b) => b[1]!), 0]);
+      out.set(header, at);
+      at += header.length;
+      for (let i = 0; i < e.dna.length; i++) out[at + (i >> 2)]! |= codes[e.dna[i]!]! << (6 - 2 * (i % 4));
+      at += Math.ceil(e.dna.length / 4);
+    }
+    return out;
+  }
+
+  it("reads windows of a twoBit file, and counts what it took", async () => {
+    const file = new Blob([twoBit()]);
+    expect(file.size).toBe(250085);
+    const source = countingSource(blobSource(file));
+    const genome = await TwoBitWindow.open(source);
+    expect(genome.names).toEqual(["chrA", "chrB"]);
+    expect(await genome.lengthOf("chrA")).toBe(1000000);
+    expect(await genome.fetch("chrA", 500_000, 500_012)).toBe("ACGTACGTACGT");
+    expect(await genome.fetch("chrB", 0, 10)).toBe("ACGTNNgtac");
+    expect(await genome.blocksOf("chrB")).toEqual({ nBlocks: [[4, 6]], maskBlocks: [[6, 10]] });
+    expect(source.bytesRead).toBe(4150);
   });
 });

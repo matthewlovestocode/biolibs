@@ -245,6 +245,37 @@ index(alignmentText, "clustal");
 // ValueError: Unsupported format 'clustal'
 ```
 
+### Reading part of a large file
+
+Everything above is handed the whole file. A genome does not fit, so `TwoBitWindow` reads a twoBit
+file through a `ByteSource`, which is asked for the bytes between two positions and answers when it has
+them. Three are provided: `blobSource` for a `File` or `Blob`, `urlSource` for a file on a server that
+supports HTTP range requests, and `bytesSource` for bytes already in memory.
+
+```ts
+import { TwoBitWindow, blobSource, countingSource } from "@biolibs/seqio";
+
+// `file` is a File from an <input> or a drop: 250,085 bytes, two sequences. Nothing is read yet.
+const source = countingSource(blobSource(file));
+const genome = await TwoBitWindow.open(source);    // the header and the list of sequences
+
+genome.names;                                      // ["chrA", "chrB"]
+await genome.lengthOf("chrA");                     // 1000000
+await genome.fetch("chrA", 500_000, 500_012);      // "ACGTACGTACGT"
+await genome.fetch("chrB", 0, 10);                 // "ACGTNNgtac" — unknown bases as N, soft-masked in lower case
+await genome.blocksOf("chrB");                     // { nBlocks: [[4, 6]], maskBlocks: [[6, 10]] }
+
+source.bytesRead;                                  // 4150 of the file's 250085
+```
+
+Opening reads the first 4 kB. A sequence's block tables are read the first time it is used and kept;
+after that a window costs one read of a byte for every four bases, wherever in the file it is.
+`countingSource` wraps any source to count what was read, which is how the figure above is measured.
+
+This has no counterpart in Biopython, so it is not on the parity checklist. It is tested by comparing
+every answer with `TwoBitIterator`, the ported reader, on the same bytes; see
+[Things to know](#things-to-know).
+
 ### `LineStream` and the handles
 
 `LineStream` is a Python text file over a string: iterating and `readline()` share one position, so a
@@ -289,6 +320,7 @@ npx vitest run packages/seqio/test
 | `test/index.test.ts` | 1,964 `index` cases: every key, its raw bytes, its parsed record, and the probes for a missing key |
 | `test/api.test.ts` | the TypeScript-only surface: the handles, the registries, custom readers and writers, the struct helpers |
 | `test/xml-errors.test.ts` | 521 malformed-XML cases, comparing `SAXParseException` messages |
+| `test/twobit-window.test.ts` | `TwoBitWindow` against `TwoBitIterator` on the same bytes, over the golden twoBit files and a 310,000-base file in both byte orders; and a count of the bytes it reads |
 | `test/readme.test.ts` | every code block in this file |
 
 Coverage from this package's own tests — `npx vitest run --coverage packages/seqio/test`:
@@ -319,6 +351,10 @@ manifest that only instrument-produced SFF files carry.
 - **The alignment formats come back as records**, one per row. `@biolibs/align`'s own `parse` gives you the
   alignment object instead; this package's bridge is the `Bio.SeqIO`-shaped view of the same file.
 - **SnapGene, GCK and 2bit are read-only here**, as they are in Biopython. `xdna` and `nib` write.
+- **`TwoBitWindow` is stricter than `TwoBitIterator` about truncated files.** Biopython reads a number
+  that is missing from the end of a file as zero and carries on; the windowed reader says where the
+  file ended. On a file that is whole, the two give the same bases for every window, including a file
+  whose block tables are out of order, where both stop at the first block beyond the window.
 
 ## License
 
