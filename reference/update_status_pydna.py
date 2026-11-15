@@ -238,5 +238,71 @@ if pseq["proteins"]:
                    "seguid", "transcribe", "translate"):
         mark(f"pydna.seq.ProteinSeq.{member}")
 
+# The assembly engine. A function or method is done when the golden cases call it and the port's answer
+# matched pydna's, down to the order the products come back in. The cases are grouped by what they drive,
+# so each group ticks off what driving it exercises.
+asm = json.load(open(f"{here}/../packages/assembly2/test/golden/assembly2.json"))
+ran = {c["fn"] for c in asm["utils"] if "fn" in c}
+finders = {key.split(":")[0] for c in asm["algorithms"] for key in c.get("runs", {})}
+
+#: What each group of cases exercises, where every case in the group goes through all of it.
+COVERED = {
+    "algorithms": [f"pydna.assembly2.{fn}" for fn in finders] + ["pydna.assembly2.restriction_ligation_overlap",
+                   "pydna.assembly2.primer_template_overlap"],
+    # Building the graph, walking it, checking the walks, and turning them into molecules.
+    "assembly": ["pydna.assembly2.Assembly." + m for m in (
+        "__init__", "__repr__", "add_edges_from_match", "assembly_is_valid", "format_assembly_edge",
+        "get_linear_assemblies", "get_circular_assemblies", "get_insertion_assemblies", "assemble_linear",
+        "assemble_circular", "assemble_insertion", "get_locations_on_fragments", "node_path2assembly_list",
+        "assembly_uses_only_adjacent_edges", "get_possible_assembly_number", "get_unique_linear_paths",
+        "format_insertion_assembly", "format_insertion_assembly_edge_case")] + [
+        "pydna.assembly2." + f for f in (
+        "assemble", "assembly_is_circular", "get_assembly_subfragments", "extract_subfragment",
+        "edge_representation2subfragment_representation", "remove_subassemblies",
+        "reverse_complement_assembly", "filter_linear_subassemblies")],
+    "pcr": ["pydna.assembly2.PCRAssembly." + m for m in (
+        "__init__", "assemble_linear", "get_linear_assemblies", "get_circular_assemblies",
+        "get_insertion_assemblies")] + ["pydna.assembly2.pcr_assembly",
+        "pydna.assembly2.annotate_primer_binding_sites"],
+    "single": ["pydna.assembly2.SingleFragmentAssembly." + m for m in (
+        "__init__", "get_circular_assemblies", "get_insertion_assemblies", "get_inversion_assemblies",
+        "get_linear_assemblies", "assemble_inversion")],
+    "methods": ["pydna.assembly2." + f for f in (
+        "gibson_assembly", "in_fusion_assembly", "fusion_pcr_assembly", "in_vivo_assembly",
+        "ligation_assembly", "restriction_ligation_assembly", "golden_gate_assembly",
+        "common_function_assembly_products", "partially_digested_seqs_in_restriction_ligation_assembly",
+        "combine_algorithms")],
+    "primer": ["pydna.primer.Primer." + m for m in (
+        "__init__", "__repr__", "__radd__", "__getitem__", "footprint", "tail", "reverse_complement")],
+}
+for group, keys in COVERED.items():
+    if any("value" in json.dumps(c) for c in asm[group]):
+        for key in keys:
+            mark(key)
+
+#: The helpers that have cases of their own, by the name the case goes under.
+BY_CASE = {
+    "ends_from_cutsite": ["pydna.assembly2.ends_from_cutsite"],
+    "zip_match": ["pydna.assembly2.zip_match_leftwards", "pydna.assembly2.zip_match_rightwards",
+                  "pydna.assembly2.seqrecord2_uppercase_DNA_string"],
+    "is_sublist": ["pydna.assembly2.is_sublist"],
+    "circular_permutation_min_abs": ["pydna.assembly2.circular_permutation_min_abs"],
+    "gather_overlapping_locations": ["pydna.assembly2.gather_overlapping_locations"],
+    "assembly_strings": ["pydna.assembly2.assembly2str", "pydna.assembly2.assembly2str_tuple",
+                         "pydna.assembly2.assembly_has_mismatches",
+                         "pydna.assembly2.subfragment_representation2edge_representation"],
+    "create_location": ["pydna.utils.create_location"],
+    "cuts_overlap": ["pydna.utils.cuts_overlap"],
+    "cutsite_to_location": ["pydna.utils.cutsite_to_location"],
+    "deduplicate": ["pydna.utils.deduplicate"],
+    "limit_iterator": ["pydna.utils.limit_iterator"],
+    "location_overlap": ["pydna.utils.location_overlap", "pydna.utils.locations_overlap"],
+    "sum_is_sticky": ["pydna.utils.sum_is_sticky"],
+}
+for case_name, keys in BY_CASE.items():
+    if case_name in ran:
+        for key in keys:
+            mark(key)
+
 json.dump(status, open(sp, "w"), indent=1, sort_keys=True)
 print({s: sum(v == s for v in status.values()) for s in ("done", "partial", "na")})

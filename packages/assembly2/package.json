@@ -1,0 +1,54 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.1.0",
+    "@biolibs/seq": "^1.0.0",
+    "@biolibs/seqfeature": "^1.0.0",
+    "@biolibs/dseq": "^1.0.0",
+    "@biolibs/dseqrecord": "^1.0.0",
+    "@biolibs/assembly": "^1.0.0"
+  },
+  "description": "The assembly engine of pydna, verified against it: Gibson, In-Fusion, fusion PCR, in-vivo assembly, ligation, Golden Gate and PCR, each product carrying a record of how it was made (pydna.assembly2)",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/assembly2#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "typescript",
+    "pydna",
+    "cloning",
+    "gibson",
+    "golden-gate",
+    "pcr",
+    "assembly",
+    "plasmid"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/assembly2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/assembly2"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
+}

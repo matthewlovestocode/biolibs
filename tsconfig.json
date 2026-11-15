@@ -75,6 +75,9 @@
     },
     {
       "path": "packages/pdblist"
+    },
+    {
+      "path": "packages/assembly2"
     }
   ]
 }

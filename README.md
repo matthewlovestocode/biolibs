@@ -3,9 +3,9 @@
 TypeScript ports of Python bioengineering libraries, verified case by case against the originals — plus a
 few packages that have no Python equivalent.
 
-- **25 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
-- **2,712 API items at parity** across three upstream libraries, of 2,715 applicable
-- **18,938 tests**, replaying answers recorded from the real Python libraries
+- **26 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
+- **2,796 API items at parity** across three upstream libraries, of 2,815 applicable
+- **18,955 tests**, replaying answers recorded from the real Python libraries
 
 ## Install
 
@@ -35,7 +35,7 @@ cases rather than maintained by hand.
 | Upstream | Verified | Checklist |
 |---|---|---|
 | Biopython 1.88 | **2,465 / 2,467** | [docs/parity/](docs/parity/README.md) |
-| pydna 5.5.16 | **224 / 225** | [docs/parity-pydna/](docs/parity-pydna/README.md) |
+| pydna 5.5.16 | **308 / 325** | [docs/parity-pydna/](docs/parity-pydna/README.md) |
 | seguid | **23 / 23** | [docs/parity-seguid/](docs/parity-seguid/README.md) |
 
 The two unverified Biopython items are `Entrez.read` and `Entrez.parse`, which turn NCBI's XML replies
@@ -74,11 +74,14 @@ absent from the inventory the checklists are generated from until this was notic
 |---|---|---|---|
 | [`@biolibs/dseq`](packages/dseq) | `pydna.dseq`, `pydna.alphabet`, `pydna.seq` | 128 | double-stranded DNA whose sticky ends, nicks and circularity are part of the molecule, one letter per base *pair*, so a bad ligation is refused rather than joined; plus pydna's own `Seq` and `ProteinSeq`. [README](packages/dseq/README.md) |
 | [`@biolibs/dseqrecord`](packages/dseqrecord) | `pydna.seqrecord`, `pydna.dseqrecord`, part of `pydna.utils` | 94 / 95 | that molecule with a name, features and annotations; cutting, joining, rotating — every operation carrying the features with it. [README](packages/dseqrecord/README.md) |
+| [`@biolibs/assembly2`](packages/assembly2) | `pydna.assembly2`, `pydna.primer`, more of `pydna.utils` | 89 / 105 | the assembly engine: Gibson, In-Fusion, fusion PCR, in-vivo assembly, ligation, Golden Gate and PCR, each product carrying a record of how it was made. Recombination — Gateway, Cre-lox, recombinases, CRISPR — is not ported. [README](packages/assembly2/README.md) |
 | [`@biolibs/assembly`](packages/assembly) | `pydna.common_sub_strings` | 2 | the shared-homology matcher Gibson assembly and homologous recombination both start from, with no dependencies. [README](packages/assembly/README.md) |
 | [`@biolibs/seguid`](packages/seguid) | [seguid](https://github.com/seguid/seguid-python) | 23 | SEGUID v2 checksums: one identifier for a sequence however it is rotated, and whichever strand you call watson |
 
-`pydna.assembly2` itself is not ported yet — it needs `pydna.contig` and a provenance model built on
-pydantic. See [docs/dseqrecord.md](docs/dseqrecord.md) for what remains.
+The seventeen unverified pydna items are `Dseqrecord.write`, which takes a file name, and the sixteen
+functions of `pydna.assembly2` that join DNA by recombination rather than by homology or by ligation —
+Gateway, Cre-lox, the recombinases, CRISPR and the integration helpers they share.
+[`@biolibs/assembly2`](packages/assembly2) says exactly where that line falls.
 
 ## Not ports
 
@@ -107,7 +110,7 @@ Biopython checklist, because it is a port of CPython itself: 1,253 recorded case
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 18,938 tests
+npm test           # vitest — 18,955 tests
 npm run coverage   # per-file coverage
 ```
 

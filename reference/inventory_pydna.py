@@ -9,7 +9,7 @@ listed: the inherited `Bio.Seq` API is already measured under `docs/parity/Bio.S
 """
 import inspect, json
 import pydna
-from pydna import alphabet, common_sub_strings, dseq, dseqrecord, seq as pydna_seq, seqrecord, utils
+from pydna import alphabet, assembly2, common_sub_strings, dseq, dseqrecord, primer, seq as pydna_seq, seqrecord, utils
 
 #: Dunder members a port has to provide even though their names are private.
 DUNDERS = ("__init__", "__len__", "__getitem__", "__setitem__", "__iter__", "__next__", "__str__",
@@ -86,13 +86,27 @@ inv = {
         "functions": funcs(dseqrecord),
         "classes": {"Dseqrecord": members(dseqrecord.Dseqrecord)},
     },
-    # Only what the record layer uses from pydna.utils: the label cleaner the slice naming needs, and the
-    # four location helpers Dseqrecord's feature handling rests on. The rest of that module is listed as
-    # the methods that call it are ported.
+    # The primer: a record that knows which part of itself binds a template.
+    "pydna.primer": {
+        "functions": funcs(primer),
+        "classes": {"Primer": members(primer.Primer)},
+    },
+    # The assembly engine: how fragments can be joined, and what comes out. The methods that need the
+    # recombinases, Gateway, Cre-lox or CRISPR are listed and stay unticked until those are ported.
+    "pydna.assembly2": {
+        "functions": funcs(assembly2),
+        "classes": {"Assembly": members(assembly2.Assembly),
+                    "PCRAssembly": members(assembly2.PCRAssembly),
+                    "SingleFragmentAssembly": members(assembly2.SingleFragmentAssembly)},
+    },
+    # Only what the record layer and the assembly engine use from pydna.utils: the label cleaner the slice
+    # naming needs, the location helpers the feature handling rests on, and the few the engine calls. The
+    # rest of that module is listed as the methods that call it are ported.
     "pydna.utils": {
         "functions": {name: sig(getattr(utils, name)) for name in
-                      ("flatten", "identifier_from_string", "location_boundaries", "shift_feature",
-                       "shift_location")},
+                      ("create_location", "cuts_overlap", "cutsite_to_location", "deduplicate", "flatten",
+                       "identifier_from_string", "limit_iterator", "location_boundaries", "location_overlap",
+                       "locations_overlap", "shift_feature", "shift_location", "sum_is_sticky")},
     },
 }
 

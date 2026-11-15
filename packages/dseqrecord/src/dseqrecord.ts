@@ -587,10 +587,20 @@ export class Dseqrecord extends PydnaSeqRecord {
         f.location!.shift(this.length + offset) as SimpleLocation, f.type, f.id,
         new Map(f.qualifiers)));
     } else {
-      newseq = this.dseq.add(String(other)) as Dseq;
+      // Adding text to an empty molecule gives the text straight back, and pydna then tries to put a
+      // plain string where a sequence belongs, which its own setter refuses.
+      const joined = this.dseq.add(String(other));
+      if (typeof joined === "string") throw new TypeError("seq must be a Seq or MutableSeq object");
+      newseq = joined;
     }
-    const answer = this.derive(newseq, undefined, undefined, undefined, [...this.dbxrefs],
-                               [...this.features, ...shiftedFeatures], new Map(this.annotations));
+    // Biopython keeps an identifier only where both records agree on it, and leaves a placeholder
+    // otherwise; pydna fills its own defaults in for those. Adding plain text changes nothing.
+    const them = other as { id?: string | null; name?: string; description?: string };
+    const agreed = <T>(mine: T, theirs: T, fallback: T): T => (!isRecord || mine === theirs ? mine : fallback);
+    const answer = this.derive(newseq, agreed(this.id, them?.id ?? null, "id"),
+                               agreed(this.name, them?.name ?? "", "name"),
+                               agreed(this.description, them?.description ?? "", "description"),
+                               [...this.dbxrefs], [...this.features, ...shiftedFeatures], new Map(this.annotations));
     // pydna fills in its own defaults where Biopython's join leaves a placeholder.
     if (answer.name === "<unknown name>") answer.name = "name";
     if (answer.id === "<unknown id>") answer.id = "id";

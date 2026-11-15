@@ -828,6 +828,69 @@
 "repr": "Dseqrecord(-8)"
 }
 },
+"add_named": {
+"value": {
+"code": "atgtaatt",
+"watson": "atgtaatt",
+"crick": "aattacat",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "atgtaatt",
+"watson": "atgtaatt",
+"crick": "aattacat",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "atgtaatt",
+"watson": "atgtaatt",
+"crick": "aattacat",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
 "mul": {
 "0": {
 "value": {
@@ -3086,6 +3149,69 @@ false
 "repr": "Dseqrecord(-8)"
 }
 },
+"add_named": {
+"value": {
+"code": "atgtaatt",
+"watson": "atgtaatt",
+"crick": "aattacat",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "atgtaatt",
+"watson": "atgtaatt",
+"crick": "aattacat",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "atgtaatt",
+"watson": "atgtaatt",
+"crick": "aattacat",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -4578,6 +4704,69 @@ false
 "ovhg": 0,
 "id": "id",
 "name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_named": {
+"value": {
+"code": "ATGTAAtt",
+"watson": "ATGTAAtt",
+"crick": "aaTTACAT",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "ATGTAAtt",
+"watson": "ATGTAAtt",
+"crick": "aaTTACAT",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "ATGTAAtt",
+"watson": "ATGTAAtt",
+"crick": "aaTTACAT",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
 "description": "description",
 "annotations": {
 "molecule_type": "DNA",
@@ -6847,6 +7036,69 @@ false
 "repr": "Dseqrecord(-8)"
 }
 },
+"add_named": {
+"value": {
+"code": "ATGTAAtt",
+"watson": "ATGTAAtt",
+"crick": "aaTTACAT",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "ATGTAAtt",
+"watson": "ATGTAAtt",
+"crick": "aaTTACAT",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "ATGTAAtt",
+"watson": "ATGTAAtt",
+"crick": "aaTTACAT",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -7919,6 +8171,69 @@ false
 "repr": "Dseqrecord(-5)"
 }
 },
+"add_named": {
+"value": {
+"code": "aAatt",
+"watson": "aAatt",
+"crick": "aatTt",
+"circular": false,
+"len": 5,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-5)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "aAatt",
+"watson": "aAatt",
+"crick": "aatTt",
+"circular": false,
+"len": 5,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-5)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "aAatt",
+"watson": "aAatt",
+"crick": "aatTt",
+"circular": false,
+"len": 5,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-5)"
+}
+},
 "mul": {
 "0": {
 "value": {
@@ -8835,6 +9150,69 @@ false
 "ovhg": 0,
 "id": "id",
 "name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-5)"
+}
+},
+"add_named": {
+"value": {
+"code": "aAatt",
+"watson": "aAatt",
+"crick": "aatTt",
+"circular": false,
+"len": 5,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-5)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "aAatt",
+"watson": "aAatt",
+"crick": "aatTt",
+"circular": false,
+"len": 5,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-5)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "aAatt",
+"watson": "aAatt",
+"crick": "aatTt",
+"circular": false,
+"len": 5,
+"ovhg": 0,
+"id": "one",
+"name": "first",
 "description": "description",
 "annotations": {
 "molecule_type": "DNA",
@@ -9912,6 +10290,69 @@ false
 "ovhg": 0,
 "id": "id",
 "name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_named": {
+"value": {
+"code": "gaattctt",
+"watson": "gaattctt",
+"crick": "aagaattc",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "gaattctt",
+"watson": "gaattctt",
+"crick": "aagaattc",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "gaattctt",
+"watson": "gaattctt",
+"crick": "aagaattc",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
 "description": "description",
 "annotations": {
 "molecule_type": "DNA",
@@ -12021,6 +12462,69 @@ false
 "repr": "Dseqrecord(-8)"
 }
 },
+"add_named": {
+"value": {
+"code": "gaattctt",
+"watson": "gaattctt",
+"crick": "aagaattc",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "gaattctt",
+"watson": "gaattctt",
+"crick": "aagaattc",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "gaattctt",
+"watson": "gaattctt",
+"crick": "aagaattc",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -13288,6 +13792,24 @@ false
 }
 },
 "add": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_named": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_same_name": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_text_named": {
 "exc": {
 "type": "TypeError",
 "msg": "sticky ends not compatible!"
@@ -15101,6 +15623,24 @@ false
 "msg": "sticky ends not compatible!"
 }
 },
+"add_named": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_same_name": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_text_named": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -16402,6 +16942,24 @@ false
 }
 },
 "add": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_named": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_same_name": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_text_named": {
 "exc": {
 "type": "TypeError",
 "msg": "sticky ends not compatible!"
@@ -18359,6 +18917,24 @@ false
 "msg": "sticky ends not compatible!"
 }
 },
+"add_named": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_same_name": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_text_named": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -19785,6 +20361,69 @@ false
 "ovhg": 0,
 "id": "id",
 "name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-26)"
+}
+},
+"add_named": {
+"value": {
+"code": "atggcctttaaatttgggtgctgatt",
+"watson": "atggcctttaaatttgggtgctgatt",
+"crick": "aatcagcacccaaatttaaaggccat",
+"circular": false,
+"len": 26,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-26)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "atggcctttaaatttgggtgctgatt",
+"watson": "atggcctttaaatttgggtgctgatt",
+"crick": "aatcagcacccaaatttaaaggccat",
+"circular": false,
+"len": 26,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-26)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "atggcctttaaatttgggtgctgatt",
+"watson": "atggcctttaaatttgggtgctgatt",
+"crick": "aatcagcacccaaatttaaaggccat",
+"circular": false,
+"len": 26,
+"ovhg": 0,
+"id": "one",
+"name": "first",
 "description": "description",
 "annotations": {
 "molecule_type": "DNA",
@@ -22054,6 +22693,69 @@ false
 "repr": "Dseqrecord(-26)"
 }
 },
+"add_named": {
+"value": {
+"code": "atggcctttaaatttgggtgctgatt",
+"watson": "atggcctttaaatttgggtgctgatt",
+"crick": "aatcagcacccaaatttaaaggccat",
+"circular": false,
+"len": 26,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-26)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "atggcctttaaatttgggtgctgatt",
+"watson": "atggcctttaaatttgggtgctgatt",
+"crick": "aatcagcacccaaatttaaaggccat",
+"circular": false,
+"len": 26,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-26)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "atggcctttaaatttgggtgctgatt",
+"watson": "atggcctttaaatttgggtgctgatt",
+"crick": "aatcagcacccaaatttaaaggccat",
+"circular": false,
+"len": 26,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-26)"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -23590,6 +24292,69 @@ false
 "ovhg": 0,
 "id": "id",
 "name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-32)"
+}
+},
+"add_named": {
+"value": {
+"code": "atgtacgatcgtatgctggttatattttagtt",
+"watson": "atgtacgatcgtatgctggttatattttagtt",
+"crick": "aactaaaatataaccagcatacgatcgtacat",
+"circular": false,
+"len": 32,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-32)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "atgtacgatcgtatgctggttatattttagtt",
+"watson": "atgtacgatcgtatgctggttatattttagtt",
+"crick": "aactaaaatataaccagcatacgatcgtacat",
+"circular": false,
+"len": 32,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-32)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "atgtacgatcgtatgctggttatattttagtt",
+"watson": "atgtacgatcgtatgctggttatattttagtt",
+"crick": "aactaaaatataaccagcatacgatcgtacat",
+"circular": false,
+"len": 32,
+"ovhg": 0,
+"id": "one",
+"name": "first",
 "description": "description",
 "annotations": {
 "molecule_type": "DNA",
@@ -25903,6 +26668,69 @@ false
 "repr": "Dseqrecord(-32)"
 }
 },
+"add_named": {
+"value": {
+"code": "atgtacgatcgtatgctggttatattttagtt",
+"watson": "atgtacgatcgtatgctggttatattttagtt",
+"crick": "aactaaaatataaccagcatacgatcgtacat",
+"circular": false,
+"len": 32,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-32)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "atgtacgatcgtatgctggttatattttagtt",
+"watson": "atgtacgatcgtatgctggttatattttagtt",
+"crick": "aactaaaatataaccagcatacgatcgtacat",
+"circular": false,
+"len": 32,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-32)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "atgtacgatcgtatgctggttatattttagtt",
+"watson": "atgtacgatcgtatgctggttatattttagtt",
+"crick": "aactaaaatataaccagcatacgatcgtacat",
+"circular": false,
+"len": 32,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-32)"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -26975,6 +27803,69 @@ false
 "repr": "Dseqrecord(-3)"
 }
 },
+"add_named": {
+"value": {
+"code": "att",
+"watson": "att",
+"crick": "aat",
+"circular": false,
+"len": 3,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-3)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "att",
+"watson": "att",
+"crick": "aat",
+"circular": false,
+"len": 3,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-3)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "att",
+"watson": "att",
+"crick": "aat",
+"circular": false,
+"len": 3,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-3)"
+}
+},
 "mul": {
 "0": {
 "value": {
@@ -27902,6 +28793,69 @@ false
 "repr": "Dseqrecord(-3)"
 }
 },
+"add_named": {
+"value": {
+"code": "att",
+"watson": "att",
+"crick": "aat",
+"circular": false,
+"len": 3,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-3)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "att",
+"watson": "att",
+"crick": "aat",
+"circular": false,
+"len": 3,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-3)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "att",
+"watson": "att",
+"crick": "aat",
+"circular": false,
+"len": 3,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-3)"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -28635,6 +29589,54 @@ false
 "features": [],
 "n": 5e-14,
 "repr": "Dseqrecord(-2)"
+}
+},
+"add_named": {
+"value": {
+"code": "tt",
+"watson": "tt",
+"crick": "aa",
+"circular": false,
+"len": 2,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-2)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "tt",
+"watson": "tt",
+"crick": "aa",
+"circular": false,
+"len": 2,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-2)"
+}
+},
+"add_text_named": {
+"exc": {
+"type": "TypeError",
+"msg": "seq must be a Seq or MutableSeq object"
 }
 },
 "mul": {
@@ -29430,6 +30432,54 @@ false
 "features": [],
 "n": 5e-14,
 "repr": "Dseqrecord(-2)"
+}
+},
+"add_named": {
+"value": {
+"code": "tt",
+"watson": "tt",
+"crick": "aa",
+"circular": false,
+"len": 2,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-2)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "tt",
+"watson": "tt",
+"crick": "aa",
+"circular": false,
+"len": 2,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-2)"
+}
+},
+"add_text_named": {
+"exc": {
+"type": "TypeError",
+"msg": "seq must be a Seq or MutableSeq object"
 }
 },
 "mul": {
@@ -30408,6 +31458,69 @@ false
 "ovhg": 0,
 "id": "id",
 "name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-6)"
+}
+},
+"add_named": {
+"value": {
+"code": "aaaatt",
+"watson": "aaaatt",
+"crick": "aatttt",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-6)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "aaaatt",
+"watson": "aaaatt",
+"crick": "aatttt",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-6)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "aaaatt",
+"watson": "aaaatt",
+"crick": "aatttt",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "one",
+"name": "first",
 "description": "description",
 "annotations": {
 "molecule_type": "DNA",
@@ -32527,6 +33640,69 @@ false
 "repr": "Dseqrecord(-6)"
 }
 },
+"add_named": {
+"value": {
+"code": "aaaatt",
+"watson": "aaaatt",
+"crick": "aatttt",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-6)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "aaaatt",
+"watson": "aaaatt",
+"crick": "aatttt",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-6)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "aaaatt",
+"watson": "aaaatt",
+"crick": "aatttt",
+"circular": false,
+"len": 6,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-6)"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -33887,6 +35063,69 @@ false
 "ovhg": 0,
 "id": "id",
 "name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_named": {
+"value": {
+"code": "GGATCCtt",
+"watson": "GGATCCtt",
+"crick": "aaGGATCC",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "GGATCCtt",
+"watson": "GGATCCtt",
+"crick": "aaGGATCC",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "GGATCCtt",
+"watson": "GGATCCtt",
+"crick": "aaGGATCC",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
 "description": "description",
 "annotations": {
 "molecule_type": "DNA",
@@ -35996,6 +37235,69 @@ false
 "repr": "Dseqrecord(-8)"
 }
 },
+"add_named": {
+"value": {
+"code": "GGATCCtt",
+"watson": "GGATCCtt",
+"crick": "aaGGATCC",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "id",
+"name": "name",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_same_name": {
+"value": {
+"code": "GGATCCtt",
+"watson": "GGATCCtt",
+"crick": "aaGGATCC",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "d1",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
+"add_text_named": {
+"value": {
+"code": "GGATCCtt",
+"watson": "GGATCCtt",
+"crick": "aaGGATCC",
+"circular": false,
+"len": 8,
+"ovhg": 0,
+"id": "one",
+"name": "first",
+"description": "description",
+"annotations": {
+"molecule_type": "DNA",
+"organism": ".",
+"source": ""
+},
+"features": [],
+"n": 5e-14,
+"repr": "Dseqrecord(-8)"
+}
+},
 "mul": {
 "0": {
 "exc": {
@@ -37193,6 +38495,24 @@ false
 }
 },
 "add": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_named": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_same_name": {
+"exc": {
+"type": "TypeError",
+"msg": "sticky ends not compatible!"
+}
+},
+"add_text_named": {
 "exc": {
 "type": "TypeError",
 "msg": "sticky ends not compatible!"

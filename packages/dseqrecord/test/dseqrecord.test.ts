@@ -66,6 +66,9 @@ interface Case {
   contains?: Record<string, Guarded<boolean>>;
   find_aa?: Record<string, Guarded<[number, number] | null>>;
   add?: Guarded<Snap>;
+  add_named?: Guarded<Snap>;
+  add_same_name?: Guarded<Snap>;
+  add_text_named?: Guarded<Snap>;
   mul?: Record<string, Guarded<Snap>>;
   mul_bad?: Guarded<Snap>;
   join?: Guarded<Snap>;
@@ -201,6 +204,15 @@ describe(`pydna.dseqrecord.Dseqrecord: parity with pydna ${golden.pydna}`, () =>
       }
       same(c.add!, () => snap(new Dseqrecord(c.data).add(new Dseqrecord("tt")) as unknown as Dseqrecord),
            "add");
+      // Two records that disagree about what they are called keep only what they agree on.
+      const named = (data: string, id: string, name: string, description?: string): Dseqrecord =>
+        new Dseqrecord(data, null, undefined, id, name, description);
+      same(c.add_named!, () => snap(named(c.data, "one", "first", "d1").add(named("tt", "two", "second", "d2")) as unknown as Dseqrecord),
+           "add named");
+      same(c.add_same_name!, () => snap(named(c.data, "one", "first", "d1").add(named("tt", "one", "first", "d1")) as unknown as Dseqrecord),
+           "add same name");
+      same(c.add_text_named!, () => snap(named(c.data, "one", "first").add("tt") as unknown as Dseqrecord),
+           "add text named");
       for (const [times, want] of Object.entries(c.mul!)) {
         same(want, () => snap(r.multiply(Number(times))), `multiply ${times}`);
       }

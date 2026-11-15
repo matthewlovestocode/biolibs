@@ -124,6 +124,13 @@ for data in MOLECULES:
         case["find_aa"] = {o: guard(lambda o=o: (lambda s: [s.start, s.stop] if s else None)(r.find_aa(o)))
                            for o in ("M", "MYD", "RML", "zzz")}
         case["add"] = guard(lambda: snap(Dseqrecord(data) + Dseqrecord("tt")))
+        # Adding two records that disagree about what they are called: Biopython keeps an identifier
+        # only where both agree, so this is where pydna's own defaults come back in.
+        case["add_named"] = guard(lambda: snap(Dseqrecord(data, id="one", name="first", description="d1")
+                                               + Dseqrecord("tt", id="two", name="second", description="d2")))
+        case["add_same_name"] = guard(lambda: snap(Dseqrecord(data, id="one", name="first", description="d1")
+                                                   + Dseqrecord("tt", id="one", name="first", description="d1")))
+        case["add_text_named"] = guard(lambda: snap(Dseqrecord(data, id="one", name="first") + "tt"))
         case["mul"] = {str(k): guard(lambda k=k: snap(r * k)) for k in (0, 1, 2, 3, -1)}
         case["mul_bad"] = guard(lambda: snap(r * 1.5))
         case["join"] = guard(lambda: snap(Dseqrecord("a").join([Dseqrecord("A"), Dseqrecord("B"),
