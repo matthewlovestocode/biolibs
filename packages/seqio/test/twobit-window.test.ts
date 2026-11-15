@@ -171,6 +171,28 @@ describe("TwoBitWindow reads only what it needs", () => {
     expect(ranges[0]).toBe("bytes=0-0");             // the request that finds the size
   });
 
+  it("finds the size from a HEAD request when the browser hides Content-Range", async () => {
+    // What a page sees from a server on another site that allows range requests but does not list
+    // Content-Range in Access-Control-Expose-Headers: the 206 arrives without that header.
+    const bytes = writeTwoBit(genome(new PyRandom(11)));
+    const methods: string[] = [];
+    const server = (async (_url: string, init?: RequestInit) => {
+      methods.push(init?.method ?? "GET");
+      if (init?.method === "HEAD") return new Response(null, { status: 200, headers: { "Content-Length": String(bytes.length) } });
+      const [from, to] = /bytes=(\d+)-(\d+)/.exec((init!.headers as Record<string, string>).Range)!.slice(1).map(Number) as [number, number];
+      return new Response(bytes.slice(from, to + 1), { status: 206 });
+    }) as unknown as typeof fetch;
+    const source = await urlSource("https://example.org/genome.2bit", server);
+    expect(source.size).toBe(bytes.length);
+    expect(methods).toEqual(["GET", "HEAD"]);
+    const file = await TwoBitWindow.open(source);
+    expect(await file.fetch("chrC", 10, 70)).toBe(new TwoBitIterator(bytes).get("chrC").seq!.slice(10, 70).toString());
+
+    const silent = (async (_url: string, init?: RequestInit) =>
+      init?.method === "HEAD" ? new Response(null, { status: 200 }) : new Response(bytes.slice(0, 1), { status: 206 })) as unknown as typeof fetch;
+    await expect(urlSource("https://example.org/genome.2bit", silent)).rejects.toThrow("did not say how large the file is");
+  });
+
   it("copes with a server that ignores Range and sends the whole file", async () => {
     const bytes = writeTwoBit(genome(new PyRandom(11)));
     const server = (async () => new Response(bytes, { status: 200, headers: { "Content-Length": String(bytes.length) } })) as unknown as typeof fetch;

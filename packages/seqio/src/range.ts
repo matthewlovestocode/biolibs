@@ -59,7 +59,8 @@ export function blobSource(blob: Blob): ByteSource {
  *
  * The server has to support range requests, as static file servers and object stores do; from a page on
  * another site it must also allow the `Range` header through CORS. The first request finds the file's
- * size.
+ * size, from `Content-Range`; where a browser hides that header, as it does for a server on another
+ * site that does not expose it, a `HEAD` request is made for `Content-Length` instead.
  *
  * @param url - The file's address.
  * @param fetcher - What to fetch with (default: the platform's `fetch`).
@@ -81,8 +82,17 @@ export async function urlSource(url: string, fetcher: typeof fetch = fetch): Pro
   // A one-byte request is enough to learn the size: the reply says "bytes 0-0/<total>".
   const probe = await range(0, 1);
   const total = /\/(\d+)\s*$/.exec(probe.headers.get("content-range") ?? "")?.[1];
+  let size = NaN;
+  if (total !== undefined) size = Number(total);
   // A server that ignores Range sends the whole file with status 200; its length is then the size.
-  const size = total !== undefined ? Number(total) : probe.status === 200 ? Number(probe.headers.get("content-length") ?? NaN) : NaN;
+  else if (probe.status === 200) size = Number(probe.headers.get("content-length") ?? NaN);
+  else {
+    // A page on another site cannot read Content-Range unless the server names it in
+    // Access-Control-Expose-Headers, and many do not. Content-Length is always readable, so ask for
+    // the headers of the whole file instead.
+    const head = await fetcher(url, { method: "HEAD" });
+    if (head.ok) size = Number(head.headers.get("content-length") ?? NaN);
+  }
   if (!Number.isFinite(size)) throw new ValueError(`${url} did not say how large the file is, so it cannot be read in parts`);
   return {
     size,

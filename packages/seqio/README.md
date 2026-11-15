@@ -351,6 +351,10 @@ manifest that only instrument-produced SFF files carry.
 - **The alignment formats come back as records**, one per row. `@biolibs/align`'s own `parse` gives you the
   alignment object instead; this package's bridge is the `Bio.SeqIO`-shaped view of the same file.
 - **SnapGene, GCK and 2bit are read-only here**, as they are in Biopython. `xdna` and `nib` write.
+- **`urlSource` from a page on another site needs two things of the server**: range requests, and
+  `Access-Control-Allow-Headers: Range`. It does *not* need `Content-Range` to be exposed: a browser
+  hides that header unless the server lists it, so when it is missing the file's size is taken from a
+  `HEAD` request instead. UCSC's download server is one that works this way.
 - **`TwoBitWindow` is stricter than `TwoBitIterator` about truncated files.** Biopython reads a number
   that is missing from the end of a file as zero and carries on; the windowed reader says where the
   file ended. On a file that is whole, the two give the same bases for every window, including a file
