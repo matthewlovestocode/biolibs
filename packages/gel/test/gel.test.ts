@@ -134,8 +134,28 @@ describe("bandsOf", () => {
     expect(front.position).toBe(1);
   });
 
+  it("runs everything above the gel's range together at the wells", () => {
+    // The large end is the mirror of the small one: a 1% gel separates nothing over 10 kb, so two such
+    // fragments sit at the same place and must not be reported as two resolved bands.
+    const bands = bandsOf([30000, 20000, 5000], gel);
+    expect(bands).toHaveLength(2);
+    const wells = bands[0]!;
+    expect(wells.unresolved).toBe(true);
+    expect(wells.sizes).toEqual([30000, 20000]);
+    expect(wells.position).toBe(0);
+    expect(bands[1]!.unresolved).toBe(false);
+  });
+
   it("does not mark a band inside the range as unresolved", () => {
     expect(bandsOf([1000], gel)[0]!.unresolved).toBe(false);
+    // The range is inclusive at both ends.
+    expect(bandsOf([10000, 250], gel).every((b) => !b.unresolved)).toBe(true);
+  });
+
+  it("anchors merging on the band's representative, so near-neighbours cannot chain", () => {
+    // 980 is within 3% of 1000, but 960 is not, so a second band starts there and takes 940 with it.
+    expect(bandsOf([1000, 980, 960, 940], gel).map((b) => [...b.sizes]))
+      .toEqual([[1000, 980], [960, 940]]);
   });
 
   it("totals the base pairs in each band and scales intensity to the heaviest", () => {

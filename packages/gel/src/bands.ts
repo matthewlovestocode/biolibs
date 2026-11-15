@@ -7,8 +7,9 @@
  * giving 0 at the wells and 1 at the running front.
  *
  * Two fragments of nearly the same size cannot be told apart by eye, so {@link bandsOf} merges sizes that fall
- * within a tolerance of each other into a single band and records how many fragments it holds. Fragments too small
- * for the gel all pile up at the front, and are merged into one band there regardless of tolerance.
+ * within a tolerance of each other into a single band and records how many fragments it holds. Fragments outside
+ * the gel's range are not separated at all, so they are merged regardless of tolerance: the small ones pile up
+ * together at the front, and the large ones stay bunched at the wells.
  */
 
 import { ValueError } from "@biolibs/core";
@@ -65,7 +66,10 @@ export interface Band {
   totalBases: number;
   /** Brightness from 0 to 1, the band's share of the lane's base pairs, scaled so the heaviest band is 1. */
   intensity: number;
-  /** True when every fragment in the band is below the gel's resolving range, so it sits at the running front. */
+  /**
+   * True when every fragment in the band is outside the gel's resolving range, so the gel does not separate them:
+   * below it they sit together at the running front, above it they stay bunched at the wells.
+   */
   unresolved: boolean;
 }
 
@@ -94,12 +98,17 @@ export function bandsOf(sizes: readonly number[], gel: GelType, tolerance = DEFA
   const descending = [...sizes].sort((a, b) => b - a);
 
   // Walk down the sizes, starting a new group whenever the next fragment is further than `tolerance` from the
-  // group's representative size. Everything below the gel's range joins one final group at the front.
+  // group's representative size. Comparing against the group's representative rather than the previous fragment is
+  // what stops a run of near-neighbours chaining into one unbounded band.
   const groups: number[][] = [];
   for (const size of descending) {
     const current = groups[groups.length - 1];
     const representative = current?.[0];
-    const bothUnresolved = representative !== undefined && representative < gel.smallest && size < gel.smallest;
+    // Fragments the gel does not separate belong in one band however far apart they are: everything above the
+    // range stays bunched at the wells, and everything below it runs off together at the front.
+    const bothUnresolved = representative !== undefined
+      && ((representative < gel.smallest && size < gel.smallest)
+        || (representative > gel.largest && size > gel.largest));
     const closeEnough = representative !== undefined && representative - size <= representative * tolerance;
     if (current && (bothUnresolved || closeEnough)) current.push(size);
     else groups.push([size]);
@@ -113,7 +122,7 @@ export function bandsOf(sizes: readonly number[], gel: GelType, tolerance = DEFA
     position: bandPosition(group[0]!, gel),
     totalBases: weights[i]!,
     intensity: heaviest > 0 ? weights[i]! / heaviest : 0,
-    unresolved: group.every((size) => size < gel.smallest),
+    unresolved: group.every((size) => !resolves(size, gel)),
   }));
 }
 
@@ -122,7 +131,9 @@ export function bandsOf(sizes: readonly number[], gel: GelType, tolerance = DEFA
  *
  * @param ladderSizes - The ladder's band sizes.
  * @param gel - The gel being run.
- * @returns One band per marker size, largest first, each of equal intensity.
+ * @returns One band per marker size, largest first, each of equal intensity. Markers the gel does not resolve are
+ *   marked `unresolved` but, unlike a sample lane, are never merged: a ladder's bands are known sizes and worth
+ *   showing individually even where the gel would not separate them.
  */
 export function ladderBands(ladderSizes: readonly number[], gel: GelType): Band[] {
   return [...ladderSizes]
@@ -133,6 +144,6 @@ export function ladderBands(ladderSizes: readonly number[], gel: GelType): Band[
       position: bandPosition(size, gel),
       totalBases: size,
       intensity: 1,
-      unresolved: size < gel.smallest,
+      unresolved: !resolves(size, gel),
     }));
 }
