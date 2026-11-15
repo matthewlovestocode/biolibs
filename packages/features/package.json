@@ -1,10 +1,15 @@
 {
-  "name": "@biolibs/features",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0",
+    "@biolibs/seqfeature": "^1.0.0"
+  },
   "description": "Find known elements in a DNA sequence by comparing it with a library of reference pieces on both strands, tolerating a few mismatches",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,21 +17,32 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/features#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "annotation",
+    "feature-detection",
+    "plasmid",
+    "reference-library"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/features",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/features"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/features#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {
-    "@biolibs/core": "0.1.0",
-    "@biolibs/seq": "0.1.0",
-    "@biolibs/seqfeature": "0.1.0"
-  }
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

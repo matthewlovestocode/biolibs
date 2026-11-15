@@ -1,10 +1,12 @@
 {
-  "name": "@biolibs/core",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {},
   "description": "Python's answers in TypeScript: Python-style errors and warnings, CPython-compatible int/float/round/repr/%/random, zlib deflate and inflate, SHA-1 and base64",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,17 +14,34 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/core#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "python",
+    "compatibility",
+    "errors",
+    "warnings",
+    "sha1",
+    "zlib"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/core",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/core"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/core#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {}
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

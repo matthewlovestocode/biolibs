@@ -1,10 +1,20 @@
 {
-  "name": "@biolibs/phylo",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/align": "^1.0.0",
+    "@biolibs/core": "^1.0.0",
+    "@biolibs/nexus": "^1.0.0",
+    "@biolibs/seq": "^1.0.0",
+    "@biolibs/seqfeature": "^1.0.0",
+    "@biolibs/seqio": "^1.0.0",
+    "@biolibs/seqrecord": "^1.0.0"
+  },
   "description": "Phylogenetic trees, verified against Biopython: Tree and Clade with search and editing, Newick, NEXUS and phyloXML both ways, strict/majority/Adam consensus, UPGMA, neighbour joining and parsimony (Bio.Phylo)",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,24 +22,34 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/phylo#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "biopython",
+    "phylogenetics",
+    "tree",
+    "newick",
+    "phyloxml",
+    "consensus"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/phylo",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/phylo"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/phylo#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {
-    "@biolibs/core": "0.1.0",
-    "@biolibs/seqfeature": "0.1.0",
-    "@biolibs/seqio": "0.1.0",
-    "@biolibs/nexus": "0.1.0",
-    "@biolibs/align": "0.1.0",
-    "@biolibs/seqrecord": "0.1.0"
-  }
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

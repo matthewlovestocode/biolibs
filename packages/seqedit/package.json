@@ -1,10 +1,17 @@
 {
-  "name": "@biolibs/seqedit",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0",
+    "@biolibs/seq": "^1.0.0",
+    "@biolibs/seqfeature": "^1.0.0",
+    "@biolibs/seqrecord": "^1.0.0"
+  },
   "description": "Edit a SeqRecord while keeping its features true: replace, insert and delete bases with every location moved, stretched or clipped to match",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,22 +19,34 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/seqedit#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "editor",
+    "feature",
+    "annotation",
+    "insert",
+    "delete",
+    "plasmid"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/seqedit",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/seqedit"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/seqedit#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {
-    "@biolibs/core": "0.1.0",
-    "@biolibs/seq": "0.1.0",
-    "@biolibs/seqfeature": "0.1.0",
-    "@biolibs/seqrecord": "0.1.0"
-  }
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

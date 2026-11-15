@@ -1,10 +1,14 @@
 {
-  "name": "@biolibs/seq",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0"
+  },
   "description": "Biological sequences, verified against Biopython: Seq and MutableSeq, translation with all 27 genetic codes, undefined and partially defined content, CodonTable and IUPACData (Bio.Seq, Bio.Data)",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,19 +16,33 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/seq#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "sequence",
+    "biopython",
+    "translation",
+    "genetic-code",
+    "reverse-complement"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/seq",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/seq"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/seq#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {
-    "@biolibs/core": "0.1.0"
-  }
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

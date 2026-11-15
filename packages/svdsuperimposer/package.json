@@ -1,10 +1,11 @@
 {
-  "name": "@biolibs/svdsuperimposer",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
   "description": "Least-squares superposition of two sets of 3D points, verified against Biopython: the Kabsch algorithm through a 3x3 Jacobi SVD, in single or double precision, with no dependencies (Bio.SVDSuperimposer)",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,19 +13,34 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/svdsuperimposer#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "biopython",
+    "kabsch",
+    "svd",
+    "superposition",
+    "rmsd",
+    "structure"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/svdsuperimposer",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/svdsuperimposer"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/svdsuperimposer#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {
-    "@biolibs/core": "0.1.0"
-  }
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

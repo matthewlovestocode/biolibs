@@ -1,10 +1,16 @@
 {
-  "name": "@biolibs/pdb",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0",
+    "@biolibs/seq": "^1.0.0",
+    "@biolibs/svdsuperimposer": "^1.0.0"
+  },
   "description": "Macromolecular structures, verified against Biopython: the Structure/Model/Chain/Residue/Atom hierarchy, PDB and mmCIF both ways, polypeptides, neighbour search, surface area, superimposition, internal coordinates (Bio.PDB)",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,21 +18,34 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/pdb#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "biopython",
+    "pdb",
+    "mmcif",
+    "structure",
+    "protein",
+    "internal-coordinates"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/pdb",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/pdb"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/pdb#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {
-    "@biolibs/core": "0.1.0",
-    "@biolibs/seq": "0.1.0",
-    "@biolibs/svdsuperimposer": "0.1.0"
-  }
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

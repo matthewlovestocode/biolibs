@@ -1,10 +1,16 @@
 {
-  "name": "@biolibs/seqrecord",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0",
+    "@biolibs/seq": "^1.0.0",
+    "@biolibs/seqfeature": "^1.0.0"
+  },
   "description": "A sequence with everything a file knows about it, verified against Biopython: slicing that carries features and per-letter annotations, concatenation that merges metadata, reverseComplement and translate, 26 output formats (Bio.SeqRecord)",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,21 +18,32 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/seqrecord#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "biopython",
+    "seqrecord",
+    "annotation",
+    "record"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/seqrecord",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/seqrecord"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/seqrecord#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {
-    "@biolibs/core": "0.1.0",
-    "@biolibs/seq": "0.1.0",
-    "@biolibs/seqfeature": "0.1.0"
-  }
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

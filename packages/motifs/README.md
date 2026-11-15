@@ -58,6 +58,7 @@ graph BT
   motifs["@biolibs/motifs"] --> core["@biolibs/core"]
   motifs --> seq["@biolibs/seq"]
   motifs --> align["@biolibs/align"]
+  motifs --> seqio["@biolibs/seqio<br/><i>ElementTree, for the XML formats</i>"]
 ```
 
 `@biolibs/align` is a dependency because a motif's instances are an `Alignment`.

@@ -1,10 +1,14 @@
 {
-  "name": "@biolibs/gel",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0"
+  },
   "description": "Virtual agarose gel electrophoresis: where DNA fragments of a given size run, ladders, and which bands a gel resolves",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,19 +16,33 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/gel#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "agarose",
+    "gel-electrophoresis",
+    "ladder",
+    "fragment",
+    "virtual-gel"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/gel",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/gel"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/gel#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {
-    "@biolibs/core": "0.1.0"
-  }
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

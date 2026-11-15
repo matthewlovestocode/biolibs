@@ -67,6 +67,8 @@ graph BT
   phylo --> sr["@biolibs/seqrecord"]
   phylo --> align["@biolibs/align"]
   phylo --> nexus["@biolibs/nexus"]
+  phylo --> sf["@biolibs/seqfeature"]
+  phylo --> seqio["@biolibs/seqio"]
 ```
 
 `@biolibs/align` is needed because `DistanceCalculator` works on alignments and phyloXML converts to them;

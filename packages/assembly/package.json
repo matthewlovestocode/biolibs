@@ -1,10 +1,14 @@
 {
-  "name": "@biolibs/assembly",
-  "version": "0.1.0",
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0"
+  },
   "description": "Where two sequences agree and for how long: the maximal-common-substring matcher Gibson assembly, fusion PCR and homologous recombination all start from, verified against pydna. No dependencies",
-  "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "engines": {
+    "node": ">=20"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -12,19 +16,32 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/assembly#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "dna",
+    "typescript",
+    "pydna",
+    "assembly",
+    "homologous-recombination",
+    "cloning"
   ],
   "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/assembly",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthewlovestocode/biolibs.git",
     "directory": "packages/assembly"
   },
-  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/assembly#readme",
-  "bugs": {
-    "url": "https://github.com/matthewlovestocode/biolibs/issues"
-  },
-  "dependencies": {
-    "@biolibs/core": "0.1.0"
-  }
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "1.0.0"
 }

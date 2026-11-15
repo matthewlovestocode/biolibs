@@ -59,7 +59,6 @@ npm install @biolibs/pcr
 ```mermaid
 graph BT
   pcr["@biolibs/pcr"] --> seqtools["@biolibs/seqtools<br/><i>Tm_NN and its salt corrections</i>"]
-  pcr --> seq["@biolibs/seq"]
   pcr --> core["@biolibs/core"]
   cloning["@biolibs/cloning"] --> pcr
 ```

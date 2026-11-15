@@ -92,7 +92,6 @@ npm install @biolibs/features
 ```mermaid
 graph BT
   features["@biolibs/features"] --> seqfeature["@biolibs/seqfeature<br/><i>SeqFeature, locations</i>"]
-  features --> seq["@biolibs/seq"]
   features --> core["@biolibs/core"]
 ```
 
