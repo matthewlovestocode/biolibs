@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * A term, with its picture always beside its words.
  *
@@ -6,7 +8,7 @@
  * with it, and the sheet a biologist reviews shows the two together, since they are signed off
  * together.
  */
-import type { ReactNode } from "react";
+import type { ReactNode, SyntheticEvent } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { CATEGORIES, GLOSSARY, REVIEWS, getEntry, reviewOf, reviewWords, splitByTerms, termFingerprint,
          type GlossaryEntry, type Review, type ReviewState } from "@biolibs/glossary";
@@ -72,10 +74,30 @@ export function TermCard({ slug, full = false, reviews }: { slug: string; full?:
 }
 
 /**
+ * Put a term's tip where it can be read: above the word if there is no room below it, and moved
+ * left if it would run off the right-hand edge. Without this the tip is below the word, as the
+ * stylesheet has it, so a page with no script still shows it.
+ *
+ * @param event - The pointer or the keyboard arriving at the term, or its tip changing size.
+ */
+export function placeTip(event: SyntheticEvent<HTMLElement>): void {
+  const term = event.currentTarget.closest<HTMLElement>(".glossary-term");
+  const tip = term?.querySelector<HTMLElement>(".glossary-tip");
+  if (term === null || term === undefined || tip === null || tip === undefined) return;
+  const word = term.getBoundingClientRect();
+  const [below, above] = [window.innerHeight - word.bottom, word.top];
+  term.classList.toggle("above", below < tip.offsetHeight + 12 && above > below);
+  const over = word.left + tip.offsetWidth - (window.innerWidth - 8);
+  tip.style.marginLeft = over > 0 ? `${-Math.min(over, word.left - 8)}px` : "";
+}
+
+/**
  * A word in running text that says what it means when asked.
  *
  * Hovering it, or moving to it with the keyboard, shows the term's picture and its one-sentence
- * definition, with the rest a press away. It needs no script: it is shown by the stylesheet.
+ * definition, with the rest a press away. It is shown by the stylesheet, and stays while the
+ * pointer moves onto it, so what is in it can be pressed. Where a script runs, it opens upwards
+ * when there is no room below.
  *
  * @param props - `slug` is the term; `children` is the word as written, the term's own name if not
  *   given; `reviews` are the reviews to show.
@@ -92,13 +114,13 @@ export function Term({ slug, children, reviews }: { slug: string; children?: Rea
   const entry = getEntry(slug);
   if (entry === undefined) return <>{children}</>;
   return (
-    <span className="glossary glossary-term" tabIndex={0}>
+    <span className="glossary glossary-term" tabIndex={0} onMouseEnter={placeTip} onFocus={placeTip}>
       <span className="glossary-word">{children ?? entry.term}</span>
       <span className="glossary-tip" role="tooltip">
         <TermDiagram slug={slug} decorative />
         <span className="glossary-name">{entry.term}</span>
         <span className="glossary-definition">{entry.definition}</span>
-        <details>
+        <details onToggle={placeTip}>
           <summary>More</summary>
           <span className="glossary-detail">{entry.detail}</span>
           <span className="glossary-why"><strong>Why it matters.</strong> {entry.why}</span>
