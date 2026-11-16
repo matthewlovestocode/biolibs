@@ -8,6 +8,9 @@
     "@biolibs/bionet-panels": "^0.3.1",
     "@biolibs/bionet-react": "^0.2.0",
     "@biolibs/dseqrecord": "^1.1.1",
+    "@biolibs/gel": "^1.0.0",
+    "@biolibs/restriction": "^1.0.0",
+    "@biolibs/seq": "^1.0.0",
     "@biolibs/seqtools": "^1.0.0"
   },
   "description": "The tools a lab uses at the bench, tied to its freezer: run a PCR in silico from the tubes it holds, and record it so the template and primers drop by what was used and the product becomes a tube",

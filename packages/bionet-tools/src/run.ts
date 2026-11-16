@@ -7,6 +7,7 @@
  */
 import type { ItemState, PartState, PlaceState } from "@biolibs/bionet";
 import { amountOf, whereWords } from "@biolibs/bionet-panels";
+import { planDigest, type DigestPlan } from "./digest.js";
 import { ANNEAL_AT_LEAST, looksLikePrimer, planPcr, type PcrPlan } from "./pcr.js";
 
 /** As much of a lab as a tool reads. */
@@ -130,11 +131,97 @@ export function pcrRun(lab: ToolLab, choice: PcrChoice): PcrRun {
 }
 
 /**
+ * The tubes a digest could be run on: every tube with something in it, the longer molecules first,
+ * since those are what is usually checked.
+ *
+ * @param lab - The lab.
+ * @returns The tubes to offer.
+ */
+export function digestTubes(lab: ToolLab): TubeChoice[] {
+  return pcrTubes(lab).templates;
+}
+
+/** What somebody has chosen for a digest. */
+export interface DigestChoice {
+  /** The tube being cut. */
+  tube: string;
+  /** The enzymes, by name. */
+  enzymes: readonly string[];
+  /** How much of the tube was used, in its own unit. A whole number. */
+  used?: number;
+  /** The gel's agarose concentration and the ladder beside it, by their IDs in `@biolibs/gel`. */
+  gel?: string;
+  ladder?: string;
+  /** The gel station it was run at, if the lab has one. */
+  instrument?: string | null;
+  /** Anything worth saying about it. */
+  note?: string | null;
+}
+
+/** A digest as chosen: what it would give, and what to ask the lab to record. */
+export interface DigestRun {
+  /** What the digest would give, or `null` if the tube is not one the lab has. */
+  plan: DigestPlan | null;
+  /** What to hand to the lab's `recordRun` if the gel matched. `null` while there is nothing to match. */
+  matched: Record<string, unknown> | null;
+  /** What to hand to it if the gel was run and did not match. `null` likewise. */
+  differed: Record<string, unknown> | null;
+}
+
+/**
+ * Work a choice of tube and enzymes out into a run.
+ *
+ * A digest here is a check: it uses some of a tube and makes nothing. What is recorded is which
+ * enzymes, what pieces were expected, and whether the gel showed them. Keeping a piece as a tube is
+ * not offered, because a part cannot yet say what ends it has, and a cut piece is defined by its ends.
+ *
+ * @param lab - The lab.
+ * @param choice - The tube, the enzymes, and how much was used.
+ * @returns What it would give, and what to record either way.
+ */
+export function digestRun(lab: ToolLab, choice: DigestChoice): DigestRun {
+  const item = lab.items.find((one) => one.item === choice.tube);
+  const part = item === undefined ? undefined : lab.parts.find((one) => one.checksum === item.part);
+  if (part === undefined) return { plan: null, matched: null, differed: null };
+  const plan = planDigest(part, choice.enzymes, { ...(choice.gel === undefined ? {} : { gel: choice.gel }), ...(choice.ladder === undefined ? {} : { ladder: choice.ladder }) });
+  if (plan.problem !== null) return { plan, matched: null, differed: null };
+  const used = choice.used === undefined || !Number.isSafeInteger(choice.used) || choice.used < 0 ? 1 : choice.used;
+  const record = {
+    kind: "digest", instrument: choice.instrument ?? null,
+    inputs: [{ item: choice.tube, amount: used, role: "cut" }],
+    outputs: [],
+    // Settings are short text, so a digest into very many pieces records as many as fit.
+    settings: { enzymes: plan.cutters.map((one) => one.name).join("+").slice(0, 200), expected: plan.fragments.join(",").slice(0, 200), gel: plan.gel },
+    note: choice.note ?? null,
+  };
+  return { plan, matched: { ...record, outcome: "worked" }, differed: { ...record, outcome: "failed" } };
+}
+
+/** The tools there are. */
+export type ToolName = "pcr" | "digest";
+
+/** The model of instrument each tool is used at. */
+export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station" };
+
+/**
  * Which tool an instrument opens.
  *
  * @param place - The place, as the lab records it.
  * @returns The tool's name, or `null` if there is none for it yet.
  */
-export function toolFor(place: Pick<PlaceState, "kind" | "fields"> | undefined): "pcr" | null {
-  return place?.kind === "instrument" && place.fields["model"] === "thermocycler" ? "pcr" : null;
+export function toolFor(place: Pick<PlaceState, "kind" | "fields"> | undefined): ToolName | null {
+  if (place?.kind !== "instrument") return null;
+  return (Object.keys(TOOL_AT) as ToolName[]).find((tool) => TOOL_AT[tool] === place.fields["model"]) ?? null;
+}
+
+/**
+ * The instrument a tool would be used at, if the lab has placed one.
+ *
+ * @param lab - The lab.
+ * @param tool - The tool.
+ * @returns The first such instrument still in use, or `null`.
+ */
+export function instrumentFor(lab: Pick<ToolLab, "places">, tool: ToolName): { id: string; name: string } | null {
+  const found = lab.places.find((place) => !place.retired && toolFor(place) === tool);
+  return found === undefined ? null : { id: found.place, name: found.name };
 }

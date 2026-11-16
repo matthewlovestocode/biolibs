@@ -102,7 +102,7 @@ dseqrecord, opencloning  <-- bionet  <-- bionet-peer
                                '------ bionet-client  <-- bionet-react  <-- bionet-panels
 bionet-theme  (nothing)  <------------------------------------'               (and as a peer)
 bionet-space  (nothing)  <-- bionet-scene  (also uses bionet-theme, three.js)
-assembly2, seqtools, bionet-panels  <-- bionet-tools
+assembly2, restriction, gel, seqtools, bionet-panels  <-- bionet-tools
 ```
 
 Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none. Only `entrez` and `pdblist` touch the network, each through one function that can be replaced (`settings.transport`, and the `fetcher` a `PDBList` is given); no other package does any I/O.

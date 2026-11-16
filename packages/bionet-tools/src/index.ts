@@ -8,12 +8,17 @@
  * which run made it.
  *
  * - `pcr.ts` — what a PCR would make, worked out from sequences alone
+ * - `digest.ts` — where enzymes cut, the pieces, and the gel they would give
  * - `run.ts` — a PCR as a lab does one: which tubes, and what to record
- * - `pcr-tool.tsx` — the PCR tool, and the tool an instrument opens
+ * - `pcr-tool.tsx`, `digest-tool.tsx` — the tools
+ * - `tools.tsx` — getting to one: from an instrument, or from a list of them all
  *
  * The tools are drawn with the styles of `@biolibs/bionet-panels` and belong inside its `LabWindow`.
  * Import `@biolibs/bionet-tools/tools.css` once.
  */
 export * from "./pcr.js";
+export * from "./digest.js";
 export * from "./run.js";
 export * from "./pcr-tool.js";
+export * from "./digest-tool.js";
+export * from "./tools.js";

@@ -10,7 +10,7 @@
 import { useMemo, useState } from "react";
 import { useAct, useLab } from "@biolibs/bionet-react";
 import { primerTm } from "./pcr.js";
-import { pcrRun, pcrTubes, toolFor, type TubeChoice } from "./run.js";
+import { pcrRun, pcrTubes, type TubeChoice } from "./run.js";
 
 const whole = (text: string): number | undefined => (text.trim() === "" ? undefined : Number(text));
 
@@ -155,28 +155,5 @@ export function PcrTool({ instrument = null, onDone }: { instrument?: { id: stri
         </section>
       )}
     </div>
-  );
-}
-
-/**
- * The tool an instrument opens.
- *
- * @param props - `place` is the instrument's ID; `onDone` adds a way to leave.
- */
-export function InstrumentTool({ place, onDone }: { place: string; onDone?: () => void }) {
-  const lab = useLab()?.lab;
-  if (lab === null || lab === undefined) return null;
-  const found = lab.places.find((one) => one.place === place);
-  if (toolFor(found) === "pcr") return <PcrTool instrument={{ id: place, name: found!.name }} {...(onDone === undefined ? {} : { onDone })} />;
-  return (
-    <section className="card">
-      <div className="toolhead">
-        <div>
-          <h2>{found?.name ?? "This place"}</h2>
-          <p className="dim">There is no tool for this yet. A thermocycler opens the PCR tool.</p>
-        </div>
-        {onDone !== undefined && <button type="button" className="quiet" onClick={onDone}>Back to the lab</button>}
-      </div>
-    </section>
   );
 }

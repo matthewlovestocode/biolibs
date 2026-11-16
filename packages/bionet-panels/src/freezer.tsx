@@ -2,6 +2,7 @@
 
 /** The freezer: every part, its tubes, and what can be done to them. */
 import type { ItemState, PartState } from "@biolibs/bionet";
+import type { LabView } from "@biolibs/bionet-client";
 import { useAct, useLab } from "@biolibs/bionet-react";
 import { Ask } from "./parts.js";
 import { PutItem } from "./places.js";
@@ -15,6 +16,25 @@ const whole = (data: FormData, name: string): number => Number(String(data.get(n
  * @returns Something like `7 µL`.
  */
 export const amountOf = (item: Pick<ItemState, "amount" | "unit">): string => `${item.amount}${item.unit === null ? "" : ` ${item.unit}`}`;
+
+/**
+ * Where a tube came from, if a run made it.
+ *
+ * @param item - The tube.
+ * @param lab - The lab's runs, items and parts.
+ * @returns Something like `made by a PCR from pWren-402, fwd-1 and rev-1`, or `null` for a tube
+ *   that was simply added.
+ */
+export function madeFrom(item: Pick<ItemState, "from">, lab: Pick<LabView, "runs" | "items" | "parts">): string | null {
+  const run = item.from === null ? undefined : lab.runs.find((one) => one.run === item.from);
+  if (run === undefined) return null;
+  const names = run.inputs.map((input) => {
+    const tube = lab.items.find((one) => one.item === input.item);
+    return lab.parts.find((part) => part.checksum === tube?.part)?.name ?? "a tube";
+  });
+  const from = names.length === 0 ? "" : ` from ${names.length === 1 ? names[0] : `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`}`;
+  return `made by ${run.kind === "pcr" ? "a PCR" : `a ${run.kind} run`}${from}`;
+}
 
 /** Every part with its tubes, and a form to add a part. Draws nothing until the lab has arrived. */
 export function Freezer() {
@@ -73,9 +93,14 @@ export function PartCard({ part, items }: { part: PartState; items: ItemState[] 
 /** One tube: how much there is, and the ways to change that. */
 export function ItemRow({ item }: { item: ItemState }) {
   const act = useAct();
+  const lab = useLab()?.lab;
+  const origin = lab === null || lab === undefined ? null : madeFrom(item, lab);
   return (
     <tr className={item.needsRecount ? "flagged" : undefined}>
-      <td><code>{item.item.slice(0, 10)}…</code></td>
+      <td>
+        <code>{item.item.slice(0, 10)}…</code>
+        {origin !== null && <div className="dim small origin">{origin}</div>}
+      </td>
       <td>
         <strong>{amountOf(item)}</strong>
         {item.needsRecount && <span className="badge" title="The log has lost track of this tube: it went below zero, or two people counted it at once.">needs a count</span>}

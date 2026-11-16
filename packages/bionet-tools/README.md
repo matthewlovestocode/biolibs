@@ -1,6 +1,6 @@
 # @biolibs/bionet-tools
 
-The tools a lab uses at the bench, tied to its freezer. The first is PCR: choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
+The tools a lab uses at the bench, tied to its freezer: PCR, and a check digest with its gel. For PCR, choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
 
 ```
 npm install @biolibs/bionet-tools @biolibs/bionet-panels @biolibs/bionet-react @biolibs/bionet-theme react
@@ -33,6 +33,24 @@ if (run.worked !== null) await act("recordRun", run.worked);
 
 `pcrTubes` offers short linear parts as primers and the rest as templates. `pcrRun` works a choice out into what to hand the lab's `recordRun`: `worked` when there is exactly one product, and `failed` for a run that was done and gave nothing, which still used the tubes.
 
+## A digest and its gel
+
+```ts
+import { cutters, digestRun, planDigest } from "@biolibs/bionet-tools";
+
+const plan = planDigest({ sequence: "AAAAAAAAAAGAATTCAAAAAAAAAAAAAAAAAAAAGGATCCAAAAAAAAAA", circular: true }, ["EcoRI", "BamHI"]);
+plan.fragments;    // [ 26, 26 ]
+plan.problem;      // null
+
+cutters(part);                                             // the usual enzymes that cut a part, fewest cuts first
+const run = digestRun(lab, { tube, enzymes: ["EcoRI"] });  // what to record, if the gel matched or did not
+```
+
+`planDigest` gives the cuts, the pieces, and the bands they and a ladder would show on a gel, from
+`@biolibs/restriction` and `@biolibs/gel`. A digest here is a check: recording it uses some of the
+tube, makes nothing, and notes which enzymes, what was expected and whether the gel showed it.
+Keeping a cut piece as a tube is not offered, because a part cannot yet say what ends it has.
+
 ## The tool
 
 ```tsx
@@ -40,10 +58,11 @@ import "@biolibs/bionet-tools/tools.css";
 import { InstrumentTool, PcrTool } from "@biolibs/bionet-tools";
 
 <InstrumentTool place={thermocyclerId} onDone={close} />   // the tool for whichever instrument that is
-<PcrTool />                                                // or the PCR tool on its own
+<Tools />                                                  // every tool, for a lab that has not drawn its room
+<PcrTool />                                                // or one tool on its own; DigestTool likewise
 ```
 
-The tools use the lab's hooks and are drawn with the panels' styles, so they go inside a `LabProvider` and a `LabWindow`. `InstrumentTool` opens the PCR tool for a place whose `model` is `thermocycler`, and says so when there is no tool for an instrument yet.
+The tools use the lab's hooks and are drawn with the panels' styles, so they go inside a `LabProvider` and a `LabWindow`. `InstrumentTool` opens PCR for a place whose `model` is `thermocycler` and digest and gel for a `gel-station`, and says so when there is no tool for an instrument yet. `Tools` lists them all, and still records a run at the lab's instrument for that tool if it has placed one.
 
 ## License
 

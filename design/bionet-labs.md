@@ -312,7 +312,7 @@ This replaces the package list under "Libraries" above. Each layer may depend on
 | Hooks | `@biolibs/bionet-react` | The lab, asking for a change, the last refusal; the mark and logo as components | Client, look, React | Built |
 | Panels | `@biolibs/bionet-panels` | Freezer, people, history, sharing, and a whole window | Hooks, look | Built |
 | Geometry | `@biolibs/bionet-space` | A tree of places, where each stands, box grids, camera poses, search, a layout from a lab's record | Plain data only | Built |
-| Tools | `@biolibs/bionet-tools` | PCR from the lab's tubes, recorded as a run; digest, gel, assembly and a sequence map to come | Engines, hooks, panels | Written and tested, not published |
+| Tools | `@biolibs/bionet-tools` | PCR, and a check digest with its gel, from the lab's tubes and recorded as runs; assembly and a sequence map to come | Engines, hooks, panels | Written and tested, not published |
 | 3D | `@biolibs/bionet-scene` | The scene: places, boxes, tubes, instruments, neighbours; molecules to come | Geometry, look, three.js | Built |
 
 "Built" means written, tested in this repository, published to npm as 0.x, and in use by the
@@ -787,8 +787,24 @@ the cloning plans use, and the run is recorded.
 - **Tools are a package**, `@biolibs/bionet-tools`, in three layers: sequences, the lab, the window.
 - **Which tool an instrument opens** comes from its `model` field. Only `thermocycler` has one.
 
-Not done: digest and gel, assembly, a sequence viewer; replaying a run to check it; a run as a step
-in a cloning plan; importing an instrument's own output; a Tools tab for labs that draw no room.
+### Digest and gel, and a Tools tab
+
+A gel station opens a check digest: choose a tube and enzymes, see the pieces and the gel they
+should give beside a ladder, and record whether the real gel matched.
+
+- **A digest is a check.** It uses some of the tube and makes nothing. The run records the
+  enzymes, the pieces expected, and the outcome.
+- **A cut piece cannot be kept as a tube yet.** A part is a sequence and whether it is a circle. A
+  piece is defined by its ends as well, and two pieces with the same bases and different overhangs
+  would share a checksum. Parts need to say what ends they have before a piece can be recorded
+  honestly, and before assembly can be a tool.
+- **A Tools tab lists every tool**, for a lab that has not drawn its room. A run is still recorded
+  at the lab's instrument for that tool if one has been placed.
+- **A tube says where it came from** in the Freezer tab: which kind of run made it, and from what.
+
+Not done: ends on a part, and with them keeping a cut piece and assembly as a tool; a sequence
+viewer; replaying a run to check it; a run as a step in a cloning plan; importing an instrument's
+own output.
 
 Not done: placing a tube in a box by dragging it (that is still by position, on the Freezer tab); adding a place from the scene (it is still the
 form on the Places tab); undo, other than dragging back; molecules

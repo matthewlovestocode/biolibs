@@ -7,7 +7,7 @@
  */
 import { Lab, memoryKeys, memoryStore, sourceOf } from "@biolibs/bionet-client";
 import { LabProvider } from "@biolibs/bionet-react";
-import { InstrumentTool, PcrTool, pcrRun, pcrTubes, toolFor } from "@biolibs/bionet-tools";
+import { DigestTool, Gel, InstrumentTool, PcrTool, Tools, digestRun, digestTubes, instrumentFor, pcrRun, pcrTubes, planDigest, toolFor } from "@biolibs/bionet-tools";
 import { createElement as h, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
@@ -105,6 +105,7 @@ describe("the tool an instrument opens", () => {
     expect(tool).toContain("Back to the lab");
     expect(tool).not.toContain("What it makes");            // nothing has been chosen yet
     expect(draw(lab, h(InstrumentTool, { place: centrifuge }))).toContain("There is no tool for this yet");
+    expect(draw(lab, h(InstrumentTool, { place: "no such place" }))).toContain("This place");
     expect(draw(lab, h(PcrTool))).toContain("<h2>PCR</h2>");
   });
 
@@ -121,5 +122,72 @@ describe("the tool an instrument opens", () => {
     await empty.setPerson("Ada");
     await empty.found({ name: "Empty" });
     expect(draw(empty, h(PcrTool))).toContain("There are no tubes to run a PCR from");
+  });
+});
+
+const PLASMID = `${"ACGT".repeat(300)}GAATTC${"ACGT".repeat(700)}GGATCC${"ACGT".repeat(250)}`;
+
+describe("a check digest", () => {
+  it("uses some of the tube, makes nothing, and records what was expected and whether the gel showed it", async () => {
+    const { lab } = await wren();
+    await lab.addPart({ name: "pBig", sequence: PLASMID, circular: true });
+    const tube = await lab.addItem({ part: lab.snapshot().lab!.parts.at(-1)!.checksum, amount: 10, unit: "µL" });
+    const bench = lab.snapshot().lab!.places[0]!.place;
+    const station = await lab.addPlace({ kind: "instrument", name: "Gel station", parent: bench, model: "gel-station" });
+    expect(digestTubes(lab.snapshot().lab!)[0]!.part.name).toBe("pWren-402");
+    expect(instrumentFor(lab.snapshot().lab!, "digest")).toEqual({ id: station, name: "Gel station" });
+    expect(toolFor(lab.snapshot().lab!.places.find((one) => one.place === station))).toBe("digest");
+
+    const run = digestRun(lab.snapshot().lab!, { tube, enzymes: ["EcoRI", "BamHI"], used: 2, instrument: station, note: "clean" });
+    expect(run.plan).toMatchObject({ problem: null, fragments: [2806, 2206] });
+    expect(run.matched).toMatchObject({ kind: "digest", instrument: station, outcome: "worked", outputs: [], note: "clean",
+                                        inputs: [{ item: tube, amount: 2, role: "cut" }], settings: { enzymes: "EcoRI+BamHI", expected: "2806,2206", gel: "1.0" } });
+    expect(run.differed).toMatchObject({ outcome: "failed", outputs: [] });
+
+    const before = lab.snapshot().lab!.items.length;
+    await lab.recordRun(run.matched as Parameters<Lab["recordRun"]>[0]);
+    await lab.recordRun(run.differed as Parameters<Lab["recordRun"]>[0]);
+    const seen = lab.snapshot().lab!;
+    expect(seen.items.find((one) => one.item === tube)!.amount).toBe(6);
+    expect(seen.items).toHaveLength(before);
+    expect(seen.runs.map((one) => [one.kind, one.outcome])).toEqual([["digest", "worked"], ["digest", "failed"]]);
+
+    const tool = draw(lab, h(DigestTool, { instrument: { id: station, name: "Gel station" } }));
+    expect(tool).toContain("Digest and gel · Gel station");
+    expect(tool).toContain("Recent digests here");
+    expect(tool).toContain("EcoRI + BamHI");
+    expect(tool).toContain("did not match");
+    expect(draw(lab, h(InstrumentTool, { place: station }))).toContain("Digest and gel · Gel station");
+  });
+
+  it("has nothing to record when the enzymes do not cut, the tube is unknown, or nothing is chosen", async () => {
+    const { lab, tubes } = await wren();
+    const seen = lab.snapshot().lab!;
+    expect(digestRun(seen, { tube: tubes.template, enzymes: ["NotI"] })).toMatchObject({ plan: { problem: "NotI does not cut this." }, matched: null, differed: null });
+    expect(digestRun(seen, { tube: tubes.template, enzymes: [] }).matched).toBeNull();
+    expect(digestRun(seen, { tube: "no-such-tube", enzymes: ["EcoRI"] })).toEqual({ plan: null, matched: null, differed: null });
+    expect(instrumentFor(seen, "digest")).toBeNull();
+  });
+
+  it("is drawn as a gel that says what is on it", () => {
+    const plan = planDigest({ sequence: PLASMID, circular: true }, ["EcoRI", "BamHI"]);
+    const gel = renderToStaticMarkup(h(Gel, { ladder: plan.ladder, bands: plan.bands, name: "pBig" }));
+    expect(gel).toContain('aria-label="A gel: a ladder beside pBig, cut into pieces of 2806, 2206 base pairs"');
+    expect(gel).toContain(">2806<");
+    expect(gel).toContain(">ladder<");
+    expect(gel.match(/<rect /g)!.length).toBe(3 + plan.ladder.length + plan.bands.length);
+  });
+});
+
+describe("every tool, without walking to an instrument", () => {
+  it("opens on PCR, offers digest, and records at the lab's instrument if it has one", async () => {
+    const { lab } = await wren();
+    const tools = draw(lab, h(Tools));
+    expect(tools).toContain('aria-selected="true" class="">PCR</button>');
+    expect(tools).toContain(">Digest and gel</button>");
+    expect(tools).toContain("PCR · Thermocycler");
+    const digest = draw(lab, h(Tools, { tool: "digest" }));
+    expect(digest).toContain("<h2>Digest and gel</h2>");      // no gel station has been placed
+    expect(digest).not.toContain("Back to the lab");
   });
 });

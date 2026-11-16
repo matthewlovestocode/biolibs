@@ -66,3 +66,4 @@
 .bionet details.restore { margin-top: .9rem }
 .bionet details.restore summary { cursor: pointer; color: var(--bionet-dim) }
 .bionet details.restore summary:hover { color: var(--bionet-ink) }
+.bionet .origin { max-width: 14rem; margin-top: .15rem }

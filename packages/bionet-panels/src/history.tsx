@@ -47,6 +47,12 @@ export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "
     case "run.record": {
       const made = Array.isArray(op["outputs"]) ? (op["outputs"] as { name?: unknown }[]) : [];
       const at = op["instrument"] === null ? "" : ` at ${place(op["instrument"])}`;
+      if (op["kind"] === "digest") {
+        const settings = (typeof op["settings"] === "object" && op["settings"] !== null ? op["settings"] : {}) as Record<string, unknown>;
+        const cut = Array.isArray(op["inputs"]) ? tube((op["inputs"] as { item?: unknown }[])[0]?.item) : "a tube";
+        const enzymes = typeof settings["enzymes"] === "string" ? ` with ${settings["enzymes"].replace(/\+/g, " and ")}` : "";
+        return `digested ${cut}${enzymes}${at}: the gel ${op["outcome"] === "worked" ? "matched" : "did not match"}`;
+      }
       const what = op["kind"] === "pcr" ? "a PCR" : `a ${String(op["kind"])} run`;
       return op["outcome"] === "worked" ? `ran ${what}${at}, which made ${made.map((one) => String(one.name)).join(" and ") || "nothing"}` : `ran ${what}${at}, which did not work`;
     }

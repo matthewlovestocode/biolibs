@@ -8,7 +8,7 @@
 import { readFileSync } from "node:fs";
 import { Lab, memoryKeys, memoryStore, sourceOf, type LabSnapshot, type LabSource, type PeerView } from "@biolibs/bionet-client";
 import { BackUpKey, Freezer, History, LabWindow, People, Places, RestoreKey, Sharing, SyncStatus, TABS, amountOf, describeEntry,
-         listedParts, placePath, placeTree, syncWords, whereWords } from "@biolibs/bionet-panels";
+         listedParts, madeFrom, placePath, placeTree, syncWords, whereWords } from "@biolibs/bionet-panels";
 import { LabProvider } from "@biolibs/bionet-react";
 import { cssVariable, MEANINGS } from "@biolibs/bionet-theme";
 import { createElement as h, type ReactElement } from "react";
@@ -114,6 +114,29 @@ describe("the places", () => {
 
     await lab.retirePlace({ place: freezer });
     expect(placeTree(lab.snapshot().lab!.places).map((one) => one.place.name)).toEqual(["Main lab"]);
+  });
+});
+
+describe("where a tube came from", () => {
+  it("is said under the tube a run made, and not under one that was simply added", async () => {
+    const { lab, tube } = await wren();
+    await lab.addPart({ name: "fwd-1", sequence: F1.slice(0, 18) });
+    const primer = await lab.addItem({ part: lab.snapshot().lab!.parts[1]!.checksum, amount: 5, unit: "µL" });
+    const done = await lab.recordRun({
+      kind: "pcr", inputs: [{ item: tube, amount: 1, role: "template" }, { item: primer, amount: 1, role: "forward primer" }],
+      outputs: [{ sequence: F1.slice(0, 40), name: "amplicon", amount: 50, unit: "µL" }],
+    });
+    const seen = lab.snapshot().lab!;
+    expect(madeFrom(seen.items.find((one) => one.item === done.items[0])!, seen)).toBe("made by a PCR from f1 and fwd-1");
+    expect(madeFrom(seen.items.find((one) => one.item === tube)!, seen)).toBeNull();
+    expect(madeFrom({ from: "a run nobody recorded" }, seen)).toBeNull();
+    expect(madeFrom({ from: "r" }, { runs: [{ ...seen.runs[0]!, run: "r", kind: "digest", inputs: [] }], items: [], parts: [] })).toBe("made by a digest run");
+    expect(draw(lab, h(Freezer))).toContain("made by a PCR from f1 and fwd-1");
+    expect(draw(lab, h(History))).toContain("ran a PCR, which made amplicon");
+    await lab.recordRun({ kind: "digest", inputs: [{ item: tube, amount: 1, role: "cut" }], settings: { enzymes: "EcoRI+BamHI" }, outcome: "worked" });
+    await lab.recordRun({ kind: "digest", inputs: [{ item: tube, amount: 1, role: "cut" }], outcome: "failed" });
+    expect(draw(lab, h(History))).toContain("digested a tube of f1 with EcoRI and BamHI: the gel matched");
+    expect(draw(lab, h(History))).toContain("digested a tube of f1: the gel did not match");
   });
 });
 
