@@ -156,6 +156,9 @@ parts.
 
 ## Libraries
 
+The package list in this section was the first plan. It is superseded by "The libraries, revised"
+under "The lab workspace" below; the principles here still hold.
+
 | Package | Holds |
 |---|---|
 | `@biolibs/bionet` | The protocol: inventory, roster, signed logs, merge rules, transport interface, provenance |
@@ -183,6 +186,191 @@ Two families of hooks and components:
 The example labs are the test beds: Wren on MUI, Thistle on Tailwind. Rich UI is built in a lab first
 and promoted to a library when a second consumer needs it. One variant is finished before the next
 is started.
+
+## The lab workspace
+
+Decided 2026-11-15, after the first slice. This is the direction for what the desktop app becomes.
+None of it is built.
+
+### Where it comes from
+
+An earlier project, lab-p2p, was a 3D lab builder with sharing between labs. It is the previous
+version this improves on, used as a reference and not as a source: nothing is ported from it, and
+everything here is written new.
+
+- **What it got right:** a person could build a visual representation of their own physical lab.
+- **What it got wrong:** that representation was not tied to the network features, and did not offer
+  the tools a lab application needs. The lab was a picture beside the features.
+
+So the organising idea is that **the lab you build is the place you work from**, with bionet and the
+biolibs tools reachable from the things in it.
+
+### Requirements
+
+1. Real tools, able to replace software in high use in labs, in a distributed form built on bionet.
+2. Both software tools and physical instruments.
+3. An impressive three-dimensional scene, always present, matching the lab, the tools and the material.
+
+### One scene, from the building to the molecule
+
+| Scale | What is seen in 3D | What is done there |
+|---|---|---|
+| Lab | Rooms, freezers, benches, instruments, neighbouring labs | Build the lab; see who is reachable |
+| Freezer | Shelves, racks, boxes | Find and move things |
+| Box | The grid of tubes | Pick, count, place |
+| Tube | The molecule: a plasmid as a ring with its features, or a linear fragment | Read, annotate, edit, design primers |
+| Instrument | The thermocycler, the gel | Run it and see the result |
+
+Dense information (sequence text, tables, forms) sits in panels over the scene, because 3D alone
+cannot carry it legibly. The same tools are also reachable from a plain menu.
+
+### What it replaces
+
+| In use today | Here | Engine in biolibs |
+|---|---|---|
+| SnapGene, ApE | Open `.dna` and GenBank files; maps, features, enzyme sites, editing | seqio, seqmap, seqedit, restriction, features |
+| SnapGene cloning, Benchling assembly | Digest and ligate, Gibson, Golden Gate, PCR, as a signed plan | assembly2, cloning, pcr, opencloning |
+| Primer tools | Design and check primers, melting temperatures | pcr, seqtools |
+| Sequencing verification | Align a Sanger trace to the expected sequence | seqio (traces), align |
+| Quartzy, freezer spreadsheets | The freezer itself, with amounts and history | bionet |
+| Addgene, Benchling registry | Parts on offer across labs, found by walking | bionet |
+
+The engines exist. What is missing is the application around them.
+
+### Instruments as recorded runs
+
+Equipment placed in the lab is the way into a tool, and a run on it is a recorded event. Tubes go
+into the thermocycler, the PCR is run in silico, the template and primers drop by what was used, and
+the product appears as a new tube to be placed. The run is a signed entry and a step in the plan, so
+the plan, the freezer and the history agree.
+
+### Places
+
+The location model the earlier sections left for later.
+
+- **A generic tree of places**, each with a kind and a parent, in place of a fixed hierarchy. It has
+  to hold rooms, freezers, shelves, racks, drawers, towers, dewars and boxes alike.
+- **Location and geometry are separate layers.** The tree is required; where a place stands and how
+  big it is are optional. A lab can say which box a tube is in without drawing a floor plan.
+- **A box has positions inside it**, since a row and a column is how a tube is found.
+- **Places and moves are signed operations**, merged like everything else.
+- **A layout the merge cannot fix is flagged, not refused.** Two people offline can each drag a
+  freezer onto the same spot; like an item below zero, that is shown as needing attention.
+
+### Order of building
+
+1. **The lab and its places**: the builder, places, box grids, and the scene with finding a tube.
+2. **The sequence workbench**: open a tube or a file, see the map, edit, find enzymes and features.
+   Opening existing SnapGene and GenBank files is also how a lab's sequences get in.
+3. **Plan, source, simulate**: a cloning plan with a pick list in the freezer, missing parts sourced
+   across the bionet, gel and PCR previews.
+4. **Verify**: Sanger traces aligned to the plan's product.
+5. **Instruments as recorded runs.**
+
+Each is meant to be usable on its own.
+
+### The libraries, revised
+
+This replaces the package list under "Libraries" above. Each layer may depend only on those before it.
+
+| Layer | Package | Holds | Knows about |
+|---|---|---|---|
+| Engines | `@biolibs/seqio`, `restriction`, `pcr`, `gel`, `assembly2`, and the rest | The science | Nothing else |
+| Protocol | `@biolibs/bionet` | Signed logs, merge, places, sync messages | Engines |
+| Geometry | `@biolibs/labspace` (name open) | Sizes, footprints, overlap, box grids, camera targets | Plain data only |
+| Client | `@biolibs/bionet-client` | One device in one lab: actions, sync, state | Protocol; storage, keys and transport are plugged in |
+| Hooks | `@biolibs/bionet-react` | The lab, places, items, sync, walking, focus | Client, React |
+| Hooks | `@biolibs/tools-react` | Sequence map, digest, PCR, gel, plan, alignment | Engines, React |
+| 3D | `@biolibs/lab-three` | The scene: places, boxes, molecules, instruments, neighbours | The hooks' data, three.js |
+| Panels | `@biolibs/lab-mui`, later a Tailwind set | Lists, box grid, sequence panel, tool panels | Hooks, MUI |
+
+What makes them reusable:
+
+- **Data in, events out.** No component reads a global store.
+- **One shared idea of focus**: what is selected, and at which scale. The scene and the panels both
+  follow it, which is what ties the 3D view to the tools.
+- **A registry of renderers by kind**, so a model of a particular freezer or instrument can be
+  published as its own package.
+- **Plug-in edges** for storage, key keeping and transport, so the same client runs in Electron, a
+  browser or Node.
+- **React and three.js as peer dependencies.**
+
+`bionet-desktop`'s `src/core` is the start of `@biolibs/bionet-client`, and its views are the first
+version of the hooks and panels. The biolibs site's examples are a second consumer for the tools.
+
+Each piece is written as a package from the start, inside this repository, and published once two
+consumers use it.
+
+### The scene's API is fixed
+
+- Components take the lab's data and report what the user did. They have no settings for
+  appearance, camera behaviour or layout style.
+- **Dimensions are what a lab configures, and they are lab data.** A room's width, depth and height,
+  and the size, position and turn of what stands in it, are set in the builder and stored as signed
+  entries.
+- Anything else stays fixed until there is a concrete need. Otherwise the difficulty becomes fitting
+  the configuration into the interface.
+
+### The theme
+
+There is a light theme and a dark one, and the app follows the system's.
+
+**Dark is glowing edges on black**, as the earlier project drew it:
+
+- Everything is drawn as its edges on a near-black ground.
+- Edge colours are pushed brighter than white, and a bloom pass makes them glow.
+
+**Light is the same drawing without the glow**: edges in the deeper light-theme colours on a pale
+ground. A glow needs something dark to glow against, so there is none.
+
+In both:
+
+- Colour carries meaning: the kind of thing, and its state.
+- Other labs are drawn in their own colour family, so they never read as this lab's.
+
+Bionet adds states that need a colour: a tube needing a recount, a part on offer, a tube a plan
+needs, a part only a neighbouring lab has, and changes not yet sent to the lab's peer.
+
+The colours are defined in one place, with a value for each theme, so that a rework is contained.
+Themes beyond these two are not built until asked for.
+
+### The brand
+
+Decided 2026-11-15.
+
+- **The name is Bionet**, and stays so unless something forces a change.
+- **Nothing is carried over from the identity of the first Bionet** (the BioBricks Foundation
+  project) until its owners consent. Bringing the two together is an eventual goal, not a starting
+  assumption. The identity here is new.
+- **Mark:** a lower-case b whose bowl is a plasmid: a ring drawn as three arcs, two in the colour
+  for yours and one in the colour for theirs, with a stem. Most of the ring is yours; one piece came
+  from another lab. It is also the first letter of the name, and stands in for it in the wordmark.
+  The files, and the script that draws them from Geist's measurements, are in `design/brand/`.
+- **It stands on transparency, for a light theme and a dark one.** A first idea, a box with a beam,
+  was set aside for this.
+- **Colour**, each with one meaning and a value for each theme:
+
+  | Meaning | On dark | On light |
+  |---|---|---|
+  | The ground everything sits on | `#05070d` | `#f6f7f9` |
+  | Yours: this lab. The primary colour | `#22d3ee` | `#0891b2` |
+  | Theirs: other labs | `#a78bfa` | `#7c3aed` |
+  | Held: something is there | `#fbbf24` | `#b45309` |
+  | Found: a match | `#f472b6` | `#db2777` |
+  | In step | `#34d399` | `#059669` |
+  | Needs attention | `#f87171` | `#dc2626` |
+  | Letters | `#e8fbff` | `#0b1020` |
+
+- **Type:** Geist for the interface, and Geist ExtraLight for the lower-case wordmark; Geist Mono for keys, checksums and
+  sequences.
+- **Voice:** plain and exact, saying what is known and what is not.
+- **Line:** "Your lab, and everyone's parts."
+
+### Open
+
+- Whether other labs are shown a lab's rooms. The starting position is no: the layout is private,
+  and other labs appear as neighbours showing their public parts.
+- Who may change the layout: any member, or keepers only.
 
 ## The log entry
 
@@ -436,8 +624,7 @@ the peer serves the signed inventory.
 
 - Founding the real Wren Lab and setting its ID (`BIONET_LAB`) on the deployed peer.
 - Removing a member from the app; editing fields; locations; choosing pointers.
-- The UI libraries. The app's interface is its own for now, to be promoted once a second consumer
-  needs it.
+- Everything under "The lab workspace": places, the scene, the tools and the libraries.
 - The roster as a published document for outside readers. Readers still remember keys per address.
 - `lab-thistle` has no peer yet.
 - A removed member who is still connected keeps receiving entries until they reconnect.
