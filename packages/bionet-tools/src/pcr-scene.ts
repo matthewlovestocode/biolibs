@@ -129,6 +129,8 @@ export interface PcrCheck {
   weight: "stop" | "look";
   /** What to ask, said for a person. */
   says: string;
+  /** The comparison that raised it, so it can be checked. */
+  because: string;
 }
 
 /**
@@ -148,22 +150,22 @@ export function programmeChecks(programme: PcrProgramme, reaction: PcrReaction):
   const coolest = sorted[0];
   const warmest = sorted.at(-1);
   if (coolest !== undefined && anneal.celsius > coolest.tm) {
-    checks.push({ about: "anneal", weight: "stop", says: `Annealing at ${anneal.celsius} °C is above ${coolest.name}'s melting temperature, about ${Math.round(coolest.tm)} °C. It may not bind.` });
+    checks.push({ about: "anneal", weight: "stop", says: `Annealing at ${anneal.celsius} °C is above ${coolest.name}'s melting temperature, about ${Math.round(coolest.tm)} °C. It may not bind.`, because: `${anneal.celsius} °C > ${Math.round(coolest.tm)} °C` });
   } else if (coolest !== undefined && anneal.celsius < coolest.tm - 10) {
-    checks.push({ about: "anneal", weight: "look", says: `Annealing at ${anneal.celsius} °C is more than ten degrees under the primers' melting temperatures. They may bind in places they should not.` });
+    checks.push({ about: "anneal", weight: "look", says: `Annealing at ${anneal.celsius} °C is more than ten degrees under the primers' melting temperatures. They may bind in places they should not.`, because: `${anneal.celsius} °C < ${Math.round(coolest.tm)} − 10 = ${Math.round(coolest.tm) - 10} °C` });
   }
   if (coolest !== undefined && warmest !== undefined && warmest.tm - coolest.tm > 5) {
-    checks.push({ about: "anneal", weight: "look", says: `${warmest.name} melts about ${Math.round(warmest.tm - coolest.tm)} degrees above ${coolest.name}. No one annealing temperature suits both well.` });
+    checks.push({ about: "anneal", weight: "look", says: `${warmest.name} melts about ${Math.round(warmest.tm - coolest.tm)} degrees above ${coolest.name}. No one annealing temperature suits both well.`, because: `${Math.round(warmest.tm)} − ${Math.round(coolest.tm)} = ${Math.round(warmest.tm - coolest.tm)} > 5` });
   }
   const wanted = (reaction.length / 1000) * SECONDS_PER_KB;
   if (extend.seconds < wanted / 2) {
-    checks.push({ about: "extend", weight: "stop", says: `${extend.seconds} seconds is short for a ${reaction.length.toLocaleString("en-US")} base product. Allow about a minute for every thousand bases unless the polymerase is a fast one.` });
+    checks.push({ about: "extend", weight: "stop", says: `${extend.seconds} seconds is short for a ${reaction.length.toLocaleString("en-US")} base product. Allow about a minute for every thousand bases unless the polymerase is a fast one.`, because: `${extend.seconds} s < half of ${reaction.length.toLocaleString("en-US")} ÷ 1,000 × ${SECONDS_PER_KB} = ${Math.round(wanted)} s` });
   } else if (extend.seconds < wanted) {
-    checks.push({ about: "extend", weight: "look", says: `${extend.seconds} seconds is under a minute per thousand bases for a ${reaction.length.toLocaleString("en-US")} base product. Fine for a fast polymerase.` });
+    checks.push({ about: "extend", weight: "look", says: `${extend.seconds} seconds is under a minute per thousand bases for a ${reaction.length.toLocaleString("en-US")} base product. Fine for a fast polymerase.`, because: `${extend.seconds} s < ${reaction.length.toLocaleString("en-US")} ÷ 1,000 × ${SECONDS_PER_KB} = ${Math.round(wanted)} s` });
   }
-  if (denature.celsius < 90) checks.push({ about: "denature", weight: "stop", says: `${denature.celsius} °C may not separate the strands. It is usually 94 to 98 °C.` });
-  if (programme.cycles > 40) checks.push({ about: "cycles", weight: "look", says: `${programme.cycles} cycles is a lot. Past about 35, wrong products build up faster than the right one.` });
-  if (programme.cycles < 15) checks.push({ about: "cycles", weight: "look", says: `${programme.cycles} cycles may not make enough to see on a gel.` });
+  if (denature.celsius < 90) checks.push({ about: "denature", weight: "stop", says: `${denature.celsius} °C may not separate the strands. It is usually 94 to 98 °C.`, because: `${denature.celsius} °C < 90 °C` });
+  if (programme.cycles > 40) checks.push({ about: "cycles", weight: "look", says: `${programme.cycles} cycles is a lot. Past about 35, wrong products build up faster than the right one.`, because: `${programme.cycles} > 40` });
+  if (programme.cycles < 15) checks.push({ about: "cycles", weight: "look", says: `${programme.cycles} cycles may not make enough to see on a gel.`, because: `${programme.cycles} < 15` });
   return checks.sort((a, b) => Number(b.weight === "stop") - Number(a.weight === "stop"));
 }
 

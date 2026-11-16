@@ -15,6 +15,10 @@ import { bandsOf, gelById, ladderBands, ladderById } from "@biolibs/gel";
 import { useAct, useLab } from "@biolibs/bionet-react";
 import { Glossed } from "@biolibs/glossary-react";
 import { Gel } from "./digest-tool.js";
+import { SequenceMap } from "./map.js";
+import { bindingWorking, carriedWorking, countsWorking, lengthWorking, programmeWorking, tmWorking } from "./pcr-working.js";
+import { FacedBases, ShowWorking } from "./working.js";
+import { moleculeOf, type DrawnMolecule } from "./sequence-file.js";
 import { primerTm } from "./pcr.js";
 import { primerBinding, programmeChecks, screenOf, strandCounts, suggestProgramme, tubeLens, tubeView,
          type PcrProgramme, type PcrStepName, type TubeLens, type TubeStrand } from "./pcr-scene.js";
@@ -32,6 +36,10 @@ export interface BenchStage {
   screen: { text: string; lit?: boolean }[];
   well?: { row: number; column: number };
   tube?: { length: number; strands: TubeStrand[] };
+  /** Lengths marked off under the strands, each with the subtraction that gives it. */
+  measures?: { from: number; to: number; label: string }[];
+  /** What the run makes, to be drawn above the machine in the result view. */
+  molecule?: DrawnMolecule;
   /** The real bases at the primer being looked at, for any moment of the step showing. */
   lens?: (through: number) => (TubeLens & { rows: [number, number] }) | null;
   legend: Partial<Record<TubeStrand["kind"], string>>;
@@ -172,6 +180,13 @@ export function usePcrBench({ instrument = null, onDone }: { instrument?: { id: 
     const rows: [number, number] = step === "denature" ? [0, 3] : site === "top" ? [2, 3] : [0, 1];
     return (through: number) => ({ ...tubeLens(templatePart.sequence, primer.sequence, binding, step, through, { primer: primer.name, template: templatePart.name }), rows });
   }, [bindings, templatePart, forwardPart, reversePart, annealAtLeast, site, step]);
+  // The working for the primer being looked at, and for the counts.
+  const bound = useMemo(() => {
+    if (bindings === null || templatePart === undefined) return null;
+    const primer = [forwardPart, reversePart].find((part) => part !== undefined && primerBinding(templatePart.sequence, part.sequence, annealAtLeast)?.reads === site);
+    return primer === undefined ? null : { ...bindingWorking(templatePart.sequence, primer, bindings[site], annealAtLeast), name: primer.name };
+  }, [bindings, templatePart, forwardPart, reversePart, annealAtLeast, site]);
+  const counted = useMemo(() => countsWorking(programme.cycles), [programme.cycles]);
   const inTube = bindings === null || templatePart === undefined ? undefined : tubeView(templatePart.length, bindings.top, bindings.bottom, step, cycle);
   // Running the programme: each step plays into the next, and each cycle into the next, as the
   // machine would. The first three cycles are played at the pace chosen, since each shows something
@@ -194,6 +209,10 @@ export function usePcrBench({ instrument = null, onDone }: { instrument?: { id: 
     ...(templatePart === undefined ? {} : { well: { row: 0, column: 0 } }),
     ...(inTube === undefined || templatePart === undefined ? {} : { tube: { length: templatePart.length, strands: inTube.strands } }),
     ...(lens === undefined || cycle > 3 ? {} : { lens }),
+    // The product's length, shown as what it is: the distance between where the two primers reach.
+    ...(bindings === null || bindings.bottom.end <= bindings.top.start ? {} : { measures: [{ from: bindings.top.start, to: bindings.bottom.end,
+      label: `${bindings.bottom.end.toLocaleString("en-US")} − ${(bindings.top.start + 1).toLocaleString("en-US")} + 1 = ${(bindings.bottom.end - bindings.top.start).toLocaleString("en-US")} bases copied` }] }),
+    ...(product === null || run === null || view !== "result" ? {} : { molecule: moleculeOf({ name: run.name, length: product.length, circular: false, features: run.features }) }),
     legend: { template: "the template's two strands", primer: "a primer", long: "a copy that runs on too far", product: "the product, at its exact length" },
   };
 
@@ -222,6 +241,17 @@ export function usePcrBench({ instrument = null, onDone }: { instrument?: { id: 
           </fieldset>
         )}
         {chosen && drafted?.plan?.problem !== null && drafted?.plan !== null && <p className="trouble" role="status">{drafted?.plan?.problem}</p>}
+        {templatePart !== undefined && (
+          <SequenceMap name={templatePart.name} length={templatePart.length} circular={templatePart.circular} features={templatePart.features}
+                       spans={bindings === null ? [] : [
+                         // What is copied: from one primer's far end to the other's.
+                         ...(product !== null && bindings.bottom.end > bindings.top.start ? [{ start: bindings.top.start, end: bindings.bottom.end, label: `${product.length.toLocaleString("en-US")} bp`, strand: 0 as const }] : []),
+                         ...[forwardPart, reversePart].flatMap((part) => {
+                           const binding = part === undefined ? null : primerBinding(templatePart.sequence, part.sequence, annealAtLeast);
+                           return binding === null || part === undefined ? [] : [{ start: binding.start, end: binding.end, label: part.name, strand: binding.reads === "top" ? (1 as const) : (-1 as const) }];
+                         }),
+                       ]} />
+        )}
       </section>
 
       {view === "machine" && (
@@ -260,8 +290,11 @@ export function usePcrBench({ instrument = null, onDone }: { instrument?: { id: 
               </p>
               <p className="voice">Checks</p>
               {checks.length === 0 ? <p className="small good">Nothing in this programme looks wrong for this reaction.</p> : (
-                <ul className="checks">{checks.map((check) => <li key={check.says} className={check.weight}>{check.says}</li>)}</ul>
+                <ul className="checks">{checks.map((check) => <li key={check.says} className={check.weight}>{check.says} <code className="because">{check.because}</code></li>)}</ul>
               )}
+              <p className="voice">The working</p>
+              {[forwardPart, reversePart].map((part) => { const working = part === undefined ? null : tmWorking(part.name, part.sequence); return working === null ? null : <ShowWorking key={part!.checksum} working={working} />; })}
+              {programmeWorking(reaction, suggested).map((working) => <ShowWorking key={working.of} working={working} />)}
             </>
           )}
         </section>
@@ -309,6 +342,14 @@ export function usePcrBench({ instrument = null, onDone }: { instrument?: { id: 
                 Strands in the tube now, from one double-stranded template. Each step along a bar is twice as many. The copies that run on too far
                 grow by two a cycle; the product doubles, and after {programme.cycles} cycles there are {strandCounts(programme.cycles).product.toLocaleString("en-US")}.
               </p>
+              <p className="voice">The working</p>
+              {bound !== null && <ShowWorking working={bound}><FacedBases working={bound} name={bound.name} /></ShowWorking>}
+              <ShowWorking working={counted}>
+                <table className="counts">
+                  <thead><tr><th>After cycle</th><th>Template</th><th>Too long</th><th>Product</th><th>In all</th></tr></thead>
+                  <tbody>{counted.rows.map((row) => <tr key={row.cycle}><td>{row.cycle}</td><td>{row.template}</td><td>{row.long}</td><td>{row.product.toLocaleString("en-US")}</td><td>{row.total.toLocaleString("en-US")}</td></tr>)}</tbody>
+                </table>
+              </ShowWorking>
             </>
           )}
         </section>
@@ -321,6 +362,18 @@ export function usePcrBench({ instrument = null, onDone }: { instrument?: { id: 
             <>
               <p className="voice">This run</p>
               <p><strong>{product.length.toLocaleString("en-US")} bp</strong> <span className="dim">linear</span></p>
+              <SequenceMap name={run?.name ?? "product"} length={product.length} circular={false} features={run?.features ?? []} />
+              {bindings !== null && templatePart !== undefined && (
+                <>
+                  <p className="voice">The working</p>
+                  <ShowWorking working={lengthWorking(bindings.top, bindings.bottom, templatePart, product.length)} />
+                  {bindings.bottom.end > bindings.top.start && carriedWorking(templatePart.features, bindings.top.start, bindings.bottom.end, bindings.top.tail).length > 0 && (
+                    <ShowWorking working={{ of: "what is marked on the product", comes: `${carriedWorking(templatePart.features, bindings.top.start, bindings.bottom.end, bindings.top.tail).length} carried from the template`, kind: "exact",
+                                           steps: carriedWorking(templatePart.features, bindings.top.start, bindings.bottom.end, bindings.top.tail) }} />
+                  )}
+                </>
+              )}
+              <p className="dim small">{(run?.features.length ?? 0) > 2 ? "What the template had marked on this stretch is marked on the product, and is kept with it when the run is recorded." : "The primers are marked at the ends they became."}</p>
               <code className="wrap">{product.length <= 96 ? product.sequence : `${product.sequence.slice(0, 44)} … ${product.sequence.slice(-44)}`}</code>
               <Gel ladder={ladderBands(ladderById(product.length < 1500 ? "100bp" : "1kb").sizes, gelById(product.length < 1500 ? "1.5" : "1.0"))}
                    bands={bandsOf([product.length], gelById(product.length < 1500 ? "1.5" : "1.0"))} name={run?.name ?? "product"} />

@@ -49,7 +49,7 @@ describe("what a careful operator would ask", () => {
 
   it("is said in words about the step it concerns, the likeliest to matter first", () => {
     const hot = programmeChecks(set((p) => { p.steps[1].celsius = 62; }), reaction);
-    expect(hot).toEqual([{ about: "anneal", weight: "stop", says: "Annealing at 62 °C is above rev-1's melting temperature, about 50 °C. It may not bind." }]);
+    expect(hot).toEqual([{ about: "anneal", weight: "stop", says: "Annealing at 62 °C is above rev-1's melting temperature, about 50 °C. It may not bind.", because: "62 °C > 50 °C" }]);
     expect(programmeChecks(set((p) => { p.steps[1].celsius = 45; }), { length: 3000, primers: [{ name: "f", tm: 60 }, { name: "r", tm: 60 }] })[0])
       .toMatchObject({ about: "anneal", weight: "look" });
     const apart = programmeChecks(base, { length: 3000, primers: [{ name: "f", tm: 66 }, { name: "r", tm: 50 }] });

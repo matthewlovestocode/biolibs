@@ -5,11 +5,13 @@
  * primers, and what to ask the lab to record once somebody has chosen. It is plain data in and plain
  * data out, so the window that uses it decides nothing.
  */
-import type { ItemState, PartState, PlaceState } from "@biolibs/bionet";
+import type { ItemState, PartFeature, PartState, PlaceState } from "@biolibs/bionet";
 import { amountOf, whereWords } from "@biolibs/bionet-panels";
 import { planDigest, type DigestPlan } from "./digest.js";
+import { cutSites, digestPieces, type DigestPiece } from "./digest-working.js";
 import { ANNEAL_AT_LEAST, looksLikePrimer, planPcr, type PcrPlan } from "./pcr.js";
-import type { PcrProgramme } from "./pcr-scene.js";
+import { primerBinding, type PcrProgramme } from "./pcr-scene.js";
+import { carryFeatures } from "./sequence-file.js";
 
 /** As much of a lab as a tool reads. */
 export interface ToolLab {
@@ -76,12 +78,45 @@ export interface PcrChoice {
 export interface PcrRun {
   /** What the PCR would make, or `null` if a tube that was chosen is not one the lab has. */
   plan: PcrPlan | null;
+  /** What is marked on the product: what the template had on the stretch copied, and the primers at its ends. */
+  features: PartFeature[];
   /** What the product would be called. */
   name: string;
   /** What to hand to the lab's `recordRun` if it worked. `null` while there is not exactly one product. */
   worked: Record<string, unknown> | null;
   /** What to hand to the lab's `recordRun` if it was run and gave nothing. `null` if a tube is missing. */
   failed: Record<string, unknown> | null;
+}
+
+/**
+ * What is marked on a PCR's product.
+ *
+ * A feature of the template that lies on the stretch copied is carried over, moved to where it now
+ * is; one that is only partly copied is carried as the part that was, and named as a part. Each
+ * primer is marked at the end it became. If the template is a circle and the stretch copied runs
+ * through its origin, only the primers are marked.
+ *
+ * @param template - The template, with what is marked on it.
+ * @param forward - One primer, by name and bases.
+ * @param reverse - The other.
+ * @param least - How many bases at each primer's 3′ end must bind.
+ * @returns The features, placed on the product. Empty if either primer does not bind in one place.
+ */
+export function pcrFeatures(template: Pick<PartState, "sequence" | "features">, forward: { name: string; sequence: string },
+                            reverse: { name: string; sequence: string }, least = ANNEAL_AT_LEAST): PartFeature[] {
+  const found = [forward, reverse].map((primer) => ({ primer, binding: primerBinding(template.sequence, primer.sequence, least) }));
+  const top = found.find((one) => one.binding?.reads === "top");
+  const bottom = found.find((one) => one.binding?.reads === "bottom");
+  if (top?.binding == null || bottom?.binding == null) return [];
+  const [from, to] = [top.binding.start, bottom.binding.end];
+  const straight = to > from;
+  const copied = straight ? to - from : template.sequence.replace(/\s+/g, "").length - from + to;
+  const length = top.binding.tail + copied + bottom.binding.tail;
+  const primers: PartFeature[] = [
+    { type: "primer_bind", label: top.primer.name, strand: 1, parts: [{ start: 0, end: Math.min(length, top.primer.sequence.length) }] },
+    { type: "primer_bind", label: bottom.primer.name, strand: -1, parts: [{ start: Math.max(0, length - bottom.primer.sequence.length), end: length }] },
+  ];
+  return [...(straight ? carryFeatures(template.features, from, to, top.binding.tail) : []), ...primers];
 }
 
 /**
@@ -107,7 +142,7 @@ export function pcrRun(lab: ToolLab, choice: PcrChoice): PcrRun {
   };
   const [template, forward, reverse] = [partOf(choice.template), partOf(choice.forward), partOf(choice.reverse)];
   const typed = choice.name?.trim() ?? "";
-  if (template === undefined || forward === undefined || reverse === undefined) return { plan: null, name: typed, worked: null, failed: null };
+  if (template === undefined || forward === undefined || reverse === undefined) return { plan: null, name: typed, features: [], worked: null, failed: null };
   const least = choice.annealAtLeast ?? ANNEAL_AT_LEAST;
   const plan = planPcr(template, forward.sequence, reverse.sequence, { annealAtLeast: least });
   const name = typed !== "" ? typed : `${template.name} × ${forward.name} + ${reverse.name}`.slice(0, 200);
@@ -127,11 +162,14 @@ export function pcrRun(lab: ToolLab, choice: PcrChoice): PcrRun {
     note: choice.note ?? null,
   };
   const product = plan.problem === null ? plan.products[0]! : null;
+  // Only marked if they land on the product the engine made: the two are worked out separately.
+  const marked = product === null ? [] : pcrFeatures(template, forward, reverse, least);
+  const features = marked.every((one) => one.parts.every((piece) => piece.end <= product!.length)) ? marked : [];
   return {
-    plan, name,
+    plan, name, features,
     worked: product === null ? null : {
       ...record, outcome: "worked",
-      outputs: [{ sequence: product.sequence, circular: false, name, amount: whole(choice.amount, 50), unit: choice.unit === undefined ? "µL" : choice.unit }],
+      outputs: [{ sequence: product.sequence, circular: false, name, features, amount: whole(choice.amount, 50), unit: choice.unit === undefined ? "µL" : choice.unit }],
     },
     failed: { ...record, outcome: "failed", outputs: [] },
   };
@@ -159,6 +197,14 @@ export interface DigestChoice {
   /** The gel's agarose concentration and the ladder beside it, by their IDs in `@biolibs/gel`. */
   gel?: string;
   ladder?: string;
+  /**
+   * The pieces to keep as tubes, each by where it starts on the molecule. Cutting a band out of a
+   * gel and cleaning it up gives a tube of that piece, with the ends the enzymes left.
+   */
+  keep?: readonly { from: number; name?: string; amount?: number; unit?: string | null }[];
+  /** What the power supply was set to: volts, and minutes run. Whole numbers. */
+  volts?: number;
+  minutes?: number;
   /** The gel station it was run at, if the lab has one. */
   instrument?: string | null;
   /** Anything worth saying about it. */
@@ -169,6 +215,8 @@ export interface DigestChoice {
 export interface DigestRun {
   /** What the digest would give, or `null` if the tube is not one the lab has. */
   plan: DigestPlan | null;
+  /** The pieces, each with its ends and what it carries. */
+  pieces: DigestPiece[];
   /** What to hand to the lab's `recordRun` if the gel matched. `null` while there is nothing to match. */
   matched: Record<string, unknown> | null;
   /** What to hand to it if the gel was run and did not match. `null` likewise. */
@@ -178,9 +226,9 @@ export interface DigestRun {
 /**
  * Work a choice of tube and enzymes out into a run.
  *
- * A digest here is a check: it uses some of a tube and makes nothing. What is recorded is which
- * enzymes, what pieces were expected, and whether the gel showed them. Keeping a piece as a tube is
- * not offered, because a part cannot yet say what ends it has, and a cut piece is defined by its ends.
+ * A digest is first a check: it uses some of a tube, and what is recorded is which enzymes, what
+ * pieces were expected, and whether the gel showed them. Pieces may also be kept. Each kept piece
+ * becomes a tube of a part with the ends the enzymes left, since a cut piece is defined by its ends.
  *
  * @param lab - The lab.
  * @param choice - The tube, the enzymes, and how much was used.
@@ -189,19 +237,32 @@ export interface DigestRun {
 export function digestRun(lab: ToolLab, choice: DigestChoice): DigestRun {
   const item = lab.items.find((one) => one.item === choice.tube);
   const part = item === undefined ? undefined : lab.parts.find((one) => one.checksum === item.part);
-  if (part === undefined) return { plan: null, matched: null, differed: null };
+  if (part === undefined) return { plan: null, pieces: [], matched: null, differed: null };
   const plan = planDigest(part, choice.enzymes, { ...(choice.gel === undefined ? {} : { gel: choice.gel }), ...(choice.ladder === undefined ? {} : { ladder: choice.ladder }) });
-  if (plan.problem !== null) return { plan, matched: null, differed: null };
+  if (plan.problem !== null) return { plan, pieces: [], matched: null, differed: null };
+  const pieces = digestPieces(part, plan.cutters.flatMap((one) => cutSites(part, one)));
+  const enzymesUsed = plan.cutters.filter((one) => one.positions.length > 0).map((one) => one.name).join("+");
+  const kept = (choice.keep ?? []).flatMap((wanted) => {
+    const piece = pieces.find((one) => one.from === wanted.from);
+    if (piece === undefined) return [];
+    const amount = wanted.amount === undefined || !Number.isSafeInteger(wanted.amount) || wanted.amount < 0 ? 20 : wanted.amount;
+    const typed = wanted.name?.trim() ?? "";
+    return [{ sequence: piece.sequence, circular: false, ends: piece.ends, features: piece.features, amount, unit: wanted.unit === undefined ? "µL" : wanted.unit,
+              name: (typed !== "" ? typed : `${part.name} ${enzymesUsed} ${piece.length} bp`).slice(0, 200) }];
+  });
   const used = choice.used === undefined || !Number.isSafeInteger(choice.used) || choice.used < 0 ? 1 : choice.used;
   const record = {
     kind: "digest", instrument: choice.instrument ?? null,
     inputs: [{ item: choice.tube, amount: used, role: "cut" }],
     outputs: [],
     // Settings are short text, so a digest into very many pieces records as many as fit.
-    settings: { enzymes: plan.cutters.map((one) => one.name).join("+").slice(0, 200), expected: plan.fragments.join(",").slice(0, 200), gel: plan.gel },
+    settings: { enzymes: plan.cutters.map((one) => one.name).join("+").slice(0, 200), expected: plan.fragments.join(",").slice(0, 200), gel: plan.gel,
+                ...(Number.isSafeInteger(choice.volts) ? { volts: choice.volts } : {}), ...(Number.isSafeInteger(choice.minutes) ? { minutes: choice.minutes } : {}) },
     note: choice.note ?? null,
   };
-  return { plan, matched: { ...record, outcome: "worked" }, differed: { ...record, outcome: "failed" } };
+  // Pieces can only be kept from a gel that showed them.
+  return { plan, pieces, matched: { ...record, outputs: kept, outcome: "worked", ...(kept.length === 0 ? {} : { settings: { ...record.settings, kept: kept.length } }) },
+           differed: { ...record, outcome: "failed" } };
 }
 
 /** The tools there are. */

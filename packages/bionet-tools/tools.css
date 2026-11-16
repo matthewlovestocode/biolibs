@@ -48,3 +48,56 @@
 .bionet.benchpanel .bar .fill.template { background: var(--bionet-dim) } .bionet.benchpanel .bar .fill.long { background: var(--bionet-theirs) }
 .bionet.benchpanel .bar .fill.product { background: var(--bionet-held) }
 .bionet.benchpanel .bar .count { text-align: right; font-variant-numeric: tabular-nums }
+/* A sequence's map. */
+.bionet .seqmap { display: block; width: 100%; max-width: 24rem; height: auto; margin: 0 auto }
+.bionet .seqmap.linear { max-width: 44rem }
+.bionet .seqmap .backbone { fill: none; stroke: var(--bionet-ink); stroke-width: 2 }
+.bionet .seqmap .tick { stroke: var(--bionet-dim); stroke-width: 1 }
+.bionet .seqmap .feature { opacity: .92 }
+.bionet .seqmap .tone-yours, .bionet .swatch.tone-yours { fill: var(--bionet-yours); background: var(--bionet-yours) }
+.bionet .seqmap .tone-theirs, .bionet .swatch.tone-theirs { fill: var(--bionet-theirs); background: var(--bionet-theirs) }
+.bionet .seqmap .tone-held, .bionet .swatch.tone-held { fill: var(--bionet-held); background: var(--bionet-held) }
+.bionet .seqmap .tone-found, .bionet .swatch.tone-found { fill: var(--bionet-found); background: var(--bionet-found) }
+.bionet .seqmap .tone-good, .bionet .swatch.tone-good { fill: var(--bionet-good); background: var(--bionet-good) }
+.bionet .seqmap .tone-attention, .bionet .swatch.tone-attention { fill: var(--bionet-attention); background: var(--bionet-attention) }
+.bionet .seqmap .tone-dim, .bionet .swatch.tone-dim { fill: var(--bionet-dim); background: var(--bionet-dim) }
+.bionet .seqmap .span { fill: var(--bionet-found) }
+.bionet .seqmap .mark { fill: none; stroke: var(--bionet-attention); stroke-width: 1.2 }
+.bionet .seqmap text { font-size: 10px; fill: var(--bionet-dim) }
+.bionet .seqmap text.marked { fill: var(--bionet-attention); font-family: ui-monospace, monospace }
+.bionet .seqmap text.name { font-size: 14px; font-weight: 600; fill: var(--bionet-ink) }
+.bionet .seqmap text.length { font-family: ui-monospace, monospace }
+.bionet .swatch { display: inline-block; width: .62rem; height: .62rem; margin-right: .45rem; border-radius: 2px; vertical-align: baseline }
+.bionet .sequences .mapped { display: grid; grid-template-columns: minmax(15rem, 24rem) 1fr; gap: 1.4rem; align-items: start; margin-top: 1rem }
+@media (max-width: 860px) { .bionet .sequences .mapped { grid-template-columns: 1fr } }
+.bionet .sequences input[type="file"] { margin-top: .4rem }
+.bionet .seqmap .span.wide { opacity: .55 }
+.bionet .seqmap text.spanned { fill: var(--bionet-found) }
+.bionet .benchpanel .seqmap { margin-top: .8rem; max-width: 20rem }
+.bionet .benchpanel .seqmap.linear { max-width: 100% }
+/* The working: a figure that opens to show the steps that give it. */
+.bionet .working { margin: .3rem 0; border: 1px solid var(--bionet-rule); border-radius: 8px; font-size: .84rem }
+.bionet .working summary { cursor: pointer; padding: .4rem .6rem; display: flex; flex-wrap: wrap; gap: .4rem; align-items: baseline }
+.bionet .working summary .of { color: var(--bionet-dim) }
+.bionet .working summary .kind { margin-left: auto; font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; padding: 0 .4rem; border-radius: 999px; border: 1px solid currentColor }
+.bionet .working summary .kind.exact { color: var(--bionet-good) } .bionet .working summary .kind.estimate { color: var(--bionet-held) }
+.bionet .working ol { margin: 0 .6rem .5rem 1.9rem; padding: 0; display: grid; gap: .25rem }
+.bionet .working .rests { margin: 0 .6rem .6rem; color: var(--bionet-dim); font-size: .8rem }
+.bionet .working table.counts { display: block; overflow-x: auto; margin: 0 .6rem .6rem; font-family: ui-monospace, monospace; font-size: .72rem }
+.bionet .working table.counts td, .bionet .working table.counts th { text-align: right; padding: .1rem .3rem }
+.bionet .checks .because { margin-left: .3rem; font-size: .76rem; color: var(--bionet-dim); white-space: nowrap }
+.bionet .faced { --base-a: #5fd3a6; --base-t: #f0788a; --base-g: #e6b450; --base-c: #78aef5; margin: 0 .6rem .6rem; overflow-x: auto; font-family: ui-monospace, monospace; font-size: .8rem; line-height: 1.15 }
+.bionet[data-bionet-theme="light"] .faced, [data-bionet-theme="light"] .bionet .faced { --base-a: #1f8a5b; --base-t: #c8394b; --base-g: #b97a08; --base-c: #2a66b8 }
+.bionet .faced .row { display: flex; white-space: pre }
+.bionet .faced .row > span { flex: 0 0 1ch; text-align: center }
+.bionet .faced .row > .end { flex: 0 0 auto; min-width: 2.2ch; padding: 0 .5ch; color: var(--bionet-dim); font-family: inherit }
+.bionet .faced .base-a { color: var(--base-a) } .bionet .faced .base-t { color: var(--base-t) } .bionet .faced .base-g { color: var(--base-g) } .bionet .faced .base-c { color: var(--base-c) }
+.bionet .faced .base-none { color: var(--bionet-dim) }
+.bionet .faced .needed { text-decoration: underline; text-underline-offset: .2em }
+.bionet .faced .bond { color: var(--bionet-dim) }
+.bionet .cutbases .row > .base { flex: 0 0 1.25ch; opacity: .55 }
+.bionet .cutbases .row > .base.site { opacity: 1; font-weight: 700; background: color-mix(in srgb, var(--bionet-attention) 16%, transparent) }
+.bionet .cutbases .row > .base.cut { box-shadow: -2px 0 0 var(--bionet-attention) }
+.bionet .pieces td, .bionet .pieces th { font-size: .82rem; vertical-align: top }
+.bionet .pieces code { font-size: .78rem }
+.bionet .benchpanel .gel { max-width: 18rem }

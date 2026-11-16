@@ -1,10 +1,42 @@
 # @biolibs/bionet-tools
 
-The tools a lab uses at the bench, tied to its freezer: PCR, and a check digest with its gel. For PCR, choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
+The tools a lab uses at the bench, tied to its freezer: its sequences and their maps, PCR, and a check digest with its gel. Sequences come in from the SnapGene, GenBank, EMBL and FASTA files a lab already has, with their features. For PCR, choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
 
 ```
 npm install @biolibs/bionet-tools @biolibs/bionet-panels @biolibs/bionet-react @biolibs/bionet-theme react
 ```
+
+## Bringing sequences in
+
+```ts
+import { readSequenceFile } from "@biolibs/bionet-tools";
+
+const read = readSequenceFile(file.name, new Uint8Array(await file.arrayBuffer()));
+read.format;      // "snapgene", "genbank", "embl" or "fasta"
+read.circular;    // as the file says
+read.features;    // [{ type: "CDS", label: "AmpR", strand: -1, parts: [{ start: 999, end: 1860 }] }, …]
+await act("addPart", { name: read.name, sequence: read.sequence, circular: read.circular, features: read.features });
+```
+
+SnapGene's own `.dna` files are read as they are, so a lab's constructs come across with their
+names, their shape and everything marked on them. The features are kept in the lab's signed log
+with the part, so every member sees the same map. A part is known by its sequence: bringing in one
+the lab already has adds only what is marked on it.
+
+## A sequence's map
+
+```tsx
+import { SequenceMap } from "@biolibs/bionet-tools";
+
+<SequenceMap name={part.name} length={part.length} circular={part.circular} features={part.features}
+             marks={[{ at: 396, label: "EcoRI" }]} spans={[{ start: 1950, end: 1972, label: "fwd", strand: 1 }]} />
+```
+
+A circle for a plasmid and a line for anything else. Features are arrows in lanes, so ones that
+overlap can both be seen; `marks` are places to name, such as where an enzyme cuts; `spans` are
+stretches to point at, such as where a primer binds. `SequencesTool` is the whole thing for a lab:
+choose files to bring in, pick any part, and read its map, its features and which enzymes cut it
+once or twice.
 
 ## What a PCR would make
 
@@ -32,6 +64,20 @@ if (run.worked !== null) await act("recordRun", run.worked);
 ```
 
 `pcrTubes` offers short linear parts as primers and the rest as templates. `pcrRun` works a choice out into what to hand the lab's `recordRun`: `worked` when there is exactly one product, and `failed` for a run that was done and gave nothing, which still used the tubes.
+
+## What the product carries
+
+```ts
+import { pcrFeatures } from "@biolibs/bionet-tools";
+
+pcrFeatures(template, { name: "fwd", sequence: fwd }, { name: "rvs", sequence: rvs });
+// what the template had on the stretch copied, moved to where it now is, and each primer at its end
+```
+
+A feature that is only partly copied is carried as the part that was, and its name says `(part)`,
+since half a gene is not the gene. `pcrRun` puts these on the product it asks the lab to record, so
+a product made here has its map from the start. `moleculeOf(part)` gives a part in the shape
+`@biolibs/bionet-scene` draws: a ring or a bar with its features, above the machine or over a tube.
 
 ## A PCR at the machine
 
@@ -66,6 +112,68 @@ hardest to picture: the first cycle's copies run on too far, the second makes th
 exactly the product's length, and from the third the product takes over. The programme a run was
 set to is kept with the run.
 
+## A digest at the gel station
+
+```tsx
+import { InstrumentStage } from "@biolibs/bionet-scene";
+import { useDigestBench } from "@biolibs/bionet-tools";
+
+const bench = useDigestBench({ instrument });
+<InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage>
+```
+
+The same five views as a PCR, named for this machine: the gel box, the gel in it, the power supply,
+what is in the tube, and the gel once run. In the tube the molecule is drawn as its map with every
+cut marked, in the scene and on the page, and the pieces are listed with what made each end and what
+each carries. The run gel is drawn in the scene and on the page, and can be dragged back to watch
+the pieces start in the well and draw apart.
+
+```ts
+import { cutSites, cutsOf, digestPieces } from "@biolibs/bionet-tools";
+
+const sites = cutSites(part, cutsOf(part, "EcoRI"));
+sites[0];                      // { at: 11, bottom: 15, overhang: "5′", bases: "AATT", site: { start: 10, end: 16 }, … }
+digestPieces(part, sites);     // each piece: from, to, length, left and right ends, features carried
+```
+
+`cutSites` finds the enzyme's own bases behind each cut the restriction engine reports, on either
+strand and across a circle's origin, and says where each strand is cut and what end that leaves.
+Each piece is also a molecule of its own: `sequence` is every base either of its strands has and
+`ends` how many at each end are unpaired. `digestRun` takes `keep`, the pieces to keep by where they
+start, and the run it asks the lab to record then makes a tube of each: a part with those ends and
+whatever the piece carries. That is cutting a band out of the gel and cleaning it up.
+
+`digestChecks` is what a careful operator would ask before running the gel: pieces too close to tell
+apart, a piece the gel will not hold, one cut of a circle, an enzyme that does nothing.
+
+## The working
+
+```tsx
+import { ShowWorking, tmWorking, lengthWorking } from "@biolibs/bionet-tools";
+
+tmWorking("fwd", "GGATCACAGTCTACACTG")?.steps;
+// ["9 of its 18 bases are A or T, and 9 are G or C.", "2 × 9 + 4 × 9 = 54 °C."]
+
+<ShowWorking working={lengthWorking(top, bottom, template, product.length)} />
+```
+
+Everything the tool says is worked out in the window from the lab's own sequences, so it can all be
+shown. Each figure opens to the steps that give it, and says on the outside whether it is `exact`
+(it follows from the sequences alone) or an `estimate` (it rests on a rule of thumb, which is named).
+
+- `tmWorking`: the count behind a melting temperature.
+- `bindingWorking`: a primer laid against the strand it binds, base by base, drawn by `FacedBases`.
+- `lengthWorking`: the product's length as a subtraction, compared with what the engine built.
+- `programmeWorking`: where the suggested annealing temperature and extension time come from.
+- `countsWorking`: how many strands there are after each cycle, as a table.
+- `carriedWorking`: how each feature was moved from the template onto the product.
+- `siteWorking`: one cut in its bases, drawn by `CutBases`.
+- `piecesWorking`: the pieces as differences between cuts that add up to the whole, compared with the gel engine's.
+- `migrationWorking`: how far a piece runs, by the rule the gel is drawn by.
+
+Every check from `programmeChecks` carries `because`: the comparison that raised it. At the machine,
+the copied stretch is also marked off under the strands in the scene, with its subtraction.
+
 ## A digest and its gel
 
 ```ts
@@ -81,8 +189,8 @@ const run = digestRun(lab, { tube, enzymes: ["EcoRI"] });  // what to record, if
 
 `planDigest` gives the cuts, the pieces, and the bands they and a ladder would show on a gel, from
 `@biolibs/restriction` and `@biolibs/gel`. A digest here is a check: recording it uses some of the
-tube, makes nothing, and notes which enzymes, what was expected and whether the gel showed it.
-Keeping a cut piece as a tube is not offered, because a part cannot yet say what ends it has.
+tube and notes which enzymes, what was expected and whether the gel showed it. Pieces can be kept
+as tubes, each a part with the ends the enzymes left.
 
 ## The tool
 
@@ -91,7 +199,7 @@ import "@biolibs/bionet-tools/tools.css";
 import { InstrumentTool, PcrTool } from "@biolibs/bionet-tools";
 
 <InstrumentTool place={thermocyclerId} onDone={close} />   // the tool for whichever instrument that is
-<Tools />                                                  // every tool, for a lab that has not drawn its room
+<Tools />                                                  // every tool, and the lab's sequences
 <PcrTool />                                                // or one tool on its own; DigestTool likewise
 ```
 

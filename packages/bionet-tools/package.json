@@ -4,7 +4,7 @@
   },
   "dependencies": {
     "@biolibs/assembly2": "^1.0.0",
-    "@biolibs/bionet": "^1.3.1",
+    "@biolibs/bionet": "^1.3.2",
     "@biolibs/bionet-panels": "^0.3.1",
     "@biolibs/bionet-react": "^0.2.0",
     "@biolibs/dseqrecord": "^1.1.1",
@@ -12,6 +12,8 @@
     "@biolibs/glossary-react": "^0.1.0",
     "@biolibs/restriction": "^1.0.0",
     "@biolibs/seq": "^1.0.0",
+    "@biolibs/seqio": "^1.1.2",
+    "@biolibs/seqmap": "^1.0.0",
     "@biolibs/seqtools": "^1.0.0"
   },
   "description": "The tools a lab uses at the bench, tied to its freezer: PCR and a check digest with its gel, run in silico from the tubes it holds and recorded, so what was used is taken and what was made becomes a tube",
@@ -59,5 +61,5 @@
   ],
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.1.1"
+  "version": "0.1.2"
 }

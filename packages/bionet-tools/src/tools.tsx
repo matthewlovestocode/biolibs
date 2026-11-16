@@ -6,6 +6,7 @@ import { useLab } from "@biolibs/bionet-react";
 import { DigestTool } from "./digest-tool.js";
 import { PcrTool } from "./pcr-tool.js";
 import { instrumentFor, toolFor, type ToolName } from "./run.js";
+import { SequencesTool } from "./sequences-tool.js";
 
 /** What each tool is called. */
 export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel" };
@@ -44,21 +45,22 @@ export function InstrumentTool({ place, onDone }: { place: string; onDone?: () =
  *
  * A run is still recorded as done at the instrument for that tool, if the lab has placed one.
  *
- * @param props - `tool` is which to open on; `views` lets a host show a tool its own way, such as
+ * @param props - `tool` is which to open on, `sequences` being the lab's sequences and their maps; `views` lets a host show a tool its own way, such as
  *   at its instrument in a scene, in place of the plain form.
  */
-export function Tools({ tool: first = "pcr", views = {} }: { tool?: ToolName; views?: Partial<Record<ToolName, ReactNode>> }) {
+export function Tools({ tool: first = "pcr", views = {} }: { tool?: ToolName | "sequences"; views?: Partial<Record<ToolName, ReactNode>> }) {
   const lab = useLab()?.lab;
-  const [tool, setTool] = useState<ToolName>(first);
+  const [tool, setTool] = useState<ToolName | "sequences">(first);
   if (lab === null || lab === undefined) return null;
+  const names: [ToolName | "sequences", string][] = [["sequences", "Sequences"], ...(Object.keys(TOOL_NAMES) as ToolName[]).map((one): [ToolName, string] => [one, TOOL_NAMES[one]])];
   return (
     <div className="tools">
       <div className="row tight pick" role="tablist" aria-label="Tools">
-        {(Object.keys(TOOL_NAMES) as ToolName[]).map((one) => (
-          <button key={one} type="button" role="tab" aria-selected={one === tool} className={one === tool ? "" : "quiet"} onClick={() => setTool(one)}>{TOOL_NAMES[one]}</button>
+        {names.map(([one, name]) => (
+          <button key={one} type="button" role="tab" aria-selected={one === tool} className={one === tool ? "" : "quiet"} onClick={() => setTool(one)}>{name}</button>
         ))}
       </div>
-      {views[tool] ?? <Tool key={tool} tool={tool} instrument={instrumentFor(lab, tool)} />}
+      {tool === "sequences" ? <SequencesTool /> : views[tool] ?? <Tool key={tool} tool={tool} instrument={instrumentFor(lab, tool)} />}
     </div>
   );
 }

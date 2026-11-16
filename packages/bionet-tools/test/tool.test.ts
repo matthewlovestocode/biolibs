@@ -87,7 +87,7 @@ describe("a choice of tubes", () => {
     expect(run.plan!.problem).toMatch(/do not both bind/);
     expect(run.worked).toBeNull();
     expect(run.failed).toMatchObject({ outcome: "failed", outputs: [] });
-    expect(pcrRun(lab.snapshot().lab!, { ...tubes, template: "no-such-tube" })).toEqual({ plan: null, name: "", worked: null, failed: null });
+    expect(pcrRun(lab.snapshot().lab!, { ...tubes, template: "no-such-tube" })).toEqual({ plan: null, name: "", features: [], worked: null, failed: null });
   });
 });
 
@@ -165,7 +165,7 @@ describe("a check digest", () => {
     const seen = lab.snapshot().lab!;
     expect(digestRun(seen, { tube: tubes.template, enzymes: ["NotI"] })).toMatchObject({ plan: { problem: "NotI does not cut this." }, matched: null, differed: null });
     expect(digestRun(seen, { tube: tubes.template, enzymes: [] }).matched).toBeNull();
-    expect(digestRun(seen, { tube: "no-such-tube", enzymes: ["EcoRI"] })).toEqual({ plan: null, matched: null, differed: null });
+    expect(digestRun(seen, { tube: "no-such-tube", enzymes: ["EcoRI"] })).toEqual({ plan: null, pieces: [], matched: null, differed: null });
     expect(instrumentFor(seen, "digest")).toBeNull();
   });
 
