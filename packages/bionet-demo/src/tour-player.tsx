@@ -132,8 +132,10 @@ export function DemoTour({ demo, onDone, onAgain }: { demo: DemoLab; onDone?: ()
         <p className="demoprose">{step.says}</p>
       </aside>
       <div className="demoshow">
-        {/* Keyed by the step, so each stop sets its tool up from the start rather than inheriting the last one's. */}
-        {state !== null && state !== undefined && <Stop key={`${at} ${stop.at}`} stop={stop} demo={demo} lab={state} />}
+        {/* Keyed by what is being shown and not by which stop, so that going from one stop to the
+            next in the same place keeps the scene it is already in and moves the camera through it,
+            rather than building the room again at the new spot. */}
+        {state !== null && state !== undefined && <Stop key={stop.at} stop={stop} demo={demo} lab={state} />}
       </div>
     </div>
   );

@@ -126,7 +126,7 @@ function Pick({ label, choices, value, onChange }: { label: string; choices: Tub
  */
 export function usePcrBench({ instrument = null, onDone, start }: {
   instrument?: { id: string; name: string } | null; onDone?: () => void;
-  /** What to open on: the view, the tubes already chosen, and where in the programme to be. Read once. */
+  /** What to show: the view, the tubes chosen, and where in the programme to be. Followed whenever it changes. */
   start?: { view?: BenchView; template?: string; forward?: string; reverse?: string; step?: PcrStepName; cycle?: number };
 } = {}): { stage: BenchStage; panel: ReactNode } {
   const lab = useLab()?.lab;
@@ -146,6 +146,19 @@ export function usePcrBench({ instrument = null, onDone, start }: {
   const [said, setSaid] = useState<string | null>(null);
   const [running, setRunning] = useState(false);
   const [site, setSite] = useState<"top" | "bottom">("top");
+
+  // A host driving the bench — a tour, or a link — says what to show by changing `start`. Following
+  // it rather than being mounted afresh is what lets the scene stay put and the camera travel.
+  const asked = JSON.stringify(start ?? null);
+  useEffect(() => {
+    if (start === undefined) return;
+    if (start.view !== undefined) setView(start.view);
+    if (start.template !== undefined) setTemplate(start.template);
+    if (start.forward !== undefined) setForward(start.forward);
+    if (start.reverse !== undefined) setReverse(start.reverse);
+    if (start.step !== undefined) setStep(start.step);
+    if (start.cycle !== undefined) setCycle(start.cycle);
+  }, [asked]);
 
   const tubes = useMemo(() => (lab === null || lab === undefined ? { templates: [], primers: [] } : pcrTubes(lab)), [lab]);
   const partOf = (item: string) => [...tubes.templates, ...tubes.primers].find((one) => one.item === item)?.part;

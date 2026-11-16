@@ -9,7 +9,7 @@
  * then read off the gel against a ladder. So the views run the same way as a PCR's: the rig, the
  * gel in it, what the power supply says, then what is in the tube, and the gel once it has run.
  */
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { GELS, LADDERS, gelById } from "@biolibs/gel";
 import { useAct, useLab } from "@biolibs/bionet-react";
 import { Glossed } from "@biolibs/glossary-react";
@@ -63,7 +63,7 @@ const endWords = (end: PieceEnd): ReactNode => (end.enzyme === null ? <span clas
  */
 export function useDigestBench({ instrument = null, onDone, start }: {
   instrument?: { id: string; name: string } | null; onDone?: () => void;
-  /** What to open on: the view, the tube and enzymes already chosen, the pieces to keep, and how far the gel starts. Read once. */
+  /** What to show: the view, the tube and enzymes chosen, the pieces to keep, how far the gel starts. Followed whenever it changes. */
   start?: { view?: DigestView; tube?: string; enzymes?: readonly string[]; keep?: readonly number[]; ran?: number };
 } = {}): { stage: DigestStage; panel: ReactNode } {
   const lab = useLab()?.lab;
@@ -83,6 +83,17 @@ export function useDigestBench({ instrument = null, onDone, start }: {
   const [said, setSaid] = useState<string | null>(null);
   const [keep, setKeep] = useState<number[]>([...(start?.keep ?? [])]);
   const [amount, setAmount] = useState("20");
+
+  // A host driving the bench — a tour, or a link — says what to show by changing `start`. Following
+  // it rather than being mounted afresh is what lets the scene stay put and the camera travel.
+  const asked = JSON.stringify(start ?? null);
+  useEffect(() => {
+    if (start === undefined) return;
+    if (start.view !== undefined) setView(start.view);
+    if (start.tube !== undefined) setTube(start.tube);
+    if (start.enzymes !== undefined) setChosen([...start.enzymes]);
+    if (start.keep !== undefined) setKeep([...start.keep]);
+  }, [asked]);
 
   const tubes = useMemo(() => (lab === null || lab === undefined ? [] : digestTubes(lab)), [lab]);
   // Arriving at the gel finds it running, because that is what a gel does.

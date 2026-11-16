@@ -6,7 +6,7 @@
  * It is given a lab and keeps only what is being looked at and what was typed. Everything drawn
  * comes from `sceneView`, so what is on screen is always the lab it was given.
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { layoutFrom, search, type Layout, type RecordedLab, type Standing } from "@biolibs/bionet-space";
 import { THEME_ATTRIBUTE, type Theme } from "@biolibs/bionet-theme";
 import { useMotion, type Motion } from "./motion.js";
@@ -62,6 +62,10 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
   const system = useSystemTheme();
   const shown = theme ?? system;
   const [focus, setFocus] = useState<Focus>(start ?? { place: null });
+  // A host that drives the view says where to look by changing `focus`. Following it rather than
+  // being mounted afresh at the new place is what makes the camera travel there instead of jumping.
+  const asked = start === undefined ? null : `${start.place ?? ""} ${start.item ?? ""}`;
+  useEffect(() => { if (start !== undefined) setFocus(start); }, [asked]);
   const [words, setWords] = useState("");
   const found = useMemo(() => search(layout, words), [layout, words]);
   const matches = useMemo(() => new Set(found.map((one) => one.item)), [found]);
@@ -180,7 +184,7 @@ export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, 
   return (
     <div className="bionet-view">
       <LabExplorer layout={layout} labName={name} {...pinned} {...(neighbours === undefined ? {} : { neighbours })} {...(onUse === undefined ? {} : { onUse })} {...(molecule === undefined ? {} : { molecule })}
-                   {...(focus === undefined ? {} : { focus, key: `${focus.place ?? "lab"} ${focus.item ?? ""}` })} />
+                   {...(focus === undefined ? {} : { focus })} />
       {onStand !== undefined && <button type="button" className="bionet-arrange" onClick={() => setArranging(true)}>Arrange</button>}
     </div>
   );

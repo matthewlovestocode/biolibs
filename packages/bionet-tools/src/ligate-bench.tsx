@@ -7,7 +7,7 @@
  * the tube and invisible: which ends found each other, which way round a piece went in, and whether
  * anything closed into a circle. So the machine's views are short and the pictured ones carry it.
  */
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useAct, useLab } from "@biolibs/bionet-react";
 import { amountOf } from "@biolibs/bionet-panels";
 import { Glossed } from "@biolibs/glossary-react";
@@ -65,7 +65,7 @@ const productWords = (product: LigationProduct): string =>
  */
 export function useLigationBench({ instrument = null, onDone, start }: {
   instrument?: { id: string; name: string } | null; onDone?: () => void;
-  /** What to open on: the view, the pieces already in the tube, and how far along to be. Read once. */
+  /** What to show: the view, the pieces in the tube, and how far along to be. Followed whenever it changes. */
   start?: { view?: LigationView; tubes?: readonly string[]; joined?: number };
 } = {}): { stage: LigationStage; panel: ReactNode } {
   const lab = useLab()?.lab;
@@ -83,6 +83,15 @@ export function useLigationBench({ instrument = null, onDone, start }: {
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [said, setSaid] = useState<string | null>(null);
+
+  // A host driving the bench — a tour, or a link — says what to show by changing `start`. Following
+  // it rather than being mounted afresh is what lets the scene stay put and the camera travel.
+  const asked = JSON.stringify(start ?? null);
+  useEffect(() => {
+    if (start === undefined) return;
+    if (start.view !== undefined) setView(start.view);
+    if (start.tubes !== undefined) setTubes([...start.tubes]);
+  }, [asked]);
 
   const offered = useMemo(() => (lab === null || lab === undefined ? [] : ligationTubes(lab)), [lab]);
   // Arriving at the tube finds the pieces closing, which is the whole of what is happening in it.
