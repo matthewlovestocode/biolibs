@@ -17,7 +17,7 @@ import type { DemoLab } from "./lab.js";
 /** Where a step is shown. */
 export type TourStop =
   | { at: "lab"; focus?: { place: string | null; item?: string } }
-  | { at: "sequences"; part?: string }
+  | { at: "sequences"; part?: string; focus?: { place: string | null; item?: string } }
   | { at: "pcr"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; template?: string; forward?: string; reverse?: string; step?: "denature" | "anneal" | "extend"; cycle?: number } }
   | { at: "digest"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tube?: string; enzymes?: readonly string[]; keep?: readonly number[]; ran?: number } }
   | { at: "ligation"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tubes?: readonly string[]; joined?: number } };
@@ -100,8 +100,11 @@ export function demoTour(demo: DemoLab): TourStep[] {
     },
     {
       title: "What is on it",
-      says: "The same molecule read closely. The features came in with the file this plasmid was brought in from, and they are kept in the lab's log, so every member reads the same map. Underneath, the enzymes that cut it once or twice — which is what a cloning plan is built out of.",
-      show: () => ({ at: "sequences", part: demo.molecules.pGene.name }),
+      says: "The same molecule read closely, with the tube it is in still there behind it. The features came in with the file this plasmid was brought in from, and they are kept in the lab's log, so every member reads the same map. Underneath, the enzymes that cut it once or twice — which is what a cloning plan is built out of.",
+      show: (lab) => ({
+        at: "sequences", focus: { place: places.box, item: tubes.pGene },
+        ...(() => { const part = lab.parts.find((one) => one.name === pGene.name); return part === undefined ? {} : { part: part.checksum }; })(),
+      }),
     },
 
     // ── to the thermocycler ──────────────────────────────────────────────────────────────────────

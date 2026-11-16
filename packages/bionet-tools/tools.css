@@ -12,8 +12,11 @@
 .bionet .tools .pick { flex-wrap: wrap }
 .bionet .digest .enzymes { display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; margin: .3rem 0 .7rem }
 .bionet .digest .label { margin: 0; color: var(--bionet-dim) }
+/* Measured against the space the tool is given, not the window: a tool stands beside a scene as
+   often as it fills a tab, and in a column it has to fold rather than be cut off. */
+.bionet .digest { container-type: inline-size }
 .bionet .digest .result { display: grid; grid-template-columns: minmax(15rem, 20rem) 1fr; gap: 1.4rem; align-items: start; margin-bottom: 1rem }
-@media (max-width: 760px) { .bionet .digest .result { grid-template-columns: 1fr } }
+@container (max-width: 760px) { .bionet .digest .result { grid-template-columns: 1fr } }
 .bionet .gel { width: 100%; height: auto }
 .bionet .gel .slab { fill: var(--bionet-field, var(--bionet-ground)); stroke: var(--bionet-rule) }
 .bionet .gel .well { fill: var(--bionet-rule) }
@@ -68,8 +71,11 @@
 .bionet .seqmap text.name { font-size: 14px; font-weight: 600; fill: var(--bionet-ink) }
 .bionet .seqmap text.length { font-family: ui-monospace, monospace }
 .bionet .swatch { display: inline-block; width: .62rem; height: .62rem; margin-right: .45rem; border-radius: 2px; vertical-align: baseline }
+.bionet .sequences { container-type: inline-size }
 .bionet .sequences .mapped { display: grid; grid-template-columns: minmax(15rem, 24rem) 1fr; gap: 1.4rem; align-items: start; margin-top: 1rem }
-@media (max-width: 860px) { .bionet .sequences .mapped { grid-template-columns: 1fr } }
+@container (max-width: 860px) { .bionet .sequences .mapped { grid-template-columns: 1fr } }
+/* A table of features is the one thing here with no give in it, so it scrolls on its own. */
+.bionet .sequences .mapped > div { min-width: 0; overflow-x: auto }
 .bionet .sequences input[type="file"] { margin-top: .4rem }
 .bionet .seqmap .span.wide { opacity: .55 }
 .bionet .seqmap text.spanned { fill: var(--bionet-found) }

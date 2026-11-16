@@ -80,6 +80,11 @@
 /* An instrument in use. The scene keeps the left, and what the host shows beside it keeps the right. */
 .bionet-scene.stage-of { min-height: 34rem }
 .bionet-scene.stage-of .stage { right: min(26rem, 46%) }
+/* A tool that is all data and no machine — a sequence read closely — wants more of the window. */
+.bionet-scene.widebench .stage { right: min(38rem, 54%) }
+.bionet-scene.widebench .bench { width: min(38rem, 54%) }
+.bionet-scene.widebench .crumbs.views, .bionet-scene.widebench .playback { max-width: calc(100% - min(38rem, 54%) - 1.8rem) }
+.bionet-scene.widebench .playback { left: calc((100% - min(38rem, 54%)) / 2) }
 .bionet-scene .bench { position: absolute; top: 0; right: 0; bottom: 0; width: min(26rem, 46%); overflow-y: auto; padding: .9rem;
   border-left: 1px solid var(--bionet-rule); background: var(--bionet-ground) }
 .bionet-scene .crumbs.views { max-width: calc(100% - min(26rem, 46%) - 1.8rem); gap: .2rem }

@@ -11,14 +11,14 @@
  * frame, and the lab puts that frame where the instrument stands.
  */
 import { Line } from "@react-three/drei";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Meaning, Theme } from "@biolibs/bionet-theme";
 import { GelSlab, Joining, Molecule, gelLabels, joiningLabels, moleculeLabels } from "./molecule.js";
 import type { Motion } from "./motion.js";
 import { paint, type Label } from "./scene.js";
 import { INSTRUMENT_SIZE } from "@biolibs/bionet-space";
-import { MOLECULE_RADIUS, STEP_SECONDS, lensFrame, lidOpen, measureLine, moleculeCentre, pairsOf, placeGel, placeJoining,
-         placeMolecule, placeStrands, polymerasesOf, shapeOf, stagePose, type PlacedGel, type PlacedJoining,
+import { MOLECULE_RADIUS, STAGE_VIEWS, STEP_SECONDS, lensFrame, lidOpen, measureLine, moleculeCentre, pairsOf, placeGel, placeJoining,
+         placeMolecule, placeStrands, polymerasesOf, shapeOf, stagePose, stageViewName, type PlacedGel, type PlacedJoining,
          type PlacedMolecule, type PlacedStrand, type Rung, type StageGel, type StageJoining, type StageLens,
          type StageMeasure, type StageMolecule, type StageTube, type StageView, type StepSpeed } from "./shapes.js";
 
@@ -285,4 +285,122 @@ export function poseAtInstrument(placed: PlacedInUse, under: readonly [number, n
     pose: { target: atInstrument(placed.pose.target, under, turn), position: atInstrument(placed.pose.position, under, turn) },
     fov: placed.pose.fov,
   };
+}
+
+/**
+ * An instrument in use, as a host hands it over: what is going on at it, and the rest of what a
+ * person working it needs around the scene.
+ *
+ * It is one bundle because both hosts take the same one. A machine on its own stage and the same
+ * machine standing on a bench in its lab are handed exactly this, and differ only in where it is
+ * drawn.
+ */
+export interface InUseHere extends InUse {
+  /** What the lab calls it. */
+  name: string;
+  /** Told when another of its views is asked for. */
+  onView: (view: StageView) => void;
+  /** What each kind of strand drawn in the tube is, for the legend. */
+  legend?: Partial<Record<StageTube["strands"][number]["kind"], string>>;
+  /** How long the step showing takes to play, in place of the speed chosen in the scene. */
+  seconds?: number;
+  /** Told each time a step finishes playing, which is how a host runs one step into the next. */
+  onPlayed?: () => void;
+  /** The tool itself, to put beside the scene. */
+  panel?: ReactNode;
+}
+
+/**
+ * The real bases at one place on the strands, written out.
+ *
+ * Two rows of letters, each base over the one it pairs with, with a mark between the ones that are
+ * paired. Bases are letters as well as colours, so colour is never the only cue.
+ *
+ * @param props - `lens` is the bases and which are paired.
+ */
+export function BaseLens({ lens }: { lens: StageLens }) {
+  const row = (strand: StageLens["upper"], ends: [string, string]): ReactNode => (
+    <div className="strand">
+      <span className="end">{ends[0]}</span>
+      {strand.cells.map((cell, at) => (
+        <span key={at} className={`base ${cell.base === "" ? "none" : `base-${cell.base.toLowerCase()}`} ${cell.state}${lens.polymerase === at ? " next" : ""}`}>{cell.base === "" ? "·" : cell.base}</span>
+      ))}
+      <span className="end">{ends[1]}</span>
+      <span className="what">{strand.label}</span>
+    </div>
+  );
+  const paired = lens.joined.filter(Boolean).length;
+  return (
+    <div className="lens" role="img"
+         aria-label={`Bases ${lens.from + 1} to ${lens.to} of the template. ${lens.upper.label}: ${lens.upper.cells.map((cell) => cell.base || "-").join("")}. ${lens.lower.label}: ${lens.lower.cells.map((cell) => cell.base || "-").join("")}. ${paired} of ${lens.joined.length} places are paired.`}>
+      {row(lens.upper, ["5′", "3′"])}
+      <div className="strand pairs" aria-hidden="true">
+        <span className="end" />
+        {lens.joined.map((joined, at) => <span key={at} className={joined ? "base pair" : "base"}>{joined ? "|" : ""}</span>)}
+        <span className="end" />
+        <span className="what">{lens.beyond > 0 ? `${lens.beyond.toLocaleString("en-US")} more to copy` : `bases ${(lens.from + 1).toLocaleString("en-US")}–${lens.to.toLocaleString("en-US")}`}</span>
+      </div>
+      {row(lens.lower, ["3′", "5′"])}
+    </div>
+  );
+}
+
+/**
+ * An instrument in use, worked out: what to draw in the scene, and what to put over it.
+ *
+ * Both hosts call this and neither works any of it out for itself, so the same machine in the same
+ * state is the same picture whether it is on a stage of its own or standing on its bench in the lab.
+ * It takes `null` for nothing in use, so a host that may or may not have a tool open can still call
+ * it once, every time, and keep one scene.
+ *
+ * @param what - The instrument in use, or `null` if none is.
+ * @param motion - Whether the scene moves, which decides whether a step plays or is shown finished.
+ * @returns What to draw, in the instrument's own frame, and the views, bases, legend and playback
+ *   that belong over it.
+ */
+export function useInUse(what: InUseHere | null, motion: Motion): { placed: PlacedInUse | null; chrome: ReactNode } {
+  const tube = what?.tube;
+  const moving = what !== null && what.view === "tube" && tube !== undefined && tube.strands.some((one) => one.moves !== undefined);
+  const scene = useMemo(() => JSON.stringify(tube?.strands ?? []), [tube]);
+  const { through, setThrough, playing, setPlaying, speed, setSpeed } =
+    useStagePlay({ moving, scene, motion, seconds: what?.seconds, onPlayed: what?.onPlayed });
+  const placed = useMemo(() => (what === null ? null : placeInUse(what, through)), [what, through]);
+  if (what === null || placed === null) return { placed: null, chrome: null };
+  const chrome = (
+    <>
+      <nav className="crumbs views" aria-label={`Views of ${what.name}`}>
+        <strong>{what.name}</strong>
+        {STAGE_VIEWS.map((one) => (
+          <button key={one} type="button" aria-pressed={one === what.view} className={one === what.view ? "on" : undefined}
+                  onClick={() => what.onView(one)}>{stageViewName(what.model, one)}</button>
+        ))}
+      </nav>
+      {placed.close !== null && <BaseLens lens={placed.close} />}
+      {what.view === "tube" && placed.kinds.length > 0 && (
+        <ul className="legend" aria-label="What the lines are">
+          {placed.kinds.map((kind) => <li key={kind}><span className={`swatch tone-${STRAND_TONE[kind]}`} />{what.legend?.[kind] ?? kind}</li>)}
+        </ul>
+      )}
+      {placed.moving && (
+        <div className="playback" role="group" aria-label="This step, played out">
+          {motion === "on" ? (
+            <button type="button" onClick={() => { if (through >= 1) setThrough(0); setPlaying(through >= 1 ? true : !playing); }}>
+              {playing ? "Pause" : through >= 1 ? "Play again" : "Play"}
+            </button>
+          ) : (
+            <>
+              <button type="button" aria-pressed={through <= 0} onClick={() => setThrough(0)}>Before</button>
+              <button type="button" aria-pressed={through >= 1} onClick={() => setThrough(1)}>After</button>
+            </>
+          )}
+          <input type="range" min={0} max={1000} step={1} value={Math.round(through * 1000)} aria-label="How far through the step"
+                 onChange={(event) => { setPlaying(false); setThrough(Number(event.target.value) / 1000); }} />
+          {motion === "on" && what.seconds === undefined && (["slow", "usual", "fast"] as const).map((one) => (
+            <button key={one} type="button" aria-pressed={one === speed} onClick={() => setSpeed(one)}>{one === "usual" ? "Normal" : one === "slow" ? "Slow" : "Fast"}</button>
+          ))}
+        </div>
+      )}
+    </>
+  );
+  return { placed, chrome };
 }
