@@ -1,11 +1,12 @@
 # biolibs
 
-TypeScript ports of Python bioengineering libraries, verified case by case against the originals — plus a
-few packages that have no Python equivalent.
+TypeScript ports of Python bioengineering libraries, verified case by case against the originals — plus
+packages that have no Python equivalent, and [Bionet](#bionet): labs keeping a freezer together and
+sharing what they hold, with no server in charge.
 
-- **27 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
+- **33 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,837 API items at parity** across three upstream libraries, of 2,859 applicable
-- **18,990 tests**, replaying answers recorded from the real Python libraries
+- **19,187 tests**, most of them replaying answers recorded from the real Python libraries
 
 ## Install
 
@@ -100,7 +101,6 @@ Biopython's, that part is still recorded and replayed. See
 | [`@biolibs/features`](packages/features) | Find known elements against a library of reference pieces, both strands, mismatch-tolerant, across a circular origin; turn hits into features and skip what is already annotated. No library is bundled |
 | [`@biolibs/gel`](packages/gel) | A virtual agarose gel: log-linear migration, four concentrations, ladders, band merging, fragment sizes from cut positions |
 | [`@biolibs/seqmap`](packages/seqmap) | Plasmid and linear map geometry: positions on a circle or line, feature arcs and arrows as SVG paths, round tick intervals, lane packing, label de-collision |
-| [`@biolibs/bionet`](packages/bionet) | Lab inventories: what a lab holds, named by checksum, signed with its key and published at its own address — so the parts a cloning plan starts from can be looked up. Careful about what fetching one does *not* establish |
 
 [`@biolibs/core`](packages/core) underpins all of them: Python-style errors and warnings, the
 compatibility helpers that let a port reproduce Python's `int()`, `repr()`, `round()`, `%` and `random`, a
@@ -108,12 +108,43 @@ zlib inflate *and* deflate that matches zlib's own bytes, and SHA-1 with base64.
 Biopython checklist, because it is a port of CPython itself: 1,253 recorded cases say so.
 [README](packages/core/README.md)
 
+## Bionet
+
+A lab's freezer, kept by the people in the lab and shared with other labs, with nothing in the middle
+that has to be trusted. Each member's device signs its own changes into its own log; what the lab holds
+is worked out from all the logs together, the same on every machine, so people work offline and agree
+when they meet. A lab publishes what it has, signed, at its own web address, and another lab finds it by
+following pointers from a lab it already knows.
+
+| Package | What it does |
+|---|---|
+| [`@biolibs/bionet`](packages/bionet) | The protocol. A lab's signed logs and how they merge; inventories named by checksum, signed and published at the lab's own address; finding labs by walking from ones you know; what a signature does and does *not* establish |
+| [`@biolibs/bionet-client`](packages/bionet-client) | One device in one lab: its key, its copy of the log, everything a member can do, and the connection to the lab's web peer. Works offline, syncs when it can. Storage, key keeping and sockets are plugged in |
+| [`@biolibs/bionet-peer`](packages/bionet-peer) | A lab's web peer: a member that holds no key. It keeps a copy of the log, passes changes between members who are never online together, and serves the published inventory |
+| [`@biolibs/bionet-theme`](packages/bionet-theme) | The look, in one place: each colour's meaning with a value for a light theme and a dark one, and the Bionet mark and logo |
+| [`@biolibs/bionet-react`](packages/bionet-react) | React hooks with no appearance of their own: the lab as it stands, asking for a change, hearing why it was refused |
+| [`@biolibs/bionet-panels`](packages/bionet-panels) | The parts of a lab application, ready to place: freezer, people, history, sharing, a whole window, and a lab's public page |
+
+They are layered so that an application owns nothing: no colour, no component and no rule of its own.
+Three things are built on them:
+
+- [bionet-desktop](https://github.com/matthewlovestocode/bionet-desktop), a desktop app whose own code is
+  the keychain, the window and the door between them.
+- Two example labs, each a web page and a web peer at its own address:
+  [lab-wren.onrender.com](https://lab-wren.onrender.com) and
+  [lab-thistle.onrender.com](https://lab-thistle.onrender.com).
+- The last section of the [recipe page](https://biolibs-site.onrender.com/examples/recipe), which walks
+  from one lab to the other to find who has the parts a plan starts from.
+
+Why it is built this way, what was decided and what is still open:
+[design/bionet-labs.md](design/bionet-labs.md).
+
 ## Building
 
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 18,990 tests
+npm test           # vitest — 19,187 tests
 npm run coverage   # per-file coverage
 ```
 
@@ -131,7 +162,8 @@ how each is now caught.
 
 ## Documentation
 
-Per-package reference, conventions and examples: [docs/](docs/README.md).
+Per-package reference, conventions and examples: [docs/](docs/README.md). The design of Bionet's labs:
+[design/](design/bionet-labs.md).
 
 ## Licence
 
