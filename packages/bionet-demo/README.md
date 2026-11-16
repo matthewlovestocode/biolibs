@@ -22,7 +22,7 @@ import { Demo } from "@biolibs/bionet-demo";
 <Demo />
 ```
 
-Twenty-eight stops, from the room down to one tube and back again. It walks to each machine before
+Thirty-one stops, from the room down to one tube and back again. Before any machine is used it stops at a desk: the primers the PCR needs are not in the freezer at the start, so the walk designs them for the gene, shows every length that was weighed, and has them arrive as tubes. It walks to each machine before
 using it — across the room, up to the thermocycler, and only then in front of it — because a tool
 is a thing on a bench in the lab and not a screen that replaces it. The stage's first view looks
 from the same direction the room was looking, so the two are the same machine from the same side.
@@ -39,7 +39,7 @@ about, so anybody can take the controls at any point. Nothing is a recording.
 import { demoLab } from "@biolibs/bionet-demo";
 
 const demo = await demoLab();
-demo.lab.snapshot().lab?.parts.map((one) => one.name);   // pGene, pWren backbone, wrenA-F, wrenA-R
+demo.lab.snapshot().lab?.parts.map((one) => one.name);   // pGene, pWren backbone — the primers arrive during the walk
 ```
 
 `demo.source` goes straight into `LabProvider`. `demo.tubes`, `demo.instruments` and `demo.places`
@@ -58,7 +58,7 @@ where the tour needs them and every other site patched out, so a site on one of 
 always one somebody planted. `pGene` is a small plasmid holding one gene between an EcoRI site and a
 BamHI site; `backbone` is a bigger plasmid already cut with the same two, waiting as a linear piece
 with sticky ends. The package's tests check that the enzymes still cut where the tour says, that the
-primers still make one product of 502 bases, and that the pieces still close into one circle — so a
+primers are still the pair the design tool gives for the gene and still make one product of 780 bases, and that the pieces still close into one circle — so a
 demo that quietly stopped being true would fail the build rather than be shown to somebody.
 
 ## The walk on its own

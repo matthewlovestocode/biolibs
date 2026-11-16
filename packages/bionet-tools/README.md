@@ -184,6 +184,56 @@ close on itself, the same pieces making one product with an insert in and anothe
 way round, a blunt join that will mostly not happen, and a piece that came out of a PCR, which has
 no phosphate for ligase to seal. `ratioWorking` is the arithmetic for how much of each to put in.
 
+## Designing primers
+
+Primers are designed at a desk and ordered, so this tool has no instrument. It takes a part from the
+lab and a stretch of it — dragged out on a strip, typed as two bases, or chosen as a feature, which
+is how people usually choose — and designs the pair that amplifies exactly that stretch.
+
+```ts
+import { designPair, featureStretches, primerOrder } from "@biolibs/bionet-tools";
+
+const [gene] = featureStretches(part);                  // what is marked on it, as stretches
+const design = designPair(part, gene);                  // { targetTm: 60, minLength: 18, maxLength: 30 } unless said
+design.forward.chosen.report.sequence;                  // 5′ to 3′
+design.forward.candidates;                              // every length tried, each with its score, term by term
+design.forward.why;                                     // "24 bases scores lowest, at 0.72: 59.3 °C is 0.7 from the 60 °C aimed for, …"
+design.warnings;                                        // what a careful person would stop at
+primerOrder(design, { base: "wrenA" }).lines;           // "wrenA-F\tTTGAGT…", "wrenA-R\t…"
+```
+
+The choosing is `@biolibs/pcr`'s and is not done again here. What is added is what a person wants
+beside the answer. Every candidate is kept, with the score that ranked it, so the winner can be seen
+to have won and any other length can be taken instead (`forwardLength`, `reverseLength`). A stretch
+may run through a plasmid's origin. And the warnings cover the pair and the template as well as each
+primer: melting temperatures too far apart, the two primers pairing with each other at a 3′ end, a
+primer whose 3′ end is found in more than one place (`bindingPlaces` lists them, on both strands and
+through the origin), and primers that overlap because the stretch is short.
+
+Each figure has its working, as the other tools do: `primerTmWorking` is the nearest-neighbour sum
+itself — every neighbouring pair with what the table gives for it, the ends, the salt and the one
+formula they go into — and is only returned if the sum done here reaches the engine's figure;
+`gcWorking` is the count over the length; `productWorking` the subtraction of the two ends, compared
+with what the PCR engine makes from the pair; `selfWorking` and `crossWorking` the bases that pair
+with each other, laid out for `PairedBases` to draw; `scoreWorking` the score of a candidate.
+
+```tsx
+import { usePrimerBench } from "@biolibs/bionet-tools";
+
+const primers = usePrimerBench({ onPcr: (tubes) => openPcr(tubes) });
+<LabView lab={lab} wide beside={primers.panel} {...(primers.desk.focus === null ? {} : { focus: primers.desk.focus })}
+         molecule={(item) => (item === primers.desk.focus?.item ? primers.desk.molecule : null)} />
+```
+
+`panel` is the tool. `desk` is what a scene beside it should show: the template's tube to look at,
+and the template as a molecule with the stretch and a primer at each end marked on it, drawn over
+that tube. `PrimerTool` is the panel alone.
+
+Keeping a design adds the two primers to the lab as parts. A tube of each is added only when there
+is one, with `addItem`, and no run is recorded: a tube of something ordered is not the output of a
+run, so its record says only that it is in the lab. Once the lab has a tube of the template and of
+each primer, `desk.ready` names them and the PCR tool can be opened on them.
+
 ## The working
 
 ```tsx

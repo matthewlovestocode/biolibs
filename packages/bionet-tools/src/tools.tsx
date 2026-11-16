@@ -7,7 +7,11 @@ import { DigestTool } from "./digest-tool.js";
 import { PcrTool } from "./pcr-tool.js";
 import { instrumentFor, toolFor, type ToolName } from "./run.js";
 import { LigationTool } from "./ligate-bench.js";
+import { PrimerTool } from "./primer-bench.js";
 import { SequencesTool } from "./sequences-tool.js";
+
+/** The tools used at a desk and not at an instrument: the lab's sequences, and designing primers. */
+export type DeskTool = "sequences" | "primers";
 
 /** What each tool is called. */
 export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation" };
@@ -48,14 +52,17 @@ export function InstrumentTool({ place, onDone }: { place: string; onDone?: () =
  *
  * A run is still recorded as done at the instrument for that tool, if the lab has placed one.
  *
- * @param props - `tool` is which to open on, `sequences` being the lab's sequences and their maps; `views` lets a host show a tool its own way, such as
- *   at its instrument in a scene, in place of the plain form.
+ * @param props - `tool` is which to open on, `sequences` being the lab's sequences and their maps and `primers` designing a pair; `views` lets a host show a tool its own way, such as
+ *   at its instrument in a scene, in place of the plain form. A host that gives every tool the same kind of view keeps that
+ *   view across a change of tool, which is what lets one scene carry on and its camera travel from one machine to the next.
+ *   A view may be a function, which is handed a way to go to another tool: designing primers leads on to the PCR.
  */
-export function Tools({ tool: first = "pcr", views = {} }: { tool?: ToolName | "sequences"; views?: Partial<Record<ToolName, ReactNode>> }) {
+export function Tools({ tool: first = "pcr", views = {} }: { tool?: ToolName | DeskTool; views?: Partial<Record<ToolName | DeskTool, ReactNode | ((go: (tool: ToolName | DeskTool) => void) => ReactNode)>> }) {
   const lab = useLab()?.lab;
-  const [tool, setTool] = useState<ToolName | "sequences">(first);
+  const [tool, setTool] = useState<ToolName | DeskTool>(first);
   if (lab === null || lab === undefined) return null;
-  const names: [ToolName | "sequences", string][] = [["sequences", "Sequences"], ...(Object.keys(TOOL_NAMES) as ToolName[]).map((one): [ToolName, string] => [one, TOOL_NAMES[one]])];
+  const shown = views[tool];
+  const names: [ToolName | DeskTool, string][] = [["sequences", "Sequences"], ["primers", "Primers"], ...(Object.keys(TOOL_NAMES) as ToolName[]).map((one): [ToolName, string] => [one, TOOL_NAMES[one]])];
   return (
     <div className="tools">
       <div className="row tight pick" role="tablist" aria-label="Tools">
@@ -63,7 +70,8 @@ export function Tools({ tool: first = "pcr", views = {} }: { tool?: ToolName | "
           <button key={one} type="button" role="tab" aria-selected={one === tool} className={one === tool ? "" : "quiet"} onClick={() => setTool(one)}>{name}</button>
         ))}
       </div>
-      {tool === "sequences" ? <SequencesTool /> : views[tool] ?? <Tool key={tool} tool={tool} instrument={instrumentFor(lab, tool)} />}
+      {(typeof shown === "function" ? shown(setTool) : shown) ?? (tool === "sequences" ? <SequencesTool /> : tool === "primers" ? <PrimerTool onPcr={() => setTool("pcr")} />
+        : <Tool key={tool} tool={tool} instrument={instrumentFor(lab, tool)} />)}
     </div>
   );
 }

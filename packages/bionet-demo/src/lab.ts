@@ -17,8 +17,8 @@ export interface DemoLab {
   source: LabSource;
   /** The molecules it holds. */
   molecules: DemoMolecules;
-  /** The tubes, by what they are of. */
-  tubes: { pGene: string; backbone: string; forward: string; reverse: string };
+  /** The tubes it starts with, by what they are of. The primers are not among them: the tour designs those. */
+  tubes: { pGene: string; backbone: string };
   /** The instruments, by the tool used at each. */
   instruments: { pcr: string; digest: string; ligation: string };
   /** The box the tubes are in, and the room. */
@@ -69,8 +69,6 @@ export async function demoLab({ person = "Ada", name = "The Wren Lab" }: { perso
   const tubes = {
     pGene: await stock(molecules.pGene, 30, { row: 1, column: 1 }),
     backbone: await stock(molecules.backbone, 20, { row: 1, column: 2 }),
-    forward: await stock(molecules.forward, 100, { row: 3, column: 0 }),
-    reverse: await stock(molecules.reverse, 100, { row: 3, column: 1 }),
   };
   return { lab, source: sourceOf(lab), molecules, tubes, instruments, places: { room, bench, freezer, box } };
 }

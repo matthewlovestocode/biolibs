@@ -8,10 +8,13 @@
  * The package's tests check that what comes out still does what the tour says it does.
  */
 import type { PartFeature } from "@biolibs/bionet";
-import { cutSites, cutsOf, digestPieces } from "@biolibs/bionet-tools";
+import { cutSites, cutsOf, designPair, digestPieces, primerOrder } from "@biolibs/bionet-tools";
 
 /** The sites the demo plants, and which it keeps out of everything else. */
 const PLANTED = { ecoRI: "GAATTC", bamHI: "GGATCC" } as const;
+
+/** What the pair of primers for the gene is called: this, with -F and -R. */
+export const PRIMERS = "wrenA";
 
 /** Sites kept out of the filler, so that every site on these plasmids was put there on purpose. */
 const AVOID = ["GAATTC", "GGATCC", "AAGCTT", "CTCGAG", "GCGGCCGC", "ACCGGT", "GGTACC", "CATATG", "CCCGGG",
@@ -70,7 +73,10 @@ export interface DemoMolecules {
   pGene: DemoMolecule;
   /** The backbone the gene is going into, already cut and waiting in the freezer. */
   backbone: DemoMolecule;
-  /** The two primers the gene is checked with. */
+  /**
+   * The two primers the gene is checked with. The lab does not start with them: they are what the
+   * primer design tool gives for the gene, and the tour designs them and has them arrive.
+   */
   forward: DemoMolecule;
   reverse: DemoMolecule;
   /** Where the gene sits on `pGene`, for what the tour says about it. */
@@ -111,21 +117,27 @@ export function demoMolecules(): DemoMolecules {
   const geneAt = { start: before.length + 6, end: before.length + 6 + gene.length };
   const mark = (type: string, label: string, strand: -1 | 0 | 1, start: number, end: number): PartFeature =>
     ({ type, label, strand, parts: [{ start, end }] });
+  const held: DemoMolecule = {
+    name: "pGene", sequence: pGene, circular: true,
+    features: [
+      mark("CDS", "wrenA", 1, geneAt.start, geneAt.end),
+      mark("promoter", "lac promoter", 1, before.length - 90, before.length - 20),
+      mark("rep_origin", "ori", 1, geneAt.end + 60, geneAt.end + 480),
+    ],
+  };
+  // The primers are not written down either: they are designed, by the tool the tour then uses, to
+  // amplify the gene. So what the tour designs in front of somebody is what its PCR is then run with.
+  const design = designPair(held, geneAt);
+  if (design === null) throw new Error("No primers could be designed for the demo's gene.");
+  const [forward, reverse] = primerOrder(design, { base: PRIMERS }).parts;
   return {
-    pGene: {
-      name: "pGene", sequence: pGene, circular: true,
-      features: [
-        mark("CDS", "wrenA", 1, geneAt.start, geneAt.end),
-        mark("promoter", "lac promoter", 1, before.length - 90, before.length - 20),
-        mark("rep_origin", "ori", 1, geneAt.end + 60, geneAt.end + 480),
-      ],
-    },
+    pGene: held,
     backbone: {
       name: "pWren backbone", sequence: backbone.sequence, circular: false, ends: backbone.ends,
       features: [mark("CDS", "AmpR", -1, 300, 1160), mark("rep_origin", "ori", 1, 1400, 1820)],
     },
-    forward: { name: "wrenA-F", sequence: gene.slice(40, 62), circular: false, features: [] },
-    reverse: { name: "wrenA-R", sequence: otherStrand(gene.slice(520, 542)), circular: false, features: [] },
+    forward: { ...forward, features: [] },
+    reverse: { ...reverse, features: [] },
     gene: geneAt,
   };
 }

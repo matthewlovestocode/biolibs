@@ -108,3 +108,44 @@
 .bionet .pieces code { font-size: .78rem }
 .bionet .benchpanel .gel { max-width: 18rem }
 .bionet .faced.blunt { margin: 0 .6rem .6rem; font-family: inherit; color: var(--bionet-dim) }
+/* Designing primers: a wide panel, so the candidates for each primer can sit side by side. */
+.bionet.benchpanel.primers { container-type: inline-size }
+.bionet .primers .choosing { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .6rem; align-items: end }
+.bionet .primers .choosing label, .bionet .primers .aims label { display: grid; gap: .2rem; font-size: .82rem }
+.bionet .primers .choosing input { width: 100% }
+.bionet .primers .aims { display: grid; gap: .5rem; align-content: start }
+.bionet .primers .aims label { display: flex; align-items: center; gap: .5rem }
+.bionet .primers .aims input { width: 4.5rem }
+.bionet .primers .mapped { display: grid; grid-template-columns: minmax(13rem, 20rem) 1fr; gap: 1.2rem; align-items: start }
+.bionet .primers .strip { display: block; width: 100%; height: auto; margin: .7rem 0 .2rem; cursor: crosshair; user-select: none }
+.bionet .primers .strip .backbone, .bionet .primers .pairpicture .strand { stroke: var(--bionet-ink); stroke-width: 1.6 }
+.bionet .primers .strip .chosen, .bionet .primers .pairpicture .chosen { fill: color-mix(in srgb, var(--bionet-found) 22%, transparent) }
+.bionet .primers .strip text, .bionet .primers .pairpicture text { font-size: 10px; fill: var(--bionet-dim); font-family: ui-monospace, monospace }
+.bionet .primers .strip text.spanned { fill: var(--bionet-found) }
+.bionet .primers .strip .feature { opacity: .85 }
+.bionet .primers .strip .tone-yours { fill: var(--bionet-yours) } .bionet .primers .strip .tone-theirs { fill: var(--bionet-theirs) }
+.bionet .primers .strip .tone-held { fill: var(--bionet-held) } .bionet .primers .strip .tone-found { fill: var(--bionet-found) }
+.bionet .primers .strip .tone-good { fill: var(--bionet-good) } .bionet .primers .strip .tone-attention { fill: var(--bionet-attention) }
+.bionet .primers .strip .tone-dim { fill: var(--bionet-dim) }
+.bionet .primers .pairpicture { display: block; width: 100%; max-width: 44rem; height: auto; margin: .2rem 0 .6rem }
+.bionet .primers .pairpicture .primer { fill: none; stroke: var(--bionet-found); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round }
+.bionet .primers .pairpicture text.named { fill: var(--bionet-found); font-family: inherit; font-size: 11px; font-weight: 600 }
+.bionet .primers .pairpicture text.between { fill: var(--bionet-ink); font-family: inherit; font-size: 12px }
+.bionet .primers table { border-collapse: collapse; font-size: .82rem; font-variant-numeric: tabular-nums }
+.bionet .primers table.pair { display: block; overflow-x: auto; margin: .2rem 0 .5rem }
+.bionet .primers table.pair td, .bionet .primers table.pair th, .bionet .primers .candidates td, .bionet .primers .candidates th { padding: .16rem .55rem .16rem 0; text-align: left; white-space: nowrap }
+.bionet .primers code.oligo { font-size: .8rem; letter-spacing: .04em }
+.bionet .primers .considered { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; align-items: start }
+.bionet .primers .candidates { min-width: 0; overflow-x: auto }
+.bionet .primers .candidates h3 { margin: .3rem 0; font-size: .92rem }
+.bionet .primers .candidates tr.chosen td { background: color-mix(in srgb, var(--bionet-found) 16%, transparent) }
+.bionet .primers .candidates tr.chosen td:first-child { box-shadow: inset 3px 0 0 var(--bionet-found); padding-left: .45rem }
+.bionet .primers .look { color: var(--bionet-held) }
+.bionet .primers code.order { white-space: pre; overflow-x: auto; word-break: normal }
+.bionet .primers code.order span { display: block }
+.bionet .primers .workings { margin-bottom: .4rem }
+@container (max-width: 760px) { .bionet .primers .considered, .bionet .primers .mapped { grid-template-columns: 1fr } }
+/* Two primers laid against each other can be twice a primer wide, so they scroll and never wrap. */
+.bionet .faced.paired .row { flex-wrap: nowrap; gap: 0; width: max-content }
+.bionet .faced.paired + .faced.paired { margin-top: .9rem }
+.bionet .primers .strip { max-width: 46rem }

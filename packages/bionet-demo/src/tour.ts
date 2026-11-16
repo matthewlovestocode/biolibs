@@ -4,7 +4,7 @@
  * One window at a time is how the app is used and the worst way to be shown it, because what makes
  * Bionet worth anything is that the freezer, the tools and the record are the same thing. So the
  * tour goes round all of it in one line of argument: here is a lab, here is a tube in it, here is
- * what is on that tube, and here is each tool used on it in turn, ending with a plasmid in the
+ * what is on that tube, here are primers designed for it, and here is each tool used on it in turn, ending with a plasmid in the
  * freezer that was not there at the start.
  *
  * Nothing here draws anything, and nothing pretends. A step that says a run was recorded records it.
@@ -13,11 +13,13 @@ import type { PartFeature } from "@biolibs/bionet";
 import type { LabView } from "@biolibs/bionet-client";
 import { cutSites, cutsOf, digestPieces, planLigation, planPcr } from "@biolibs/bionet-tools";
 import type { DemoLab } from "./lab.js";
+import { PRIMERS } from "./molecules.js";
 
 /** Where a step is shown. */
 export type TourStop =
   | { at: "lab"; focus?: { place: string | null; item?: string } }
   | { at: "sequences"; part?: string; focus?: { place: string | null; item?: string } }
+  | { at: "primers"; start?: { part?: string; feature?: string; name?: string; section?: "choose" | "pair" | "considered" | "working" | "order" } }
   | { at: "pcr"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; template?: string; forward?: string; reverse?: string; step?: "denature" | "anneal" | "extend"; cycle?: number } }
   | { at: "digest"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tube?: string; enzymes?: readonly string[]; keep?: readonly number[]; ran?: number } }
   | { at: "ligation"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tubes?: readonly string[]; joined?: number } };
@@ -76,7 +78,16 @@ export function demoTour(demo: DemoLab): TourStep[] {
     { id: "backbone", name: backbone.name, sequence: backbone.sequence, ends: backbone.ends ?? { left: 0, right: 0 }, features: backbone.features },
     { id: "gene", name: GENE_PIECE, sequence: gene.sequence, ends: gene.ends, features: gene.features },
   ]).products[0];
-  const pcr = { template: tubes.pGene, forward: tubes.forward, reverse: tubes.reverse };
+  /** The tubes the PCR is run from. The primers' are there once the design stop has had them arrive. */
+  const pcr = (lab: LabView): { template: string; forward?: string; reverse?: string } => {
+    const [one, other] = [tubeOf(lab, forward.name), tubeOf(lab, reverse.name)];
+    return { template: tubes.pGene, ...(one === undefined ? {} : { forward: one }), ...(other === undefined ? {} : { reverse: other }) };
+  };
+  /** The primer design tool, opened on the gene. */
+  const designing = (lab: LabView, section: "choose" | "pair" | "considered" | "working" | "order"): TourStop => {
+    const part = lab.parts.find((one) => one.name === pGene.name);
+    return { at: "primers", start: { ...(part === undefined ? {} : { part: part.checksum }), feature: "wrenA", name: PRIMERS, section } };
+  };
   const cutting = { tube: tubes.pGene, enzymes: ["EcoRI", "BamHI"] as const };
   /** The pieces in the tube at the heat block, once the digest has put the gene in the freezer. */
   const joining = (lab: LabView): string[] =>
@@ -107,6 +118,33 @@ export function demoTour(demo: DemoLab): TourStep[] {
       }),
     },
 
+    // ── at the desk: the primers ─────────────────────────────────────────────────────────────────
+    {
+      title: "Choosing what to copy",
+      says: "The first check will be that the gene is where it should be, which is a PCR, and a PCR needs two primers the lab does not have. So they are designed. Choosing the gene from what is marked on the plasmid chooses the stretch: 780 bases, from its first to its last. Over the tube, the same plasmid with that stretch and a primer at each end of it.",
+      show: (lab) => designing(lab, "choose"),
+    },
+    {
+      title: "Every length that was tried",
+      says: "A primer has to start at its end of the stretch, so the only choice is how long it is. Every length from 18 to 30 was measured, and here they all are with the score that ranked them. Nothing was thrown away unseen, and any of them can be taken instead. One thing is flagged: the two melting temperatures are a few degrees apart, which is worth knowing and not worth stopping for.",
+      show: (lab) => designing(lab, "considered"),
+    },
+    {
+      title: "Ordered, and arrived",
+      says: "Primers are ordered, not made at the bench. The design is kept as two parts, known by their sequences like everything else, and when the tubes come they are added as tubes that arrived: no run is recorded, because nothing was made here. They go in the box beside the plasmid.",
+      show: (lab) => designing(lab, "order"),
+      does: async (lab, state) => {
+        for (const [primer, column] of [[forward, 0], [reverse, 1]] as const) {
+          if (state.parts.some((one) => one.name === primer.name)) continue;
+          await lab.lab.addPart({ name: primer.name, sequence: primer.sequence, circular: false });
+          const part = lab.lab.snapshot().lab?.parts.find((one) => one.name === primer.name);
+          if (part === undefined) continue;
+          const tube = await lab.lab.addItem({ part: part.checksum, amount: 100, unit: "µL" });
+          await lab.lab.putItem({ item: tube, place: places.box, slot: { row: 3, column } });
+        }
+      },
+    },
+
     // ── to the thermocycler ──────────────────────────────────────────────────────────────────────
     {
       title: "Over to the bench",
@@ -115,54 +153,55 @@ export function demoTour(demo: DemoLab): TourStep[] {
     },
     {
       title: "Up to the thermocycler",
-      says: "The first check is that the gene is where it should be, which is a PCR. Walking up to the machine is still the lab: the same room, the same record, just closer.",
+      says: "With the primers in the freezer the PCR can be run. Walking up to the machine is still the lab: the same room, the same record, just closer.",
       show: () => ({ at: "lab", focus: { place: instruments.pcr } }),
     },
     {
       title: "At the machine",
       says: "And now in front of it, with the tubes already chosen. A thermocycler is a block of wells under a heated lid, with a screen on the front. Everything it can tell you is on that screen.",
-      show: () => ({ at: "pcr", start: { view: "machine", ...pcr } }),
+      show: (lab) => ({ at: "pcr", start: { view: "machine", ...pcr(lab) } }),
     },
     {
       title: "Under the lid",
       says: "The lid lifts and the block is underneath: ninety-six wells, with this reaction in the first. The lid presses on the tubes while it runs so that nothing condenses on their caps.",
-      show: () => ({ at: "pcr", start: { view: "block", ...pcr } }),
+      show: (lab) => ({ at: "pcr", start: { view: "block", ...pcr(lab) } }),
     },
     {
       title: "The programme",
       says: "The screen, close up, and the programme suggested for this reaction. Five degrees under the cooler primer, a minute for every thousand bases — both conventions, and both shown with the arithmetic that got there. Change either and the checks underneath answer.",
-      show: () => ({ at: "pcr", start: { view: "screen", ...pcr } }),
+      show: (lab) => ({ at: "pcr", start: { view: "screen", ...pcr(lab) } }),
     },
     {
       title: "Heat pulls the strands apart",
       says: "Here is what the machine does not show. Ninety-five degrees, and the two strands of the template come apart — nothing can be copied until they are single. The letters are this lab's own bases.",
-      show: () => ({ at: "pcr", start: { view: "tube", ...pcr, step: "denature", cycle: 1 } }),
+      show: (lab) => ({ at: "pcr", start: { view: "tube", ...pcr(lab), step: "denature", cycle: 1 } }),
     },
     {
       title: "The primers find their places",
       says: "Cooler, and each primer finds the one place on the template that it matches and binds there. Below, the bases themselves: each one pairing with its partner, and the three at the end that have to pair for the polymerase to start.",
-      show: () => ({ at: "pcr", start: { view: "tube", ...pcr, step: "anneal", cycle: 1 } }),
+      show: (lab) => ({ at: "pcr", start: { view: "tube", ...pcr(lab), step: "anneal", cycle: 1 } }),
     },
     {
       title: "And a copy grows from each",
       says: "Seventy-two degrees. The polymerase starts at a primer and runs along, adding the partner of each base it passes. These first copies start in the right place and run on too far, which is why the first cycle makes nothing of the length wanted.",
-      show: () => ({ at: "pcr", start: { view: "tube", ...pcr, step: "extend", cycle: 1 } }),
+      show: (lab) => ({ at: "pcr", start: { view: "tube", ...pcr(lab), step: "extend", cycle: 1 } }),
     },
     {
       title: "By the third cycle",
       says: "Now a copy is being made from a strand that already begins at a primer, so it stops where that one began. These are the first strands of exactly the product's length, and from here they double every cycle while the over-long ones only grow by two.",
-      show: () => ({ at: "pcr", start: { view: "tube", ...pcr, step: "extend", cycle: 3 } }),
+      show: (lab) => ({ at: "pcr", start: { view: "tube", ...pcr(lab), step: "extend", cycle: 3 } }),
     },
     {
       title: "What came out",
-      says: "502 bases, which is the distance between the two primers — and the working shows that subtraction, checked against the molecule the engine built. The gene is there. Recording the run takes a little from each tube and puts the product in the freezer.",
-      show: () => ({ at: "pcr", start: { view: "result", ...pcr } }),
+      says: "780 bases, which is the stretch the primers were designed for — and the working shows that subtraction, checked against the molecule the engine built. The gene is there. Recording the run takes a little from each tube and puts the product in the freezer.",
+      show: (lab) => ({ at: "pcr", start: { view: "result", ...pcr(lab) } }),
       does: async (lab, state) => {
-        if (state.runs.some((one) => one.kind === "pcr") || product === undefined) return;
+        const [one, other] = [tubeOf(state, forward.name), tubeOf(state, reverse.name)];
+        if (state.runs.some((each) => each.kind === "pcr") || product === undefined || one === undefined || other === undefined) return;
         await lab.lab.recordRun({
           kind: "pcr", instrument: instruments.pcr,
-          inputs: [{ item: tubes.pGene, amount: 1, role: "template" }, { item: tubes.forward, amount: 1, role: "forward primer" },
-                   { item: tubes.reverse, amount: 1, role: "reverse primer" }],
+          inputs: [{ item: tubes.pGene, amount: 1, role: "template" }, { item: one, amount: 1, role: "forward primer" },
+                   { item: other, amount: 1, role: "reverse primer" }],
           outputs: [{ sequence: product.sequence, name: "wrenA check", amount: 50, unit: "µL" }],
           settings: { anneal_at_least: 18 }, note: "the gene is where it should be",
         });
@@ -259,7 +298,7 @@ export function demoTour(demo: DemoLab): TourStep[] {
     },
     {
       title: "Back in the freezer",
-      says: "The box has three tubes in it that were not there at the start, and every one of them says which run made it and what went into that run. That is the whole of it: a freezer, the tools used on what is in it, and one signed record of both.",
+      says: "The box has five tubes in it that were not there at the start. Three say which run made them and what went into that run; the two primers say only that they arrived, which is the truth about them. That is the whole of it: a freezer, the tools used on what is in it, and one signed record of both.",
       show: (lab) => ({ at: "lab", focus: { place: places.box, item: tubeOf(lab, MADE) ?? tubes.pGene } }),
     },
   ];

@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 import type { CutSite } from "./digest-working.js";
 import type { JoinOverhangs } from "./ligate-working.js";
 import type { BindingWorking, FacedBase, Working } from "./pcr-working.js";
+import type { PairedStrands } from "./primer-design.js";
 
 /**
  * One figure and its working.
@@ -91,6 +92,34 @@ export function JoinBases({ bases }: { bases: JoinOverhangs }) {
       <div className="row"><span className="end">{bases.from}</span>{row(bases.left)}<span className="end" /></div>
       <div className="row"><span className="end" />{[...bases.left].map((base, at) => <span key={at} className="bond">|</span>)}<span className="end" /></div>
       <div className="row"><span className="end">{bases.to}</span>{row(bases.right)}<span className="end" /></div>
+    </div>
+  );
+}
+
+/**
+ * Two primers, or two copies of one, written one over the other as they would pair.
+ *
+ * The upper is written 5′ to 3′ and the lower 3′ to 5′, slid to where the run being shown pairs. A
+ * line joins every pair at that place, and the bases of the run itself are underlined.
+ *
+ * @param props - `paired` is from `pairedStrands`; `upper` and `lower` are what to call the two
+ *   strands; `run` is which run to show: the longest anywhere, or the longest that reaches a 3′ end.
+ */
+export function PairedBases({ paired, upper, lower, run = "longest" }: { paired: PairedStrands; upper: string; lower: string; run?: "longest" | "end" }) {
+  const [shift, from, length] = run === "end" ? [paired.endShift, paired.endFrom, paired.endLength] : [paired.shift, paired.from, paired.length];
+  const PAIR: Readonly<Record<string, string>> = { A: "T", T: "A", G: "C", C: "G" };
+  const [first, last] = [Math.min(0, shift), Math.max(paired.upper.length, shift + paired.lower.length)];
+  const columns = Array.from({ length: last - first }, (_, at) => first + at);
+  const over = (column: number): string => paired.upper[column] ?? "";
+  const under = (column: number): string => paired.lower[column - shift] ?? "";
+  const inRun = (column: number): boolean => column >= from && column < from + length;
+  const says = `${upper}, 5′ to 3′, over ${lower}, 3′ to 5′: ${length} ${length === 1 ? "base pairs" : "bases in a row pair"}${length === 0 ? "" : `, ${paired.upper.slice(from, from + length)} with ${paired.lower.slice(from - shift, from - shift + length)}`}.`;
+  const cell = (base: string, marked: boolean): ReactNode => <span className={`base base-${base.toLowerCase() || "none"}${marked ? " needed" : ""}`}>{base || " "}</span>;
+  return (
+    <div className="faced paired" role="img" aria-label={says}>
+      <div className="row"><span className="end">5′</span>{columns.map((column) => <span key={column}>{cell(over(column), inRun(column))}</span>)}<span className="end">3′ {upper}</span></div>
+      <div className="row"><span className="end" />{columns.map((column) => { const pairs = over(column) !== "" && PAIR[over(column)] === under(column); return <span key={column} className={pairs ? "bond" : "bond none"}>{pairs ? "|" : " "}</span>; })}<span className="end" /></div>
+      <div className="row"><span className="end">3′</span>{columns.map((column) => <span key={column}>{cell(under(column), inRun(column))}</span>)}<span className="end">5′ {lower}</span></div>
     </div>
   );
 }

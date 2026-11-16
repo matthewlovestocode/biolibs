@@ -6,8 +6,8 @@
  * use — the enzymes cut where it says, the primers make one product, and the pieces join into one
  * circle — and the lab is checked for having really been founded and filled.
  */
-import { cutsOf, cutSites, digestPieces, planLigation, planPcr, primerTm } from "@biolibs/bionet-tools";
-import { demoLab, demoMolecules, otherStrand } from "@biolibs/bionet-demo";
+import { cutsOf, cutSites, designPair, digestPieces, planLigation, planPcr, primerTm } from "@biolibs/bionet-tools";
+import { demoLab, demoMolecules, demoTour, otherStrand } from "@biolibs/bionet-demo";
 import { describe, expect, it } from "vitest";
 
 const molecules = demoMolecules();
@@ -30,7 +30,7 @@ describe("the demo lab's molecules", () => {
   it("let the primers make one product, of a size the tour can say", () => {
     const plan = planPcr(molecules.pGene, molecules.forward.sequence, molecules.reverse.sequence);
     expect(plan.problem).toBeNull();
-    expect(plan.products[0]!.length).toBe(502);
+    expect(plan.products[0]!.length).toBe(780);
     // Near enough each other that one annealing temperature suits both.
     const [one, other] = [primerTm(molecules.forward.sequence)!, primerTm(molecules.reverse.sequence)!];
     expect(Math.abs(one - other)).toBeLessThanOrEqual(6);
@@ -70,9 +70,10 @@ describe("the demo lab", () => {
     const lab = demo.lab.snapshot().lab!;
     expect(lab.name).toBe("The Wren Lab");
     expect(lab.member).toBe(true);
-    expect(lab.parts.map((one) => one.name)).toEqual(["pGene", "pWren backbone", "wrenA-F", "wrenA-R"]);
+    // No primers: the tour designs them, and they arrive.
+    expect(lab.parts.map((one) => one.name)).toEqual(["pGene", "pWren backbone"]);
     expect(lab.places.map((one) => one.name)).toEqual(["Main lab", "The bench", "−80", "Box 1", "Thermocycler", "Gel station", "Heat block"]);
-    expect(lab.items).toHaveLength(4);
+    expect(lab.items).toHaveLength(2);
     // Every tube is somewhere, so the scene has something to draw.
     expect(lab.items.every((one) => one.where?.place === demo.places.box)).toBe(true);
     expect(lab.crowded).toEqual([]);
@@ -91,5 +92,45 @@ describe("the demo lab", () => {
     const [one, other] = await Promise.all([demoLab(), demoLab({ person: "Bob", name: "Another lab" })]);
     expect(one.lab.snapshot().lab!.id).not.toBe(other.lab.snapshot().lab!.id);
     expect(other.lab.snapshot().lab!.name).toBe("Another lab");
+  });
+});
+
+describe("the primers", () => {
+  it("are the pair the design tool gives for the gene, so the tour designs what it then uses", () => {
+    const design = designPair(molecules.pGene, molecules.gene)!;
+    expect(molecules.forward).toMatchObject({ name: "wrenA-F", sequence: design.forward.chosen.report.sequence });
+    expect(molecules.reverse).toMatchObject({ name: "wrenA-R", sequence: design.reverse.chosen.report.sequence });
+    expect(design.length).toBe(780);
+    // What the tour says about the design: nothing that would stop it, and one thing flagged.
+    expect(design.warnings.map((one) => [one.weight, one.about])).toEqual([["look", "pair"]]);
+    expect(design.warnings[0]!.says).toContain("apart");
+    expect(design.forward.candidates).toHaveLength(13);
+  });
+
+  it("are not in the lab until the tour's stop has them arrive, and then the PCR is recorded with them", async () => {
+    const demo = await demoLab();
+    const steps = demoTour(demo);
+    const state = () => demo.lab.snapshot().lab!;
+    const arrive = steps.find((one) => one.title === "Ordered, and arrived")!;
+    const came = steps.find((one) => one.title === "What came out")!;
+    // Before they arrive the PCR has no primers to be opened on, and recording it does nothing.
+    expect(steps.find((one) => one.title === "The programme")!.show(state())).toEqual({ at: "pcr", start: { view: "screen", template: demo.tubes.pGene } });
+    await came.does!(demo, state());
+    expect(state().runs).toHaveLength(0);
+
+    await arrive.does!(demo, state());
+    await arrive.does!(demo, state());                       // going back over the stop adds nothing more
+    expect(state().parts.map((one) => one.name)).toEqual(["pGene", "pWren backbone", "wrenA-F", "wrenA-R"]);
+    const primers = state().items.filter((one) => one.item !== demo.tubes.pGene && one.item !== demo.tubes.backbone);
+    expect(primers).toHaveLength(2);
+    // A tube that arrived is not the output of a run, and the record does not say it was.
+    expect(primers.every((one) => one.from === null && one.where?.place === demo.places.box)).toBe(true);
+    expect(state().runs).toHaveLength(0);
+
+    const stop = arrive.show(state());
+    expect(stop).toMatchObject({ at: "primers", start: { feature: "wrenA", name: "wrenA", section: "order" } });
+    await came.does!(demo, state());
+    expect(state().runs.map((one) => one.kind)).toEqual(["pcr"]);
+    expect(state().parts.find((one) => one.name === "wrenA check")?.length).toBe(780);
   });
 });

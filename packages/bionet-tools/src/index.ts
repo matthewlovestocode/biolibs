@@ -24,6 +24,9 @@
  * - `working.tsx` — the working drawn: a figure that opens to show its steps
  * - `map.tsx` — a sequence's map: a circle or a line, with what is marked on it
  * - `sequences-tool.tsx` — bringing sequences in from files, and reading a part as a map
+ * - `primer-design.ts` — a pair of primers designed for a stretch of a part, with every candidate that was weighed and what to warn of
+ * - `primer-working.ts` — the working behind a design: the melting temperature's sum, the GC count, the bases that pair
+ * - `primer-bench.tsx` — designing primers at a desk: the panel, and the template with the pair marked on it for a scene
  * - `tools.tsx` — getting to one: from an instrument, or from a list of them all
  *
  * The tools are drawn with the styles of `@biolibs/bionet-panels` and belong inside its `LabWindow`.
@@ -48,3 +51,6 @@ export * from "./map.js";
 export * from "./sequences-tool.js";
 export * from "./tools.js";
 export * from "./pcr-bench.js";
+export * from "./primer-design.js";
+export * from "./primer-working.js";
+export * from "./primer-bench.js";

@@ -651,6 +651,96 @@ export function CutDiagram({ enzyme: name, ...options }: FigureOptions & { enzym
   );
 }
 
+/** The three things looked for at a primer's ends: a G or C to hold it, a fold, and a partner it should not have. */
+export function PrimerEndDiagram({ kind, ...options }: FigureOptions & { kind: "clamp" | "hairpin" | "dimer" }) {
+  const pair = (text: string) => new Seq(text).complement().toString();
+  const rungs = (x: number, from: number, many: number, top: number, bottom: number) =>
+    Array.from({ length: many }, (_, i) => <line key={i} x1={x + (from + i) * CELL + CELL / 2} x2={x + (from + i) * CELL + CELL / 2} y1={top} y2={bottom} stroke="var(--line)" strokeWidth={1.5} />);
+  if (kind === "clamp") {
+    const primer = "ATGACCATGATTACG";
+    const template = pair(`${primer}CCAAGC`);
+    const x = 40;
+    const last = primer.length - 1;
+    return (
+      <Figure
+        width={template.length * CELL + 80}
+        height={132}
+        description={`A primer, ${primer}, written 5′ to 3′ over the strand it binds. Its last base, a G, is outlined, paired with a C below. An arrow runs on from that end, where copying starts.`}
+        caption="The primer's last base is a G, paired with a C. That end is the one the copying enzyme extends, so a strong pair there holds it in place."
+        {...options}
+      >
+        <rect x={x + last * CELL + 1} y={24} width={CELL - 2} height={66} rx={5} fill="var(--accent-soft)" stroke="var(--accent)" />
+        <Letters x={x} y={46} text={primer} />
+        {rungs(x, 0, primer.length, 54, 68)}
+        <Letters x={x} y={84} text={template} opacity={(i) => (i < primer.length ? 1 : 0.4)} />
+        <Note x={x - 8} y={50} anchor="end">5′</Note>
+        <Note x={x - 8} y={88} anchor="end">3′</Note>
+        <Note x={x + template.length * CELL + 8} y={88}>5′</Note>
+        <Arrow from={[x + primer.length * CELL + 4, 42]} to={[x + template.length * CELL - 4, 42]} color="var(--accent)" width={2} />
+        <Note x={x + (last + 0.5) * CELL} y={16} anchor="middle" fill="var(--accent)" bold>3′ end: G</Note>
+        <Note x={x} y={118}>the primer, over the strand it binds</Note>
+      </Figure>
+    );
+  }
+  if (kind === "hairpin") {
+    const [stem, loop] = ["GGATCCA", "TTTT"];
+    const back = pair(stem);
+    const x = 44;
+    const turn = x + stem.length * CELL;
+    return (
+      <Figure
+        width={stem.length * CELL + 150}
+        height={132}
+        description={`One strand, ${stem}${loop}${[...back].reverse().join("")}, folded back on itself. Its first seven bases are paired with its last seven, and the four Ts between them make an unpaired loop at the turn.`}
+        caption="One strand, read 5′ to 3′ along the top, round the loop and back along the bottom. Its two ends are complementary, so it pairs with itself."
+        {...options}
+      >
+        <Letters x={x} y={46} text={stem} />
+        {rungs(x, 0, stem.length, 54, 68)}
+        <Letters x={x} y={84} text={back} />
+        <path d={`M${turn + 4},40 C${turn + 78},30 ${turn + 78},90 ${turn + 4},80`} fill="none" stroke="var(--line)" strokeWidth={1.5} />
+        <Letters x={turn + 6} y={34} text={loop.slice(0, 2)} />
+        <Letters x={turn + 6} y={96} text={[...loop.slice(2)].reverse().join("")} />
+        <Note x={turn + 70} y={64} fill="var(--muted)">loop</Note>
+        <Note x={x - 8} y={50} anchor="end">5′</Note>
+        <Note x={x - 8} y={88} anchor="end">3′</Note>
+        <Note x={x} y={118}>the stem: {stem.length} bases paired</Note>
+      </Figure>
+    );
+  }
+  const [first, overlap] = ["ACTGAC", "GGATCC"];
+  const second = "TGACCA";
+  const upper = first + overlap;
+  const lower = pair(overlap) + second;
+  const x = 44;
+  const lowerX = x + first.length * CELL;
+  return (
+    <Figure
+      width={(first.length + overlap.length + second.length) * CELL + 96}
+      height={140}
+      description={`Two primers. The last six bases of the upper one, ${overlap}, are paired with the last six of the lower one. A dashed arrow runs on from the 3′ end of each along the other, where each would be extended.`}
+      caption="The 3′ ends of the two primers are complementary, so they pair with each other. Each is then extended along the other, making a short product that is not the one wanted."
+      {...options}
+    >
+      <rect x={lowerX} y={26} width={overlap.length * CELL} height={66} rx={6} fill="var(--accent-soft)" />
+      <Letters x={x} y={46} text={upper} />
+      {rungs(x, first.length, overlap.length, 54, 68)}
+      <Letters x={lowerX} y={84} text={lower} />
+      <Note x={x - 8} y={50} anchor="end">5′</Note>
+      <Note x={x + upper.length * CELL + 6} y={50}>3′</Note>
+      <Note x={lowerX - 8} y={88} anchor="end">3′</Note>
+      <Note x={lowerX + lower.length * CELL + 6} y={88}>5′</Note>
+      <line x1={x + upper.length * CELL + 22} x2={lowerX + lower.length * CELL - 8} y1={42} y2={42} stroke="var(--accent)" strokeWidth={2} strokeDasharray="4 3" />
+      <Arrow from={[lowerX + lower.length * CELL - 10, 42]} to={[lowerX + lower.length * CELL, 42]} color="var(--accent)" width={2} />
+      <line x1={lowerX - 22} x2={x + 8} y1={80} y2={80} stroke="var(--accent)" strokeWidth={2} strokeDasharray="4 3" />
+      <Arrow from={[x + 10, 80]} to={[x, 80]} color="var(--accent)" width={2} />
+      <Note x={x} y={18}>one primer</Note>
+      <Note x={lowerX + lower.length * CELL} y={112} anchor="end">the other primer</Note>
+      <Note x={x} y={130}>dashed: where each is extended along the other</Note>
+    </Figure>
+  );
+}
+
 export function PcrDiagram(options: FigureOptions) {
   return (
     <Figure
@@ -1046,6 +1136,12 @@ export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string
     case "primer":
     case "pcr":
       return <PcrDiagram {...options} />;
+    case "gc-clamp":
+      return <PrimerEndDiagram kind="clamp" {...options} />;
+    case "hairpin":
+      return <PrimerEndDiagram kind="hairpin" {...options} />;
+    case "primer-dimer":
+      return <PrimerEndDiagram kind="dimer" {...options} />;
     case "gel-electrophoresis":
       return <GelDiagram {...options} />;
     case "alignment":
