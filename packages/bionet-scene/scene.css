@@ -74,3 +74,49 @@
 .bionet-scene .use { position: absolute; left: 50%; bottom: 2.6rem; transform: translateX(-50%); display: flex; align-items: center; gap: .8rem; padding: .5rem .6rem .5rem .9rem;
   border: 1px solid var(--bionet-yours); border-radius: 999px; background: color-mix(in srgb, var(--bionet-surface) 92%, transparent); backdrop-filter: blur(6px) }
 .bionet-scene .use button { font: inherit; font-weight: 600; color: var(--bionet-on-action, var(--bionet-ground)); background: var(--bionet-action, var(--bionet-yours)); border: 0; border-radius: 999px; padding: .3rem .9rem; cursor: pointer }
+.bionet-scene .motion { position: absolute; left: .9rem; bottom: 2.1rem; font: inherit; font-size: 11px; color: var(--bionet-dim); padding: .2rem .55rem;
+  border: 1px solid var(--bionet-rule); border-radius: 999px; background: color-mix(in srgb, var(--bionet-surface) 82%, transparent); cursor: pointer }
+.bionet-scene .motion:hover { color: var(--bionet-ink); border-color: var(--bionet-yours) }
+/* An instrument in use. The scene keeps the left, and what the host shows beside it keeps the right. */
+.bionet-scene.stage-of { min-height: 34rem }
+.bionet-scene.stage-of .stage { right: min(26rem, 46%) }
+.bionet-scene .bench { position: absolute; top: 0; right: 0; bottom: 0; width: min(26rem, 46%); overflow-y: auto; padding: .9rem;
+  border-left: 1px solid var(--bionet-rule); background: var(--bionet-ground) }
+.bionet-scene .crumbs.views { max-width: calc(100% - min(26rem, 46%) - 1.8rem); gap: .2rem }
+.bionet-scene .crumbs.views strong { margin-right: .35rem }
+.bionet-scene .crumbs.views button.on { color: var(--bionet-yours); font-weight: 600 }
+.bionet-scene .motion { z-index: 5 }
+.bionet-scene .lcd { transform: translateY(-1.1em); white-space: pre; font: 600 10px/1.35 ui-monospace, "SF Mono", Menlo, monospace; padding: .2rem .4rem; border-radius: 4px;
+  color: var(--bionet-found); border: 1px solid color-mix(in srgb, var(--bionet-found) 50%, transparent); background: color-mix(in srgb, var(--bionet-ground) 88%, transparent) }
+.bionet-scene .lcd.large { transform: none; font-size: 13px; line-height: 1.5; padding: .7rem .9rem; border-radius: 8px; color: var(--bionet-dim); background: var(--bionet-ground) }
+.bionet-scene .lcd.large .lit { color: var(--bionet-found) }
+.bionet-scene .end { font-size: 10px; color: var(--bionet-dim) }
+.bionet-scene .legend { position: absolute; left: .9rem; bottom: 4rem; margin: 0; padding: .4rem .6rem; list-style: none; display: grid; gap: .15rem; font-size: 11px;
+  color: var(--bionet-dim); border: 1px solid var(--bionet-rule); border-radius: 8px; background: color-mix(in srgb, var(--bionet-surface) 85%, transparent) }
+.bionet-scene .legend .swatch { display: inline-block; width: 1.1rem; height: 3px; margin-right: .45rem; vertical-align: middle; border-radius: 2px; background: currentColor }
+.bionet-scene .legend .tone-ink { color: var(--bionet-ink); opacity: .55 } .bionet-scene .legend .tone-yours { color: var(--bionet-yours) }
+.bionet-scene .legend .tone-theirs { color: var(--bionet-theirs) } .bionet-scene .legend .tone-held { color: var(--bionet-held) }
+.bionet-scene .legend .tone-found { color: var(--bionet-found) }
+.bionet-scene .playback { position: absolute; left: calc((100% - min(26rem, 46%)) / 2); bottom: .7rem; transform: translateX(-50%); display: flex; align-items: center; gap: .5rem;
+  padding: .35rem .6rem; border: 1px solid var(--bionet-rule); border-radius: 999px; background: color-mix(in srgb, var(--bionet-surface) 90%, transparent); backdrop-filter: blur(6px) }
+.bionet-scene .playback button { font: inherit; font-size: 12px; color: var(--bionet-ink); padding: .2rem .7rem; border: 1px solid var(--bionet-rule); border-radius: 999px; background: transparent; cursor: pointer; white-space: nowrap }
+.bionet-scene .playback button:hover, .bionet-scene .playback button.on, .bionet-scene .playback button[aria-pressed="true"] { border-color: var(--bionet-yours); color: var(--bionet-yours) }
+.bionet-scene .playback input { width: 11rem; accent-color: var(--bionet-yours) }
+/* The real bases at one place, written out over the scene. */
+.bionet-scene .lens { --base-a: #5fd3a6; --base-t: #f0788a; --base-g: #e6b450; --base-c: #78aef5;
+  position: absolute; top: 3.6rem; left: .9rem; max-width: calc(100% - min(26rem, 46%) - 1.8rem); overflow-x: auto; padding: .55rem .7rem;
+  border: 1px dashed var(--bionet-found); border-radius: 8px; background: color-mix(in srgb, var(--bionet-ground) 90%, transparent); backdrop-filter: blur(6px);
+  font: 600 13px/1.25 ui-monospace, "SF Mono", Menlo, monospace }
+.bionet-scene[data-bionet-theme="light"] .lens { --base-a: #1f8a5b; --base-t: #c8394b; --base-g: #b97a08; --base-c: #2a66b8 }
+.bionet-scene .lens .strand { display: flex; align-items: center; white-space: nowrap }
+.bionet-scene .lens .base { display: inline-block; width: .95em; text-align: center; color: var(--bionet-dim); transition: opacity .15s }
+.bionet-scene .lens .base-a { color: var(--base-a) } .bionet-scene .lens .base-t { color: var(--base-t) }
+.bionet-scene .lens .base-g { color: var(--base-g) } .bionet-scene .lens .base-c { color: var(--base-c) }
+.bionet-scene .lens .base.single { opacity: .55 }
+.bionet-scene .lens .base.fresh { background: color-mix(in srgb, var(--bionet-held) 26%, transparent); border-radius: 2px }
+.bionet-scene .lens .base.none { opacity: .18 }
+.bionet-scene .lens .base.next { outline: 1.5px solid var(--bionet-found); outline-offset: -1px; border-radius: 3px; opacity: 1 }
+.bionet-scene .lens .pairs .base { height: .9em; line-height: .9em; font-weight: 400 }
+.bionet-scene .lens .pairs .pair { color: var(--bionet-ink); opacity: .7 }
+.bionet-scene .lens .end { display: inline-block; width: 1.7em; font-size: 10px; font-weight: 400; color: var(--bionet-dim); text-align: center }
+.bionet-scene .lens .what { margin-left: .5rem; font: 400 11px/1.2 "Geist", -apple-system, system-ui, sans-serif; color: var(--bionet-dim) }

@@ -7,7 +7,7 @@
  */
 import { Lab, memoryKeys, memoryStore, sourceOf } from "@biolibs/bionet-client";
 import { LabProvider } from "@biolibs/bionet-react";
-import { DigestTool, Gel, InstrumentTool, PcrTool, Tools, digestRun, digestTubes, instrumentFor, pcrRun, pcrTubes, planDigest, toolFor } from "@biolibs/bionet-tools";
+import { DigestTool, Gel, InstrumentTool, PcrTool, Tools, digestRun, digestTubes, instrumentFor, pcrRun, pcrTubes, planDigest, strandCounts, suggestProgramme, toolFor, usePcrBench, StrandBars, TemperatureTrace, type BenchStage } from "@biolibs/bionet-tools";
 import { createElement as h, type ReactElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
@@ -189,5 +189,53 @@ describe("every tool, without walking to an instrument", () => {
     const digest = draw(lab, h(Tools, { tool: "digest" }));
     expect(digest).toContain("<h2>Digest and gel</h2>");      // no gel station has been placed
     expect(digest).not.toContain("Back to the lab");
+  });
+});
+
+describe("a PCR at the machine", () => {
+  /** Draws the bench's panel, and hands back what the scene would be told. */
+  const bench = (lab: Lab): { panel: string; stage: BenchStage } => {
+    let stage: BenchStage | undefined;
+    const Show = (): ReactElement => { const made = usePcrBench({ instrument: { id: "cycler", name: "Thermocycler" } }); stage = made.stage; return h("div", null, made.panel); };
+    const panel = draw(lab, h(Show));
+    return { panel, stage: stage! };
+  };
+
+  it("starts at the machine with nothing chosen, and says what the machine does and does not show", async () => {
+    const { lab } = await wren();
+    const { panel, stage } = bench(lab);
+    expect(stage).toMatchObject({ model: "thermocycler", name: "Thermocycler", view: "machine", screen: [{ text: "No programme" }] });
+    expect(stage.well).toBeUndefined();
+    expect(stage.tube).toBeUndefined();
+    expect(panel).toContain("It shows nothing of the DNA");
+    expect(panel).toContain("pWren-402 · 20 µL · nowhere recorded");
+    expect(panel).toContain('role="tooltip"');                         // its terms explain themselves
+    expect(Object.keys(stage.legend)).toEqual(["template", "primer", "long", "product"]);
+  });
+
+  it("keeps the programme a run was set to with the run", async () => {
+    const { lab, tubes } = await wren();
+    const programme = { initial: { celsius: 95, seconds: 120 }, cycles: 28, final: { celsius: 72, seconds: 300 },
+                        steps: [{ name: "denature", celsius: 95, seconds: 30 }, { name: "anneal", celsius: 48, seconds: 30 }, { name: "extend", celsius: 72, seconds: 20 }] } as const;
+    const run = pcrRun(lab.snapshot().lab!, { ...tubes, programme: structuredClone(programme) as never });
+    expect(run.worked).toMatchObject({ settings: { anneal_at_least: 18, denature_c: 95, anneal_c: 48, anneal_s: 30, extend_c: 72, extend_s: 20, cycles: 28 } });
+    await lab.recordRun(run.worked as Parameters<Lab["recordRun"]>[0]);
+    expect(lab.snapshot().lab!.runs[0]!.settings).toMatchObject({ anneal_c: 48, cycles: 28 });
+  });
+
+  it("draws a cycle's temperatures with the step it is on, and the strands as bars on a doubling scale", () => {
+    const programme = suggestProgramme({ length: 1500, primers: [{ name: "f", tm: 60 }, { name: "r", tm: 58 }] });
+    const trace = renderToStaticMarkup(h(TemperatureTrace, { programme, step: "anneal" }));
+    expect(trace).toContain("It is on anneal.");
+    expect(trace).toContain('class="on">53°<');
+    expect(trace.match(/°</g)).toHaveLength(3);
+
+    const bars = renderToStaticMarkup(h(StrandBars, { counts: strandCounts(3), cycles: 30 }));
+    expect(bars).toContain('aria-label="Template: 2 strands. Too long: 6 strands. Product: 8 strands"');
+    const width = (kind: string, cycles: number): number => Number(new RegExp(`fill ${kind}" style="width:([0-9.]+)%`).exec(renderToStaticMarkup(h(StrandBars, { counts: strandCounts(cycles), cycles: 30 })))![1]);
+    // Each cycle the product's bar moves on by the same step, since it doubles; the over-long strands barely move.
+    expect(width("product", 20) - width("product", 10)).toBeCloseTo(width("product", 30) - width("product", 20), 0);
+    expect(width("long", 30)).toBeLessThan(width("product", 30) / 4);
+    expect(width("product", 30)).toBeLessThanOrEqual(100);
   });
 });

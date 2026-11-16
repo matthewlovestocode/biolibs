@@ -63,6 +63,42 @@ which. What opens is the host's to decide; `@biolibs/bionet-tools` has the tools
 
 `LabBuilder` is the same thing on its own, taking a `Layout`.
 
+## An instrument in use
+
+```tsx
+import { InstrumentStage } from "@biolibs/bionet-scene";
+
+<InstrumentStage model="thermocycler" name="Thermocycler" view={view} onView={setView}
+                 screen={[{ text: "Anneal  55 °C   0:30", lit: true }]} well={{ row: 0, column: 0 }} tube={tube}>
+  {panel}
+</InstrumentStage>
+```
+
+One instrument in a space of its own, away from the lab, with five views as buttons: the machine,
+its block with the lid up, its screen, what is in the tube, and the result. The first three are
+what the machine shows; the last two are what its operator has to picture. What is on the screen,
+which well is taken and what is in the tube are handed in as plain data, and `children` is drawn
+beside the scene. `@biolibs/bionet-tools` supplies all of it for a PCR.
+
+A thermocycler and a gel station are drawn to resemble the equipment, from a `Shape`: a body, a lid
+that opens, a screen, a block of wells. They are drawn that way in the lab as well.
+
+What is in the tube plays out, slowly enough to follow: strands part, primers land, copies grow
+from each primer, with a polymerase at each growing end. A strand says what it does
+(`moves: "parts" | "lands" | "grows"`), and the stage plays the step over about two seconds, with
+Pause, a scrubber to drag to any moment, and Slow and Fast. `onPlayed` is told when a step finishes,
+which is how a host runs one step into the next.
+
+The strands are thousands of bases long and are lines. `lens` gives the real bases at one place on
+them for any moment of the step, and they are written out over the scene as two rows of letters, each
+base above the one it pairs with, with the stretch they are of outlined on the strands.
+
+## Motion can be turned off
+
+Every scene has a switch, and starts as the system's "reduce motion" setting says. With motion off a
+change of view is a cut and nothing moves by itself: a step in the tube is shown finished, with
+Before and After buttons and the scrubber to look at any moment of it. `motion="off"` pins it.
+
 ## What to draw is decided before anything is drawn
 
 ```ts

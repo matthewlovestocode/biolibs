@@ -851,9 +851,40 @@ tooltip, a review sheet), so the desktop app and the site read the same ones.
 - **The app has a Glossary tab**, which is the review sheet: every term with its picture, its words,
   its standing, and the fingerprint to sign off.
 
-Not done: the PCR scene itself (a mesh that resembles the machine, the block, the screen, the view
-into the tube); the checks; turning animations off; a "teach me" switch; the site reading its
-glossary from the packages; signing a review with a key.
+### The thermocycler, in use
+
+The first scene built that way. A thermocycler stands in a space of its own with five views as
+buttons: the machine, the block, the screen, in the tube, the result.
+
+- **The mesh resembles the equipment**: a base, a control panel with a lit screen, a hinged lid, a
+  block of 96 wells. A gel station has a shape too. They are drawn so in the lab as well.
+- **The screen shows a programme**, suggested from the reaction and changed by the operator. What
+  they set is recorded with the run.
+- **Checks are about this run**: annealing above a primer's melting temperature, an extension too
+  short for the product. They are shown beside the programme and never stop a run.
+- **In the tube** is drawn from where the primers really bind, a step and a cycle at a time. The
+  first cycle's copies run on too far; the second makes the first strands of the product's exact
+  length; from the third the product takes over. A table gives the counts.
+- **A step is played out, not switched.** Strands part, primers land and copies grow, with a
+  polymerase at each growing end. Shown as stills, the steps went by too fast to see what had
+  happened; played over seven seconds they were too slow to wait for. A step takes about two
+  seconds, with slow, fast, pause and a scrubber.
+- **The real bases are shown, at a primer's site.** A template is too long to write out, so the
+  strands are lines and one place is magnified: the lab's own bases in two rows, each over its
+  partner, unzipping, pairing with the primer, and being added to by the polymerase one at a time.
+- **A programme can be run.** Each step plays into the next and each cycle into the next. The first
+  three cycles go at the chosen pace; the rest go by quickly while the cycle count, a temperature
+  trace and the strands of each kind, as bars on a doubling scale, follow beside the scene.
+- **Motion is a setting**, on every scene. Off, a change of view is a cut. It starts where the
+  system's "reduce motion" is.
+- **The scene and the PCR are separate packages.** `bionet-scene` draws an instrument from plain
+  data and knows nothing of PCR; `bionet-tools` works the PCR out and knows nothing of three.js.
+  The desktop app puts them together.
+
+Not done: the camera travelling from the lab to the instrument (the instrument's space is entered
+by a cut, from the Lab tab or the Tools tab); the same treatment for the gel station; the
+bases away from a primer's site; a "teach me" switch that hides the lessons; the site reading its glossary from the
+packages; signing a review with a key.
 
 Not done: ends on a part, and with them keeping a cut piece and assembly as a tool; a sequence
 viewer; replaying a run to check it; a run as a step in a cloning plan; importing an instrument's

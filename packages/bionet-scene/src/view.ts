@@ -46,6 +46,10 @@ export interface DrawnPlace {
   focusable: boolean;
   /** Whether to write its name beside it. */
   labelled: boolean;
+  /** How far it is turned in all, in degrees, for something that is not the same from every side. */
+  turn: number;
+  /** For an instrument: which one, so that it can be drawn to look like it. */
+  model?: string;
 }
 
 /** One tube to draw, standing in its position. */
@@ -206,7 +210,8 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
   for (const one of arranged) {
     const { place } = one;
     const held = within.get(place.id) ?? [];
-    const base = { id: place.id, kind: place.kind, name: place.name, center: one.center, size: one.size };
+    const base = { id: place.id, kind: place.kind, name: place.name, center: one.center, size: one.size, turn: one.turn,
+                   ...(place.model === undefined ? {} : { model: place.model }) };
     const depth = one.path.length;
     const isFocus = focused !== null && place.id === focused.place.id;
     const childOfFocus = focused !== null && place.parent === focused.place.id;

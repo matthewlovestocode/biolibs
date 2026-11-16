@@ -20,3 +20,31 @@
 .bionet .gel text { font-size: 9.5px; fill: var(--bionet-dim) }
 .bionet .gel text.size { fill: var(--bionet-ink); font-weight: 600 }
 .bionet .gel text.lane { font-size: 10.5px }
+/* Beside an instrument's scene. */
+.bionet.benchpanel { display: grid; gap: .8rem; font-size: .92rem }
+.bionet.benchpanel .card { padding: .9rem 1rem }
+.bionet.benchpanel fieldset { border: 0; margin: 0; padding: 0 }
+.bionet.benchpanel select { width: 100% }
+.bionet.benchpanel .voice { margin: .9rem 0 .15rem; font-size: .68rem; letter-spacing: .09em; text-transform: uppercase; color: var(--bionet-dim) }
+.bionet.benchpanel .voice + p, .bionet.benchpanel .voice + ul { margin-top: 0 }
+.bionet.benchpanel .programme { display: grid; gap: .45rem }
+.bionet.benchpanel .programme label { display: flex; align-items: center; gap: .5rem }
+.bionet.benchpanel .programme input { width: 5.5rem }
+.bionet.benchpanel .checks { margin: 0; padding-left: 1.1rem; display: grid; gap: .3rem; font-size: .86rem }
+.bionet.benchpanel .checks .stop { color: var(--bionet-attention) }
+.bionet.benchpanel .checks .look { color: var(--bionet-held) }
+.bionet.benchpanel .good { color: var(--bionet-good) }
+.bionet.benchpanel .pick { margin-bottom: .4rem; flex-wrap: wrap; align-items: center }
+.bionet.benchpanel code.wrap { display: block; margin: .3rem 0 .6rem; word-break: break-all; font-size: .78rem }
+.bionet.benchpanel .trace { display: block; width: 100%; max-width: 20rem; height: auto; margin: .2rem 0 .3rem }
+.bionet.benchpanel .trace .line { stroke: var(--bionet-dim); stroke-width: 2; stroke-linejoin: round }
+.bionet.benchpanel .trace .now { fill: var(--bionet-found); opacity: .16 }
+.bionet.benchpanel .trace text { font-size: 9px; fill: var(--bionet-dim) }
+.bionet.benchpanel .trace text.on { fill: var(--bionet-found); font-weight: 600 }
+.bionet.benchpanel .bars { display: grid; gap: .3rem; margin: .2rem 0 .5rem }
+.bionet.benchpanel .bar { display: grid; grid-template-columns: 4.6rem 1fr 6.2rem; align-items: center; gap: .5rem; font-size: .82rem }
+.bionet.benchpanel .bar .track { height: .55rem; border-radius: 999px; background: color-mix(in srgb, var(--bionet-rule) 60%, transparent); overflow: hidden }
+.bionet.benchpanel .bar .fill { display: block; height: 100%; border-radius: 999px; transition: width .2s linear }
+.bionet.benchpanel .bar .fill.template { background: var(--bionet-dim) } .bionet.benchpanel .bar .fill.long { background: var(--bionet-theirs) }
+.bionet.benchpanel .bar .fill.product { background: var(--bionet-held) }
+.bionet.benchpanel .bar .count { text-align: right; font-variant-numeric: tabular-nums }

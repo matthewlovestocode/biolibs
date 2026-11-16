@@ -9,10 +9,25 @@
 import { useMemo, useState } from "react";
 import { layoutFrom, search, type Layout, type RecordedLab, type Standing } from "@biolibs/bionet-space";
 import { THEME_ATTRIBUTE, type Theme } from "@biolibs/bionet-theme";
+import { useMotion, type Motion } from "./motion.js";
 import { needsArranging, placeToAdd, type NewPlace } from "./arranging.js";
 import { LabBuilder } from "./builder.js";
 import { LabScene, useSystemTheme, type Neighbour } from "./scene.js";
 import { focusOn, sceneView, type Focus } from "./view.js";
+
+/**
+ * The switch that turns the scene's motion off and on.
+ *
+ * @param props - `motion` is the setting; `onFlip` changes it.
+ */
+export function MotionSwitch({ motion, onFlip }: { motion: Motion; onFlip: () => void }) {
+  return (
+    <button type="button" className="motion" aria-pressed={motion === "on"} onClick={onFlip}
+            title={motion === "on" ? "The view travels from one place to the next. Press to make it cut." : "The view cuts from one place to the next. Press to make it travel."}>
+      Motion {motion}
+    </button>
+  );
+}
 
 /**
  * A lab in three dimensions, with the controls to move around it.
@@ -23,7 +38,8 @@ import { focusOn, sceneView, type Focus } from "./view.js";
  * @param props - `layout` is the lab; `labName` is what to call it; `neighbours` are other labs to
  *   draw beside it; `theme` pins a theme, which otherwise follows the system; `focus` is where to
  *   start; `onNeighbour` is told when another lab is pressed; `onUse`, if given, puts a way to use
- *   an instrument beside it once it has been pressed, and is told which.
+ *   an instrument beside it once it has been pressed, and is told which; `motion` pins whether the
+ *   camera travels or cuts, which otherwise follows the system and the switch.
  *
  * @example
  * ```tsx
@@ -35,10 +51,11 @@ import { focusOn, sceneView, type Focus } from "./view.js";
  * <LabExplorer layout={exampleLab()} labName="The Wren Lab" />
  * ```
  */
-export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus: start, onNeighbour, onUse }: {
+export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus: start, onNeighbour, onUse, motion: pinned }: {
   layout: Layout; labName?: string; neighbours?: readonly Neighbour[]; theme?: Theme; focus?: Focus; onNeighbour?: (id: string) => void;
-  onUse?: (place: string) => void;
+  onUse?: (place: string) => void; motion?: Motion;
 }) {
+  const [motion, flipMotion] = useMotion(pinned);
   const system = useSystemTheme();
   const shown = theme ?? system;
   const [focus, setFocus] = useState<Focus>(start ?? { place: null });
@@ -53,7 +70,7 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
 
   return (
     <div className="bionet-scene" {...{ [THEME_ATTRIBUTE]: shown }}>
-      <LabScene view={view} theme={shown} onFocus={setFocus} {...(neighbours === undefined ? {} : { neighbours })}
+      <LabScene view={view} theme={shown} motion={motion} onFocus={setFocus} {...(neighbours === undefined ? {} : { neighbours })}
                 {...(onNeighbour === undefined ? {} : { onNeighbour })} />
       <nav className="crumbs" aria-label="Where you are">
         {view.crumbs.map((crumb, at) => (
@@ -72,6 +89,7 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
         <input value={words} onChange={(event) => setWords(event.target.value)} placeholder="Find a part" aria-label="Find a part" spellCheck={false} />
         {words.trim() !== "" && <span className="count">{found.length === 0 ? "none" : `${found.length} found`}</span>}
       </form>
+      <MotionSwitch motion={motion} onFlip={flipMotion} />
       <p className="status">
         {view.holding.toLocaleString("en-US")} {view.holding === 1 ? "tube" : "tubes"} in {where.name}
         {view.level !== "box" && <span className="hint"> · press something to look into it</span>}

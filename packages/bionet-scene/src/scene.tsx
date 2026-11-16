@@ -18,6 +18,9 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, 
 import { BoxGeometry, Color, CylinderGeometry, EdgesGeometry, Object3D, Plane, QuadraticBezierCurve3, RingGeometry, Vector3,
          type InstancedMesh, type Mesh, type PerspectiveCamera } from "three";
 import { colour, type Meaning, type Theme } from "@biolibs/bionet-theme";
+import { InstrumentShape } from "./instruments.js";
+import type { Motion } from "./motion.js";
+import { shapeOf } from "./shapes.js";
 import { legible, type DrawnPlace, type DrawnSlot, type DrawnTube, type Focus, type SceneView, type Written } from "./view.js";
 
 /** Another lab, drawn beside this one. */
@@ -71,7 +74,7 @@ export function useSystemTheme(): Theme {
 const NEIGHBOUR_SIZE: [number, number, number] = [1.8, 1.5, 1.8];
 
 /** Something written over the scene, at a point in it. */
-interface Label {
+export interface Label {
   /** What tells it apart from the others. */
   key: string;
   /** The point it is written at. */
@@ -88,7 +91,7 @@ interface Label {
  * The labels are ordinary elements beside the canvas, drawn by the same React as everything else.
  * This only moves them: once a frame it works out where each point falls on screen.
  */
-function Follow({ labels, layer }: { labels: readonly Label[]; layer: RefObject<HTMLDivElement | null> }) {
+export function Follow({ labels, layer }: { labels: readonly Label[]; layer: RefObject<HTMLDivElement | null> }) {
   const point = useMemo(() => new Vector3(), []);
   useFrame(({ camera, size }) => {
     const elements = layer.current?.children;
@@ -172,12 +175,21 @@ function PlaceBox({ place, theme, onPick, drag }: { place: DrawnPlace; theme: Th
   };
   const edge = paint(place.tone, theme, place.strength);
   const face = colour(place.tone, theme);
+  const shape = place.kind === "instrument" ? shapeOf(place.model) : null;
+  // A shape is drawn at the instrument's own size and then turned, so a quarter turn is undone here.
+  const own: [number, number, number] = place.turn === 90 || place.turn === 270 ? [place.size[2], place.size[1], place.size[0]] : place.size;
   const volume = place.size[0] * place.size[1] * place.size[2];
   return (
     <group position={place.center}>
-      <lineSegments scale={place.size} geometry={EDGES}>
-        <lineBasicMaterial color={edge.color} transparent opacity={edge.opacity} toneMapped={false} />
-      </lineSegments>
+      {shape === null ? (
+        <lineSegments scale={place.size} geometry={EDGES}>
+          <lineBasicMaterial color={edge.color} transparent opacity={edge.opacity} toneMapped={false} />
+        </lineSegments>
+      ) : (
+        <group rotation={[0, -(place.turn * Math.PI) / 180, 0]}>
+          <InstrumentShape shape={shape} size={own} theme={theme} tone={place.tone} strength={place.strength} />
+        </group>
+      )}
       {(place.focusable || place.fill > 0) && (
         <mesh scale={place.size} geometry={BOX} userData={place.focusable ? { volume } : {}}
               onPointerDown={!draggable ? undefined : (event) => {
@@ -313,8 +325,13 @@ function NeighbourLab({ neighbour, from, to, theme, onPick }: {
   );
 }
 
-/** Moves the camera to where the view says to stand, then leaves it to the person. */
-function Rig({ view }: { view: SceneView }) {
+/**
+ * Moves the camera to where a view says to stand, then leaves it to the person.
+ *
+ * @param props - `view` is where to stand and through what lens; `motion` says whether to travel
+ *   there or cut.
+ */
+export function Rig({ view, motion = "on" }: { view: Pick<SceneView, "pose" | "fov">; motion?: Motion }) {
   const camera = useThree((state) => state.camera);
   const controls = useThree((state) => state.controls) as unknown as { target: Vector3; update: () => void } | null;
   const lens = camera as PerspectiveCamera;
@@ -326,8 +343,8 @@ function Rig({ view }: { view: SceneView }) {
   useEffect(() => { left.current = 1.6; }, [position, target, view.fov]);
   useFrame((_, delta) => {
     if (controls === null || left.current <= 0) return;
-    if (first.current) {
-      // The first look is not a journey: start where the view says to stand.
+    if (first.current || motion === "off") {
+      // The first look is not a journey, and with motion off no look is: start where the view says to stand.
       first.current = false;
       camera.position.copy(position);
       controls.target.copy(target);
@@ -355,11 +372,12 @@ function Rig({ view }: { view: SceneView }) {
  *
  * @param props - `view` is what to draw; `theme` picks the colours; `onFocus` is told which place or
  *   tube was pressed; `neighbours` are other labs to draw beside this one, and `onNeighbour` is told
- *   when one is pressed; `drag` lets some places be dragged across the floor.
+ *   when one is pressed; `drag` lets some places be dragged across the floor; `motion` says whether
+ *   the camera travels between views or cuts.
  */
-export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, drag }: {
+export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, drag, motion = "on" }: {
   view: SceneView; theme: Theme; onFocus: (focus: Focus) => void; neighbours?: readonly Neighbour[]; onNeighbour?: (id: string) => void;
-  drag?: Dragging;
+  drag?: Dragging; motion?: Motion;
 }) {
   const rooms = view.places.filter((place) => place.kind === "room");
   const right = Math.max(0, ...rooms.map((room) => room.center[0] + room.size[0] / 2));
@@ -407,7 +425,7 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
       ))}
       <Follow labels={labels} layer={layer} />
       <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.03} minDistance={0.08} maxDistance={60} />
-      <Rig view={view} />
+      <Rig view={view} motion={motion} />
       {theme === "dark" && (
         <EffectComposer>
           <Bloom mipmapBlur intensity={0.85} luminanceThreshold={0.55} luminanceSmoothing={0.3} />

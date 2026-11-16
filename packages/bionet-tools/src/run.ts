@@ -9,6 +9,7 @@ import type { ItemState, PartState, PlaceState } from "@biolibs/bionet";
 import { amountOf, whereWords } from "@biolibs/bionet-panels";
 import { planDigest, type DigestPlan } from "./digest.js";
 import { ANNEAL_AT_LEAST, looksLikePrimer, planPcr, type PcrPlan } from "./pcr.js";
+import type { PcrProgramme } from "./pcr-scene.js";
 
 /** As much of a lab as a tool reads. */
 export interface ToolLab {
@@ -67,6 +68,8 @@ export interface PcrChoice {
   unit?: string | null;
   /** Anything worth saying about the run. */
   note?: string | null;
+  /** The programme the machine was set to, to be kept with the run. */
+  programme?: PcrProgramme;
 }
 
 /** A PCR as chosen: what it would make, and what to ask the lab to record. */
@@ -116,7 +119,11 @@ export function pcrRun(lab: ToolLab, choice: PcrChoice): PcrRun {
       { item: choice.forward, amount: whole(choice.used?.forward, 1), role: "forward primer" },
       { item: choice.reverse, amount: whole(choice.used?.reverse, 1), role: "reverse primer" },
     ],
-    settings: { anneal_at_least: least },
+    // What the operator set is part of what was done, and is what somebody repeating the run needs.
+    settings: { anneal_at_least: least, ...(choice.programme === undefined ? {} : {
+      denature_c: choice.programme.steps[0].celsius, anneal_c: choice.programme.steps[1].celsius, anneal_s: choice.programme.steps[1].seconds,
+      extend_c: choice.programme.steps[2].celsius, extend_s: choice.programme.steps[2].seconds, cycles: choice.programme.cycles,
+    }) },
     note: choice.note ?? null,
   };
   const product = plan.problem === null ? plan.products[0]! : null;

@@ -33,6 +33,39 @@ if (run.worked !== null) await act("recordRun", run.worked);
 
 `pcrTubes` offers short linear parts as primers and the rest as templates. `pcrRun` works a choice out into what to hand the lab's `recordRun`: `worked` when there is exactly one product, and `failed` for a run that was done and gave nothing, which still used the tubes.
 
+## A PCR at the machine
+
+```tsx
+import { InstrumentStage } from "@biolibs/bionet-scene";
+import { usePcrBench } from "@biolibs/bionet-tools";
+
+const bench = usePcrBench({ instrument });
+<InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage>
+```
+
+`usePcrBench` is a PCR as a person at the machine meets it. `stage` is what a scene is told to show:
+the programme on the screen, the well that is taken, the strands in the tube. `panel` is what goes
+beside it, and keeps four things apart: what the **machine** shows, what is true of this **run**, the
+**checks** a careful operator would make, and what is going on, for somebody new. This package does
+not depend on three.js; the scene comes from `@biolibs/bionet-scene`.
+
+The pieces are plain functions:
+
+```ts
+import { primerBinding, programmeChecks, screenOf, strandCounts, suggestProgramme, tubeView } from "@biolibs/bionet-tools";
+
+const programme = suggestProgramme({ length: 1500, primers: [{ name: "fwd", tm: 60 }, { name: "rev", tm: 58 }] });
+programme.steps[1];                 // { name: "anneal", celsius: 53, seconds: 30 }
+screenOf(programme)[3].text;        // "  Anneal  53 °C   0:30"
+programmeChecks(programme, { length: 1500, primers: [{ name: "fwd", tm: 60 }, { name: "rev", tm: 58 }] });   // []
+strandCounts(3);                    // { template: 2, long: 6, product: 8 }
+```
+
+`tubeView` says what is in the tube at each step of each cycle, including the thing people find
+hardest to picture: the first cycle's copies run on too far, the second makes the first strands of
+exactly the product's length, and from the third the product takes over. The programme a run was
+set to is kept with the run.
+
 ## A digest and its gel
 
 ```ts

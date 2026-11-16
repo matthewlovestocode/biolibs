@@ -64,6 +64,36 @@ A drag follows the floor the place stands on, not the camera's depth, and turns 
 
 `LabView` takes a lab's record as plain data and draws it, so the same component sits in a desktop window and on a web page. It has an empty state because a lab has no places until somebody adds one.
 
+## A scene is what the machine shows, and what its operator pictures
+
+How to decide what a scene of an instrument should be: imagine the real machine in use. Some things it displays — its body, its lid, its block, its screen. Other things the person at it has to picture, because the machine says nothing about them. Those two lists are the views. A thermocycler shows a programme and a block temperature; it does not show strands parting or primers binding, so that is the view worth drawing.
+
+What this rules out is motion for its own sake. Tubes travelling from the freezer to the bench show the operator nothing they did not know.
+
+`InstrumentStage` is that, for one instrument: three views of what it shows and two of what is pictured, each a button, so any is one press away. It takes what to show as plain data — screen lines, a well, the strands in the tube — and knows nothing of PCR. The shapes of instruments and the camera's place for each view are data too (`shapes.ts`), and tested as numbers.
+
+## A step is played, not switched
+
+The first version showed each step of a cycle as a still, so pressing "Anneal" replaced one picture with another and the thing that had happened was exactly what was not shown. Now a step plays out: two strands lie paired and part; a primer drifts in from beside its place and settles on it; a copy grows from its primer towards its 3′ end. It takes about two seconds. The first attempt took seven, which was long enough to watch and too long to wait for; so the usual speed is quick, and there is a slow one, a fast one, a pause and a scrubber, since the moment worth looking at is different for everybody.
+
+A step can also run into the next: the stage tells its host when one has finished playing, so a whole programme can be run, cycle after cycle.
+
+## The real bases
+
+The strands are lines, because a template is thousands of bases and no screen shows that many letters. Lines alone leave out what a PCR is made of, which is bases pairing. Ticks between the lines say that pairing is happening but they are stand-ins: one every centimetre of scene, not the sequence.
+
+So one place is magnified: where a primer binds. There the lab's actual bases are written out in two rows, each base above its partner, with a mark between the ones that are paired. Heating unzips them one after another. The primer's own bases land and pair, and a tail it carries is seen not to. The polymerase adds the real next bases one at a time, with the place it will add to outlined. The stretch being read is outlined on the strands, so the letters and the lines are seen to be the same thing at two scales.
+
+The scene does not know sequences. It is handed two rows of cells and which are paired, for any moment of the step, and draws them. Bases are letters as well as colours.
+
+What moves is data, like the rest. A strand says it `parts`, `lands` or `grows`, and `placeStrands` says where it is for any moment of the step. The tests check the movement as numbers: parting never slides a base away from the one it was paired with, a primer keeps its length on the way in, a copy is anchored at its 5′ end.
+
+This is motion that shows something the operator cannot see, which is the test a scene's motion has to pass.
+
+## Motion is a setting
+
+Moving between views helps some people keep their place and makes others unwell, or just slows them down the tenth time. Every scene has a switch that starts where the system's "reduce motion" setting is. With it off, a change of view is a cut, a lid is open or shut, and nothing moves by itself.
+
 ## Using an instrument
 
 Pressing an instrument and then "Use it" tells the host which instrument, through `onUse`. The scene does not know what a thermocycler does and does not depend on the tools; what opens is the host's to decide. `@biolibs/bionet-tools` has the tools, and `InstrumentTool` there picks one by the instrument's `model`.
@@ -80,6 +110,10 @@ packages/bionet-scene/src/
   scene.tsx      that list, drawn with three.js
   arranging.ts   a room being arranged by hand, as plain data
   builder.tsx    dragging, turning and resizing what stands in a room
+  shapes.ts      what an instrument is made of, and where to stand for each view of it
+  instruments.tsx  an instrument drawn from its shape
+  stage.tsx      one instrument in use
+  motion.ts      whether the scene moves between views, or cuts
   explorer.tsx   the scene with the way back, a search, and what was picked
 packages/bionet-scene/scene.css   the frame and what is written over the scene
 ```

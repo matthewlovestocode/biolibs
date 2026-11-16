@@ -9,6 +9,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { UNNAMED_ROOM, quarterTurned, standingAt, standingOf, standingUp, type Layout, type Standing } from "@biolibs/bionet-space";
 import { THEME_ATTRIBUTE, type Theme } from "@biolibs/bionet-theme";
+import { useMotion } from "./motion.js";
 import { INSTRUMENTS, arranging, kindsFor, movableAt, placeToAdd, roomsOf, toSay, type NewPlace } from "./arranging.js";
 import { LabScene, useSystemTheme, type Dragging } from "./scene.js";
 
@@ -39,6 +40,7 @@ export function LabBuilder({ layout, onStand, onAdd, onRetire, labName = "Lab", 
 }) {
   const system = useSystemTheme();
   const shown = theme ?? system;
+  const [motion] = useMotion();
   const rooms = useMemo(() => roomsOf(layout), [layout]);
   const [chosen, setInside] = useState<string | null>(null);
   // What is being arranged: the place chosen if the lab still has it, or else the first room.
@@ -92,7 +94,7 @@ export function LabBuilder({ layout, onStand, onAdd, onRetire, labName = "Lab", 
 
   return (
     <div className="bionet-scene" {...{ [THEME_ATTRIBUTE]: shown }}>
-      <LabScene view={now.view} theme={shown} drag={drag}
+      <LabScene view={now.view} theme={shown} drag={drag} motion={motion}
                 onFocus={(focus) => {
                   const meant = focus.place === null ? null : movableAt(now, focus.place);
                   if (meant !== null) setPicked(meant);

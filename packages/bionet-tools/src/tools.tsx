@@ -1,7 +1,7 @@
 "use client";
 
 /** Getting to a tool: from the instrument it is used at, or from a list of them all. */
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useLab } from "@biolibs/bionet-react";
 import { DigestTool } from "./digest-tool.js";
 import { PcrTool } from "./pcr-tool.js";
@@ -44,9 +44,10 @@ export function InstrumentTool({ place, onDone }: { place: string; onDone?: () =
  *
  * A run is still recorded as done at the instrument for that tool, if the lab has placed one.
  *
- * @param props - `tool` is which to open on.
+ * @param props - `tool` is which to open on; `views` lets a host show a tool its own way, such as
+ *   at its instrument in a scene, in place of the plain form.
  */
-export function Tools({ tool: first = "pcr" }: { tool?: ToolName }) {
+export function Tools({ tool: first = "pcr", views = {} }: { tool?: ToolName; views?: Partial<Record<ToolName, ReactNode>> }) {
   const lab = useLab()?.lab;
   const [tool, setTool] = useState<ToolName>(first);
   if (lab === null || lab === undefined) return null;
@@ -57,7 +58,7 @@ export function Tools({ tool: first = "pcr" }: { tool?: ToolName }) {
           <button key={one} type="button" role="tab" aria-selected={one === tool} className={one === tool ? "" : "quiet"} onClick={() => setTool(one)}>{TOOL_NAMES[one]}</button>
         ))}
       </div>
-      <Tool key={tool} tool={tool} instrument={instrumentFor(lab, tool)} />
+      {views[tool] ?? <Tool key={tool} tool={tool} instrument={instrumentFor(lab, tool)} />}
     </div>
   );
 }
