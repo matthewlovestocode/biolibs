@@ -1,6 +1,6 @@
 # @biolibs/bionet-scene
 
-A lab in three dimensions. Rooms, freezers, boxes and tubes drawn as edges in the Bionet theme — glowing on black, or plainly on a pale ground — with a camera that moves from the whole lab down to one position in a box.
+A lab in three dimensions. Rooms, freezers, boxes and tubes drawn as edges in the Bionet theme — glowing on black, or plainly on a pale ground — with a camera that moves from the whole lab down to one position in a box. The same view arranges the lab by hand: drag, turn, resize, add and retire places.
 
 ```
 npm install @biolibs/bionet-scene @biolibs/bionet-space @biolibs/bionet-theme three @react-three/fiber @react-three/drei @react-three/postprocessing

@@ -118,21 +118,22 @@ following pointers from a lab it already knows.
 
 | Package | What it does |
 |---|---|
-| [`@biolibs/bionet`](packages/bionet) | The protocol. A lab's signed logs and how they merge; inventories named by checksum, signed and published at the lab's own address; finding labs by walking from ones you know; what a signature does and does *not* establish |
-| [`@biolibs/bionet-client`](packages/bionet-client) | One device in one lab: its key, its copy of the log, everything a member can do, and the connection to the lab's web peer. Works offline, syncs when it can. Storage, key keeping and sockets are plugged in |
+| [`@biolibs/bionet`](packages/bionet) | The protocol. A lab's signed logs and how they merge: parts and tubes, where each tube is, and what was done at the bench. Inventories named by checksum, signed and published at the lab's own address; finding labs by walking from ones you know; what a signature does and does *not* establish |
+| [`@biolibs/bionet-client`](packages/bionet-client) | One device in one lab: its key, its copy of the log, everything a member can do, and the connection to the lab's web peer. Works offline, syncs when it can. Backs up the key and the lab. Storage, key keeping and sockets are plugged in |
 | [`@biolibs/bionet-peer`](packages/bionet-peer) | A lab's web peer: a member that holds no key. It keeps a copy of the log, passes changes between members who are never online together, and serves the published inventory |
 | [`@biolibs/bionet-theme`](packages/bionet-theme) | The look, in one place: each colour's meaning with a value for a light theme and a dark one, and the Bionet mark and logo |
 | [`@biolibs/bionet-react`](packages/bionet-react) | React hooks with no appearance of their own: the lab as it stands, asking for a change, hearing why it was refused |
-| [`@biolibs/bionet-panels`](packages/bionet-panels) | The parts of a lab application, ready to place: freezer, people, history, sharing, a whole window, and a lab's public page |
-| [`@biolibs/bionet-space`](packages/bionet-space) | Where things are in a lab: a tree of places, where each stands, the positions inside a box, and where a camera should look. Plain data, nothing drawn |
-| [`@biolibs/bionet-scene`](packages/bionet-scene) | A lab in three dimensions: rooms, freezers, boxes and tubes in the Bionet theme, from the whole lab down to one position in a box |
-| [`@biolibs/bionet-tools`](packages/bionet-tools) | The tools a lab uses at the bench, tied to its freezer: run a PCR from the tubes it holds and record it, so the inputs drop and the product becomes a tube |
+| [`@biolibs/bionet-panels`](packages/bionet-panels) | The parts of a lab application, ready to place: freezer, places, people, history, sharing, backing up, a whole window that takes a host's own views, and a lab's public page |
+| [`@biolibs/bionet-space`](packages/bionet-space) | Where things are in a lab: a tree of places, where each stands, the positions inside a box, where a camera should look, and what a drag would have the lab say. Plain data, nothing drawn |
+| [`@biolibs/bionet-scene`](packages/bionet-scene) | A lab in three dimensions: rooms, freezers, boxes and tubes in the Bionet theme, from the whole lab down to one position in a box, and arranged by hand in the same view |
+| [`@biolibs/bionet-tools`](packages/bionet-tools) | The tools a lab uses at the bench, tied to its freezer: PCR and a check digest with its gel, run from the tubes it holds and recorded, so what was used is taken and what was made becomes a tube |
 
 They are layered so that an application owns nothing: no colour, no component and no rule of its own.
 Three things are built on them:
 
-- [bionet-desktop](https://github.com/matthewlovestocode/bionet-desktop), a desktop app whose own code is
-  the keychain, the window and the door between them.
+- [bionet-desktop](https://github.com/matthewlovestocode/bionet-desktop), a desktop app for running a
+  lab's freezer: parts and tubes, where they are, the lab in three dimensions, PCR and digests at the
+  bench. Its own code is the keychain, the window and the door between them.
 - Two example labs, each a web page and a web peer at its own address:
   [lab-wren.onrender.com](https://lab-wren.onrender.com) and
   [lab-thistle.onrender.com](https://lab-thistle.onrender.com).

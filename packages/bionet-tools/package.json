@@ -13,7 +13,7 @@
     "@biolibs/seq": "^1.0.0",
     "@biolibs/seqtools": "^1.0.0"
   },
-  "description": "The tools a lab uses at the bench, tied to its freezer: run a PCR in silico from the tubes it holds, and record it so the template and primers drop by what was used and the product becomes a tube",
+  "description": "The tools a lab uses at the bench, tied to its freezer: PCR and a check digest with its gel, run in silico from the tubes it holds and recorded, so what was used is taken and what was made becomes a tube",
   "engines": {
     "node": ">=20"
   },

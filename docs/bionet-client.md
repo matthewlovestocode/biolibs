@@ -39,6 +39,10 @@ A window does not always share a process with the lab it shows. In a desktop app
 
 `snapshot()` returns the same object until something changes, so it can be compared by identity, which is what React's external-store hook needs.
 
+## Everything a member can do is one list
+
+`ACTIONS` in `source.ts` is the whole of what a window may ask for: saying who is at the device, founding or joining, the roster, parts and tubes, places and where a tube is, recording a run at the bench, publishing, and backing up. A tool or a scene does not get a way of its own into the lab. It asks for one of these, so a new kind of window adds no new power.
+
 ## The key can be kept somewhere else
 
 The design gives each device its own key and never moves one. The exception is loss: a lab with one member and one device ends when the device does, and the real Wren Lab was exactly that. So a key can be sealed under a passphrase into a small document, and opened on a new device.
@@ -56,7 +60,7 @@ packages/bionet-client/src/
   lab.ts       the device: Lab, and the plain-data snapshot a window draws
   link.ts      the connection to the web peer, which is allowed to fail
   source.ts    the narrow way a window reaches a lab
-  backup.ts   the device's key, sealed under a passphrase
+  backup.ts    the device's key, sealed under a passphrase
   store.ts     the interfaces for storage and key keeping, with in-memory versions
   sqlite.ts    storage in a SQLite file
 ```

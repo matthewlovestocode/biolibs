@@ -9,7 +9,7 @@
     "@biolibs/bionet-space": "^0.3.0",
     "@biolibs/opencloning": "^2.0.0"
   },
-  "description": "The parts of a Bionet lab application, ready to place: the freezer, the people, the history, what other labs are shown, and a whole window that puts them together, in a light theme and a dark one",
+  "description": "The parts of a Bionet lab application, ready to place: the freezer, where things are kept, the people, the history, what other labs are shown, backing up, and a whole window that puts them together, in a light theme and a dark one",
   "engines": {
     "node": ">=20"
   },

@@ -1,7 +1,8 @@
 # @biolibs/bionet-panels
 
-The parts of a Bionet lab application, ready to place: the freezer, the people, the history, what
-other labs are shown, and a whole window that puts them together. Light and dark.
+The parts of a Bionet lab application, ready to place: the freezer, where things are kept, the
+people, the history, what other labs are shown, backing up the key and the lab, and a whole window
+that puts them together. Light and dark.
 
 ## Install
 

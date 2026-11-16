@@ -1,6 +1,6 @@
 # @biolibs/bionet-panels
 
-The parts of a Bionet lab application, ready to place: the freezer, the people, the history, what other labs are shown, a whole window that puts them together, and a lab's public page.
+The parts of a Bionet lab application, ready to place: the freezer, where things are kept, the people, the history, what other labs are shown, backing up the key and the lab, a whole window that puts them together, and a lab's public page.
 
 ```tsx
 import "@biolibs/bionet-theme/theme.css";
@@ -36,7 +36,9 @@ Every rule in `panels.css` is inside `.bionet`, so nothing reaches the page arou
 
 ## A host can add a view, and nothing else
 
-`LabWindow` takes `extra` tabs. That is how a desktop app shows the three-dimensional scene without this package depending on three.js, which a lab's public web page should not have to load. The host supplies a component; it still decides no colour and no rule.
+`LabWindow` takes `extra` tabs. That is how a desktop app shows the three-dimensional scene and the bench tools without this package depending on three.js or the cloning engines, which a lab's public web page should not have to load. The host supplies a component; it still decides no colour and no rule.
+
+It also takes `copy` and `save`, for a host that puts words on the clipboard or hands over a file in its own way. A desktop app saves through a dialog in its main process, and answers `false` if the person chose not to save, which the form then says.
 
 ## Source layout
 
@@ -44,8 +46,10 @@ Every rule in `panels.css` is inside `.bionet`, so nothing reaches the page arou
 packages/bionet-panels/
   panels.css            the styles, scoped to .bionet
   src/window.tsx        LabWindow, and the screens before there is a lab
-  src/freezer.tsx       parts, tubes, amounts
+  src/freezer.tsx       parts, tubes, amounts, where each tube is and which run made it
+  src/places.tsx        the tree of places, and putting a tube somewhere
   src/people.tsx        the roster, and letting somebody in
+  src/backup.tsx        sealing the key to a file, copying the whole lab, and bringing either back
   src/history.tsx       every signed change, and what became of it
   src/sharing.tsx       what other labs are shown, and the lab's web peer
   src/public.tsx        a lab's public page

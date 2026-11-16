@@ -52,15 +52,15 @@ Labs keeping a freezer together and sharing what they hold, with no server in ch
 
 | Package | Purpose | Docs |
 |---|---|---|
-| `@biolibs/bionet` | The protocol: a lab's signed logs and how they merge, signed inventories at a lab's own address, finding labs by walking, and what a signature does not establish | [bionet.md](bionet.md) |
-| `@biolibs/bionet-client` | One device in one lab: its key, its copy of the log, every action, and the connection to the lab's web peer. Storage, keys and sockets are plugged in | [bionet-client.md](bionet-client.md) |
+| `@biolibs/bionet` | The protocol: a lab's signed logs and how they merge, including where each tube is and what was done at the bench; signed inventories at a lab's own address, finding labs by walking, and what a signature does not establish | [bionet.md](bionet.md) |
+| `@biolibs/bionet-client` | One device in one lab: its key, its copy of the log, every action, the connection to the lab's web peer, and backing up the key and the lab. Storage, keys and sockets are plugged in | [bionet-client.md](bionet-client.md) |
 | `@biolibs/bionet-peer` | A lab's web peer: a member that holds no key, which stores and forwards the log and serves the published inventory | [bionet-peer.md](bionet-peer.md) |
 | `@biolibs/bionet-theme` | Each colour's meaning with a value for a light theme and a dark one, and the Bionet mark and logo | [bionet-theme.md](bionet-theme.md) |
 | `@biolibs/bionet-react` | React hooks with no appearance of their own, and the mark and logo as components | [bionet-react.md](bionet-react.md) |
-| `@biolibs/bionet-panels` | The parts of a lab application, a whole window, and a lab's public page | [bionet-panels.md](bionet-panels.md) |
-| `@biolibs/bionet-space` | Where things are in a lab: a tree of places, the positions inside a box, and where a camera should look. Plain data | [bionet-space.md](bionet-space.md) |
-| `@biolibs/bionet-tools` | The tools a lab uses at the bench, tied to its freezer: PCR from the tubes it holds, recorded as a run | [bionet-tools.md](bionet-tools.md) |
-| `@biolibs/bionet-scene` | A lab in three dimensions, from the whole room down to one position in a box | [bionet-scene.md](bionet-scene.md) |
+| `@biolibs/bionet-panels` | The parts of a lab application, a whole window that takes a host's own views, and a lab's public page | [bionet-panels.md](bionet-panels.md) |
+| `@biolibs/bionet-space` | Where things are in a lab: a tree of places, the positions inside a box, where a camera should look, and arranging by hand. Plain data | [bionet-space.md](bionet-space.md) |
+| `@biolibs/bionet-tools` | The tools a lab uses at the bench, tied to its freezer: PCR and a check digest with its gel, recorded as runs | [bionet-tools.md](bionet-tools.md) |
+| `@biolibs/bionet-scene` | A lab in three dimensions, from the whole room down to one position in a box, and arranged by hand | [bionet-scene.md](bionet-scene.md) |
 
 ## Dependency graph
 
@@ -99,7 +99,7 @@ Bionet sits on top of those, in layers that each depend only on the ones before:
 ```
 dseqrecord, opencloning  <-- bionet  <-- bionet-peer
                                ^
-                               '------ bionet-client  <-- bionet-react  <-- bionet-panels
+                               '------ bionet-client  <-- bionet-react  <-- bionet-panels  (also uses bionet-space)
 bionet-theme  (nothing)  <------------------------------------'               (and as a peer)
 bionet-space  (nothing)  <-- bionet-scene  (also uses bionet-theme, three.js)
 assembly2, restriction, gel, seqtools, bionet-panels  <-- bionet-tools

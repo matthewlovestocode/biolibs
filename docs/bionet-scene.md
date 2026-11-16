@@ -64,6 +64,10 @@ A drag follows the floor the place stands on, not the camera's depth, and turns 
 
 `LabView` takes a lab's record as plain data and draws it, so the same component sits in a desktop window and on a web page. It has an empty state because a lab has no places until somebody adds one.
 
+## Using an instrument
+
+Pressing an instrument and then "Use it" tells the host which instrument, through `onUse`. The scene does not know what a thermocycler does and does not depend on the tools; what opens is the host's to decide. `@biolibs/bionet-tools` has the tools, and `InstrumentTool` there picks one by the instrument's `model`.
+
 ## What is fixed
 
 How the scene looks is not configurable. Sizes are the lab's data; colours are the theme's. The design record says why: every option is something a person must be given a way to set.

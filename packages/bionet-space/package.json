@@ -2,7 +2,7 @@
   "bugs": {
     "url": "https://github.com/matthewlovestocode/biolibs/issues"
   },
-  "description": "Where things are in a lab: a tree of places, where each one stands and how big it is, the positions inside a box, and where a camera should look. Plain data and arithmetic, with nothing drawn",
+  "description": "Where things are in a lab: a tree of places, where each one stands and how big it is, the positions inside a box, where a camera should look, and what arranging by hand would have the lab say. Plain data and arithmetic, with nothing drawn",
   "engines": {
     "node": ">=20"
   },

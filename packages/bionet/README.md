@@ -7,6 +7,10 @@ sign it so the plan is attached to a key. Both of those are about the document. 
 anybody a plasmid. This package is the other half: a lab writes down what it has, signs the list, and
 publishes it at a fixed path on its own web address. Then a plan's starting parts can be looked up.
 
+It is also what a lab is kept with inside: every member's device signs its own changes into its own
+log, and the lab is worked out from all of them together. Parts and tubes, where each tube is, and
+what was done at the bench are all changes of that kind. See "Inside a lab" below.
+
 - **Write an inventory** from the molecules a lab holds
 - **Sign it**, and let another lab countersign
 - **Publish it** at `/.well-known/bionet.json`

@@ -6,6 +6,15 @@ was settled.
 
 ## Where things stand
 
+*As of 2026-11-16.* A lab is a tool people can run a freezer with. The desktop app founds or joins a
+lab, keeps parts and tubes, records where each tube is, draws the lab in three dimensions and lets
+it be arranged by hand, runs a PCR or a check digest from the tubes it holds and records the run,
+and backs up both the device's key and the lab itself. One real lab, the Wren Lab, is kept this
+way. All of it is in packages; the app owns none of it. The sections below record how that was
+arrived at, in the order it was decided, and each says what is still not done.
+
+What follows in this section is where things stood when this document was begun.
+
 `@biolibs/bionet` 1.1.0 lets a lab publish a signed list of parts at `/.well-known/bionet.json`, lets a
 reader fetch and check one, walk from lab to lab through `peers`, remember which key answered at an
 address, and match a plan's starting parts to labs by checksum.
@@ -260,12 +269,14 @@ The location model the earlier sections left for later.
 ### Order of building
 
 1. **The lab and its places**: the builder, places, box grids, and the scene with finding a tube.
+   *Built.*
 2. **The sequence workbench**: open a tube or a file, see the map, edit, find enzymes and features.
-   Opening existing SnapGene and GenBank files is also how a lab's sequences get in.
+   Opening existing SnapGene and GenBank files is also how a lab's sequences get in. *Not started.*
 3. **Plan, source, simulate**: a cloning plan with a pick list in the freezer, missing parts sourced
-   across the bionet, gel and PCR previews.
-4. **Verify**: Sanger traces aligned to the plan's product.
-5. **Instruments as recorded runs.**
+   across the bionet, gel and PCR previews. *The gel and PCR are built as tools; the plan is not.*
+4. **Verify**: Sanger traces aligned to the plan's product. *Not started.*
+5. **Instruments as recorded runs.** *Built for PCR and a check digest. It was taken before the
+   workbench because it needed the least that did not exist.*
 
 Each is meant to be usable on its own.
 
@@ -305,18 +316,18 @@ This replaces the package list under "Libraries" above. Each layer may depend on
 | Layer | Package | Holds | Knows about | State |
 |---|---|---|---|---|
 | Engines | `@biolibs/seqio`, `restriction`, `pcr`, `gel`, `assembly2`, and the rest | The science | Nothing else | Published |
-| Protocol | `@biolibs/bionet` | Signed logs, merge, sync messages; places to come | Engines | Published |
+| Protocol | `@biolibs/bionet` | Signed logs, merge, sync messages; places, where a tube is, and runs at the bench | Engines | Published |
 | Look | `@biolibs/bionet-theme` | Colours by meaning for both themes, as CSS and as data; the mark and logo | Nothing | Built |
 | Peer | `@biolibs/bionet-peer` | A lab's web peer, its stores, putting it on a web server, an in-process network | Protocol | Built |
-| Client | `@biolibs/bionet-client` | One device in one lab: actions, sync, state; the narrow way a window reaches a lab | Protocol; storage, keys and sockets are plugged in | Built |
+| Client | `@biolibs/bionet-client` | One device in one lab: actions, sync, state; the narrow way a window reaches a lab; sealing the key and copying the lab | Protocol; storage, keys and sockets are plugged in | Built |
 | Hooks | `@biolibs/bionet-react` | The lab, asking for a change, the last refusal; the mark and logo as components | Client, look, React | Built |
-| Panels | `@biolibs/bionet-panels` | Freezer, people, history, sharing, and a whole window | Hooks, look | Built |
+| Panels | `@biolibs/bionet-panels` | Freezer, places, people, history, sharing, backing up, a whole window that takes a host's own views, and a lab's public page | Hooks, look, geometry | Built |
 | Geometry | `@biolibs/bionet-space` | A tree of places, where each stands, box grids, camera poses, search, a layout from a lab's record | Plain data only | Built |
-| Tools | `@biolibs/bionet-tools` | PCR, and a check digest with its gel, from the lab's tubes and recorded as runs; assembly and a sequence map to come | Engines, hooks, panels | Written and tested, not published |
-| 3D | `@biolibs/bionet-scene` | The scene: places, boxes, tubes, instruments, neighbours; molecules to come | Geometry, look, three.js | Built |
+| Tools | `@biolibs/bionet-tools` | PCR, and a check digest with its gel, from the lab's tubes and recorded as runs; assembly and a sequence map to come | Engines, hooks, panels | Built |
+| 3D | `@biolibs/bionet-scene` | The scene: places, boxes, tubes, instruments, neighbours; arranging, adding and retiring places; molecules to come | Geometry, look, three.js | Built |
 
 "Built" means written, tested in this repository, published to npm as 0.x, and in use by the
-desktop app and both labs.
+desktop app. The two example labs use the protocol, the peer, the theme and the public page.
 
 What makes them reusable:
 
@@ -325,8 +336,9 @@ What makes them reusable:
   told when it changes, and one of a fixed list of things to be done. A lab in the same process
   satisfies it, and so does a bridge to one elsewhere. The desktop app's window is in a different
   process from its lab, and the hooks cannot tell.
-- **One shared idea of focus**, to come with the scene: what is selected, and at which scale.
-- **A registry of renderers by kind**, to come with the scene.
+- **One idea of focus** in the scene: a place, and perhaps one item in it. It is not yet shared
+  with the panels, so picking a tube in the freezer list does not move the camera.
+- **A registry of renderers by kind** is not built. Every place is drawn as a box.
 - **Plug-in edges** for storage, key keeping and sockets, so the same client runs in Electron, a
   browser or Node.
 - **React and three.js as peer dependencies.**
@@ -679,8 +691,10 @@ the peer serves the signed inventory.
 
 - Somewhere durable for the peer to keep the lab. On the host's free tier its disk is emptied on
   every deploy, after which the lab serves its committed example until a member's app reconnects.
-- Removing a member from the app; editing fields; locations; choosing pointers.
-- Everything under "The lab workspace": places, the scene, the tools and the libraries.
+- Removing a member from the app; editing fields; choosing pointers.
+- From "The lab workspace": the sequence workbench, a cloning plan with a pick list, and verifying
+  against Sanger traces. Places, the scene, the builder and the first two tools are built, and are
+  recorded in the sections that follow.
 - The roster as a published document for outside readers. Readers still remember keys per address.
 - `lab-thistle` has no peer yet.
 - The glue in each lab's page that gathers what is drawn (the published inventory from disk, the

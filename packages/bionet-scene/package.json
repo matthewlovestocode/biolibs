@@ -6,7 +6,7 @@
     "@biolibs/bionet-space": "^0.3.0",
     "@biolibs/bionet-theme": "^0.1.0"
   },
-  "description": "A lab in three dimensions: rooms, freezers, boxes and tubes drawn as edges in the Bionet theme, with a camera that moves from the whole lab down to one position in a box",
+  "description": "A lab in three dimensions: rooms, freezers, boxes and tubes drawn as edges in the Bionet theme, with a camera that moves from the whole lab down to one position in a box, and the lab arranged by hand in the same view",
   "engines": {
     "node": ">=20"
   },

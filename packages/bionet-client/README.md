@@ -1,7 +1,8 @@
 # @biolibs/bionet-client
 
 One device in one lab: its key, its copy of the lab's signed log, everything a member can do, and the
-connection to the lab's web peer. It works with no network and syncs when there is one.
+connection to the lab's web peer. It works with no network and syncs when there is one. A member can
+keep parts and tubes, say where each is, record a run at the bench, and back up the key and the lab.
 
 It is an application with the edges left open. Where entries are kept, where the key lives and what
 opens a socket are handed in, so the same `Lab` runs behind a desktop window, in a browser or in a test.
