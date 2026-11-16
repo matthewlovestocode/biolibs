@@ -30,8 +30,14 @@ export const LONGEST_ENTRY = 600_000;
 /** How many other logs one entry may say it had seen. */
 export const MOST_SEEN = 1_000;
 
-/** What a key on the roster may do: change the inventory, or change the roster as well. */
-export type Role = "member" | "keeper";
+/**
+ * What a key on the roster may do: change the inventory, change the roster as well, or only advise.
+ *
+ * An adviser has no hands. It may say what parts there are and propose runs, and nothing it writes
+ * can move an amount, a tube or a place: that limit is applied where every log is merged, so it
+ * holds on every device and not only in the app the adviser is reached through.
+ */
+export type Role = "member" | "keeper" | "adviser";
 
 /**
  * One change. `type` says which; the rest is whatever that change carries.
@@ -433,6 +439,70 @@ export const recordRun = (run: RunRecord): Operation => ({ type: "run.record", .
 
 /** @returns A new ID for a run, made the way an item's is. */
 export const newRunId = (): string => newItemId();
+
+/** One thing a planned run would use: a tube the lab has, or a part it would first have to get. */
+export interface PlanInput {
+  /** The item, if the lab holds a tube of it. Exactly one of `item` and `part` is given. */
+  item?: string;
+  /** The part's checksum, if there is no tube of it yet: something to be ordered or made first. */
+  part?: string;
+  /** How much of it the run would use, in the item's own unit. A whole number, which may be 0. */
+  amount: number;
+  /** What it would be there as: a template, a forward primer. */
+  role: string;
+}
+
+/** One thing a planned run is expected to make. Nothing exists yet, so it has no item and no amount. */
+export interface PlanExpect {
+  /** The bases of what it would be. */
+  sequence: string;
+  /** Whether that is a circle. */
+  circular: boolean;
+  /** Its ends, if it is linear and they are not blunt. */
+  ends?: PartEnds;
+  /** What to call it. */
+  name: string;
+}
+
+/**
+ * A run that has not been done: what somebody proposes doing at the bench.
+ *
+ * It is a recorded run with everything that claims something happened taken out. It carries what it
+ * expects to make and not how that was worked out, because every reader can work that out again
+ * with their own engine and see whether they agree.
+ */
+export interface PlanRecord {
+  /** The plan's ID. */
+  plan: string;
+  /** What kind of run it would be: `pcr`. */
+  kind: string;
+  /** The place to do it at, such as a thermocycler, or `null`. */
+  instrument: string | null;
+  /** What it would use. */
+  inputs: PlanInput[];
+  /** What it is expected to make. */
+  expects: PlanExpect[];
+  /** How to set it up: whole numbers and short text, by name. */
+  settings: Record<string, string | number>;
+  /** Why, and anything else worth saying. */
+  note: string | null;
+}
+
+/**
+ * @returns The change that proposes a run. It changes nothing the lab holds: no amount moves and no
+ *   item or part is made. It is kept so that somebody can carry it out and say that they did.
+ */
+export const planRun = (plan: PlanRecord): Operation => ({ type: "plan.add", ...plan });
+
+/**
+ * @returns The change that closes a plan: carried out as `run`, or set aside if `run` is `null`.
+ *   It is an entry of its own and not something a recorded run carries, so that a device too old to
+ *   know of plans still reads the run.
+ */
+export const settlePlan = (plan: string, run: string | null): Operation => ({ type: "plan.settle", plan, run });
+
+/** @returns A new ID for a plan, made the way an item's is. */
+export const newPlanId = (): string => newItemId();
 
 /** @returns The change that sets one field on a part (by checksum), an item or a place (by ID). */
 export const setField = (on: "part" | "item" | "place", id: string, field: string, value: string | number | null): Operation =>

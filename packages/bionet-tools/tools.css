@@ -149,3 +149,8 @@
 .bionet .faced.paired .row { flex-wrap: nowrap; gap: 0; width: max-content }
 .bionet .faced.paired + .faced.paired { margin-top: .9rem }
 .bionet .primers .strip { max-width: 46rem }
+.bionet .proposed .plan { padding: .55rem .7rem; margin: .5rem 0; border: 1px solid var(--bionet-rule); border-radius: 8px }
+.bionet .proposed .plan.now { border-color: var(--bionet-good) }
+.bionet .proposed .plan p { margin: 0 0 .35rem }
+.bionet .proposed .plan .why { color: var(--bionet-dim); font-style: italic }
+.bionet .proposed .attention { color: var(--bionet-attention) }

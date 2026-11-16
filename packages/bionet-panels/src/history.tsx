@@ -26,9 +26,9 @@ export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "
   const tidy = (words: string): string => words.replace(/\s+/g, " ").trim();
   switch (op.type) {
     case "roster.found": return `founded ${String(op["name"])}`;
-    case "roster.add": return `added ${String(op["person"])} as a ${String(op["role"])}`;
+    case "roster.add": return `added ${String(op["person"])} as ${op["role"] === "adviser" ? "an" : "a"} ${String(op["role"])}`;
     case "roster.remove": return `removed ${who(op["key"])}`;
-    case "roster.role": return `made ${who(op["key"])} a ${String(op["role"])}`;
+    case "roster.role": return `made ${who(op["key"])} ${op["role"] === "adviser" ? "an" : "a"} ${String(op["role"])}`;
     case "part.add": return `added the part ${String(op["name"])}`;
     case "part.annotate": return `marked ${Array.isArray(op["features"]) ? op["features"].length : 0} features on ${part(op["part"])}`;
     case "part.offer": return op["available"] === true ? `put ${part(op["part"])} on offer` : `took ${part(op["part"])} off offer`;
@@ -57,6 +57,12 @@ export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "
       const what = op["kind"] === "pcr" ? "a PCR" : `a ${String(op["kind"])} run`;
       return op["outcome"] === "worked" ? `ran ${what}${at}, which made ${made.map((one) => String(one.name)).join(" and ") || "nothing"}` : `ran ${what}${at}, which did not work`;
     }
+    case "plan.add": {
+      const what = op["kind"] === "pcr" ? "a PCR" : op["kind"] === "digest" ? "a digest" : `a ${String(op["kind"])}`;
+      const made = Array.isArray(op["expects"]) ? (op["expects"] as { name?: unknown }[]).map((one) => String(one.name)).join(" and ") : "";
+      return `proposed ${what}${op["instrument"] === null ? "" : ` at ${place(op["instrument"])}`}${made === "" ? "" : `, expecting ${made}`}. Nothing was done or used`;
+    }
+    case "plan.settle": return op["run"] === null ? "set a proposed run aside" : "said a proposed run was carried out";
     case "field.set": return `set ${String(op["field"])} to ${String(op["value"])}`;
     default: return `did something this version does not know (${op.type})`;
   }

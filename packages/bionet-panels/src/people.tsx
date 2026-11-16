@@ -37,7 +37,7 @@ export function People() {
           <Ask onAsk={(data) => act("addMember", { key: String(data.get("key") ?? ""), person: String(data.get("person") ?? ""), role: String(data.get("role") ?? "member") })} className="stack">
             <label>Their device's key<input name="key" placeholder="43 letters and digits" required spellCheck={false} /></label>
             <label>Their name<input name="person" required maxLength={200} /></label>
-            <label>As<select name="role"><option value="member">a member, who can change the freezer</option><option value="keeper">a keeper, who can also change who is in the lab</option></select></label>
+            <label>As<select name="role"><option value="member">a member, who can change the freezer</option><option value="keeper">a keeper, who can also change who is in the lab</option><option value="adviser">an adviser, who can add parts and propose runs, and change nothing else</option></select></label>
             <button type="submit">Add to the lab</button>
           </Ask>
           {state.peer.invite !== null ? (

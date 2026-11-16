@@ -248,3 +248,49 @@ describe("a copy of the whole lab", () => {
     for (const one of [lab, stranger, other]) one.close();
   });
 });
+
+describe("a lab that keeps what was proposed", () => {
+  it("keeps a plan without changing what it holds, and settles it as the run that carried it out", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    await lab.addPart({ name: "template", sequence: F1 });
+    const part = lab.snapshot().lab!.parts[0]!.checksum;
+    const template = await lab.addItem({ part, amount: 20, unit: "µL" });
+
+    const { plan } = await lab.planRun({ kind: "pcr", inputs: [{ item: template, amount: 1, role: "template" }],
+                                         expects: [{ sequence: `${F1.slice(0, 20)}\n${F1.slice(20)}`, name: " copy " }], note: "  to see it is there  " });
+    let seen = lab.snapshot().lab!;
+    expect(seen.adviser).toBe(false);
+    expect(seen.plans).toHaveLength(1);
+    expect(seen.plans[0]).toMatchObject({ plan, note: "to see it is there", settled: null, wanting: [] });
+    // Tidied on the way in, and known by the same checksum as the part it would be a copy of.
+    expect(seen.plans[0]!.expects[0]).toMatchObject({ name: "copy", checksum: part });
+    expect(seen.items[0]!.amount).toBe(20);
+    expect(seen.runs).toHaveLength(0);
+
+    const done = await lab.recordRun({ kind: "pcr", plan, inputs: [{ item: template, amount: 1, role: "template" }],
+                                       outputs: [{ sequence: F1, name: "copy", amount: 50, unit: "µL" }] });
+    seen = lab.snapshot().lab!;
+    expect(seen.plans[0]!.settled).toMatchObject({ run: done.run });
+    expect(seen.items.find((one) => one.item === template)!.amount).toBe(19);
+    // The run itself says nothing of the plan: the link is an entry of its own.
+    expect(seen.entries.map((one) => one.op.type).slice(-2)).toEqual(["run.record", "plan.settle"]);
+    expect(Object.keys(seen.entries.at(-2)!.op)).not.toContain("plan");
+  });
+
+  it("sets a plan aside, refuses one the lab could not keep, and takes both through the door a window uses", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    await lab.addPart({ name: "template", sequence: F1 });
+    const part = lab.snapshot().lab!.parts[0]!.checksum;
+    await expect(lab.planRun({ kind: "pcr", inputs: [{ item: "no-such-item", amount: 1, role: "template" }] })).rejects.toThrow(/not an item the lab has/);
+    const answer = await perform(lab, "planRun", { kind: "pcr", inputs: [{ part, amount: 1, role: "template" }] });
+    expect(answer).toMatchObject({ ok: true });
+    const plan = lab.snapshot().lab!.plans[0]!.plan;
+    expect(await perform(lab, "settlePlan", { plan })).toMatchObject({ ok: true });
+    expect(lab.snapshot().lab!.plans[0]!.settled).toMatchObject({ run: null });
+    await expect(lab.settlePlan({ plan })).rejects.toThrow(/already settled/);
+  });
+});

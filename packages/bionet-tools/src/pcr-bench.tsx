@@ -22,6 +22,7 @@ import { moleculeOf, type DrawnMolecule } from "./sequence-file.js";
 import { primerTm } from "./pcr.js";
 import { primerBinding, programmeChecks, screenOf, strandCounts, suggestProgramme, tubeLens, tubeView,
          type PcrProgramme, type PcrStepName, type TubeLens, type TubeStrand } from "./pcr-scene.js";
+import { Proposed, withPlan, type Plan } from "./plans.js";
 import { pcrRun, pcrTubes, type TubeChoice } from "./run.js";
 
 /** The views of the machine, in the order a person meets them. */
@@ -237,11 +238,18 @@ export function usePcrBench({ instrument = null, onDone, start }: {
   const record = async (what: Record<string, unknown> | null, done: string): Promise<void> => {
     if (what === null) return;
     setBusy(true);
-    const answer = await act("recordRun", what);
+    const answer = await act("recordRun", withPlan(lab, what));
     setBusy(false);
     if (answer.ok) { setSaid(done); setName(""); setNote(""); }
   };
   const chosen = templatePart !== undefined && forwardPart !== undefined && reversePart !== undefined;
+  /** Set the bench up as a plan says: each tube in the place the plan gives it. */
+  const setUp = (plan: Plan): void => {
+    const as = (role: string): string => plan.inputs.find((one) => one.role === role)?.item ?? "";
+    setTemplate(as("template")); setForward(as("forward primer")); setReverse(as("reverse primer"));
+    if (typeof plan.settings["anneal_at_least"] === "number") setLeast(String(plan.settings["anneal_at_least"]));
+    setView("result");
+  };
 
   const panel = lab === null || lab === undefined ? null : (
     <div className="bionet benchpanel">
@@ -270,6 +278,8 @@ export function usePcrBench({ instrument = null, onDone, start }: {
                        ]} />
         )}
       </section>
+
+      <Proposed kind="pcr" now={run?.worked ?? null} onSetUp={setUp} />
 
       {view === "machine" && (
         <section className="card">

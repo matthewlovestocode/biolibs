@@ -14,6 +14,7 @@ import { Glossed } from "@biolibs/glossary-react";
 import { endBases, type LigationPiece, type LigationProduct } from "./ligate.js";
 import { joinWorking, ligationChecks, ligationLengthWorking, ratioWorking } from "./ligate-working.js";
 import { SequenceMap } from "./map.js";
+import { Proposed, withPlan, type Plan } from "./plans.js";
 import { ligationRun, ligationTubes } from "./run.js";
 import { useRunning } from "./running.js";
 import { moleculeOf, type DrawnMolecule } from "./sequence-file.js";
@@ -125,6 +126,11 @@ export function useLigationBench({ instrument = null, onDone, start }: {
     } }),
   };
 
+  /** Set the bench up as a plan says: the pieces it names, in the tube. */
+  const setUp = (plan: Plan): void => {
+    setTubes(plan.inputs.flatMap((one) => (one.item === undefined ? [] : [one.item])));
+    setChosen(0); setSaid(null); setView("result");
+  };
   const pick = (item: string): void => {
     setTubes(tubes.includes(item) ? tubes.filter((one) => one !== item) : [...tubes, item]);
     setChosen(0);
@@ -133,7 +139,7 @@ export function useLigationBench({ instrument = null, onDone, start }: {
   const record = async (what: Record<string, unknown> | null, done: string): Promise<void> => {
     if (what === null) return;
     setBusy(true);
-    const answer = await act("recordRun", what);
+    const answer = await act("recordRun", withPlan(lab, what));
     setBusy(false);
     if (answer.ok) { setSaid(done); setNote(""); setName(""); setTubes([]); }
   };
@@ -174,6 +180,8 @@ export function useLigationBench({ instrument = null, onDone, start }: {
           </label>
         )}
       </section>
+
+      <Proposed kind="ligation" now={run?.worked ?? null} onSetUp={setUp} />
 
       {view === "machine" && (
         <section className="card">

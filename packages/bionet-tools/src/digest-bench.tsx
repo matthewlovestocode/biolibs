@@ -17,6 +17,7 @@ import { cutters, enzymeNamed } from "./digest.js";
 import { Gel } from "./digest-tool.js";
 import { cutSites, digestChecks, digestPieces, migrationWorking, piecesWorking, siteWorking, type PieceEnd } from "./digest-working.js";
 import { SequenceMap } from "./map.js";
+import { Proposed, withPlan, type Plan } from "./plans.js";
 import { digestRun, digestTubes } from "./run.js";
 import { useRunning } from "./running.js";
 import { moleculeOf, type DrawnMolecule } from "./sequence-file.js";
@@ -132,11 +133,17 @@ export function useDigestBench({ instrument = null, onDone, start }: {
     ] } }),
   };
 
+  /** Set the bench up as a plan says: its tube, and the enzymes it names. */
+  const setUp = (plan: Plan): void => {
+    setTube(plan.inputs.find((one) => one.role === "cut")?.item ?? "");
+    setChosen(typeof plan.settings["enzymes"] === "string" ? plan.settings["enzymes"].split("+").filter((one) => one !== "") : []);
+    setSaid(null); setKeep([]); setView("result");
+  };
   const toggle = (name: string): void => { setChosen(chosen.includes(name) ? chosen.filter((one) => one !== name) : [...chosen, name]); setSaid(null); setKeep([]); };
   const record = async (what: Record<string, unknown> | null, done: string): Promise<void> => {
     if (what === null) return;
     setBusy(true);
-    const answer = await act("recordRun", what);
+    const answer = await act("recordRun", withPlan(lab, what));
     setBusy(false);
     if (answer.ok) { setSaid(done); setNote(""); setKeep([]); }
   };
@@ -190,6 +197,8 @@ export function useDigestBench({ instrument = null, onDone, start }: {
         )}
         {plan !== null && chosen.length > 0 && plan.problem !== null && <p className="trouble" role="status">{plan.problem}</p>}
       </section>
+
+      <Proposed kind="digest" now={run?.matched ?? null} onSetUp={setUp} />
 
       {view === "machine" && (
         <section className="card">

@@ -27,7 +27,7 @@
 import { Dseq } from "@biolibs/dseq";
 import { Dseqrecord } from "@biolibs/dseqrecord";
 import type { SignOptions, SigningKey } from "@biolibs/opencloning";
-import { entryId, readEntry, verifyEntry, writeEntry, type Operation, type PartEnds, type PartFeature, type Role, type RunInput, type StandingMm,
+import { entryId, readEntry, verifyEntry, writeEntry, type Operation, type PartEnds, type PartFeature, type PlanInput, type Role, type RunInput, type StandingMm,
          type SignedEntry } from "./log.js";
 import { INVENTORY_VERSION, type InventoryDocument, type InventoryPart, type LabModel,
          type PeerModel } from "./model.js";
@@ -148,6 +148,35 @@ export interface RunState {
   added: string;
 }
 
+/** A run somebody has proposed, as the lab holds it. */
+export interface PlanState {
+  /** Its ID. */
+  plan: string;
+  /** What kind of run it would be: `pcr`. */
+  kind: string;
+  /** The place to do it at, or `null`. */
+  instrument: string | null;
+  /** What it would use: a tube, or a part there is no tube of yet. */
+  inputs: PlanInput[];
+  /** What it is expected to make, each with the checksum that would be its identity. */
+  expects: { name: string; sequence: string; circular: boolean; ends: PartEnds; length: number; checksum: string }[];
+  /** How to set it up. */
+  settings: Record<string, string | number>;
+  /** Why, and anything else said about it. */
+  note: string | null;
+  /** The key that proposed it. */
+  by: string;
+  /** What became of it: the run that carried it out, or `null` for that if it was set aside. `null` while it is open. */
+  settled: { run: string | null; by: string; entry: string } | null;
+  /**
+   * For a plan still open: the tubes it counts on that have since been retired or hold less than it
+   * would use. The plan is kept and shown; somebody has to look before carrying it out.
+   */
+  wanting: string[];
+  /** The entry that proposed it. */
+  added: string;
+}
+
 /** One position of one box that the log says holds more than one item. */
 export interface Crowded {
   /** The box. */
@@ -209,6 +238,8 @@ export interface LabState {
   crowded: Crowded[];
   /** Everything done at the bench that was recorded, in the order the merge settled on. */
   runs: RunState[];
+  /** Every run that has been proposed, open or settled, in the order the merge settled on. */
+  plans: PlanState[];
   /** Every entry that could be placed, in order, with what became of it. */
   entries: Placed[];
   /** Entries that are waiting on others that have not arrived. */
@@ -232,6 +263,8 @@ interface Node {
   op: Operation;
   /** How far into each log this entry had seen, itself included. Set when it is placed. */
   vc: Map<string, number>;
+  /** Whether its key was an adviser when it was placed. Set when it is placed. */
+  adviser?: boolean;
 }
 
 const KEY = /^[A-Za-z0-9_-]{43}$/;
@@ -347,8 +380,17 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
     inputs: [{ item: true, amount: true, role: true }],
     outputs: [{ item: true, sequence: true, circular: true, ends: { left: true, right: true }, name: true, amount: true, unit: true }],
   },
+  "plan.add": {
+    plan: true, kind: true, instrument: true, settings: true, note: true,
+    inputs: [{ item: true, part: true, amount: true, role: true }],
+    expects: [{ sequence: true, circular: true, ends: { left: true, right: true }, name: true }],
+  },
+  "plan.settle": { plan: true, run: true },
   "field.set": { on: true, id: true, field: true, value: true },
 };
+
+/** What an adviser may write. Everything else from one is refused. */
+const ADVISER_MAY = new Set(["part.add", "plan.add", "plan.settle"]);
 
 /**
  * The first field in a change that this version does not know, if there is one.
@@ -398,6 +440,43 @@ export function strayField(op: Operation): string | null {
 /** The most items that may go into one run or come out of it, and the most settings it may carry. */
 const MOST_IN_A_RUN = 50;
 
+/** Whether something is a run's settings: whole numbers and short text, by name. */
+const areSettings = (settings: unknown): settings is Record<string, string | number> =>
+  typeof settings === "object" && settings !== null && !Array.isArray(settings) && Object.keys(settings).length <= MOST_IN_A_RUN
+    && Object.entries(settings).every(([name, value]) => FIELD.test(name) && (amountOf(value) || (typeof value === "string" && value.length <= 200)));
+
+/**
+ * Why a plan cannot be kept, or `null` if it can.
+ *
+ * Only its form is checked: that it names things the lab has and that what it expects is a
+ * molecule. Whether the run would really make that is not the log's to say. Each reader's own
+ * tools work it out again, which is why the plan carries its claim and not its working.
+ */
+function planProblem(op: Operation, items: ReadonlyMap<string, unknown>, parts: ReadonlyMap<string, unknown>, places: ReadonlyMap<string, unknown>,
+                     plans: ReadonlyMap<string, unknown>): string | null {
+  if (!(typeof op["plan"] === "string" && ITEM_ID.test(op["plan"])) || !text(op["kind"], 40)) return "It does not carry a plan ID and what kind of run it would be.";
+  if (plans.has(op["plan"])) return "A plan with that ID already exists.";
+  if (!(op["instrument"] === null || (typeof op["instrument"] === "string" && places.has(op["instrument"])))) return "The place it would be done at is not one the lab has.";
+  if (!(op["note"] === null || text(op["note"], 2_000))) return "Its note is not some text.";
+  if (!areSettings(op["settings"])) return "Its settings are not whole numbers and short text, by name.";
+  const inputs = op["inputs"];
+  if (!Array.isArray(inputs) || inputs.length > MOST_IN_A_RUN) return "It does not list what it would use.";
+  for (const input of inputs as Partial<PlanInput>[]) {
+    if (typeof input !== "object" || input === null || !amountOf(input.amount) || input.amount < 0 || !text(input.role, 40)) return "It does not say how many whole units of each thing it would use, and as what.";
+    if ((input.item === undefined) === (input.part === undefined)) return "Each thing it would use has to be a tube or a part, and not both.";
+    if (input.item !== undefined && !(typeof input.item === "string" && items.has(input.item))) return "A tube it would use is not an item the lab has.";
+    if (input.part !== undefined && !(typeof input.part === "string" && parts.has(input.part))) return "A part it would use is not one the lab has.";
+  }
+  const expects = op["expects"];
+  if (!Array.isArray(expects) || expects.length > MOST_IN_A_RUN) return "It does not list what it expects to make.";
+  for (const expect of expects as Record<string, unknown>[]) {
+    if (typeof expect !== "object" || expect === null || !text(expect["sequence"], LONGEST_SEQUENCE) || typeof expect["circular"] !== "boolean" || !text(expect["name"], 200)) {
+      return "It does not give each thing it expects a sequence, a name and whether it is a circle.";
+    }
+  }
+  return null;
+}
+
 /**
  * Why a run cannot be recorded, or `null` if it can.
  *
@@ -438,7 +517,7 @@ function runProblem(op: Operation, items: ReadonlyMap<string, unknown>, places: 
 }
 
 const amountOf = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value);
-const role = (value: unknown): value is Role => value === "member" || value === "keeper";
+const role = (value: unknown): value is Role => value === "member" || value === "keeper" || value === "adviser";
 
 /** Whether `later` was written by somebody who held `earlier`. */
 const hadSeen = (later: Node, earlier: Node): boolean => (later.vc.get(earlier.author) ?? -1) >= earlier.seq;
@@ -463,7 +542,7 @@ const hadSeen = (later: Node, earlier: Node): boolean => (later.vc.get(earlier.a
  * ```
  */
 export async function mergeLog(entries: readonly unknown[], options: { lab?: string } = {}): Promise<LabState> {
-  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], runs: [], entries: [],
+  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], runs: [], plans: [], entries: [],
                             waiting: [], discarded: [], overlaps: [], heads: {}, knows: {} };
 
   // Read and check every entry on its own, before any of them is believed about the others.
@@ -648,6 +727,12 @@ function walk(founding: Node, chains: Map<string, Node[]>, chained: Map<string, 
     if (cut !== undefined && node.seq > cut) { say("set aside", "It comes after the point at which its key was removed."); continue; }
 
     if (!op.type.startsWith("roster.")) {
+      // An adviser proposes and describes. It is turned away here, where the roster is known as it
+      // stood when the entry was written, from anything that would change what the lab holds.
+      if (author.role === "adviser") {
+        if (!ADVISER_MAY.has(op.type)) { say("refused", "Its key is an adviser, which may add parts and propose runs and nothing else."); continue; }
+        node.adviser = true;
+      }
       say("applied");       // whether the change itself makes sense is settled when the inventory is folded
       continue;
     }
@@ -684,7 +769,7 @@ function walk(founding: Node, chains: Map<string, Node[]>, chained: Map<string, 
       const target = typeof op["key"] === "string" ? roster.get(op["key"]) : undefined;
       if (target === undefined || target.removed !== null || !role(op["role"])) {
         say("refused", "It does not name a key on the roster and a role to give it.");
-      } else if (target.role === "keeper" && op["role"] === "member" && liveKeepers() === 1) {
+      } else if (target.role === "keeper" && op["role"] !== "keeper" && liveKeepers() === 1) {
         say("refused", "A lab cannot be left without a keeper.");
       } else {
         if (op["role"] === "keeper" && target.role !== "keeper") since.set(target.key, since.size);
@@ -719,6 +804,8 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
   };
 
   const places = new Map<string, { place: PlaceState; set: Map<string, Register> }>();
+  /** Each plan, with the entry that settled it, if one has. */
+  const plans = new Map<string, { plan: PlanState; settled: Node | null }>();
   /** Where each item was last put. */
   const put = new Map<string, Map<string, Register>>();
 
@@ -882,6 +969,44 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         settings: { ...(op["settings"] as Record<string, string | number>) }, outcome: op["outcome"] as "worked" | "failed",
         note: op["note"] as string | null, added: node.id,
       });
+    } else if (op.type === "plan.add") {
+      const problem = planProblem(op, items, parts, places, plans);
+      if (problem !== null) { refuse(problem); continue; }
+      const expects: PlanState["expects"] = [];
+      try {
+        for (const expect of op["expects"] as { sequence: string; circular: boolean; name: string; ends?: unknown }[]) {
+          const molecule = moleculeOf(expect.sequence, expect.circular, expect.ends);
+          expects.push({ name: expect.name, sequence: expect.sequence, circular: expect.circular, ends: molecule.ends, length: molecule.length, checksum: molecule.checksum });
+        }
+      } catch {
+        refuse("Something it expects to make is not a sequence, with ends a molecule of that length can have.");
+        continue;
+      }
+      plans.set(op["plan"] as string, {
+        settled: null,
+        plan: {
+          plan: op["plan"] as string, kind: op["kind"] as string, instrument: op["instrument"] as string | null,
+          inputs: (op["inputs"] as PlanInput[]).map((input) => ({ ...(input.item === undefined ? { part: input.part! } : { item: input.item }), amount: input.amount, role: input.role })),
+          expects, settings: { ...(op["settings"] as Record<string, string | number>) }, note: op["note"] as string | null,
+          by: node.author, settled: null, wanting: [], added: node.id,
+        },
+      });
+    } else if (op.type === "plan.settle") {
+      const held = typeof op["plan"] === "string" ? plans.get(op["plan"]) : undefined;
+      const run = op["run"];
+      if (held === undefined) { refuse("It does not name a plan the lab has."); continue; }
+      if (!(run === null || (typeof run === "string" && state.runs.some((one) => one.run === run)))) { refuse("The run it says carried the plan out is not one the lab has."); continue; }
+      // Only somebody who can do a run can say one was done; an adviser can take back what it proposed.
+      if (node.adviser === true && (run !== null || held.plan.by !== node.author)) { refuse("An adviser may only set aside a plan of its own."); continue; }
+      const settle = (): void => { held.settled = node; held.plan.settled = { run: run as string | null, by: node.author, entry: node.id }; };
+      if (held.settled === null) settle();
+      else if (hadSeen(node, held.settled)) refuse("That plan is already settled.");
+      else {
+        // Two people settled it without knowing of each other. One stands, and the overlap is shown.
+        const wins = node.id < held.settled.id;
+        state.overlaps.push({ what: `what became of plan ${held.plan.plan.slice(0, 12)}`, kept: wins ? node.id : held.settled.id, dropped: wins ? held.settled.id : node.id });
+        if (wins) settle();
+      }
     } else if (op.type === "field.set") {
       const field = op["field"];
       const value = op["value"];
@@ -918,6 +1043,17 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
     for (const [field, held] of set) item.fields[field] = held.value as string | number | null;
     item.where = (put.get(item.item)?.get("where")?.value ?? null) as ItemState["where"];
     state.items.push(item);
+  }
+  // A plan counts on tubes that go on being used after it is written. It is not refused for that:
+  // it is kept, and says which of them are no longer what it needs.
+  for (const { plan } of plans.values()) {
+    if (plan.settled === null) {
+      plan.wanting = plan.inputs.flatMap((input) => {
+        const held = input.item === undefined ? undefined : items.get(input.item)?.item;
+        return held !== undefined && (held.retired || held.amount < input.amount) ? [held.item] : [];
+      });
+    }
+    state.plans.push(plan);
   }
   for (const { place, set } of places.values()) {
     for (const [field, held] of set) {

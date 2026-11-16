@@ -4,8 +4,8 @@
   },
   "dependencies": {
     "@biolibs/assembly2": "^1.0.0",
-    "@biolibs/bionet": "^1.3.2",
-    "@biolibs/bionet-panels": "^0.3.1",
+    "@biolibs/bionet": "^1.5.0",
+    "@biolibs/bionet-panels": "^0.3.3",
     "@biolibs/bionet-react": "^0.2.0",
     "@biolibs/dseq": "^1.0.0",
     "@biolibs/dseqrecord": "^1.1.1",
@@ -63,5 +63,5 @@
   ],
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.1.6"
+  "version": "0.1.7"
 }

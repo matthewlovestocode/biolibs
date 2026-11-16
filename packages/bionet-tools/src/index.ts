@@ -27,6 +27,7 @@
  * - `primer-design.ts` — a pair of primers designed for a stretch of a part, with every candidate that was weighed and what to warn of
  * - `primer-working.ts` — the working behind a design: the melting temperature's sum, the GC count, the bases that pair
  * - `primer-bench.tsx` — designing primers at a desk: the panel, and the template with the pair marked on it for a scene
+ * - `plans.tsx` — runs that have been proposed, at the tool that would carry them out
  * - `tools.tsx` — getting to one: from an instrument, or from a list of them all
  *
  * The tools are drawn with the styles of `@biolibs/bionet-panels` and belong inside its `LabWindow`.
@@ -49,6 +50,7 @@ export * from "./digest-bench.js";
 export * from "./working.js";
 export * from "./map.js";
 export * from "./sequences-tool.js";
+export * from "./plans.js";
 export * from "./tools.js";
 export * from "./pcr-bench.js";
 export * from "./primer-design.js";

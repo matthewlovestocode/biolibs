@@ -370,6 +370,46 @@ A run is recorded whole or refused whole. One that did not work is recorded with
 out, and still takes what was used. The merge does not work the run out again: what came out is what
 its signer said came out.
 
+### What somebody proposes doing
+
+A plan is a run nobody has done. It has a run's shape with everything that says something happened
+taken out, and it changes nothing the lab holds: no amount moves, and no tube or part is made.
+
+```ts
+import { newPlanId, planRun, settlePlan } from "@biolibs/bionet";
+
+const proposed = newPlanId();
+await write(ada, adasKey, planRun({
+  plan: proposed, kind: "pcr", instrument: null,
+  inputs: [{ item: tube, amount: 1, role: "template" }],
+  expects: [{ sequence: F1.slice(0, 40), circular: false, name: "amplicon" }],
+  settings: { anneal_at_least: 18 }, note: "to check the insert is there",
+}));
+
+const planned = await mergeLog(ada);
+planned.plans[0]?.settled;                // null: it is open
+planned.plans[0]?.expects[0]?.checksum;   // what the product would be known by
+
+// Somebody does it and records the run as usual. Closing the plan is a change of its own.
+const done = planned.runs[0]!.run;
+await write(ada, adasKey, settlePlan(proposed, done));     // or settlePlan(proposed, null) to set it aside
+(await mergeLog(ada)).plans[0]?.settled?.run;              // the run that carried it out
+```
+
+An input may name a `part` in place of an `item`, for something there is no tube of yet. A plan
+carries what it expects and not how that was worked out: each reader's own tools work it out again
+and can say whether they agree. A plan whose tubes have since been retired or run short is not
+refused; it lists them in `wanting`.
+
+The link from a run to its plan is the settling entry's alone. A recorded run is, field for field,
+what it always was, so a device too old to know of plans still reads the run and holds the same
+inventory.
+
+A plan is what a key with the role `adviser` is for. An adviser may add parts, propose runs, and set
+aside a plan of its own. Everything else it writes is refused where the logs are merged, on every
+device, so something with no hands at the bench can be let into a lab without being able to say
+that anything was done, used or moved.
+
 ### Moving entries between machines
 
 `mergeLog` works on whatever it is given. `sync.ts` is how entries are given, without opening a

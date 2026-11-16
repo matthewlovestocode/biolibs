@@ -11,10 +11,10 @@
  * that have been apart agree the moment they have each other's entries.
  */
 import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, entryId, fetchInventory, foundLab, isMember, mergeLog,
-         movePlace, newItemId, newPlaceId, newRunId, nextEntry, offerPart, publicInventory, putItem, recordRun, recountItem, retireItem, retirePlace,
-         setField, signInventory, standPlace,
+         movePlace, newItemId, newPlaceId, newPlanId, newRunId, nextEntry, offerPart, planRun, publicInventory, putItem, recordRun, recountItem, retireItem, retirePlace,
+         setField, settlePlan, signInventory, standPlace,
          takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type PartEnds, type PartFeature, type PartState, type PlaceState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry } from "@biolibs/bionet";
+         type PartEnds, type PartFeature, type PartState, type PlaceState, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
 import { openKey, sealKey } from "./backup.js";
@@ -53,6 +53,8 @@ export interface LabView {
   member: boolean;
   /** Whether it may change the roster as well. */
   keeper: boolean;
+  /** Whether it may only advise: add parts and propose runs, and change nothing the lab holds. */
+  adviser: boolean;
   roster: RosterView[];
   parts: PartState[];
   items: ItemState[];
@@ -62,6 +64,8 @@ export interface LabView {
   crowded: Crowded[];
   /** Everything done at the bench that was recorded. */
   runs: RunState[];
+  /** Every run that has been proposed, open or settled. */
+  plans: PlanState[];
   overlaps: Overlap[];
   /** How many entries are waiting on others that have not arrived. */
   waiting: number;
@@ -218,12 +222,14 @@ export class Lab {
         arrived: state.roster.length > 0,
         member: me !== undefined,
         keeper: me?.role === "keeper",
+        adviser: me?.role === "adviser",
         roster: state.roster.map((one) => ({ ...one, fingerprint: this.fingerprints.get(one.key) ?? "", you: one.key === mine })),
         parts: state.parts,
         items: state.items,
         places: state.places,
         crowded: state.crowded,
         runs: state.runs,
+        plans: state.plans,
         overlaps: state.overlaps,
         waiting: state.waiting.length,
         entries: state.entries.map((one) => ({
@@ -496,6 +502,8 @@ export class Lab {
     kind: string; instrument?: string | null; inputs: RunInput[];
     outputs?: { sequence: string; circular?: boolean; name: string; amount: number; unit?: string | null; features?: PartFeature[]; ends?: PartEnds }[];
     settings?: Record<string, string | number>; outcome?: "worked" | "failed"; note?: string | null;
+    /** The plan this run carries out, if it does. The plan is settled as this run once the run is recorded. */
+    plan?: string;
   }): Promise<{ run: string; items: string[] }> {
     const id = newRunId();
     const outputs = (run.outputs ?? []).map((output) => ({
@@ -514,8 +522,40 @@ export class Lab {
       const held = this.state?.parts.find((one) => one.checksum === part);
       if (output.features !== undefined && output.features.length > 0 && held !== undefined && held.features.length === 0) await this.write(annotatePart(held.checksum, output.features));
     }
+    // Said after the run and apart from it, so that a device too old to know of plans still reads the run.
+    if (run.plan !== undefined && this.state?.plans.some((one) => one.plan === run.plan && one.settled === null)) await this.write(settlePlan(run.plan, id));
     return { run: id, items: outputs.map((output) => output.item) };
   }
+
+  /**
+   * Propose something to be done at the bench, without saying that it was.
+   *
+   * Nothing the lab holds changes: no amount moves and nothing is made. The plan is kept for
+   * somebody to carry out, and it is what a member with no hands — an adviser — has to offer.
+   *
+   * @param plan - What kind of run, where, what it would use (a tube, or a part there is no tube of
+   *   yet), what it is expected to make, how to set it up, and why.
+   * @returns The plan's ID.
+   */
+  async planRun(plan: {
+    kind: string; instrument?: string | null; inputs: PlanInput[];
+    expects?: { sequence: string; circular?: boolean; name: string; ends?: PartEnds }[];
+    settings?: Record<string, string | number>; note?: string | null;
+  }): Promise<{ plan: string }> {
+    const id = newPlanId();
+    const note = plan.note === undefined || plan.note === null || plan.note.trim() === "" ? null : plan.note.trim();
+    await this.write(planRun({
+      plan: id, kind: plan.kind, instrument: plan.instrument ?? null, inputs: plan.inputs, settings: plan.settings ?? {}, note,
+      expects: (plan.expects ?? []).map((expect) => ({
+        sequence: expect.sequence.replace(/\s+/g, ""), circular: expect.circular === true, name: expect.name.trim(),
+        ...(expect.ends === undefined || (expect.ends.left === 0 && expect.ends.right === 0) ? {} : { ends: expect.ends }),
+      })),
+    }));
+    return { plan: id };
+  }
+
+  /** Close a plan: as carried out by a run, or, with no run, as set aside. */
+  settlePlan(which: { plan: string; run?: string | null }): Promise<void> { return this.write(settlePlan(which.plan, which.run ?? null)); }
 
   /** Set one field on a part (by checksum), an item or a place (by ID). */
   setField(change: { on: "part" | "item" | "place"; id: string; field: string; value: string | number | null }): Promise<void> {

@@ -75,7 +75,7 @@ function Body({ first, extra }: { first: string; extra: readonly ExtraTab[] }) {
           <Mark size={34} />
           <div>
             <h1>{lab.name ?? "A lab"}</h1>
-            <p className="dim small">{state.device.person} · {lab.keeper ? "keeper" : "member"} · this device <code>{state.device.fingerprint}</code></p>
+            <p className="dim small">{state.device.person} · {lab.keeper ? "keeper" : lab.adviser ? "adviser" : "member"} · this device <code>{state.device.fingerprint}</code></p>
           </div>
         </div>
         <SyncStatus peer={state.peer} />
