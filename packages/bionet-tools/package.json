@@ -10,7 +10,7 @@
     "@biolibs/dseq": "^1.0.0",
     "@biolibs/dseqrecord": "^1.1.1",
     "@biolibs/gel": "^1.0.0",
-    "@biolibs/glossary-react": "^0.1.0",
+    "@biolibs/glossary-react": "^0.1.2",
     "@biolibs/pcr": "^1.0.0",
     "@biolibs/restriction": "^1.0.0",
     "@biolibs/seq": "^1.0.0",
@@ -63,5 +63,5 @@
   ],
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.1.5"
+  "version": "0.1.6"
 }

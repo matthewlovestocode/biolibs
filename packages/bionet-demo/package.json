@@ -8,7 +8,7 @@
     "@biolibs/bionet-react": "^0.2.0",
     "@biolibs/bionet-scene": "^0.3.6",
     "@biolibs/bionet-theme": "^0.1.0",
-    "@biolibs/bionet-tools": "^0.1.5"
+    "@biolibs/bionet-tools": "^0.1.6"
   },
   "description": "A lab that shows what Bionet is: a made-up freezer, and a tour that uses its tools on it",
   "exports": {
@@ -46,5 +46,5 @@
   "sideEffects": false,
   "type": "module",
   "types": "./dist/index.d.ts",
-  "version": "0.1.2"
+  "version": "0.1.3"
 }
