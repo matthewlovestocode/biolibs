@@ -646,7 +646,14 @@ Nothing blocks the first slice. Two things remain for the step after it:
   variables, so it has no palette of its own to drift. The four bases and code highlighting keep
   their colours, which are not the brand's to choose.
 
-**The first slice is complete, run locally:** two devices each with their own key; one founds the
+**The Wren Lab is real (2026-11-15).** It was founded in the desktop app on its keeper's own machine,
+with the key sealed in that machine's keychain, and its ID is in `lab-wren`'s configuration. The
+freezer was stocked with the seven example parts, synced to the live peer, and published: the
+inventory at `lab-wren.onrender.com` is now signed by a person's device key, lists the same
+molecules as before by checksum, and still points at Thistle. A browser that had seen the old key
+was told the key had changed, which is what that warning is for.
+
+**The first slice is complete, run locally and then for real:** two devices each with their own key; one founds the
 roster and adds the other; both work offline; they converge through the web peer; one publishes, and
 the peer serves the signed inventory.
 
@@ -670,7 +677,8 @@ the peer serves the signed inventory.
 
 **Not done:**
 
-- Founding the real Wren Lab and setting its ID (`BIONET_LAB`) on the deployed peer.
+- Somewhere durable for the peer to keep the lab. On the host's free tier its disk is emptied on
+  every deploy, after which the lab serves its committed example until a member's app reconnects.
 - Removing a member from the app; editing fields; locations; choosing pointers.
 - Everything under "The lab workspace": places, the scene, the tools and the libraries.
 - The roster as a published document for outside readers. Readers still remember keys per address.
