@@ -19,6 +19,7 @@
  * - `ligate-working.ts` — a ligation's working: each join in its bases, the length, how much to put in
  * - `ligate-bench.tsx` — a ligation at the heat block: what is shown beside it, and what the scene draws
  * - `digest-working.ts` — a digest looked at closely: each cut in its bases, each piece with its ends, the working
+ * - `running.ts` — a gel that runs and pieces that close when the view showing them is arrived at
  * - `digest-bench.tsx` — a digest at the gel station: what is shown beside it, and what the scene is told to draw
  * - `working.tsx` — the working drawn: a figure that opens to show its steps
  * - `map.tsx` — a sequence's map: a circle or a line, with what is marked on it
@@ -40,6 +41,7 @@ export * from "./digest-working.js";
 export * from "./ligate.js";
 export * from "./ligate-working.js";
 export * from "./ligate-bench.js";
+export * from "./running.js";
 export * from "./digest-bench.js";
 export * from "./working.js";
 export * from "./map.js";

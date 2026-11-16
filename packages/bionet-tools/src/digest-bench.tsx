@@ -18,6 +18,7 @@ import { Gel } from "./digest-tool.js";
 import { cutSites, digestChecks, digestPieces, migrationWorking, piecesWorking, siteWorking, type PieceEnd } from "./digest-working.js";
 import { SequenceMap } from "./map.js";
 import { digestRun, digestTubes } from "./run.js";
+import { useRunning } from "./running.js";
 import { moleculeOf, type DrawnMolecule } from "./sequence-file.js";
 import { CutBases, ShowWorking } from "./working.js";
 
@@ -62,7 +63,7 @@ const endWords = (end: PieceEnd): ReactNode => (end.enzyme === null ? <span clas
  */
 export function useDigestBench({ instrument = null, onDone, start }: {
   instrument?: { id: string; name: string } | null; onDone?: () => void;
-  /** What to open on: the view, the tube and enzymes already chosen, the pieces to keep. Read once. */
+  /** What to open on: the view, the tube and enzymes already chosen, the pieces to keep, and how far the gel starts. Read once. */
   start?: { view?: DigestView; tube?: string; enzymes?: readonly string[]; keep?: readonly number[]; ran?: number };
 } = {}): { stage: DigestStage; panel: ReactNode } {
   const lab = useLab()?.lab;
@@ -77,7 +78,6 @@ export function useDigestBench({ instrument = null, onDone, start }: {
   const [ladder, setLadder] = useState("1kb");
   const [volts, setVolts] = useState("100");
   const [minutes, setMinutes] = useState("45");
-  const [ran, setRan] = useState(start?.ran ?? 100);
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [said, setSaid] = useState<string | null>(null);
@@ -85,6 +85,8 @@ export function useDigestBench({ instrument = null, onDone, start }: {
   const [amount, setAmount] = useState("20");
 
   const tubes = useMemo(() => (lab === null || lab === undefined ? [] : digestTubes(lab)), [lab]);
+  // Arriving at the gel finds it running, because that is what a gel does.
+  const [ran, setRan, running] = useRunning(view === "result" && tube !== "", start?.ran ?? 0);
   const part = tubes.find((one) => one.item === tube)?.part;
   const offered = useMemo(() => (part === undefined ? [] : cutters(part)), [part]);
   const run = useMemo(() => (lab === null || lab === undefined ? null : digestRun(lab, {
@@ -256,8 +258,8 @@ export function useDigestBench({ instrument = null, onDone, start }: {
             <>
               <p className="voice">This run</p>
               <Gel ladder={good.ladder} bands={good.bands} name={part.name} />
-              <label className="small">How far it has run
-                <input type="range" min={0} max={100} step={1} value={ran} onChange={(event) => setRan(Number(event.target.value))} aria-label="How far the gel has run" />
+              <label className="small">How far it has run{running ? " · running" : ""}
+                <input type="range" min={0} max={100} step={1} value={Math.round(ran)} onChange={(event) => setRan(Number(event.target.value))} aria-label="How far the gel has run" />
               </label>
               <p className="dim small">Drag it back to see the pieces start together in the well and draw apart as they run. The scene follows.</p>
               {good.bands.some((band) => band.unresolved) && <p className="dim small">* outside what this gel separates.</p>}

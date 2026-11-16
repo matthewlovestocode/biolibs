@@ -76,6 +76,12 @@ export function demoTour(demo: DemoLab): TourStep[] {
     { id: "backbone", name: backbone.name, sequence: backbone.sequence, ends: backbone.ends ?? { left: 0, right: 0 }, features: backbone.features },
     { id: "gene", name: GENE_PIECE, sequence: gene.sequence, ends: gene.ends, features: gene.features },
   ]).products[0];
+  const pcr = { template: tubes.pGene, forward: tubes.forward, reverse: tubes.reverse };
+  const cutting = { tube: tubes.pGene, enzymes: ["EcoRI", "BamHI"] as const };
+  /** The pieces in the tube at the heat block, once the digest has put the gene in the freezer. */
+  const joining = (lab: LabView): string[] =>
+    [tubes.backbone, tubeOf(lab, GENE_PIECE)].filter((one): one is string => one !== undefined);
+
   return [
     {
       title: "A lab",
@@ -97,65 +103,149 @@ export function demoTour(demo: DemoLab): TourStep[] {
       says: "The same molecule read closely. The features came in with the file this plasmid was brought in from, and they are kept in the lab's log, so every member reads the same map. Underneath, the enzymes that cut it once or twice — which is what a cloning plan is built out of.",
       show: () => ({ at: "sequences", part: demo.molecules.pGene.name }),
     },
+
+    // ── to the thermocycler ──────────────────────────────────────────────────────────────────────
     {
-      title: "A PCR, at the machine",
-      says: "First, a check that the gene is where it should be: a PCR with two primers that sit inside it. A thermocycler shows a programme, a temperature and a cycle count, and nothing at all about the DNA.",
-      show: () => ({ at: "pcr", start: { view: "screen", template: tubes.pGene, forward: tubes.forward, reverse: tubes.reverse } }),
+      title: "Over to the bench",
+      says: "The three machines sit on the bench, where the lab put them. They are not icons: each is drawn to the shape of the thing it is, and that is the same drawing you walk up to next.",
+      show: () => ({ at: "lab", focus: { place: places.bench } }),
     },
     {
-      title: "In the tube",
-      says: "This is what the machine does not show, and what the person at it has to picture: the strands coming apart, the primers finding the one place each matches, and a copy growing from each. The letters are the lab's own bases, not an illustration of some.",
-      show: () => ({ at: "pcr", start: { view: "tube", template: tubes.pGene, forward: tubes.forward, reverse: tubes.reverse, step: "anneal", cycle: 2 } }),
+      title: "Up to the thermocycler",
+      says: "The first check is that the gene is where it should be, which is a PCR. Walking up to the machine is still the lab: the same room, the same record, just closer.",
+      show: () => ({ at: "lab", focus: { place: instruments.pcr } }),
+    },
+    {
+      title: "At the machine",
+      says: "And now in front of it, with the tubes already chosen. A thermocycler is a block of wells under a heated lid, with a screen on the front. Everything it can tell you is on that screen.",
+      show: () => ({ at: "pcr", start: { view: "machine", ...pcr } }),
+    },
+    {
+      title: "Under the lid",
+      says: "The lid lifts and the block is underneath: ninety-six wells, with this reaction in the first. The lid presses on the tubes while it runs so that nothing condenses on their caps.",
+      show: () => ({ at: "pcr", start: { view: "block", ...pcr } }),
+    },
+    {
+      title: "The programme",
+      says: "The screen, close up, and the programme suggested for this reaction. Five degrees under the cooler primer, a minute for every thousand bases — both conventions, and both shown with the arithmetic that got there. Change either and the checks underneath answer.",
+      show: () => ({ at: "pcr", start: { view: "screen", ...pcr } }),
+    },
+    {
+      title: "Heat pulls the strands apart",
+      says: "Here is what the machine does not show. Ninety-five degrees, and the two strands of the template come apart — nothing can be copied until they are single. The letters are this lab's own bases.",
+      show: () => ({ at: "pcr", start: { view: "tube", ...pcr, step: "denature", cycle: 1 } }),
+    },
+    {
+      title: "The primers find their places",
+      says: "Cooler, and each primer finds the one place on the template that it matches and binds there. Below, the bases themselves: each one pairing with its partner, and the three at the end that have to pair for the polymerase to start.",
+      show: () => ({ at: "pcr", start: { view: "tube", ...pcr, step: "anneal", cycle: 1 } }),
+    },
+    {
+      title: "And a copy grows from each",
+      says: "Seventy-two degrees. The polymerase starts at a primer and runs along, adding the partner of each base it passes. These first copies start in the right place and run on too far, which is why the first cycle makes nothing of the length wanted.",
+      show: () => ({ at: "pcr", start: { view: "tube", ...pcr, step: "extend", cycle: 1 } }),
+    },
+    {
+      title: "By the third cycle",
+      says: "Now a copy is being made from a strand that already begins at a primer, so it stops where that one began. These are the first strands of exactly the product's length, and from here they double every cycle while the over-long ones only grow by two.",
+      show: () => ({ at: "pcr", start: { view: "tube", ...pcr, step: "extend", cycle: 3 } }),
     },
     {
       title: "What came out",
       says: "502 bases, which is the distance between the two primers — and the working shows that subtraction, checked against the molecule the engine built. The gene is there. Recording the run takes a little from each tube and puts the product in the freezer.",
-      show: () => ({ at: "pcr", start: { view: "result", template: tubes.pGene, forward: tubes.forward, reverse: tubes.reverse } }),
+      show: () => ({ at: "pcr", start: { view: "result", ...pcr } }),
       does: async (lab, state) => {
-        if (state.runs.some((one) => one.kind === "pcr")) return;
+        if (state.runs.some((one) => one.kind === "pcr") || product === undefined) return;
         await lab.lab.recordRun({
           kind: "pcr", instrument: instruments.pcr,
           inputs: [{ item: tubes.pGene, amount: 1, role: "template" }, { item: tubes.forward, amount: 1, role: "forward primer" },
                    { item: tubes.reverse, amount: 1, role: "reverse primer" }],
-          outputs: product === undefined ? [] : [{ sequence: product.sequence, name: "wrenA check", amount: 50, unit: "µL" }],
+          outputs: [{ sequence: product.sequence, name: "wrenA check", amount: 50, unit: "µL" }],
           settings: { anneal_at_least: 18 }, note: "the gene is where it should be",
         });
       },
     },
+
+    // ── across to the gel station ────────────────────────────────────────────────────────────────
     {
-      title: "Cutting it open",
-      says: "Now the gene is taken out, with the two enzymes whose sites sit either side of it. Each cut is shown in the bases the enzyme recognised, and each piece knows which enzyme made each of its ends — which is what decides what it can be joined to.",
-      show: () => ({ at: "digest", start: { view: "tube", tube: tubes.pGene, enzymes: ["EcoRI", "BamHI"] } }),
+      title: "Back out to the room",
+      says: "Out of the machine and back to where it stands. The thermocycler has a run against it now, and the freezer has a tube that was not there four minutes ago.",
+      show: () => ({ at: "lab", focus: { place: places.bench } }),
     },
     {
-      title: "The gel",
-      says: "Two bands, 926 and 786 bases, which is what the lengths say they should be. The slider runs the gel: every piece starts in the same well and they draw apart as they go. The 786 is the gene, and it is kept — the band is cut out, cleaned up, and becomes a tube.",
-      show: () => ({ at: "digest", start: { view: "result", tube: tubes.pGene, enzymes: ["EcoRI", "BamHI"], keep: gene === undefined ? [] : [gene.from] } }),
+      title: "Across to the gel station",
+      says: "Next the gene comes out of the plasmid, with the two enzymes whose sites sit either side of it. That is a digest, and it is read on a gel.",
+      show: () => ({ at: "lab", focus: { place: instruments.digest } }),
+    },
+    {
+      title: "The gel box",
+      says: "A shallow tank with a lid, and beside it the power supply. Between them they show a voltage and a time, and nothing whatever about the DNA.",
+      show: () => ({ at: "digest", start: { view: "machine", ...cutting } }),
+    },
+    {
+      title: "The gel itself",
+      says: "Under the lid, a slab of agarose with a row of wells at one end. The wells go at the negative end, because DNA is negative all along its backbone and runs towards the positive one.",
+      show: () => ({ at: "digest", start: { view: "block", ...cutting } }),
+    },
+    {
+      title: "The power supply",
+      says: "A hundred volts for forty minutes. Nothing here works out what that will give — it depends on the box, the buffer and the gel — so what is set is kept with the run and no more is claimed.",
+      show: () => ({ at: "digest", start: { view: "screen", ...cutting } }),
+    },
+    {
+      title: "Where it gets cut",
+      says: "In the tube: the plasmid with both cuts marked, and each cut opened out into the bases the enzyme recognised and the staggered ends it leaves. Each piece knows which enzyme made each of its ends, which is what decides what it can be joined to.",
+      show: () => ({ at: "digest", start: { view: "tube", ...cutting } }),
+    },
+    {
+      title: "The gel, running",
+      says: "Every piece starts in the same well and they draw apart as they go, which is the whole of what a gel does. Two bands, 926 and 786, which is what the lengths say they should be. The 786 is the gene, and it is kept: cut out of the gel, cleaned up, and made a tube.",
+      show: () => ({ at: "digest", start: { view: "result", ...cutting, keep: gene === undefined ? [] : [gene.from], ran: 0 } }),
       does: async (lab, state) => {
         if (state.runs.some((one) => one.kind === "digest") || gene === undefined) return;
-        const piece = gene;
         await lab.lab.recordRun({
           kind: "digest", instrument: instruments.digest,
           inputs: [{ item: tubes.pGene, amount: 1, role: "cut" }],
-          outputs: [{ sequence: piece.sequence, name: GENE_PIECE, amount: 20, unit: "µL", ends: piece.ends, features: piece.features }],
+          outputs: [{ sequence: gene.sequence, name: GENE_PIECE, amount: 20, unit: "µL", ends: gene.ends, features: gene.features }],
           settings: { enzymes: "EcoRI+BamHI", expected: "926,786", gel: "1.0" }, note: "the gene is the lower band",
         });
       },
     },
+
+    // ── and to the heat block ────────────────────────────────────────────────────────────────────
     {
-      title: "Joining it up",
-      says: "The gene, and a backbone cut with the same two enzymes that has been waiting in the freezer. Their ends fit one way only, so there is no question of which way round the gene goes in. Drag the slider and the two pieces close into a circle.",
-      show: (lab) => ({ at: "ligation", start: { view: "tube", tubes: [tubes.backbone, tubeOf(lab, GENE_PIECE)].filter((one): one is string => one !== undefined), joined: 45 } }),
+      title: "Along to the heat block",
+      says: "The gene is out. What is left is to put it into something that can be grown, which is a ligation, and that happens in a tube left at one temperature for a long time.",
+      show: () => ({ at: "lab", focus: { place: instruments.ligation } }),
+    },
+    {
+      title: "One number on a display",
+      says: "This is the whole of what the machine shows while a ligation happens, and whether anything joined is found out days later by what grows. Everything that matters is in the tube and invisible.",
+      show: (lab) => ({ at: "ligation", start: { view: "machine", tubes: joining(lab) } }),
+    },
+    {
+      title: "The wells",
+      says: "A metal block with holes for tubes. In this one: the gene, a backbone cut with the same two enzymes that has been waiting in the freezer, and ligase with the buffer that carries the ATP it needs.",
+      show: (lab) => ({ at: "ligation", start: { view: "block", tubes: joining(lab) } }),
+    },
+    {
+      title: "Sixteen degrees, overnight",
+      says: "Two things are wanted at once and they want opposite temperatures: the ends have to stay stuck together long enough to be sealed, and ligase works faster the warmer it is. Sixteen overnight is the usual answer to that.",
+      show: (lab) => ({ at: "ligation", start: { view: "screen", tubes: joining(lab) } }),
+    },
+    {
+      title: "The pieces close",
+      says: "And this is what is going on in it. Each piece takes its share of the ring in proportion to its length, with a gap at every join, and the gaps close. Their ends fit one way only, so there is no question of which way round the gene goes in.",
+      show: (lab) => ({ at: "ligation", start: { view: "tube", tubes: joining(lab), joined: 0 } }),
     },
     {
       title: "What it makes",
       says: "A plasmid of 3,492 bases that nobody had before, carrying what each piece carried, with both joins marked. It is a part like any other: known by its sequence, so another lab that made the same thing would call it the same name without ever having spoken to this one.",
-      show: (lab) => ({ at: "ligation", start: { view: "result", tubes: [tubes.backbone, tubeOf(lab, GENE_PIECE)].filter((one): one is string => one !== undefined) } }),
+      show: (lab) => ({ at: "ligation", start: { view: "result", tubes: joining(lab) } }),
       does: async (lab, state) => {
-        if (state.parts.some((one) => one.name === MADE)) return;
+        if (state.parts.some((one) => one.name === MADE) || joined === undefined) return;
         const gene = tubeOf(state, GENE_PIECE);
         if (gene === undefined) return;
-        if (joined === undefined) return;
         await lab.lab.recordRun({
           kind: "ligation", instrument: instruments.ligation,
           inputs: [{ item: tubes.backbone, amount: 1, role: "piece" }, { item: gene, amount: 1, role: "piece" }],

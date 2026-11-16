@@ -59,7 +59,14 @@ export interface Pose {
 }
 
 /** Which way to look from, by level, for something facing front: across, up, towards the viewer. */
-const FROM: Readonly<Record<Level, readonly [number, number, number]>> = {
+/**
+ * Which way each level is looked at from: across, up, and towards the viewer.
+ *
+ * It is exported because a view of one instrument on its own has to start from the same direction
+ * the room was looking from, or walking up to a machine and then being at it is two pictures of two
+ * different machines. `stagePose` in `@biolibs/bionet-scene` uses `inside` for exactly that.
+ */
+export const VIEWED_FROM: Readonly<Record<Level, readonly [number, number, number]>> = {
   lab: [0.45, 0.62, 1],
   room: [0.4, 0.6, 1],
   unit: [0.42, 0.28, 1],
@@ -83,7 +90,7 @@ export function poseFor(arranged: readonly Arranged[], id: string | null, fov = 
   const one = id === null ? null : arranged.find((each) => each.place.id === id) ?? null;
   const bounds = one ?? boundsOf(arranged.filter((each) => each.place.parent === null)) ?? { center: [0, 0, 0], size: [4, 3, 4] };
   const level = levelOf(one);
-  const [x, y, z] = FROM[level];
+  const [x, y, z] = VIEWED_FROM[level];
   // Turn the direction with the place, so a freezer facing a side wall is still seen from its front.
   const turn = one?.turn ?? 0;
   const [dx, dz] = turn === 90 ? [-z, x] : turn === 180 ? [-x, -z] : turn === 270 ? [z, -x] : [x, z];

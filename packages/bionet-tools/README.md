@@ -146,6 +146,13 @@ whatever the piece carries. That is cutting a band out of the gel and cleaning i
 `digestChecks` is what a careful operator would ask before running the gel: pieces too close to tell
 apart, a piece the gel will not hold, one cut of a circle, an enzyme that does nothing.
 
+## A gel that runs, and pieces that close
+
+Arriving at the gel finds it running: every piece starts in the same well and they draw apart as
+they go, which is the whole of what a gel does. Arriving at the ligation's tube finds the pieces
+closing. Both are the thing itself rather than an ornament on it, so they play on arrival and stop
+wherever the slider is put. A machine asking for reduced motion is never given any.
+
 ## A ligation at the heat block
 
 ```tsx

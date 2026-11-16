@@ -104,6 +104,10 @@ The stage was built for a thermocycler, and its five views turned out to be abou
 
 Adding a gel station tested whether the five views were about a thermocycler. Adding a heat block tested whether they were about machines that do much at all. A heat block has one number on it, and the answer was the same: the views are the shape of using an instrument, and what changes is their names and what the pictured ones draw. For a ligation they draw the pieces as arcs of a ring with a gap at each join, and the gaps close.
 
+## Walking up to a machine
+
+A tool used to begin wherever its own camera happened to put it, which made going from the room to the machine two pictures of two machines. Now `stagePose` takes its first view from `VIEWED_FROM.inside`, the direction the room looks at anything standing in it, so the lab's close-up of a thermocycler and the tool's first view of one are the same machine from the same side. The scene cuts between two canvases, and the cut reads as a step forward rather than a jump, because both sides agree about where the viewer is.
+
 ## Motion is a setting
 
 Moving between views helps some people keep their place and makes others unwell, or just slows them down the tenth time. Every scene has a switch that starts where the system's "reduce motion" setting is. With it off, a change of view is a cut, a lid is open or shut, and nothing moves by itself.

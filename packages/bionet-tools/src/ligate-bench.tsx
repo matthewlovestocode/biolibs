@@ -15,6 +15,7 @@ import { endBases, type LigationPiece, type LigationProduct } from "./ligate.js"
 import { joinWorking, ligationChecks, ligationLengthWorking, ratioWorking } from "./ligate-working.js";
 import { SequenceMap } from "./map.js";
 import { ligationRun, ligationTubes } from "./run.js";
+import { useRunning } from "./running.js";
 import { moleculeOf, type DrawnMolecule } from "./sequence-file.js";
 import { JoinBases, ShowWorking } from "./working.js";
 
@@ -74,7 +75,6 @@ export function useLigationBench({ instrument = null, onDone, start }: {
   const [blunt, setBlunt] = useState(false);
   const [linear, setLinear] = useState(false);
   const [chosen, setChosen] = useState(0);
-  const [joined, setJoined] = useState(start?.joined ?? 100);
   const [celsius, setCelsius] = useState("16");
   const [hours, setHours] = useState("16");
   const [ratio, setRatio] = useState("3");
@@ -85,6 +85,8 @@ export function useLigationBench({ instrument = null, onDone, start }: {
   const [said, setSaid] = useState<string | null>(null);
 
   const offered = useMemo(() => (lab === null || lab === undefined ? [] : ligationTubes(lab)), [lab]);
+  // Arriving at the tube finds the pieces closing, which is the whole of what is happening in it.
+  const [joined, setJoined, closing] = useRunning(view === "tube" && tubes.length > 0, start?.joined ?? 0);
   const run = useMemo(() => (lab === null || lab === undefined ? null : ligationRun(lab, {
     tubes, blunt, linear, chosen, instrument: instrument?.id ?? null, name, note, ...(whole(amount) === undefined ? {} : { amount: whole(amount)! }),
   })), [lab, tubes, blunt, linear, chosen, instrument, name, note, amount]);
@@ -211,8 +213,8 @@ export function useLigationBench({ instrument = null, onDone, start }: {
             <>
               <p className="voice">This run</p>
               <p><strong>{product.pieces.length} {product.pieces.length === 1 ? "piece" : "pieces"}</strong> <span className="dim">{product.circular ? "closing into a circle" : "end to end"}</span></p>
-              <label className="small">How far along
-                <input type="range" min={0} max={100} step={1} value={joined} onChange={(event) => setJoined(Number(event.target.value))} aria-label="How far along the joining is" />
+              <label className="small">How far along{closing ? " · closing" : ""}
+                <input type="range" min={0} max={100} step={1} value={Math.round(joined)} onChange={(event) => setJoined(Number(event.target.value))} aria-label="How far along the joining is" />
               </label>
               <p className="dim small">Drag it back to see the pieces apart, and forward to close them. Nothing in the tube can be seen while this is going on; this is the picture of it.</p>
               <p className="small"><Glossed text="A sticky end holds to the end whose unpaired bases pair with it, and ligase seals the backbone on each strand. A blunt end has nothing to hold to, so the two ends must meet by chance." /></p>

@@ -9,7 +9,7 @@ import { placeGel, placeJoining, stageViewName, measureLine, MOLECULE_RADIUS, mo
          stagePose, type Part, type StageLens } from "@biolibs/bionet-scene";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { exampleLab } from "@biolibs/bionet-space";
+import { VIEWED_FROM, exampleLab } from "@biolibs/bionet-space";
 import { describe, expect, it } from "vitest";
 
 const SIZE: [number, number, number] = [0.35, 0.25, 0.45];
@@ -410,5 +410,22 @@ describe("pieces being joined, drawn", () => {
     expect(stageViewName("heat-block", "machine")).toBe("The heat block");
     expect(stageViewName("heat-block", "result")).toBe("What it makes");
     expect(shapeOf("heat-block")?.block?.rows).toBe(2);
+  });
+});
+
+describe("walking up to a machine and then being at it", () => {
+  it("looks from the same side both times", () => {
+    // The room looks at a place inside it from one direction; a machine on its own has to be seen
+    // from that same direction, or the cut between the two is two pictures of two machines.
+    const size = [0.35, 0.25, 0.45] as const;
+    const pose = stagePose("machine", size, shapeOf("thermocycler"));
+    const unit = (at: readonly number[]): number[] => {
+      const length = Math.hypot(at[0]!, at[1]!, at[2]!);
+      return at.map((one) => Math.round((one / length) * 1000) / 1000);
+    };
+    const looking = unit([pose.position[0] - pose.target[0], pose.position[1] - pose.target[1], pose.position[2] - pose.target[2]]);
+    expect(looking).toEqual(unit(VIEWED_FROM.inside));
+    // And from in front of it, far enough out that the whole machine is in the picture.
+    expect(pose.position[2]).toBeGreaterThan(Math.max(...size));
   });
 });

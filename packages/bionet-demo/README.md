@@ -22,11 +22,16 @@ import { Demo } from "@biolibs/bionet-demo";
 <Demo />
 ```
 
-Twelve stops, from the room down to one tube and back again: the lab, the freezer, a tube with the
-molecule in it drawn over it, its map, a PCR at the thermocycler, a digest at the gel station, a
-ligation at the heat block, and the freezer again with three tubes in it that were not there at the
-start. Each stop mounts the real tool, opened on what the stop is about, so anybody can take the
-controls at any point. Nothing is a recording and nothing is a screenshot.
+Twenty-eight stops, from the room down to one tube and back again. It walks to each machine before
+using it — across the room, up to the thermocycler, and only then in front of it — because a tool
+is a thing on a bench in the lab and not a screen that replaces it. The stage's first view looks
+from the same direction the room was looking, so the two are the same machine from the same side.
+
+At each machine it goes through every view: the machine, what is under its lid, what it displays,
+what is in the tube, and what came out. The PCR's tube is watched over four stops — the strands
+parting, the primers landing, the first copies running on too far, and the third cycle where the
+product's own length first appears. Each stop mounts the real tool, opened on what the stop is
+about, so anybody can take the controls at any point. Nothing is a recording.
 
 ## The lab on its own
 

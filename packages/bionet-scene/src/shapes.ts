@@ -9,7 +9,7 @@
  *
  * Nothing here draws anything. The same data places the camera for each view of the instrument.
  */
-import type { Pose } from "@biolibs/bionet-space";
+import { VIEWED_FROM, type Pose } from "@biolibs/bionet-space";
 import type { Meaning } from "@biolibs/bionet-theme";
 
 /** A box that is part of an instrument: where its middle is and how big it is, as fractions of the whole. */
@@ -132,8 +132,13 @@ export function stagePose(view: StageView, size: readonly [number, number, numbe
     const at = moleculeCentre(size);
     return { target: [0, (at[1] + h * 0.7) / 2, 0], position: [reach * 0.45, at[1] + reach * 0.1, reach * 1.2 + MOLECULE_RADIUS * 4.4], fov: 40 };
   }
-  // The machine and the result are seen as somebody standing at the bench sees it.
-  return { target: [0, h * 0.55, 0], position: [reach * 1.25, h + reach * 0.85, reach * 2.1], fov: 40 };
+  // The machine is seen from where the room was looking at it, so that walking up to a machine and
+  // then being in front of it are the same machine seen from the same side rather than two pictures.
+  const [across, up, towards] = VIEWED_FROM.inside;
+  const length = Math.hypot(across, up, towards);
+  // Far enough back that the whole machine is in a pane the panel has taken half of.
+  const away = (reach * 3.1) / length;
+  return { target: [0, h * 0.5, 0], position: [across * away, h * 0.5 + up * away, towards * away], fov: 40 };
 }
 
 /** One strand to draw in the tube, as the caller gives it. */
