@@ -47,13 +47,43 @@ The view into the tube exists because of the one thing a thermocycler never show
 
 The suggested programme is conventions (five degrees under the cooler primer, a minute per thousand bases), and the operator can change it. What they set is kept in the run's settings, since it is what somebody repeating the run needs.
 
-## A digest is a check, and makes nothing
+## A digest is a check first
 
 The digest tool cuts a tube's molecule in silico, lists the pieces and draws the gel they should give beside a ladder. Recording it uses some of the tube and notes the enzymes, the pieces expected and whether the real gel showed them. The offered enzymes are the ones usually on a shelf that cut the molecule, fewest cuts first, since one or two cuts is what a check wants; any other can be named.
 
-It does not offer to keep a cut piece as a tube. A part is a sequence and whether it is a circle, and a piece cut by an enzyme is defined by its ends as much as its sequence: two pieces with the same bases and different overhangs are different molecules that would have one checksum. Until a part can say what ends it has, recording a piece would record something false. That is the next thing the model needs before assembly can be a tool.
+For a long time it did not offer to keep a cut piece as a tube. A piece cut by an enzyme is defined by its ends as much as its sequence: two pieces with the same bases and different overhangs are different molecules, and a part that was only a sequence would have given them one checksum. Recording a piece then would have recorded something false. A part can now say its ends, so a piece can be kept; see the gel station below.
 
 The gel is `@biolibs/gel`'s model, with that package's own limits: conventional figures, positions as a fraction of the lane, pieces too close in size merged into one band.
+
+## Sequences come in from the files a lab has
+
+A lab already has its constructs, and it has them as SnapGene and GenBank files. So the first thing a sequence tool has to do is read those, with what is marked on them, and nothing here asks a lab to type a plasmid in. `readSequenceFile` reads SnapGene's own format, GenBank, EMBL and FASTA through `@biolibs/seqio`, in the window, with no server: the file never leaves the machine except as entries in the lab's own log.
+
+The map is the picture a lab reads a construct by, and it is drawn in two places from the same features. On the page it is an SVG, a circle or a line, with enzymes that cut once named on it. In the scene it is a ring or a bar in three dimensions: over a tube that has been picked in its box, and above the thermocycler as what a run made. Those are the same picture on purpose. The page is where a map is read closely; the scene is where it is tied to the physical thing.
+
+A PCR's product carries what its template had on the stretch copied. That is worked out here and recorded with the run, so a product is never a bare sequence that somebody has to annotate again. A feature cut by the end of the product is kept as far as it goes and named as a part.
+
+What this is not is a sequence editor. Nothing here edits bases, and the features a file brings are shown and carried, not redrawn by hand.
+
+## The working is shown
+
+The calculations happen in the window, on the lab's own sequences. That is usually treated as an implementation detail. Here it is treated as something to show: there is no server whose answer has to be taken on trust, so every figure can open to the steps that give it.
+
+Two kinds of thing are kept apart, because confusing them is how tools mislead. Some of what a PCR tool says is **exact**: that these bases pair with those, that the product is this long, that a feature lands here. Those are facts about sequences and can be shown in full, down to the letters. The rest is **estimate**: a melting temperature from the Wallace rule, an annealing temperature five degrees under it, a minute a thousand bases. Those are shown as the rule and its inputs, with what the rule ignores, and are labelled as estimates on the outside so nobody has to open one to find out.
+
+Where a figure can be checked against something worked out another way, it is. The product's length is a subtraction on where the primers bind; the product itself is built by the assembly engine. The working shows both and says whether they agree.
+
+The working is plain data (`pcr-working.ts`), so it is tested against the thing it explains: the count against the melting temperature the tool uses, the bases against the sequences, the subtraction against the engine.
+
+## The gel station, to the same standard
+
+A digest is met at a gel box the way a PCR is met at a thermocycler, and the split is the same. The box and its power supply show volts, current and time. Where the DNA was cut, how many pieces there are and how far each has run are pictured, and then read off the gel against a ladder. So the stage has the same five views under this machine's names, and the last two are the pictured ones: the molecule with its cuts, and the gel once run.
+
+Three things are worked out that the first digest tool did not have. **Each cut in its bases**: the restriction engine says where an enzyme cuts; `cutSites` finds the enzyme's own sequence behind each of those cuts, on either strand, and from it where each strand is cut and what end is left. It keeps only sites whose cut the engine also found, so nothing is invented, and a test checks across thousands of cuts that none is left unexplained. **Each piece with its ends**: which enzyme made each end, what overhang it has, and what features it carries. **The checks** a careful operator would make before pouring a gel.
+
+The run gel can be dragged back to the start. That is the one piece of motion here, and it is the thing itself: every piece begins in the same well and they draw apart as they run, which is the whole of what a gel does.
+
+Voltage and time are kept with the run and are not modelled. How far a given voltage moves a band in a given time depends on the box, the buffer and the gel, and a tool that drew that with confidence would be making it up. A piece can be kept. Ticking one and recording a gel that matched makes a tube of it, as cutting the band out and cleaning it up does at the bench. The part it is a tube of has the ends the enzymes left and whatever the piece carried, and is traced back to the tube that was cut. Its length in the freezer is every base either strand has, which for sticky ends is a few more than the length it runs at on a gel, since a gel sees the paired stretch and the freezer counts the overhangs too.
 
 ## What the tool does not check
 
@@ -63,10 +93,17 @@ The merge does not run the PCR again. A run says what came out, and the lab reco
 
 ```
 packages/bionet-tools/src/
+  sequence-file.ts reading a lab's sequence files, and carrying features onto a stretch
+  map.tsx          a sequence's map, a circle or a line
+  sequences-tool.tsx  bringing sequences in, and reading any part as a map
   pcr.ts           what a PCR would make, worked out from sequences alone
   pcr-scene.ts     a PCR as met at the machine: the programme, the checks, what is in the tube
+  pcr-working.ts   the working behind each figure, as steps that can be checked
+  working.tsx      the working drawn: a figure that opens to show its steps
   pcr-bench.tsx    what is shown beside the instrument, and what the scene is told to draw
   digest.ts        where enzymes cut, the pieces, and the gel they would give
+  digest-working.ts  each cut in its bases, each piece with its ends, the checks, the working
+  digest-bench.tsx   what is shown beside the gel station, and what the scene is told to draw
   run.ts           each as a lab does one: which tubes, and what to record
   pcr-tool.tsx     the PCR tool
   digest-tool.tsx  the digest tool, and the gel drawn

@@ -84,6 +84,18 @@ An item is put in a place, and at a position if the place is a box. That is a re
 
 Two outcomes are flagged and not refused. Two people apart can each move a place into the other, and neither move is wrong alone; every place in the loop comes out `adrift`, in nothing, until somebody moves one. And two people apart can each stand a tube in the same position; that position is listed in `crowded`. In both cases the log has lost track of the physical lab, and the honest thing is to say so and let somebody look.
 
+## What is marked on a part
+
+A part's features are kept in the log, as one register per part. That is a choice: they could have been left to each member's files. But a map is what a lab reads a construct by, and two members reading different maps of the same tube is the kind of quiet disagreement the log exists to prevent. Features do not change which part it is. A part is its sequence, by checksum, and what is marked on it is a claim about that sequence that the lab holds in common.
+
+They are said whole. Merging two people's feature lists piece by piece would produce maps nobody wrote.
+
+## A part's ends
+
+A part was a sequence and whether it is a circle. That is enough for a plasmid and for a PCR product, and not for a piece cut out by restriction enzymes, whose few unpaired bases at each end are the whole point of it: they decide what it will join to. So a linear part may say its ends, as how many bases at each end are on one strand only.
+
+The ends are part of the part's identity. Two pieces with the same bases and different ends are different molecules that do different things in a ligation, so they have different checksums, and the checksum used is the one a staggered double strand already has in the scheme the inventories use. It is the same whichever strand the piece was written from. A part whose ends are blunt carries no `ends` in its entry and has the checksum it always had, so nothing already in a log changes.
+
 ## What was done at the bench
 
 A run is a single entry and not a handful of adjustments, for two reasons. It is atomic: an entry is applied or refused whole, so a run can never take a template without making its product. And it is provenance: an item made by a run carries the run's ID, and the run carries what went in, so any tube can be traced back to the tubes it was made from.

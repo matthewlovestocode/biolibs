@@ -895,6 +895,54 @@ form on the Places tab); undo, other than dragging back; molecules
 and instruments beyond an outline. The real Wren Lab has no places yet, and its key has not been
 backed up.
 
+### Sequences, as a lab already has them
+
+Asked what a typical SnapGene user needs. Most of what they do most often is open a construct, read
+its map, see where enzymes cut, and simulate a PCR. All of that now starts from their own files.
+
+- **Features are in the log**, `part.annotate`: one register per part, said whole. A map is what a
+  lab reads a construct by, so the lab holds it in common. A part is still its sequence alone.
+- **Files are read in the window**: SnapGene `.dna`, GenBank, EMBL, FASTA, through `seqio`. No
+  server sees them.
+- **One picture, two places.** The map on the page (`SequenceMap`) and the molecule in the scene
+  (`placeMolecule`) are drawn from the same features. The scene's is over a picked tube and above
+  the thermocycler in the result view.
+- **A product carries its template's features**, with the primers marked at its ends, recorded with
+  the run.
+- **Not built:** editing bases, drawing features by hand, a sequence view with translations,
+  enzyme sets, ends on parts, and the same carrying for a digest's pieces.
+
+### The working, shown
+
+The calculations run in the window, so there is nothing to take on trust and all of it can be shown.
+This is a fifth voice beside the machine, the run, the checks and the lesson.
+
+- **Exact and estimate are kept apart**, and said on the outside. Bases pairing, lengths and where a
+  feature lands are exact. Melting temperature, the suggested programme and strand counts in a real
+  tube are estimates, shown as the rule, its inputs and what it ignores.
+- **Checked against another way of working it out** where there is one: the product's length by
+  subtraction against the product the engine builds.
+- **In the scene as well as the panel**: the copied stretch is marked off under the strands with its
+  subtraction.
+- **Every tool gets this.** PCR and digest are done. A part's checksum is not.
+
+### The gel station, in use
+
+Digest and gel brought to the bar set for every tool: the full tool, 3D beside 2D, glossary, and the
+working shown.
+
+- **The same five views**, named for the machine: the gel box, the gel, the power supply, in the
+  tube, the gel run.
+- **Each cut in its bases**: the site, where each strand is cut, the end left. Found from the
+  enzyme's own sequence and kept only where the restriction engine agrees.
+- **Each piece with its ends and what it carries, and it can be kept.** A part may now say its
+  ends (`ends` on `part.add` and on a run's outputs), and the checksum takes them in. Keeping a
+  piece is a digest run with outputs.
+- **The gel in the scene**, and draggable back to the start.
+- **Checks** before the gel is run, each with its comparison.
+- **Not modelled:** voltage and time (kept with the run only), uncut and supercoiled plasmid,
+  methylation other than a note on DpnI, buffers, star activity, more than one sample lane.
+
 ## A first slice
 
 Two instances of the desktop app for the Wren Lab:

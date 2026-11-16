@@ -90,6 +90,16 @@ What moves is data, like the rest. A strand says it `parts`, `lands` or `grows`,
 
 This is motion that shows something the operator cannot see, which is the test a scene's motion has to pass.
 
+## The molecule
+
+A tube in a box is a white cylinder, and what makes it worth finding is the construct in it. So a tube that has been picked can have its construct drawn over it, the way a plasmid map draws one: a ring read from the top and clockwise, features as coloured stretches in lanes, a barb on the ones that point. It is drawn flat on to whoever is looking, between the tube and the camera, and it is real geometry in the scene, so it turns with everything else. The same drawing stands above an instrument in its result view, as what the run made.
+
+The scene knows nothing of sequence files or feature types. It is handed a `StageMolecule`: a length, a shape, and stretches that each carry a colour's meaning. `placeMolecule` turns that into lines and is plain arithmetic, tested without drawing anything.
+
+## More than one machine
+
+The stage was built for a thermocycler, and its five views turned out to be about using a machine and not about that machine: what it is, what is under its lid, what it displays, what is in the tube, and the result. A gel station has the same five under other names, so the views are fixed and their names come from the model. What differs is what the pictured views draw. For a PCR it is strands in a tube. For a digest it is the molecule with its cuts marked, and then a gel: a slab facing whoever is looking, wells at the top, each band a line as bright as the DNA in it, with its size beside it.
+
 ## Motion is a setting
 
 Moving between views helps some people keep their place and makes others unwell, or just slows them down the tenth time. Every scene has a switch that starts where the system's "reduce motion" setting is. With it off, a change of view is a cut, a lid is open or shut, and nothing moves by itself.
