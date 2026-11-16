@@ -7,8 +7,9 @@
  * neither person did anything wrong; both are shown as needing somebody to look.
  */
 import { generateSigningKey, type SigningKey } from "@biolibs/opencloning";
-import { addItem, addPart, addPlace, addToRoster, annotatePart, foundLab, mergeLog, movePlace, newItemId, newPlaceId, newRunId, nextEntry, recordRun,
-         putItem, retirePlace, setField, standPlace, type LabState, type Operation, type PartFeature, type SignedEntry } from "@biolibs/bionet";
+import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, foundLab, mergeLog, movePlace, newItemId, newPlaceId, newRunId, nextEntry,
+         offerPart, putItem, recordRun, recountItem, removeFromRoster, retireItem, retirePlace, setField, setRole, standPlace, strayField,
+         type LabState, type Operation, type PartFeature, type SignedEntry } from "@biolibs/bionet";
 import { beforeAll, describe, expect, it } from "vitest";
 
 const F1 = "GGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGA";
@@ -302,5 +303,94 @@ describe("a part with sticky ends", () => {
     expect(await last(a)).toMatchObject({ status: "refused", reason: expect.stringMatching(/ends a molecule of that length can have/) });
     a.held.pop();
     expect((await a.lab()).items.find((one) => one.item === tube)!.amount).toBe(9);
+  });
+});
+
+describe("a change carrying something this version does not know", () => {
+  // Every change the package itself writes. If a field is added to one of these and not to the
+  // table the merge knows, this fails — which is the point: every reader has to be taught the field
+  // before any writer may use it.
+  const everything: Operation[] = [
+    { type: "roster.found", name: "The Wren Lab", person: "Ada" },
+    addToRoster("a".repeat(43), "Bob"),
+    addToRoster("a".repeat(43), "Bob", "keeper"),
+    removeFromRoster("a".repeat(43), 3),
+    setRole("a".repeat(43), "keeper"),
+    addPart({ sequence: F1, name: "f1" }),
+    addPart({ sequence: F1, name: "f1", circular: true }),
+    addPart({ sequence: "AATTCGGGGTTTTGGGGCCCCAAAAGGATC", name: "piece", ends: { left: 4, right: 4 } }),
+    annotatePart("p", [{ type: "CDS", label: "g", strand: 1, parts: [{ start: 0, end: 9 }] }]),
+    offerPart("p", true),
+    addItem({ item: newItemId(), part: "p", amount: 10, unit: "µL" }),
+    adjustItem("i", -2),
+    recountItem("i", 7),
+    retireItem("i"),
+    putItem("i", "b", { row: 1, column: 2 }),
+    putItem("i", "b", null),
+    addPlace({ place: newPlaceId(), kind: "box", name: "Box 1" }),
+    addPlace({ place: newPlaceId(), kind: "box", name: "Box 1", parent: "f", grid: { rows: 9, columns: 9 } }),
+    movePlace("p", null),
+    standPlace("p", { at: [0, 0, 0], size: [1, 1, 1], turn: 90 }),
+    standPlace("p", null),
+    retirePlace("p"),
+    recordRun({ run: newRunId(), kind: "pcr", instrument: null, inputs: [{ item: "i", amount: 1, role: "template" }],
+                outputs: [{ item: newItemId(), sequence: F1, circular: false, name: "n", amount: 50, unit: "µL" }],
+                settings: { anneal_at_least: 18, note_to_self: "hot" }, outcome: "worked", note: null }),
+    recordRun({ run: newRunId(), kind: "digest", instrument: null, inputs: [],
+                outputs: [{ item: newItemId(), sequence: F1, circular: false, ends: { left: 4, right: -2 }, name: "n", amount: 1, unit: null }],
+                settings: {}, outcome: "worked", note: "x" }),
+    setField("part", "p", "note", "anything"),
+  ];
+
+  it("knows every field of every change this package writes", () => {
+    for (const op of everything) expect([op.type, strayField(op)]).toEqual([op.type, null]);
+    expect(everything.length).toBeGreaterThan(20);
+  });
+
+  it("lets be the fields that are open by design", () => {
+    // A run's settings and a field's value are whatever the lab wants to put there.
+    expect(strayField(recordRun({ run: "r", kind: "pcr", instrument: null, inputs: [], outputs: [],
+                                  settings: { whatever_it_likes: 3 }, outcome: "failed", note: null }))).toBeNull();
+    expect(strayField(setField("item", "i", "whatever_it_likes", "so"))).toBeNull();
+  });
+
+  it("says a field it does not know, wherever it sits", () => {
+    expect(strayField({ type: "part.add", sequence: F1, circular: false, name: "f1", colour: "red" } as Operation)).toBe("colour");
+    expect(strayField({ type: "part.add", sequence: F1, circular: false, name: "f1", ends: { left: 4, right: 0, kind: "5′" } } as Operation)).toBe("ends.kind");
+    expect(strayField({ type: "part.annotate", part: "p", features: [{ type: "CDS", label: "g", strand: 1, parts: [{ start: 0, end: 9, why: "x" }] }] } as Operation)).toBe("features[0].parts[0].why");
+    expect(strayField({ type: "run.record", run: "r", kind: "pcr", instrument: null, inputs: [], settings: {}, outcome: "worked", note: null,
+                        outputs: [{ item: "i", sequence: F1, circular: false, name: "n", amount: 1, unit: null, phosphate: true }] } as Operation)).toBe("outputs[0].phosphate");
+    // A kind of change it does not know is a different thing, and is said differently.
+    expect(strayField({ type: "future.thing", whatever: 1 } as unknown as Operation)).toBeNull();
+  });
+
+  it("sets such a change aside rather than reading it, and the lab carries on", async () => {
+    const { a } = await wren();
+    const before = await a.lab();
+    await a.write({ type: "part.add", sequence: F1, circular: false, name: "from the future", phosphorylated: true } as Operation);
+    const said = await last(a);
+    expect(said.status).toBe("not understood");
+    expect(said.reason).toMatch(/"phosphorylated", which this version does not know/);
+    const after = await a.lab();
+    // Nothing of it was read: no part, and everything else the lab had is untouched.
+    expect(after.parts.map((one) => one.name)).toEqual(before.parts.map((one) => one.name));
+    expect(after.lab).toBe(before.lab);
+    a.held.pop();
+    // And an ordinary change written afterwards still applies.
+    await a.write(addPart({ sequence: F1.slice(0, 30), name: "an ordinary one" }));
+    expect((await a.lab()).parts.map((one) => one.name)).toContain("an ordinary one");
+  });
+
+  it("is why a part's ends could not simply be added", async () => {
+    // The whole reason for the rule: a reader that did not know `ends` worked the checksum out from
+    // the bases alone, so two machines read one entry differently. Now it would not read it at all.
+    const { a } = await wren();
+    await a.write(addPart({ sequence: "AATTCGGGGTTTTGGGGCCCCAAAAGGATC", name: "piece", ends: { left: 4, right: 4 } }));
+    expect((await last(a)).status).toBe("applied");
+    const sticky = (await a.lab()).parts.at(-1)!;
+    expect(sticky.ends).toEqual({ left: 4, right: 4 });
+    await a.write({ type: "part.add", sequence: "AATTCGGGGTTTTGGGGCCCCAAAAGGATC", circular: false, name: "piece", ends: { left: 4, right: 4 }, nicked: true } as Operation);
+    expect((await last(a)).status).toBe("not understood");
+    a.held.pop();
   });
 });

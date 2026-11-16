@@ -304,6 +304,97 @@ function areFeatures(value: unknown, length: number): value is PartFeature[] {
       && piece.start >= 0 && piece.end > piece.start && piece.end <= length));
 }
 
+/**
+ * What a value in a change may be, for the purpose of knowing it: `true` for anything at all, an
+ * object for something whose fields are listed, and a list of one shape for a list of those.
+ */
+type Known = true | { readonly [field: string]: Known } | readonly [Known];
+
+/**
+ * Every field each kind of change may carry, and every field inside those.
+ *
+ * This exists because of what happened when parts learned to have ends. A version that did not know
+ * `ends` took such an entry, ignored them, and worked the part's checksum out from the bases alone —
+ * so two machines read one entry differently, which is the one thing the merge must never do. A kind
+ * of change a version does not know is refused and said so; a *field* it does not know used to pass
+ * unnoticed. Now it does not: anything not listed here is as unreadable as an unknown change.
+ *
+ * So adding a field is a breaking change for older readers, and it is meant to be. They will set the
+ * entry aside and say why, which a person can act on, instead of quietly disagreeing about the lab.
+ *
+ * `true` means the value is not looked into: `settings` on a run and `value` on a field are open by
+ * design, and `at`, `size` and a feature's strand are numbers rather than things with fields.
+ */
+const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
+  "roster.found": { name: true, person: true },
+  "roster.add": { key: true, person: true, role: true },
+  "roster.remove": { key: true, cutoff: true },
+  "roster.role": { key: true, role: true },
+  "part.add": { sequence: true, circular: true, name: true, ends: { left: true, right: true } },
+  "part.annotate": { part: true, features: [{ type: true, label: true, strand: true, parts: [{ start: true, end: true }] }] },
+  "part.offer": { part: true, available: true },
+  "item.add": { item: true, part: true, amount: true, unit: true },
+  "item.adjust": { item: true, by: true },
+  "item.recount": { item: true, amount: true },
+  "item.retire": { item: true },
+  "item.put": { item: true, place: true, slot: { row: true, column: true } },
+  "place.add": { place: true, kind: true, name: true, parent: true, grid: { rows: true, columns: true } },
+  "place.move": { place: true, parent: true },
+  "place.stand": { place: true, standing: { at: true, size: true, turn: true } },
+  "place.retire": { place: true },
+  "run.record": {
+    run: true, kind: true, instrument: true, settings: true, outcome: true, note: true,
+    inputs: [{ item: true, amount: true, role: true }],
+    outputs: [{ item: true, sequence: true, circular: true, ends: { left: true, right: true }, name: true, amount: true, unit: true }],
+  },
+  "field.set": { on: true, id: true, field: true, value: true },
+};
+
+/**
+ * The first field in a change that this version does not know, if there is one.
+ *
+ * @param value - What to look at.
+ * @param known - What its fields may be.
+ * @param where - What to call it in the answer, such as `outputs`.
+ * @returns The field's name, said as a path, or `null` if every field is one this version knows.
+ */
+function strayIn(value: unknown, known: Known, where: string): string | null {
+  if (known === true || value === null || typeof value !== "object") return null;
+  if (Array.isArray(known)) {
+    if (!Array.isArray(value)) return null;        // that it is not a list is settled by the checks below
+    for (const [at, one] of value.entries()) {
+      const stray = strayIn(one, known[0]!, `${where}[${at}]`);
+      if (stray !== null) return stray;
+    }
+    return null;
+  }
+  if (Array.isArray(value)) return null;
+  // Not a list, so it is the object form; TypeScript cannot see that through the tuple in the union.
+  const fields = known as Readonly<Record<string, Known>>;
+  for (const [field, held] of Object.entries(value as Record<string, unknown>)) {
+    const path = where === "" ? field : `${where}.${field}`;
+    if (!Object.hasOwn(fields, field)) return path;
+    const stray = strayIn(held, fields[field]!, path);
+    if (stray !== null) return stray;
+  }
+  return null;
+}
+
+/**
+ * The first field a change carries that this version does not know.
+ *
+ * @param op - The change.
+ * @returns The field's name, or `null` if this version knows every field it carries, or does not
+ *   know the kind of change at all — which is settled elsewhere, and said differently.
+ */
+export function strayField(op: Operation): string | null {
+  const known = Object.hasOwn(KNOWN, op.type) ? KNOWN[op.type]! : undefined;
+  if (known === undefined) return null;
+  const { type: _type, ...rest } = op as Record<string, unknown>;
+  void _type;
+  return strayIn(rest, known, "");
+}
+
 /** The most items that may go into one run or come out of it, and the most settings it may carry. */
 const MOST_IN_A_RUN = 50;
 
@@ -534,6 +625,14 @@ function walk(founding: Node, chains: Map<string, Node[]>, chained: Map<string, 
       placed.push({ id: node.id, signed: node.signed, status, reason });
     };
     const op = node.op;
+
+    // Before any of it is read: a field this version does not know makes the whole change
+    // unreadable, because what it would change about the rest cannot be guessed.
+    const stray = strayField(op);
+    if (stray !== null) {
+      say("not understood", `It carries ${JSON.stringify(stray)}, which this version does not know, so it could be read differently from the way its author meant it.`);
+      continue;
+    }
 
     if (node === founding) {
       roster.set(node.author, { key: node.author, person: text(op["person"], 200) ? op["person"] : "",

@@ -324,6 +324,26 @@ overhang, negative a 3′ one, 0 blunt. The checksum takes the ends in, so the s
 different ends are different parts, and a piece is the same part whichever strand it was written
 from. A part with blunt ends is recorded and named exactly as it always was.
 
+### A change this version cannot read
+
+```ts
+import { strayField } from "@biolibs/bionet";
+
+strayField(addPart({ sequence: "GGATCC", name: "f1" }));                              // null
+strayField({ type: "part.add", sequence: "GGATCC", circular: false, name: "f1", nicked: true });   // "nicked"
+```
+
+Every kind of change lists the fields it may carry, and so does everything inside them. A change
+carrying anything else is set aside as `not understood`, with the field named, exactly as a kind of
+change this version has never heard of is.
+
+This is deliberately strict, and it is strict because of what happened when parts learned to have
+ends. A version that did not know `ends` took such an entry, ignored them, and worked the part's
+checksum out from the bases alone — so two machines read one entry differently, which is the one
+thing the merge must never do. A new *kind* of change was always safe, because an old reader refused
+it and said so. A new *field* was not. Now it is: adding one is a breaking change for older readers,
+and they will say which field they could not read instead of quietly disagreeing about the lab.
+
 ### What was done at the bench
 
 A run is one change that does three things: takes what was used from each tube that went in, adds

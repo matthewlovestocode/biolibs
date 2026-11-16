@@ -84,6 +84,18 @@ An item is put in a place, and at a position if the place is a box. That is a re
 
 Two outcomes are flagged and not refused. Two people apart can each move a place into the other, and neither move is wrong alone; every place in the loop comes out `adrift`, in nothing, until somebody moves one. And two people apart can each stand a tube in the same position; that position is listed in `crowded`. In both cases the log has lost track of the physical lab, and the honest thing is to say so and let somebody look.
 
+## A field an older reader does not know
+
+The merge is a pure function of the set of entries: the same entries in any order give the same lab. That is the claim everything else rests on, and it is a claim about *every* reader, not about one version of one program.
+
+Adding `ends` to a part broke it, quietly. An older reader took the entry, ignored the field it did not know, and worked the checksum out from the bases alone; a newer one took the ends in and got a different checksum. Two machines, one entry, two answers. Nothing complained, because nothing was looking.
+
+What had always been safe was adding a new *kind* of change: an old reader does not recognise `part.annotate` at all, sets the entry aside, and says so. The asymmetry was the bug. A kind of change is declared and checked; a field was neither.
+
+So now every operation declares its fields, and everything nested inside them, and an entry carrying anything else is set aside as `not understood` with the field named. Two things are left open on purpose, because they are open by design: a run's `settings` and a field's `value`, which are whatever a lab wants to put there.
+
+This cannot repair the versions already published — a reader at 1.3.1 still misreads `ends`, and no change here can reach it. What it does is make the next addition degrade the way the first one should have. It also makes adding a field a deliberate act: a reader has to be taught the field before any writer may use it, and the package's own tests fail if a change it writes carries a field the table does not list.
+
 ## What is marked on a part
 
 A part's features are kept in the log, as one register per part. That is a choice: they could have been left to each member's files. But a map is what a lab reads a construct by, and two members reading different maps of the same tube is the kind of quiet disagreement the log exists to prevent. Features do not change which part it is. A part is its sequence, by checksum, and what is marked on it is a claim about that sequence that the lab holds in common.

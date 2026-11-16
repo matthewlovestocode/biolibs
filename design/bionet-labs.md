@@ -974,6 +974,22 @@ thing.
 - **The only thing the tools needed** was to be able to open on a given state (`start`), read once
   at mount.
 
+### A field an older reader does not know
+
+Found while bringing the web peer up to the packages: a peer on the older release took an entry
+carrying a part's `ends`, ignored them, and worked the checksum out from the bases alone. Two
+machines, one entry, two answers — the one thing the merge must never do.
+
+- **The asymmetry was the bug.** A new *kind* of change was always safe: an old reader does not know
+  `part.annotate`, sets it aside and says so. A new *field* was neither declared nor checked.
+- **Every operation now lists its fields**, and everything nested in them. Anything else is
+  `not understood`, with the field named.
+- **Two things stay open by design:** a run's `settings` and a field's `value`.
+- **It cannot repair what is published.** A reader at 1.3.1 still misreads `ends`. What it does is
+  make the next addition degrade the way the first should have, and make adding a field deliberate:
+  the package's own tests fail if a change it writes carries a field the table does not list.
+- Published as 1.4.0 rather than a patch, because it can refuse an entry that used to apply.
+
 ## A first slice
 
 Two instances of the desktop app for the Wren Lab:
