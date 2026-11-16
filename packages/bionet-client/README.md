@@ -50,6 +50,34 @@ guards it; `memoryKeys()` is for tests.
 2. The keeper adds it, `lab.addMember({ key, person })`, and sends back `lab.invite`.
 3. The new member calls `lab.join(invite)`. The lab arrives once the keeper's change reaches the peer.
 
+## Where things are
+
+```ts
+const freezer = await lab.addPlace({ kind: "freezer", name: "−80" });
+const box = await lab.addPlace({ kind: "box", name: "Box 1", parent: freezer, grid: { rows: 9, columns: 9 } });
+await lab.putItem({ item: tube, place: box, slot: { row: 0, column: 0 } });
+lab.snapshot().lab?.places.length;    // 2
+```
+
+`movePlace`, `standPlace` (in metres, kept to the millimetre) and `retirePlace` do the rest.
+`layoutFrom` in `@biolibs/bionet-space` turns the snapshot's lab into something that can be drawn.
+
+## Backing up the key
+
+A device's key never leaves it, with one exception: a lab with one member and one device ends when
+the device does.
+
+```ts
+const backup = await lab.backUp("several unrelated words");   // text to write to a file
+// later, on a new device that is not in a lab yet:
+await fresh.restore({ backup, passphrase: "several unrelated words" });
+await fresh.join(invite);                                      // and it carries on the same log
+```
+
+The key is sealed with AES-256-GCM under a key stretched from the passphrase by PBKDF2 (600,000
+rounds of SHA-256). Nothing remembers the passphrase. `restore` is refused once a device is in a
+lab: one key on two devices writes two histories the lab cannot tell apart.
+
 ## The window's side
 
 A window does not always share a process with the lab. It reaches one through a `LabSource`: the lab

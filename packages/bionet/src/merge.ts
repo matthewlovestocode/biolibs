@@ -26,7 +26,7 @@
  */
 import { Dseqrecord } from "@biolibs/dseqrecord";
 import type { SignOptions, SigningKey } from "@biolibs/opencloning";
-import { entryId, readEntry, verifyEntry, writeEntry, type Operation, type Role,
+import { entryId, readEntry, verifyEntry, writeEntry, type Operation, type Role, type StandingMm,
          type SignedEntry } from "./log.js";
 import { INVENTORY_VERSION, type InventoryDocument, type InventoryPart, type LabModel,
          type PeerModel } from "./model.js";
@@ -84,10 +84,49 @@ export interface ItemState {
   retired: boolean;
   /** Whether the log has lost track: the amount went below zero, or two recounts overlapped. */
   needsRecount: boolean;
+  /** Where it is, if anybody has said: the place, and the position if the place is a box. */
+  where: { place: string; slot: { row: number; column: number } | null } | null;
   /** Anything else set on it. */
   fields: Record<string, string | number | null>;
   /** The entry that added it. */
   added: string;
+}
+
+/** One place: a room, a freezer, a shelf, a box. */
+export interface PlaceState {
+  /** Its ID. */
+  place: string;
+  /** What kind of place it is. Anything a lab calls one; the usual ones are drawn knowingly. */
+  kind: string;
+  /** What the lab calls it. */
+  name: string;
+  /** The place it is in, or `null` if it is in nothing. */
+  parent: string | null;
+  /** Its positions, if it is a box. Fixed when it is added. */
+  grid: { rows: number; columns: number } | null;
+  /** Where it stands and how big it is, if anybody has said. */
+  standing: StandingMm | null;
+  /** Whether it has been retired. */
+  retired: boolean;
+  /**
+   * Whether moves made apart left it inside itself. Such a place is shown as being in nothing
+   * until somebody moves it.
+   */
+  adrift: boolean;
+  /** Anything else set on it. */
+  fields: Record<string, string | number | null>;
+  /** The entry that added it. */
+  added: string;
+}
+
+/** One position of one box that the log says holds more than one item. */
+export interface Crowded {
+  /** The box. */
+  place: string;
+  /** The position. */
+  slot: { row: number; column: number };
+  /** The items the log has there. */
+  items: string[];
 }
 
 /** What became of one entry. */
@@ -135,6 +174,10 @@ export interface LabState {
   parts: PartState[];
   /** Every item. */
   items: ItemState[];
+  /** Every place. */
+  places: PlaceState[];
+  /** Positions the log says hold more than one item. Somebody has to go and look. */
+  crowded: Crowded[];
   /** Every entry that could be placed, in order, with what became of it. */
   entries: Placed[];
   /** Entries that are waiting on others that have not arrived. */
@@ -168,6 +211,31 @@ const RESERVED = new Set(["amount", "part", "item", "checksum", "sequence", "cir
 const text = (value: unknown, most: number): value is string =>
   typeof value === "string" && value.length > 0 && value.length <= most;
 /** An amount is a whole number of the item's unit: only whole numbers have one agreed spelling to sign. */
+/** Fields of a place that are changed by their own operations, not by `field.set`. */
+const PLACE_RESERVED = new Set(["place", "kind", "parent", "grid", "standing", "retired", "adrift"]);
+
+/** The most positions a box may have along one side, and the farthest a place may stand or reach, in millimetres. */
+const MOST_SIDE = 100;
+const FARTHEST = 1_000_000;
+
+const isGrid = (value: unknown): value is { rows: number; columns: number } => {
+  const grid = value as { rows?: unknown; columns?: unknown } | null;
+  return typeof grid === "object" && grid !== null && [grid.rows, grid.columns].every((side) => Number.isSafeInteger(side) && (side as number) >= 1 && (side as number) <= MOST_SIDE);
+};
+
+const isSlot = (value: unknown): value is { row: number; column: number } => {
+  const slot = value as { row?: unknown; column?: unknown } | null;
+  return typeof slot === "object" && slot !== null && [slot.row, slot.column].every((at) => Number.isSafeInteger(at) && (at as number) >= 0);
+};
+
+const isStanding = (value: unknown): value is StandingMm => {
+  const standing = value as Partial<StandingMm> | null;
+  const three = (list: unknown, least: number): boolean =>
+    Array.isArray(list) && list.length === 3 && list.every((one) => Number.isSafeInteger(one) && one >= least && one <= FARTHEST);
+  return typeof standing === "object" && standing !== null && three(standing.at, -FARTHEST) && three(standing.size, 1)
+    && [0, 90, 180, 270].includes(standing.turn as number);
+};
+
 const amountOf = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value);
 const role = (value: unknown): value is Role => value === "member" || value === "keeper";
 
@@ -194,7 +262,7 @@ const hadSeen = (later: Node, earlier: Node): boolean => (later.vc.get(earlier.a
  * ```
  */
 export async function mergeLog(entries: readonly unknown[], options: { lab?: string } = {}): Promise<LabState> {
-  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], entries: [],
+  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], entries: [],
                             waiting: [], discarded: [], overlaps: [], heads: {}, knows: {} };
 
   // Read and check every entry on its own, before any of them is believed about the others.
@@ -441,6 +509,10 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
     if (wins) set.set(field, { node, value });
   };
 
+  const places = new Map<string, { place: PlaceState; set: Map<string, Register> }>();
+  /** Where each item was last put. */
+  const put = new Map<string, Map<string, Register>>();
+
   for (const one of placed) {
     if (one.status !== "applied") continue;
     const node = chained.get(one.id)!;
@@ -485,7 +557,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         refuse("The part it is an item of is not one the lab has.");
       } else {
         items.set(op["item"], {
-          item: { item: op["item"], part: op["part"], unit: op["unit"], amount: 0, retired: false, needsRecount: false, fields: {}, added: node.id },
+          item: { item: op["item"], part: op["part"], unit: op["unit"], amount: 0, retired: false, needsRecount: false, where: null, fields: {}, added: node.id },
           set: new Map(), base: { node, amount: op["amount"], recount: false }, adjusted: [], overlapped: false,
         });
       }
@@ -511,12 +583,64 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       } else {
         held.item.retired = true;
       }
+    } else if (op.type === "place.add") {
+      const grid = op["grid"];
+      if (!(typeof op["place"] === "string" && ITEM_ID.test(op["place"])) || !text(op["kind"], 40) || !text(op["name"], 200)
+          || !(grid === null || isGrid(grid))) {
+        refuse("It does not carry a place ID, a kind, a name, and positions that are whole numbers.");
+      } else if (places.has(op["place"])) {
+        refuse("A place with that ID already exists.");
+      } else if (!(op["parent"] === null || (typeof op["parent"] === "string" && places.has(op["parent"])))) {
+        refuse("The place it is in is not one the lab has.");
+      } else {
+        places.set(op["place"], {
+          place: { place: op["place"], kind: op["kind"], name: op["name"], parent: null, grid: grid === null ? null : { rows: grid.rows, columns: grid.columns },
+                   standing: null, retired: false, adrift: false, fields: {}, added: node.id },
+          set: new Map<string, Register>([["name", { node, value: op["name"] }], ["parent", { node, value: op["parent"] }]]),
+        });
+      }
+    } else if (op.type === "place.move" || op.type === "place.stand" || op.type === "place.retire") {
+      const held = typeof op["place"] === "string" ? places.get(op["place"]) : undefined;
+      if (held === undefined) { refuse("The place it changes is not one the lab has."); continue; }
+      if (op.type === "place.move") {
+        const parent = op["parent"];
+        if (!(parent === null || (typeof parent === "string" && places.has(parent)))) { refuse("The place it moves to is not one the lab has."); continue; }
+        if (parent === op["place"]) { refuse("A place cannot be inside itself."); continue; }
+        write(held.set, "parent", node, parent, `where ${held.place.name} is`);
+      } else if (op.type === "place.stand") {
+        const standing = op["standing"];
+        if (!(standing === null || isStanding(standing))) { refuse("It does not say where the place stands and how big it is, in whole millimetres."); continue; }
+        write(held.set, "standing", node, standing, `where ${held.place.name} stands`);
+      } else {
+        held.place.retired = true;
+      }
+    } else if (op.type === "item.put") {
+      const item = typeof op["item"] === "string" ? items.get(op["item"]) : undefined;
+      if (item === undefined) { refuse("The item it puts somewhere is not one the lab has."); continue; }
+      const place = op["place"];
+      const slot = op["slot"];
+      if (place === null) {
+        if (slot !== null) { refuse("An item that is nowhere is at no position."); continue; }
+      } else {
+        const into = typeof place === "string" ? places.get(place) : undefined;
+        if (into === undefined) { refuse("The place it puts the item in is not one the lab has."); continue; }
+        if (slot !== null && !(isSlot(slot) && into.place.grid !== null && slot.row < into.place.grid.rows && slot.column < into.place.grid.columns)) {
+          refuse("The position it names is not one that place has.");
+          continue;
+        }
+      }
+      if (!put.has(item.item.item)) put.set(item.item.item, new Map());
+      write(put.get(item.item.item)!, "where", node, place === null ? null : { place, slot: slot === null ? null : { row: (slot as { row: number }).row, column: (slot as { column: number }).column } },
+            `where item ${item.item.item.slice(0, 12)} is`);
     } else if (op.type === "field.set") {
       const field = op["field"];
       const value = op["value"];
       const target = op["on"] === "part" && typeof op["id"] === "string" ? parts.get(op["id"])
-                   : op["on"] === "item" && typeof op["id"] === "string" ? items.get(op["id"]) : undefined;
-      if (target === undefined) { refuse("It does not name a part or an item the lab has."); continue; }
+                   : op["on"] === "item" && typeof op["id"] === "string" ? items.get(op["id"])
+                   : op["on"] === "place" && typeof op["id"] === "string" ? places.get(op["id"]) : undefined;
+      if (target === undefined) { refuse("It does not name a part, an item or a place the lab has."); continue; }
+      if (op["on"] === "place" && typeof field === "string" && PLACE_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
+      if (field === "name" && op["on"] === "place" && !text(value, 200)) { refuse("A place's name has to be some text."); continue; }
       if (typeof field !== "string" || !FIELD.test(field) || RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (!(value === null || amountOf(value) || (typeof value === "string" && value.length <= 2_000))) { refuse("Its value is not text, a whole number or nothing."); continue; }
       if (field === "name" && op["on"] === "part" && !text(value, 200)) { refuse("A part's name has to be some text."); continue; }
@@ -541,8 +665,38 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
     item.amount = base.amount + since;
     item.needsRecount = item.amount < 0 || overlapped;
     for (const [field, held] of set) item.fields[field] = held.value as string | number | null;
+    item.where = (put.get(item.item)?.get("where")?.value ?? null) as ItemState["where"];
     state.items.push(item);
   }
+  for (const { place, set } of places.values()) {
+    for (const [field, held] of set) {
+      if (field === "name") place.name = held.value as string;
+      else if (field === "parent") place.parent = held.value as string | null;
+      else if (field === "standing") place.standing = held.value as StandingMm | null;
+      else place.fields[field] = held.value as string | number | null;
+    }
+    state.places.push(place);
+  }
+  // Two people apart can each move a place into the other. Neither move is wrong alone, so neither
+  // is refused: every place caught in the loop is shown as being in nothing, and says so.
+  for (const { place } of places.values()) {
+    const passed = new Set<string>();
+    for (let up = place.parent; up !== null && !passed.has(up); up = places.get(up)!.place.parent) {
+      if (up === place.place) { place.adrift = true; break; }
+      passed.add(up);
+    }
+  }
+  for (const { place } of places.values()) if (place.adrift) place.parent = null;
+  // Two tubes cannot stand in one position, but two people apart can each say theirs does.
+  const stood = new Map<string, Crowded>();
+  for (const item of state.items) {
+    if (item.retired || item.where === null || item.where.slot === null) continue;
+    const key = `${item.where.place} ${item.where.slot.row} ${item.where.slot.column}`;
+    const held = stood.get(key) ?? { place: item.where.place, slot: item.where.slot, items: [] };
+    held.items.push(item.item);
+    stood.set(key, held);
+  }
+  state.crowded = [...stood.values()].filter((one) => one.items.length > 1);
 }
 
 /**

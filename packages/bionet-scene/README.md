@@ -22,6 +22,19 @@ Press a freezer to look into it, a box to take it out, a tube to pick it. The li
 
 three.js needs a canvas, so in Next.js load it in the browser only: `dynamic(() => import("@biolibs/bionet-scene").then((m) => m.LabExplorer), { ssr: false })`.
 
+## A real lab
+
+```tsx
+import { useLab } from "@biolibs/bionet-react";
+import { LabView } from "@biolibs/bionet-scene";
+
+const lab = useLab()?.lab;
+lab && <LabView lab={lab} name={lab.name ?? "Lab"} />
+```
+
+`LabView` draws a lab from its own record: the places its members added and where they put each
+tube. Until the lab has a place it says there is nothing to draw yet.
+
 ## What to draw is decided before anything is drawn
 
 ```ts

@@ -45,3 +45,21 @@ search(lab, "t7 promoter").length > 0;    // true
 ## Positions in a box
 
 `slotCenter`, `slotSize`, `slotName` (`A1`, `B7`) and `firstFreeSlot` work out a box's grid. `storedWithin` gives everything in a place however deep.
+
+`slotFrom("C4")` reads a position the way it is written on a lid.
+
+## From a lab's own record
+
+```ts
+import { layoutFrom } from "@biolibs/bionet-space";
+
+const layout = layoutFrom({
+  places: [{ place: "f", kind: "freezer", name: "−80", parent: null, grid: null, standing: null, retired: false }],
+  items: [], parts: [],
+});
+layout.places.map((one) => [one.id, one.parent]);   // [ [ "~room", null ], [ "f", "~room" ] ]
+```
+
+`layoutFrom` takes a lab as `@biolibs/bionet` records it — millimetres, retired places, items that
+may be nowhere — and gives a layout of what can be found. It asks for the lab by shape, so this
+package still depends on nothing. Places standing in no room are put in one made up for the purpose.

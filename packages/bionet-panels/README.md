@@ -46,6 +46,18 @@ used on its own inside one:
 
 Every colour comes from `@biolibs/bionet-theme`, and no rule reaches outside `.bionet`.
 
+## Places, and a view of your own
+
+`Places` shows the tree of places and adds to it; each tube in `Freezer` says where it is and can be
+put somewhere, by place and by position (`C4`). `BackUpKey` and `RestoreKey` seal the device's key to
+a file and take one up again.
+
+`LabWindow` takes views of the host's own, shown as tabs after its own:
+
+```tsx
+<LabWindow extra={[{ id: "scene", label: "Lab", view: <MyDrawingOfTheLab /> }]} />
+```
+
 ## A lab's public page
 
 What a lab shows the world, and what it can see of another lab. These take what was fetched and

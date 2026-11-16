@@ -307,9 +307,46 @@ export const recountItem = (item: string, amount: number): Operation => ({ type:
 /** @returns The change that retires an item. It stays in the history. */
 export const retireItem = (item: string): Operation => ({ type: "item.retire", item });
 
-/** @returns The change that sets one field on a part (by checksum) or an item (by ID). */
-export const setField = (on: "part" | "item", id: string, field: string, value: string | number | null): Operation =>
+/** Where a place stands and how big it is, in whole millimetres, since only whole numbers are signed. */
+export interface StandingMm {
+  /** The centre of its base, measured from the centre of the base of the place it is in: across, up, and towards the front. */
+  at: [number, number, number];
+  /** How wide, how tall and how deep it is. */
+  size: [number, number, number];
+  /** Which way it faces, in quarter turns. */
+  turn: 0 | 90 | 180 | 270;
+}
+
+/**
+ * @returns The change that adds a place: a room, a freezer, a shelf, a box. `parent` is the place it
+ *   is in, or `null` for one that is in nothing. `grid` makes it a box, with positions.
+ */
+export const addPlace = (place: { place: string; kind: string; name: string; parent?: string | null;
+                                  grid?: { rows: number; columns: number } | null }): Operation =>
+  ({ type: "place.add", place: place.place, kind: place.kind, name: place.name, parent: place.parent ?? null, grid: place.grid ?? null });
+
+/** @returns The change that puts a place inside another, or inside nothing. */
+export const movePlace = (place: string, parent: string | null): Operation => ({ type: "place.move", place, parent });
+
+/** @returns The change that says where a place stands and how big it is, or with `null` that nobody has said. */
+export const standPlace = (place: string, standing: StandingMm | null): Operation => ({ type: "place.stand", place, standing });
+
+/** @returns The change that retires a place. It stays in the history. */
+export const retirePlace = (place: string): Operation => ({ type: "place.retire", place });
+
+/**
+ * @returns The change that says where an item is: in which place, and at which position if the
+ *   place is a box. `null` for the place says it is nowhere the lab has recorded.
+ */
+export const putItem = (item: string, place: string | null, slot: { row: number; column: number } | null = null): Operation =>
+  ({ type: "item.put", item, place, slot });
+
+/** @returns The change that sets one field on a part (by checksum), an item or a place (by ID). */
+export const setField = (on: "part" | "item" | "place", id: string, field: string, value: string | number | null): Operation =>
   ({ type: "field.set", on, id, field, value });
+
+/** @returns A new ID for a place, made the way an item's is. */
+export const newPlaceId = (): string => newItemId();
 
 /**
  * A new ID for an item: 16 random bytes in hex.

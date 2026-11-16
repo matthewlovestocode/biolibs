@@ -10,34 +10,51 @@
  * It walks a person through the three places they can be: nobody has said who is at this device,
  * the device is in no lab, the device is waiting to be let into one — and then the lab itself.
  */
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Logo, Mark, useAct, useLab } from "@biolibs/bionet-react";
 import { Freezer } from "./freezer.js";
 import { History } from "./history.js";
 import { Ask, CopyContext, DeviceKey, SyncStatus, Trouble } from "./parts.js";
+import { RestoreKey, SaveContext } from "./backup.js";
 import { People } from "./people.js";
+import { Places } from "./places.js";
 import { Sharing } from "./sharing.js";
 
-/** The four things a member looks at. */
-export const TABS = ["freezer", "people", "history", "sharing"] as const;
+/** The things a member looks at. */
+export const TABS = ["freezer", "places", "people", "history", "sharing"] as const;
 
 /** One of them. */
 export type Tab = (typeof TABS)[number];
 
+/** A view a host adds to the window beside its own, such as a drawing of the lab. */
+export interface ExtraTab {
+  /** What tells it apart. */
+  id: string;
+  /** What its tab says. */
+  label: string;
+  /** What it shows. It is inside the lab's provider, so it may use the hooks. */
+  view: ReactNode;
+}
+
 /**
  * The window.
  *
- * @param props - `tab` is which view to open on; `copy` puts words on the clipboard, for a host that
- *   cannot use the browser's own way.
+ * @param props - `tab` is which view to open on; `copy` puts words on the clipboard and `save` hands
+ *   over a file, for a host that cannot use the browser's own way; `extra` are views the host adds,
+ *   shown after the window's own.
  */
-export function LabWindow({ tab: first = "freezer", copy }: { tab?: Tab; copy?: (words: string) => Promise<void> }) {
-  const window = <Body first={first} />;
-  return <div className="bionet">{copy === undefined ? window : <CopyContext.Provider value={copy}>{window}</CopyContext.Provider>}</div>;
+export function LabWindow({ tab: first = "freezer", copy, save, extra = [] }: {
+  tab?: Tab | string; copy?: (words: string) => Promise<void>; save?: (name: string, text: string) => Promise<void>; extra?: readonly ExtraTab[];
+}) {
+  let window = <Body first={first} extra={extra} />;
+  if (save !== undefined) window = <SaveContext.Provider value={save}>{window}</SaveContext.Provider>;
+  if (copy !== undefined) window = <CopyContext.Provider value={copy}>{window}</CopyContext.Provider>;
+  return <div className="bionet">{window}</div>;
 }
 
-function Body({ first }: { first: Tab }) {
+function Body({ first, extra }: { first: string; extra: readonly ExtraTab[] }) {
   const state = useLab();
-  const [tab, setTab] = useState<Tab>(first);
+  const [tab, setTab] = useState<string>(first);
   if (state === null) return <main className="centre"><p className="dim">Opening the lab…</p></main>;
   if (state.device.person === null) return <main className="centre"><Logo /><Trouble /><Who /></main>;
   if (state.lab === null) return <main className="centre"><Logo /><Trouble /><NoLab /></main>;
@@ -46,6 +63,7 @@ function Body({ first }: { first: Tab }) {
   const lab = state.lab;
   const label: Record<Tab, string> = {
     freezer: `Freezer · ${lab.items.filter((item) => !item.retired).length}`,
+    places: `Places · ${lab.places.filter((place) => !place.retired).length}`,
     people: `People · ${lab.roster.filter((key) => key.removed === null).length}`,
     history: `History · ${lab.entries.length}`,
     sharing: "Sharing",
@@ -64,13 +82,16 @@ function Body({ first }: { first: Tab }) {
       </header>
       <nav>
         {TABS.map((one) => <button key={one} type="button" className={one === tab ? "tab on" : "tab"} onClick={() => setTab(one)}>{label[one]}</button>)}
+        {extra.map((one) => <button key={one.id} type="button" className={one.id === tab ? "tab on" : "tab"} onClick={() => setTab(one.id)}>{one.label}</button>)}
       </nav>
       <main>
         <Trouble />
         {tab === "freezer" && <Freezer />}
+        {tab === "places" && <Places />}
         {tab === "people" && <People />}
         {tab === "history" && <History />}
         {tab === "sharing" && <Sharing />}
+        {extra.find((one) => one.id === tab)?.view}
       </main>
     </div>
   );
@@ -115,6 +136,7 @@ export function NoLab() {
           <label>Invitation<input name="invite" placeholder="wss://your-lab.example/sync#…" required /></label>
           <button type="submit">Join</button>
         </Ask>
+        <RestoreKey />
       </section>
     </div>
   );

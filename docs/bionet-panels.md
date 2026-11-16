@@ -34,6 +34,10 @@ The public page's pieces take what was fetched and checked as plain values, so t
 
 Every rule in `panels.css` is inside `.bionet`, so nothing reaches the page around a panel, and every colour is one of the theme's variables. Both are tested: one test reads the stylesheet and fails if a selector escapes the scope, another fails if a colour is written in directly.
 
+## A host can add a view, and nothing else
+
+`LabWindow` takes `extra` tabs. That is how a desktop app shows the three-dimensional scene without this package depending on three.js, which a lab's public web page should not have to load. The host supplies a component; it still decides no colour and no rule.
+
 ## Source layout
 
 ```

@@ -59,3 +59,10 @@
 .bionet main.page { max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 6rem; overflow: visible; font-size: 15px; line-height: 1.65 }
 .bionet main.page .title { margin-bottom: .6rem } .bionet main.page h1 { font-size: 1.6rem }
 .bionet main.page h2 { font-size: 1.1rem; margin: 2.4rem 0 .6rem; padding-bottom: .3rem; border-bottom: 1px solid var(--bionet-rule) }
+/* Places, where a tube is, and restoring a key. */
+.bionet .where { display: grid; gap: .25rem }
+.bionet .where select { max-width: 11rem }
+.bionet .plainlist { list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem }
+.bionet details.restore { margin-top: .9rem }
+.bionet details.restore summary { cursor: pointer; color: var(--bionet-dim) }
+.bionet details.restore summary:hover { color: var(--bionet-ink) }

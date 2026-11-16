@@ -239,3 +239,25 @@ export function slotName(slot: Slot): string {
   for (let at = slot.row; at >= 0; at = Math.floor(at / 26) - 1) row = String.fromCharCode(65 + (at % 26)) + row;
   return `${row}${slot.column + 1}`;
 }
+
+/**
+ * Read a position the way it is written on a box lid.
+ *
+ * @param name - Something like `C4` or `c4`.
+ * @returns The position, or `null` if that is not how one is written.
+ *
+ * @example
+ * ```ts
+ * import { slotFrom, slotName } from "@biolibs/bionet-space";
+ *
+ * slotFrom("C4");                    // { row: 2, column: 3 }
+ * slotName(slotFrom("AB12")!);       // "AB12"
+ * slotFrom("4C");                    // null
+ * ```
+ */
+export function slotFrom(name: string): Slot | null {
+  const found = /^([A-Za-z]{1,2})([1-9][0-9]{0,2})$/.exec(name.trim());
+  if (found === null) return null;
+  const row = [...found[1]!.toUpperCase()].reduce((sum, letter) => sum * 26 + (letter.charCodeAt(0) - 64), 0) - 1;
+  return { row, column: Number(found[2]) - 1 };
+}

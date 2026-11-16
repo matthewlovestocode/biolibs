@@ -39,6 +39,14 @@ A window does not always share a process with the lab it shows. In a desktop app
 
 `snapshot()` returns the same object until something changes, so it can be compared by identity, which is what React's external-store hook needs.
 
+## The key can be kept somewhere else
+
+The design gives each device its own key and never moves one. The exception is loss: a lab with one member and one device ends when the device does, and the real Wren Lab was exactly that. So a key can be sealed under a passphrase into a small document, and opened on a new device.
+
+Two things keep that from undoing the rest. A window is handed only the sealed text, so the rule that the window never sees the key still holds. And `restore` is refused once a device is in a lab: a backup is for a device standing in for a lost one, and a key in use on two devices at once writes two histories under one name. A restored device joins as usual, is sent its own old log by the peer, and carries on from where that stopped.
+
+The fingerprint written on the outside of a backup is not sealed, so it is checked against the key inside before the key is used.
+
 ## Source layout
 
 ```
@@ -46,6 +54,7 @@ packages/bionet-client/src/
   lab.ts       the device: Lab, and the plain-data snapshot a window draws
   link.ts      the connection to the web peer, which is allowed to fail
   source.ts    the narrow way a window reaches a lab
+  backup.ts   the device's key, sealed under a passphrase
   store.ts     the interfaces for storage and key keeping, with in-memory versions
   sqlite.ts    storage in a SQLite file
 ```

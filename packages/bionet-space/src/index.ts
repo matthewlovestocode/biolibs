@@ -13,9 +13,11 @@
  * - `model.ts` — places, what is stored in them, and a place with somewhere to stand
  * - `arrange.ts` — giving every place somewhere to stand, and the positions inside a box
  * - `find.ts` — levels, bounds, camera poses, searching
+ * - `from.ts` — a layout made from a lab's own record of itself
  * - `example.ts` — a lab to look at
  */
 export * from "./model.js";
 export * from "./arrange.js";
 export * from "./find.js";
 export * from "./example.js";
+export * from "./from.js";

@@ -7,7 +7,7 @@
  * comes from `sceneView`, so what is on screen is always the lab it was given.
  */
 import { useMemo, useState } from "react";
-import { search, type Layout } from "@biolibs/bionet-space";
+import { layoutFrom, search, type Layout, type RecordedLab } from "@biolibs/bionet-space";
 import { THEME_ATTRIBUTE, type Theme } from "@biolibs/bionet-theme";
 import { LabScene, useSystemTheme, type Neighbour } from "./scene.js";
 import { focusOn, sceneView, type Focus } from "./view.js";
@@ -79,4 +79,35 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
       )}
     </div>
   );
+}
+
+/**
+ * A lab's own record of itself, drawn.
+ *
+ * It takes the lab as plain data — what `@biolibs/bionet-client` gives a window fits as it is — so
+ * it can be put in a desktop window or on a web page alike. Until the lab has said where anything
+ * is kept there is nothing to draw, and it says so.
+ *
+ * @param props - `lab` is the lab's places, items and parts; `name` is what to call it; `theme` pins
+ *   a theme; `neighbours` are other labs to draw beside it.
+ *
+ * @example
+ * ```tsx
+ * import { useLab } from "@biolibs/bionet-react";
+ * import { LabView } from "@biolibs/bionet-scene";
+ *
+ * const lab = useLab()?.lab;
+ * lab && <LabView lab={lab} name={lab.name ?? "Lab"} />
+ * ```
+ */
+export function LabView({ lab, name = "Lab", theme, neighbours }: { lab: RecordedLab; name?: string; theme?: Theme; neighbours?: readonly Neighbour[] }) {
+  const layout = useMemo(() => layoutFrom(lab, { room: name }), [lab.places, lab.items, lab.parts, name]);
+  if (layout.places.length === 0) {
+    return (
+      <div className="bionet-scene empty" {...(theme === undefined ? {} : { [THEME_ATTRIBUTE]: theme })}>
+        <p>Nothing to draw yet. Add a place — a freezer, then the boxes in it — and it appears here.</p>
+      </div>
+    );
+  }
+  return <LabExplorer layout={layout} labName={name} {...(theme === undefined ? {} : { theme })} {...(neighbours === undefined ? {} : { neighbours })} />;
 }

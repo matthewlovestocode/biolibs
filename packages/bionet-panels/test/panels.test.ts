@@ -7,8 +7,8 @@
  */
 import { readFileSync } from "node:fs";
 import { Lab, memoryKeys, memoryStore, sourceOf, type LabSnapshot, type LabSource, type PeerView } from "@biolibs/bionet-client";
-import { Freezer, History, LabWindow, People, Sharing, SyncStatus, TABS, amountOf, describeEntry, listedParts,
-         syncWords } from "@biolibs/bionet-panels";
+import { BackUpKey, Freezer, History, LabWindow, People, Places, RestoreKey, Sharing, SyncStatus, TABS, amountOf, describeEntry,
+         listedParts, placePath, placeTree, syncWords, whereWords } from "@biolibs/bionet-panels";
 import { LabProvider } from "@biolibs/bionet-react";
 import { cssVariable, MEANINGS } from "@biolibs/bionet-theme";
 import { createElement as h, type ReactElement } from "react";
@@ -68,11 +68,64 @@ describe("the window", () => {
 
   it("opens on the view it is asked for", async () => {
     const { lab } = await wren();
-    expect(TABS).toEqual(["freezer", "people", "history", "sharing"]);
+    expect(TABS).toEqual(["freezer", "places", "people", "history", "sharing"]);
+    expect(draw(lab, h(LabWindow, { tab: "places" }))).toContain("Where things are kept");
+    const withExtra = draw(lab, h(LabWindow, { tab: "scene", extra: [{ id: "scene", label: "Lab", view: h("p", null, "a drawing of the lab") }] }));
+    expect(withExtra).toContain('<button type="button" class="tab on">Lab</button>');
+    expect(withExtra).toContain("a drawing of the lab");
     expect(draw(lab, h(LabWindow, { tab: "people" }))).toContain("Who is in the lab");
     expect(draw(lab, h(LabWindow, { tab: "history" }))).toContain("Everything that has happened");
     expect(draw(lab, h(LabWindow, { tab: "sharing", copy: async () => {} }))).toContain("What other labs are shown");
     expect(draw(lab, h(LabWindow))).toContain("Add a part");
+  });
+});
+
+describe("the places", () => {
+  it("shows the tree, where each tube is, and what needs looking at", async () => {
+    const { lab, tube } = await wren();
+    expect(draw(lab, h(Places))).toContain("No places yet");
+    expect(draw(lab, h(Freezer))).toContain("nowhere recorded");
+
+    const room = await lab.addPlace({ kind: "room", name: "Main lab" });
+    const freezer = await lab.addPlace({ kind: "freezer", name: "−80", parent: room });
+    const box = await lab.addPlace({ kind: "box", name: "Box 7", parent: freezer, grid: { rows: 9, columns: 9 } });
+    await lab.putItem({ item: tube, place: box, slot: { row: 2, column: 3 } });
+    const seen = lab.snapshot().lab!;
+    expect(placePath(seen.places, box)).toBe("Main lab › −80 › Box 7");
+    expect(placePath(seen.places, "nowhere")).toBe("");
+    expect(placeTree(seen.places).map((one) => [one.place.name, one.depth])).toEqual([["Main lab", 0], ["−80", 1], ["Box 7", 2]]);
+    expect(whereWords(seen.items[0]!, seen.places)).toBe("Main lab › −80 › Box 7 · C4");
+    expect(whereWords({ where: { place: freezer, slot: null } }, seen.places)).toBe("Main lab › −80");
+    expect(whereWords({ where: { place: "gone", slot: null } }, seen.places)).toBe("a place the lab no longer has");
+
+    const places = draw(lab, h(Places));
+    expect(places).toContain("9 × 9");
+    expect(places).not.toContain("Somebody needs to look");
+    expect(draw(lab, h(Freezer))).toContain("Main lab › −80 › Box 7 · C4");
+    expect(draw(lab, h(History))).toContain("put a tube of f1 in Box 7, C4");
+    expect(draw(lab, h(History))).toContain("added the freezer −80 in Main lab");
+
+    const part = seen.parts[0]!.checksum;
+    const second = await lab.addItem({ part, amount: 1, unit: null });
+    await lab.putItem({ item: second, place: box, slot: { row: 2, column: 3 } });
+    const crowded = draw(lab, h(Places));
+    expect(crowded).toContain("Somebody needs to look");
+    expect(crowded).toContain("Main lab › −80 › Box 7 · C4");
+
+    await lab.retirePlace({ place: freezer });
+    expect(placeTree(lab.snapshot().lab!.places).map((one) => one.place.name)).toEqual(["Main lab"]);
+  });
+});
+
+describe("backing up the key", () => {
+  it("is offered among the people, and restoring before joining", async () => {
+    const { lab } = await wren();
+    expect(draw(lab, h(People))).toContain("Back up this device's key");
+    expect(draw(lab, h(BackUpKey))).toContain("Nothing here remembers the passphrase");
+    expect(draw(lab, h(RestoreKey))).toContain("Replacing a lost device?");
+    const joining = await fresh();
+    await joining.setPerson("Ada");
+    expect(draw(joining, h(LabWindow))).toContain("Restore its key");
   });
 });
 

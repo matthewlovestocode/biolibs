@@ -4,6 +4,7 @@
 import { useState } from "react";
 import type { EntryView, LabView } from "@biolibs/bionet-client";
 import { useLab } from "@biolibs/bionet-react";
+import { slotName } from "@biolibs/bionet-space";
 
 /**
  * What one change was, in words.
@@ -12,7 +13,7 @@ import { useLab } from "@biolibs/bionet-react";
  * @param lab - The lab, to name the parts, tubes and people it refers to.
  * @returns A phrase that follows the name of whoever made it, like `used 2 µL of a tube of f1`.
  */
-export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "parts" | "items" | "roster">): string {
+export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "parts" | "items" | "roster"> & Partial<Pick<LabView, "places">>): string {
   const op = entry.op;
   const part = (checksum: unknown): string => lab.parts.find((one) => one.checksum === checksum)?.name ?? "a part";
   const tube = (id: unknown): string => {
@@ -21,6 +22,7 @@ export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "
   };
   const unit = (id: unknown): string => lab.items.find((one) => one.item === id)?.unit ?? "";
   const who = (key: unknown): string => lab.roster.find((one) => one.key === key)?.person ?? "a device";
+  const place = (id: unknown): string => lab.places?.find((one) => one.place === id)?.name ?? "a place";
   const tidy = (words: string): string => words.replace(/\s+/g, " ").trim();
   switch (op.type) {
     case "roster.found": return `founded ${String(op["name"])}`;
@@ -33,6 +35,15 @@ export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "
     case "item.adjust": return tidy(`${Number(op["by"]) < 0 ? "used" : "added"} ${Math.abs(Number(op["by"]))} ${unit(op["item"])} ${Number(op["by"]) < 0 ? "of" : "to"} ${tube(op["item"])}`);
     case "item.recount": return tidy(`counted ${String(op["amount"])} ${unit(op["item"])} in ${tube(op["item"])}`);
     case "item.retire": return `retired ${tube(op["item"])}`;
+    case "place.add": return `added the ${String(op["kind"])} ${String(op["name"])}${op["parent"] === null ? "" : ` in ${place(op["parent"])}`}`;
+    case "place.move": return op["parent"] === null ? `took ${place(op["place"])} out of where it was` : `moved ${place(op["place"])} into ${place(op["parent"])}`;
+    case "place.stand": return op["standing"] === null ? `cleared where ${place(op["place"])} stands` : `said where ${place(op["place"])} stands`;
+    case "place.retire": return `retired ${place(op["place"])}`;
+    case "item.put": {
+      const slot = op["slot"] as { row: number; column: number } | null;
+      return op["place"] === null ? `took ${tube(op["item"])} out of where it was`
+        : `put ${tube(op["item"])} in ${place(op["place"])}${slot === null ? "" : `, ${slotName(slot)}`}`;
+    }
     case "field.set": return `set ${String(op["field"])} to ${String(op["value"])}`;
     default: return `did something this version does not know (${op.type})`;
   }

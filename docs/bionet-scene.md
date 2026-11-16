@@ -36,6 +36,10 @@ A freezer stands inside a room, so a ray from the pointer passes through the roo
 
 `neighbours` draws other labs as outlines in `theirs`, each joined to this one by a line something travels along. It is a picture of the fact that labs reach each other, and carries no data of its own.
 
+## A real lab
+
+`LabView` takes a lab's record as plain data and draws it, so the same component sits in a desktop window and on a web page. It has an empty state because a lab has no places until somebody adds one.
+
 ## What is fixed
 
 How the scene looks is not configurable. Sizes are the lab's data; colours are the theme's. The design record says why: every option is something a person must be given a way to set.

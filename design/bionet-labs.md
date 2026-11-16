@@ -311,9 +311,9 @@ This replaces the package list under "Libraries" above. Each layer may depend on
 | Client | `@biolibs/bionet-client` | One device in one lab: actions, sync, state; the narrow way a window reaches a lab | Protocol; storage, keys and sockets are plugged in | Built |
 | Hooks | `@biolibs/bionet-react` | The lab, asking for a change, the last refusal; the mark and logo as components | Client, look, React | Built |
 | Panels | `@biolibs/bionet-panels` | Freezer, people, history, sharing, and a whole window | Hooks, look | Built |
-| Geometry | `@biolibs/bionet-space` | A tree of places, where each stands, box grids, camera poses, search | Plain data only | Written and tested, not published |
+| Geometry | `@biolibs/bionet-space` | A tree of places, where each stands, box grids, camera poses, search, a layout from a lab's record | Plain data only | Built |
 | Hooks | `@biolibs/tools-react` | Sequence map, digest, PCR, gel, plan, alignment | Engines, React | Not started |
-| 3D | `@biolibs/bionet-scene` | The scene: places, boxes, tubes, instruments, neighbours; molecules to come | Geometry, look, three.js | Written and tested, not published |
+| 3D | `@biolibs/bionet-scene` | The scene: places, boxes, tubes, instruments, neighbours; molecules to come | Geometry, look, three.js | Built |
 
 "Built" means written, tested in this repository, published to npm as 0.x, and in use by the
 desktop app and both labs.
@@ -708,9 +708,41 @@ looked at and argued with while it is cheap to change. What building it settled:
   something.
 - **Tubes are a quiet body with a bright rim.** Solid glowing tubes merge into a slab.
 
-Not done: places as operations in the log, so the scene still shows a made-up lab and not the Wren
-Lab; molecules and instruments beyond an outline; the scene inside the desktop app; a builder for
-arranging a lab. The demo page on the site is not committed, and neither package is published.
+Both packages are published, and the site shows the scene on a made-up lab at `/lab`.
+
+### Places, in the log
+
+Places became signed operations, so the scene draws the lab its members recorded.
+
+- **Operations.** `place.add` (ID, kind, name, parent, and for a box its rows and columns),
+  `place.move`, `place.stand`, `place.retire`, and `item.put` (a place, and a position if the place
+  is a box). A place's name and other fields go through `field.set`, as a part's do.
+- **Whole millimetres.** Only whole numbers are signed, so where a place stands is kept in
+  millimetres and turned into metres for drawing.
+- **A box's positions are fixed when it is added.** Changing them would strand what is in it.
+- **A loop is shown, not refused.** Two people apart can each move a place into the other. Every
+  place in the loop comes out `adrift`, in nothing, until somebody moves one. What hangs below the
+  loop is untouched.
+- **A crowded position is shown, not refused.** Two tubes recorded in one position are listed for
+  somebody to go and look. Two freezers stood on the same spot are not detected yet.
+- **A layout is of what can be found.** `layoutFrom` in `bionet-space` leaves out retired places,
+  everything in them, and items nobody has put anywhere. Places standing in no room are put in one
+  made up for the drawing; nothing is written to the log for it.
+- **The window takes a host's own views.** The scene is a tab the desktop app adds to `LabWindow`,
+  so the panels do not depend on three.js and a lab's web page does not load it.
+
+### The key can be backed up
+
+The real lab had one member and one device, so losing the laptop would have lost the lab. A
+device's key can now be sealed under a passphrase (PBKDF2-SHA-256, 600,000 rounds; AES-256-GCM)
+into a file, and taken up by a new device before it joins. The window is handed only the sealed
+text. Restoring is refused once a device is in a lab, since one key on two devices writes two
+histories. A restored device is sent its own old log by the peer and carries on from its end; a lab
+with no peer has nowhere to get that log from, so its backup restores the key but not the lab.
+
+Not done: a builder for arranging a lab by dragging (places are added from a form and stand where
+`arrange` puts them); standing a place from the app; molecules and instruments beyond an outline;
+the real Wren Lab has no places yet, and its key has not been backed up.
 
 ## A first slice
 

@@ -8,9 +8,9 @@
 import { Dseqrecord } from "@biolibs/dseqrecord";
 import { gibsonAssembly } from "@biolibs/assembly2";
 import { CloningStrategy, generateSigningKey, keyFingerprint } from "@biolibs/opencloning";
-import { addItem, addPart, addToRoster, adjustItem, discover, entryId, fetchInventory, foundLab,
-         introducedDifferently, inventoryFrom, labMemory, mergeLog, newItemId, nextEntry, partsNeeded,
-         peer, publicInventory, remember, settled, settledLabs, signInventory, verifyInventory,
+import { addItem, addPart, addPlace, addToRoster, adjustItem, discover, entryId, fetchInventory, foundLab,
+         introducedDifferently, inventoryFrom, labMemory, mergeLog, newItemId, newPlaceId, nextEntry, partsNeeded,
+         peer, publicInventory, putItem, remember, settled, settledLabs, signInventory, verifyInventory,
          type Operation, type SignedEntry,
          signingKeys, unsourced, whoHas, type SignedInventory } from "@biolibs/bionet";
 import { describe, expect, it } from "vitest";
@@ -164,5 +164,26 @@ describe("README: inside a lab", () => {
 
     const published = await signInventory(inventory, adasKey, { signer: "Ada" });
     expect((await verifyInventory(published)).every((check) => check.ok)).toBe(true);
+  });
+
+  it("knows where a tube is", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+    await write(ada, adasKey, addPart({ sequence: F1, name: "f1" }));
+    const tube = newItemId();
+    await write(ada, adasKey, addItem({ item: tube, part: (await mergeLog(ada)).parts[0]!.checksum, amount: 10, unit: "µL" }));
+
+    const freezer = newPlaceId();
+    const box = newPlaceId();
+    await write(ada, adasKey, addPlace({ place: freezer, kind: "freezer", name: "−80" }));
+    await write(ada, adasKey, addPlace({ place: box, kind: "box", name: "Box 1", parent: freezer, grid: { rows: 9, columns: 9 } }));
+    await write(ada, adasKey, putItem(tube, box, { row: 2, column: 3 }));
+
+    const lab = await mergeLog(ada);
+    expect(lab.places.map((one) => one.name)).toEqual(["−80", "Box 1"]);
+    expect(lab.items[0]!.where).toEqual({ place: box, slot: { row: 2, column: 3 } });
+    expect(lab.crowded).toEqual([]);
   });
 });

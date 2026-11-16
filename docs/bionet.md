@@ -74,6 +74,16 @@ Entries move between machines by each saying how far into every log it holds and
 
 `publicInventory` reduces a lab to what it shows the world: the parts it has in stock and whether each is on offer. Items, amounts and names stay inside.
 
+## Where things are
+
+Places are a tree of one kind of thing: a place has a kind, a name and the place it is in. A box is a place with positions. That is deliberately less than a schema of rooms, freezers, shelves and racks, because labs do not agree on those levels and a liquid nitrogen dewar has none of them.
+
+Where a place is in the tree and where it stands in the room are separate. The tree is what finds a tube and is always there; standing is optional, in whole millimetres because only whole numbers are signed.
+
+An item is put in a place, and at a position if the place is a box. That is a register like any field: the later change wins, and two made apart are an overlap with the lower entry ID kept.
+
+Two outcomes are flagged and not refused. Two people apart can each move a place into the other, and neither move is wrong alone; every place in the loop comes out `adrift`, in nothing, until somebody moves one. And two people apart can each stand a tube in the same position; that position is listed in `crowded`. In both cases the log has lost track of the physical lab, and the honest thing is to say so and let somebody look.
+
 ## Source layout
 
 ```

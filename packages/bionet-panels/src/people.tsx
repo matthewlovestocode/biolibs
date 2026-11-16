@@ -2,6 +2,7 @@
 
 /** The people: who is in the lab, and letting somebody in. */
 import { useAct, useLab } from "@biolibs/bionet-react";
+import { BackUpKey } from "./backup.js";
 import { Ask, Copy } from "./parts.js";
 
 /** The roster, and for a keeper the way to add somebody. Draws nothing until the lab has arrived. */
@@ -47,6 +48,7 @@ export function People() {
           ) : <p className="dim small">Set the lab's web peer under Sharing to have an invitation to send.</p>}
         </section>
       ) : <p className="dim small">Only a keeper can change who is in the lab.</p>}
+      <BackUpKey />
     </>
   );
 }

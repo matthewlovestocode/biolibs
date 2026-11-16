@@ -13,6 +13,7 @@
  * - `lab.ts` — the device: `Lab`, and the plain-data snapshot a window draws
  * - `link.ts` — the connection to the web peer, which is allowed to fail
  * - `source.ts` — the narrow way a window reaches a lab, in this process or another
+ * - `backup.ts` — the device's key, sealed under a passphrase to keep somewhere else
  * - `store.ts` — the interfaces for storage and key keeping, with in-memory versions
  * - `sqlite.ts` — storage in a SQLite file, at `@biolibs/bionet-client/sqlite` because it needs Node
  */
@@ -20,3 +21,4 @@ export * from "./lab.js";
 export * from "./link.js";
 export * from "./store.js";
 export * from "./source.js";
+export * from "./backup.js";

@@ -27,6 +27,10 @@ Sizes are in metres. A place with a `standing` is put where it says. A place wit
 
 `poseFor` returns a position and a target, by level: the whole lab from above a corner, a freezer from its front, a box from overhead. Keeping it here means it can be tested with numbers, and that anything else which wants to point at a place agrees with the scene about where that is.
 
+## A layout from a lab's own record
+
+`layoutFrom` is the join between the protocol and a drawing. It reads a lab by shape — a few fields of places, items and parts — so this package depends on nothing and `@biolibs/bionet`'s lab state fits as it is. Retired places are left out with everything in them, and so are items nobody has put anywhere: a layout is of what can be found.
+
 ## Source layout
 
 ```
@@ -34,5 +38,6 @@ packages/bionet-space/src/
   model.ts     what a place is, and what is stored in one
   arrange.ts   where each place stands, and the positions inside a box
   find.ts      levels, bounds, camera poses, search
+  from.ts      a layout made from a lab's own record of itself
   example.ts   a made-up lab to draw before a real one has places
 ```

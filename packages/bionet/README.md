@@ -263,6 +263,33 @@ const published = await signInventory(inventory, adasKey, { signer: "Ada" });
 A part is listed if some item of it has anything left, and is on offer only once a member has said
 so with `offerPart`. Amounts, items and who did what stay inside.
 
+### Where things are
+
+A lab's places are a tree, and a tube is put in one. Both are signed changes, merged like the rest.
+
+```ts
+import { addPlace, movePlace, newPlaceId, putItem } from "@biolibs/bionet";
+
+const freezer = newPlaceId();
+const box = newPlaceId();
+await write(ada, adasKey, addPlace({ place: freezer, kind: "freezer", name: "−80" }));
+await write(ada, adasKey, addPlace({ place: box, kind: "box", name: "Box 1", parent: freezer, grid: { rows: 9, columns: 9 } }));
+await write(ada, adasKey, putItem(tube, box, { row: 2, column: 3 }));
+
+const lab = await mergeLog(ada);
+lab.places.map((one) => one.name);    // [ "−80", "Box 1" ]
+lab.items[0].where;                   // { place: box, slot: { row: 2, column: 3 } }
+lab.crowded;                          // []
+```
+
+A place has a kind, a name and the place it is in; only a box has positions, fixed when it is added.
+`standPlace` says where a place stands and how big it is, in whole millimetres, and is optional.
+
+Two things people working apart can do are shown, never refused, because neither person did
+anything wrong. If each moves a place into the other, both come out `adrift`: in nothing, until
+somebody moves one. If each stands a tube in the same position, it is listed in `crowded` until
+somebody goes and looks.
+
 ### Moving entries between machines
 
 `mergeLog` works on whatever it is given. `sync.ts` is how entries are given, without opening a

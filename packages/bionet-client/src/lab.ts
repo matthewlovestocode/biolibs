@@ -10,12 +10,14 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { addItem, addPart, addToRoster, adjustItem, entryId, fetchInventory, foundLab, isMember, mergeLog,
-         newItemId, nextEntry, offerPart, publicInventory, recountItem, retireItem, setField, signInventory,
-         takeEntries, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type PartState, type Role, type RosterKey, type SignedEntry } from "@biolibs/bionet";
+import { addItem, addPart, addPlace, addToRoster, adjustItem, entryId, fetchInventory, foundLab, isMember, mergeLog,
+         movePlace, newItemId, newPlaceId, nextEntry, offerPart, publicInventory, putItem, recountItem, retireItem, retirePlace,
+         setField, signInventory, standPlace,
+         takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
+         type PartState, type PlaceState, type Role, type RosterKey, type SignedEntry } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
+import { openKey, sealKey } from "./backup.js";
 import { PeerLink, type LinkStatus } from "./link.js";
 import type { KeyKeeper, LabStore } from "./store.js";
 
@@ -54,6 +56,10 @@ export interface LabView {
   roster: RosterView[];
   parts: PartState[];
   items: ItemState[];
+  /** Every place. */
+  places: PlaceState[];
+  /** Positions the log says hold more than one item. */
+  crowded: Crowded[];
   overlaps: Overlap[];
   /** How many entries are waiting on others that have not arrived. */
   waiting: number;
@@ -210,6 +216,8 @@ export class Lab {
         roster: state.roster.map((one) => ({ ...one, fingerprint: this.fingerprints.get(one.key) ?? "", you: one.key === mine })),
         parts: state.parts,
         items: state.items,
+        places: state.places,
+        crowded: state.crowded,
         overlaps: state.overlaps,
         waiting: state.waiting.length,
         entries: state.entries.map((one) => ({
@@ -304,6 +312,36 @@ export class Lab {
     this.changed();
   }
 
+  /**
+   * Seal this device's key under a passphrase, to keep somewhere that is not this device.
+   *
+   * @param passphrase - What it will take to open it again. Nothing here remembers it.
+   * @returns The sealed key as text, to be written to a file. It holds nothing readable without the passphrase.
+   */
+  async backUp(passphrase: string): Promise<string> {
+    const exported = await this.options.keys.load();
+    if (exported === null) throw new Error("This device has no key to back up.");
+    return JSON.stringify(await sealKey(exported, passphrase), null, 2);
+  }
+
+  /**
+   * Take up a key from a backup, in place of the one this device made for itself.
+   *
+   * This is for a new device standing in for a lost one, so it is refused once the device is in a
+   * lab: a key in use on two devices at once writes two histories under one name, and the lab
+   * cannot tell which is true.
+   *
+   * @param from - The text of the backup file, and the passphrase it was sealed under.
+   */
+  async restore(from: { backup: string; passphrase: string }): Promise<void> {
+    if (this.labId !== null) throw new Error("This device is already in a lab, and keeps the key it has. A backup is restored on a new device, before it joins.");
+    const exported = await openKey(from.backup, from.passphrase);
+    await this.options.keys.save(exported);
+    this.key = await importSigningKey(exported);
+    this.fingerprint = await keyFingerprint(this.key.publicKey);
+    this.changed();
+  }
+
   /** Stop talking to the peer, until `goOnline`. The device goes on working. */
   goOffline(): void { this.link?.stop(); }
 
@@ -345,8 +383,42 @@ export class Lab {
   /** Say whether a part is on offer to other labs. */
   offer(offer: { part: string; available: boolean }): Promise<void> { return this.write(offerPart(offer.part, offer.available)); }
 
-  /** Set one field on a part (by checksum) or an item (by ID). */
-  setField(change: { on: "part" | "item"; id: string; field: string; value: string | number | null }): Promise<void> {
+  /**
+   * Add a place: a room, a freezer, a shelf, a box.
+   *
+   * @param place - What kind it is, what it is called, the place it is in if any, and for a box how
+   *   many rows and columns of positions it has.
+   * @returns The new place's ID.
+   */
+  async addPlace(place: { kind: string; name: string; parent?: string | null; grid?: { rows: number; columns: number } | null }): Promise<string> {
+    const id = newPlaceId();
+    await this.write(addPlace({ place: id, kind: place.kind.trim().toLowerCase(), name: place.name.trim(), parent: place.parent ?? null, grid: place.grid ?? null }));
+    return id;
+  }
+
+  /** Put a place inside another, or with `null` inside nothing. */
+  movePlace(move: { place: string; parent: string | null }): Promise<void> { return this.write(movePlace(move.place, move.parent)); }
+
+  /**
+   * Say where a place stands and how big it is, in metres, or with `null` that nobody has said.
+   * It is kept to the millimetre.
+   */
+  standPlace(stand: { place: string; standing: { position: [number, number, number]; size: [number, number, number]; turn?: 0 | 90 | 180 | 270 } | null }): Promise<void> {
+    const mm = (list: [number, number, number]): [number, number, number] => [Math.round(list[0] * 1000), Math.round(list[1] * 1000), Math.round(list[2] * 1000)];
+    return this.write(standPlace(stand.place, stand.standing === null ? null
+      : { at: mm(stand.standing.position), size: mm(stand.standing.size), turn: stand.standing.turn ?? 0 }));
+  }
+
+  /** Retire a place. It stays in the history. */
+  retirePlace(which: { place: string }): Promise<void> { return this.write(retirePlace(which.place)); }
+
+  /** Say where an item is: which place, and which position if the place is a box. `null` for nowhere recorded. */
+  putItem(put: { item: string; place: string | null; slot?: { row: number; column: number } | null }): Promise<void> {
+    return this.write(putItem(put.item, put.place, put.slot ?? null));
+  }
+
+  /** Set one field on a part (by checksum), an item or a place (by ID). */
+  setField(change: { on: "part" | "item" | "place"; id: string; field: string; value: string | number | null }): Promise<void> {
     return this.write(setField(change.on, change.id, change.field, change.value));
   }
 

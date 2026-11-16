@@ -23,6 +23,8 @@
  */
 export * from "./window.js";
 export * from "./freezer.js";
+export * from "./places.js";
+export * from "./backup.js";
 export * from "./people.js";
 export * from "./history.js";
 export * from "./sharing.js";

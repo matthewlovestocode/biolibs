@@ -6,7 +6,8 @@
  * told where to stand is put exactly there, that turning a freezer turns everything in it, and that
  * a position in a box is where the lid says it is.
  */
-import { DEFAULT_SIZE, arrange, boundsOf, exampleLab, firstFreeSlot, levelOf, poseFor, search, slotCenter, slotName,
+import { DEFAULT_SIZE, UNNAMED_ROOM, arrange, boundsOf, exampleLab, firstFreeSlot, layoutFrom, levelOf, poseFor, search, slotCenter, slotFrom, slotName,
+         type RecordedItem, type RecordedPlace,
          slotSize, storedWithin, type Arranged, type Layout, type Place } from "@biolibs/bionet-space";
 import { describe, expect, it } from "vitest";
 
@@ -237,5 +238,60 @@ describe("looking at a place", () => {
     expect(boundsOf([])).toBeNull();
     const all = boundsOf(arranged.filter((one) => one.place.parent === null))!;
     near(all.size, [7, 2.8, 5]);
+  });
+});
+
+describe("a layout from a lab's own record", () => {
+  const place = (id: string, kind: string, parent: string | null, more: Partial<RecordedPlace> = {}): RecordedPlace =>
+    ({ place: id, kind, name: id, parent, grid: null, standing: null, retired: false, ...more });
+  const item = (id: string, where: RecordedItem["where"], more: Partial<RecordedItem> = {}): RecordedItem =>
+    ({ item: id, part: "p1", unit: "µL", amount: 5, retired: false, needsRecount: false, where, ...more });
+
+  it("keeps rooms as they are, converts millimetres, and carries an instrument's model", () => {
+    const layout = layoutFrom({
+      places: [place("room", "room", null, { standing: { at: [0, 0, 0], size: [6000, 3000, 4000], turn: 0 } }),
+               place("pcr", "instrument", "room", { fields: { model: "thermocycler", note: 3 } }),
+               place("box", "box", "room", { grid: { rows: 9, columns: 9 } })],
+      items: [item("t1", { place: "box", slot: { row: 1, column: 1 } }), item("t2", { place: "box", slot: null }, { part: "gone" })],
+      parts: [{ checksum: "p1", name: "pWren-402" }],
+    });
+    expect(layout.places).toEqual([
+      { id: "room", kind: "room", name: "room", parent: null, standing: { position: [0, 0, 0], size: [6, 3, 4], turn: 0 } },
+      { id: "pcr", kind: "instrument", name: "pcr", parent: "room", model: "thermocycler" },
+      { id: "box", kind: "box", name: "box", parent: "room", grid: { rows: 9, columns: 9 } },
+    ]);
+    expect(layout.stored.map((one) => [one.item, one.name, one.slot])).toEqual([
+      ["t1", "pWren-402", { row: 1, column: 1 }], ["t2", "A part the lab no longer lists", null]]);
+    expect(arrange(layout)).toHaveLength(3);
+  });
+
+  it("makes up a room for places that stand in none, and names it as asked", () => {
+    const lab = { places: [place("f", "freezer", null)], items: [], parts: [] };
+    expect(layoutFrom(lab).places[0]).toEqual({ id: UNNAMED_ROOM, kind: "room", name: "Lab", parent: null });
+    expect(layoutFrom(lab, { room: "The Wren Lab" }).places.map((one) => [one.name, one.parent])).toEqual([["The Wren Lab", null], ["f", UNNAMED_ROOM]]);
+    expect(layoutFrom({ places: [], items: [], parts: [] })).toEqual({ places: [], stored: [] });
+  });
+
+  it("leaves out what cannot be found: retired places and all in them, retired or unplaced items", () => {
+    const layout = layoutFrom({
+      places: [place("room", "room", null), place("old", "freezer", "room", { retired: true }), place("in-old", "box", "old"),
+               place("lost", "box", "nowhere"), place("a", "shelf", "b"), place("b", "shelf", "a"), place("kept", "box", "room")],
+      items: [item("1", { place: "in-old", slot: null }), item("2", { place: "kept", slot: null }, { retired: true }), item("3", null),
+              item("4", { place: "no such place", slot: null }), item("5", { place: "kept", slot: null }, { needsRecount: true })],
+      parts: [],
+    });
+    expect(layout.places.map((one) => one.id)).toEqual(["room", "kept"]);
+    expect(layout.stored.map((one) => [one.item, one.needsRecount])).toEqual([["5", true]]);
+  });
+});
+
+describe("a position, as written on a lid", () => {
+  it("is read back from its name", () => {
+    expect(slotFrom("C4")).toEqual({ row: 2, column: 3 });
+    expect(slotFrom(" a1 ")).toEqual({ row: 0, column: 0 });
+    for (const slot of [{ row: 0, column: 0 }, { row: 25, column: 98 }, { row: 26, column: 0 }, { row: 99, column: 99 }]) {
+      expect(slotFrom(slotName(slot))).toEqual(slot);
+    }
+    for (const not of ["4C", "", "A0", "A", "7", "ABC1", "A1000"]) expect(slotFrom(not)).toBeNull();
   });
 });

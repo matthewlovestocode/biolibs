@@ -4,6 +4,7 @@
 import type { ItemState, PartState } from "@biolibs/bionet";
 import { useAct, useLab } from "@biolibs/bionet-react";
 import { Ask } from "./parts.js";
+import { PutItem } from "./places.js";
 
 const whole = (data: FormData, name: string): number => Number(String(data.get(name) ?? "").trim());
 
@@ -56,7 +57,7 @@ export function PartCard({ part, items }: { part: PartState; items: ItemState[] 
       </div>
       {live.length === 0 ? <p className="dim small">No tubes of this.</p> : (
         <table>
-          <thead><tr><th>Tube</th><th>Amount</th><th>Use or add</th><th>Count</th><th /></tr></thead>
+          <thead><tr><th>Tube</th><th>Amount</th><th>Where</th><th>Use or add</th><th>Count</th><th /></tr></thead>
           <tbody>{live.map((item) => <ItemRow key={item.item} item={item} />)}</tbody>
         </table>
       )}
@@ -79,6 +80,7 @@ export function ItemRow({ item }: { item: ItemState }) {
         <strong>{amountOf(item)}</strong>
         {item.needsRecount && <span className="badge" title="The log has lost track of this tube: it went below zero, or two people counted it at once.">needs a count</span>}
       </td>
+      <td><PutItem item={item} /></td>
       <td>
         <div className="row tight">
           <button type="button" className="quiet" onClick={() => void act("adjust", { item: item.item, by: -1 })}>−1</button>

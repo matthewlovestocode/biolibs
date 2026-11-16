@@ -329,8 +329,8 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour }:
         </EffectComposer>
       )}
     </Canvas>
-    <div className="labels" ref={layer}>
-      {labels.map((label) => <div key={label.key} className="label">{label.content}</div>)}
+    <div className="pins" ref={layer}>
+      {labels.map((label) => <div key={label.key} className="pin">{label.content}</div>)}
     </div>
     </div>
   );

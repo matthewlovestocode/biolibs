@@ -168,8 +168,10 @@ describe("a device and the lab's peer", () => {
     const bob = await device();
     await bob.setPerson("Bob");
     await ada.addMember({ key: bob.snapshot().device.key, person: "Bob" });
+    // The peer has to hold Bob's key before he asks, or he is told to wait and asks again later.
+    expect(await until(() => status(ada) === "synced" && ada.snapshot().peer.pending === 0)).toBe(true);
     await bob.join(ada.invite!);
-    await until(() => status(bob) === "synced");
+    expect(await until(() => status(bob) === "synced", 10_000)).toBe(true);
 
     await ada.write(removeFromRoster(bob.snapshot().device.key, -1));
     expect(await until(() => status(bob) === "waiting")).toBe(true);
