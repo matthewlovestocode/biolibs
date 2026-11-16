@@ -198,6 +198,84 @@ it", which are different problems for the person reading the plan.
 Inventories whose signatures do not hold are yours to filter out before you call `whoHas` — it matches
 what it is given and claims nothing about whether the labs are to be believed.
 
+## Inside a lab
+
+An inventory is what a lab shows the world. Inside it, a freezer changes every day and the people
+changing it are not always online, so what a lab holds is not a file anybody edits. It is worked out
+from **signed logs**: each device has a key, every change made on it is one signed entry in that
+key's own log, and nobody writes to anybody else's.
+
+```ts
+import { addItem, addPart, addToRoster, adjustItem, entryId, foundLab, mergeLog, newItemId,
+         nextEntry, publicInventory, recountItem, signInventory } from "@biolibs/bionet";
+
+// Ada founds the lab. Its ID is the ID of that entry, not a name or an address.
+const founding = await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" });
+const ada = [founding];
+const write = async (held, key, op) => held.push(await nextEntry(await mergeLog(held), key, op));
+
+await write(ada, adasKey, addToRoster(bobsKey.publicKey, "Bob"));
+await write(ada, adasKey, addPart({ sequence: "GGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGA", name: "f1" }));
+const part = (await mergeLog(ada)).parts[0].checksum;
+const tube = newItemId();
+await write(ada, adasKey, addItem({ item: tube, part, amount: 10, unit: "µL" }));
+
+// Bob takes a copy and both go offline. Each uses some of the tube.
+const bob = [...ada];
+await write(ada, adasKey, adjustItem(tube, -1));
+await write(bob, bobsKey, adjustItem(tube, -2));
+
+// They meet. Either order, either machine: the same lab, and both uses counted.
+const everything = [...new Set([...ada, ...bob])];
+(await mergeLog(everything)).items[0].amount;             // 7
+(await mergeLog(everything.reverse())).items[0].amount;   // 7
+```
+
+`mergeLog` takes every entry held, in any order, and returns the lab: its roster, its parts, its
+items and how much of each, and for every entry whether it counted and why not if not.
+
+| Rule | Why |
+|---|---|
+| Order comes from what an entry had seen, never from a clock | Offline laptops agree about nothing, least of all the time |
+| Amounts are whole-number differences | Two people using a tube are two uses. Whole numbers have one spelling to sign and add up exactly |
+| A recount replaces only the adjustments its author had seen | The count was true when it was made; what happened unseen still happened |
+| An item below zero, or counted twice at once, is flagged `needsRecount` | The freezer is the truth, and the log should say when it has lost track |
+| Overlapping edits: the lower entry ID stands, and `overlaps` reports the other | The same choice on every machine, and nobody can arrange it in advance |
+| Only a keeper changes the roster; the longer-standing keeper is heard first | Two keepers removing each other must come out one way |
+| A removal names a cutoff in the removed key's log | Somebody removed cannot add to the lab later by claiming not to have heard. What they wrote past it is kept and marked `set aside` |
+
+An entry that is not allowed is still placed, with `status` and `reason`, because the people in the
+lab need to see what was turned away. An entry whose kind this version does not know is kept in the
+chain and not applied, so an older app survives a newer one.
+
+What leaves the lab is a reduction of all that:
+
+```ts
+const lab = await mergeLog(everything);
+const inventory = publicInventory(lab, {
+  name: "The Wren Lab", origin: "https://lab-wren.onrender.com", contact: null, note: null,
+});
+inventory.parts.map((one) => [one.name, one.available]);   // [ [ "f1", false ] ]
+
+const published = await signInventory(inventory, adasKey, { signer: "Ada" });
+```
+
+A part is listed if some item of it has anything left, and is on offer only once a member has said
+so with `offerPart`. Amounts, items and who did what stay inside.
+
+### Moving entries between machines
+
+`mergeLog` works on whatever it is given. `sync.ts` is how entries are given, without opening a
+connection itself: each side says how far into every log it holds (`haveOf`), sends what the other
+lacks (`entriesBeyond`), and keeps what belongs of what arrives (`takeEntries`, which drops anything
+from a key the roster has never heard of).
+
+A lab's web peer relays entries between members and must not hand them to anybody who asks. So it
+sends a `challenge`, the other side answers with `signHello`, and the peer sends entries only if
+`verifyHello` names a key that `isMember`. Writing needs no proof: entries are signed by their
+authors. `inventoryProblem` is the peer's rule for publishing an inventory a member sends it, and
+`readMessage` reads one message off the wire.
+
 ## Testing
 
 ```bash
@@ -209,6 +287,8 @@ npx vitest run packages/bionet/test
 |---|---|
 | `test/bionet.test.ts` | inventories, signing, addresses, fetching, remembering, matching |
 | `test/discover.test.ts` | walking the network, and everything a walk refuses to do |
+| `test/log.test.ts` | signed logs: offline work, recounts, overlaps, forgery, removal |
+| `test/sync.test.ts` | exchanging entries, who may read them, what a peer keeps and publishes |
 | `test/readme.test.ts` | every code block in this file |
 
 ## Things to know
@@ -223,6 +303,10 @@ npx vitest run packages/bionet/test
 - **An inventory written before there were peers is still valid.** A missing list of pointers reads
   as an empty one, and nothing adds the field to a document it did not write — the signature covers
   the document as the lab wrote it.
+- **A log entry is signed under its own domain**, `biolibs/bionet log entry v1`, and must be signed by
+  the key whose log it is in. A good signature from the wrong key is refused.
+- **Nothing here opens a connection.** `sync.ts` says what two machines send each other; carrying
+  the messages is for whatever uses this.
 - **Nothing here fetches a part.** Finding out who has a plasmid is as far as software goes; the rest
   is an email and a padded envelope.
 

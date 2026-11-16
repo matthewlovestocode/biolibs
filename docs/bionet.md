@@ -58,6 +58,22 @@ A pointer may also record the key the referring lab saw there. The walk compares
 
 The same care applies one layer down. Signatures are made under a domain string — `biolibs/bionet signed inventory v1` here, `biolibs/opencloning signed plan v2` there — prefixed to the bytes before signing, so a signature over one kind of document cannot be lifted onto another kind that happens to serialise the same way. The test for it signs one document under both domains and shows the crossover failing while each holds under its own.
 
+## Inside a lab: signed logs
+
+A published inventory is a snapshot for strangers. A working freezer needs something else, because the people changing it are several, are not always online, and must not be able to overwrite each other. So inside a lab nothing is edited: every change is one signed entry in the log of the device it was made on, and `mergeLog` works the lab out from all the logs together.
+
+An entry names the lab (by the ID of its founding entry, so it cannot be replayed elsewhere), its place in its own key's log, and the latest entry its author held from each other key. That last part is the ordering: a change is later than another only if its author had the other when they made it. Clocks are not consulted, because laptops that have been offline do not have clocks worth consulting.
+
+The merge is a pure function of the set of entries. The same entries in any order give the same lab, which is what lets two people who have been apart agree the moment they meet with nobody in charge. Where two changes could not both stand, the lower entry ID wins and the overlap is reported; nobody can choose an ID in advance, and every machine picks the same one.
+
+Two rules carry most of the weight. **Amounts are differences**, so concurrent uses add up, and a recount replaces only the adjustments its author had seen. **A removal names a cutoff** in the removed key's log, so that somebody who has been removed cannot keep adding to the lab by claiming not to have heard; what they wrote past the cutoff is kept and shown as set aside, for a remaining member to re-apply under their own signature if it was honest work.
+
+The merge never throws over what an entry carries. An entry from another machine can be refused, with a reason a person can read, and it can never stop the merge for everybody else.
+
+Entries move between machines by each saying how far into every log it holds and sending what the other lacks (`sync.ts`). Reading is guarded and writing is not: a lab's web peer makes the other side prove it holds a roster key before it sends an entry, since the logs hold every tube and who took what, while anybody may push entries because nothing is kept from a key the roster has never heard of.
+
+`publicInventory` reduces a lab to what it shows the world: the parts it has in stock and whether each is on offer. Items, amounts and names stay inside.
+
 ## Source layout
 
 ```
@@ -69,6 +85,9 @@ packages/bionet/src/
   discover.ts    walking from labs you know to labs you do not
   trust.ts       remembering which key answered last time
   match.ts       what a plan needs, and who has it
+  log.ts         one signed change inside a lab, and the log it belongs to
+  merge.ts       what a lab holds, worked out from every key's log together
+  sync.ts        getting entries from one machine to another, and deciding who may have them
 ```
 
-No golden cases: there is no Python library to record them from. `packages/bionet/test/bionet.test.ts` checks the behaviour the package claims, and `test/readme.test.ts` runs every example in the README.
+No golden cases: there is no Python library to record them from. `packages/bionet/test/bionet.test.ts` checks the behaviour the package claims, `test/log.test.ts` checks the signed logs, and `test/readme.test.ts` runs every example in the README.

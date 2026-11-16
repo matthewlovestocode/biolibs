@@ -1,0 +1,325 @@
+/**
+ * One signed change to a lab, and the log it belongs to.
+ *
+ * A published inventory is what a lab shows the world. This is what happens inside it: every change
+ * anybody makes — somebody joined, a tube was added, some of it was used — is one entry, signed by
+ * the key of the device it was made on, and appended to that key's own log. Nobody writes to another
+ * key's log, so two people working offline cannot overwrite each other; what the lab holds is
+ * whatever `merge.ts` makes of all the logs together.
+ *
+ * An entry says three things beyond the change itself. Which lab it is for, so it cannot be replayed
+ * into another. Where it sits in its own key's log, so a missing or substituted entry shows. And what
+ * its author had seen of everybody else's logs when they wrote it, which is the only honest way to
+ * order changes made on laptops whose clocks agree about nothing.
+ *
+ * Reading is the careful half here too. An entry arrives from another machine, so `readEntry` checks
+ * its shape and its size before anything else looks at it.
+ */
+import { canonicalJson, signUnder, verifyUnder, type DocumentSignature, type SignatureCheck,
+         type SignOptions, type SigningKey } from "@biolibs/opencloning";
+
+/** The version of the entry format written here. */
+export const LOG_VERSION = 1;
+
+/** What the bytes of a signed entry are for. No other kind of document is signed under this. */
+export const LOG_DOMAIN = "biolibs/bionet log entry v1";
+
+/** The longest one entry may be, as canonical text. A plasmid's sequence has to fit. */
+export const LONGEST_ENTRY = 600_000;
+
+/** How many other logs one entry may say it had seen. */
+export const MOST_SEEN = 1_000;
+
+/** What a key on the roster may do: change the inventory, or change the roster as well. */
+export type Role = "member" | "keeper";
+
+/**
+ * One change. `type` says which; the rest is whatever that change carries.
+ *
+ * It is deliberately loose. An entry whose `type` this version does not know is kept and chained
+ * like any other and simply not applied, so that an older app survives a newer one writing to the
+ * same lab. The operations this version does know are built by the functions at the foot of this
+ * file and checked by `merge.ts` when they are applied.
+ */
+export interface Operation {
+  /** Which change this is, like `item.adjust`. */
+  type: string;
+  [field: string]: unknown;
+}
+
+/** One entry in one key's log. This is what is signed. */
+export interface LogEntry {
+  /** Always `1`. */
+  bionet_log_version: number;
+  /** The lab this is for: the ID of its founding entry. `null` only in that founding entry. */
+  lab: string | null;
+  /** The key whose log this is in, 32 bytes in base64url. It must be the key that signs. */
+  author: string;
+  /** Where this sits in that log, from 0. */
+  seq: number;
+  /** The ID of the entry before it in the same log, or `null` at 0. */
+  prev: string | null;
+  /**
+   * What the author had of other keys' logs: for each key, the ID of the latest entry they held.
+   * Only keys whose latest entry changed since this author's previous entry need be listed.
+   */
+  seen: Record<string, string>;
+  /** The change. */
+  op: Operation;
+}
+
+/** An entry with its signature beside it, which is how one travels. */
+export interface SignedEntry {
+  /** The entry, exactly as it was signed. */
+  entry: LogEntry;
+  /** The author's signature over it. */
+  signature: DocumentSignature;
+}
+
+const HEX_ID = /^[0-9a-f]{64}$/;
+const KEY = /^[A-Za-z0-9_-]{43}$/;
+
+/**
+ * The ID of an entry: the SHA-256 of its canonical form, in hex.
+ *
+ * It covers the entry and not the signature, so it names the change itself. An entry's ID is how the
+ * next entry in the log points back at it and how another key says it has seen it.
+ *
+ * @param entry - The entry.
+ * @returns 64 hex characters.
+ */
+export async function entryId(entry: LogEntry): Promise<string> {
+  const bytes = new TextEncoder().encode(canonicalJson(entry));
+  const digest = await globalThis.crypto.subtle.digest("SHA-256", bytes as unknown as ArrayBuffer);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+/** What `writeEntry` needs to know about where an entry goes. */
+export interface EntryPlace {
+  /** The lab's ID. */
+  lab: string;
+  /** This key's previous entry, or `null` if this is its first. */
+  prev: SignedEntry | null;
+  /** The latest entry held from each other key, where that changed since `prev`. */
+  seen?: Record<string, string>;
+}
+
+/**
+ * Write and sign the next entry in a key's log.
+ *
+ * Most callers want `nextEntry` in `merge.ts`, which works the place out from the lab's merged state.
+ * This is the plain form underneath it.
+ *
+ * @param key - The device's key. Its log is the one written to.
+ * @param place - Which lab, what came before in this log, and what had been seen of the others.
+ * @param op - The change.
+ * @param options - A name to sign under, and when.
+ * @returns The signed entry.
+ * @throws If `prev` belongs to another key or another lab.
+ */
+export async function writeEntry(key: SigningKey, place: EntryPlace, op: Operation,
+                                 options: SignOptions = {}): Promise<SignedEntry> {
+  const before = place.prev?.entry ?? null;
+  if (before !== null && before.author !== key.publicKey) {
+    throw new Error("The previous entry is from another key's log.");
+  }
+  if (before !== null && before.lab !== place.lab && !(before.lab === null && before.seq === 0)) {
+    throw new Error("The previous entry is from another lab.");
+  }
+  const entry: LogEntry = {
+    bionet_log_version: LOG_VERSION,
+    lab: place.lab,
+    author: key.publicKey,
+    seq: before === null ? 0 : before.seq + 1,
+    prev: before === null ? null : await entryId(before),
+    seen: { ...(place.seen ?? {}) },
+    op,
+  };
+  return { entry, signature: await sign(entry, key, options) };
+}
+
+/** Sign an entry, saying in this file's own terms why one cannot be signed. */
+async function sign(entry: LogEntry, key: SigningKey, options: SignOptions): Promise<DocumentSignature> {
+  try {
+    canonicalJson(entry);
+  } catch {
+    throw new Error("An entry can carry only whole numbers: an amount is a whole number of the item's unit.");
+  }
+  return signUnder(LOG_DOMAIN, entry, key, options);
+}
+
+/**
+ * Found a lab: write the entry every other entry in it will point back to.
+ *
+ * The lab's ID is this entry's ID, so a lab is named by an act — this key, founding this lab, at this
+ * claimed moment — and not by an address, which can change, or a name, which anybody can use.
+ *
+ * @param key - The founder's device key. It becomes the lab's first keeper.
+ * @param about - What the lab is called, and who is founding it.
+ * @param options - A name to sign under, and when.
+ * @returns The founding entry. `entryId` of its `entry` is the lab's ID.
+ *
+ * @example
+ * ```ts
+ * import { entryId, foundLab } from "@biolibs/bionet";
+ *
+ * const founding = await foundLab(key, { name: "The Wren Lab", person: "Ada" });
+ * const lab = await entryId(founding.entry);
+ * ```
+ */
+export async function foundLab(key: SigningKey, about: { name: string; person: string },
+                               options: SignOptions = {}): Promise<SignedEntry> {
+  const entry: LogEntry = {
+    bionet_log_version: LOG_VERSION,
+    lab: null,
+    author: key.publicKey,
+    seq: 0,
+    prev: null,
+    seen: {},
+    op: { type: "roster.found", name: about.name, person: about.person },
+  };
+  return { entry, signature: await sign(entry, key, { signer: about.person, ...options }) };
+}
+
+/**
+ * Whether a value is shaped like a signed entry. Says nothing about whether the signature holds.
+ *
+ * @param value - Anything.
+ * @returns Whether it has an entry and a signature.
+ */
+export function isSignedEntry(value: unknown): value is SignedEntry {
+  if (typeof value !== "object" || value === null) return false;
+  const held = value as { entry?: unknown; signature?: unknown };
+  return typeof held.entry === "object" && held.entry !== null
+      && typeof held.signature === "object" && held.signature !== null;
+}
+
+/**
+ * Read an entry that came from somewhere else.
+ *
+ * This checks shape and size and nothing more: that it could be an entry. Whether its signature
+ * holds is `verifyEntry`'s question, and whether it belongs in the lab is `mergeLog`'s.
+ *
+ * @param value - What arrived.
+ * @returns The same value, known to be shaped like an entry.
+ * @throws If it is not one, saying what is wrong.
+ */
+export function readEntry(value: unknown): SignedEntry {
+  if (!isSignedEntry(value)) throw new Error("This is not a signed log entry.");
+  const entry = value.entry as Partial<LogEntry>;
+  if (entry.bionet_log_version !== LOG_VERSION) {
+    throw new Error(`This entry is in a format this does not read (version ${String(entry.bionet_log_version)}).`);
+  }
+  if (typeof entry.author !== "string" || !KEY.test(entry.author)) throw new Error("This entry does not say whose log it is in.");
+  if (!Number.isInteger(entry.seq) || entry.seq! < 0 || entry.seq! > 1_000_000_000) {
+    throw new Error("This entry does not say where in the log it sits.");
+  }
+  if (entry.prev !== null && (typeof entry.prev !== "string" || !HEX_ID.test(entry.prev))) {
+    throw new Error("This entry's pointer to the one before it is not an entry ID.");
+  }
+  if ((entry.seq === 0) !== (entry.prev === null)) {
+    throw new Error("Only the first entry in a log has nothing before it.");
+  }
+  if (entry.lab !== null && (typeof entry.lab !== "string" || !HEX_ID.test(entry.lab))) {
+    throw new Error("This entry does not say which lab it is for.");
+  }
+  const op = entry.op as Partial<Operation> | null | undefined;
+  if (typeof op !== "object" || op === null || Array.isArray(op) || typeof op.type !== "string"
+      || op.type.length === 0 || op.type.length > 60) {
+    throw new Error("This entry carries no change.");
+  }
+  if (entry.lab === null && !(entry.seq === 0 && op.type === "roster.found")) {
+    throw new Error("Only a founding entry may leave out the lab.");
+  }
+  if (op.type === "roster.found" && entry.lab !== null) {
+    throw new Error("A founding entry cannot be written into an existing lab.");
+  }
+  const seen = entry.seen as unknown;
+  if (typeof seen !== "object" || seen === null || Array.isArray(seen)) throw new Error("This entry does not say what it had seen.");
+  const others = Object.entries(seen as Record<string, unknown>);
+  if (others.length > MOST_SEEN) throw new Error(`An entry may name at most ${MOST_SEEN} other logs.`);
+  for (const [key, id] of others) {
+    if (!KEY.test(key) || typeof id !== "string" || !HEX_ID.test(id) || key === entry.author) {
+      throw new Error("This entry's record of what it had seen is not a list of keys and entry IDs.");
+    }
+  }
+  const signature = value.signature as Partial<DocumentSignature>;
+  if (typeof signature.algorithm !== "string" || typeof signature.public_key !== "string"
+      || typeof signature.signature !== "string" || typeof signature.signed_at !== "string"
+      || signature.signed_at.length > 40 || signature.signature.length > 200
+      || (signature.signer !== null && (typeof signature.signer !== "string" || signature.signer.length > 200))) {
+    throw new Error("This entry's signature is not a signature.");
+  }
+  if (canonicalJson(entry).length > LONGEST_ENTRY) throw new Error("This entry is longer than will be read.");
+  return value;
+}
+
+/**
+ * Check an entry's signature.
+ *
+ * Two things have to be true: the signature holds over these bytes under the log's own domain, and
+ * the key that signed is the key whose log the entry claims to be in. The second matters as much as
+ * the first — without it anybody could sign an entry into somebody else's log with their own key.
+ *
+ * @param signed - The entry.
+ * @returns The check. `ok` only if both hold; `problem` says which did not.
+ */
+export async function verifyEntry(signed: SignedEntry): Promise<SignatureCheck> {
+  const [check] = await verifyUnder(LOG_DOMAIN, signed.entry, [signed.signature]);
+  if (check!.ok && signed.signature.public_key !== signed.entry.author) {
+    return { ...check!, ok: false, problem: "This entry was signed by a key other than the one whose log it is in." };
+  }
+  return check!;
+}
+
+/** @returns The change that adds a key to the roster. */
+export const addToRoster = (key: string, person: string, role: Role = "member"): Operation =>
+  ({ type: "roster.add", key, person, role });
+
+/**
+ * @param key - The key to remove.
+ * @param cutoff - The last `seq` of that key's log the lab accepts. -1 accepts none of it.
+ * @returns The change that removes a key, keeping its entries up to the cutoff.
+ */
+export const removeFromRoster = (key: string, cutoff: number): Operation =>
+  ({ type: "roster.remove", key, cutoff });
+
+/** @returns The change that makes a key a keeper, or an ordinary member again. */
+export const setRole = (key: string, role: Role): Operation => ({ type: "roster.role", key, role });
+
+/** @returns The change that adds a part, by its sequence. Its checksum is computed when applied. */
+export const addPart = (part: { sequence: string; circular?: boolean; name: string }): Operation =>
+  ({ type: "part.add", sequence: part.sequence, circular: part.circular === true, name: part.name });
+
+/** @returns The change that says whether a part is on offer to other labs. */
+export const offerPart = (part: string, available: boolean): Operation => ({ type: "part.offer", part, available });
+
+/** @returns The change that adds one physical item of a part. `amount` is a whole number of `unit`. */
+export const addItem = (item: { item: string; part: string; amount: number; unit?: string | null }): Operation =>
+  ({ type: "item.add", item: item.item, part: item.part, amount: item.amount, unit: item.unit ?? null });
+
+/** @returns The change that adds to or takes from an item. `by` is a whole-number difference, never a total. */
+export const adjustItem = (item: string, by: number): Operation => ({ type: "item.adjust", item, by });
+
+/** @returns The change that says how much of an item is physically there. */
+export const recountItem = (item: string, amount: number): Operation => ({ type: "item.recount", item, amount });
+
+/** @returns The change that retires an item. It stays in the history. */
+export const retireItem = (item: string): Operation => ({ type: "item.retire", item });
+
+/** @returns The change that sets one field on a part (by checksum) or an item (by ID). */
+export const setField = (on: "part" | "item", id: string, field: string, value: string | number | null): Operation =>
+  ({ type: "field.set", on, id, field, value });
+
+/**
+ * A new ID for an item: 16 random bytes in hex.
+ *
+ * Random, because items are created on laptops that are offline, and two of them counting up from
+ * the same number would collide the moment they met.
+ *
+ * @returns 32 hex characters.
+ */
+export function newItemId(): string {
+  const bytes = globalThis.crypto.getRandomValues(new Uint8Array(16));
+  return [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}

@@ -20,6 +20,9 @@
  * - `discover.ts` — finding labs you were never told about, by walking from ones you were
  * - `trust.ts` — remembering which key answered last time, so a change gets noticed
  * - `match.ts` — what a plan needs, and who has it
+ * - `log.ts` — one signed change inside a lab, and the log it belongs to
+ * - `merge.ts` — what a lab holds, worked out from every key's log together
+ * - `sync.ts` — getting entries from one machine to another, and deciding who may have them
  *
  * @example
  * ```ts
@@ -41,3 +44,6 @@ export * from "./fetch.js";
 export * from "./discover.js";
 export * from "./trust.js";
 export * from "./match.js";
+export * from "./log.js";
+export * from "./merge.js";
+export * from "./sync.js";
