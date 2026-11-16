@@ -6,7 +6,7 @@
  * that a tube needing a count is flagged, and that the way back to the whole lab is always there.
  */
 import { exampleLab, search, type Layout } from "@biolibs/bionet-space";
-import { focusOn, sceneView } from "@biolibs/bionet-scene";
+import { focusOn, sceneView, BOX_FOV, ROOM_FOV, legible, type Written } from "@biolibs/bionet-scene";
 import { describe, expect, it } from "vitest";
 
 const lab = exampleLab();
@@ -106,7 +106,7 @@ describe("looking into a box", () => {
   });
 
   it("draws the focused box open, and names the way back", () => {
-    expect(drawn(view, BOX)).toMatchObject({ strength: 1, fill: 0.05, labelled: true });
+    expect(drawn(view, BOX)).toMatchObject({ strength: 1, fill: 0.05, labelled: false });
     expect(view.crumbs.map((crumb) => crumb.id)).toEqual([null, "main", "minus80", "minus80-s1", "minus80-s1-A", BOX]);
     expect(view.holding).toBe(items.length);
   });
@@ -173,7 +173,30 @@ describe("a box, looked into", () => {
     expect(view.level).toBe("box");
     expect(view.places.map((one) => one.id)).toEqual(["main", "minus80", "minus80-s3", "minus80-s3-B", "minus80-s3-B-4"]);
     for (const around of view.places.slice(0, -1)) expect(around).toMatchObject({ strength: 0.1, fill: 0, focusable: false, labelled: false });
-    expect(view.places.at(-1)).toMatchObject({ strength: 1, labelled: true });
+    expect(view.places.at(-1)).toMatchObject({ strength: 1, labelled: false });
     expect(view.tubes.length + view.empty.length).toBe(81);
+  });
+});
+
+describe("the lens", () => {
+  it("is long for a box, so its tubes are seen straight, and stands further back to match", () => {
+    const room = sceneView(lab, { place: "minus80" });
+    const box = sceneView(lab, { place: "minus80-s3-B-4" });
+    expect([room.fov, box.fov]).toEqual([ROOM_FOV, BOX_FOV]);
+    const far = (view: typeof box): number => Math.hypot(...view.pose.position.map((value, axis) => value - view.pose.target[axis]!));
+    expect(far(box)).toBeGreaterThan(far(sceneView(lab, { place: "minus80-s3-B-4" }, { fov: ROOM_FOV })) * 2);
+    expect(sceneView(lab, { place: null }, { fov: 30 }).fov).toBe(30);
+  });
+});
+
+describe("what is written over the scene", () => {
+  const at = (x: number, y: number, rank: number): Written => ({ x, y, width: 80, height: 20, rank });
+  it("shows what matters most where two would sit on each other, and everything that is clear", () => {
+    expect(legible([at(100, 100, 2), at(130, 105, 1), at(300, 100, 2)])).toEqual([false, true, true]);
+    expect(legible([at(100, 100, 2), at(130, 105, 2)])).toEqual([true, false]);            // equals: the earlier
+    expect(legible([at(100, 100, 2), at(100, 130, 2), at(190, 100, 2)])).toEqual([true, true, true]);
+    expect(legible([at(100, 100, 2), at(181, 100, 2)])).toEqual([true, false]);            // closer than the gap
+    expect(legible([at(100, 100, 2), at(181, 100, 2)], 0)).toEqual([true, true]);
+    expect(legible([])).toEqual([]);
   });
 });

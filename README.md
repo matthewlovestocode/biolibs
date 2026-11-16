@@ -6,7 +6,7 @@ sharing what they hold, with no server in charge.
 
 - **35 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,837 API items at parity** across three upstream libraries, of 2,859 applicable
-- **19,259 tests**, most of them replaying answers recorded from the real Python libraries
+- **19,269 tests**, most of them replaying answers recorded from the real Python libraries
 
 ## Install
 
@@ -146,7 +146,7 @@ Why it is built this way, what was decided and what is still open:
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 19,259 tests
+npm test           # vitest — 19,269 tests
 npm run coverage   # per-file coverage
 ```
 

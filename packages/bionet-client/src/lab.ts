@@ -386,13 +386,15 @@ export class Lab {
   /**
    * Add a place: a room, a freezer, a shelf, a box.
    *
-   * @param place - What kind it is, what it is called, the place it is in if any, and for a box how
-   *   many rows and columns of positions it has.
+   * @param place - What kind it is, what it is called, the place it is in if any, for a box how
+   *   many rows and columns of positions it has, and for an instrument which one it is.
    * @returns The new place's ID.
    */
-  async addPlace(place: { kind: string; name: string; parent?: string | null; grid?: { rows: number; columns: number } | null }): Promise<string> {
+  async addPlace(place: { kind: string; name: string; parent?: string | null; grid?: { rows: number; columns: number } | null; model?: string | null }): Promise<string> {
     const id = newPlaceId();
     await this.write(addPlace({ place: id, kind: place.kind.trim().toLowerCase(), name: place.name.trim(), parent: place.parent ?? null, grid: place.grid ?? null }));
+    // Which instrument it is is a field like any other, so a lab can correct it later.
+    if (typeof place.model === "string" && place.model.trim() !== "") await this.write(setField("place", id, "model", place.model.trim()));
     return id;
   }
 

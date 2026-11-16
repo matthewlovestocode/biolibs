@@ -131,6 +131,12 @@ describe("a lab that knows where things are", () => {
     expect(layout.stored.some((one) => one.item === loose)).toBe(false);
     expect(arrange(layout).map((one) => one.place.id)).toEqual([UNNAMED_ROOM, freezer, box]);
 
+    const bench = await lab.addPlace({ kind: "bench", name: "Bench" });
+    const pcr = await lab.addPlace({ kind: "instrument", name: "Thermocycler", parent: bench, model: "thermocycler" });
+    expect(lab.snapshot().lab!.places.find((one) => one.place === pcr)!.fields).toEqual({ model: "thermocycler" });
+    expect(layoutFrom(lab.snapshot().lab!).places.find((one) => one.id === pcr)!.model).toBe("thermocycler");
+    await lab.retirePlace({ place: bench });
+
     await lab.movePlace({ place: box, parent: null });
     await lab.retirePlace({ place: freezer });
     await lab.setField({ on: "place", id: box, field: "name", value: "Box A" });

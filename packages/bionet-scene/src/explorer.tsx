@@ -9,6 +9,7 @@
 import { useMemo, useState } from "react";
 import { layoutFrom, search, type Layout, type RecordedLab, type Standing } from "@biolibs/bionet-space";
 import { THEME_ATTRIBUTE, type Theme } from "@biolibs/bionet-theme";
+import { needsArranging, placeToAdd, type NewPlace } from "./arranging.js";
 import { LabBuilder } from "./builder.js";
 import { LabScene, useSystemTheme, type Neighbour } from "./scene.js";
 import { focusOn, sceneView, type Focus } from "./view.js";
@@ -42,7 +43,8 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
   const [words, setWords] = useState("");
   const found = useMemo(() => search(layout, words), [layout, words]);
   const matches = useMemo(() => new Set(found.map((one) => one.item)), [found]);
-  const view = useMemo(() => sceneView(layout, focus, { matches, labName }), [layout, focus, matches, labName]);
+  const wrong = useMemo(() => needsArranging(layout), [layout]);
+  const view = useMemo(() => sceneView(layout, focus, { matches, labName, attention: wrong.attention }), [layout, focus, matches, labName, wrong]);
   const picked = view.tubes.find((tube) => tube.selected);
   const where = view.crumbs.at(-1)!;
 
@@ -70,6 +72,7 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
       <p className="status">
         {view.holding.toLocaleString("en-US")} {view.holding === 1 ? "tube" : "tubes"} in {where.name}
         {view.level !== "box" && <span className="hint"> · press something to look into it</span>}
+        {wrong.problems.length > 0 && <span className="wrong" title={wrong.problems.join("\n")}> · {wrong.problems.length === 1 ? wrong.problems[0] : `${wrong.problems.length} things need arranging`}</span>}
       </p>
       {picked !== undefined && (
         <aside className="picked" aria-live="polite">
@@ -91,7 +94,8 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  *
  * @param props - `lab` is the lab's places, items and parts; `name` is what to call it; `theme` pins
  *   a theme; `neighbours` are other labs to draw beside it; `onStand`, if given, adds a way to
- *   arrange the lab by hand, and is told each standing to say.
+ *   arrange the lab by hand, and is told each standing to say; `onAdd` and `onRetire`, if given,
+ *   let places be added and retired while arranging.
  *
  * @example
  * ```tsx
@@ -101,21 +105,30 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  * <LabView lab={lab} name={lab.name ?? "Lab"} />
  * ```
  */
-export function LabView({ lab, name = "Lab", theme, neighbours, onStand }: {
+export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, onRetire }: {
   lab: RecordedLab; name?: string; theme?: Theme; neighbours?: readonly Neighbour[];
   onStand?: (place: string, standing: Standing | null) => Promise<unknown> | void;
+  onAdd?: (place: NewPlace) => Promise<unknown> | void; onRetire?: (place: string) => Promise<unknown> | void;
 }) {
   const layout = useMemo(() => layoutFrom(lab, { room: name }), [lab.places, lab.items, lab.parts, name]);
   const [arranging, setArranging] = useState(false);
   if (layout.places.length === 0) {
     return (
       <div className="bionet-scene empty" {...(theme === undefined ? {} : { [THEME_ATTRIBUTE]: theme })}>
-        <p>Nothing to draw yet. Add a place — a freezer, then the boxes in it — and it appears here.</p>
+        <div>
+          <p>Nothing to draw yet. A lab is drawn from the places its members add: a room, a freezer in it, the boxes in that.</p>
+          {onAdd !== undefined && (
+            <button type="button" onClick={() => { void onAdd(placeToAdd(layout, null, "room", { name: "Main lab" })); setArranging(true); }}>Add the first room</button>
+          )}
+        </div>
       </div>
     );
   }
   const pinned = theme === undefined ? {} : { theme };
-  if (arranging && onStand !== undefined) return <LabBuilder layout={layout} labName={name} onStand={onStand} onDone={() => setArranging(false)} {...pinned} />;
+  if (arranging && onStand !== undefined) {
+    return <LabBuilder layout={layout} labName={name} onStand={onStand} onDone={() => setArranging(false)} {...pinned}
+                       {...(onAdd === undefined ? {} : { onAdd })} {...(onRetire === undefined ? {} : { onRetire })} />;
+  }
   return (
     <div className="bionet-view">
       <LabExplorer layout={layout} labName={name} {...pinned} {...(neighbours === undefined ? {} : { neighbours })} />

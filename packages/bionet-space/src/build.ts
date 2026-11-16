@@ -116,6 +116,28 @@ export function standingAt(arranged: readonly Arranged[], id: string, to: readon
 }
 
 /**
+ * The standing a place would have if its base were moved to a height.
+ *
+ * This is how a shelf is moved: up and down inside what it is in, and nowhere else. The height is
+ * settled onto a grid and kept between the floor and the ceiling of the place it is in.
+ *
+ * @param arranged - The lab, arranged.
+ * @param id - The place being moved.
+ * @param height - How high its base should be, in the lab's coordinates.
+ * @param options - `snap` is the grid to settle on, in metres; 0 for none.
+ * @returns The standing, or `null` if the lab has no such place.
+ */
+export function standingUp(arranged: readonly Arranged[], id: string, height: number, options: { snap?: number } = {}): Standing | null {
+  const one = arranged.find((each) => each.place.id === id);
+  const now = standingOf(arranged, id);
+  if (one === undefined || now === null) return null;
+  const parent = parentOf(arranged, one);
+  let up = snapped(height - (parent === null ? 0 : base(parent)[1]), options.snap ?? SNAP);
+  if (parent !== null) up = round(Math.min(Math.max(up, 0), Math.max(0, parent.size[1] - now.size[1])));
+  return { ...now, position: [now.position[0], up, now.position[2]] };
+}
+
+/**
  * A standing turned a quarter turn further.
  *
  * @param standing - The standing.

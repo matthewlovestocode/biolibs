@@ -44,9 +44,19 @@ import { LabView } from "@biolibs/bionet-scene";
 ```
 
 Given `onStand`, the view gains an Arrange switch. In it, drag what stands in a room to move it,
-press it to turn it a quarter or set its size, and with nothing picked set the size of the room.
+press it to turn it a quarter, set its size or its height off the floor, and with nothing picked set
+the size of the room. "Arrange inside" goes into a freezer, a shelf or a bench to arrange what is
+there; shelves are dragged up and down, everything else across.
 Every move is handed to `onStand` and the room is redrawn from what the lab then says. Places
 standing in each other, or through a wall, turn the attention colour and are named in words.
+
+Given `onAdd` and `onRetire` as well, places are added and retired there too: a freezer in the room,
+a shelf in the freezer, a box on the shelf, an instrument on a bench. A lab with no places offers
+its first room, so a lab can be built without leaving the view.
+
+```tsx
+<LabView lab={lab} onStand={stand} onAdd={(place) => act("addPlace", place)} onRetire={(place) => act("retirePlace", { place })} />
+```
 
 `LabBuilder` is the same thing on its own, taking a `Layout`.
 

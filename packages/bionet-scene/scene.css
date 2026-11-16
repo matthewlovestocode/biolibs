@@ -64,3 +64,10 @@
 .bionet-scene .arrange .row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center }
 .bionet-scene .arrange .note { margin: 0; color: var(--bionet-dim) }
 .bionet-scene .arrange .problems { margin: 0; padding-left: 1rem; color: var(--bionet-attention) }
+.bionet-scene .status .wrong { color: var(--bionet-attention) }
+.bionet-scene .arrange fieldset.four { grid-template-columns: repeat(4, 1fr) auto }
+.bionet-scene .arrange form.add { display: grid; gap: .4rem; padding-top: .55rem; border-top: 1px solid var(--bionet-rule) }
+.bionet-scene .arrange form.add fieldset { grid-template-columns: 1fr 1fr }
+.bionet-scene .arrange form.add .wide { grid-column: 1 / -1 }
+.bionet-scene .arrange select { font: inherit; width: 100%; color: var(--bionet-ink); padding: .25rem .35rem; border: 1px solid var(--bionet-rule); border-radius: 6px; background: var(--bionet-field, var(--bionet-ground)) }
+.bionet-scene.empty button { font: inherit; margin-top: .9rem; color: var(--bionet-ink); padding: .4rem .9rem; border: 1px solid var(--bionet-yours); border-radius: 8px; background: transparent; cursor: pointer }

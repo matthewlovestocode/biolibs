@@ -756,11 +756,21 @@ size, and the room itself be given one. Each change is a signed `place.stand`.
 - **Problems are shown, not prevented.** Two things standing in each other, or one through a wall,
   turn the attention colour and are named. They are not refused: the builder cannot know which of
   the two is wrong, and a lab mid-rearrangement passes through such states.
-- **Only what stands in a room is dragged.** What is inside a freezer goes with it and is arranged
-  by default. A room that was made up for the drawing has no entry in the log and cannot be sized.
+- **One place is arranged at a time, at any depth.** What is dragged is whatever is directly in the
+  place being arranged: a room's freezers, a freezer's shelves, a shelf's racks, a bench's
+  instruments. "Arrange inside" goes down a level. Shelves move up and down; everything else moves
+  across. A room that was made up for the drawing has no entry in the log and cannot be sized.
 
-Not done: arranging inside a freezer or on a bench; adding a place from the scene (it is still the
-form on the Places tab); undo, other than dragging back; overlaps shown outside Arrange; molecules
+Afterwards the scene was tidied: names that would sit on each other are hidden by how much they
+matter, a box is looked at through a long lens so its tubes do not lean, and places stood in each
+other are flagged in the ordinary view as well as in Arrange.
+
+Places are added and retired from the same view, so a lab can be built from nothing on the Lab tab:
+the first room, then what stands in it, then what is inside that. A new place takes the first clear
+spot. Which instrument a place is is a field on it (`model`), set when it is added.
+
+Not done: placing a tube in a box by dragging it (that is still by position, on the Freezer tab); adding a place from the scene (it is still the
+form on the Places tab); undo, other than dragging back; molecules
 and instruments beyond an outline. The real Wren Lab has no places yet, and its key has not been
 backed up.
 

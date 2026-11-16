@@ -78,5 +78,6 @@ sticking(arranged);                             // []  — places stood partly o
 
 `standingOf` is the inverse of `arrange`: where a place stands as the lab would say it, measured from
 the place it is in, including for a place nobody has stood anywhere. `standingAt` is what a drag
-becomes: settled every 5 cm and kept inside the parent. `quarterTurned` turns one. None of them
+becomes: settled every 5 cm and kept inside the parent. `standingUp` is the same for a shelf, which
+moves up and down. `quarterTurned` turns one. None of them
 moves anything; they work out what would be said.

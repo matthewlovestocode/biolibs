@@ -23,6 +23,8 @@ There is no freezer type, shelf type and rack type. There is a `Place`, with a k
 
 Sizes are in metres. A place with a `standing` is put where it says. A place without one is given a default size for its kind and a spot inside its parent: boxes in rows, shelves stacked, instruments along a bench. So a lab can be drawn the moment it has said what it holds, and made to match the real room later by adding numbers, with no second format to move to.
 
+A place added among ones already stood by hand is moved to the first clear spot on the same floor, looking along the back wall first. If nowhere is clear it is left where the usual arrangement put it, to be flagged: a full room is for a person to sort out.
+
 ## The camera is arithmetic too
 
 `poseFor` returns a position and a target, by level: the whole lab from above a corner, a freezer from its front, a box from overhead. Keeping it here means it can be tested with numbers, and that anything else which wants to point at a place agrees with the scene about where that is.

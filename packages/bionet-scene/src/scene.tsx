@@ -16,9 +16,9 @@ import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber"
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { BoxGeometry, Color, CylinderGeometry, EdgesGeometry, Object3D, Plane, QuadraticBezierCurve3, RingGeometry, Vector3,
-         type InstancedMesh, type Mesh } from "three";
+         type InstancedMesh, type Mesh, type PerspectiveCamera } from "three";
 import { colour, type Meaning, type Theme } from "@biolibs/bionet-theme";
-import type { DrawnPlace, DrawnSlot, DrawnTube, Focus, SceneView } from "./view.js";
+import { legible, type DrawnPlace, type DrawnSlot, type DrawnTube, type Focus, type SceneView, type Written } from "./view.js";
 
 /** Another lab, drawn beside this one. */
 export interface Neighbour {
@@ -78,6 +78,8 @@ interface Label {
   at: [number, number, number];
   /** What is written. */
   content: ReactNode;
+  /** How much it matters when two would sit on each other. Lower matters more. */
+  rank: number;
 }
 
 /**
@@ -91,14 +93,26 @@ function Follow({ labels, layer }: { labels: readonly Label[]; layer: RefObject<
   useFrame(({ camera, size }) => {
     const elements = layer.current?.children;
     if (elements === undefined) return;
-    labels.forEach((label, index) => {
+    const written: (Written | null)[] = labels.map((label, index) => {
+      const element = elements[index] as HTMLElement | undefined;
+      if (element === undefined) return null;
+      const depth = point.set(...label.at).distanceTo(camera.position);
+      point.project(camera);
+      // Past the far side of the camera a point still projects onto the screen, mirrored.
+      if (point.z > 1 || point.z < -1) return null;
+      // Among labels that matter equally, the nearer is kept.
+      return { x: ((point.x + 1) / 2) * size.width, y: ((1 - point.y) / 2) * size.height,
+               width: element.offsetWidth, height: element.offsetHeight, rank: label.rank + Math.min(depth, 999) / 1000 };
+    });
+    const present = written.filter((one): one is Written => one !== null);
+    const shown = legible(present);
+    let at = 0;
+    written.forEach((one, index) => {
       const element = elements[index] as HTMLElement | undefined;
       if (element === undefined) return;
-      point.set(...label.at).project(camera);
-      // Past the far side of the camera a point still projects onto the screen, mirrored.
-      const behind = point.z > 1 || point.z < -1;
-      element.style.visibility = behind ? "hidden" : "visible";
-      element.style.transform = `translate(${((point.x + 1) / 2) * size.width}px, ${((1 - point.y) / 2) * size.height}px) translate(-50%, -50%)`;
+      const show = one !== null && shown[at++] === true;
+      element.style.visibility = show ? "visible" : "hidden";
+      if (one !== null) element.style.transform = `translate(${one.x}px, ${one.y}px) translate(-50%, -50%)`;
     });
   });
   return null;
@@ -123,21 +137,37 @@ const meantFor = (event: ThreeEvent<MouseEvent>, volume: number): boolean =>
 export interface Dragging {
   /** Which places may be dragged. */
   ids: ReadonlySet<string>;
-  /** Called as one is dragged, with where the centre of its base would be: across, and towards the front. */
-  onMove: (id: string, to: [number, number]) => void;
+  /** Those of them that are dragged up and down, not across the floor. */
+  upright?: ReadonlySet<string>;
+  /**
+   * Called as one is dragged, with where it would be: the centre of its base across and towards the
+   * front, or for one that moves up and down, how high its base would be.
+   */
+  onMove: (id: string, to: { across: number; forward: number } | { up: number }) => void;
   /** Called when it is let go. */
   onEnd: (id: string) => void;
 }
 
 const FLOOR = new Plane(new Vector3(0, 1, 0), 0);
+const WALL = new Plane();
 
 function PlaceBox({ place, theme, onPick, drag }: { place: DrawnPlace; theme: Theme; onPick: (id: string) => void; drag?: Dragging | undefined }) {
   const controls = useThree((state) => state.controls) as unknown as { enabled: boolean } | null;
-  const held = useRef<{ dx: number; dz: number; moved: boolean } | null>(null);
+  const held = useRef<{ dx: number; dy: number; dz: number; moved: boolean } | null>(null);
   const draggable = drag?.ids.has(place.id) === true;
-  const onFloor = (event: ThreeEvent<PointerEvent>): Vector3 | null => {
+  const upright = drag?.upright?.has(place.id) === true;
+  const bottom = place.center[1] - place.size[1] / 2;
+  /** Where the pointer is on the surface a place is dragged over. */
+  const under = (event: ThreeEvent<PointerEvent>): Vector3 | null => {
+    if (upright) {
+      // A wall through the place, facing the camera, so that it follows the pointer up and down.
+      const facing = new Vector3(event.camera.position.x - place.center[0], 0, event.camera.position.z - place.center[2]);
+      if (facing.lengthSq() === 0) facing.set(0, 0, 1);
+      WALL.setFromNormalAndCoplanarPoint(facing.normalize(), new Vector3(...place.center));
+      return event.ray.intersectPlane(WALL, new Vector3());
+    }
     // The floor the place stands on, so that it follows the pointer and not the camera's depth.
-    FLOOR.constant = -(place.center[1] - place.size[1] / 2);
+    FLOOR.constant = -bottom;
     return event.ray.intersectPlane(FLOOR, new Vector3());
   };
   const edge = paint(place.tone, theme, place.strength);
@@ -151,18 +181,18 @@ function PlaceBox({ place, theme, onPick, drag }: { place: DrawnPlace; theme: Th
       {(place.focusable || place.fill > 0) && (
         <mesh scale={place.size} geometry={BOX} userData={place.focusable ? { volume } : {}}
               onPointerDown={!draggable ? undefined : (event) => {
-                const at = onFloor(event);
+                const at = under(event);
                 if (at === null || event.button !== 0) return;
                 event.stopPropagation();
                 (event.target as Element).setPointerCapture(event.pointerId);
-                held.current = { dx: at.x - place.center[0], dz: at.z - place.center[2], moved: false };
+                held.current = { dx: at.x - place.center[0], dy: at.y - bottom, dz: at.z - place.center[2], moved: false };
                 if (controls !== null) controls.enabled = false;
               }}
               onPointerMove={!draggable ? undefined : (event) => {
-                const at = held.current === null ? null : onFloor(event);
+                const at = held.current === null ? null : under(event);
                 if (held.current === null || at === null) return;
                 held.current.moved = true;
-                drag!.onMove(place.id, [at.x - held.current.dx, at.z - held.current.dz]);
+                drag!.onMove(place.id, upright ? { up: at.y - held.current.dy } : { across: at.x - held.current.dx, forward: at.z - held.current.dz });
               }}
               onPointerUp={!draggable ? undefined : (event) => {
                 if (held.current === null) return;
@@ -287,12 +317,13 @@ function NeighbourLab({ neighbour, from, to, theme, onPick }: {
 function Rig({ view }: { view: SceneView }) {
   const camera = useThree((state) => state.camera);
   const controls = useThree((state) => state.controls) as unknown as { target: Vector3; update: () => void } | null;
+  const lens = camera as PerspectiveCamera;
   const left = useRef(0);
   const first = useRef(true);
   // Keyed on the numbers, so a view rebuilt with the same pose does not send the camera back.
   const position = useMemo(() => new Vector3(...view.pose.position), [view.pose.position.join()]);
   const target = useMemo(() => new Vector3(...view.pose.target), [view.pose.target.join()]);
-  useEffect(() => { left.current = 1.6; }, [position, target]);
+  useEffect(() => { left.current = 1.6; }, [position, target, view.fov]);
   useFrame((_, delta) => {
     if (controls === null || left.current <= 0) return;
     if (first.current) {
@@ -300,13 +331,17 @@ function Rig({ view }: { view: SceneView }) {
       first.current = false;
       camera.position.copy(position);
       controls.target.copy(target);
+      lens.fov = view.fov;
       left.current = 0;
     } else {
       left.current -= delta;
       const step = 1 - Math.exp(-delta * 5.5);
       camera.position.lerp(position, step);
       controls.target.lerp(target, step);
+      // The lens changes with the distance, so the thing looked at stays the same size on the way.
+      lens.fov = left.current <= 0 ? view.fov : lens.fov + (view.fov - lens.fov) * step;
     }
+    lens.updateProjectionMatrix();
     controls.update();
   });
   return null;
@@ -338,22 +373,28 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
   const picked = view.tubes.find((tube) => tube.selected);
   const labels: Label[] = [
     ...view.places.filter((place) => place.labelled).map((place): Label => ({
-      key: place.id, at: [place.center[0], place.center[1] + place.size[1] / 2, place.center[2]],
+      key: place.id,
+      // A room is named at a back corner, out of the way of what stands in it.
+      at: place.kind === "room" ? [place.center[0] - place.size[0] / 2, place.center[1] + place.size[1] / 2, place.center[2] - place.size[2] / 2]
+                                : [place.center[0], place.center[1] + place.size[1] / 2, place.center[2]],
       content: <span className={`tag tone-${place.tone}`}>{place.name}</span>,
+      rank: place.tone === "attention" || place.tone === "found" ? 1 : place.kind === "room" ? 4 : place.kind === "instrument" ? 3 : 2,
     })),
     ...beside.map(({ neighbour, to }): Label => ({
       key: `lab ${neighbour.id}`, at: [to[0] + NEIGHBOUR_SIZE[0] / 2, NEIGHBOUR_SIZE[1], to[2]],
       content: <span className="tag tone-theirs">{neighbour.name}{neighbour.note !== undefined && <small>{neighbour.note}</small>}</span>,
+      rank: 2,
     })),
     ...(picked === undefined ? [] : [{
       key: `tube ${picked.item}`, at: [picked.center[0], picked.center[1] + picked.height, picked.center[2]] as [number, number, number],
       content: <span className="tag tone-ink raised">{picked.name} · {picked.position}</span>,
+      rank: 0,
     }]),
   ];
   const layer = useRef<HTMLDivElement>(null);
   return (
     <div className="stage">
-    <Canvas camera={{ fov: 45, near: 0.01, far: 400, position: view.pose.position }} dpr={[1, 2]} gl={{ antialias: true }}>
+    <Canvas camera={{ fov: view.fov, near: 0.01, far: 400, position: view.pose.position }} dpr={[1, 2]} gl={{ antialias: true }}>
       <color attach="background" args={[colour("ground", theme)]} />
       <gridHelper args={[60, 60, rule.color, rule.color]} position={[0, -0.002, 0]}>
         <lineBasicMaterial attach="material" color={rule.color} transparent opacity={theme === "dark" ? 0.5 : 0.7} toneMapped={false} />

@@ -374,3 +374,29 @@ describe("arranging by hand", () => {
     expect(sticking(arrange(out))).toEqual(["out", "tall"]);
   });
 });
+
+describe("a new place among ones already stood", () => {
+  it("is given the first clear spot, and left alone when it was clear already or nowhere is", () => {
+    const stood = exampleLab();
+    const added: Layout = { ...stood, places: [...stood.places, { id: "new", kind: "freezer", name: "New freezer", parent: "main" }] };
+    const arranged = arrange(added);
+    expect(arranged.find((one) => one.place.id === "new")!.placed).toBe("by default");
+    expect(overlapping(arranged)).toEqual([]);
+    expect(sticking(arranged)).toEqual([]);
+    // Two more find places of their own, too.
+    const more: Layout = { ...added, places: [...added.places, { id: "new2", kind: "fridge", name: "F", parent: "main" }, { id: "new3", kind: "bench", name: "B", parent: "main" }] };
+    expect(overlapping(arrange(more))).toEqual([]);
+
+    // In an empty room the usual arrangement stands.
+    const alone: Layout = { stored: [], places: [{ id: "room", kind: "room", name: "Room", parent: null }, { id: "f", kind: "freezer", name: "F", parent: "room" }] };
+    expect(standingOf(arrange(alone), "f")!.position[0]).toBe(0);
+
+    // A room with no clear floor leaves it where the usual arrangement put it, to be flagged.
+    const full: Layout = { stored: [], places: [
+      { id: "room", kind: "room", name: "Room", parent: null, standing: { position: [0, 0, 0], size: [2, 3, 2] } },
+      { id: "big", kind: "bench", name: "Big", parent: "room", standing: { position: [0, 0, 0], size: [2, 1, 2] } },
+      { id: "f", kind: "freezer", name: "F", parent: "room" },
+    ] };
+    expect(overlapping(arrange(full))).toEqual([["big", "f"]]);
+  });
+});

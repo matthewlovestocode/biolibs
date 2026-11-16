@@ -95,6 +95,8 @@ export interface SceneView {
   crumbs: Crumb[];
   /** How close this look is. */
   level: Level;
+  /** The camera's vertical field of view, in degrees. Narrow for a box, so its tubes are seen straight. */
+  fov: number;
   /** How many items are in what is being looked at, however deep. */
   holding: number;
 }
@@ -111,6 +113,45 @@ export interface ViewOptions {
   fov?: number;
 }
 
+/** The field of view for looking around, in degrees. */
+export const ROOM_FOV = 45;
+
+/** The narrower field of view for looking down into a box, in degrees. */
+export const BOX_FOV = 18;
+
+/** Something written on screen: where its middle is, how big it is, and how much it matters. */
+export interface Written {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  /** Lower matters more. Among equals, the earlier one is kept. */
+  rank: number;
+}
+
+/**
+ * Which of the things written on screen to show, so that none sits on another.
+ *
+ * The ones that matter most are kept first; one that would overlap something already kept is left
+ * out. A label nobody can read is worse than no label, and the place can still be pressed.
+ *
+ * @param written - Everything that could be written.
+ * @param gap - How much clear space to leave around each, in pixels.
+ * @returns For each, in the order given, whether to show it.
+ */
+export function legible(written: readonly Written[], gap = 2): boolean[] {
+  const order = written.map((_, at) => at).sort((a, b) => written[a]!.rank - written[b]!.rank || a - b);
+  const kept: Written[] = [];
+  const shown = written.map(() => false);
+  for (const at of order) {
+    const one = written[at]!;
+    const clear = kept.every((other) => Math.abs(one.x - other.x) >= (one.width + other.width) / 2 + gap
+                                     || Math.abs(one.y - other.y) >= (one.height + other.height) / 2 + gap);
+    if (clear) { kept.push(one); shown[at] = true; }
+  }
+  return shown;
+}
+
 /** A tube's height, in metres. */
 const TUBE_HEIGHT = 0.04;
 
@@ -119,7 +160,7 @@ const TUBE_HEIGHT = 0.04;
  *
  * @param layout - The lab: its places and what is stored in them.
  * @param focus - What is being looked at.
- * @param options - Search matches, the lab's name, the camera's field of view.
+ * @param options - Search matches, the lab's name, places needing attention, and a field of view to use in place of its own.
  * @returns Everything to draw, and where to draw it from.
  *
  * @example
@@ -140,6 +181,9 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
   const focused = focus.place === null ? null : by.get(focus.place) ?? null;
   const level = levelOf(focused);
   const matches = options.matches ?? new Set<string>();
+  // Looked at from close and above with a wide lens, the tubes at a box's edges lean outwards. A
+  // long lens from further off sees them all nearly straight down.
+  const fov = options.fov ?? (level === "box" ? BOX_FOV : ROOM_FOV);
 
   // What each place holds, itself and everything inside it.
   const direct = new Map<string, Stored[]>();
@@ -186,7 +230,9 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
       const found = held.some((item) => matches.has(item.item));
       const tone: Meaning = found ? "found" : held.some((item) => item.needsRecount === true) ? "attention" : held.length > 0 ? "held" : "dim";
       places.push({ ...base, tone, strength: found || isFocus ? 1 : inUnit ? (near(one) ? 0.85 : 0.5) : 0.3,
-                    fill: held.length === 0 ? 0 : isFocus ? 0.05 : 0.14, focusable: inUnit, labelled: isFocus || childOfFocus });
+                    fill: held.length === 0 ? 0 : isFocus ? 0.05 : 0.14, focusable: inUnit,
+                    // A box being looked into is named in the way back. Written over it, the name would cover its tubes.
+                    labelled: childOfFocus });
     } else if (focusedUnit !== undefined && unitOf(one) === focusedUnit) {
       // A shelf or a rack, drawn only once its freezer is being looked into.
       places.push({ ...base, tone: "yours", strength: near(one) ? 0.55 : 0.25, fill: 0, focusable: true, labelled: isFocus || childOfFocus });
@@ -237,7 +283,8 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
     places,
     tubes,
     empty,
-    pose: poseFor(arranged, focused === null ? null : focused.place.id, options.fov ?? 45),
+    pose: poseFor(arranged, focused === null ? null : focused.place.id, fov),
+    fov,
     crumbs: [{ id: null, name: options.labName ?? "Lab" }, ...(focused?.path ?? []).map((id) => ({ id, name: by.get(id)!.place.name }))],
     level,
     holding: focused === null ? layout.stored.length : (within.get(focused.place.id) ?? []).length,

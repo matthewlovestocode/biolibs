@@ -59,7 +59,8 @@ await lab.putItem({ item: tube, place: box, slot: { row: 0, column: 0 } });
 lab.snapshot().lab?.places.length;    // 2
 ```
 
-`movePlace`, `standPlace` (in metres, kept to the millimetre) and `retirePlace` do the rest.
+`movePlace`, `standPlace` (in metres, kept to the millimetre) and `retirePlace` do the rest. An
+instrument can say which one it is: `addPlace({ kind: "instrument", name: "PCR", parent: bench, model: "thermocycler" })`.
 `layoutFrom` in `@biolibs/bionet-space` turns the snapshot's lab into something that can be drawn.
 
 ## Backing up the key

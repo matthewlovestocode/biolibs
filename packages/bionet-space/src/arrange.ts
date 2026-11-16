@@ -115,6 +115,35 @@ function byDefault(parent: [number, number, number], kind: string, children: Pla
   return children.map((_, at) => ({ position: [-inside[0] / 2 + each / 2 + at * (each + GAP), floor, 0], size: [each, inside[1], inside[2]] }));
 }
 
+/** Whether two standings in the same place share space. Ones that only touch do not. */
+function sharing(a: Standing, b: Standing): boolean {
+  const [as, bs] = [lying([...a.size], a.turn ?? 0), lying([...b.size], b.turn ?? 0)];
+  const apart = (axis: 0 | 2): boolean => Math.abs(a.position[axis] - b.position[axis]) >= (as[axis] + bs[axis]) / 2 - 0.001;
+  const above = a.position[1] >= b.position[1] + bs[1] - 0.001 || b.position[1] >= a.position[1] + as[1] - 0.001;
+  return !apart(0) && !apart(2) && !above;
+}
+
+/**
+ * A standing moved, if it has to be, to the first spot on the same floor that is clear of others.
+ *
+ * It looks along the back first and works forwards, a tenth of a metre at a time, staying inside
+ * the parent. If nowhere is clear it is left where it was: a full room is for a person to sort out.
+ */
+function clearOf(standing: Standing, others: readonly Standing[], parent: [number, number, number]): Standing {
+  if (!others.some((other) => sharing(standing, other))) return standing;
+  const [w, , d] = lying([...standing.size], standing.turn ?? 0);
+  const [reachX, reachZ] = [(parent[0] - w) / 2, (parent[2] - d) / 2];
+  if (reachX < 0 || reachZ < 0) return standing;
+  const step = 0.1;
+  for (let z = -reachZ; z <= reachZ + 1e-9; z += step) {
+    for (let x = -reachX; x <= reachX + 1e-9; x += step) {
+      const tried: Standing = { ...standing, position: [Math.round(x * 1000) / 1000, standing.position[1], Math.round(z * 1000) / 1000] };
+      if (!others.some((other) => sharing(tried, other))) return tried;
+    }
+  }
+  return standing;
+}
+
 /**
  * Give every place somewhere to stand.
  *
@@ -149,6 +178,15 @@ export function arrange(layout: Pick<Layout, "places">): Arranged[] {
     for (const which of new Set(unplaced.map(sort))) {
       const group = unplaced.filter((place) => sort(place) === which);
       byDefault(size, kind, group).forEach((standing, at) => chosen.set(group[at]!, standing));
+      // Somebody may already have stood things where the usual arrangement would put these. A new
+      // freezer should appear beside the bench, not in it, so each is moved to the first clear spot.
+      if (which !== "other") continue;
+      const fixed = places.filter((place) => place.standing !== undefined).map((place) => place.standing!);
+      for (const place of group) {
+        const clear = clearOf(chosen.get(place)!, fixed, size);
+        chosen.set(place, clear);
+        fixed.push(clear);
+      }
     }
     for (const place of places) {
       const standing = place.standing ?? chosen.get(place)!;
