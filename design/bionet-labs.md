@@ -642,6 +642,9 @@ Nothing blocks the first slice. Two things remain for the step after it:
 - Both labs' pages are drawn by `@biolibs/bionet-panels` in the theme, light or dark, wearing the
   mark. Their own stylesheets and their two copies of the page are gone. What a signature settles is
   now worded in one place.
+- The biolibs site takes Bionet's colours. Its own names for colours now point at the theme's
+  variables, so it has no palette of its own to drift. The four bases and code highlighting keep
+  their colours, which are not the brand's to choose.
 
 **The first slice is complete, run locally:** two devices each with their own key; one founds the
 roster and adds the other; both work offline; they converge through the web peer; one publishes, and
@@ -672,9 +675,6 @@ the peer serves the signed inventory.
 - Everything under "The lab workspace": places, the scene, the tools and the libraries.
 - The roster as a published document for outside readers. Readers still remember keys per address.
 - `lab-thistle` has no peer yet.
-- Whether the biolibs site takes the Bionet palette. It wears the Bionet logo where its recipe page
-  meets the network, drawn from the packages, and keeps its own palette: it is the site for all of
-  biolibs, and Bionet is one part of that.
 - The glue in each lab's page that gathers what is drawn (the published inventory from disk, the
   other lab's from its address) is still written once per lab, about forty lines.
 - Installers, signing and updates.
