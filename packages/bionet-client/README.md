@@ -77,6 +77,10 @@ done.items;    // the IDs of the tubes it made
 
 `@biolibs/bionet-tools` works out what to pass for a PCR.
 
+`addPart` takes `features` as well, and `annotatePart({ part, features })` says them for a part the
+lab already has. `addPart` and a run's outputs take `ends` too, for a linear piece whose ends are not blunt. An output of a run may carry `features`; they are said for the product if nobody
+has marked that molecule yet.
+
 ## Backing up the key
 
 A device's key never leaves it, with one exception: a lab with one member and one device ends when

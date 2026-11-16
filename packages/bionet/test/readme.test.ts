@@ -8,7 +8,7 @@
 import { Dseqrecord } from "@biolibs/dseqrecord";
 import { gibsonAssembly } from "@biolibs/assembly2";
 import { CloningStrategy, generateSigningKey, keyFingerprint } from "@biolibs/opencloning";
-import { addItem, addPart, addPlace, addToRoster, adjustItem, discover, entryId, fetchInventory, foundLab,
+import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, discover, entryId, fetchInventory, foundLab,
          introducedDifferently, inventoryFrom, labMemory, mergeLog, newItemId, newPlaceId, newRunId, nextEntry, partsNeeded,
          peer, publicInventory, putItem, recordRun, remember, settled, settledLabs, signInventory, verifyInventory,
          type Operation, type SignedEntry,
@@ -185,6 +185,28 @@ describe("README: inside a lab", () => {
     expect(lab.places.map((one) => one.name)).toEqual(["−80", "Box 1"]);
     expect(lab.items[0]!.where).toEqual({ place: box, slot: { row: 2, column: 3 } });
     expect(lab.crowded).toEqual([]);
+  });
+
+  it("keeps what is marked on a part", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+    await write(ada, adasKey, addPart({ sequence: F1, name: "f1" }));
+    const part = (await mergeLog(ada)).parts[0]!.checksum;
+
+    await write(ada, adasKey, annotatePart(part, [{ type: "CDS", label: "demo", strand: 1, parts: [{ start: 5, end: 35 }] }]));
+    expect((await mergeLog(ada)).parts[0]!.features.length).toBe(1);
+  });
+
+  it("keeps a part's sticky ends", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+
+    await write(ada, adasKey, addPart({ sequence: "AATTCGGGGTTTTGGGGCCCCAAAAGGATC", name: "piece", ends: { left: 4, right: 4 } }));
+    expect((await mergeLog(ada)).parts.at(-1)!.ends).toEqual({ left: 4, right: 4 });
   });
 
   it("records what was done at the bench", async () => {

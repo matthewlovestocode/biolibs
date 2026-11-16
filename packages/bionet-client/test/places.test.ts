@@ -173,6 +173,18 @@ describe("a lab that records what was done", () => {
     expect(lab.snapshot().lab!.items.find((one) => one.item === template)!.amount).toBe(18);
 
     await expect(lab.recordRun({ kind: "pcr", inputs: [{ item: "no-such-item", amount: 1, role: "template" }] })).rejects.toThrow(/not an item the lab has/);
+
+    // A piece cut out of something keeps the ends the enzymes left, and what was marked on it.
+    const cut = await lab.recordRun({
+      kind: "digest", inputs: [{ item: template, amount: 1, role: "cut" }],
+      outputs: [{ sequence: F1.slice(0, 30), name: "piece", amount: 20, unit: "µL", ends: { left: 4, right: -2 },
+                  features: [{ type: "CDS", label: "gene", strand: 1, parts: [{ start: 5, end: 20 }] }] }],
+    });
+    const piece = lab.snapshot().lab!.parts.find((part) => part.name === "piece")!;
+    expect(piece).toMatchObject({ ends: { left: 4, right: -2 }, features: [{ label: "gene" }] });
+    expect(lab.snapshot().lab!.items.find((one) => one.item === cut.items[0])!.part).toBe(piece.checksum);
+    await lab.addPart({ name: "sticky", sequence: F1.slice(0, 30), ends: { left: 2, right: 0 }, features: [{ type: "misc_feature", label: "mark", strand: 0, parts: [{ start: 0, end: 4 }] }] });
+    expect(lab.snapshot().lab!.parts.find((part) => part.name === "sticky")).toMatchObject({ ends: { left: 2, right: 0 }, features: [{ label: "mark" }] });
     expect(await perform(lab, "recordRun", { kind: "pcr", inputs: [] })).toMatchObject({ ok: true });
   });
 });

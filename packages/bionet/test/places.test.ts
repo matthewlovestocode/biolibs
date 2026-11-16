@@ -7,8 +7,8 @@
  * neither person did anything wrong; both are shown as needing somebody to look.
  */
 import { generateSigningKey, type SigningKey } from "@biolibs/opencloning";
-import { addItem, addPart, addPlace, addToRoster, foundLab, mergeLog, movePlace, newItemId, newPlaceId, nextEntry,
-         putItem, retirePlace, setField, standPlace, type LabState, type Operation, type SignedEntry } from "@biolibs/bionet";
+import { addItem, addPart, addPlace, addToRoster, annotatePart, foundLab, mergeLog, movePlace, newItemId, newPlaceId, newRunId, nextEntry, recordRun,
+         putItem, retirePlace, setField, standPlace, type LabState, type Operation, type PartFeature, type SignedEntry } from "@biolibs/bionet";
 import { beforeAll, describe, expect, it } from "vitest";
 
 const F1 = "GGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGA";
@@ -182,5 +182,125 @@ describe("where an item is", () => {
     expect([first, second]).toContain(kept);
     expect(lab.items[0]!.where).toEqual(kept === first ? { place: box, slot: { row: 0, column: 0 } } : { place: freezer, slot: null });
     expect((await b.lab()).items[0]!.where).toEqual(lab.items[0]!.where);
+  });
+});
+
+describe("what is marked on a part", () => {
+  const gene: PartFeature = { type: "CDS", label: "lacZ", strand: 1, parts: [{ start: 4, end: 40 }] };
+  const split: PartFeature = { type: "misc_feature", label: "across the origin", strand: -1, parts: [{ start: 44, end: 50 }, { start: 0, end: 6 }] };
+
+  it("is kept with the part, and replaced whole when it is said again", async () => {
+    const { a } = await wren();
+    const part = (await a.lab()).parts[0]!;
+    expect(part.features).toEqual([]);
+    await a.write(annotatePart(part.checksum, [gene, split]));
+    expect((await a.lab()).parts[0]!.features).toEqual([gene, split]);
+    await a.write(annotatePart(part.checksum, [gene]));
+    expect((await a.lab()).parts[0]!.features).toEqual([gene]);
+    await a.write(annotatePart(part.checksum, []));
+    expect((await a.lab()).parts[0]!.features).toEqual([]);
+  });
+
+  it("is refused if it is not features, or lies outside the part", async () => {
+    const { a } = await wren();
+    const part = (await a.lab()).parts[0]!.checksum;       // 50 bases
+    const refused: [unknown, RegExp][] = [
+      [[{ ...gene, parts: [{ start: 4, end: 51 }] }], /lie within the part/],
+      [[{ ...gene, parts: [{ start: 10, end: 10 }] }], /lie within the part/],
+      [[{ ...gene, parts: [] }], /lie within the part/],
+      [[{ ...gene, strand: 2 }], /lie within the part/],
+      [[{ ...gene, label: "" }], /lie within the part/],
+      ["not a list", /lie within the part/],
+    ];
+    for (const [features, why] of refused) {
+      await a.write({ type: "part.annotate", part, features } as Operation);
+      const { status, reason } = await last(a);
+      expect([features, status, reason]).toEqual([features, "refused", expect.stringMatching(why)]);
+      a.held.pop();
+    }
+    await a.write(annotatePart("no-such-part", [gene]));
+    expect(await last(a)).toMatchObject({ status: "refused", reason: expect.stringMatching(/part the lab has/) });
+    a.held.pop();
+    await a.write(setField("part", part, "features", "sneaked in"));
+    expect((await last(a)).status).toBe("refused");
+  });
+
+  it("keeps one answer when two people apart mark the same part, and says so", async () => {
+    const { a, b } = await wren();
+    const part = (await a.lab()).parts[0]!.checksum;
+    await a.write(annotatePart(part, [gene]));
+    await b.write(annotatePart(part, [split]));
+    a.hear(b); b.hear(a);
+    const lab = await a.lab();
+    expect(lab.overlaps.some((one) => one.what.startsWith("what is marked on"))).toBe(true);
+    expect(lab.parts[0]!.features).toEqual((await b.lab()).parts[0]!.features);
+    expect(lab.parts[0]!.features).toHaveLength(1);
+  });
+});
+
+describe("a part with sticky ends", () => {
+  const BASES = "AATTCGGGGTTTTGGGGCCCCAAAAGGATC";
+  const FLIPPED = "GATCCTTTTGGGGCCCCAAAACCCCGAATT";
+
+  it("is a different part from the same bases with blunt ends, and keeps its ends", async () => {
+    const { a } = await wren();
+    await a.write(addPart({ sequence: BASES, name: "blunt" }));
+    await a.write(addPart({ sequence: BASES, name: "cut", ends: { left: 4, right: 4 } }));
+    const [blunt, cut] = (await a.lab()).parts.slice(-2);
+    expect(blunt!.ends).toEqual({ left: 0, right: 0 });
+    expect(cut!.ends).toEqual({ left: 4, right: 4 });
+    expect(cut!.checksum).not.toBe(blunt!.checksum);
+    expect(cut!.length).toBe(BASES.length);
+  });
+
+  it("is the same part whichever strand it was written from", async () => {
+    const { a } = await wren();
+    await a.write(addPart({ sequence: BASES, name: "one way", ends: { left: 4, right: -2 } }));
+    const before = (await a.lab()).parts.length;
+    // Turned over, the left end is the right end, and a 5′ overhang is still a 5′ overhang.
+    await a.write(addPart({ sequence: FLIPPED, name: "the other way", ends: { left: -2, right: 4 } }));
+    expect((await a.lab()).parts.length).toBe(before);
+  });
+
+  it("says nothing of ends that are blunt, so the entry and the checksum are what they always were", async () => {
+    const { a } = await wren();
+    expect(addPart({ sequence: BASES, name: "p", ends: { left: 0, right: 0 } })).toEqual(addPart({ sequence: BASES, name: "p" }));
+    await a.write(addPart({ sequence: BASES, name: "p" }));
+    const plain = (await a.lab()).parts.at(-1)!.checksum;
+    await a.write({ type: "part.add", sequence: BASES, circular: false, name: "again", ends: { left: 0, right: 0 } } as Operation);
+    expect((await a.lab()).parts.at(-1)!.checksum).toBe(plain);
+  });
+
+  it("is refused on a circle, when the ends are longer than the molecule, or when they are not numbers", async () => {
+    const { a } = await wren();
+    for (const op of [
+      { type: "part.add", sequence: BASES, circular: true, name: "p", ends: { left: 4, right: 4 } },
+      { type: "part.add", sequence: BASES, circular: false, name: "p", ends: { left: 20, right: 10 } },
+      { type: "part.add", sequence: BASES, circular: false, name: "p", ends: { left: "4", right: 0 } },
+      { type: "part.add", sequence: BASES, circular: false, name: "p", ends: "sticky" },
+    ]) {
+      await a.write(op as Operation);
+      expect(await last(a)).toMatchObject({ status: "refused", reason: expect.stringMatching(/ends a molecule of that length can have/) });
+      a.held.pop();
+    }
+  });
+
+  it("comes out of a run with its ends, and a run whose ends make no sense is refused whole", async () => {
+    const { a } = await wren();
+    const lab = await a.lab();
+    const tube = newItemId();
+    await a.write(addItem({ item: tube, part: lab.parts[0]!.checksum, amount: 10, unit: "µL" }));
+    const out = { item: newItemId(), sequence: BASES, circular: false, name: "piece", amount: 20, unit: "µL" };
+    await a.write(recordRun({ run: newRunId(), kind: "digest", instrument: null, inputs: [{ item: tube, amount: 1, role: "cut" }],
+                              outputs: [{ ...out, ends: { left: 4, right: 4 } }], settings: {}, outcome: "worked", note: null }));
+    const after = await a.lab();
+    expect(after.parts.at(-1)).toMatchObject({ name: "piece", ends: { left: 4, right: 4 } });
+    expect(after.items.find((one) => one.item === tube)!.amount).toBe(9);
+
+    await a.write(recordRun({ run: newRunId(), kind: "digest", instrument: null, inputs: [{ item: tube, amount: 1, role: "cut" }],
+                              outputs: [{ ...out, item: newItemId(), ends: { left: 40, right: 4 } }], settings: {}, outcome: "worked", note: null }));
+    expect(await last(a)).toMatchObject({ status: "refused", reason: expect.stringMatching(/ends a molecule of that length can have/) });
+    a.held.pop();
+    expect((await a.lab()).items.find((one) => one.item === tube)!.amount).toBe(9);
   });
 });

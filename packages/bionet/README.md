@@ -294,6 +294,36 @@ anything wrong. If each moves a place into the other, both come out `adrift`: in
 somebody moves one. If each stands a tube in the same position, it is listed in `crowded` until
 somebody goes and looks.
 
+### What is marked on a part
+
+```ts
+import { annotatePart } from "@biolibs/bionet";
+
+await write(ada, adasKey, annotatePart(part, [{ type: "CDS", label: "demo", strand: 1, parts: [{ start: 5, end: 35 }] }]));
+(await mergeLog(ada)).parts[0]!.features.length;    // 1
+```
+
+A part can carry features: a type, a label, a strand, and one or more stretches of the sequence,
+which is what a GenBank or SnapGene file marks. They are said whole, like any field: the later
+saying wins, and two said apart are an overlap with the lower entry ID kept. Features that run past
+the end of the part are refused.
+
+### A part with sticky ends
+
+```ts
+import { addPart } from "@biolibs/bionet";
+
+await write(ada, adasKey, addPart({ sequence: "AATTCGGGGTTTTGGGGCCCCAAAAGGATC", name: "piece", ends: { left: 4, right: 4 } }));
+(await mergeLog(ada)).parts.at(-1)!.ends;    // { left: 4, right: 4 }
+```
+
+A piece cut out by a restriction enzyme has a few unpaired bases at each end, and they decide what it
+can be joined to. A linear part may say so: its sequence is every base either strand has, read along
+the top strand, and `ends` says how many at each end are on one strand only. Positive is a 5′
+overhang, negative a 3′ one, 0 blunt. The checksum takes the ends in, so the same bases with
+different ends are different parts, and a piece is the same part whichever strand it was written
+from. A part with blunt ends is recorded and named exactly as it always was.
+
 ### What was done at the bench
 
 A run is one change that does three things: takes what was used from each tube that went in, adds

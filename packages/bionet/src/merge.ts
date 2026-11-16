@@ -24,9 +24,10 @@
  * It refuses quietly. An entry that is not allowed is still placed, with its status and the reason,
  * because the people in the lab need to see what was turned away and why.
  */
+import { Dseq } from "@biolibs/dseq";
 import { Dseqrecord } from "@biolibs/dseqrecord";
 import type { SignOptions, SigningKey } from "@biolibs/opencloning";
-import { entryId, readEntry, verifyEntry, writeEntry, type Operation, type Role, type RunInput, type StandingMm,
+import { entryId, readEntry, verifyEntry, writeEntry, type Operation, type PartEnds, type PartFeature, type Role, type RunInput, type StandingMm,
          type SignedEntry } from "./log.js";
 import { INVENTORY_VERSION, type InventoryDocument, type InventoryPart, type LabModel,
          type PeerModel } from "./model.js";
@@ -64,6 +65,10 @@ export interface PartState {
   name: string;
   /** Whether it is on offer to other labs. Nothing is until somebody says so. */
   offered: boolean;
+  /** What is marked on its sequence: genes, promoters, origins. None until somebody says. */
+  features: PartFeature[];
+  /** How many bases at each end are on one strand only: positive for a 5′ overhang, negative for a 3′ one, 0 for blunt. */
+  ends: PartEnds;
   /** Anything else set on it. */
   fields: Record<string, string | number | null>;
   /** The entry that added it. */
@@ -232,7 +237,7 @@ interface Node {
 const KEY = /^[A-Za-z0-9_-]{43}$/;
 const ITEM_ID = /^[A-Za-z0-9_-]{1,80}$/;
 const FIELD = /^[a-z][a-z0-9_]{0,59}$/;
-const RESERVED = new Set(["amount", "part", "item", "checksum", "sequence", "circular", "length", "offered", "retired"]);
+const RESERVED = new Set(["amount", "part", "item", "checksum", "sequence", "circular", "length", "offered", "retired", "features", "ends"]);
 
 const text = (value: unknown, most: number): value is string =>
   typeof value === "string" && value.length > 0 && value.length <= most;
@@ -261,6 +266,43 @@ const isStanding = (value: unknown): value is StandingMm => {
   return typeof standing === "object" && standing !== null && three(standing.at, -FARTHEST) && three(standing.size, 1)
     && [0, 90, 180, 270].includes(standing.turn as number);
 };
+
+/** The most features a part may carry, and the most pieces one feature may be in. */
+const MOST_FEATURES = 2_000;
+const MOST_PIECES = 100;
+
+/**
+ * The molecule a part or a run's output describes, with its checksum.
+ *
+ * Ends are part of what a molecule is: the same bases with different ends join to different things,
+ * so they give a different checksum. Blunt ends give the checksum the bases alone always gave.
+ *
+ * @param sequence - Every base either strand has, read along the top strand.
+ * @param circular - Whether it is a circle.
+ * @param ends - What `ends` the entry carried, if any.
+ * @returns The molecule's length, checksum and ends.
+ * @throws If that is not a sequence, or the ends are not ones a linear molecule of that length can have.
+ */
+function moleculeOf(sequence: string, circular: boolean, ends: unknown): { length: number; checksum: string; ends: PartEnds } {
+  const blunt = { left: 0, right: 0 };
+  if (ends === undefined) { const record = new Dseqrecord(sequence, circular); return { length: record.length, checksum: record.seguid(), ends: blunt }; }
+  const given = ends as Partial<PartEnds> | null;
+  if (typeof given !== "object" || given === null || !amountOf(given.left) || !amountOf(given.right)) throw new Error("ends");
+  if (given.left === 0 && given.right === 0) return moleculeOf(sequence, circular, undefined);
+  // A circle has no ends, and two overhangs cannot between them be longer than the molecule.
+  if (circular || Math.abs(given.left) + Math.abs(given.right) >= sequence.length) throw new Error("ends");
+  const record = new Dseqrecord(Dseq.fromFullSequenceAndOverhangs(sequence, -given.left, -given.right));
+  return { length: sequence.length, checksum: record.seguid(), ends: { left: given.left, right: given.right } };
+}
+
+/** Whether something is a list of features that lie within a part of a given length. */
+function areFeatures(value: unknown, length: number): value is PartFeature[] {
+  if (!Array.isArray(value) || value.length > MOST_FEATURES) return false;
+  return value.every((one: Partial<PartFeature> | null) => typeof one === "object" && one !== null && text(one.type, 40) && text(one.label, 200)
+    && (one.strand === -1 || one.strand === 0 || one.strand === 1) && Array.isArray(one.parts) && one.parts.length >= 1 && one.parts.length <= MOST_PIECES
+    && one.parts.every((piece: { start?: unknown; end?: unknown } | null) => typeof piece === "object" && piece !== null && amountOf(piece.start) && amountOf(piece.end)
+      && piece.start >= 0 && piece.end > piece.start && piece.end <= length));
+}
 
 /** The most items that may go into one run or come out of it, and the most settings it may carry. */
 const MOST_IN_A_RUN = 50;
@@ -595,19 +637,18 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       }
       // Both the molecule and its checksum are worked out inside the guard: an entry from another
       // machine must never be able to stop the merge, only to be refused by it.
-      let record: Dseqrecord;
-      let checksum: string;
+      let molecule: ReturnType<typeof moleculeOf>;
       try {
-        record = new Dseqrecord(op["sequence"], op["circular"]);
-        checksum = record.seguid();
+        molecule = moleculeOf(op["sequence"], op["circular"], op["ends"]);
       } catch {
-        refuse("What it carries is not a sequence.");
+        refuse("What it carries is not a sequence, with ends a molecule of that length can have.");
         continue;
       }
+      const checksum = molecule.checksum;
       if (!parts.has(checksum)) {
         parts.set(checksum, {
-          part: { checksum, sequence: op["sequence"], circular: op["circular"], length: record.length,
-                  name: op["name"], offered: false, fields: {}, added: node.id },
+          part: { checksum, sequence: op["sequence"], circular: op["circular"], length: molecule.length,
+                  name: op["name"], offered: false, features: [], ends: molecule.ends, fields: {}, added: node.id },
           set: new Map([["name", { node, value: op["name"] }]]),
         });
       }
@@ -615,6 +656,11 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       const held = typeof op["part"] === "string" ? parts.get(op["part"]) : undefined;
       if (held === undefined || typeof op["available"] !== "boolean") { refuse("It does not name a part the lab has, and whether to offer it."); continue; }
       write(held.set, "offered", node, op["available"], `whether ${held.part.name} is on offer`);
+    } else if (op.type === "part.annotate") {
+      const held = typeof op["part"] === "string" ? parts.get(op["part"]) : undefined;
+      if (held === undefined) { refuse("It does not name a part the lab has."); continue; }
+      if (!areFeatures(op["features"], held.part.length)) { refuse("What it marks is not a list of features that lie within the part."); continue; }
+      write(held.set, "features", node, op["features"], `what is marked on ${held.part.name}`);
     } else if (op.type === "item.add") {
       if (!(typeof op["item"] === "string" && ITEM_ID.test(op["item"])) || !amountOf(op["amount"]) || op["amount"] < 0
           || !(op["unit"] === null || text(op["unit"], 20))) {
@@ -704,23 +750,23 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       const problem = runProblem(op, items, places, new Set(state.runs.map((run) => run.run)));
       if (problem !== null) { refuse(problem); continue; }
       const inputs = op["inputs"] as RunInput[];
-      const outputs = op["outputs"] as { item: string; sequence: string; circular: boolean; name: string; amount: number; unit: string | null }[];
+      const outputs = op["outputs"] as { item: string; sequence: string; circular: boolean; name: string; amount: number; unit: string | null; ends?: unknown }[];
       // What comes out is worked out before anything is changed, so that a run is recorded whole or not at all.
-      const made: { output: (typeof outputs)[number]; record: Dseqrecord; checksum: string }[] = [];
+      const made: { output: (typeof outputs)[number]; record: { length: number }; checksum: string; ends: PartEnds }[] = [];
       try {
         for (const output of outputs) {
-          const record = new Dseqrecord(output.sequence, output.circular);
-          made.push({ output, record, checksum: record.seguid() });
+          const molecule = moleculeOf(output.sequence, output.circular, output.ends);
+          made.push({ output, record: molecule, checksum: molecule.checksum, ends: molecule.ends });
         }
       } catch {
-        refuse("Something it says came out is not a sequence.");
+        refuse("Something it says came out is not a sequence, with ends a molecule of that length can have.");
         continue;
       }
       for (const input of inputs) if (input.amount > 0) items.get(input.item)!.adjusted.push({ node, by: -input.amount });
-      for (const { output, record, checksum } of made) {
+      for (const { output, record, checksum, ends } of made) {
         if (!parts.has(checksum)) {
           parts.set(checksum, {
-            part: { checksum, sequence: output.sequence, circular: output.circular, length: record.length, name: output.name, offered: false, fields: {}, added: node.id },
+            part: { checksum, sequence: output.sequence, circular: output.circular, length: record.length, name: output.name, offered: false, features: [], ends, fields: {}, added: node.id },
             set: new Map([["name", { node, value: output.name }]]),
           });
         }
@@ -760,6 +806,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
     for (const [field, held] of set) {
       if (field === "name") part.name = held.value as string;
       else if (field === "offered") part.offered = held.value as boolean;
+      else if (field === "features") part.features = (held.value as PartFeature[]).map((one) => ({ type: one.type, label: one.label, strand: one.strand, parts: one.parts.map((piece) => ({ start: piece.start, end: piece.end })) }));
       else part.fields[field] = held.value as string | number | null;
     }
     state.parts.push(part);

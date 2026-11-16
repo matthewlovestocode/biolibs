@@ -10,6 +10,20 @@ import { PutItem } from "./places.js";
 const whole = (data: FormData, name: string): number => Number(String(data.get(name) ?? "").trim());
 
 /**
+ * A part's ends, in words, if they are not blunt.
+ *
+ * @param part - Its sequence and its ends.
+ * @returns Something like `5′ AATT … 5′ GATC`, each end's unpaired bases as the top strand has them
+ *   and `blunt` for an end with none, or `null` for a part whose ends are both blunt.
+ */
+export function endsWords(part: { sequence: string; ends?: { left: number; right: number } }): string | null {
+  const ends = part.ends;
+  if (ends === undefined || (ends.left === 0 && ends.right === 0)) return null;
+  const one = (many: number, bases: string): string => (many === 0 ? "blunt" : `${many > 0 ? "5′" : "3′"} ${bases.toUpperCase()}`);
+  return `${one(ends.left, part.sequence.slice(0, Math.abs(ends.left)))} … ${one(ends.right, ends.right === 0 ? "" : part.sequence.slice(-Math.abs(ends.right)))}`;
+}
+
+/**
  * How much of an item there is, with its unit.
  *
  * @param item - The item.
@@ -68,7 +82,7 @@ export function PartCard({ part, items }: { part: PartState; items: ItemState[] 
       <div className="parthead">
         <div>
           <h2>{part.name}</h2>
-          <p className="dim small">{part.length} bp{part.circular ? " · circular" : ""} · <code>{part.checksum.slice(0, 26)}…</code></p>
+          <p className="dim small">{part.length} bp{part.circular ? " · circular" : ""}{endsWords(part) === null ? "" : ` · ends ${endsWords(part)}`} · <code>{part.checksum.slice(0, 26)}…</code></p>
         </div>
         <label className="check" title="Whether other labs are told this part can be asked for">
           <input type="checkbox" checked={part.offered} onChange={(event) => void act("offer", { part: part.checksum, available: event.target.checked })} />

@@ -287,9 +287,44 @@ export const removeFromRoster = (key: string, cutoff: number): Operation =>
 /** @returns The change that makes a key a keeper, or an ordinary member again. */
 export const setRole = (key: string, role: Role): Operation => ({ type: "roster.role", key, role });
 
-/** @returns The change that adds a part, by its sequence. Its checksum is computed when applied. */
-export const addPart = (part: { sequence: string; circular?: boolean; name: string }): Operation =>
-  ({ type: "part.add", sequence: part.sequence, circular: part.circular === true, name: part.name });
+/**
+ * What a linear part's two ends are like, when they are not blunt.
+ *
+ * A piece cut out by a restriction enzyme usually has a few unpaired bases at each end, and those
+ * decide what it can be joined to. The part's sequence is every base either strand has, read along
+ * the top strand; each number here says how many of them at that end are on one strand only. A
+ * positive number is a 5′ overhang, a negative one a 3′ overhang, and 0 is blunt.
+ */
+export interface PartEnds {
+  /** The left-hand end. */
+  left: number;
+  /** The right-hand end. */
+  right: number;
+}
+
+/**
+ * @param part - Its sequence, its name, whether it is a circle, and its ends if they are not blunt.
+ * @returns The change that adds a part, by its sequence. Its checksum is computed when applied, and
+ *   takes the ends in: the same bases with different ends are a different molecule.
+ */
+export const addPart = (part: { sequence: string; circular?: boolean; name: string; ends?: PartEnds }): Operation =>
+  ({ type: "part.add", sequence: part.sequence, circular: part.circular === true, name: part.name,
+     ...(part.ends === undefined || (part.ends.left === 0 && part.ends.right === 0) ? {} : { ends: { left: part.ends.left, right: part.ends.right } }) });
+
+/** Something marked on a part's sequence: a gene, a promoter, an origin, a primer's binding site. */
+export interface PartFeature {
+  /** What kind of thing it is, as sequence files say it: `CDS`, `promoter`, `rep_origin`. */
+  type: string;
+  /** What it is called. */
+  label: string;
+  /** Which strand it is on: 1 for the one written, -1 for the other, 0 for neither or both. */
+  strand: -1 | 0 | 1;
+  /** Where it is: one stretch, or several for something in pieces. Each counts bases from 0 and stops before `end`. */
+  parts: { start: number; end: number }[];
+}
+
+/** @returns The change that says what is marked on a part's sequence, in place of whatever was marked before. */
+export const annotatePart = (part: string, features: PartFeature[]): Operation => ({ type: "part.annotate", part, features });
 
 /** @returns The change that says whether a part is on offer to other labs. */
 export const offerPart = (part: string, available: boolean): Operation => ({ type: "part.offer", part, available });
@@ -359,6 +394,8 @@ export interface RunOutput {
   sequence: string;
   /** Whether that is a circle. */
   circular: boolean;
+  /** Its ends, if it is linear and they are not blunt. */
+  ends?: PartEnds;
   /** What to call the part, if the lab does not have it already. */
   name: string;
   /** How much there is. A whole number of `unit`. */

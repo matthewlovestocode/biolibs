@@ -10,11 +10,11 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { addItem, addPart, addPlace, addToRoster, adjustItem, entryId, fetchInventory, foundLab, isMember, mergeLog,
+import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, entryId, fetchInventory, foundLab, isMember, mergeLog,
          movePlace, newItemId, newPlaceId, newRunId, nextEntry, offerPart, publicInventory, putItem, recordRun, recountItem, retireItem, retirePlace,
          setField, signInventory, standPlace,
          takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type PartState, type PlaceState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry } from "@biolibs/bionet";
+         type PartEnds, type PartFeature, type PartState, type PlaceState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
 import { openKey, sealKey } from "./backup.js";
@@ -406,16 +406,25 @@ export class Lab {
     return this.write(addToRoster(who.key.trim(), who.person.trim(), who.role ?? "member"));
   }
 
-  /** Add a part, by its sequence. */
-  async addPart(part: { name: string; sequence: string; circular?: boolean }): Promise<void> {
+  /** Add a part, by its sequence, with whatever is marked on it. */
+  async addPart(part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[]; ends?: PartEnds }): Promise<void> {
     const bases = part.sequence.replace(/\s+/g, "");
     // The library underneath accepts any letters as a sequence. A freezer should not: a part named
     // by a checksum of the wrong letters is a part nobody else will ever match.
     if (!/^[ACGTURYSWKMBDHVN]+$/i.test(bases)) {
       throw new Error("A sequence is written in the letters for bases: A, C, G, T, and the codes for an uncertain base.");
     }
-    return this.write(addPart({ name: part.name.trim(), sequence: bases, circular: part.circular === true }));
+    await this.write(addPart({ name: part.name.trim(), sequence: bases, circular: part.circular === true, ...(part.ends === undefined ? {} : { ends: part.ends }) }));
+    if (part.features === undefined || part.features.length === 0) return;
+    // A part is known by its sequence, so the one just added is the one with these bases. Somebody
+    // else may have added it first under another name; what is marked on it is said either way.
+    const added = this.state?.parts.find((one) => one.sequence.toUpperCase() === bases.toUpperCase() && one.circular === (part.circular === true)
+      && one.ends.left === (part.ends?.left ?? 0) && one.ends.right === (part.ends?.right ?? 0));
+    if (added !== undefined) await this.write(annotatePart(added.checksum, part.features));
   }
+
+  /** Say what is marked on a part's sequence, in place of whatever was marked before. */
+  annotatePart(marks: { part: string; features: PartFeature[] }): Promise<void> { return this.write(annotatePart(marks.part, marks.features)); }
 
   /** Add one physical item of a part. @returns The new item's ID. */
   async addItem(item: { part: string; amount: number; unit?: string | null }): Promise<string> {
@@ -485,19 +494,26 @@ export class Lab {
    */
   async recordRun(run: {
     kind: string; instrument?: string | null; inputs: RunInput[];
-    outputs?: { sequence: string; circular?: boolean; name: string; amount: number; unit?: string | null }[];
+    outputs?: { sequence: string; circular?: boolean; name: string; amount: number; unit?: string | null; features?: PartFeature[]; ends?: PartEnds }[];
     settings?: Record<string, string | number>; outcome?: "worked" | "failed"; note?: string | null;
   }): Promise<{ run: string; items: string[] }> {
     const id = newRunId();
     const outputs = (run.outputs ?? []).map((output) => ({
       item: newItemId(), sequence: output.sequence.replace(/\s+/g, ""), circular: output.circular === true, name: output.name.trim(),
       amount: output.amount, unit: output.unit === "" ? null : output.unit ?? null,
+      ...(output.ends === undefined || (output.ends.left === 0 && output.ends.right === 0) ? {} : { ends: output.ends }),
     }));
     const note = run.note === undefined || run.note === null || run.note.trim() === "" ? null : run.note.trim();
     await this.write(recordRun({
       run: id, kind: run.kind, instrument: run.instrument ?? null, inputs: run.inputs, outputs, settings: run.settings ?? {},
       outcome: run.outcome ?? (outputs.length > 0 ? "worked" : "failed"), note,
     }));
+    // What is marked on what came out is said after the run, since the run is what makes the part.
+    for (const [at, output] of (run.outputs ?? []).entries()) {
+      const part = this.state?.items.find((one) => one.item === outputs[at]!.item)?.part;
+      const held = this.state?.parts.find((one) => one.checksum === part);
+      if (output.features !== undefined && output.features.length > 0 && held !== undefined && held.features.length === 0) await this.write(annotatePart(held.checksum, output.features));
+    }
     return { run: id, items: outputs.map((output) => output.item) };
   }
 

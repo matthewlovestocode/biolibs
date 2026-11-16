@@ -8,7 +8,7 @@
 import { readFileSync } from "node:fs";
 import { Lab, memoryKeys, memoryStore, sourceOf, type LabSnapshot, type LabSource, type PeerView } from "@biolibs/bionet-client";
 import { BackUpKey, BackUpLab, Freezer, History, LabWindow, People, Places, RestoreKey, RestoreLab, Sharing, SyncStatus, TABS, amountOf, describeEntry,
-         listedParts, madeFrom, placePath, placeTree, syncWords, whereWords } from "@biolibs/bionet-panels";
+         endsWords, listedParts, madeFrom, placePath, placeTree, syncWords, whereWords } from "@biolibs/bionet-panels";
 import { LabProvider } from "@biolibs/bionet-react";
 import { cssVariable, MEANINGS } from "@biolibs/bionet-theme";
 import { createElement as h, type ReactElement } from "react";
@@ -373,5 +373,15 @@ describe("a lab's public page", () => {
     expect(silent).toContain("We point at <code>https://gone.example</code> and it did not answer.");
     expect(silent).toContain("The reason given was: it timed out.");
     expect(silent).toContain("is not a lab that is lying");
+  });
+});
+
+describe("a part's ends, in words", () => {
+  it("names each end's unpaired bases, and says nothing of a part with none", () => {
+    expect(endsWords({ sequence: "AATTCGGGGGGATC", ends: { left: 4, right: 4 } })).toBe("5′ AATT … 5′ GATC");
+    expect(endsWords({ sequence: "aattcgggggtac", ends: { left: 4, right: -3 } })).toBe("5′ AATT … 3′ TAC");
+    expect(endsWords({ sequence: "AATTCGGGGGGATC", ends: { left: 0, right: -4 } })).toBe("blunt … 3′ GATC");
+    expect(endsWords({ sequence: "AATTC", ends: { left: 0, right: 0 } })).toBeNull();
+    expect(endsWords({ sequence: "AATTC" })).toBeNull();
   });
 });

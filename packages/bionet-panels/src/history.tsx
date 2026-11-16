@@ -30,6 +30,7 @@ export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "
     case "roster.remove": return `removed ${who(op["key"])}`;
     case "roster.role": return `made ${who(op["key"])} a ${String(op["role"])}`;
     case "part.add": return `added the part ${String(op["name"])}`;
+    case "part.annotate": return `marked ${Array.isArray(op["features"]) ? op["features"].length : 0} features on ${part(op["part"])}`;
     case "part.offer": return op["available"] === true ? `put ${part(op["part"])} on offer` : `took ${part(op["part"])} off offer`;
     case "item.add": return tidy(`added ${tube(op["item"])}, ${String(op["amount"])} ${String(op["unit"] ?? "")}`);
     case "item.adjust": return tidy(`${Number(op["by"]) < 0 ? "used" : "added"} ${Math.abs(Number(op["by"]))} ${unit(op["item"])} ${Number(op["by"]) < 0 ? "of" : "to"} ${tube(op["item"])}`);
