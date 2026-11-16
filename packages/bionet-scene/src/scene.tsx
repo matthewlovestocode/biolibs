@@ -1,0 +1,337 @@
+"use client";
+
+/**
+ * The scene: a list of things to draw, drawn.
+ *
+ * Everything worth deciding was decided in `view.ts`. This turns each place into the edges of a
+ * box, each tube into a cylinder and each empty position into a ring, in the colours the theme
+ * gives for what they mean, and moves the camera to where the view says to stand.
+ *
+ * In the dark theme the edges are drawn brighter than white and a bloom pass makes them glow. In
+ * the light theme the same edges are drawn plainly on a pale ground: a glow needs something dark to
+ * glow against.
+ */
+import { Line, OrbitControls } from "@react-three/drei";
+import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
+import { BoxGeometry, Color, CylinderGeometry, EdgesGeometry, Object3D, QuadraticBezierCurve3, RingGeometry, Vector3,
+         type InstancedMesh, type Mesh } from "three";
+import { colour, type Meaning, type Theme } from "@biolibs/bionet-theme";
+import type { DrawnPlace, DrawnSlot, DrawnTube, Focus, SceneView } from "./view.js";
+
+/** Another lab, drawn beside this one. */
+export interface Neighbour {
+  /** Something to tell it apart by, such as its address. */
+  id: string;
+  /** What it is called. */
+  name: string;
+  /** A line about it, such as how many parts it offers. */
+  note?: string;
+}
+
+const BOX = new BoxGeometry(1, 1, 1);
+const EDGES = new EdgesGeometry(BOX);
+const TUBE = new CylinderGeometry(1, 1, 1, 24);
+const RING = new RingGeometry(0.62, 1, 28).rotateX(-Math.PI / 2);
+
+/**
+ * The colour and opacity to draw something in.
+ *
+ * @param tone - What its colour means.
+ * @param theme - Which theme is showing.
+ * @param strength - How strongly to draw it, from 0 to 1.
+ * @returns In the dark theme a colour that may be brighter than white, which is what the bloom
+ *   picks up; in the light theme the plain colour, made fainter by opacity.
+ */
+export function paint(tone: Meaning, theme: Theme, strength: number): { color: Color; opacity: number } {
+  const color = new Color(colour(tone, theme));
+  return theme === "dark" ? { color: color.multiplyScalar(0.3 + strength * 2.3), opacity: 1 }
+                          : { color, opacity: 0.22 + 0.78 * strength };
+}
+
+/**
+ * Which theme the system is asking for.
+ *
+ * @returns `dark` or `light`, and again whenever the system changes its mind.
+ */
+export function useSystemTheme(): Theme {
+  const [theme, setTheme] = useState<Theme>("dark");
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-color-scheme: dark)");
+    const read = (): void => setTheme(query.matches ? "dark" : "light");
+    read();
+    query.addEventListener("change", read);
+    return () => query.removeEventListener("change", read);
+  }, []);
+  return theme;
+}
+
+/** How big another lab is drawn, in metres. */
+const NEIGHBOUR_SIZE: [number, number, number] = [1.8, 1.5, 1.8];
+
+/** Something written over the scene, at a point in it. */
+interface Label {
+  /** What tells it apart from the others. */
+  key: string;
+  /** The point it is written at. */
+  at: [number, number, number];
+  /** What is written. */
+  content: ReactNode;
+}
+
+/**
+ * Keeps each label over its point as the camera moves.
+ *
+ * The labels are ordinary elements beside the canvas, drawn by the same React as everything else.
+ * This only moves them: once a frame it works out where each point falls on screen.
+ */
+function Follow({ labels, layer }: { labels: readonly Label[]; layer: RefObject<HTMLDivElement | null> }) {
+  const point = useMemo(() => new Vector3(), []);
+  useFrame(({ camera, size }) => {
+    const elements = layer.current?.children;
+    if (elements === undefined) return;
+    labels.forEach((label, index) => {
+      const element = elements[index] as HTMLElement | undefined;
+      if (element === undefined) return;
+      point.set(...label.at).project(camera);
+      // Past the far side of the camera a point still projects onto the screen, mirrored.
+      const behind = point.z > 1 || point.z < -1;
+      element.style.visibility = behind ? "hidden" : "visible";
+      element.style.transform = `translate(${((point.x + 1) / 2) * size.width}px, ${((1 - point.y) / 2) * size.height}px) translate(-50%, -50%)`;
+    });
+  });
+  return null;
+}
+
+/** A click that was really the end of a drag is not a click. */
+const dragged = (event: ThreeEvent<MouseEvent>): boolean => event.delta > 4;
+
+/**
+ * Whether a press on this was meant for it.
+ *
+ * A freezer stands inside a room, so a press on the freezer passes through the room's wall first.
+ * The press belongs to the smallest thing under the pointer, not the nearest.
+ */
+const meantFor = (event: ThreeEvent<MouseEvent>, volume: number): boolean =>
+  !dragged(event) && event.intersections.every((hit) => {
+    const other = (hit.object.userData as { volume?: number }).volume;
+    return other === undefined || other >= volume;
+  });
+
+function PlaceBox({ place, theme, onPick }: { place: DrawnPlace; theme: Theme; onPick: (id: string) => void }) {
+  const edge = paint(place.tone, theme, place.strength);
+  const face = colour(place.tone, theme);
+  const volume = place.size[0] * place.size[1] * place.size[2];
+  return (
+    <group position={place.center}>
+      <lineSegments scale={place.size} geometry={EDGES}>
+        <lineBasicMaterial color={edge.color} transparent opacity={edge.opacity} toneMapped={false} />
+      </lineSegments>
+      {(place.focusable || place.fill > 0) && (
+        <mesh scale={place.size} geometry={BOX} userData={place.focusable ? { volume } : {}}
+              onClick={place.focusable ? (event) => { if (meantFor(event, volume)) onPick(place.id); } : undefined}
+              onPointerOver={place.focusable ? (event) => { event.stopPropagation(); document.body.style.cursor = "pointer"; } : undefined}
+              onPointerOut={place.focusable ? () => { document.body.style.cursor = ""; } : undefined}>
+          <meshBasicMaterial color={face} transparent opacity={theme === "dark" ? place.fill : place.fill * 1.6} depthWrite={false} toneMapped={false} />
+        </mesh>
+      )}
+    </group>
+  );
+}
+
+/**
+ * The tubes of a box: a quiet body with a bright rim.
+ *
+ * A box of solid glowing cylinders reads as one bright slab. Only the rims glow, so each tube stays
+ * its own.
+ */
+function Tubes({ tubes, theme, onPick }: { tubes: DrawnTube[]; theme: Theme; onPick: (tube: DrawnTube) => void }) {
+  const bodies = useRef<InstancedMesh>(null);
+  const rims = useRef<InstancedMesh>(null);
+  useLayoutEffect(() => {
+    const body = bodies.current;
+    const rim = rims.current;
+    if (body === null || rim === null) return;
+    const at = new Object3D();
+    tubes.forEach((tube, index) => {
+      const tone = tube.selected ? "ink" : tube.tone;
+      at.position.set(...tube.center);
+      at.scale.set(tube.radius, tube.height, tube.radius);
+      at.updateMatrix();
+      body.setMatrixAt(index, at.matrix);
+      body.setColorAt(index, theme === "dark" ? new Color(colour(tone, theme)).multiplyScalar(tube.selected ? 0.8 : 0.34) : new Color(colour(tone, theme)));
+      at.position.set(tube.center[0], tube.center[1] + tube.height / 2 + 0.0004, tube.center[2]);
+      at.scale.set(tube.radius, 1, tube.radius);
+      at.updateMatrix();
+      rim.setMatrixAt(index, at.matrix);
+      rim.setColorAt(index, theme === "dark" ? paint(tone, theme, tube.selected ? 1 : 0.6).color : new Color(colour("surface", theme)));
+    });
+    for (const mesh of [body, rim]) {
+      mesh.instanceMatrix.needsUpdate = true;
+      if (mesh.instanceColor !== null) mesh.instanceColor.needsUpdate = true;
+      mesh.computeBoundingSphere();
+    }
+  }, [tubes, theme]);
+  if (tubes.length === 0) return null;
+  return (
+    <>
+      <instancedMesh ref={bodies} key={`body-${tubes.length}`} args={[TUBE, undefined, tubes.length]} userData={{ volume: 0 }}
+                     onClick={(event) => { if (dragged(event) || event.instanceId === undefined) return; event.stopPropagation(); onPick(tubes[event.instanceId]!); }}
+                     onPointerOver={() => { document.body.style.cursor = "pointer"; }} onPointerOut={() => { document.body.style.cursor = ""; }}>
+        <meshBasicMaterial toneMapped={false} />
+      </instancedMesh>
+      <instancedMesh ref={rims} key={`rim-${tubes.length}`} args={[RING, undefined, tubes.length]}>
+        <meshBasicMaterial toneMapped={false} />
+      </instancedMesh>
+    </>
+  );
+}
+
+function EmptySlots({ slots, theme }: { slots: DrawnSlot[]; theme: Theme }) {
+  const mesh = useRef<InstancedMesh>(null);
+  useLayoutEffect(() => {
+    const instanced = mesh.current;
+    if (instanced === null) return;
+    const at = new Object3D();
+    slots.forEach((slot, index) => {
+      at.position.set(slot.center[0], slot.center[1] + 0.0005, slot.center[2]);
+      at.scale.set(slot.radius, 1, slot.radius);
+      at.updateMatrix();
+      instanced.setMatrixAt(index, at.matrix);
+    });
+    instanced.instanceMatrix.needsUpdate = true;
+    instanced.computeBoundingSphere();
+  }, [slots]);
+  if (slots.length === 0) return null;
+  const ring = paint("dim", theme, 0.35);
+  return (
+    <instancedMesh ref={mesh} key={slots.length} args={[RING, undefined, slots.length]}>
+      <meshBasicMaterial color={ring.color} transparent opacity={theme === "dark" ? 0.7 : 0.5} toneMapped={false} />
+    </instancedMesh>
+  );
+}
+
+/** Another lab: a quiet outline beside this one, and a line to it that something travels along. */
+function NeighbourLab({ neighbour, from, to, theme, onPick }: {
+  neighbour: Neighbour; from: [number, number, number]; to: [number, number, number]; theme: Theme; onPick?: (id: string) => void;
+}) {
+  const pulse = useRef<Mesh>(null);
+  const curve = useMemo(() => new QuadraticBezierCurve3(new Vector3(...from), new Vector3((from[0] + to[0]) / 2, from[1] + 1.6, (from[2] + to[2]) / 2), new Vector3(...to)), [from, to]);
+  const points = useMemo(() => curve.getPoints(40), [curve]);
+  useFrame(({ clock }) => { pulse.current?.position.copy(curve.getPoint((clock.elapsedTime * 0.22) % 1)); });
+  const edge = paint("theirs", theme, 0.7);
+  const size = NEIGHBOUR_SIZE;
+  return (
+    <>
+      <group position={[to[0] + size[0] / 2, size[1] / 2, to[2]]}>
+        <lineSegments scale={size} geometry={EDGES}>
+          <lineBasicMaterial color={edge.color} transparent opacity={edge.opacity} toneMapped={false} />
+        </lineSegments>
+        <mesh scale={size} geometry={BOX} onClick={onPick === undefined ? undefined : (event) => { if (dragged(event)) return; event.stopPropagation(); onPick(neighbour.id); }}>
+          <meshBasicMaterial color={colour("theirs", theme)} transparent opacity={0.03} depthWrite={false} toneMapped={false} />
+        </mesh>
+      </group>
+      <Line points={points} color={paint("theirs", theme, 0.5).color} lineWidth={1.2} transparent opacity={theme === "dark" ? 0.9 : 0.6} toneMapped={false} />
+      <mesh ref={pulse}>
+        <sphereGeometry args={[0.07, 16, 16]} />
+        <meshBasicMaterial color={paint("yours", theme, 1).color} toneMapped={false} />
+      </mesh>
+    </>
+  );
+}
+
+/** Moves the camera to where the view says to stand, then leaves it to the person. */
+function Rig({ view }: { view: SceneView }) {
+  const camera = useThree((state) => state.camera);
+  const controls = useThree((state) => state.controls) as unknown as { target: Vector3; update: () => void } | null;
+  const left = useRef(0);
+  const first = useRef(true);
+  const position = useMemo(() => new Vector3(...view.pose.position), [view.pose]);
+  const target = useMemo(() => new Vector3(...view.pose.target), [view.pose]);
+  useEffect(() => { left.current = 1.6; }, [position, target]);
+  useFrame((_, delta) => {
+    if (controls === null || left.current <= 0) return;
+    if (first.current) {
+      // The first look is not a journey: start where the view says to stand.
+      first.current = false;
+      camera.position.copy(position);
+      controls.target.copy(target);
+      left.current = 0;
+    } else {
+      left.current -= delta;
+      const step = 1 - Math.exp(-delta * 5.5);
+      camera.position.lerp(position, step);
+      controls.target.lerp(target, step);
+    }
+    controls.update();
+  });
+  return null;
+}
+
+/**
+ * A lab, drawn.
+ *
+ * It holds no state about the lab and decides nothing about it: it is given a view from
+ * `sceneView` and reports what was pressed.
+ *
+ * @param props - `view` is what to draw; `theme` picks the colours; `onFocus` is told which place or
+ *   tube was pressed; `neighbours` are other labs to draw beside this one, and `onNeighbour` is told
+ *   when one is pressed.
+ */
+export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour }: {
+  view: SceneView; theme: Theme; onFocus: (focus: Focus) => void; neighbours?: readonly Neighbour[]; onNeighbour?: (id: string) => void;
+}) {
+  const rooms = view.places.filter((place) => place.kind === "room");
+  const right = Math.max(0, ...rooms.map((room) => room.center[0] + room.size[0] / 2));
+  const middle = rooms.length === 0 ? 0 : rooms.reduce((sum, room) => sum + room.center[2], 0) / rooms.length;
+  const rule = paint("rule", theme, 0.5);
+  const beside = neighbours.map((neighbour, index) => ({
+    neighbour,
+    from: [right, 1.2, middle + index * 0.4] as [number, number, number],
+    to: [right + 1.2, 0.8, middle + (index - (neighbours.length - 1) / 2) * 2.6] as [number, number, number],
+  }));
+  const picked = view.tubes.find((tube) => tube.selected);
+  const labels: Label[] = [
+    ...view.places.filter((place) => place.labelled).map((place): Label => ({
+      key: place.id, at: [place.center[0], place.center[1] + place.size[1] / 2, place.center[2]],
+      content: <span className={`tag tone-${place.tone}`}>{place.name}</span>,
+    })),
+    ...beside.map(({ neighbour, to }): Label => ({
+      key: `lab ${neighbour.id}`, at: [to[0] + NEIGHBOUR_SIZE[0] / 2, NEIGHBOUR_SIZE[1], to[2]],
+      content: <span className="tag tone-theirs">{neighbour.name}{neighbour.note !== undefined && <small>{neighbour.note}</small>}</span>,
+    })),
+    ...(picked === undefined ? [] : [{
+      key: `tube ${picked.item}`, at: [picked.center[0], picked.center[1] + picked.height, picked.center[2]] as [number, number, number],
+      content: <span className="tag tone-ink raised">{picked.name} · {picked.position}</span>,
+    }]),
+  ];
+  const layer = useRef<HTMLDivElement>(null);
+  return (
+    <div className="stage">
+    <Canvas camera={{ fov: 45, near: 0.01, far: 400, position: view.pose.position }} dpr={[1, 2]} gl={{ antialias: true }}>
+      <color attach="background" args={[colour("ground", theme)]} />
+      <gridHelper args={[60, 60, rule.color, rule.color]} position={[0, -0.002, 0]}>
+        <lineBasicMaterial attach="material" color={rule.color} transparent opacity={theme === "dark" ? 0.5 : 0.7} toneMapped={false} />
+      </gridHelper>
+      {view.places.map((place) => <PlaceBox key={place.id} place={place} theme={theme} onPick={(id) => onFocus({ place: id })} />)}
+      <EmptySlots slots={view.empty} theme={theme} />
+      <Tubes tubes={view.tubes} theme={theme} onPick={(tube) => onFocus({ place: tube.place, item: tube.item })} />
+      {beside.map(({ neighbour, from, to }) => (
+        <NeighbourLab key={neighbour.id} neighbour={neighbour} theme={theme} onPick={onNeighbour} from={from} to={to} />
+      ))}
+      <Follow labels={labels} layer={layer} />
+      <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.03} minDistance={0.08} maxDistance={60} />
+      <Rig view={view} />
+      {theme === "dark" && (
+        <EffectComposer>
+          <Bloom mipmapBlur intensity={0.85} luminanceThreshold={0.55} luminanceSmoothing={0.3} />
+        </EffectComposer>
+      )}
+    </Canvas>
+    <div className="labels" ref={layer}>
+      {labels.map((label) => <div key={label.key} className="label">{label.content}</div>)}
+    </div>
+    </div>
+  );
+}

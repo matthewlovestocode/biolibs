@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
+  },
+  "include": [
+    "src"
+  ],
+  "references": [
+    {
+      "path": "../bionet-space"
+    },
+    {
+      "path": "../bionet-theme"
+    }
+  ]
+}

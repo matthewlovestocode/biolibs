@@ -58,6 +58,8 @@ Labs keeping a freezer together and sharing what they hold, with no server in ch
 | `@biolibs/bionet-theme` | Each colour's meaning with a value for a light theme and a dark one, and the Bionet mark and logo | [bionet-theme.md](bionet-theme.md) |
 | `@biolibs/bionet-react` | React hooks with no appearance of their own, and the mark and logo as components | [bionet-react.md](bionet-react.md) |
 | `@biolibs/bionet-panels` | The parts of a lab application, a whole window, and a lab's public page | [bionet-panels.md](bionet-panels.md) |
+| `@biolibs/bionet-space` | Where things are in a lab: a tree of places, the positions inside a box, and where a camera should look. Plain data | [bionet-space.md](bionet-space.md) |
+| `@biolibs/bionet-scene` | A lab in three dimensions, from the whole room down to one position in a box | [bionet-scene.md](bionet-scene.md) |
 
 ## Dependency graph
 
@@ -98,6 +100,7 @@ dseqrecord, opencloning  <-- bionet  <-- bionet-peer
                                ^
                                '------ bionet-client  <-- bionet-react  <-- bionet-panels
 bionet-theme  (nothing)  <------------------------------------'               (and as a peer)
+bionet-space  (nothing)  <-- bionet-scene  (also uses bionet-theme, three.js)
 ```
 
 Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none. Only `entrez` and `pdblist` touch the network, each through one function that can be replaced (`settings.transport`, and the `fetcher` a `PDBList` is given); no other package does any I/O.

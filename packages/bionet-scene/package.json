@@ -1,0 +1,59 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/bionet-space": "^0.1.0",
+    "@biolibs/bionet-theme": "^0.1.0"
+  },
+  "description": "A lab in three dimensions: rooms, freezers, boxes and tubes drawn as edges in the Bionet theme, with a camera that moves from the whole lab down to one position in a box",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./scene.css": "./scene.css"
+  },
+  "files": [
+    "dist",
+    "src",
+    "scene.css"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/bionet-scene#readme",
+  "keywords": [
+    "bionet",
+    "three",
+    "react-three-fiber",
+    "3d",
+    "lab",
+    "freezer",
+    "biology"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/bionet-scene",
+  "peerDependencies": {
+    "@react-three/drei": ">=10",
+    "@react-three/fiber": ">=9",
+    "@react-three/postprocessing": ">=3",
+    "react": ">=19",
+    "three": ">=0.170"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/bionet-scene"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}

@@ -99,6 +99,12 @@
     },
     {
       "path": "packages/bionet-panels"
+    },
+    {
+      "path": "packages/bionet-space"
+    },
+    {
+      "path": "packages/bionet-scene"
     }
   ]
 }

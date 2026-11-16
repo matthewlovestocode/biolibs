@@ -10,7 +10,7 @@ export default defineConfig({
       // An entry point other than the package's own has to be named before the package is.
       "@biolibs/bionet-client/sqlite": fileURLToPath(new URL("./packages/bionet-client/src/sqlite.ts", import.meta.url)),
       ...Object.fromEntries(
-      ["core", "seq", "seqio", "align", "phylo", "seqtools", "seqfeature", "seqrecord", "nexus", "svdsuperimposer", "pdb", "restriction", "motifs", "gel", "seqmap", "pcr", "seqedit", "features", "cloning", "dseq", "seguid", "assembly", "dseqrecord", "entrez", "pdblist", "assembly2", "opencloning", "bionet", "bionet-theme", "bionet-peer", "bionet-client", "bionet-react", "bionet-panels"].map((n) => [`@biolibs/${n}`, src(n)]),
+      ["core", "seq", "seqio", "align", "phylo", "seqtools", "seqfeature", "seqrecord", "nexus", "svdsuperimposer", "pdb", "restriction", "motifs", "gel", "seqmap", "pcr", "seqedit", "features", "cloning", "dseq", "seguid", "assembly", "dseqrecord", "entrez", "pdblist", "assembly2", "opencloning", "bionet", "bionet-theme", "bionet-peer", "bionet-client", "bionet-react", "bionet-panels", "bionet-space", "bionet-scene"].map((n) => [`@biolibs/${n}`, src(n)]),
       ),
     },
   },

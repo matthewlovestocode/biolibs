@@ -311,9 +311,9 @@ This replaces the package list under "Libraries" above. Each layer may depend on
 | Client | `@biolibs/bionet-client` | One device in one lab: actions, sync, state; the narrow way a window reaches a lab | Protocol; storage, keys and sockets are plugged in | Built |
 | Hooks | `@biolibs/bionet-react` | The lab, asking for a change, the last refusal; the mark and logo as components | Client, look, React | Built |
 | Panels | `@biolibs/bionet-panels` | Freezer, people, history, sharing, and a whole window | Hooks, look | Built |
-| Geometry | `@biolibs/labspace` (name open) | Sizes, footprints, overlap, box grids, camera targets | Plain data only | Not started |
+| Geometry | `@biolibs/bionet-space` | A tree of places, where each stands, box grids, camera poses, search | Plain data only | Written and tested, not published |
 | Hooks | `@biolibs/tools-react` | Sequence map, digest, PCR, gel, plan, alignment | Engines, React | Not started |
-| 3D | `@biolibs/lab-three` | The scene: places, boxes, molecules, instruments, neighbours | The hooks' data, three.js | Not started |
+| 3D | `@biolibs/bionet-scene` | The scene: places, boxes, tubes, instruments, neighbours; molecules to come | Geometry, look, three.js | Written and tested, not published |
 
 "Built" means written, tested in this repository, published to npm as 0.x, and in use by the
 desktop app and both labs.
@@ -686,6 +686,31 @@ the peer serves the signed inventory.
 - The glue in each lab's page that gathers what is drawn (the published inventory from disk, the
   other lab's from its address) is still written once per lab, about forty lines.
 - Installers, signing and updates.
+
+### The scene, first look
+
+The scene was built before places exist in the protocol, against a made-up lab, so that it could be
+looked at and argued with while it is cheap to change. What building it settled:
+
+- **Names.** `@biolibs/bionet-space` and `@biolibs/bionet-scene`, in place of `labspace` and
+  `lab-three`, to sit with the rest of the family.
+- **Metres.** Sizes are real, so a lab that measures its room gets its room.
+- **One kind of place.** A tree of places with a kind, a name and a parent. A box is a place with a
+  grid. Racks, shelves and drawers need no types of their own.
+- **Geometry is optional.** A place that does not say where it stands is given a default size and a
+  spot inside its parent, so a lab is drawable as soon as it says what it holds.
+- **Deciding is apart from drawing.** `sceneView` turns a lab and a focus into a plain list of what
+  to draw; the three.js half draws it and decides nothing. The rules are tested; the picture is
+  looked at.
+- **A box is taken out.** Looked into where it stands, a box is hidden by its rack, shelf and
+  neighbours. So at that distance only the box is drawn, with a faint outline of where it came from.
+- **A press goes to the smallest thing under the pointer**, since everything stands inside
+  something.
+- **Tubes are a quiet body with a bright rim.** Solid glowing tubes merge into a slab.
+
+Not done: places as operations in the log, so the scene still shows a made-up lab and not the Wren
+Lab; molecules and instruments beyond an outline; the scene inside the desktop app; a builder for
+arranging a lab. The demo page on the site is not committed, and neither package is published.
 
 ## A first slice
 
