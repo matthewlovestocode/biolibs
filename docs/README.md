@@ -44,6 +44,8 @@ These are not ports. Biopython has no equivalent of any of them, so they are bui
 | `@biolibs/cloning` | Restriction digests, ligation and ends that pair; Gibson assembly and overlap primer design. Built on `restriction` | [cloning.md](cloning.md) |
 | `@biolibs/features` | Find known elements in a sequence against a library of reference pieces, on both strands, tolerating mismatches | [features.md](features.md) |
 | `@biolibs/gel` | Virtual agarose gel: where fragments run, ladders, which bands a gel resolves | [gel.md](gel.md) |
+| `@biolibs/glossary` | The words of molecular biology, said plainly, and a record of which a biologist has reviewed | [glossary.md](glossary.md) |
+| `@biolibs/glossary-react` | A picture for every term, a tooltip that leads with it, and the sheet a biologist reviews | [glossary.md](glossary.md) |
 | `@biolibs/seqmap` | Geometry for plasmid and linear maps: positions on a circle or line, feature arcs, ticks, lane packing, label de-collision | [seqmap.md](seqmap.md) |
 
 ### Bionet
@@ -102,7 +104,8 @@ dseqrecord, opencloning  <-- bionet  <-- bionet-peer
                                '------ bionet-client  <-- bionet-react  <-- bionet-panels  (also uses bionet-space)
 bionet-theme  (nothing)  <------------------------------------'               (and as a peer)
 bionet-space  (nothing)  <-- bionet-scene  (also uses bionet-theme, three.js)
-assembly2, restriction, gel, seqtools, bionet-panels  <-- bionet-tools
+assembly2, restriction, gel, seqtools, bionet-panels, glossary-react  <-- bionet-tools
+core  <-- glossary  <-- glossary-react  (also uses seq, seqtools, restriction, gel)
 ```
 
 Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none. Only `entrez` and `pdblist` touch the network, each through one function that can be replaced (`settings.transport`, and the `fetcher` a `PDBList` is given); no other package does any I/O.

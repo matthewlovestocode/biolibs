@@ -9,6 +9,7 @@
  */
 import { useMemo, useState } from "react";
 import { useAct, useLab } from "@biolibs/bionet-react";
+import { Glossed } from "@biolibs/glossary-react";
 import { primerTm } from "./pcr.js";
 import { pcrRun, pcrTubes, type TubeChoice } from "./run.js";
 
@@ -88,7 +89,7 @@ export function PcrTool({ instrument = null, onDone }: { instrument?: { id: stri
         <div className="toolhead">
           <div>
             <h2>PCR{instrument === null ? "" : ` · ${instrument.name}`}</h2>
-            <p className="dim small">Choose tubes from the freezer. The product is worked out from their sequences, and recording the run takes what was used from each.</p>
+            <p className="dim small"><Glossed text="PCR copies the stretch of a template that lies between two primers. Choose tubes from the freezer. The product is worked out from their sequences, and recording the run takes what was used from each." /></p>
           </div>
           {onDone !== undefined && <button type="button" className="quiet" onClick={onDone}>Back to the lab</button>}
         </div>

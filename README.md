@@ -4,9 +4,9 @@ TypeScript ports of Python bioengineering libraries, verified case by case again
 packages that have no Python equivalent, and [Bionet](#bionet): labs keeping a freezer together and
 sharing what they hold, with no server in charge.
 
-- **36 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
+- **38 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,837 API items at parity** across three upstream libraries, of 2,859 applicable
-- **19,302 tests**, most of them replaying answers recorded from the real Python libraries
+- **19,318 tests**, most of them replaying answers recorded from the real Python libraries
 
 ## Install
 
@@ -101,6 +101,8 @@ Biopython's, that part is still recorded and replayed. See
 | [`@biolibs/features`](packages/features) | Find known elements against a library of reference pieces, both strands, mismatch-tolerant, across a circular origin; turn hits into features and skip what is already annotated. No library is bundled |
 | [`@biolibs/gel`](packages/gel) | A virtual agarose gel: log-linear migration, four concentrations, ladders, band merging, fragment sizes from cut positions |
 | [`@biolibs/seqmap`](packages/seqmap) | Plasmid and linear map geometry: positions on a circle or line, feature arcs and arrows as SVG paths, round tick intervals, lane packing, label de-collision |
+| [`@biolibs/glossary`](packages/glossary) | The words of molecular biology said plainly: sixty terms, each in a sentence, a paragraph and a reason to care, found in running text, with a record of which a biologist has reviewed |
+| [`@biolibs/glossary-react`](packages/glossary-react) | A picture for every one of those terms, drawn from the real engines; a tooltip that leads with the picture; and the sheet a biologist reviews |
 
 [`@biolibs/core`](packages/core) underpins all of them: Python-style errors and warnings, the
 compatibility helpers that let a port reproduce Python's `int()`, `repr()`, `round()`, `%` and `random`, a
@@ -148,7 +150,7 @@ Why it is built this way, what was decided and what is still open:
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 19,302 tests
+npm test           # vitest — 19,318 tests
 npm run coverage   # per-file coverage
 ```
 

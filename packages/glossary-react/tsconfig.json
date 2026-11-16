@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": { "rootDir": "src", "outDir": "dist", "jsx": "react-jsx", "noUncheckedIndexedAccess": false },
+  "include": ["src"],
+  "references": [ { "path": "../glossary" }, { "path": "../gel" }, { "path": "../restriction" }, { "path": "../seq" }, { "path": "../seqtools" } ]
+}

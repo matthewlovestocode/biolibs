@@ -1,0 +1,58 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/gel": "^1.0.0",
+    "@biolibs/glossary": "^0.1.0",
+    "@biolibs/restriction": "^1.0.0",
+    "@biolibs/seq": "^1.0.0",
+    "@biolibs/seqtools": "^1.0.0"
+  },
+  "description": "A picture for every term in the biolibs glossary, drawn from the real engines, with a tooltip that shows the picture and the definition together and a sheet for a biologist to review them",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./glossary.css": "./glossary.css"
+  },
+  "files": [
+    "dist",
+    "src",
+    "glossary.css"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/glossary-react#readme",
+  "keywords": [
+    "biology",
+    "glossary",
+    "diagrams",
+    "react",
+    "svg",
+    "education"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/glossary-react",
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/glossary-react"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}

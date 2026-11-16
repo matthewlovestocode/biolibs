@@ -822,6 +822,39 @@ should give beside a ladder, and record whether the real gel matched.
   at the lab's instrument for that tool if one has been placed.
 - **A tube says where it came from** in the Freezer tab: which kind of run made it, and from what.
 
+### Three kinds of thing to say, and a glossary
+
+Thinking about what a PCR scene should show separated four voices that had been run together.
+
+| Voice | What it answers | Example |
+|---|---|---|
+| The machine | What does it show? | 55 °C, cycle 12 of 30 |
+| The run | What is true of this reaction? | The product is 5,048 bp; this primer melts near 54 °C |
+| The check | What would a careful operator stop and ask? | The annealing temperature is above both primers' melting temperatures |
+| The lesson | What is going on, for somebody new? | What annealing is |
+
+The machine and the run are always shown. A check is about this run, can be right or wrong, and
+is shown where it applies. A lesson is general, never changes, and is there when asked for. A scene
+is designed from the first two: what the real machine displays, and what its operator has to
+picture. It is not decorated with motion that shows what the operator already knows, and all
+motion can be turned off, so that a change of view is a cut.
+
+Lessons lean on a glossary, which already existed inside the biolibs site. It became two packages,
+`@biolibs/glossary` (the words) and `@biolibs/glossary-react` (a picture for every term, the
+tooltip, a review sheet), so the desktop app and the site read the same ones.
+
+- **A term always has a composed picture, shown with its words.** Some readers need it. A test
+  fails if a term has none, and the tooltip leads with it.
+- **A term can be signed off by a biologist, optionally.** A review records who, in what capacity
+  and when, against a fingerprint of the term's words and picture. If either changes, the review is
+  shown as being of an earlier version. No term has been reviewed yet, and each says so.
+- **The app has a Glossary tab**, which is the review sheet: every term with its picture, its words,
+  its standing, and the fingerprint to sign off.
+
+Not done: the PCR scene itself (a mesh that resembles the machine, the block, the screen, the view
+into the tube); the checks; turning animations off; a "teach me" switch; the site reading its
+glossary from the packages; signing a review with a key.
+
 Not done: ends on a part, and with them keeping a cut piece and assembly as a tool; a sequence
 viewer; replaying a run to check it; a run as a step in a cloning plan; importing an instrument's
 own output.

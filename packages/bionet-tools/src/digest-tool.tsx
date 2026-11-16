@@ -10,6 +10,7 @@ import { useMemo, useState } from "react";
 import type { Band } from "@biolibs/gel";
 import { GELS, LADDERS } from "@biolibs/gel";
 import { useAct, useLab } from "@biolibs/bionet-react";
+import { Glossed } from "@biolibs/glossary-react";
 import { cutters, enzymeNamed } from "./digest.js";
 import { digestRun, digestTubes } from "./run.js";
 
@@ -94,7 +95,7 @@ export function DigestTool({ instrument = null, onDone }: { instrument?: { id: s
         <div className="toolhead">
           <div>
             <h2>Digest and gel{instrument === null ? "" : ` · ${instrument.name}`}</h2>
-            <p className="dim small">Choose a tube and the enzymes to cut it with. The pieces are worked out from its sequence, and drawn as the gel they should give.</p>
+            <p className="dim small"><Glossed text="A restriction enzyme cuts DNA wherever its site occurs, and gel electrophoresis sorts the pieces by size. Choose a tube and the enzymes to cut it with. The pieces are worked out from its sequence, and drawn as the gel they should give." /></p>
           </div>
           {onDone !== undefined && <button type="button" className="quiet" onClick={onDone}>Back to the lab</button>}
         </div>

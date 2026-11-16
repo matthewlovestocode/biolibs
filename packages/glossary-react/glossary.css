@@ -1,0 +1,47 @@
+/* The glossary's pictures and tooltip. Colours come from the Bionet theme where a page has it, and
+   fall back to plain ones where it does not. Everything is inside .glossary or a figure of its own. */
+.glossary, .glossary-figure {
+  --surface: var(--bionet-surface, #ffffff); --ink: var(--bionet-ink, #0f172a); --muted: var(--bionet-dim, #5b6472);
+  --line: var(--bionet-rule, #d8dee8); --accent: var(--bionet-action, #0e7490);
+  --sunken: color-mix(in srgb, var(--bionet-rule, #d8dee8) 45%, var(--bionet-ground, #f6f8fb));
+  --accent-soft: color-mix(in srgb, var(--bionet-yours, #0891b2) 14%, var(--bionet-ground, #f6f8fb));
+  --code-bg: color-mix(in srgb, var(--bionet-rule, #d8dee8) 35%, var(--bionet-ground, #f6f8fb));
+  --base-a: #1f8a5b; --base-t: #c8394b; --base-g: #b97a08; --base-c: #2a66b8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-bionet-theme="light"]) .glossary, :root:not([data-bionet-theme="light"]) .glossary-figure { --base-a: #5fd3a6; --base-t: #f0788a; --base-g: #e6b450; --base-c: #78aef5 }
+}
+[data-bionet-theme="dark"] .glossary, [data-bionet-theme="dark"] .glossary-figure, .glossary[data-bionet-theme="dark"] { --base-a: #5fd3a6; --base-t: #f0788a; --base-g: #e6b450; --base-c: #78aef5 }
+[data-bionet-theme="light"] .glossary, [data-bionet-theme="light"] .glossary-figure { --base-a: #1f8a5b; --base-t: #c8394b; --base-g: #b97a08; --base-c: #2a66b8 }
+
+.glossary-drawing { display: block; margin: 0 auto; width: 100%; height: auto }
+.glossary-drawing.bare { max-height: 100% }
+.glossary-figure { margin: 0; padding: 1rem; border: 1px solid var(--line); border-radius: 12px; background: var(--surface) }
+.glossary-figure .glossary-scroll { overflow-x: auto }
+.glossary-figure figcaption { margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--line); font-size: .875rem; line-height: 1.6; color: var(--muted) }
+
+.glossary-term { position: relative; display: inline; cursor: help }
+.glossary-term .glossary-word { text-decoration: underline dotted var(--accent); text-underline-offset: .18em }
+.glossary-term:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px }
+.glossary-term .glossary-tip { display: none; position: absolute; left: 0; top: calc(100% + .35rem); z-index: 60; width: min(22rem, 80vw); padding: .75rem .85rem;
+  text-align: left; font-size: .875rem; line-height: 1.5; font-weight: 400; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 10px 30px rgb(0 0 0 / .25) }
+.glossary-term:hover .glossary-tip, .glossary-term:focus .glossary-tip, .glossary-term:focus-within .glossary-tip { display: block }
+.glossary-tip > *, .glossary-tip details > span { display: block }
+.glossary-tip .glossary-drawing, .glossary-card .glossary-drawing { max-height: 9rem; margin-bottom: .5rem }
+.glossary .glossary-name { margin: 0; font-weight: 600; color: var(--ink) }
+.glossary .glossary-definition, .glossary .glossary-detail, .glossary .glossary-why { margin: .25rem 0 0 }
+.glossary .glossary-detail, .glossary .glossary-why { color: var(--muted) }
+.glossary-tip details { margin-top: .4rem } .glossary-tip summary { cursor: pointer; color: var(--accent) }
+.glossary .glossary-review { margin: .5rem 0 0; font-size: .78rem; color: var(--muted) }
+.glossary .glossary-review.current { color: var(--bionet-good, #047857) }
+.glossary .glossary-review.earlier { color: var(--bionet-attention, #b91c1c) }
+
+.glossary-card { padding: .85rem; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: var(--ink); font-size: .9rem; line-height: 1.5 }
+.glossary-sheet { color: var(--ink); line-height: 1.55 }
+.glossary-sheet .glossary-tally, .glossary-sheet .glossary-blurb { color: var(--muted) }
+.glossary-sheet h2 { margin: 1.6rem 0 .1rem; font-size: 1.15rem } .glossary-sheet h3 { margin: 0; font-size: 1rem }
+.glossary-sheet article { display: grid; grid-template-columns: minmax(14rem, 24rem) 1fr; gap: 1.2rem; align-items: start; padding: 1rem 0; border-top: 1px solid var(--line) }
+@media (max-width: 760px) { .glossary-sheet article { grid-template-columns: 1fr } }
+.glossary-sheet .glossary-print { margin: .35rem 0 0; font-size: .78rem; color: var(--muted) }
+.glossary-sheet code { font-family: ui-monospace, monospace }

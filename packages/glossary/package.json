@@ -1,0 +1,45 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0"
+  },
+  "description": "The words of molecular biology, said plainly: sixty terms, each in a sentence, a paragraph and a reason to care, found in running text, with a record of which have been reviewed by a biologist",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/glossary#readme",
+  "keywords": [
+    "biology",
+    "glossary",
+    "molecular-biology",
+    "bioinformatics",
+    "education",
+    "typescript"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/glossary",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/glossary"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}

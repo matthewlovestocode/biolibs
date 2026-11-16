@@ -64,6 +64,9 @@ import { InstrumentTool, PcrTool } from "@biolibs/bionet-tools";
 
 The tools use the lab's hooks and are drawn with the panels' styles, so they go inside a `LabProvider` and a `LabWindow`. `InstrumentTool` opens PCR for a place whose `model` is `thermocycler` and digest and gel for a `gel-station`, and says so when there is no tool for an instrument yet. `Tools` lists them all, and still records a run at the lab's instrument for that tool if it has placed one.
 
+The tools' own descriptions explain their terms on hover, with a picture, through
+[`@biolibs/glossary-react`](../glossary-react). Import its `glossary.css` once as well.
+
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT
