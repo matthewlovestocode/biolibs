@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * A lab, for React.
  *

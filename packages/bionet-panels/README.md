@@ -46,6 +46,40 @@ used on its own inside one:
 
 Every colour comes from `@biolibs/bionet-theme`, and no rule reaches outside `.bionet`.
 
+## A lab's public page
+
+What a lab shows the world, and what it can see of another lab. These take what was fetched and
+checked as plain values, so they can be drawn on a server:
+
+```tsx
+import { fetchInventory, originMatches, readInventory, verifyInventory } from "@biolibs/bionet";
+import { Held, LabPage, PeerAnswered, PeerSilent } from "@biolibs/bionet-panels";
+
+const mine = readInventory(published);
+const checks = await verifyInventory(mine);
+
+<LabPage name="The Wren Lab" note="A worked example, not a real freezer.">
+  <Held parts={mine.inventory.parts} checks={checks} origin={ORIGIN}
+        bound={originMatches(mine.inventory.lab.origin, ORIGIN)} />
+  <h2>What we can see of The Thistle Lab</h2>
+  <PeerAnswered found={await fetchInventory(PEER)} mine={mine.inventory.parts} />
+</LabPage>
+```
+
+| Piece | Shows |
+|---|---|
+| `LabPage` | The frame: the mark, the lab's name, a line about what it is |
+| `Held` | What the lab holds, and what the signature over that list settles |
+| `PeerAnswered` | Another lab that answered: what it has that this one does not, and what both have, by checksum |
+| `PeerSilent` | Another lab that did not answer, said without accusing it |
+| `PartsTable`, `WhatASignatureSettles` | The pieces those are made of |
+
+They carry the wording as well as the markup. What a signature settles, and what it does not, has to
+be said the same way on every lab's page.
+
+Everything else in this package uses hooks and is marked `"use client"`, for frameworks that draw on
+a server first.
+
 ## Testing
 
 `test/panels.test.ts` renders each panel to text against a real lab, and checks that the stylesheet

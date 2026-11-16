@@ -1,3 +1,5 @@
+"use client";
+
 /** The freezer: every part, its tubes, and what can be done to them. */
 import type { ItemState, PartState } from "@biolibs/bionet";
 import { useAct, useLab } from "@biolibs/bionet-react";

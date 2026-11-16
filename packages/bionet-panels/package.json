@@ -5,7 +5,8 @@
   "dependencies": {
     "@biolibs/bionet": "^1.2.0",
     "@biolibs/bionet-client": "^0.1.0",
-    "@biolibs/bionet-react": "^0.1.0"
+    "@biolibs/bionet-react": "^0.1.1",
+    "@biolibs/opencloning": "^2.0.0"
   },
   "description": "The parts of a Bionet lab application, ready to place: the freezer, the people, the history, what other labs are shown, and a whole window that puts them together, in a light theme and a dark one",
   "engines": {
@@ -52,5 +53,5 @@
   ],
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.1.0"
+  "version": "0.2.0"
 }

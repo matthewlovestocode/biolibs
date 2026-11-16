@@ -16,6 +16,10 @@
  * - `history.tsx` — every signed change, and what became of it
  * - `sharing.tsx` — what other labs are shown, and the lab's web peer
  * - `parts.tsx` — the small pieces they are made of
+ * - `public.tsx` — a lab's public page: what it holds, and what it can see of another lab
+ *
+ * Everything but `public.tsx` uses hooks and is marked `"use client"`, for frameworks that draw on a
+ * server first. The public page's pieces take plain values and can be drawn there.
  */
 export * from "./window.js";
 export * from "./freezer.js";
@@ -23,3 +27,4 @@ export * from "./people.js";
 export * from "./history.js";
 export * from "./sharing.js";
 export * from "./parts.js";
+export * from "./public.js";

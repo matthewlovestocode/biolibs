@@ -53,3 +53,9 @@
 .bionet .dot.waiting { background: var(--bionet-held) }
 .bionet .trouble { background: color-mix(in srgb, var(--bionet-attention) 12%, transparent); border: 1px solid var(--bionet-attention); border-radius: 8px; padding: .55rem .8rem; display: flex; justify-content: space-between; gap: 1rem }
 .bionet .note { border-left: 3px solid var(--bionet-held); padding: .1rem 0 .1rem .7rem; font-size: .9rem }
+.bionet h3 { font-size: .92rem; margin: 1.2rem 0 .3rem }
+.bionet a { color: inherit; text-decoration-color: var(--bionet-dim); text-underline-offset: 2px }
+.bionet .good { color: var(--bionet-good) } .bionet .bad { color: var(--bionet-attention) }
+.bionet main.page { max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 6rem; overflow: visible; font-size: 15px; line-height: 1.65 }
+.bionet main.page .title { margin-bottom: .6rem } .bionet main.page h1 { font-size: 1.6rem }
+.bionet main.page h2 { font-size: 1.1rem; margin: 2.4rem 0 .6rem; padding-bottom: .3rem; border-bottom: 1px solid var(--bionet-rule) }

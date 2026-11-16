@@ -230,3 +230,67 @@ describe("the stylesheet", () => {
     for (const [used] of css.matchAll(/--bionet-[a-z-]+/g)) expect(named.has(used), used).toBe(true);
   });
 });
+
+describe("a lab's public page", () => {
+  const part = (name: string, checksum: string, more: Partial<import("@biolibs/bionet").InventoryPart> = {}): import("@biolibs/bionet").InventoryPart =>
+    ({ id: name, name, checksum, length: 50, circular: false, available: true, note: null, ...more });
+  const mine = [part("f1", "one"), part("f2", "two", { available: false, note: "held, but not being sent out" })];
+  const theirs = [part("fragment two", "two"), part("f3", "three", { circular: true })];
+  const check = { ok: true, public_key: "k", fingerprint: "aaaa-bbbb-cccc-dddd", signer: null, signed_at: "now", problem: null };
+
+  it("frames the page with the mark and the lab's name, inside the panels' scope", async () => {
+    const { LabPage } = await import("@biolibs/bionet-panels");
+    const page = renderToStaticMarkup(h(LabPage, { name: "The Wren Lab", note: "A worked example.", children: h("p", null, "body") }));
+    expect(page.startsWith('<div class="bionet"><main class="page">')).toBe(true);
+    expect(page).toContain("<h1>The Wren Lab</h1>");
+    expect(page).toContain('aria-label="Bionet"');
+    expect(page).toContain("A worked example.");
+    expect(page).toContain('href="/.well-known/bionet.json"');
+    expect(renderToStaticMarkup(h(LabPage, { name: "Bare", children: null }))).not.toContain('<p class="dim">');
+  });
+
+  it("lists what a lab holds and says what the signature settles", async () => {
+    const { Held } = await import("@biolibs/bionet-panels");
+    const held = renderToStaticMarkup(h(Held, { parts: mine, checks: [check], origin: "https://lab.example", bound: true })).replace(/&#x27;/g, "'");
+    expect(held).toContain("held, but not being sent out");
+    expect(held).toContain('<td class="bad">no</td>');
+    expect(held).toContain("aaaa-bbbb-cccc-dddd");
+    expect(held).toContain("the signature holds over this list as served.");
+    expect(held).toContain("Bound to <code>https://lab.example</code>: yes.");
+    const broken = renderToStaticMarkup(h(Held, { parts: [], checks: [{ ...check, ok: false }], origin: "https://lab.example", bound: false }));
+    expect(broken).toContain("the signature does not hold.");
+    expect(broken).toContain("Nothing is listed at the moment.");
+    expect(broken).toContain(": no.");
+    expect(renderToStaticMarkup(h(Held, { parts: [], checks: [], origin: "x", bound: true }))).toContain("This list is not signed");
+  });
+
+  it("compares two labs by checksum and never by name", async () => {
+    const { PeerAnswered, heldByBoth, onlyTheirs } = await import("@biolibs/bionet-panels");
+    expect(onlyTheirs(mine, theirs).map((one) => one.name)).toEqual(["f3"]);
+    expect(heldByBoth(mine, theirs).map((one) => one.name)).toEqual(["f2"]);
+    const found = { origin: "https://thistle.example", fromItsOwnAddress: true, checks: [check],
+                    signed: { inventory: { lab: { name: "The Thistle Lab" }, parts: theirs }, signatures: [] } } as never;
+    const seen = renderToStaticMarkup(h(PeerAnswered, { found, mine })).replace(/&#x27;/g, "'");
+    expect(seen).toContain("<strong>The Thistle Lab</strong> answered at <code>https://thistle.example</code> with 2 parts.");
+    expect(seen).toContain("Its signature holds and it was served from the address it names.");
+    expect(seen).toContain("None of that says this lab is who it says it is.");
+    expect(seen).toContain("<td>f3</td>");
+    expect(seen).toContain("50 bp ○");
+    expect(seen).toContain("<code>f2 </code>");
+
+    const unsettled = { ...(found as object), fromItsOwnAddress: false, signed: { inventory: { lab: { name: "Somebody" }, parts: [part("f1", "one")] }, signatures: [] } } as never;
+    const doubt = renderToStaticMarkup(h(PeerAnswered, { found: unsettled, mine: [part("f1", "one")] }));
+    expect(doubt).toContain("with 1 part.");
+    expect(doubt).toContain("does not check out, so nothing below is settled.");
+    expect(doubt).toContain("Nothing. Everything they list, we hold too.");
+    expect(renderToStaticMarkup(h(PeerAnswered, { found, mine: [] }))).toContain("Nothing in common, by checksum.");
+  });
+
+  it("says plainly when another lab did not answer, without accusing it", async () => {
+    const { PeerSilent } = await import("@biolibs/bionet-panels");
+    const silent = renderToStaticMarkup(h(PeerSilent, { address: "https://gone.example", why: "it timed out" }));
+    expect(silent).toContain("We point at <code>https://gone.example</code> and it did not answer.");
+    expect(silent).toContain("The reason given was: it timed out.");
+    expect(silent).toContain("is not a lab that is lying");
+  });
+});

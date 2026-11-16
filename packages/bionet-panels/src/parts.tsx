@@ -1,3 +1,5 @@
+"use client";
+
 /** The small pieces the panels are made of. */
 import { createContext, useContext, useState, type FormEvent, type ReactNode } from "react";
 import type { LabSnapshot, PeerView } from "@biolibs/bionet-client";

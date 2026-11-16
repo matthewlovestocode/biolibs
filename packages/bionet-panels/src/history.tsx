@@ -1,3 +1,5 @@
+"use client";
+
 /** The history: every signed change, and what became of it. */
 import { useState } from "react";
 import type { EntryView, LabView } from "@biolibs/bionet-client";

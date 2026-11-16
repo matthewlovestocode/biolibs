@@ -1,3 +1,5 @@
+"use client";
+
 /** The people: who is in the lab, and letting somebody in. */
 import { useAct, useLab } from "@biolibs/bionet-react";
 import { Ask, Copy } from "./parts.js";

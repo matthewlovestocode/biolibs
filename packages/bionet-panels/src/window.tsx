@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * A whole lab application, in one component.
  *

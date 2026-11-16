@@ -1,3 +1,5 @@
+"use client";
+
 /** Sharing: what other labs are shown, and the lab's web peer. */
 import { useState } from "react";
 import type { ItemState, PartState } from "@biolibs/bionet";
