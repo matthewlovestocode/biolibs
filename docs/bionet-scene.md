@@ -108,6 +108,12 @@ Adding a gel station tested whether the five views were about a thermocycler. Ad
 
 A tool used to begin wherever its own camera happened to put it, which made going from the room to the machine two pictures of two machines. Now `stagePose` takes its first view from `VIEWED_FROM.inside`, the direction the room looks at anything standing in it, so the lab's close-up of a thermocycler and the tool's first view of one are the same machine from the same side. The scene cuts between two canvases, and the cut reads as a step forward rather than a jump, because both sides agree about where the viewer is.
 
+## One scene, not two
+
+Walking up to a machine and then working it used to be two canvases, and however well the two poses were matched it was still a cut. Now the machine in use is drawn in the lab's own scene: `placeInUse` works out everything that appears around an instrument in that instrument's own frame, `InUseContent` draws it, and the lab puts that frame where the instrument stands and moves its camera in. `InstrumentStage` draws the same thing either way — on a stage of its own when it is given nothing else, and in the room when it is given `inLab`.
+
+That is what makes the strands hang above a thermocycler that is standing on a bench, with the gel station beside it and the floor of the room going off behind. Nothing about it is a trick of matching: it is one camera moving through one room.
+
 ## Motion is a setting
 
 Moving between views helps some people keep their place and makes others unwell, or just slows them down the tenth time. Every scene has a switch that starts where the system's "reduce motion" setting is. With it off, a change of view is a cut, a lid is open or shut, and nothing moves by itself.

@@ -6,7 +6,7 @@
     "@biolibs/bionet": "^1.3.2",
     "@biolibs/bionet-client": "^0.2.2",
     "@biolibs/bionet-react": "^0.2.0",
-    "@biolibs/bionet-scene": "^0.3.5",
+    "@biolibs/bionet-scene": "^0.3.6",
     "@biolibs/bionet-theme": "^0.1.0",
     "@biolibs/bionet-tools": "^0.1.4"
   },
@@ -46,5 +46,5 @@
   "sideEffects": false,
   "type": "module",
   "types": "./dist/index.d.ts",
-  "version": "0.1.1"
+  "version": "0.1.2"
 }

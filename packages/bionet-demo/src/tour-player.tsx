@@ -10,8 +10,9 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LabView as LabHeld } from "@biolibs/bionet-client";
+
 import { LabProvider, useLab } from "@biolibs/bionet-react";
-import { InstrumentStage, LabView } from "@biolibs/bionet-scene";
+import { InstrumentStage, LabView, type RecordedLab } from "@biolibs/bionet-scene";
 import { SequencesTool, moleculeOf, useDigestBench, useLigationBench, usePcrBench } from "@biolibs/bionet-tools";
 import { demoLab, type DemoLab } from "./lab.js";
 import { demoTour, type TourStep, type TourStop } from "./tour.js";
@@ -35,30 +36,35 @@ function AtTheLab({ stop }: { stop: Extract<TourStop, { at: "lab" }> }) {
 }
 
 /** A tool at its instrument. Each has its own component because each has its own hook. */
-function AtThePcr({ stop, instrument }: { stop: Extract<TourStop, { at: "pcr" }>; instrument: { id: string; name: string } | null }) {
+function AtThePcr({ stop, instrument, inLab }: { stop: Extract<TourStop, { at: "pcr" }>; instrument: { id: string; name: string } | null; inLab: InLab }) {
   const bench = usePcrBench({ instrument, ...(stop.start === undefined ? {} : { start: stop.start }) });
-  return <div className="scene"><InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage></div>;
+  return <div className="scene"><InstrumentStage {...bench.stage} inLab={inLab}>{bench.panel}</InstrumentStage></div>;
 }
 
-function AtTheGel({ stop, instrument }: { stop: Extract<TourStop, { at: "digest" }>; instrument: { id: string; name: string } | null }) {
+function AtTheGel({ stop, instrument, inLab }: { stop: Extract<TourStop, { at: "digest" }>; instrument: { id: string; name: string } | null; inLab: InLab }) {
   const bench = useDigestBench({ instrument, ...(stop.start === undefined ? {} : { start: stop.start }) });
-  return <div className="scene"><InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage></div>;
+  return <div className="scene"><InstrumentStage {...bench.stage} inLab={inLab}>{bench.panel}</InstrumentStage></div>;
 }
 
-function AtTheBlock({ stop, instrument }: { stop: Extract<TourStop, { at: "ligation" }>; instrument: { id: string; name: string } | null }) {
+function AtTheBlock({ stop, instrument, inLab }: { stop: Extract<TourStop, { at: "ligation" }>; instrument: { id: string; name: string } | null; inLab: InLab }) {
   const bench = useLigationBench({ instrument, ...(stop.start === undefined ? {} : { start: stop.start }) });
-  return <div className="scene"><InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage></div>;
+  return <div className="scene"><InstrumentStage {...bench.stage} inLab={inLab}>{bench.panel}</InstrumentStage></div>;
 }
+
+/** What a tool is told so that it draws itself in the room instead of on a stage of its own. */
+interface InLab { lab: RecordedLab; labName: string; place: string }
 
 /** What one stop shows. It is keyed by its step, so moving on sets the next tool up from the start. */
-function Stop({ stop, demo }: { stop: TourStop; demo: DemoLab }) {
+function Stop({ stop, demo, lab }: { stop: TourStop; demo: DemoLab; lab: LabHeld }) {
   const named = (id: string, name: string): { id: string; name: string } => ({ id, name });
+  // Every tool is shown where its machine stands, so going to one is the camera moving in.
+  const where = (place: string): InLab => ({ lab, labName: lab.name ?? "Lab", place });
   switch (stop.at) {
     case "lab": return <AtTheLab stop={stop} />;
     case "sequences": return <div className="bionet demoscroll"><SequencesTool {...(stop.part === undefined ? {} : { part: stop.part })} /></div>;
-    case "pcr": return <AtThePcr stop={stop} instrument={named(demo.instruments.pcr, "Thermocycler")} />;
-    case "digest": return <AtTheGel stop={stop} instrument={named(demo.instruments.digest, "Gel station")} />;
-    case "ligation": return <AtTheBlock stop={stop} instrument={named(demo.instruments.ligation, "Heat block")} />;
+    case "pcr": return <AtThePcr stop={stop} instrument={named(demo.instruments.pcr, "Thermocycler")} inLab={where(demo.instruments.pcr)} />;
+    case "digest": return <AtTheGel stop={stop} instrument={named(demo.instruments.digest, "Gel station")} inLab={where(demo.instruments.digest)} />;
+    case "ligation": return <AtTheBlock stop={stop} instrument={named(demo.instruments.ligation, "Heat block")} inLab={where(demo.instruments.ligation)} />;
   }
 }
 
@@ -127,7 +133,7 @@ export function DemoTour({ demo, onDone, onAgain }: { demo: DemoLab; onDone?: ()
       </aside>
       <div className="demoshow">
         {/* Keyed by the step, so each stop sets its tool up from the start rather than inheriting the last one's. */}
-        <Stop key={`${at} ${stop.at}`} stop={stop} demo={demo} />
+        {state !== null && state !== undefined && <Stop key={`${at} ${stop.at}`} stop={stop} demo={demo} lab={state} />}
       </div>
     </div>
   );

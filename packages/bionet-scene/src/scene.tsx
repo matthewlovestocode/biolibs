@@ -18,6 +18,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, 
 import { BoxGeometry, Color, CylinderGeometry, EdgesGeometry, Object3D, Plane, QuadraticBezierCurve3, RingGeometry, Vector3,
          type InstancedMesh, type Mesh, type PerspectiveCamera } from "three";
 import { colour, type Meaning, type Theme } from "@biolibs/bionet-theme";
+import { InUseContent, atInstrument, type PlacedInUse } from "./in-use.js";
 import { InstrumentShape } from "./instruments.js";
 import type { Motion } from "./motion.js";
 import { shapeOf } from "./shapes.js";
@@ -154,7 +155,9 @@ export interface Dragging {
 const FLOOR = new Plane(new Vector3(0, 1, 0), 0);
 const WALL = new Plane();
 
-function PlaceBox({ place, theme, onPick, drag }: { place: DrawnPlace; theme: Theme; onPick: (id: string) => void; drag?: Dragging | undefined }) {
+function PlaceBox({ place, theme, onPick, drag, inUse }: { place: DrawnPlace; theme: Theme; onPick: (id: string) => void; drag?: Dragging | undefined;
+  /** For the one machine being worked: how far its lid is open, which well is taken, whether its screen is lit. */
+  inUse?: { open?: number; well?: { row: number; column: number }; lit?: boolean } | undefined }) {
   const controls = useThree((state) => state.controls) as unknown as { enabled: boolean } | null;
   const held = useRef<{ dx: number; dy: number; dz: number; moved: boolean } | null>(null);
   const draggable = drag?.ids.has(place.id) === true;
@@ -187,7 +190,8 @@ function PlaceBox({ place, theme, onPick, drag }: { place: DrawnPlace; theme: Th
         </lineSegments>
       ) : (
         <group rotation={[0, -(place.turn * Math.PI) / 180, 0]}>
-          <InstrumentShape shape={shape} size={own} theme={theme} tone={place.tone} strength={place.strength} />
+          <InstrumentShape shape={shape} size={own} theme={theme} tone={place.tone} strength={place.strength}
+                           {...(inUse === undefined ? {} : inUse)} />
         </group>
       )}
       {(place.focusable || place.fill > 0) && (
@@ -375,9 +379,16 @@ export function Rig({ view, motion = "on" }: { view: Pick<SceneView, "pose" | "f
  *   when one is pressed; `drag` lets some places be dragged across the floor; `motion` says whether
  *   the camera travels between views or cuts.
  */
-export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, drag, motion = "on", more = [], children }: {
+export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, drag, motion = "on", more = [], using, children }: {
   view: SceneView; theme: Theme; onFocus: (focus: Focus) => void; neighbours?: readonly Neighbour[]; onNeighbour?: (id: string) => void;
   drag?: Dragging; motion?: Motion; more?: readonly Label[]; children?: ReactNode;
+  /**
+   * One machine in the room being worked, and everything pictured around it.
+   *
+   * It is drawn in that machine's own frame and put where the machine stands, so the room and the
+   * machine are one scene: the view can go from across the room to in front of it without cutting.
+   */
+  using?: { place: string; placed: PlacedInUse };
 }) {
   const rooms = view.places.filter((place) => place.kind === "room");
   const right = Math.max(0, ...rooms.map((room) => room.center[0] + room.size[0] / 2));
@@ -388,6 +399,9 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
     from: [right, 1.2, middle + index * 0.4] as [number, number, number],
     to: [right + 1.2, 0.8, middle + (index - (neighbours.length - 1) / 2) * 2.6] as [number, number, number],
   }));
+  const worked = using === undefined ? null : view.places.find((place) => place.id === using.place) ?? null;
+  // The instrument's own frame has its base at the origin; in the room its base is under its middle.
+  const under = worked === null ? null : [worked.center[0], worked.center[1] - worked.size[1] / 2, worked.center[2]] as [number, number, number];
   const picked = view.tubes.find((tube) => tube.selected);
   const labels: Label[] = [
     ...view.places.filter((place) => place.labelled).map((place): Label => ({
@@ -408,6 +422,8 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
       content: <span className="tag tone-ink raised">{picked.name} · {picked.position}</span>,
       rank: 0,
     }]),
+    ...(using === undefined || under === null || worked === null ? []
+      : using.placed.labels.map((label): Label => ({ ...label, key: `in use ${label.key}`, at: atInstrument(label.at, under, worked.turn) }))),
     ...more,
   ];
   const layer = useRef<HTMLDivElement>(null);
@@ -418,7 +434,17 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
       <gridHelper args={[60, 60, rule.color, rule.color]} position={[0, -0.002, 0]}>
         <lineBasicMaterial attach="material" color={rule.color} transparent opacity={theme === "dark" ? 0.5 : 0.7} toneMapped={false} />
       </gridHelper>
-      {view.places.map((place) => <PlaceBox key={place.id} place={place} theme={theme} onPick={(id) => onFocus({ place: id })} drag={drag} />)}
+      {view.places.map((place) => (
+        <PlaceBox key={place.id} place={place} theme={theme} onPick={(id) => onFocus({ place: id })} drag={drag}
+                  {...(using === undefined || place.id !== using.place ? {} : { inUse: { open: using.placed.open, lit: true, ...(using.placed.well === undefined ? {} : { well: using.placed.well }) } })} />
+      ))}
+      {using !== undefined && under !== null && worked !== null && (
+        <group position={under}>
+          <group rotation={[0, -(worked.turn * Math.PI) / 180, 0]}>
+            <InUseContent placed={using.placed} theme={theme} />
+          </group>
+        </group>
+      )}
       <EmptySlots slots={view.empty} theme={theme} />
       <Tubes tubes={view.tubes} theme={theme} onPick={(tube) => onFocus({ place: tube.place, item: tube.item })} />
       {beside.map(({ neighbour, from, to }) => (

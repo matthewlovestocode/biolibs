@@ -12,6 +12,7 @@
  * - `builder.tsx` — dragging, turning and resizing what stands in a room
  * - `shapes.ts` — what an instrument is made of, and where to stand for each view of it in use
  * - `instruments.tsx` — an instrument drawn from its shape
+ * - `in-use.tsx` — a machine in use: what is drawn around it, in its own frame, for either host
  * - `stage.tsx` — one instrument in use: the machine, its block, its screen, what is in the tube
  * - `motion.ts` — whether the scene moves between views, or cuts
  * - `explorer.tsx` — the scene with the way back, a search, and what was picked
@@ -27,4 +28,8 @@ export * from "./shapes.js";
 export * from "./motion.js";
 export * from "./instruments.js";
 export * from "./molecule.js";
+// The shapes a host hands in come from the space package; re-exported so that anything drawing a
+// lab needs only this one.
+export type { Layout, RecordedLab, Standing } from "@biolibs/bionet-space";
+export * from "./in-use.js";
 export * from "./stage.js";

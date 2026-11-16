@@ -21,9 +21,12 @@ import { THEME_ATTRIBUTE, colour, type Meaning, type Theme } from "@biolibs/bion
 import { MotionSwitch } from "./explorer.js";
 import { InstrumentShape } from "./instruments.js";
 import { useMotion, type Motion } from "./motion.js";
-import { GelSlab, Joining, Molecule, gelLabels, joiningLabels, moleculeLabels } from "./molecule.js";
-import { Follow, Rig, paint, useSystemTheme, type Label } from "./scene.js";
-import { MOLECULE_RADIUS, measureLine, moleculeCentre, placeGel, placeJoining, placeMolecule, stageViewName, type StageGel, type StageJoining, type StageMeasure, type StageMolecule } from "./shapes.js";
+import { InUseContent, placeInUse, poseAtInstrument, useStagePlay, type StageLine } from "./in-use.js";
+export type { StageLine } from "./in-use.js";
+import { LabScene, Follow, Rig, paint, useSystemTheme, type Label } from "./scene.js";
+import { sceneView } from "./view.js";
+import { layoutFrom, type RecordedLab } from "@biolibs/bionet-space";
+import { stageViewName, type StageGel, type StageJoining, type StageMeasure, type StageMolecule } from "./shapes.js";
 import { STAGE_VIEWS, STAGE_VIEW_NAMES, STEP_SECONDS, lensFrame, lidOpen, pairsOf, placeStrands, polymerasesOf, shapeOf, stagePose, type StageLens,
          type StageTube, type StageView, type StepSpeed } from "./shapes.js";
 
@@ -33,12 +36,6 @@ const STRAND_TONE: Readonly<Record<StageTube["strands"][number]["kind"], Meaning
 };
 
 /** One line of the instrument's screen. */
-export interface StageLine {
-  /** What it says. */
-  text: string;
-  /** Whether it is the line the machine is on. */
-  lit?: boolean;
-}
 
 /**
  * An instrument in use, with the views of it as buttons.
@@ -99,97 +96,51 @@ export function BaseLens({ lens }: { lens: StageLens }) {
   );
 }
 
-export function InstrumentStage({ model, name, view, onView, screen = [], well, tube, lens, legend, molecule, gel, joining, measures = [], theme, motion: pinned, seconds, onPlayed, children }: {
+export function InstrumentStage({ model, name, view, onView, screen = [], well, tube, lens, legend, molecule, gel, joining, measures = [], theme, motion: pinned, seconds, onPlayed, children, inLab }: {
   model: string; name: string; view: StageView; onView: (view: StageView) => void; screen?: readonly StageLine[];
   well?: { row: number; column: number }; tube?: StageTube; lens?: (through: number) => StageLens | null;
   legend?: Partial<Record<StageTube["strands"][number]["kind"], string>>;
   molecule?: StageMolecule; gel?: StageGel; joining?: StageJoining; measures?: readonly StageMeasure[]; theme?: Theme; motion?: Motion; seconds?: number; onPlayed?: () => void; children?: ReactNode;
+  /**
+   * Draw the machine where it really stands, in the lab's own scene, instead of on a stage of its
+   * own. The room stays around it and the camera moves in rather than cutting, which is what makes
+   * walking up to a machine and working it one thing instead of two.
+   */
+  inLab?: { lab: RecordedLab; labName?: string; place: string };
 }) {
   const system = useSystemTheme();
   const shown = theme ?? system;
   const [motion, flipMotion] = useMotion(pinned);
-  const shape = shapeOf(model);
-  const size = useMemo((): [number, number, number] => [...(INSTRUMENT_SIZE[model] ?? [0.4, 0.3, 0.4])] as [number, number, number], [model]);
-  // A molecule is pictured, not seen: it is drawn where the DNA is thought about, in the tube if nothing else is drawn there, and as the result.
-  const made = molecule !== undefined && (view === "result" || (view === "tube" && tube === undefined));
-  const ran = view === "result" && gel !== undefined;
-  const fitting = view === "tube" && joining !== undefined && tube === undefined;
-  const pose = useMemo(() => stagePose(made || ran || fitting ? "result" : view, size, shape, made || ran || fitting), [view, size, shape, made, ran, fitting]);
-  const pairing = useMemo(() => (fitting ? placeJoining(joining, moleculeCentre(size), pose.position, MOLECULE_RADIUS) : null), [fitting, joining, size, pose]);
-  const slab = useMemo(() => (ran ? placeGel(gel, moleculeCentre(size), pose.position, [MOLECULE_RADIUS * 2.3, MOLECULE_RADIUS * 2.1]) : null), [ran, gel, size, pose]);
-  // What was made, drawn above the machine as a map of it: nothing the machine shows, and what the run was for.
-  const placed = useMemo(() => (made ? placeMolecule(molecule, moleculeCentre(size), pose.position, MOLECULE_RADIUS) : null), [made, molecule, size, pose]);
-  // What is in the tube plays out over a few seconds, slowly enough to follow: strands part, primers
-  // land, copies grow. It can be paused, slowed, and dragged to any moment. With motion off it does
-  // not play by itself, and shows the step finished until somebody drags it.
-  const [through, setThrough] = useState(1);
-  const [playing, setPlaying] = useState(false);
-  const [speed, setSpeed] = useState<StepSpeed>("usual");
-  const played = useRef(onPlayed);
-  played.current = onPlayed;
-  const reached = useRef(1);
-  reached.current = through;
   const moving = view === "tube" && tube !== undefined && tube.strands.some((one) => one.moves !== undefined);
   const scene = useMemo(() => JSON.stringify(tube?.strands ?? []), [tube]);
-  useEffect(() => {
-    setThrough(motion === "on" && moving ? 0 : 1);
-    setPlaying(motion === "on" && moving);
-    // With motion off a step does not play, so a host running one step into the next is told after
-    // a moment's hold: the run still goes through, as a series of cuts.
-    if (motion === "on" || !moving) return;
-    const held = setTimeout(() => played.current?.(), 700);
-    return () => clearTimeout(held);
-  }, [scene, moving, motion]);
-  useEffect(() => {
-    if (!playing) return;
-    let last = performance.now();
-    let frame = requestAnimationFrame(function tick(now: number) {
-      const passed = (now - last) / 1000;
-      last = now;
-      // Kept beside the state, so that the end of the step is known here and now, not at the next draw.
-      const next = Math.min(1, reached.current + passed / (seconds ?? STEP_SECONDS[speed]));
-      reached.current = next;
-      setThrough(next);
-      if (next >= 1) { setPlaying(false); played.current?.(); return; }
-      frame = requestAnimationFrame(tick);
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [playing, speed, seconds]);
-  const strands = useMemo(() => (tube === undefined || view !== "tube" ? [] : placeStrands(tube, size, through)), [tube, view, size, through]);
-  const close = useMemo(() => (view === "tube" && tube !== undefined ? lens?.(through) ?? null : null), [view, tube, lens, through]);
-  const pairs = useMemo(() => pairsOf(strands), [strands]);
-  const polymerases = useMemo(() => polymerasesOf(strands), [strands]);
-  // Lengths marked off under the strands, each a bar from one base to another.
-  const marked = useMemo(() => (view === "tube" && tube !== undefined ? measures.map((one, at) => ({ ...measureLine(one, tube.length, size, at), label: one.label })) : []), [view, tube, measures, size]);
+  const { through, setThrough, playing, setPlaying, speed, setSpeed } = useStagePlay({ moving, scene, motion, seconds, onPlayed });
+  // What is drawn here is worked out the same way the lab works it out, so that a machine on its own
+  // and the same machine standing on a bench are one picture seen from two distances.
+  const placed = useMemo(() => placeInUse({ model, view, screen, well, tube, lens, molecule, gel, joining, measures }, through),
+                         [model, view, screen, well, tube, lens, molecule, gel, joining, measures, through]);
+  const { size, shape, pose, close, kinds } = placed;
   const layer = useRef<HTMLDivElement>(null);
   const rule = paint("rule", shown, 0.5);
 
-  const point = (at: readonly [number, number, number]): [number, number, number] => [at[0] * size[0], size[1] / 2 + at[1] * size[1], at[2] * size[2]];
-  const labels: Label[] = [
-    // The screen is read where it is on the machine, small from across the bench and large up close.
-    ...(shape?.screen === undefined || screen.length === 0 || view === "tube" || view === "block" ? [] : [{
-      key: "screen", at: point(shape.screen.at), rank: 0,
-      content: (
-        <div className={view === "screen" ? "lcd large" : "lcd"}>
-          {(view === "screen" ? screen : screen.filter((line) => line.lit === true).slice(0, 1)).map((line, at) => (
-            <div key={at} className={line.lit === true ? "lit" : undefined}>{line.text}</div>
-          ))}
-        </div>
-      ),
-    }]),
-    ...strands.flatMap((one, at): Label[] => (one.presence >= 1 && Math.abs(one.end[0] - one.start[0]) > 0.02 && (one.kind === "template" || one.kind === "long" || one.kind === "product") ? [
-      { key: `five ${at}`, at: one.points === "right" ? one.start : one.end, rank: 2, content: <span className="end">5′</span> },
-      { key: `three ${at}`, at: one.points === "right" ? one.end : one.start, rank: 2, content: <span className="end">3′</span> },
-    ] : [])),
-    ...(placed === null ? [] : moleculeLabels(placed)),
-    ...(slab === null ? [] : gelLabels(slab)),
-    ...(pairing === null ? [] : joiningLabels(pairing)),
-    ...marked.map((one, at): Label => ({ key: `measure ${at}`, at: one.at, rank: 1, content: <span className="measure">{one.label}</span> })),
-  ];
-  const kinds = [...new Set(strands.map((one) => one.kind))];
+  const labels = placed.labels;
+
+  // In the lab: the same machine, drawn where it stands, with the room still around it.
+  const inRoom = useMemo(() => {
+    if (inLab === undefined) return null;
+    const seen = sceneView(layoutFrom(inLab.lab, { room: inLab.labName ?? "Lab" }), { place: inLab.place }, { labName: inLab.labName ?? "Lab" });
+    const stood = seen.places.find((one) => one.id === inLab.place);
+    if (stood === undefined) return null;
+    const under: [number, number, number] = [stood.center[0], stood.center[1] - stood.size[1] / 2, stood.center[2]];
+    const looking = poseAtInstrument(placed, under, stood.turn);
+    return { ...seen, pose: looking.pose, fov: looking.fov };
+  }, [inLab, placed]);
 
   return (
     <div className="bionet-scene stage-of" {...{ [THEME_ATTRIBUTE]: shown }}>
+      {inRoom !== null && inLab !== undefined ? (
+        // The lab brings its own canvas and its own pins, so this one steps out of the way.
+        <LabScene view={inRoom} theme={shown} motion={motion} onFocus={() => undefined} using={{ place: inLab.place, placed }} />
+      ) : (
       <div className="stage">
         <Canvas camera={{ fov: pose.fov, near: 0.01, far: 100, position: pose.position }} dpr={[1, 2]} gl={{ antialias: true }}>
           <color attach="background" args={[colour("ground", shown)]} />
@@ -202,40 +153,9 @@ export function InstrumentStage({ model, name, view, onView, screen = [], well, 
                 <boxGeometry args={[1, 1, 1]} />
                 <lineBasicMaterial color={paint("yours", shown, 1).color} toneMapped={false} />
               </lineSegments>
-            ) : <InstrumentShape shape={shape} size={size} theme={shown} open={lidOpen(view)} well={well} lit={screen.length > 0} motion={motion} />}
+            ) : <InstrumentShape shape={shape} size={size} theme={shown} open={placed.open} well={well} lit={screen.length > 0} motion={motion} />}
           </group>
-          {strands.map((one, at) => {
-            if (one.presence <= 0 || Math.abs(one.end[0] - one.start[0]) < 1e-6) return null;
-            const tone = paint(STRAND_TONE[one.kind], shown, one.kind === "template" ? 0.45 : 0.9);
-            tone.opacity *= one.presence;
-            const [from, to] = one.points === "right" ? [one.start, one.end] : [one.end, one.start];
-            // A barb at the 3′ end, so the way a strand is copied can be read off it.
-            const back = from[0] < to[0] ? -0.012 : 0.012;
-            return (
-              <group key={at}>
-                <Line points={[one.start, one.end]} color={tone.color} lineWidth={one.kind === "primer" ? 5 : one.kind === "template" ? 2 : 3.2} transparent opacity={tone.opacity} toneMapped={false} />
-                <Line points={[[to[0] + back, to[1] + 0.008, to[2]], to, [to[0] + back, to[1] - 0.008, to[2]]]} color={tone.color} lineWidth={2} transparent opacity={tone.opacity} toneMapped={false} />
-              </group>
-            );
-          })}
-          {pairs.length > 0 && (
-            <Line segments points={pairs.flatMap((one): [number, number, number][] => [[one.x, one.top, 0], [one.x, one.bottom, 0]])}
-                  vertexColors={pairs.flatMap((one): [number, number, number][] => { const tone = paint("dim", shown, 0.2 + 0.5 * one.presence).color; return [[tone.r, tone.g, tone.b], [tone.r, tone.g, tone.b]]; })}
-                  lineWidth={1.4} transparent opacity={shown === "dark" ? 0.9 : 0.7} toneMapped={false} />
-          )}
-          {close !== null && tube !== undefined && (
-            <Line points={lensFrame(close, tube.length, size)} color={paint("found", shown, 0.8).color} lineWidth={1.5} dashed dashSize={0.006} gapSize={0.004} toneMapped={false} />
-          )}
-          {polymerases.map((at, index) => (
-            <mesh key={index} position={at}>
-              <sphereGeometry args={[0.009, 16, 12]} />
-              <meshBasicMaterial color={paint("found", shown, 1).color} toneMapped={false} />
-            </mesh>
-          ))}
-          {placed !== null && <Molecule placed={placed} theme={shown} />}
-          {slab !== null && <GelSlab placed={slab} theme={shown} />}
-          {pairing !== null && <Joining placed={pairing} theme={shown} />}
-          {marked.map((one, at) => <Line key={at} points={one.points} color={paint("ink", shown, 0.6).color} lineWidth={1.5} transparent opacity={0.8} toneMapped={false} />)}
+          <InUseContent placed={placed} theme={shown} />
           <Follow labels={labels} layer={layer} />
           <OrbitControls makeDefault enableDamping={motion === "on"} dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.03} minDistance={0.15} maxDistance={8} />
           <Rig view={{ pose, fov: pose.fov }} motion={motion} />
@@ -244,6 +164,7 @@ export function InstrumentStage({ model, name, view, onView, screen = [], well, 
           {labels.map((label) => <div key={label.key} className="pin">{label.content}</div>)}
         </div>
       </div>
+      )}
       <nav className="crumbs views" aria-label={`Views of ${name}`}>
         <strong>{name}</strong>
         {STAGE_VIEWS.map((one) => (

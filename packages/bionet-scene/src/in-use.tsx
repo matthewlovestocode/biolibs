@@ -1,0 +1,288 @@
+"use client";
+
+/**
+ * A machine in use, drawn: everything that appears around an instrument while somebody is working it.
+ *
+ * This is kept apart from the window that shows it because the same thing has to be drawn in two
+ * places. On its own stage an instrument stands at the origin with nothing else in the room. In the
+ * lab it stands on a bench, and what is being pictured above it — strands, a molecule, a gel, pieces
+ * closing — has to appear in the room, at that bench, so that the view can go from the room to the
+ * machine without cutting. Both of those draw what is worked out here, in the instrument's own
+ * frame, and the lab puts that frame where the instrument stands.
+ */
+import { Line } from "@react-three/drei";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { Meaning, Theme } from "@biolibs/bionet-theme";
+import { GelSlab, Joining, Molecule, gelLabels, joiningLabels, moleculeLabels } from "./molecule.js";
+import type { Motion } from "./motion.js";
+import { paint, type Label } from "./scene.js";
+import { INSTRUMENT_SIZE } from "@biolibs/bionet-space";
+import { MOLECULE_RADIUS, STEP_SECONDS, lensFrame, lidOpen, measureLine, moleculeCentre, pairsOf, placeGel, placeJoining,
+         placeMolecule, placeStrands, polymerasesOf, shapeOf, stagePose, type PlacedGel, type PlacedJoining,
+         type PlacedMolecule, type PlacedStrand, type Rung, type StageGel, type StageJoining, type StageLens,
+         type StageMeasure, type StageMolecule, type StageTube, type StageView, type StepSpeed } from "./shapes.js";
+
+/** What colour each kind of strand is drawn in. */
+const STRAND_TONE: Readonly<Record<StageTube["strands"][number]["kind"], Meaning>> = {
+  template: "ink", primer: "yours", growing: "found", long: "theirs", product: "good",
+};
+
+export interface StageLine {
+  /** What it says. */
+  text: string;
+  /** Whether it is the line the machine is on. */
+  lit?: boolean;
+}
+
+/** What is going on at an instrument, as a host hands it over. */
+export interface InUse {
+  /** Which model of instrument, for its shape and its size. */
+  model: string;
+  /** Which of the five views is being looked at. */
+  view: StageView;
+  /** What its screen says. Its being lit at all is what having any lines means. */
+  screen?: readonly StageLine[];
+  /** The well the tube is in. */
+  well?: { row: number; column: number };
+  /** The strands in the tube. */
+  tube?: StageTube;
+  /** The real bases at one place on them, for any moment of the step. */
+  lens?: (through: number) => StageLens | null;
+  /** A molecule to picture: what a run made, or what is in the tube when no strands are drawn. */
+  molecule?: StageMolecule;
+  /** A gel that has been run. */
+  gel?: StageGel;
+  /** Pieces being joined. */
+  joining?: StageJoining;
+  /** Lengths marked off under the strands. */
+  measures?: readonly StageMeasure[];
+}
+
+/** Everything about a machine in use, worked out: where the camera goes, and what to draw. */
+export interface PlacedInUse {
+  /** How wide, tall and deep the instrument is, in metres. */
+  size: [number, number, number];
+  /** What it is made of, or `null` for a model drawn as a plain box. */
+  shape: ReturnType<typeof shapeOf>;
+  /** Where to look from, in the instrument's own frame, and how wide. */
+  pose: ReturnType<typeof stagePose>;
+  /** How far open its lid is, from 0 to 1. */
+  open: number;
+  /** The well the tube is in, carried through so a host can mark it. */
+  well: { row: number; column: number } | undefined;
+  /** The strands, placed. */
+  strands: PlacedStrand[];
+  /** The base pairs between them. */
+  pairs: Rung[];
+  /** Where each polymerase is. */
+  polymerases: [number, number, number][];
+  /** The real bases at this moment, if any are being read. */
+  close: StageLens | null;
+  /** The frame drawn round the stretch they are of. */
+  frame: [number, number, number][] | null;
+  /** A molecule pictured above it, if one is. */
+  molecule: PlacedMolecule | null;
+  /** A gel that has been run, if one has. */
+  gel: PlacedGel | null;
+  /** Pieces closing, if any are. */
+  joining: PlacedJoining | null;
+  /** Lengths marked off, each with where to write it. */
+  measures: { points: [number, number, number][]; at: [number, number, number]; label: string }[];
+  /** What is written over it, at points in its own frame. */
+  labels: Label[];
+  /** Which kinds of strand are drawn, for a legend. */
+  kinds: StageTube["strands"][number]["kind"][];
+  /** Whether anything in the tube moves during this step. */
+  moving: boolean;
+}
+
+/**
+ * Work out everything that is drawn at an instrument in use.
+ *
+ * @param what - What is going on there.
+ * @param through - How far through the step being played, from 0 to 1.
+ * @returns Where to look from and what to draw, all in the instrument's own frame.
+ */
+export function placeInUse(what: InUse, through: number): PlacedInUse {
+  const { model, view, screen = [], tube, lens, molecule, gel, joining, measures = [] } = what;
+  const shape = shapeOf(model);
+  const size: [number, number, number] = [...(INSTRUMENT_SIZE[model] ?? [0.4, 0.3, 0.4])] as [number, number, number];
+  // A molecule is pictured, not seen: where the DNA is thought about, in the tube if nothing else is
+  // drawn there, and as the result.
+  const made = molecule !== undefined && (view === "result" || (view === "tube" && tube === undefined));
+  const ran = view === "result" && gel !== undefined;
+  const fitting = view === "tube" && joining !== undefined && tube === undefined;
+  const wide = made || ran || fitting;
+  const pose = stagePose(wide ? "result" : view, size, shape, wide);
+  const centre = moleculeCentre(size);
+  const placedMolecule = made ? placeMolecule(molecule, centre, pose.position, MOLECULE_RADIUS) : null;
+  const placedGel = ran ? placeGel(gel, centre, pose.position, [MOLECULE_RADIUS * 2.3, MOLECULE_RADIUS * 2.1]) : null;
+  const placedJoining = fitting ? placeJoining(joining, centre, pose.position, MOLECULE_RADIUS) : null;
+  const strands = tube === undefined || view !== "tube" ? [] : placeStrands(tube, size, through);
+  const close = view === "tube" && tube !== undefined ? lens?.(through) ?? null : null;
+  const marked = view === "tube" && tube !== undefined
+    ? measures.map((one, at) => ({ ...measureLine(one, tube.length, size, at), label: one.label })) : [];
+
+  const point = (at: readonly [number, number, number]): [number, number, number] => [at[0] * size[0], size[1] / 2 + at[1] * size[1], at[2] * size[2]];
+  const labels: Label[] = [
+    // The screen is read where it is on the machine, small from across the bench and large up close.
+    ...(shape?.screen === undefined || screen.length === 0 || view === "tube" || view === "block" ? [] : [{
+      key: "screen", at: point(shape.screen.at), rank: 0,
+      content: (
+        <div className={view === "screen" ? "lcd large" : "lcd"}>
+          {(view === "screen" ? screen : screen.filter((line) => line.lit === true).slice(0, 1)).map((line, at) => (
+            <div key={at} className={line.lit === true ? "lit" : undefined}>{line.text}</div>
+          ))}
+        </div>
+      ),
+    } satisfies Label]),
+    ...strands.flatMap((one, at): Label[] => (one.presence >= 1 && Math.abs(one.end[0] - one.start[0]) > 0.02
+      && (one.kind === "template" || one.kind === "long" || one.kind === "product") ? [
+      { key: `five ${at}`, at: one.points === "right" ? one.start : one.end, rank: 2, content: <span className="end">5′</span> },
+      { key: `three ${at}`, at: one.points === "right" ? one.end : one.start, rank: 2, content: <span className="end">3′</span> },
+    ] : [])),
+    ...(placedMolecule === null ? [] : moleculeLabels(placedMolecule)),
+    ...(placedGel === null ? [] : gelLabels(placedGel)),
+    ...(placedJoining === null ? [] : joiningLabels(placedJoining)),
+    ...marked.map((one, at): Label => ({ key: `measure ${at}`, at: one.at, rank: 1, content: <span className="measure">{one.label}</span> })),
+  ];
+  return {
+    size, shape, pose, open: lidOpen(view), well: what.well, strands, pairs: pairsOf(strands), polymerases: polymerasesOf(strands),
+    close, frame: close === null || tube === undefined ? null : lensFrame(close, tube.length, size),
+    molecule: placedMolecule, gel: placedGel, joining: placedJoining, measures: marked, labels,
+    kinds: [...new Set(strands.map((one) => one.kind))], moving: view === "tube" && tube !== undefined && tube.strands.some((one) => one.moves !== undefined),
+  };
+}
+
+/**
+ * What is drawn around an instrument in use. It goes inside a canvas, in the instrument's own frame.
+ *
+ * @param props - `placed` is from `placeInUse`; `theme` is the theme to paint it in.
+ */
+export function InUseContent({ placed, theme }: { placed: PlacedInUse; theme: Theme }) {
+  return (
+    <>
+      {placed.strands.map((one, at) => {
+        if (one.presence <= 0 || Math.abs(one.end[0] - one.start[0]) < 1e-6) return null;
+        const tone = paint(STRAND_TONE[one.kind], theme, one.kind === "template" ? 0.45 : 0.9);
+        tone.opacity *= one.presence;
+        const [from, to] = one.points === "right" ? [one.start, one.end] : [one.end, one.start];
+        // A barb at the 3′ end, so the way a strand is copied can be read off it.
+        const back = from[0] < to[0] ? -0.012 : 0.012;
+        return (
+          <group key={at}>
+            <Line points={[one.start, one.end]} color={tone.color} transparent opacity={tone.opacity} toneMapped={false}
+                  lineWidth={one.kind === "primer" ? 5 : one.kind === "template" ? 2 : 3.2} />
+            <Line points={[[to[0] + back, to[1] + 0.008, to[2]], to, [to[0] + back, to[1] - 0.008, to[2]]]} color={tone.color}
+                  lineWidth={2} transparent opacity={tone.opacity} toneMapped={false} />
+          </group>
+        );
+      })}
+      {placed.pairs.length > 0 && (
+        <Line segments points={placed.pairs.flatMap((one): [number, number, number][] => [[one.x, one.top, 0], [one.x, one.bottom, 0]])}
+              vertexColors={placed.pairs.flatMap((one): [number, number, number][] => {
+                const tone = paint("dim", theme, 0.2 + 0.5 * one.presence).color;
+                return [[tone.r, tone.g, tone.b], [tone.r, tone.g, tone.b]];
+              })}
+              lineWidth={1.4} transparent opacity={theme === "dark" ? 0.9 : 0.7} toneMapped={false} />
+      )}
+      {placed.frame !== null && (
+        <Line points={placed.frame} color={paint("found", theme, 0.8).color} lineWidth={1.5} dashed dashSize={0.006} gapSize={0.004} toneMapped={false} />
+      )}
+      {placed.polymerases.map((at, index) => (
+        <mesh key={index} position={at}>
+          <sphereGeometry args={[0.009, 16, 12]} />
+          <meshBasicMaterial color={paint("found", theme, 1).color} toneMapped={false} />
+        </mesh>
+      ))}
+      {placed.molecule !== null && <Molecule placed={placed.molecule} theme={theme} />}
+      {placed.gel !== null && <GelSlab placed={placed.gel} theme={theme} />}
+      {placed.joining !== null && <Joining placed={placed.joining} theme={theme} />}
+      {placed.measures.map((one, at) => (
+        <Line key={at} points={one.points} color={paint("ink", theme, 0.6).color} lineWidth={1.5} transparent opacity={0.8} toneMapped={false} />
+      ))}
+    </>
+  );
+}
+
+/**
+ * The moment of the step being looked at, and how it plays.
+ *
+ * A step plays out over a few seconds, slowly enough to follow: strands part, primers land, copies
+ * grow. It can be paused, slowed, and dragged to any moment. With motion off it does not play by
+ * itself and shows the step finished, and a host running one step into the next is told after a
+ * moment's hold, so the run still goes through as a series of cuts.
+ *
+ * @param options - `moving` is whether anything moves in this step; `scene` changes when the step
+ *   does; `motion` is the setting; `seconds` pins how long a step takes; `onPlayed` is told when one finishes.
+ * @returns How far through, a way to set it, whether it is playing, and the speed.
+ */
+export function useStagePlay({ moving, scene, motion, seconds, onPlayed }: {
+  moving: boolean; scene: string; motion: Motion; seconds?: number | undefined; onPlayed?: (() => void) | undefined;
+}): { through: number; setThrough: (to: number) => void; playing: boolean; setPlaying: (to: boolean) => void; speed: StepSpeed; setSpeed: (to: StepSpeed) => void } {
+  const [through, setThrough] = useState(1);
+  const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState<StepSpeed>("usual");
+  const played = useRef(onPlayed);
+  played.current = onPlayed;
+  const reached = useRef(1);
+  reached.current = through;
+
+  useEffect(() => {
+    setThrough(motion === "on" && moving ? 0 : 1);
+    setPlaying(motion === "on" && moving);
+    if (motion === "on" || !moving) return;
+    const held = setTimeout(() => played.current?.(), 700);
+    return () => clearTimeout(held);
+  }, [scene, moving, motion]);
+
+  useEffect(() => {
+    if (!playing) return;
+    let last = performance.now();
+    let frame = requestAnimationFrame(function tick(now: number) {
+      const passed = (now - last) / 1000;
+      last = now;
+      // Kept beside the state, so that the end of the step is known here and now, not at the next draw.
+      const next = Math.min(1, reached.current + passed / (seconds ?? STEP_SECONDS[speed]));
+      reached.current = next;
+      setThrough(next);
+      if (next >= 1) { setPlaying(false); played.current?.(); return; }
+      frame = requestAnimationFrame(tick);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [playing, speed, seconds]);
+
+  return { through, setThrough, playing, setPlaying, speed, setSpeed };
+}
+
+/**
+ * A point in an instrument's own frame, put where that instrument stands in a room.
+ *
+ * @param at - The point, in the instrument's frame.
+ * @param where - Where the instrument's base sits.
+ * @param turn - Which way it faces, in degrees.
+ * @returns The point, in the room.
+ */
+export function atInstrument(at: readonly [number, number, number], where: readonly [number, number, number], turn = 0): [number, number, number] {
+  const angle = (-turn * Math.PI) / 180;
+  const [sin, cos] = [Math.sin(angle), Math.cos(angle)];
+  return [where[0] + at[0] * cos + at[2] * sin, where[1] + at[1], where[2] - at[0] * sin + at[2] * cos];
+}
+
+/**
+ * Where to look from for a machine that is standing in a room rather than on its own.
+ *
+ * It is the same view of the same machine, said in the room's coordinates, so going from across the
+ * room to in front of it is one move of one camera rather than a cut between two scenes.
+ *
+ * @param placed - The machine in use.
+ * @param under - Where its base sits in the room.
+ * @param turn - Which way it faces, in degrees.
+ * @returns The pose and the field of view.
+ */
+export function poseAtInstrument(placed: PlacedInUse, under: readonly [number, number, number], turn = 0): { pose: { target: [number, number, number]; position: [number, number, number] }; fov: number } {
+  return {
+    pose: { target: atInstrument(placed.pose.target, under, turn), position: atInstrument(placed.pose.position, under, turn) },
+    fov: placed.pose.fov,
+  };
+}
