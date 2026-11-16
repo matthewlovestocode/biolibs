@@ -21,9 +21,9 @@ import { THEME_ATTRIBUTE, colour, type Meaning, type Theme } from "@biolibs/bion
 import { MotionSwitch } from "./explorer.js";
 import { InstrumentShape } from "./instruments.js";
 import { useMotion, type Motion } from "./motion.js";
-import { GelSlab, Molecule, gelLabels, moleculeLabels } from "./molecule.js";
+import { GelSlab, Joining, Molecule, gelLabels, joiningLabels, moleculeLabels } from "./molecule.js";
 import { Follow, Rig, paint, useSystemTheme, type Label } from "./scene.js";
-import { MOLECULE_RADIUS, measureLine, moleculeCentre, placeGel, placeMolecule, stageViewName, type StageGel, type StageMeasure, type StageMolecule } from "./shapes.js";
+import { MOLECULE_RADIUS, measureLine, moleculeCentre, placeGel, placeJoining, placeMolecule, stageViewName, type StageGel, type StageJoining, type StageMeasure, type StageMolecule } from "./shapes.js";
 import { STAGE_VIEWS, STAGE_VIEW_NAMES, STEP_SECONDS, lensFrame, lidOpen, pairsOf, placeStrands, polymerasesOf, shapeOf, stagePose, type StageLens,
          type StageTube, type StageView, type StepSpeed } from "./shapes.js";
 
@@ -51,7 +51,8 @@ export interface StageLine {
  *   what otherwise follows the system; `seconds` sets how long a step in the tube takes to play, in
  *   place of the speed chosen in the scene, and `onPlayed` is told each time one finishes playing,
  *   which is how a host runs one step into the next; `measures` are lengths to mark off under the
- *   strands in the tube, each from one base to another; `gel` is a gel that has been run, drawn above the
+ *   strands in the tube, each from one base to another; `joining` is pieces being joined, drawn
+ *   in the tube view where there are no strands to draw; `gel` is a gel that has been run, drawn above the
  *   instrument in the result view; `molecule` is what was made, drawn above the
  *   instrument in the result view as a map of it; `children` is drawn beside the scene.
  *
@@ -98,11 +99,11 @@ export function BaseLens({ lens }: { lens: StageLens }) {
   );
 }
 
-export function InstrumentStage({ model, name, view, onView, screen = [], well, tube, lens, legend, molecule, gel, measures = [], theme, motion: pinned, seconds, onPlayed, children }: {
+export function InstrumentStage({ model, name, view, onView, screen = [], well, tube, lens, legend, molecule, gel, joining, measures = [], theme, motion: pinned, seconds, onPlayed, children }: {
   model: string; name: string; view: StageView; onView: (view: StageView) => void; screen?: readonly StageLine[];
   well?: { row: number; column: number }; tube?: StageTube; lens?: (through: number) => StageLens | null;
   legend?: Partial<Record<StageTube["strands"][number]["kind"], string>>;
-  molecule?: StageMolecule; gel?: StageGel; measures?: readonly StageMeasure[]; theme?: Theme; motion?: Motion; seconds?: number; onPlayed?: () => void; children?: ReactNode;
+  molecule?: StageMolecule; gel?: StageGel; joining?: StageJoining; measures?: readonly StageMeasure[]; theme?: Theme; motion?: Motion; seconds?: number; onPlayed?: () => void; children?: ReactNode;
 }) {
   const system = useSystemTheme();
   const shown = theme ?? system;
@@ -112,7 +113,9 @@ export function InstrumentStage({ model, name, view, onView, screen = [], well, 
   // A molecule is pictured, not seen: it is drawn where the DNA is thought about, in the tube if nothing else is drawn there, and as the result.
   const made = molecule !== undefined && (view === "result" || (view === "tube" && tube === undefined));
   const ran = view === "result" && gel !== undefined;
-  const pose = useMemo(() => stagePose(made || ran ? "result" : view, size, shape, made || ran), [view, size, shape, made, ran]);
+  const fitting = view === "tube" && joining !== undefined && tube === undefined;
+  const pose = useMemo(() => stagePose(made || ran || fitting ? "result" : view, size, shape, made || ran || fitting), [view, size, shape, made, ran, fitting]);
+  const pairing = useMemo(() => (fitting ? placeJoining(joining, moleculeCentre(size), pose.position, MOLECULE_RADIUS) : null), [fitting, joining, size, pose]);
   const slab = useMemo(() => (ran ? placeGel(gel, moleculeCentre(size), pose.position, [MOLECULE_RADIUS * 2.3, MOLECULE_RADIUS * 2.1]) : null), [ran, gel, size, pose]);
   // What was made, drawn above the machine as a map of it: nothing the machine shows, and what the run was for.
   const placed = useMemo(() => (made ? placeMolecule(molecule, moleculeCentre(size), pose.position, MOLECULE_RADIUS) : null), [made, molecule, size, pose]);
@@ -180,6 +183,7 @@ export function InstrumentStage({ model, name, view, onView, screen = [], well, 
     ] : [])),
     ...(placed === null ? [] : moleculeLabels(placed)),
     ...(slab === null ? [] : gelLabels(slab)),
+    ...(pairing === null ? [] : joiningLabels(pairing)),
     ...marked.map((one, at): Label => ({ key: `measure ${at}`, at: one.at, rank: 1, content: <span className="measure">{one.label}</span> })),
   ];
   const kinds = [...new Set(strands.map((one) => one.kind))];
@@ -230,6 +234,7 @@ export function InstrumentStage({ model, name, view, onView, screen = [], well, 
           ))}
           {placed !== null && <Molecule placed={placed} theme={shown} />}
           {slab !== null && <GelSlab placed={slab} theme={shown} />}
+          {pairing !== null && <Joining placed={pairing} theme={shown} />}
           {marked.map((one, at) => <Line key={at} points={one.points} color={paint("ink", shown, 0.6).color} lineWidth={1.5} transparent opacity={0.8} toneMapped={false} />)}
           <Follow labels={labels} layer={layer} />
           <OrbitControls makeDefault enableDamping={motion === "on"} dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.03} minDistance={0.15} maxDistance={8} />

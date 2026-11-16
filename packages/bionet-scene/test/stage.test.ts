@@ -5,7 +5,7 @@
  * they are checked as numbers: a shape stays inside the instrument it is a shape of, each view looks
  * at the part it is named for, and a strand's place along the template can be compared across rows.
  */
-import { placeGel, stageViewName, measureLine, MOLECULE_RADIUS, moleculeCentre, placeMolecule, BaseLens, STAGE_VIEWS, STAGE_VIEW_NAMES, STEP_SECONDS, TUBE_SPACE, lensFrame, lidOpen, pairsOf, placeStrands, polymerasesOf, sceneView, shapeOf,
+import { placeGel, placeJoining, stageViewName, measureLine, MOLECULE_RADIUS, moleculeCentre, placeMolecule, BaseLens, STAGE_VIEWS, STAGE_VIEW_NAMES, STEP_SECONDS, TUBE_SPACE, lensFrame, lidOpen, pairsOf, placeStrands, polymerasesOf, sceneView, shapeOf,
          stagePose, type Part, type StageLens } from "@biolibs/bionet-scene";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -361,5 +361,54 @@ describe("a gel that has been run, drawn", () => {
     expect(Math.hypot(...placed.marks[0]!.at)).toBeGreaterThan(Math.hypot(...outer!));
     // A quarter of the way round is to the right.
     expect(placed.marks[0]!.at[0]).toBeGreaterThan(0.2);
+  });
+});
+
+describe("pieces being joined, drawn", () => {
+  const joining = { circular: true, pieces: [
+    { name: "vector", length: 300, flipped: false, tone: "yours" as const },
+    { name: "insert", length: 100, flipped: true, tone: "theirs" as const },
+  ], joins: [{ label: "GATC" }, { label: "AATT" }] };
+
+  it("gives each piece a share of the whole in proportion to its length", () => {
+    const placed = placeJoining({ ...joining, joined: 1 }, [0, 0, 0], [0, 0, 5], 0.2);
+    const round = (piece: { points: [number, number, number][] }): number => {
+      // How far round the circle it goes, from the angle its two ends subtend.
+      const angle = (at: [number, number, number]): number => Math.atan2(at[0], at[1]);
+      return ((angle(piece.points.at(-1)!) - angle(piece.points[0]!) + 2 * Math.PI) % (2 * Math.PI)) / (2 * Math.PI);
+    };
+    expect(round(placed.pieces[0]!)).toBeCloseTo(0.75, 2);
+    expect(round(placed.pieces[1]!)).toBeCloseTo(0.25, 2);
+    for (const piece of placed.pieces) for (const point of piece.points) expect(Math.hypot(point[0], point[1])).toBeCloseTo(0.2, 6);
+  });
+
+  it("says which piece went in the other way round", () => {
+    const placed = placeJoining(joining, [0, 0, 0], [0, 0, 5], 0.2);
+    expect(placed.pieces.map((one) => one.label)).toEqual(["vector", "insert ↺"]);
+    expect(placed.joins.map((one) => one.label)).toEqual(["GATC", "AATT"]);
+  });
+
+  it("leaves a gap at every join while the pieces are apart, and none once they are joined", () => {
+    const apart = placeJoining({ ...joining, joined: 0 }, [0, 0, 0], [0, 0, 5], 0.2);
+    const done = placeJoining({ ...joining, joined: 1 }, [0, 0, 0], [0, 0, 5], 0.2);
+    const gap = (placed: typeof apart): number => Math.hypot(placed.pieces[0]!.points.at(-1)![0] - placed.pieces[1]!.points[0]![0],
+                                                             placed.pieces[0]!.points.at(-1)![1] - placed.pieces[1]!.points[0]![1]);
+    expect(gap(apart)).toBeGreaterThan(gap(done));
+    expect(gap(done)).toBeCloseTo(0, 6);
+    expect(apart.joins.every((join) => join.closed === 0)).toBe(true);
+    expect(done.joins.every((join) => join.closed === 1)).toBe(true);
+  });
+
+  it("lays pieces that do not close along a line, with one join fewer", () => {
+    const placed = placeJoining({ ...joining, circular: false, joins: [{ label: "GATC" }] }, [0, 1, 0], [0, 1, 5], 0.2);
+    expect(placed.joins.length).toBe(1);
+    expect(placed.pieces[0]!.points[0]).toEqual([-0.2, 1, 0]);
+    expect(placed.pieces.at(-1)!.points.at(-1)![0]).toBeCloseTo(0.2, 6);
+  });
+
+  it("calls a heat block's views by what they are", () => {
+    expect(stageViewName("heat-block", "machine")).toBe("The heat block");
+    expect(stageViewName("heat-block", "result")).toBe("What it makes");
+    expect(shapeOf("heat-block")?.block?.rows).toBe(2);
   });
 });

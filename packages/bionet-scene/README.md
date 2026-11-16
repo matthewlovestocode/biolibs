@@ -120,6 +120,10 @@ On an instrument's stage it is drawn above the machine in the result view, as wh
 `placeMolecule` works one out into lines facing whoever is looking, and is plain arithmetic.
 `moleculeOf` in `@biolibs/bionet-tools` makes one from a part.
 
+`joining` is pieces being joined, drawn in the tube view where there are no strands to draw: each
+piece takes a share of the ring in proportion to its length, with a gap at every join that closes as
+`joined` goes from 0 to 1. A `heat-block` is drawn and named like any other instrument.
+
 ## Motion can be turned off
 
 Every scene has a switch, and starts as the system's "reduce motion" setting says. With motion off a

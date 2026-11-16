@@ -45,6 +45,12 @@ const SHAPES: Readonly<Record<string, Shape>> = {
     screen: { at: [0.36, 0.2, 0.205], size: [0.18, 0.2], leans: 0 },
     block: { at: [-0.18, 0.105, 0], size: [0.46, 0.7], rows: 1, columns: 8 },
   },
+  // A metal block with two rows of holes for tubes, and a small display on the front of its base.
+  "heat-block": {
+    body: [{ at: [0, -0.28, 0], size: [1, 0.44, 1] }, { at: [0, 0.02, 0], size: [0.86, 0.16, 0.86] }],
+    screen: { at: [0, -0.18, 0.5], size: [0.3, 0.14], leans: 0 },
+    block: { at: [0, 0.1, 0], size: [0.72, 0.6], rows: 2, columns: 6 },
+  },
 };
 
 /**
@@ -444,6 +450,7 @@ export function measureLine(measure: StageMeasure, length: number, size: readonl
 /** What each view is called for a model of instrument, where it differs from a thermocycler's. */
 const VIEW_NAMES: Readonly<Record<string, Partial<Record<StageView, string>>>> = {
   "gel-station": { machine: "The gel box", block: "The gel", screen: "The power supply", tube: "In the tube", result: "The gel, run" },
+  "heat-block": { machine: "The heat block", block: "The wells", screen: "The temperature", tube: "In the tube", result: "What it makes" },
 };
 
 /**
@@ -520,4 +527,79 @@ export function placeGel(gel: StageGel, centre: readonly [number, number, number
                at: at(lane === 0 ? x(lane) - half - w * 0.02 : x(lane) + half + w * 0.02, y) };
     })),
   };
+}
+
+/** Pieces being joined, to draw: what is in the tube while a ligation is going on. */
+export interface StageJoining {
+  /** The pieces, in the order they go round or along the product. */
+  pieces: readonly { name: string; length: number; flipped: boolean; tone: Meaning }[];
+  /** What is written at each join, such as the overhang the two ends share. A circle has one for each piece, a line one fewer. */
+  joins: readonly { label: string }[];
+  /** Whether they close into a circle. */
+  circular: boolean;
+  /** How far along the joining is, from 0 (the pieces apart) to 1 (joined). */
+  joined?: number;
+}
+
+/** Pieces worked out into lines in the scene. */
+export interface PlacedJoining {
+  /** Each piece: the line to draw, its colour, and where to write its name. */
+  pieces: { points: Point[]; tone: Meaning; label: string; at: Point }[];
+  /** Each join: where to write what it is made of, and a short line across it once it is closed. */
+  joins: { label: string; at: Point; points: Point[]; closed: number }[];
+}
+
+/**
+ * Work pieces being joined out into lines, facing whoever is looking.
+ *
+ * Each piece takes a share of the whole in proportion to its length, so the picture is to scale.
+ * While they are apart there is a gap at every join, and the gaps close as the joining goes on: for
+ * a circle that is the ring closing, which is the thing itself and not decoration.
+ *
+ * @param joining - The pieces and their joins.
+ * @param centre - Where the middle is.
+ * @param toward - Where it is looked at from: it is drawn flat on to there.
+ * @param radius - A ring's radius, or half a line's length, in metres.
+ * @returns The lines, and where to write the names.
+ */
+export function placeJoining(joining: StageJoining, centre: readonly [number, number, number], toward: readonly [number, number, number], radius: number): PlacedJoining {
+  const unit = (v: Point): Point => { const n = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / n, v[1] / n, v[2] / n]; };
+  const cross = (a: Point, b: Point): Point => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const facing = unit([toward[0] - centre[0], toward[1] - centre[1], toward[2] - centre[2]]);
+  const right = unit(cross(Math.abs(facing[1]) > 0.98 ? [0, 0, -1] : [0, 1, 0], facing));
+  const up = cross(facing, right);
+  const at = (x: number, y: number): Point => [centre[0] + right[0] * x + up[0] * y, centre[1] + right[1] * x + up[1] * y, centre[2] + right[2] * x + up[2] * y];
+  const whole = Math.max(1, joining.pieces.reduce((sum, piece) => sum + Math.max(1, piece.length), 0));
+  const joined = Math.min(1, Math.max(0, joining.joined ?? 1));
+  // Apart, a fifth of the way round is gaps; joined, none of it is.
+  const gaps = joining.circular ? joining.pieces.length : Math.max(0, joining.pieces.length - 1);
+  const gap = gaps === 0 ? 0 : ((1 - joined) * 0.2) / gaps;
+  const span = 1 - gap * gaps;
+  // Along the whole, from 0 to 1: round a circle from the top clockwise, or left to right along a line.
+  const on = (where: number, out = 0): Point => {
+    if (!joining.circular) return at((where - 0.5) * 2 * radius, out);
+    const angle = where * 2 * Math.PI;
+    return at(Math.sin(angle) * (radius + out), Math.cos(angle) * (radius + out));
+  };
+  const line = (from: number, to: number, out = 0): Point[] => {
+    const steps = joining.circular ? Math.max(2, Math.ceil((to - from) * 72)) : 1;
+    return Array.from({ length: steps + 1 }, (_, step) => on(from + ((to - from) * step) / steps, out));
+  };
+  const pieces: PlacedJoining["pieces"] = [];
+  const joins: PlacedJoining["joins"] = [];
+  let where = joining.circular ? gap / 2 : 0;
+  for (const [index, piece] of joining.pieces.entries()) {
+    const takes = (Math.max(1, piece.length) / whole) * span;
+    pieces.push({ points: line(where, where + takes), tone: piece.tone, label: `${piece.name}${piece.flipped ? " ↺" : ""}`,
+                  at: on(where + takes / 2, joining.circular ? radius * 0.2 : -radius * 0.12) });
+    where += takes;
+    const join = joining.joins[index];
+    // A join sits in the gap after its piece: before the next one, or back at the start for a circle.
+    if (join !== undefined && (joining.circular || index < joining.pieces.length - 1)) {
+      joins.push({ label: join.label, at: on(where + gap / 2, joining.circular ? -radius * 0.22 : radius * 0.16),
+                   points: line(where, where + gap, 0), closed: joined });
+      where += gap;
+    }
+  }
+  return { pieces, joins };
 }

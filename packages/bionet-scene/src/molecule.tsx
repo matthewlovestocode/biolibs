@@ -10,18 +10,19 @@
 import { Line } from "@react-three/drei";
 import type { Theme } from "@biolibs/bionet-theme";
 import { paint, type Label } from "./scene.js";
-import type { PlacedGel, PlacedMolecule } from "./shapes.js";
+import type { PlacedGel, PlacedJoining, PlacedMolecule } from "./shapes.js";
 
 /**
  * The names to write over a molecule: each stretch marked on it, and what it is.
  *
  * @param placed - The molecule, worked out by `placeMolecule`.
- * @param named - Whether to write its name and length at its middle. Off where something else already does.
+ * @param named - Whether to write its name and length at its middle. Off where something else
+ *   already does. A long name is cut short, since it is written across the middle of a ring.
  * @returns Labels for `Follow`. Stretches matter less than the name, so they give way when crowded.
  */
 export function moleculeLabels(placed: PlacedMolecule, named = true): Label[] {
   return [
-    ...(named ? [{ key: "molecule", at: placed.middle, rank: 0, content: <span className="molecule-name">{placed.name}<small>{placed.size}</small></span> }] : []),
+    ...(named ? [{ key: "molecule", at: placed.middle, rank: 0, content: <span className="molecule-name">{placed.name.length > 26 ? `${placed.name.slice(0, 25)}…` : placed.name}<small>{placed.size}</small></span> }] : []),
     ...placed.marks.map((one, at): Label => ({ key: `molecule mark ${at}`, at: one.at, rank: 1, content: <span className="molecule-cut">{one.label}</span> })),
     ...placed.features.map((one, at): Label => ({ key: `molecule ${at}`, at: one.at, rank: 3, content: <span className={`molecule-mark tone-${one.tone}`}>{one.label}</span> })),
   ];
@@ -78,6 +79,40 @@ export function GelSlab({ placed, theme }: { placed: PlacedGel; theme: Theme }) 
       {placed.bands.map((band, at) => {
         const tone = paint(band.tone, theme, 1);
         return <Line key={at} points={band.points} color={tone.color} lineWidth={band.lane === 0 ? 3 : 5} transparent opacity={band.strength} toneMapped={false} />;
+      })}
+    </group>
+  );
+}
+
+/**
+ * The names to write over pieces being joined: each piece's, and what each join is made of.
+ *
+ * @param placed - The pieces, worked out by `placeJoining`.
+ * @returns Labels for `Follow`. A join matters more than a piece's name, since it is what is being looked at.
+ */
+export function joiningLabels(placed: PlacedJoining): Label[] {
+  return [
+    ...placed.joins.map((one, at): Label => ({ key: `join ${at}`, at: one.at, rank: 0, content: <span className="molecule-cut">{one.label}</span> })),
+    ...placed.pieces.map((one, at): Label => ({ key: `piece ${at}`, at: one.at, rank: 2, content: <span className={`molecule-mark tone-${one.tone}`}>{one.label}</span> })),
+  ];
+}
+
+/**
+ * The lines of pieces being joined. It goes inside a canvas.
+ *
+ * @param props - `placed` is from `placeJoining`; `theme` is the theme to paint it in.
+ */
+export function Joining({ placed, theme }: { placed: PlacedJoining; theme: Theme }) {
+  return (
+    <group>
+      {placed.pieces.map((piece, at) => {
+        const tone = paint(piece.tone, theme, 1);
+        return <Line key={at} points={piece.points} color={tone.color} lineWidth={6} toneMapped={false} />;
+      })}
+      {placed.joins.map((join, at) => {
+        const tone = paint("attention", theme, 1);
+        // The join itself is drawn only once the ends have met: until then there is a gap, which is the point.
+        return join.closed < 1 ? null : <Line key={at} points={join.points} color={tone.color} lineWidth={4} toneMapped={false} />;
       })}
     </group>
   );

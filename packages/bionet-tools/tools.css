@@ -101,3 +101,4 @@
 .bionet .pieces td, .bionet .pieces th { font-size: .82rem; vertical-align: top }
 .bionet .pieces code { font-size: .78rem }
 .bionet .benchpanel .gel { max-width: 18rem }
+.bionet .faced.blunt { margin: 0 .6rem .6rem; font-family: inherit; color: var(--bionet-dim) }

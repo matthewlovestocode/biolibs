@@ -15,6 +15,9 @@
  * - `pcr-tool.tsx`, `digest-tool.tsx` — the tools
  * - `pcr-bench.tsx` — a PCR at the machine: what is beside the scene, and what the scene is told to show
  * - `pcr-working.ts` — the working behind what the PCR tool says: each figure with the steps that give it
+ * - `ligate.ts` — pieces that have already been cut, joined where their ends fit
+ * - `ligate-working.ts` — a ligation's working: each join in its bases, the length, how much to put in
+ * - `ligate-bench.tsx` — a ligation at the heat block: what is shown beside it, and what the scene draws
  * - `digest-working.ts` — a digest looked at closely: each cut in its bases, each piece with its ends, the working
  * - `digest-bench.tsx` — a digest at the gel station: what is shown beside it, and what the scene is told to draw
  * - `working.tsx` — the working drawn: a figure that opens to show its steps
@@ -34,6 +37,9 @@ export * from "./pcr-tool.js";
 export * from "./digest-tool.js";
 export * from "./pcr-working.js";
 export * from "./digest-working.js";
+export * from "./ligate.js";
+export * from "./ligate-working.js";
+export * from "./ligate-bench.js";
 export * from "./digest-bench.js";
 export * from "./working.js";
 export * from "./map.js";

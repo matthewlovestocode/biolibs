@@ -6,14 +6,17 @@ import { useLab } from "@biolibs/bionet-react";
 import { DigestTool } from "./digest-tool.js";
 import { PcrTool } from "./pcr-tool.js";
 import { instrumentFor, toolFor, type ToolName } from "./run.js";
+import { LigationTool } from "./ligate-bench.js";
 import { SequencesTool } from "./sequences-tool.js";
 
 /** What each tool is called. */
-export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel" };
+export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation" };
 
 function Tool({ tool, instrument, onDone }: { tool: ToolName; instrument: { id: string; name: string } | null; onDone?: (() => void) | undefined }) {
   const more = onDone === undefined ? {} : { onDone };
-  return tool === "pcr" ? <PcrTool instrument={instrument} {...more} /> : <DigestTool instrument={instrument} {...more} />;
+  return tool === "pcr" ? <PcrTool instrument={instrument} {...more} />
+    : tool === "ligation" ? <LigationTool instrument={instrument} {...more} />
+    : <DigestTool instrument={instrument} {...more} />;
 }
 
 /**

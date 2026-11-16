@@ -943,6 +943,22 @@ working shown.
 - **Not modelled:** voltage and time (kept with the run only), uncut and supercoiled plasmid,
   methylation other than a note on DpnI, buffers, star activity, more than one sample lane.
 
+### Ligation, and the round trip
+
+The step after a digest, so the bench now goes all the way round: bring a plasmid in from a file,
+cut it, keep the pieces, join them back up, and have what comes out be a part the lab holds.
+
+- **A heat block** (`heat-block`), with the same five views. It shows one number, which is the point:
+  everything else is pictured.
+- **What fits follows from the ends**, which parts now carry. The joining is `assembly2`'s; what is
+  added is where each piece sits, which way round, and what each join is made of — all checked in
+  the tests against the product's own bases.
+- **The picture is the pieces closing**, with a drag, like the gel that runs.
+- **The checks are the ways it gives the wrong thing:** self-ligation, an insert either way round, a
+  blunt join, and a PCR product with no phosphate — that last read off the log's own provenance.
+- **Not modelled:** time and temperature beyond keeping them, ligase units, buffer, how much of each
+  is really in the tube.
+
 ## A first slice
 
 Two instances of the desktop app for the Wren Lab:

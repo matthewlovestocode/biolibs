@@ -7,6 +7,7 @@
  */
 import type { ReactNode } from "react";
 import type { CutSite } from "./digest-working.js";
+import type { JoinOverhangs } from "./ligate-working.js";
 import type { BindingWorking, FacedBase, Working } from "./pcr-working.js";
 
 /**
@@ -72,6 +73,24 @@ export function CutBases({ site }: { site: CutSite }) {
     <div className="faced cutbases" role="img" aria-label={says}>
       <div className="row"><span className="end">5′</span>{row(top, cutTop)}<span className="end">3′ top</span></div>
       <div className="row"><span className="end">3′</span>{row(bottom, cutBottom)}<span className="end">5′ bottom</span></div>
+    </div>
+  );
+}
+
+/**
+ * Two ends of a ligation written one over the other, so that the pairing can be read.
+ *
+ * @param props - `bases` is from `joinWorking`.
+ */
+export function JoinBases({ bases }: { bases: JoinOverhangs }) {
+  if (bases.kind === "blunt") return <p className="faced blunt">Both ends are blunt, so there is nothing to pair: ligase seals them as they meet.</p>;
+  const says = `${bases.from}'s ${bases.kind} overhang ${bases.left} against ${bases.to}'s ${bases.right}.`;
+  const row = (text: string): ReactNode => [...text].map((base, at) => <span key={at} className={`base base-${base.toLowerCase()}`}>{base}</span>);
+  return (
+    <div className="faced" role="img" aria-label={says}>
+      <div className="row"><span className="end">{bases.from}</span>{row(bases.left)}<span className="end" /></div>
+      <div className="row"><span className="end" />{[...bases.left].map((base, at) => <span key={at} className="bond">|</span>)}<span className="end" /></div>
+      <div className="row"><span className="end">{bases.to}</span>{row(bases.right)}<span className="end" /></div>
     </div>
   );
 }

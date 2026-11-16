@@ -85,6 +85,18 @@ The run gel can be dragged back to the start. That is the one piece of motion he
 
 Voltage and time are kept with the run and are not modelled. How far a given voltage moves a band in a given time depends on the box, the buffer and the gel, and a tool that drew that with confidence would be making it up. A piece can be kept. Ticking one and recording a gel that matched makes a tube of it, as cutting the band out and cleaning it up does at the bench. The part it is a tube of has the ends the enzymes left and whatever the piece carried, and is traced back to the tube that was cut. Its length in the freezer is every base either strand has, which for sticky ends is a few more than the length it runs at on a gel, since a gel sees the paired stretch and the freezer counts the overhangs too.
 
+## Ligation: what the machine shows is one number
+
+A heat block displays its temperature. That is the whole of what there is to see while a ligation happens, and whether anything joined is found out days later by what grows. So of the five views, the first three are short and the last two carry it.
+
+The joining is `@biolibs/assembly2`'s `ligationAssembly`, which is the ported pydna algorithm. This package works out the part a bench reads and an assembly graph does not report plainly: where each piece sits in the product, which way round it went in, and what each join is made of. All of that is checked, in the tests, against the product's own bases — each piece is read back out of the product at the position claimed for it, and each join's overhang is read at the position claimed for it.
+
+The picture in the tube view is pieces as arcs with a gap at every join, and a drag that closes them. That is the same decision as the gel that can be dragged back: the motion is the thing itself, not an ornament on it. Nothing in the tube can be seen while a ligation is going on, which is exactly why the picture is worth drawing.
+
+What the checks are for is that a ligation usually gives several things and only one of them is wanted. A vector whose two ends fit each other closes on itself and gives colonies with nothing in them; an insert with the same overhang at both ends goes in either way round and both are in the tube; a blunt join happens far less often than a sticky one; and a PCR product has no phosphate at its 5′ ends, so ligase has nothing to seal. That last one is read off the log: the item's `from` names the run that made it, and the run says it was a PCR.
+
+Not modelled: how long and how warm, beyond keeping what was set with the run. Ligase units, buffer, ATP and how much of each is in the tube are the lesson's business, not a calculation's.
+
 ## What the tool does not check
 
 The merge does not run the PCR again. A run says what came out, and the lab records that its signer said so. The tool only offers to record a product the engine worked out, so an honest member's run is right; a run written by other software is a claim like any other signed entry. Replaying a run from its inputs to check it is possible, since the inputs and settings are kept, and is not built yet.
@@ -102,6 +114,9 @@ packages/bionet-tools/src/
   working.tsx      the working drawn: a figure that opens to show its steps
   pcr-bench.tsx    what is shown beside the instrument, and what the scene is told to draw
   digest.ts        where enzymes cut, the pieces, and the gel they would give
+  ligate.ts        pieces that have already been cut, joined where their ends fit
+  ligate-working.ts  each join in its bases, the length, how much to put in, the checks
+  ligate-bench.tsx   a ligation at the heat block
   digest-working.ts  each cut in its bases, each piece with its ends, the checks, the working
   digest-bench.tsx   what is shown beside the gel station, and what the scene is told to draw
   run.ts           each as a lab does one: which tubes, and what to record

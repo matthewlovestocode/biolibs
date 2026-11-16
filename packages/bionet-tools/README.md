@@ -1,6 +1,6 @@
 # @biolibs/bionet-tools
 
-The tools a lab uses at the bench, tied to its freezer: its sequences and their maps, PCR, and a check digest with its gel. Sequences come in from the SnapGene, GenBank, EMBL and FASTA files a lab already has, with their features. For PCR, choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
+The tools a lab uses at the bench, tied to its freezer: its sequences and their maps, PCR, a check digest with its gel, and a ligation that joins the pieces back up. Sequences come in from the SnapGene, GenBank, EMBL and FASTA files a lab already has, with their features. For PCR, choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
 
 ```
 npm install @biolibs/bionet-tools @biolibs/bionet-panels @biolibs/bionet-react @biolibs/bionet-theme react
@@ -146,6 +146,37 @@ whatever the piece carries. That is cutting a band out of the gel and cleaning i
 `digestChecks` is what a careful operator would ask before running the gel: pieces too close to tell
 apart, a piece the gel will not hold, one cut of a circle, an enzyme that does nothing.
 
+## A ligation at the heat block
+
+```tsx
+import { useLigationBench } from "@biolibs/bionet-tools";
+
+const bench = useLigationBench({ instrument });
+<InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage>
+```
+
+The step after a digest. Tick the cut pieces in the tube and what they would make is worked out from
+their ends: which fit, in what order, which way round, and whether anything closes into a circle.
+In the tube view the pieces are drawn as arcs with a gap at each join, and dragging closes them,
+which is the ring closing and not decoration. What it makes is drawn as a map with each join marked,
+carrying what each piece carried, turned round with it where a piece went in backwards.
+
+```ts
+import { endBases, endsFit, planLigation } from "@biolibs/bionet-tools";
+
+endBases(piece).right;                      // { kind: "5′", bases: "GATC" }
+endsFit(endBases(a).right, endBases(b).left);   // { kind: "5′", bases: "GATC" }, or null
+planLigation([vector, insert]).products[0];     // its length, its pieces in order, its joins, its features
+```
+
+The joining itself is `@biolibs/assembly2`'s. What this adds is what a bench has to read: where each
+piece sits in the product, which way round it went, and what each join is made of.
+
+`ligationChecks` is what a careful person would ask: a piece whose two ends fit each other and will
+close on itself, the same pieces making one product with an insert in and another with it the other
+way round, a blunt join that will mostly not happen, and a piece that came out of a PCR, which has
+no phosphate for ligase to seal. `ratioWorking` is the arithmetic for how much of each to put in.
+
 ## The working
 
 ```tsx
@@ -170,6 +201,9 @@ shown. Each figure opens to the steps that give it, and says on the outside whet
 - `siteWorking`: one cut in its bases, drawn by `CutBases`.
 - `piecesWorking`: the pieces as differences between cuts that add up to the whole, compared with the gel engine's.
 - `migrationWorking`: how far a piece runs, by the rule the gel is drawn by.
+- `joinWorking`: one join with its two overhangs written one over the other, drawn by `JoinBases`.
+- `ligationLengthWorking`: the pieces' lengths, less the overhangs they share.
+- `ratioWorking`: how much insert to put in for a given number of molecules to each of vector.
 
 Every check from `programmeChecks` carries `because`: the comparison that raised it. At the machine,
 the copied stretch is also marked off under the strands in the scene, with its subtraction.

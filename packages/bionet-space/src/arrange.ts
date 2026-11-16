@@ -26,6 +26,7 @@ export const DEFAULT_SIZE: Readonly<Record<string, readonly [number, number, num
 export const INSTRUMENT_SIZE: Readonly<Record<string, readonly [number, number, number]>> = {
   thermocycler: [0.35, 0.25, 0.45],
   "gel-station": [0.45, 0.18, 0.3],
+  "heat-block": [0.2, 0.12, 0.2],
   centrifuge: [0.4, 0.3, 0.45],
   computer: [0.5, 0.4, 0.25],
   microscope: [0.3, 0.45, 0.4],

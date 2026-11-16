@@ -9,6 +9,7 @@ import type { ItemState, PartFeature, PartState, PlaceState } from "@biolibs/bio
 import { amountOf, whereWords } from "@biolibs/bionet-panels";
 import { planDigest, type DigestPlan } from "./digest.js";
 import { cutSites, digestPieces, type DigestPiece } from "./digest-working.js";
+import { endBases, planLigation, type LigationPiece, type LigationPlan, type LigationProduct } from "./ligate.js";
 import { ANNEAL_AT_LEAST, looksLikePrimer, planPcr, type PcrPlan } from "./pcr.js";
 import { primerBinding, type PcrProgramme } from "./pcr-scene.js";
 import { carryFeatures } from "./sequence-file.js";
@@ -265,11 +266,114 @@ export function digestRun(lab: ToolLab, choice: DigestChoice): DigestRun {
            differed: { ...record, outcome: "failed" } };
 }
 
+/**
+ * The tubes a ligation could be set up from: every tube of a linear molecule with something in it.
+ *
+ * A circle has no ends to join, so it is left out until somebody cuts it.
+ *
+ * @param lab - The lab.
+ * @returns The tubes to offer, the ones with sticky ends first, since those are the ones that were cut.
+ */
+export function ligationTubes(lab: ToolLab): TubeChoice[] {
+  return pcrTubes(lab).templates.filter((one) => !one.part.circular)
+    .sort((a, b) => Number(sticky(b.part)) - Number(sticky(a.part)) || b.part.length - a.part.length);
+}
+
+/** Whether a part has an end with unpaired bases. */
+const sticky = (part: PartState): boolean => (part.ends?.left ?? 0) !== 0 || (part.ends?.right ?? 0) !== 0;
+
+/** What somebody has chosen for a ligation. */
+export interface LigationChoice {
+  /** The tubes to join, by item ID. */
+  tubes: readonly string[];
+  /** How much of each was used, in its own unit. Whole numbers, by item ID. */
+  used?: Readonly<Record<string, number>>;
+  /** Whether two blunt ends may be joined, and whether to keep the products that do not close. */
+  blunt?: boolean;
+  linear?: boolean;
+  /** Which product is being made, by its place in the plan. The first by default. */
+  chosen?: number;
+  /** The heat block or water bath it was set up at, if the lab has one. */
+  instrument?: string | null;
+  /** What to call the product, how much of it there is, and in what unit. */
+  name?: string;
+  amount?: number;
+  unit?: string | null;
+  /** Anything worth saying about it. */
+  note?: string | null;
+}
+
+/** A ligation as chosen: what it would make, and what to ask the lab to record. */
+export interface LigationRun {
+  /** What it would make, or `null` if a tube that was chosen is not one the lab has. */
+  plan: LigationPlan | null;
+  /** The pieces, as the sequence layer needs them. */
+  pieces: LigationPiece[];
+  /** The product being made, or `null` if there is nothing to make. */
+  product: LigationProduct | null;
+  /** What it would be called. */
+  name: string;
+  /** What to hand to the lab's `recordRun` if it worked. `null` while there is nothing to make. */
+  worked: Record<string, unknown> | null;
+  /** What to hand to it if it was set up and gave nothing. `null` if a tube is missing. */
+  failed: Record<string, unknown> | null;
+}
+
+/**
+ * Work a choice of tubes out into a ligation.
+ *
+ * What comes out is one molecule, and it is a part like any other: a circle if the pieces closed,
+ * and otherwise a line with the outer ends the pieces brought. It carries what the pieces carried.
+ *
+ * @param lab - The lab.
+ * @param choice - The tubes, how much of each, and what to call what comes out.
+ * @returns What it would make, and what to record either way.
+ */
+export function ligationRun(lab: ToolLab, choice: LigationChoice): LigationRun {
+  const pieces: LigationPiece[] = [];
+  for (const item of choice.tubes) {
+    const held = lab.items.find((one) => one.item === item);
+    const part = held === undefined ? undefined : lab.parts.find((one) => one.checksum === held.part);
+    if (part === undefined || part.circular) return { plan: null, pieces: [], product: null, name: "", worked: null, failed: null };
+    pieces.push({ id: item, name: part.name, sequence: part.sequence, ends: part.ends ?? { left: 0, right: 0 }, features: part.features });
+  }
+  const plan = planLigation(pieces, { blunt: choice.blunt === true, linear: choice.linear === true });
+  const product = plan.products[Math.max(0, Math.min(choice.chosen ?? 0, plan.products.length - 1))] ?? null;
+  const typed = choice.name?.trim() ?? "";
+  const name = (typed !== "" ? typed : pieces.map((piece) => piece.name).join(" + ")).slice(0, 200);
+  const whole = (value: number | undefined, usual: number): number => (value === undefined || !Number.isSafeInteger(value) || value < 0 ? usual : value);
+  const record = {
+    kind: "ligation", instrument: choice.instrument ?? null,
+    inputs: pieces.map((piece) => ({ item: piece.id, amount: whole(choice.used?.[piece.id], 1), role: "piece" })),
+    settings: { pieces: pieces.length, ...(product === null ? {} : { joins: product.joins.length, made: product.circular ? "circle" : "line" }),
+                ...(choice.blunt === true ? { blunt: "allowed" } : {}) },
+    note: choice.note ?? null,
+  };
+  if (product === null) return { plan, pieces, product, name, worked: null, failed: { ...record, outcome: "failed", outputs: [] } };
+  // A circle has no ends. A line keeps the outer ends of the pieces at each of its own ends.
+  const first = product.pieces[0]!;
+  const last = product.pieces.at(-1)!;
+  const endsOf = (placed: typeof first, which: "left" | "right"): number => {
+    const piece = pieces.find((one) => one.id === placed.id)!;
+    const own = placed.flipped ? { left: -piece.ends.right, right: -piece.ends.left } : piece.ends;
+    return own[which];
+  };
+  const ends = product.circular ? undefined : { left: endsOf(first, "left"), right: endsOf(last, "right") };
+  return {
+    plan, pieces, product, name,
+    worked: { ...record, outcome: "worked",
+              outputs: [{ sequence: product.sequence, circular: product.circular, name, features: product.features,
+                          amount: whole(choice.amount, 20), unit: choice.unit === undefined ? "µL" : choice.unit,
+                          ...(ends === undefined || (ends.left === 0 && ends.right === 0) ? {} : { ends }) }] },
+    failed: { ...record, outcome: "failed", outputs: [] },
+  };
+}
+
 /** The tools there are. */
-export type ToolName = "pcr" | "digest";
+export type ToolName = "pcr" | "digest" | "ligation";
 
 /** The model of instrument each tool is used at. */
-export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station" };
+export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station", ligation: "heat-block" };
 
 /**
  * Which tool an instrument opens.

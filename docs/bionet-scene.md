@@ -100,6 +100,10 @@ The scene knows nothing of sequence files or feature types. It is handed a `Stag
 
 The stage was built for a thermocycler, and its five views turned out to be about using a machine and not about that machine: what it is, what is under its lid, what it displays, what is in the tube, and the result. A gel station has the same five under other names, so the views are fixed and their names come from the model. What differs is what the pictured views draw. For a PCR it is strands in a tube. For a digest it is the molecule with its cuts marked, and then a gel: a slab facing whoever is looking, wells at the top, each band a line as bright as the DNA in it, with its size beside it.
 
+## A third machine
+
+Adding a gel station tested whether the five views were about a thermocycler. Adding a heat block tested whether they were about machines that do much at all. A heat block has one number on it, and the answer was the same: the views are the shape of using an instrument, and what changes is their names and what the pictured ones draw. For a ligation they draw the pieces as arcs of a ring with a gap at each join, and the gaps close.
+
 ## Motion is a setting
 
 Moving between views helps some people keep their place and makes others unwell, or just slows them down the tenth time. Every scene has a switch that starts where the system's "reduce motion" setting is. With it off, a change of view is a cut, a lid is open or shut, and nothing moves by itself.
