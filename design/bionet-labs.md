@@ -315,8 +315,8 @@ This replaces the package list under "Libraries" above. Each layer may depend on
 | Hooks | `@biolibs/tools-react` | Sequence map, digest, PCR, gel, plan, alignment | Engines, React | Not started |
 | 3D | `@biolibs/lab-three` | The scene: places, boxes, molecules, instruments, neighbours | The hooks' data, three.js | Not started |
 
-"Built" means written, tested in this repository, and in use by the desktop app and `lab-wren`
-through locally packed copies, but not yet on npm.
+"Built" means written, tested in this repository, published to npm as 0.x, and in use by the
+desktop app and both labs.
 
 What makes them reusable:
 
@@ -631,7 +631,7 @@ Nothing blocks the first slice. Two things remain for the step after it:
   the ones built into its Node, and the device key is sealed by the operating system's keychain.
   `npm run try-app` runs the real app as two devices and photographs each step.
 
-**Restructured into packages (2026-11-15), built and not yet published:**
+**Restructured into packages (2026-11-15), published and in use:**
 
 - `@biolibs/bionet-theme`, `-peer`, `-client`, `-react`, `-panels`: see "The libraries". Together
   they add 68 tests; the workspace passes (19,183).
@@ -639,6 +639,9 @@ Nothing blocks the first slice. Two things remain for the step after it:
   between them. Its core, views, styles and logo are gone, taken from the packages.
 - `lab-wren`'s server is a few lines around `@biolibs/bionet-peer`. Its own copy of the peer is gone.
 - The peer now cuts off a removed member the moment the entry that removes them arrives.
+- Both labs' pages are drawn by `@biolibs/bionet-panels` in the theme, light or dark, wearing the
+  mark. Their own stylesheets and their two copies of the page are gone. What a signature settles is
+  now worded in one place.
 
 **The first slice is complete, run locally:** two devices each with their own key; one founds the
 roster and adds the other; both work offline; they converge through the web peer; one publishes, and
@@ -669,8 +672,11 @@ the peer serves the signed inventory.
 - Everything under "The lab workspace": places, the scene, the tools and the libraries.
 - The roster as a published document for outside readers. Readers still remember keys per address.
 - `lab-thistle` has no peer yet.
-- Publishing the five packages, which `bionet-desktop` and `lab-wren` need before they can be pushed.
-- The labs' pages and the site taking the mark and colours from the theme package.
+- Whether the biolibs site takes the Bionet palette. It wears the Bionet logo where its recipe page
+  meets the network, drawn from the packages, and keeps its own palette: it is the site for all of
+  biolibs, and Bionet is one part of that.
+- The glue in each lab's page that gathers what is drawn (the published inventory from disk, the
+  other lab's from its address) is still written once per lab, about forty lines.
 - Installers, signing and updates.
 
 ## A first slice
