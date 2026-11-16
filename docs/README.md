@@ -46,6 +46,19 @@ These are not ports. Biopython has no equivalent of any of them, so they are bui
 | `@biolibs/gel` | Virtual agarose gel: where fragments run, ladders, which bands a gel resolves | [gel.md](gel.md) |
 | `@biolibs/seqmap` | Geometry for plasmid and linear maps: positions on a circle or line, feature arcs, ticks, lane packing, label de-collision | [seqmap.md](seqmap.md) |
 
+### Bionet
+
+Labs keeping a freezer together and sharing what they hold, with no server in charge. `bionet` is the protocol; the rest are the layers an application is composed from, so that an application owns no colour, component or rule of its own. The design is in [`design/bionet-labs.md`](../design/bionet-labs.md).
+
+| Package | Purpose | Docs |
+|---|---|---|
+| `@biolibs/bionet` | The protocol: a lab's signed logs and how they merge, signed inventories at a lab's own address, finding labs by walking, and what a signature does not establish | [bionet.md](bionet.md) |
+| `@biolibs/bionet-client` | One device in one lab: its key, its copy of the log, every action, and the connection to the lab's web peer. Storage, keys and sockets are plugged in | [bionet-client.md](bionet-client.md) |
+| `@biolibs/bionet-peer` | A lab's web peer: a member that holds no key, which stores and forwards the log and serves the published inventory | [bionet-peer.md](bionet-peer.md) |
+| `@biolibs/bionet-theme` | Each colour's meaning with a value for a light theme and a dark one, and the Bionet mark and logo | [bionet-theme.md](bionet-theme.md) |
+| `@biolibs/bionet-react` | React hooks with no appearance of their own, and the mark and logo as components | [bionet-react.md](bionet-react.md) |
+| `@biolibs/bionet-panels` | The parts of a lab application, a whole window, and a lab's public page | [bionet-panels.md](bionet-panels.md) |
+
 ## Dependency graph
 
 ```
@@ -76,6 +89,15 @@ seq, restriction, seguid  <-- dseq
 core  <-- seguid
 
 seq, dseq, dseqrecord, assembly  <-- assembly2  <-- opencloning  (also uses seqio, restriction)
+```
+
+Bionet sits on top of those, in layers that each depend only on the ones before:
+
+```
+dseqrecord, opencloning  <-- bionet  <-- bionet-peer
+                               ^
+                               '------ bionet-client  <-- bionet-react  <-- bionet-panels
+bionet-theme  (nothing)  <------------------------------------'               (and as a peer)
 ```
 
 Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none. Only `entrez` and `pdblist` touch the network, each through one function that can be replaced (`settings.transport`, and the `fetcher` a `PDBList` is given); no other package does any I/O.
