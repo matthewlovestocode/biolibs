@@ -103,6 +103,8 @@ export interface SceneView {
 export interface ViewOptions {
   /** Items a search has matched. Their boxes and tubes are drawn as found. */
   matches?: ReadonlySet<string>;
+  /** Places to draw as needing attention, whatever else they are: standing in each other, or through a wall. */
+  attention?: ReadonlySet<string>;
   /** What to call the whole lab in the crumbs. */
   labName?: string;
   /** The camera's vertical field of view, in degrees. */
@@ -189,6 +191,10 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
       // A shelf or a rack, drawn only once its freezer is being looked into.
       places.push({ ...base, tone: "yours", strength: near(one) ? 0.55 : 0.25, fill: 0, focusable: true, labelled: isFocus || childOfFocus });
     }
+  }
+
+  if (options.attention !== undefined) {
+    for (const drawn of places) if (options.attention.has(drawn.id)) Object.assign(drawn, { tone: "attention", strength: 1 });
   }
 
   // The tubes and empty positions of the box being looked at.

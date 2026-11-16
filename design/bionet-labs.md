@@ -740,9 +740,29 @@ text. Restoring is refused once a device is in a lab, since one key on two devic
 histories. A restored device is sent its own old log by the peer and carries on from its end; a lab
 with no peer has nowhere to get that log from, so its backup restores the key but not the lab.
 
-Not done: a builder for arranging a lab by dragging (places are added from a form and stand where
-`arrange` puts them); standing a place from the app; molecules and instruments beyond an outline;
-the real Wren Lab has no places yet, and its key has not been backed up.
+### The builder
+
+Arranging a lab by hand: the part of the earlier lab application worth keeping, now tied to the
+record. In the Lab tab, Arrange lets what stands in a room be dragged, turned a quarter and given a
+size, and the room itself be given one. Each change is a signed `place.stand`.
+
+- **Tried, said, redrawn.** A drag is drawn as it happens and said once, on letting go. What is
+  drawn afterwards is what the lab says, so a refused move goes back.
+- **The first move in a room pins the rest.** Places nobody has stood are put where there is room,
+  which shifts when a neighbour is stood by hand. So the first move also records where the others
+  already are, as entries of their own.
+- **It settles every 5 cm and stays inside the room.** Free placement to the millimetre is what the
+  size fields are for.
+- **Problems are shown, not prevented.** Two things standing in each other, or one through a wall,
+  turn the attention colour and are named. They are not refused: the builder cannot know which of
+  the two is wrong, and a lab mid-rearrangement passes through such states.
+- **Only what stands in a room is dragged.** What is inside a freezer goes with it and is arranged
+  by default. A room that was made up for the drawing has no entry in the log and cannot be sized.
+
+Not done: arranging inside a freezer or on a bench; adding a place from the scene (it is still the
+form on the Places tab); undo, other than dragging back; overlaps shown outside Arrange; molecules
+and instruments beyond an outline. The real Wren Lab has no places yet, and its key has not been
+backed up.
 
 ## A first slice
 

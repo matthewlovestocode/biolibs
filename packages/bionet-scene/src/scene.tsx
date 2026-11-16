@@ -15,7 +15,7 @@ import { Line, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
-import { BoxGeometry, Color, CylinderGeometry, EdgesGeometry, Object3D, QuadraticBezierCurve3, RingGeometry, Vector3,
+import { BoxGeometry, Color, CylinderGeometry, EdgesGeometry, Object3D, Plane, QuadraticBezierCurve3, RingGeometry, Vector3,
          type InstancedMesh, type Mesh } from "three";
 import { colour, type Meaning, type Theme } from "@biolibs/bionet-theme";
 import type { DrawnPlace, DrawnSlot, DrawnTube, Focus, SceneView } from "./view.js";
@@ -119,7 +119,27 @@ const meantFor = (event: ThreeEvent<MouseEvent>, volume: number): boolean =>
     return other === undefined || other >= volume;
   });
 
-function PlaceBox({ place, theme, onPick }: { place: DrawnPlace; theme: Theme; onPick: (id: string) => void }) {
+/** Letting places be dragged across the floor they stand on. */
+export interface Dragging {
+  /** Which places may be dragged. */
+  ids: ReadonlySet<string>;
+  /** Called as one is dragged, with where the centre of its base would be: across, and towards the front. */
+  onMove: (id: string, to: [number, number]) => void;
+  /** Called when it is let go. */
+  onEnd: (id: string) => void;
+}
+
+const FLOOR = new Plane(new Vector3(0, 1, 0), 0);
+
+function PlaceBox({ place, theme, onPick, drag }: { place: DrawnPlace; theme: Theme; onPick: (id: string) => void; drag?: Dragging | undefined }) {
+  const controls = useThree((state) => state.controls) as unknown as { enabled: boolean } | null;
+  const held = useRef<{ dx: number; dz: number; moved: boolean } | null>(null);
+  const draggable = drag?.ids.has(place.id) === true;
+  const onFloor = (event: ThreeEvent<PointerEvent>): Vector3 | null => {
+    // The floor the place stands on, so that it follows the pointer and not the camera's depth.
+    FLOOR.constant = -(place.center[1] - place.size[1] / 2);
+    return event.ray.intersectPlane(FLOOR, new Vector3());
+  };
   const edge = paint(place.tone, theme, place.strength);
   const face = colour(place.tone, theme);
   const volume = place.size[0] * place.size[1] * place.size[2];
@@ -130,6 +150,28 @@ function PlaceBox({ place, theme, onPick }: { place: DrawnPlace; theme: Theme; o
       </lineSegments>
       {(place.focusable || place.fill > 0) && (
         <mesh scale={place.size} geometry={BOX} userData={place.focusable ? { volume } : {}}
+              onPointerDown={!draggable ? undefined : (event) => {
+                const at = onFloor(event);
+                if (at === null || event.button !== 0) return;
+                event.stopPropagation();
+                (event.target as Element).setPointerCapture(event.pointerId);
+                held.current = { dx: at.x - place.center[0], dz: at.z - place.center[2], moved: false };
+                if (controls !== null) controls.enabled = false;
+              }}
+              onPointerMove={!draggable ? undefined : (event) => {
+                const at = held.current === null ? null : onFloor(event);
+                if (held.current === null || at === null) return;
+                held.current.moved = true;
+                drag!.onMove(place.id, [at.x - held.current.dx, at.z - held.current.dz]);
+              }}
+              onPointerUp={!draggable ? undefined : (event) => {
+                if (held.current === null) return;
+                (event.target as Element).releasePointerCapture(event.pointerId);
+                const moved = held.current.moved;
+                held.current = null;
+                if (controls !== null) controls.enabled = true;
+                if (moved) drag!.onEnd(place.id);
+              }}
               onClick={place.focusable ? (event) => { if (meantFor(event, volume)) onPick(place.id); } : undefined}
               onPointerOver={place.focusable ? (event) => { event.stopPropagation(); document.body.style.cursor = "pointer"; } : undefined}
               onPointerOut={place.focusable ? () => { document.body.style.cursor = ""; } : undefined}>
@@ -247,8 +289,9 @@ function Rig({ view }: { view: SceneView }) {
   const controls = useThree((state) => state.controls) as unknown as { target: Vector3; update: () => void } | null;
   const left = useRef(0);
   const first = useRef(true);
-  const position = useMemo(() => new Vector3(...view.pose.position), [view.pose]);
-  const target = useMemo(() => new Vector3(...view.pose.target), [view.pose]);
+  // Keyed on the numbers, so a view rebuilt with the same pose does not send the camera back.
+  const position = useMemo(() => new Vector3(...view.pose.position), [view.pose.position.join()]);
+  const target = useMemo(() => new Vector3(...view.pose.target), [view.pose.target.join()]);
   useEffect(() => { left.current = 1.6; }, [position, target]);
   useFrame((_, delta) => {
     if (controls === null || left.current <= 0) return;
@@ -277,10 +320,11 @@ function Rig({ view }: { view: SceneView }) {
  *
  * @param props - `view` is what to draw; `theme` picks the colours; `onFocus` is told which place or
  *   tube was pressed; `neighbours` are other labs to draw beside this one, and `onNeighbour` is told
- *   when one is pressed.
+ *   when one is pressed; `drag` lets some places be dragged across the floor.
  */
-export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour }: {
+export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, drag }: {
   view: SceneView; theme: Theme; onFocus: (focus: Focus) => void; neighbours?: readonly Neighbour[]; onNeighbour?: (id: string) => void;
+  drag?: Dragging;
 }) {
   const rooms = view.places.filter((place) => place.kind === "room");
   const right = Math.max(0, ...rooms.map((room) => room.center[0] + room.size[0] / 2));
@@ -314,7 +358,7 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour }:
       <gridHelper args={[60, 60, rule.color, rule.color]} position={[0, -0.002, 0]}>
         <lineBasicMaterial attach="material" color={rule.color} transparent opacity={theme === "dark" ? 0.5 : 0.7} toneMapped={false} />
       </gridHelper>
-      {view.places.map((place) => <PlaceBox key={place.id} place={place} theme={theme} onPick={(id) => onFocus({ place: id })} />)}
+      {view.places.map((place) => <PlaceBox key={place.id} place={place} theme={theme} onPick={(id) => onFocus({ place: id })} drag={drag} />)}
       <EmptySlots slots={view.empty} theme={theme} />
       <Tubes tubes={view.tubes} theme={theme} onPick={(tube) => onFocus({ place: tube.place, item: tube.item })} />
       {beside.map(({ neighbour, from, to }) => (

@@ -32,6 +32,18 @@ Nothing here names a colour. A place or a tube carries a meaning — `yours`, `t
 
 A freezer stands inside a room, so a ray from the pointer passes through the room's wall first. The press is given to the smallest thing under the pointer, not the nearest, and a movement of more than a few pixels is a drag of the camera and not a press.
 
+## Arranging
+
+The builder follows the same split. `arranging.ts` decides, as plain data, which places may be moved, what the room looks like with a move not yet made, what has gone wrong, and what the lab must be told. `builder.tsx` turns a drag into calls to it.
+
+Three choices are worth knowing.
+
+- **A move is tried, then said, then redrawn from the lab.** The builder keeps only the standing being tried. On letting go it hands the standing to `onStand` and forgets it; what is drawn next is whatever the lab says. If the lab refuses, the place goes back.
+- **Standing one place pins the ones beside it.** A place nobody has stood is put where there is room, and that changes when its neighbour is stood by hand. So the first move in a room also says where the others already are. Arranging one thing must not make the rest shuffle.
+- **Only what stands directly in a room is dragged.** Shelves, racks and boxes go with their freezer. Their own arrangement inside it is still the default.
+
+A drag follows the floor the place stands on, not the camera's depth, and turns the camera's own dragging off while it lasts.
+
 ## Other labs
 
 `neighbours` draws other labs as outlines in `theirs`, each joined to this one by a line something travels along. It is a picture of the fact that labs reach each other, and carries no data of its own.
@@ -50,6 +62,8 @@ How the scene looks is not configurable. Sizes are the lab's data; colours are t
 packages/bionet-scene/src/
   view.ts        what to draw at each distance, as plain data
   scene.tsx      that list, drawn with three.js
+  arranging.ts   a room being arranged by hand, as plain data
+  builder.tsx    dragging, turning and resizing what stands in a room
   explorer.tsx   the scene with the way back, a search, and what was picked
 packages/bionet-scene/scene.css   the frame and what is written over the scene
 ```

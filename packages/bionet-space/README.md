@@ -63,3 +63,20 @@ layout.places.map((one) => [one.id, one.parent]);   // [ [ "~room", null ], [ "f
 `layoutFrom` takes a lab as `@biolibs/bionet` records it — millimetres, retired places, items that
 may be nowhere — and gives a layout of what can be found. It asks for the lab by shape, so this
 package still depends on nothing. Places standing in no room are put in one made up for the purpose.
+
+## Arranging by hand
+
+```ts
+import { arrange, exampleLab, overlapping, standingAt, standingOf, sticking } from "@biolibs/bionet-space";
+
+const arranged = arrange(exampleLab());
+standingOf(arranged, "minus80")?.size;          // [ 0.9, 2, 0.85 ]
+standingAt(arranged, "minus80", [3.1, 2.2]);    // the standing it would have with its base centred there
+overlapping(arranged);                          // []  — pairs of places standing in each other
+sticking(arranged);                             // []  — places stood partly outside what they are in
+```
+
+`standingOf` is the inverse of `arrange`: where a place stands as the lab would say it, measured from
+the place it is in, including for a place nobody has stood anywhere. `standingAt` is what a drag
+becomes: settled every 5 cm and kept inside the parent. `quarterTurned` turns one. None of them
+moves anything; they work out what would be said.

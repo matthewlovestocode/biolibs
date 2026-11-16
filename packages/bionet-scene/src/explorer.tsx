@@ -7,8 +7,9 @@
  * comes from `sceneView`, so what is on screen is always the lab it was given.
  */
 import { useMemo, useState } from "react";
-import { layoutFrom, search, type Layout, type RecordedLab } from "@biolibs/bionet-space";
+import { layoutFrom, search, type Layout, type RecordedLab, type Standing } from "@biolibs/bionet-space";
 import { THEME_ATTRIBUTE, type Theme } from "@biolibs/bionet-theme";
+import { LabBuilder } from "./builder.js";
 import { LabScene, useSystemTheme, type Neighbour } from "./scene.js";
 import { focusOn, sceneView, type Focus } from "./view.js";
 
@@ -89,7 +90,8 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  * is kept there is nothing to draw, and it says so.
  *
  * @param props - `lab` is the lab's places, items and parts; `name` is what to call it; `theme` pins
- *   a theme; `neighbours` are other labs to draw beside it.
+ *   a theme; `neighbours` are other labs to draw beside it; `onStand`, if given, adds a way to
+ *   arrange the lab by hand, and is told each standing to say.
  *
  * @example
  * ```tsx
@@ -99,8 +101,12 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  * <LabView lab={lab} name={lab.name ?? "Lab"} />
  * ```
  */
-export function LabView({ lab, name = "Lab", theme, neighbours }: { lab: RecordedLab; name?: string; theme?: Theme; neighbours?: readonly Neighbour[] }) {
+export function LabView({ lab, name = "Lab", theme, neighbours, onStand }: {
+  lab: RecordedLab; name?: string; theme?: Theme; neighbours?: readonly Neighbour[];
+  onStand?: (place: string, standing: Standing | null) => Promise<unknown> | void;
+}) {
   const layout = useMemo(() => layoutFrom(lab, { room: name }), [lab.places, lab.items, lab.parts, name]);
+  const [arranging, setArranging] = useState(false);
   if (layout.places.length === 0) {
     return (
       <div className="bionet-scene empty" {...(theme === undefined ? {} : { [THEME_ATTRIBUTE]: theme })}>
@@ -108,5 +114,12 @@ export function LabView({ lab, name = "Lab", theme, neighbours }: { lab: Recorde
       </div>
     );
   }
-  return <LabExplorer layout={layout} labName={name} {...(theme === undefined ? {} : { theme })} {...(neighbours === undefined ? {} : { neighbours })} />;
+  const pinned = theme === undefined ? {} : { theme };
+  if (arranging && onStand !== undefined) return <LabBuilder layout={layout} labName={name} onStand={onStand} onDone={() => setArranging(false)} {...pinned} />;
+  return (
+    <div className="bionet-view">
+      <LabExplorer layout={layout} labName={name} {...pinned} {...(neighbours === undefined ? {} : { neighbours })} />
+      {onStand !== undefined && <button type="button" className="bionet-arrange" onClick={() => setArranging(true)}>Arrange</button>}
+    </div>
+  );
 }

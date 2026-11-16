@@ -31,6 +31,12 @@ Sizes are in metres. A place with a `standing` is put where it says. A place wit
 
 `layoutFrom` is the join between the protocol and a drawing. It reads a lab by shape — a few fields of places, items and parts — so this package depends on nothing and `@biolibs/bionet`'s lab state fits as it is. Retired places are left out with everything in them, and so are items nobody has put anywhere: a layout is of what can be found.
 
+## Arranging is the inverse, and is arithmetic too
+
+Dragging a freezer across a floor has to become something a lab can say: a position measured from the place the freezer is in, in that place's own facing. `standingOf` and `standingAt` are that inverse of `arrange`. They are here, not in the scene, for the reason the camera is: they can be tested with numbers. The test that matters stands every place exactly where `arrange` put it and checks that nothing moves.
+
+`overlapping` and `sticking` say what has gone wrong. Only places in the same place are compared, and only places stood by hand are said to stick out: where `arrange` put something is not the lab's mistake.
+
 ## Source layout
 
 ```
@@ -38,6 +44,7 @@ packages/bionet-space/src/
   model.ts     what a place is, and what is stored in one
   arrange.ts   where each place stands, and the positions inside a box
   find.ts      levels, bounds, camera poses, search
+  build.ts     arranging by hand: what a drag would have the lab say, and what has gone wrong
   from.ts      a layout made from a lab's own record of itself
   example.ts   a made-up lab to draw before a real one has places
 ```

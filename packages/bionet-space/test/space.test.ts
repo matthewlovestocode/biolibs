@@ -6,7 +6,8 @@
  * told where to stand is put exactly there, that turning a freezer turns everything in it, and that
  * a position in a box is where the lid says it is.
  */
-import { DEFAULT_SIZE, UNNAMED_ROOM, arrange, boundsOf, exampleLab, firstFreeSlot, layoutFrom, levelOf, poseFor, search, slotCenter, slotFrom, slotName,
+import { DEFAULT_SIZE, UNNAMED_ROOM, arrange, boundsOf, exampleLab, firstFreeSlot, layoutFrom, levelOf, overlapping, poseFor, quarterTurned, search, slotCenter, slotFrom, slotName, snapped, standingAt,
+         standingOf, sticking,
          type RecordedItem, type RecordedPlace,
          slotSize, storedWithin, type Arranged, type Layout, type Place } from "@biolibs/bionet-space";
 import { describe, expect, it } from "vitest";
@@ -293,5 +294,83 @@ describe("a position, as written on a lid", () => {
       expect(slotFrom(slotName(slot))).toEqual(slot);
     }
     for (const not of ["4C", "", "A0", "A", "7", "ABC1", "A1000"]) expect(slotFrom(not)).toBeNull();
+  });
+});
+
+describe("arranging by hand", () => {
+  const lab = exampleLab();
+  const arranged = arrange(lab);
+
+  it("says where every place stands, so that saying it back changes nothing", () => {
+    // Stand every place exactly where arrange put it, and arrange again.
+    const stood = { ...lab, places: lab.places.map((place) => ({ ...place, standing: standingOf(arranged, place.id)! })) };
+    const again = arrange(stood);
+    for (const one of arranged) {
+      const other = again.find((each) => each.place.id === one.place.id)!;
+      one.center.forEach((value, axis) => expect(other.center[axis]).toBeCloseTo(value, 3));
+      one.size.forEach((value, axis) => expect(other.size[axis]).toBeCloseTo(value, 3));
+      expect(other.turn).toBe(one.turn);
+      expect(other.placed).toBe("by hand");
+    }
+    expect(standingOf(arranged, "no such place")).toBeNull();
+    expect(standingAt(arranged, "no such place", [0, 0])).toBeNull();
+  });
+
+  it("undoes the turn of the place something is in", () => {
+    const turned: Layout = { stored: [], places: [
+      { id: "room", kind: "room", name: "Room", parent: null, standing: { position: [0, 0, 0], size: [6, 3, 4], turn: 90 } },
+      { id: "bench", kind: "bench", name: "Bench", parent: "room", standing: { position: [1, 0, -0.5], size: [1.8, 0.9, 0.75], turn: 90 } },
+    ] };
+    const here = arrange(turned);
+    expect(standingOf(here, "bench")).toEqual({ position: [1, 0, -0.5], size: [1.8, 0.9, 0.75], turn: 90 });
+    expect(standingOf(here, "room")).toEqual({ position: [0, 0, 0], size: [6, 3, 4], turn: 90 });
+    // Dragging it to where it already is leaves it there.
+    const bench = here.find((one) => one.place.id === "bench")!;
+    expect(standingAt(here, "bench", [bench.center[0], bench.center[2]])!.position).toEqual([1, 0, -0.5]);
+  });
+
+  it("settles a dragged place onto a grid, and keeps it inside the room", () => {
+    const room = arranged.find((one) => one.place.id === "main")!;
+    const moved = standingAt(arranged, "minus80", [room.center[0] + 0.337, room.center[2] + 0.212])!;
+    expect(moved.position).toEqual([0.35, 0, 0.2]);
+    expect(moved.size).toEqual(standingOf(arranged, "minus80")!.size);
+    expect(standingAt(arranged, "minus80", [room.center[0] + 0.337, room.center[2]], { snap: 0 })!.position[0]).toBeCloseTo(0.337, 3);
+    const far = standingAt(arranged, "minus80", [room.center[0] + 100, room.center[2] - 100])!;
+    expect(far.position[0]).toBeCloseTo((room.size[0] - 0.9) / 2, 3);
+    expect(far.position[2]).toBeCloseTo(-(room.size[2] - 0.85) / 2, 3);
+    expect(snapped(0.337)).toBe(0.35);
+    expect(snapped(0.3374, 0)).toBe(0.337);
+    // A room is in nothing, so there is nothing to keep it inside.
+    expect(standingAt(arranged, "main", [40, -40])!.position).toEqual([40, 0, -40]);
+  });
+
+  it("turns a place a quarter at a time", () => {
+    const once = quarterTurned({ position: [0, 0, 0], size: [1, 2, 3] });
+    expect(once.turn).toBe(90);
+    expect(quarterTurned(quarterTurned(quarterTurned(once))).turn).toBe(0);
+  });
+
+  it("names places standing in each other, and not ones that only touch or are inside one another", () => {
+    expect(overlapping(arranged)).toEqual([]);
+    const fridge = standingOf(arranged, "fridge")!;
+    const onTop: Layout = { ...lab, places: lab.places.map((place) => (place.id === "minus80" ? { ...place, standing: { ...standingOf(arranged, "minus80")!, position: fridge.position } } : place)) };
+    expect(overlapping(arrange(onTop))).toEqual([["minus80", "fridge"]]);
+    const touching: Layout = { stored: [], places: [
+      { id: "room", kind: "room", name: "Room", parent: null },
+      { id: "a", kind: "freezer", name: "A", parent: "room", standing: { position: [0, 0, 0], size: [1, 2, 1] } },
+      { id: "b", kind: "freezer", name: "B", parent: "room", standing: { position: [1, 0, 0], size: [1, 2, 1] } },
+    ] };
+    expect(overlapping(arrange(touching))).toEqual([]);
+  });
+
+  it("names places stood partly outside what they are in, but only ones stood by hand", () => {
+    expect(sticking(arranged)).toEqual([]);
+    const out: Layout = { stored: [], places: [
+      { id: "room", kind: "room", name: "Room", parent: null, standing: { position: [0, 0, 0], size: [4, 3, 4] } },
+      { id: "in", kind: "freezer", name: "In", parent: "room", standing: { position: [1.5, 0, 0], size: [1, 2, 1] } },
+      { id: "out", kind: "freezer", name: "Out", parent: "room", standing: { position: [1.8, 0, 0], size: [1, 2, 1] } },
+      { id: "tall", kind: "freezer", name: "Tall", parent: "room", standing: { position: [-1, 0, 0], size: [1, 3.5, 1] } },
+    ] };
+    expect(sticking(arrange(out))).toEqual(["out", "tall"]);
   });
 });

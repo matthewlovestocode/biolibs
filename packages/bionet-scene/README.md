@@ -35,6 +35,21 @@ lab && <LabView lab={lab} name={lab.name ?? "Lab"} />
 `LabView` draws a lab from its own record: the places its members added and where they put each
 tube. Until the lab has a place it says there is nothing to draw yet.
 
+## Arranging the lab
+
+```tsx
+import { LabView } from "@biolibs/bionet-scene";
+
+<LabView lab={lab} name="The Wren Lab" onStand={(place, standing) => act("standPlace", { place, standing })} />
+```
+
+Given `onStand`, the view gains an Arrange switch. In it, drag what stands in a room to move it,
+press it to turn it a quarter or set its size, and with nothing picked set the size of the room.
+Every move is handed to `onStand` and the room is redrawn from what the lab then says. Places
+standing in each other, or through a wall, turn the attention colour and are named in words.
+
+`LabBuilder` is the same thing on its own, taking a `Layout`.
+
 ## What to draw is decided before anything is drawn
 
 ```ts
