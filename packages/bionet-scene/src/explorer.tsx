@@ -93,11 +93,10 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  *
  * @example
  * ```tsx
- * import { useLab } from "@biolibs/bionet-react";
  * import { LabView } from "@biolibs/bionet-scene";
  *
- * const lab = useLab()?.lab;
- * lab && <LabView lab={lab} name={lab.name ?? "Lab"} />
+ * // `lab` is the lab as a window is given it: the `lab` of a client's snapshot fits as it is.
+ * <LabView lab={lab} name={lab.name ?? "Lab"} />
  * ```
  */
 export function LabView({ lab, name = "Lab", theme, neighbours }: { lab: RecordedLab; name?: string; theme?: Theme; neighbours?: readonly Neighbour[] }) {
