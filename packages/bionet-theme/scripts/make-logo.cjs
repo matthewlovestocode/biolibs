@@ -1,17 +1,24 @@
 // Draws the Bionet logo from Geist's own measurements, so the ring is exactly the height of the letters
 // beside it and its stroke is exactly their weight. Writes plain SVG with every letter as a shape.
-const opentype = require("opentype.js");
+//
+//   npx tsc -b packages/bionet-theme
+//   (in any folder outside this repository)  npm install opentype.js @fontsource/geist-sans
+//   (from that folder)                       node <path to this file>
+//
+// The font and the font reader are found in the folder it is run from, so that this package needs
+// neither to be installed.
 const fs = require("fs");
-const OUT = process.argv[2];
-const font = opentype.parse(fs.readFileSync("node_modules/@fontsource/geist-sans/files/geist-sans-latin-200-normal.woff").buffer);
+const path = require("path");
+const here = (name) => require.resolve(name, { paths: [process.cwd()] });
+const opentype = require(here("opentype.js"));
+const OUT = process.argv[2] ?? path.join(__dirname, "..", "brand");
+const font = opentype.parse(fs.readFileSync(path.join(path.dirname(here("@fontsource/geist-sans/package.json")), "files", "geist-sans-latin-200-normal.woff")).buffer);
 
-// One meaning per colour, with a value for each theme. On a light surface the dark-theme cyan and the
-// near-white letters are too faint to read, so the light values are deeper.
-const THEMES = {
-  dark: { yours: "#22d3ee", theirs: "#a78bfa", ink: "#e8fbff" },
-  light: { yours: "#0891b2", theirs: "#7c3aed", ink: "#0b1020" },
-};
-const GROUND = "#05070d";
+// The colours come from the package itself, so the files cannot drift from the table.
+const { COLOURS } = require("../dist/index.js");
+const THEMES = Object.fromEntries(["dark", "light"].map((theme) =>
+  [theme, { yours: COLOURS[theme].yours, theirs: COLOURS[theme].theirs, ink: COLOURS[theme].ink }]));
+const GROUND = COLOURS.dark.ground;
 let CYAN = THEMES.dark.yours, VIOLET = THEMES.dark.theirs, INK = THEMES.dark.ink;
 const box = (ch) => font.charToGlyph(ch).getBoundingBox();
 const W = box("i").x2 - box("i").x1;                 // the weight of a stem
@@ -69,4 +76,6 @@ const tx = size / 2 - (stemX - W / 2 + markW / 2) * scale, ty = size / 2 - (ASC 
 fs.writeFileSync(`${OUT}/bionet-icon.svg`,
   `${head(size, size, "Bionet")}${blur}<rect width="${size}" height="${size}" rx="${size * 0.225}" fill="${GROUND}"/><g transform="translate(${r2(tx)} ${r2(ty)}) scale(${r2(scale)})" fill="none" stroke-linecap="round">${glow(ASC)}${strokes(ASC)}</g></svg>\n`);
 
-console.log(`stem ${W}, ring radius ${r2(R)}, gap ${r2(GAP * 2)} degrees, ratio ${r2(W / R)}`);
+console.log(`stem ${W}, ring radius ${r2(R)}, gap ${r2(GAP * 2)} degrees`);
+// If any of these differ from MARK in src/index.ts, the geometry has changed and MARK must follow.
+console.log(JSON.stringify({ width: r2(markRight + shift + pad), height: r2(ASC + pad * 2 + 12), offsetX: r2(shift), strokeWidth: W, yours: mine(base), theirs: theirs(base) }, null, 1));

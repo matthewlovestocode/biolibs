@@ -36,7 +36,8 @@ describe("built output", () => {
     const it_ = existsSync(dist) ? it : it.skip;
     it_(`@biolibs/${pkg} has no output left over from a deleted source`, () => {
       const orphans = jsFiles(dist)
-        .filter((js) => !existsSync(`${js.replace("/dist/", "/src/").slice(0, -3)}.ts`))
+        // A component is written as .tsx and still comes out as .js.
+        .filter((js) => [".ts", ".tsx"].every((ext) => !existsSync(`${js.replace("/dist/", "/src/").slice(0, -3)}${ext}`)))
         .map((js) => js.slice(packagesDir.length));
       expect(orphans, "delete these, or rebuild from a clean dist/").toEqual([]);
     });

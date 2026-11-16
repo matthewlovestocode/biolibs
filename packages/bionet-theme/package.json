@@ -1,0 +1,49 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "description": "The look of Bionet in one place: each colour's meaning with a value for a light theme and a dark one, as CSS variables and as data, and the Bionet mark and logo",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./theme.css": "./theme.css",
+    "./brand/*": "./brand/*"
+  },
+  "files": [
+    "dist",
+    "src",
+    "brand",
+    "theme.css"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/bionet-theme#readme",
+  "keywords": [
+    "bionet",
+    "theme",
+    "design-tokens",
+    "css-variables",
+    "logo",
+    "biology"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/bionet-theme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/bionet-theme"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}

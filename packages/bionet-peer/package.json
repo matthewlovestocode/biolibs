@@ -1,0 +1,45 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/bionet": "^1.2.0"
+  },
+  "description": "A lab's web peer: a member of the lab's network that holds no key. It keeps a copy of the lab's signed log, passes changes between members who are never online together, and serves the inventory a member publishes",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/bionet-peer#readme",
+  "keywords": [
+    "bionet",
+    "sync",
+    "websocket",
+    "local-first",
+    "inventory",
+    "biology"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/bionet-peer",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/bionet-peer"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}

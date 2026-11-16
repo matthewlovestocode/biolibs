@@ -20,7 +20,7 @@ function referenced(packageDir) {
       const full = join(p, entry.name);
       if (entry.isDirectory()) walk(full);
       else if (entry.name.endsWith(".js") || entry.name.endsWith(".d.ts")) {
-        for (const m of readFileSync(full, "utf8").matchAll(/["'](@biolibs\/[a-z0-9]+)["']/g)) found.add(m[1]);
+        for (const m of readFileSync(full, "utf8").matchAll(/["'](@biolibs\/[a-z0-9-]+)(?:\/[^"']*)?["']/g)) found.add(m[1]);
       }
     }
   };

@@ -1,0 +1,50 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/bionet": "^1.2.0",
+    "@biolibs/opencloning": "^2.0.0"
+  },
+  "description": "One device in one lab: its key, its copy of the lab's signed log, everything a member can do, and the connection to the lab's web peer. Works offline and syncs when it can. Storage and key keeping are plugged in, so it runs in Electron, Node or a browser",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./sqlite": {
+      "types": "./dist/sqlite.d.ts",
+      "default": "./dist/sqlite.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/bionet-client#readme",
+  "keywords": [
+    "bionet",
+    "local-first",
+    "offline",
+    "sync",
+    "inventory",
+    "biology"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/bionet-client",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/bionet-client"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}

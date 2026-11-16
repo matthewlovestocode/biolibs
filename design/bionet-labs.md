@@ -269,37 +269,71 @@ The location model the earlier sections left for later.
 
 Each is meant to be usable on its own.
 
-### The libraries, revised
+### The rule: an app owns nothing
+
+Decided 2026-11-15, after getting it wrong. The brand's colours had been written into the desktop
+app's stylesheet and the mark into one of its components, while each lab's page and the site had
+palettes of their own: four places to edit to change what "yours" looks like, and a mark that existed
+in one of them. The earlier project's scene could not be lifted out of its app for the same reason.
+
+So:
+
+1. **Design starts from the package.** Before a feature is written, decide which package owns it and
+   what that package exposes.
+2. **An app owns no colour, no component and no rule.** It composes packages and supplies what only
+   its platform can: on the desktop, the keychain, the window and the file the entries are kept in.
+3. **Every consumer takes the same packages**: the desktop app, each lab's web page, the site. That
+   is the test that an abstraction is real.
+4. **Packages are published early**, as 0.x, because a consumer in another repository cannot use
+   one otherwise.
+
+The reasons it has to come first here, and cannot be tidied up afterwards:
+
+- The product is a network. Other labs will build on bionet, and what they receive is the libraries;
+  the desktop app is one example of using them.
+- Some things have to be said identically everywhere: what a signature settles, what a changed key
+  means, what "on offer" promises. An app that words these itself will sooner or later overclaim.
+- The scene and the tools connect only through contracts — a shared idea of focus, the tree of
+  places, a registry of renderers. Not designed as interfaces, the 3D view ends up as a picture
+  beside the features again.
+- Two themes need one source that CSS, React and a 3D scene all read.
+
+### The libraries
 
 This replaces the package list under "Libraries" above. Each layer may depend only on those before it.
 
-| Layer | Package | Holds | Knows about |
-|---|---|---|---|
-| Engines | `@biolibs/seqio`, `restriction`, `pcr`, `gel`, `assembly2`, and the rest | The science | Nothing else |
-| Protocol | `@biolibs/bionet` | Signed logs, merge, places, sync messages | Engines |
-| Geometry | `@biolibs/labspace` (name open) | Sizes, footprints, overlap, box grids, camera targets | Plain data only |
-| Client | `@biolibs/bionet-client` | One device in one lab: actions, sync, state | Protocol; storage, keys and transport are plugged in |
-| Hooks | `@biolibs/bionet-react` | The lab, places, items, sync, walking, focus | Client, React |
-| Hooks | `@biolibs/tools-react` | Sequence map, digest, PCR, gel, plan, alignment | Engines, React |
-| 3D | `@biolibs/lab-three` | The scene: places, boxes, molecules, instruments, neighbours | The hooks' data, three.js |
-| Panels | `@biolibs/lab-mui`, later a Tailwind set | Lists, box grid, sequence panel, tool panels | Hooks, MUI |
+| Layer | Package | Holds | Knows about | State |
+|---|---|---|---|---|
+| Engines | `@biolibs/seqio`, `restriction`, `pcr`, `gel`, `assembly2`, and the rest | The science | Nothing else | Published |
+| Protocol | `@biolibs/bionet` | Signed logs, merge, sync messages; places to come | Engines | Published |
+| Look | `@biolibs/bionet-theme` | Colours by meaning for both themes, as CSS and as data; the mark and logo | Nothing | Built |
+| Peer | `@biolibs/bionet-peer` | A lab's web peer, its stores, putting it on a web server, an in-process network | Protocol | Built |
+| Client | `@biolibs/bionet-client` | One device in one lab: actions, sync, state; the narrow way a window reaches a lab | Protocol; storage, keys and sockets are plugged in | Built |
+| Hooks | `@biolibs/bionet-react` | The lab, asking for a change, the last refusal; the mark and logo as components | Client, look, React | Built |
+| Panels | `@biolibs/bionet-panels` | Freezer, people, history, sharing, and a whole window | Hooks, look | Built |
+| Geometry | `@biolibs/labspace` (name open) | Sizes, footprints, overlap, box grids, camera targets | Plain data only | Not started |
+| Hooks | `@biolibs/tools-react` | Sequence map, digest, PCR, gel, plan, alignment | Engines, React | Not started |
+| 3D | `@biolibs/lab-three` | The scene: places, boxes, molecules, instruments, neighbours | The hooks' data, three.js | Not started |
+
+"Built" means written, tested in this repository, and in use by the desktop app and `lab-wren`
+through locally packed copies, but not yet on npm.
 
 What makes them reusable:
 
 - **Data in, events out.** No component reads a global store.
-- **One shared idea of focus**: what is selected, and at which scale. The scene and the panels both
-  follow it, which is what ties the 3D view to the tools.
-- **A registry of renderers by kind**, so a model of a particular freezer or instrument can be
-  published as its own package.
-- **Plug-in edges** for storage, key keeping and transport, so the same client runs in Electron, a
+- **A window reaches a lab through one small interface** (`LabSource`): the lab as plain data, being
+  told when it changes, and one of a fixed list of things to be done. A lab in the same process
+  satisfies it, and so does a bridge to one elsewhere. The desktop app's window is in a different
+  process from its lab, and the hooks cannot tell.
+- **One shared idea of focus**, to come with the scene: what is selected, and at which scale.
+- **A registry of renderers by kind**, to come with the scene.
+- **Plug-in edges** for storage, key keeping and sockets, so the same client runs in Electron, a
   browser or Node.
 - **React and three.js as peer dependencies.**
 
-`bionet-desktop`'s `src/core` is the start of `@biolibs/bionet-client`, and its views are the first
-version of the hooks and panels. The biolibs site's examples are a second consumer for the tools.
-
-Each piece is written as a package from the start, inside this repository, and published once two
-consumers use it.
+The panels are plain components styled from the theme's variables, scoped so that nothing reaches
+the page around them. The earlier plan named MUI and Tailwind variants; with a theme of our own in
+two modes, whether those are still wanted is open.
 
 ### The scene's API is fixed
 
@@ -371,6 +405,7 @@ Decided 2026-11-15.
 - Whether other labs are shown a lab's rooms. The starting position is no: the layout is private,
   and other labs appear as neighbours showing their public parts.
 - Who may change the layout: any member, or keepers only.
+- Whether MUI and Tailwind variants of the panels are still wanted, now that there is a theme.
 
 ## The log entry
 
@@ -592,11 +627,18 @@ Nothing blocks the first slice. Two things remain for the step after it:
   address, and it is newer than the one it replaces.
 - **Connected members are sent changes as the peer keeps them**, so two open apps stay in step.
 
-- `bionet-desktop` (`~/bio/bionet-desktop`, not yet committed): the desktop app. Electron 45 with no
-  native modules: SQLite and WebSocket are the ones built into its Node, and the device key is sealed
-  by the operating system's keychain. The core is plain Node with no Electron in it, tested as two
-  devices against the real web peer (`npm run try-core`, 22 checks). `npm run try-app` runs the real
-  app as two devices and photographs each step.
+- `bionet-desktop`: the desktop app. Electron 45 with no native modules: SQLite and WebSocket are
+  the ones built into its Node, and the device key is sealed by the operating system's keychain.
+  `npm run try-app` runs the real app as two devices and photographs each step.
+
+**Restructured into packages (2026-11-15), built and not yet published:**
+
+- `@biolibs/bionet-theme`, `-peer`, `-client`, `-react`, `-panels`: see "The libraries". Together
+  they add 68 tests; the workspace passes (19,183).
+- `bionet-desktop` now holds only what the desktop can do: the keychain, the window, the door
+  between them. Its core, views, styles and logo are gone, taken from the packages.
+- `lab-wren`'s server is a few lines around `@biolibs/bionet-peer`. Its own copy of the peer is gone.
+- The peer now cuts off a removed member the moment the entry that removes them arrives.
 
 **The first slice is complete, run locally:** two devices each with their own key; one founds the
 roster and adds the other; both work offline; they converge through the web peer; one publishes, and
@@ -627,7 +669,8 @@ the peer serves the signed inventory.
 - Everything under "The lab workspace": places, the scene, the tools and the libraries.
 - The roster as a published document for outside readers. Readers still remember keys per address.
 - `lab-thistle` has no peer yet.
-- A removed member who is still connected keeps receiving entries until they reconnect.
+- Publishing the five packages, which `bionet-desktop` and `lab-wren` need before they can be pushed.
+- The labs' pages and the site taking the mark and colours from the theme package.
 - Installers, signing and updates.
 
 ## A first slice

@@ -84,6 +84,21 @@
     },
     {
       "path": "packages/bionet"
+    },
+    {
+      "path": "packages/bionet-theme"
+    },
+    {
+      "path": "packages/bionet-peer"
+    },
+    {
+      "path": "packages/bionet-client"
+    },
+    {
+      "path": "packages/bionet-react"
+    },
+    {
+      "path": "packages/bionet-panels"
     }
   ]
 }

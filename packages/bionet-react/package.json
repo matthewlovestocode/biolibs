@@ -1,0 +1,49 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/bionet-client": "^0.1.0",
+    "@biolibs/bionet-theme": "^0.1.0"
+  },
+  "description": "React hooks for a Bionet lab, with no appearance of their own: the lab as it stands, asking for a change and hearing why it was refused, and the Bionet mark and logo drawn in the current theme",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/bionet-react#readme",
+  "keywords": [
+    "bionet",
+    "react",
+    "hooks",
+    "headless",
+    "local-first",
+    "biology"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/bionet-react",
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/bionet-react"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}

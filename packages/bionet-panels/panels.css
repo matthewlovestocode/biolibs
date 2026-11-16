@@ -1,0 +1,55 @@
+/* The panels' styles. Every rule is inside .bionet, so nothing here reaches the page around it, and
+   every colour is one of the theme's variables, so it follows a light or dark theme. */
+.bionet { background: var(--bionet-ground); color: var(--bionet-ink); height: 100%;
+  font: 14px/1.5 "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+.bionet * { box-sizing: border-box }
+.bionet h1 { font-size: 1.35rem; margin: 0 } .bionet h2 { font-size: 1.02rem; margin: 0 0 .35rem }
+.bionet p { margin: .35rem 0 .8rem }
+.bionet code { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .86em }
+.bionet .dim { color: var(--bionet-dim) } .bionet .small { font-size: .86rem } .bionet .nowrap { white-space: nowrap }
+.bionet .wrap { display: block; overflow-wrap: anywhere }
+.bionet .shell { display: flex; flex-direction: column; height: 100% }
+.bionet header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.5rem .6rem }
+.bionet header p { margin: .1rem 0 0 }
+.bionet .title { display: flex; align-items: center; gap: .8rem } .bionet .title svg { display: block; flex: none }
+.bionet nav { display: flex; gap: .25rem; padding: 0 1.5rem; border-bottom: 1px solid var(--bionet-rule) }
+.bionet .tab { background: none; border: 0; border-bottom: 2px solid transparent; color: var(--bionet-dim); padding: .55rem .8rem; font: inherit; cursor: pointer; border-radius: 0 }
+.bionet .tab.on { color: var(--bionet-ink); border-bottom-color: var(--bionet-yours); font-weight: 600 }
+.bionet main { flex: 1; overflow: auto; padding: 1.25rem 1.5rem 3rem }
+.bionet main.centre { display: grid; place-content: center; justify-items: center; gap: 1rem; padding: 2rem; min-height: 100% }
+.bionet .card { background: var(--bionet-surface); border: 1px solid var(--bionet-rule); border-radius: 10px; padding: 1.1rem 1.25rem; margin: 0 0 1rem }
+.bionet .card.narrow { max-width: 34rem } .bionet .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1rem; max-width: 60rem; width: 100% }
+.bionet .empty { color: var(--bionet-dim); padding: 1.5rem 0; text-align: center }
+.bionet fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: contents }
+.bionet form.stack { display: grid; gap: .7rem; margin-top: .6rem }
+.bionet form.row, .bionet .row { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; margin-top: .6rem }
+.bionet .row.tight { margin-top: 0; gap: .35rem; flex-wrap: nowrap }
+.bionet label { display: grid; gap: .25rem; font-size: .86rem; color: var(--bionet-dim) }
+.bionet label.check { display: flex; align-items: center; gap: .4rem; color: var(--bionet-ink) }
+.bionet input, .bionet textarea, .bionet select { font: inherit; color: var(--bionet-ink); background: var(--bionet-field); border: 1px solid var(--bionet-rule); border-radius: 6px; padding: .4rem .55rem; min-width: 0 }
+.bionet form.row input:not(.num):not([type=checkbox]) { flex: 1 }
+.bionet textarea { font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .86em; resize: vertical }
+.bionet input.num { width: 5.2rem } .bionet input[type=checkbox] { width: auto; accent-color: var(--bionet-yours) }
+.bionet input:focus-visible, .bionet textarea:focus-visible, .bionet select:focus-visible, .bionet button:focus-visible { outline: 2px solid var(--bionet-yours); outline-offset: 1px }
+.bionet button { font: inherit; border-radius: 6px; padding: .42rem .8rem; border: 1px solid var(--bionet-action); background: var(--bionet-action); color: var(--bionet-on-action); cursor: pointer; white-space: nowrap }
+.bionet button.quiet { background: transparent; color: var(--bionet-ink); border-color: var(--bionet-rule) }
+.bionet button.quiet:hover { border-color: var(--bionet-dim) }
+.bionet button.plain { background: none; border: 0; color: var(--bionet-dim); text-decoration: underline; padding: 0 .3rem }
+.bionet button:disabled, .bionet fieldset:disabled button { opacity: .55; cursor: default }
+.bionet table { width: 100%; border-collapse: collapse; margin: .5rem 0 .2rem }
+.bionet th { text-align: left; font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; color: var(--bionet-dim); font-weight: 600; padding: .3rem .5rem .3rem 0; border-bottom: 1px solid var(--bionet-rule) }
+.bionet td { padding: .45rem .5rem .45rem 0; border-bottom: 1px solid var(--bionet-rule); vertical-align: middle }
+.bionet tr:last-child td { border-bottom: 0 } .bionet tr.gone td { color: var(--bionet-dim) }
+.bionet tr.flagged td { background: color-mix(in srgb, var(--bionet-attention) 9%, transparent) }
+.bionet .parthead { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem } .bionet .parthead p { margin: 0 }
+.bionet .badge { display: inline-block; margin-left: .5rem; padding: .05rem .45rem; border-radius: 999px; font-size: .74rem; border: 1px solid var(--bionet-attention); color: var(--bionet-attention) }
+.bionet .badge.calm { border-color: var(--bionet-rule); color: var(--bionet-dim) }
+.bionet .keybox { border: 1px dashed var(--bionet-rule); border-radius: 8px; padding: .7rem .8rem; margin: .8rem 0 }
+.bionet .keybox > div { display: flex; justify-content: space-between; align-items: center; margin-bottom: .35rem } .bionet .keybox p { margin: .4rem 0 0 }
+.bionet .label { font-size: .74rem; text-transform: uppercase; letter-spacing: .05em; color: var(--bionet-dim); font-weight: 600 }
+.bionet .sync { display: flex; align-items: center; gap: .5rem; font-size: .86rem; color: var(--bionet-dim); white-space: nowrap }
+.bionet .dot { width: .6rem; height: .6rem; border-radius: 50%; background: var(--bionet-dim) }
+.bionet .dot.synced { background: var(--bionet-good) } .bionet .dot.syncing, .bionet .dot.connecting { background: var(--bionet-yours) }
+.bionet .dot.waiting { background: var(--bionet-held) }
+.bionet .trouble { background: color-mix(in srgb, var(--bionet-attention) 12%, transparent); border: 1px solid var(--bionet-attention); border-radius: 8px; padding: .55rem .8rem; display: flex; justify-content: space-between; gap: 1rem }
+.bionet .note { border-left: 3px solid var(--bionet-held); padding: .1rem 0 .1rem .7rem; font-size: .9rem }
