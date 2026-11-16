@@ -84,6 +84,14 @@ An item is put in a place, and at a position if the place is a box. That is a re
 
 Two outcomes are flagged and not refused. Two people apart can each move a place into the other, and neither move is wrong alone; every place in the loop comes out `adrift`, in nothing, until somebody moves one. And two people apart can each stand a tube in the same position; that position is listed in `crowded`. In both cases the log has lost track of the physical lab, and the honest thing is to say so and let somebody look.
 
+## What was done at the bench
+
+A run is a single entry and not a handful of adjustments, for two reasons. It is atomic: an entry is applied or refused whole, so a run can never take a template without making its product. And it is provenance: an item made by a run carries the run's ID, and the run carries what went in, so any tube can be traced back to the tubes it was made from.
+
+What went in is taken as differences, like any use of a tube, so a run adds up with somebody else pipetting from the same tube at the same moment. What came out is added as an item, and as a part too if the lab did not already have that molecule.
+
+The merge records what a run says came out and does not work it out again. Doing so would put every engine a run might use inside the merge, and every machine would have to agree on every engine's version to agree on the lab. The run keeps its inputs and settings, so it can be replayed by whoever wants to check.
+
 ## Source layout
 
 ```

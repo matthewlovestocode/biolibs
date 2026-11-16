@@ -9,8 +9,8 @@ import { Dseqrecord } from "@biolibs/dseqrecord";
 import { gibsonAssembly } from "@biolibs/assembly2";
 import { CloningStrategy, generateSigningKey, keyFingerprint } from "@biolibs/opencloning";
 import { addItem, addPart, addPlace, addToRoster, adjustItem, discover, entryId, fetchInventory, foundLab,
-         introducedDifferently, inventoryFrom, labMemory, mergeLog, newItemId, newPlaceId, nextEntry, partsNeeded,
-         peer, publicInventory, putItem, remember, settled, settledLabs, signInventory, verifyInventory,
+         introducedDifferently, inventoryFrom, labMemory, mergeLog, newItemId, newPlaceId, newRunId, nextEntry, partsNeeded,
+         peer, publicInventory, putItem, recordRun, remember, settled, settledLabs, signInventory, verifyInventory,
          type Operation, type SignedEntry,
          signingKeys, unsourced, whoHas, type SignedInventory } from "@biolibs/bionet";
 import { describe, expect, it } from "vitest";
@@ -185,5 +185,29 @@ describe("README: inside a lab", () => {
     expect(lab.places.map((one) => one.name)).toEqual(["−80", "Box 1"]);
     expect(lab.items[0]!.where).toEqual({ place: box, slot: { row: 2, column: 3 } });
     expect(lab.crowded).toEqual([]);
+  });
+
+  it("records what was done at the bench", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+    await write(ada, adasKey, addPart({ sequence: F1, name: "f1" }));
+    const tube = newItemId();
+    await write(ada, adasKey, addItem({ item: tube, part: (await mergeLog(ada)).parts[0]!.checksum, amount: 10, unit: "µL" }));
+
+    const product = newItemId();
+    const run = newRunId();
+    await write(ada, adasKey, recordRun({
+      run, kind: "pcr", instrument: null,
+      inputs: [{ item: tube, amount: 1, role: "template" }],
+      outputs: [{ item: product, sequence: F1.slice(0, 40), circular: false, name: "amplicon", amount: 50, unit: "µL" }],
+      settings: { anneal_at_least: 18 }, outcome: "worked", note: null,
+    }));
+
+    const after = await mergeLog(ada);
+    expect(after.items.find((one) => one.item === tube)?.amount).toBe(9);
+    expect(after.items.find((one) => one.item === product)?.from).toBe(run);
+    expect(after.runs.length).toBe(1);
   });
 });

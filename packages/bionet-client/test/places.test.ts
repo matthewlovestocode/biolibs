@@ -147,3 +147,32 @@ describe("a lab that knows where things are", () => {
     expect(layoutFrom(lab.snapshot().lab!)).toEqual({ places: [], stored: [] });
   });
 });
+
+describe("a lab that records what was done", () => {
+  it("takes what a run used, keeps the tube it made, and says where the tube came from", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    await lab.addPart({ name: "template", sequence: F1 });
+    const template = await lab.addItem({ part: lab.snapshot().lab!.parts[0]!.checksum, amount: 20, unit: "µL" });
+    const cycler = await lab.addPlace({ kind: "instrument", name: "Thermocycler", model: "thermocycler" });
+
+    const done = await lab.recordRun({
+      kind: "pcr", instrument: cycler, inputs: [{ item: template, amount: 1, role: "template" }],
+      outputs: [{ sequence: ` ${F1.slice(0, 40)} `, name: " amplicon ", amount: 50, unit: "µL" }], settings: { anneal_at_least: 18 }, note: "  ",
+    });
+    const seen = lab.snapshot().lab!;
+    expect(seen.items.find((one) => one.item === template)!.amount).toBe(19);
+    expect(seen.items.find((one) => one.item === done.items[0])).toMatchObject({ amount: 50, from: done.run });
+    expect(seen.parts.map((part) => part.name)).toEqual(["template", "amplicon"]);
+    expect(seen.runs).toMatchObject([{ run: done.run, kind: "pcr", instrument: cycler, outcome: "worked", note: null }]);
+
+    const failed = await lab.recordRun({ kind: "pcr", inputs: [{ item: template, amount: 1, role: "template" }], note: "no band" });
+    expect(failed.items).toEqual([]);
+    expect(lab.snapshot().lab!.runs[1]).toMatchObject({ outcome: "failed", instrument: null, note: "no band" });
+    expect(lab.snapshot().lab!.items.find((one) => one.item === template)!.amount).toBe(18);
+
+    await expect(lab.recordRun({ kind: "pcr", inputs: [{ item: "no-such-item", amount: 1, role: "template" }] })).rejects.toThrow(/not an item the lab has/);
+    expect(await perform(lab, "recordRun", { kind: "pcr", inputs: [] })).toMatchObject({ ok: true });
+  });
+});

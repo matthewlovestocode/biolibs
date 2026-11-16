@@ -26,7 +26,7 @@
  */
 import { Dseqrecord } from "@biolibs/dseqrecord";
 import type { SignOptions, SigningKey } from "@biolibs/opencloning";
-import { entryId, readEntry, verifyEntry, writeEntry, type Operation, type Role, type StandingMm,
+import { entryId, readEntry, verifyEntry, writeEntry, type Operation, type Role, type RunInput, type StandingMm,
          type SignedEntry } from "./log.js";
 import { INVENTORY_VERSION, type InventoryDocument, type InventoryPart, type LabModel,
          type PeerModel } from "./model.js";
@@ -84,6 +84,8 @@ export interface ItemState {
   retired: boolean;
   /** Whether the log has lost track: the amount went below zero, or two recounts overlapped. */
   needsRecount: boolean;
+  /** The run that made it, if one did. */
+  from: string | null;
   /** Where it is, if anybody has said: the place, and the position if the place is a box. */
   where: { place: string; slot: { row: number; column: number } | null } | null;
   /** Anything else set on it. */
@@ -116,6 +118,28 @@ export interface PlaceState {
   /** Anything else set on it. */
   fields: Record<string, string | number | null>;
   /** The entry that added it. */
+  added: string;
+}
+
+/** Something done at the bench, as the lab records it. */
+export interface RunState {
+  /** Its ID. */
+  run: string;
+  /** What kind of run it was: `pcr`. */
+  kind: string;
+  /** The place it was done at, or `null`. */
+  instrument: string | null;
+  /** What went in, and how much of each was used. */
+  inputs: RunInput[];
+  /** The items it made, and the part each is an item of. */
+  outputs: { item: string; part: string }[];
+  /** How it was set up. */
+  settings: Record<string, string | number>;
+  /** Whether it worked. */
+  outcome: "worked" | "failed";
+  /** Anything said about it. */
+  note: string | null;
+  /** The entry that recorded it. */
   added: string;
 }
 
@@ -178,6 +202,8 @@ export interface LabState {
   places: PlaceState[];
   /** Positions the log says hold more than one item. Somebody has to go and look. */
   crowded: Crowded[];
+  /** Everything done at the bench that was recorded, in the order the merge settled on. */
+  runs: RunState[];
   /** Every entry that could be placed, in order, with what became of it. */
   entries: Placed[];
   /** Entries that are waiting on others that have not arrived. */
@@ -236,6 +262,48 @@ const isStanding = (value: unknown): value is StandingMm => {
     && [0, 90, 180, 270].includes(standing.turn as number);
 };
 
+/** The most items that may go into one run or come out of it, and the most settings it may carry. */
+const MOST_IN_A_RUN = 50;
+
+/**
+ * Why a run cannot be recorded, or `null` if it can.
+ *
+ * Everything is checked before anything is changed: an entry from another machine may be refused,
+ * and must never leave a run half applied.
+ */
+function runProblem(op: Operation, items: ReadonlyMap<string, unknown>, places: ReadonlyMap<string, unknown>, runs: ReadonlySet<string>): string | null {
+  if (!(typeof op["run"] === "string" && ITEM_ID.test(op["run"])) || !text(op["kind"], 40)) return "It does not carry a run ID and what kind of run it was.";
+  if (runs.has(op["run"])) return "A run with that ID already exists.";
+  if (!(op["instrument"] === null || (typeof op["instrument"] === "string" && places.has(op["instrument"])))) return "The place it was done at is not one the lab has.";
+  if (op["outcome"] !== "worked" && op["outcome"] !== "failed") return "It does not say whether it worked.";
+  if (!(op["note"] === null || text(op["note"], 2_000))) return "Its note is not some text.";
+  const settings = op["settings"];
+  if (typeof settings !== "object" || settings === null || Array.isArray(settings) || Object.keys(settings).length > MOST_IN_A_RUN
+      || !Object.entries(settings).every(([name, value]) => FIELD.test(name) && (amountOf(value) || (typeof value === "string" && value.length <= 200)))) {
+    return "Its settings are not whole numbers and short text, by name.";
+  }
+  const inputs = op["inputs"];
+  if (!Array.isArray(inputs) || inputs.length > MOST_IN_A_RUN) return "It does not list what went in.";
+  for (const input of inputs as Partial<RunInput>[]) {
+    if (typeof input !== "object" || input === null || !amountOf(input.amount) || input.amount < 0 || !text(input.role, 40)) return "It does not say how many whole units of each thing went in, and as what.";
+    if (typeof input.item !== "string" || !items.has(input.item)) return "Something it says went in is not an item the lab has.";
+  }
+  const outputs = op["outputs"];
+  if (!Array.isArray(outputs) || outputs.length > MOST_IN_A_RUN) return "It does not list what came out.";
+  if (op["outcome"] === "failed" && outputs.length > 0) return "A run that did not work made nothing.";
+  const seen = new Set<string>();
+  for (const output of outputs as Record<string, unknown>[]) {
+    if (typeof output !== "object" || output === null || !(typeof output["item"] === "string" && ITEM_ID.test(output["item"]))
+        || !text(output["sequence"], LONGEST_SEQUENCE) || typeof output["circular"] !== "boolean" || !text(output["name"], 200)
+        || !amountOf(output["amount"]) || output["amount"] < 0 || !(output["unit"] === null || text(output["unit"], 20))) {
+      return "It does not give each thing that came out an item ID, a sequence, a name, a whole amount and a unit.";
+    }
+    if (items.has(output["item"]) || seen.has(output["item"])) return "An item with that ID already exists.";
+    seen.add(output["item"]);
+  }
+  return null;
+}
+
 const amountOf = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value);
 const role = (value: unknown): value is Role => value === "member" || value === "keeper";
 
@@ -262,7 +330,7 @@ const hadSeen = (later: Node, earlier: Node): boolean => (later.vc.get(earlier.a
  * ```
  */
 export async function mergeLog(entries: readonly unknown[], options: { lab?: string } = {}): Promise<LabState> {
-  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], entries: [],
+  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], runs: [], entries: [],
                             waiting: [], discarded: [], overlaps: [], heads: {}, knows: {} };
 
   // Read and check every entry on its own, before any of them is believed about the others.
@@ -557,7 +625,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         refuse("The part it is an item of is not one the lab has.");
       } else {
         items.set(op["item"], {
-          item: { item: op["item"], part: op["part"], unit: op["unit"], amount: 0, retired: false, needsRecount: false, where: null, fields: {}, added: node.id },
+          item: { item: op["item"], part: op["part"], unit: op["unit"], amount: 0, retired: false, needsRecount: false, from: null, where: null, fields: {}, added: node.id },
           set: new Map(), base: { node, amount: op["amount"], recount: false }, adjusted: [], overlapped: false,
         });
       }
@@ -632,6 +700,43 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       if (!put.has(item.item.item)) put.set(item.item.item, new Map());
       write(put.get(item.item.item)!, "where", node, place === null ? null : { place, slot: slot === null ? null : { row: (slot as { row: number }).row, column: (slot as { column: number }).column } },
             `where item ${item.item.item.slice(0, 12)} is`);
+    } else if (op.type === "run.record") {
+      const problem = runProblem(op, items, places, new Set(state.runs.map((run) => run.run)));
+      if (problem !== null) { refuse(problem); continue; }
+      const inputs = op["inputs"] as RunInput[];
+      const outputs = op["outputs"] as { item: string; sequence: string; circular: boolean; name: string; amount: number; unit: string | null }[];
+      // What comes out is worked out before anything is changed, so that a run is recorded whole or not at all.
+      const made: { output: (typeof outputs)[number]; record: Dseqrecord; checksum: string }[] = [];
+      try {
+        for (const output of outputs) {
+          const record = new Dseqrecord(output.sequence, output.circular);
+          made.push({ output, record, checksum: record.seguid() });
+        }
+      } catch {
+        refuse("Something it says came out is not a sequence.");
+        continue;
+      }
+      for (const input of inputs) if (input.amount > 0) items.get(input.item)!.adjusted.push({ node, by: -input.amount });
+      for (const { output, record, checksum } of made) {
+        if (!parts.has(checksum)) {
+          parts.set(checksum, {
+            part: { checksum, sequence: output.sequence, circular: output.circular, length: record.length, name: output.name, offered: false, fields: {}, added: node.id },
+            set: new Map([["name", { node, value: output.name }]]),
+          });
+        }
+        items.set(output.item, {
+          item: { item: output.item, part: checksum, unit: output.unit, amount: 0, retired: false, needsRecount: false, from: op["run"] as string,
+                  where: null, fields: {}, added: node.id },
+          set: new Map(), base: { node, amount: output.amount, recount: false }, adjusted: [], overlapped: false,
+        });
+      }
+      state.runs.push({
+        run: op["run"] as string, kind: op["kind"] as string, instrument: op["instrument"] as string | null,
+        inputs: inputs.map((input) => ({ item: input.item, amount: input.amount, role: input.role })),
+        outputs: made.map(({ output, checksum }) => ({ item: output.item, part: checksum })),
+        settings: { ...(op["settings"] as Record<string, string | number>) }, outcome: op["outcome"] as "worked" | "failed",
+        note: op["note"] as string | null, added: node.id,
+      });
     } else if (op.type === "field.set") {
       const field = op["field"];
       const value = op["value"];

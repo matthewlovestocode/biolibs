@@ -44,6 +44,12 @@ export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "
       return op["place"] === null ? `took ${tube(op["item"])} out of where it was`
         : `put ${tube(op["item"])} in ${place(op["place"])}${slot === null ? "" : `, ${slotName(slot)}`}`;
     }
+    case "run.record": {
+      const made = Array.isArray(op["outputs"]) ? (op["outputs"] as { name?: unknown }[]) : [];
+      const at = op["instrument"] === null ? "" : ` at ${place(op["instrument"])}`;
+      const what = op["kind"] === "pcr" ? "a PCR" : `a ${String(op["kind"])} run`;
+      return op["outcome"] === "worked" ? `ran ${what}${at}, which made ${made.map((one) => String(one.name)).join(" and ") || "nothing"}` : `ran ${what}${at}, which did not work`;
+    }
     case "field.set": return `set ${String(op["field"])} to ${String(op["value"])}`;
     default: return `did something this version does not know (${op.type})`;
   }

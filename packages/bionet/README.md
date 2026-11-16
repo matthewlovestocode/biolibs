@@ -290,6 +290,32 @@ anything wrong. If each moves a place into the other, both come out `adrift`: in
 somebody moves one. If each stands a tube in the same position, it is listed in `crowded` until
 somebody goes and looks.
 
+### What was done at the bench
+
+A run is one change that does three things: takes what was used from each tube that went in, adds
+each tube that came out, and keeps the run so a tube can say where it came from.
+
+```ts
+import { newRunId, recordRun } from "@biolibs/bionet";
+
+const product = newItemId();
+await write(ada, adasKey, recordRun({
+  run: newRunId(), kind: "pcr", instrument: null,
+  inputs: [{ item: tube, amount: 1, role: "template" }],
+  outputs: [{ item: product, sequence: F1.slice(0, 40), circular: false, name: "amplicon", amount: 50, unit: "µL" }],
+  settings: { anneal_at_least: 18 }, outcome: "worked", note: null,
+}));
+
+const after = await mergeLog(ada);
+after.items.find((one) => one.item === tube)?.amount;      // one less than before
+after.items.find((one) => one.item === product)?.from;     // the run's ID
+after.runs.length;                                         // 1
+```
+
+A run is recorded whole or refused whole. One that did not work is recorded with nothing coming
+out, and still takes what was used. The merge does not work the run out again: what came out is what
+its signer said came out.
+
 ### Moving entries between machines
 
 `mergeLog` works on whatever it is given. `sync.ts` is how entries are given, without opening a

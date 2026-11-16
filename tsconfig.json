@@ -105,6 +105,9 @@
     },
     {
       "path": "packages/bionet-scene"
+    },
+    {
+      "path": "packages/bionet-tools"
     }
   ]
 }

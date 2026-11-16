@@ -4,9 +4,9 @@ TypeScript ports of Python bioengineering libraries, verified case by case again
 packages that have no Python equivalent, and [Bionet](#bionet): labs keeping a freezer together and
 sharing what they hold, with no server in charge.
 
-- **35 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
+- **36 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,837 API items at parity** across three upstream libraries, of 2,859 applicable
-- **19,269 tests**, most of them replaying answers recorded from the real Python libraries
+- **19,290 tests**, most of them replaying answers recorded from the real Python libraries
 
 ## Install
 
@@ -126,6 +126,7 @@ following pointers from a lab it already knows.
 | [`@biolibs/bionet-panels`](packages/bionet-panels) | The parts of a lab application, ready to place: freezer, people, history, sharing, a whole window, and a lab's public page |
 | [`@biolibs/bionet-space`](packages/bionet-space) | Where things are in a lab: a tree of places, where each stands, the positions inside a box, and where a camera should look. Plain data, nothing drawn |
 | [`@biolibs/bionet-scene`](packages/bionet-scene) | A lab in three dimensions: rooms, freezers, boxes and tubes in the Bionet theme, from the whole lab down to one position in a box |
+| [`@biolibs/bionet-tools`](packages/bionet-tools) | The tools a lab uses at the bench, tied to its freezer: run a PCR from the tubes it holds and record it, so the inputs drop and the product becomes a tube |
 
 They are layered so that an application owns nothing: no colour, no component and no rule of its own.
 Three things are built on them:
@@ -146,7 +147,7 @@ Why it is built this way, what was decided and what is still open:
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 19,269 tests
+npm test           # vitest — 19,290 tests
 npm run coverage   # per-file coverage
 ```
 

@@ -312,7 +312,7 @@ This replaces the package list under "Libraries" above. Each layer may depend on
 | Hooks | `@biolibs/bionet-react` | The lab, asking for a change, the last refusal; the mark and logo as components | Client, look, React | Built |
 | Panels | `@biolibs/bionet-panels` | Freezer, people, history, sharing, and a whole window | Hooks, look | Built |
 | Geometry | `@biolibs/bionet-space` | A tree of places, where each stands, box grids, camera poses, search, a layout from a lab's record | Plain data only | Built |
-| Hooks | `@biolibs/tools-react` | Sequence map, digest, PCR, gel, plan, alignment | Engines, React | Not started |
+| Tools | `@biolibs/bionet-tools` | PCR from the lab's tubes, recorded as a run; digest, gel, assembly and a sequence map to come | Engines, hooks, panels | Written and tested, not published |
 | 3D | `@biolibs/bionet-scene` | The scene: places, boxes, tubes, instruments, neighbours; molecules to come | Geometry, look, three.js | Built |
 
 "Built" means written, tested in this repository, published to npm as 0.x, and in use by the
@@ -768,6 +768,27 @@ other are flagged in the ordinary view as well as in Arrange.
 Places are added and retired from the same view, so a lab can be built from nothing on the Lab tab:
 the first room, then what stands in it, then what is inside that. A new place takes the first clear
 spot. Which instrument a place is is a field on it (`model`), set when it is added.
+
+### The first tool: PCR
+
+Pressing a thermocycler in the Lab tab and then "Use it" opens the PCR tool in the scene's place.
+A template and two primers are chosen from the lab's tubes, the product is worked out by the engine
+the cloning plans use, and the run is recorded.
+
+- **A run is one signed entry**, `run.record`: what kind, where, what went in and how much, what
+  came out, how it was set up, whether it worked, a note. It is applied or refused whole.
+- **It uses and makes.** Each input drops by what was used, as a difference, so it adds up with
+  anybody else using the tube. Each output is a new item, and a new part if the lab lacked it.
+- **A tube knows where it came from.** An item made by a run carries the run's ID.
+- **A run that gave nothing is still recorded**, with no outputs. The tubes were used.
+- **Primers are parts.** Short linear parts are offered as primers; nothing else distinguishes them.
+- **The merge does not replay a run.** It records what the signer said came out. The inputs and
+  settings are kept so a run can be replayed and checked; that check is not built.
+- **Tools are a package**, `@biolibs/bionet-tools`, in three layers: sequences, the lab, the window.
+- **Which tool an instrument opens** comes from its `model` field. Only `thermocycler` has one.
+
+Not done: digest and gel, assembly, a sequence viewer; replaying a run to check it; a run as a step
+in a cloning plan; importing an instrument's own output; a Tools tab for labs that draw no room.
 
 Not done: placing a tube in a box by dragging it (that is still by position, on the Freezer tab); adding a place from the scene (it is still the
 form on the Places tab); undo, other than dragging back; molecules

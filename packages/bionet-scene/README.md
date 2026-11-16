@@ -58,6 +58,9 @@ its first room, so a lab can be built without leaving the view.
 <LabView lab={lab} onStand={stand} onAdd={(place) => act("addPlace", place)} onRetire={(place) => act("retirePlace", { place })} />
 ```
 
+`onUse`, if given, puts a "Use it" button beside an instrument once it has been pressed, and is told
+which. What opens is the host's to decide; `@biolibs/bionet-tools` has the tools.
+
 `LabBuilder` is the same thing on its own, taking a `Layout`.
 
 ## What to draw is decided before anything is drawn

@@ -341,6 +341,62 @@ export const retirePlace = (place: string): Operation => ({ type: "place.retire"
 export const putItem = (item: string, place: string | null, slot: { row: number; column: number } | null = null): Operation =>
   ({ type: "item.put", item, place, slot });
 
+/** One item that went into a run, and how much of it was used. */
+export interface RunInput {
+  /** The item. */
+  item: string;
+  /** How much of it was used, in the item's own unit. A whole number, which may be 0. */
+  amount: number;
+  /** What it was there as: a template, a forward primer. */
+  role: string;
+}
+
+/** One item that came out of a run. */
+export interface RunOutput {
+  /** The new item's ID. */
+  item: string;
+  /** The bases of what it is. */
+  sequence: string;
+  /** Whether that is a circle. */
+  circular: boolean;
+  /** What to call the part, if the lab does not have it already. */
+  name: string;
+  /** How much there is. A whole number of `unit`. */
+  amount: number;
+  /** What one of that is. */
+  unit: string | null;
+}
+
+/** Something done at the bench, as it is recorded. */
+export interface RunRecord {
+  /** The run's ID. */
+  run: string;
+  /** What kind of run it was: `pcr`. */
+  kind: string;
+  /** The place it was done at, such as a thermocycler, or `null`. */
+  instrument: string | null;
+  /** What went in. */
+  inputs: RunInput[];
+  /** What came out. None, for a run that did not work. */
+  outputs: RunOutput[];
+  /** How it was set up: whole numbers and short text, by name. */
+  settings: Record<string, string | number>;
+  /** Whether it worked. */
+  outcome: "worked" | "failed";
+  /** Anything worth saying about it. */
+  note: string | null;
+}
+
+/**
+ * @returns The change that records something done at the bench. In one entry it takes what was used
+ *   from each input, adds each output as an item (and as a part, if it is new), and keeps the run
+ *   itself, so that any item it made can say where it came from.
+ */
+export const recordRun = (run: RunRecord): Operation => ({ type: "run.record", ...run });
+
+/** @returns A new ID for a run, made the way an item's is. */
+export const newRunId = (): string => newItemId();
+
 /** @returns The change that sets one field on a part (by checksum), an item or a place (by ID). */
 export const setField = (on: "part" | "item" | "place", id: string, field: string, value: string | number | null): Operation =>
   ({ type: "field.set", on, id, field, value });

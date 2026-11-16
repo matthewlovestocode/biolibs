@@ -11,10 +11,10 @@
  * that have been apart agree the moment they have each other's entries.
  */
 import { addItem, addPart, addPlace, addToRoster, adjustItem, entryId, fetchInventory, foundLab, isMember, mergeLog,
-         movePlace, newItemId, newPlaceId, nextEntry, offerPart, publicInventory, putItem, recountItem, retireItem, retirePlace,
+         movePlace, newItemId, newPlaceId, newRunId, nextEntry, offerPart, publicInventory, putItem, recordRun, recountItem, retireItem, retirePlace,
          setField, signInventory, standPlace,
          takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type PartState, type PlaceState, type Role, type RosterKey, type SignedEntry } from "@biolibs/bionet";
+         type PartState, type PlaceState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
 import { openKey, sealKey } from "./backup.js";
@@ -60,6 +60,8 @@ export interface LabView {
   places: PlaceState[];
   /** Positions the log says hold more than one item. */
   crowded: Crowded[];
+  /** Everything done at the bench that was recorded. */
+  runs: RunState[];
   overlaps: Overlap[];
   /** How many entries are waiting on others that have not arrived. */
   waiting: number;
@@ -218,6 +220,7 @@ export class Lab {
         items: state.items,
         places: state.places,
         crowded: state.crowded,
+        runs: state.runs,
         overlaps: state.overlaps,
         waiting: state.waiting.length,
         entries: state.entries.map((one) => ({
@@ -417,6 +420,35 @@ export class Lab {
   /** Say where an item is: which place, and which position if the place is a box. `null` for nowhere recorded. */
   putItem(put: { item: string; place: string | null; slot?: { row: number; column: number } | null }): Promise<void> {
     return this.write(putItem(put.item, put.place, put.slot ?? null));
+  }
+
+  /**
+   * Record something done at the bench: what went in and how much of each, and what came out.
+   *
+   * It is one change. What was used is taken from each tube, each thing that came out becomes a
+   * tube (and a part, if the lab did not have it), and the run is kept so those tubes can say where
+   * they came from. A run that did not work is recorded with nothing coming out.
+   *
+   * @param run - What kind of run, where, what went in, what came out, how it was set up, whether it
+   *   worked, and anything worth saying.
+   * @returns The run's ID, and the IDs of the tubes it made, in order.
+   */
+  async recordRun(run: {
+    kind: string; instrument?: string | null; inputs: RunInput[];
+    outputs?: { sequence: string; circular?: boolean; name: string; amount: number; unit?: string | null }[];
+    settings?: Record<string, string | number>; outcome?: "worked" | "failed"; note?: string | null;
+  }): Promise<{ run: string; items: string[] }> {
+    const id = newRunId();
+    const outputs = (run.outputs ?? []).map((output) => ({
+      item: newItemId(), sequence: output.sequence.replace(/\s+/g, ""), circular: output.circular === true, name: output.name.trim(),
+      amount: output.amount, unit: output.unit === "" ? null : output.unit ?? null,
+    }));
+    const note = run.note === undefined || run.note === null || run.note.trim() === "" ? null : run.note.trim();
+    await this.write(recordRun({
+      run: id, kind: run.kind, instrument: run.instrument ?? null, inputs: run.inputs, outputs, settings: run.settings ?? {},
+      outcome: run.outcome ?? (outputs.length > 0 ? "worked" : "failed"), note,
+    }));
+    return { run: id, items: outputs.map((output) => output.item) };
   }
 
   /** Set one field on a part (by checksum), an item or a place (by ID). */

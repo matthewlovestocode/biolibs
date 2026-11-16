@@ -22,7 +22,8 @@ import { focusOn, sceneView, type Focus } from "./view.js";
  *
  * @param props - `layout` is the lab; `labName` is what to call it; `neighbours` are other labs to
  *   draw beside it; `theme` pins a theme, which otherwise follows the system; `focus` is where to
- *   start; `onNeighbour` is told when another lab is pressed.
+ *   start; `onNeighbour` is told when another lab is pressed; `onUse`, if given, puts a way to use
+ *   an instrument beside it once it has been pressed, and is told which.
  *
  * @example
  * ```tsx
@@ -34,8 +35,9 @@ import { focusOn, sceneView, type Focus } from "./view.js";
  * <LabExplorer layout={exampleLab()} labName="The Wren Lab" />
  * ```
  */
-export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus: start, onNeighbour }: {
+export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus: start, onNeighbour, onUse }: {
   layout: Layout; labName?: string; neighbours?: readonly Neighbour[]; theme?: Theme; focus?: Focus; onNeighbour?: (id: string) => void;
+  onUse?: (place: string) => void;
 }) {
   const system = useSystemTheme();
   const shown = theme ?? system;
@@ -46,6 +48,7 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
   const wrong = useMemo(() => needsArranging(layout), [layout]);
   const view = useMemo(() => sceneView(layout, focus, { matches, labName, attention: wrong.attention }), [layout, focus, matches, labName, wrong]);
   const picked = view.tubes.find((tube) => tube.selected);
+  const instrument = layout.places.find((place) => place.id === focus.place && place.kind === "instrument");
   const where = view.crumbs.at(-1)!;
 
   return (
@@ -74,6 +77,12 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
         {view.level !== "box" && <span className="hint"> · press something to look into it</span>}
         {wrong.problems.length > 0 && <span className="wrong" title={wrong.problems.join("\n")}> · {wrong.problems.length === 1 ? wrong.problems[0] : `${wrong.problems.length} things need arranging`}</span>}
       </p>
+      {onUse !== undefined && instrument !== undefined && (
+        <aside className="use">
+          <strong>{instrument.name}</strong>
+          <button type="button" onClick={() => onUse(instrument.id)}>Use it</button>
+        </aside>
+      )}
       {picked !== undefined && (
         <aside className="picked" aria-live="polite">
           <strong>{picked.name}</strong>
@@ -95,7 +104,7 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  * @param props - `lab` is the lab's places, items and parts; `name` is what to call it; `theme` pins
  *   a theme; `neighbours` are other labs to draw beside it; `onStand`, if given, adds a way to
  *   arrange the lab by hand, and is told each standing to say; `onAdd` and `onRetire`, if given,
- *   let places be added and retired while arranging.
+ *   let places be added and retired while arranging; `onUse` is told when an instrument is to be used.
  *
  * @example
  * ```tsx
@@ -105,10 +114,11 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  * <LabView lab={lab} name={lab.name ?? "Lab"} />
  * ```
  */
-export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, onRetire }: {
+export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, onRetire, onUse }: {
   lab: RecordedLab; name?: string; theme?: Theme; neighbours?: readonly Neighbour[];
   onStand?: (place: string, standing: Standing | null) => Promise<unknown> | void;
   onAdd?: (place: NewPlace) => Promise<unknown> | void; onRetire?: (place: string) => Promise<unknown> | void;
+  onUse?: (place: string) => void;
 }) {
   const layout = useMemo(() => layoutFrom(lab, { room: name }), [lab.places, lab.items, lab.parts, name]);
   const [arranging, setArranging] = useState(false);
@@ -131,7 +141,7 @@ export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, 
   }
   return (
     <div className="bionet-view">
-      <LabExplorer layout={layout} labName={name} {...pinned} {...(neighbours === undefined ? {} : { neighbours })} />
+      <LabExplorer layout={layout} labName={name} {...pinned} {...(neighbours === undefined ? {} : { neighbours })} {...(onUse === undefined ? {} : { onUse })} />
       {onStand !== undefined && <button type="button" className="bionet-arrange" onClick={() => setArranging(true)}>Arrange</button>}
     </div>
   );

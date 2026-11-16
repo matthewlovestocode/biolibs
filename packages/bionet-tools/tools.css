@@ -1,0 +1,10 @@
+/* The tools are drawn with the panels' styles, inside a .bionet window. These are the few of their own. */
+.bionet .pcr { display: grid; gap: 1rem }
+.bionet .toolhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem }
+.bionet .pcr fieldset { border: 0; margin: 0; padding: 0 }
+.bionet .pcr .choose { display: grid; gap: .8rem; margin-top: .8rem }
+.bionet .pcr .tube { display: grid; grid-template-columns: 1fr 6rem; gap: .2rem .7rem; align-items: end }
+.bionet .pcr .tube p { grid-column: 1 / -1; margin: 0 }
+.bionet .pcr .tube select { width: 100% }
+.bionet .pcr .least input { max-width: 6rem }
+.bionet .pcr code.wrap { display: block; margin: .4rem 0 .9rem; word-break: break-all }

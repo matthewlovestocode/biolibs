@@ -63,6 +63,19 @@ lab.snapshot().lab?.places.length;    // 2
 instrument can say which one it is: `addPlace({ kind: "instrument", name: "PCR", parent: bench, model: "thermocycler" })`.
 `layoutFrom` in `@biolibs/bionet-space` turns the snapshot's lab into something that can be drawn.
 
+## Recording a run
+
+```ts
+const done = await lab.recordRun({
+  kind: "pcr", instrument: thermocycler,
+  inputs: [{ item: template, amount: 1, role: "template" }],
+  outputs: [{ sequence: "GGATCACAGTCTACACTGCTCACTCC", name: "amplicon", amount: 50, unit: "µL" }],
+});
+done.items;    // the IDs of the tubes it made
+```
+
+`@biolibs/bionet-tools` works out what to pass for a PCR.
+
 ## Backing up the key
 
 A device's key never leaves it, with one exception: a lab with one member and one device ends when
