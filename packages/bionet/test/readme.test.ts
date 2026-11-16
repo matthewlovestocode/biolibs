@@ -43,12 +43,12 @@ describe("README: publishing what a lab holds", () => {
     const key = await generateSigningKey();
     const [f1, f2, f3] = parts();
     const inventory = inventoryFrom([f1!, f2!, f3!], {
-      name: "Endy lab", origin: "https://endylab.example", contact: null, note: null,
+      name: "Wren lab", origin: "https://wrenlab.example", contact: null, note: null,
     });
     expect(inventory.parts[0]!.name).toBe("f1");
     expect(inventory.parts[0]!.checksum).toMatch(/^ldseguid=/);
 
-    const published = await signInventory(inventory, key, { signer: "Endy lab" });
+    const published = await signInventory(inventory, key, { signer: "Wren lab" });
     expect(published.signatures.length).toBe(1);
   });
 });
@@ -58,10 +58,10 @@ describe("README: reading somebody else's", () => {
     const key = await generateSigningKey();
     const [f1, f2] = parts();
     const published = await signInventory(inventoryFrom([f1!, f2!], {
-      name: "Endy lab", origin: "https://endylab.example", contact: null, note: null,
-    }), key, { signer: "Endy lab" });
+      name: "Wren lab", origin: "https://wrenlab.example", contact: null, note: null,
+    }), key, { signer: "Wren lab" });
 
-    const found = await fetchInventory("endylab.example", { fetch: servingOne(published) });
+    const found = await fetchInventory("wrenlab.example", { fetch: servingOne(published) });
     expect(found.checks[0]!.ok).toBe(true);
     expect(found.fromItsOwnAddress).toBe(true);
     expect(settled(found)).toBe(true);
@@ -73,9 +73,9 @@ describe("README: noticing when a key changes", () => {
   it("goes new, then known, then changed", async () => {
     const key = await generateSigningKey();
     const published = await signInventory(inventoryFrom(parts(), {
-      name: "Endy lab", origin: "https://endylab.example", contact: null, note: null,
+      name: "Wren lab", origin: "https://wrenlab.example", contact: null, note: null,
     }), key);
-    const found = await fetchInventory("endylab.example", { fetch: servingOne(published) });
+    const found = await fetchInventory("wrenlab.example", { fetch: servingOne(published) });
 
     const memory = labMemory();
     expect(remember(memory, found.origin, signingKeys(found)).how).toBe("new");
@@ -87,21 +87,21 @@ describe("README: noticing when a key changes", () => {
 describe("README: how labs find each other", () => {
   it("walks from a lab it was told about to one it was not", async () => {
     const key = await generateSigningKey();
-    const lab = { name: "Endy lab", origin: "https://endylab.example", contact: null, note: null };
+    const lab = { name: "Wren lab", origin: "https://wrenlab.example", contact: null, note: null };
     const other = await signInventory(inventoryFrom([parts()[2]!], {
       ...lab, name: "Other lab", origin: "https://otherlab.example",
     }), key);
-    const endy = await signInventory(inventoryFrom([parts()[0]!], lab, {
+    const wren = await signInventory(inventoryFrom([parts()[0]!], lab, {
       peers: [peer("otherlab.example", { name: "Other lab", key: await keyFingerprint(key.publicKey) })],
     }), key);
 
-    const walk = await discover(["endylab.example"], {
+    const walk = await discover(["wrenlab.example"], {
       maxDepth: 2,
-      fetch: serving({ "https://endylab.example": endy, "https://otherlab.example": other }),
+      fetch: serving({ "https://wrenlab.example": wren, "https://otherlab.example": other }),
     });
     expect(walk.reached.map((one) => one.path.join(" → "))).toEqual([
-      "https://endylab.example",
-      "https://endylab.example → https://otherlab.example",
+      "https://wrenlab.example",
+      "https://wrenlab.example → https://otherlab.example",
     ]);
     expect(walk.reached[1]!.asIntroduced).toBe("agrees");
     expect(introducedDifferently(walk)).toEqual([]);
@@ -118,15 +118,15 @@ describe("README: asking who has the parts", () => {
     const plan = CloningStrategy.fromRecords([plasmid!], { description: "a 75 bp circle" });
 
     const published = await signInventory(inventoryFrom([parts()[0]!, parts()[1]!], {
-      name: "Endy lab", origin: "https://endylab.example", contact: null, note: null,
+      name: "Wren lab", origin: "https://wrenlab.example", contact: null, note: null,
     }), key);
-    const found = await fetchInventory("endylab.example", { fetch: servingOne(published) });
+    const found = await fetchInventory("wrenlab.example", { fetch: servingOne(published) });
 
     const needed = partsNeeded(plan.document);
     expect(needed.map((part) => part.name)).toEqual(["f1", "f2", "f3"]);
 
     const sourcing = whoHas(needed, [found]);
-    expect(sourcing[0]!.holders[0]!.lab).toBe("Endy lab");
+    expect(sourcing[0]!.holders[0]!.lab).toBe("Wren lab");
     expect(unsourced(sourcing).map((part) => part.name)).toEqual(["f3"]);
   });
 });

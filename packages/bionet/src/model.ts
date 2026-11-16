@@ -10,8 +10,8 @@
  * circle, wherever you cut it open. Two labs holding the same molecule publish the same checksum
  * without having agreed on anything.
  *
- * **The address is the identity.** An inventory signed by a key and served from `endylab.example` ties
- * that key to `endylab.example` and to nothing else. There is no registry, no authority and nobody to
+ * **The address is the identity.** An inventory signed by a key and served from `wrenlab.example` ties
+ * that key to `wrenlab.example` and to nothing else. There is no registry, no authority and nobody to
  * ask: you get a lab's key the way you got its web address, and what you can catch afterwards is the
  * key *changing*.
  *
@@ -27,7 +27,7 @@ export interface LabModel {
   /** What the lab calls itself. A label, not a verified name. */
   name: string;
   /**
-   * The web address the inventory is published at, as an origin like `https://endylab.example`.
+   * The web address the inventory is published at, as an origin like `https://wrenlab.example`.
    *
    * Fetching checks this against where the document actually came from. A document claiming an origin
    * it was not served from is refused, because that claim is the whole of the binding.

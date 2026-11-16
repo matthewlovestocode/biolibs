@@ -106,7 +106,7 @@ interface Pending {
  * ```ts
  * import { discover, partsNeeded, settledLabs, whoHas } from "@biolibs/bionet";
  *
- * const walk = await discover(["endylab.example"], { maxDepth: 2 });
+ * const walk = await discover(["wrenlab.example"], { maxDepth: 2 });
  * walk.reached.map((one) => `${one.path.join(" → ")}`);
  *
  * whoHas(partsNeeded(plan.document), settledLabs(walk));

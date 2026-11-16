@@ -38,7 +38,7 @@ export interface FetchOptions {
 /**
  * Fetch a lab's inventory and check it.
  *
- * @param address - The lab's address, like `endylab.example`.
+ * @param address - The lab's address, like `wrenlab.example`.
  * @param options - What to fetch with, and how long to wait.
  * @returns What came back, with the signatures checked and the address compared.
  * @throws If the address is not usable, nothing answered, or what answered is not an inventory.
@@ -47,7 +47,7 @@ export interface FetchOptions {
  * ```ts
  * import { fetchInventory, settled } from "@biolibs/bionet";
  *
- * const found = await fetchInventory("endylab.example");
+ * const found = await fetchInventory("wrenlab.example");
  * settled(found);                       // signed, and served from the address it claims
  * found.signed.inventory.parts.length;
  * ```

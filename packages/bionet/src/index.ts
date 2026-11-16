@@ -28,7 +28,7 @@
  * ```ts
  * import { fetchInventory, partsNeeded, settled, whoHas } from "@biolibs/bionet";
  *
- * const found = await fetchInventory("endylab.example");
+ * const found = await fetchInventory("wrenlab.example");
  * const sourcing = whoHas(partsNeeded(plan.document), settled(found) ? [found] : []);
  *
  * for (const { needed, holders } of sourcing) {

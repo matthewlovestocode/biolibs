@@ -33,8 +33,8 @@ of exactly the kind this is meant to avoid:
 | it came from its own address | The document names the origin it was served from, so those keys belong to **that address** |
 
 `settled()` is all three at once. What none of them is: *this lab is who it says it is.* The address
-does that work, and only as far as you already trusted the address. If you know `endylab.example` is
-the Endy lab — from a paper, a colleague, a sign on the door — then a signed inventory served from
+does that work, and only as far as you already trusted the address. If you know `wrenlab.example` is
+the Wren lab — from a paper, a colleague, a sign on the door — then a signed inventory served from
 there ties that key to that lab. If you do not know that, nothing here will tell you.
 
 Two edges worth stating plainly:
@@ -66,8 +66,8 @@ import { generateSigningKey } from "@biolibs/opencloning";
 const key = await generateSigningKey();
 
 const inventory = inventoryFrom([f1, f2, f3], {
-  name: "Endy lab",
-  origin: "https://endylab.example",
+  name: "Wren lab",
+  origin: "https://wrenlab.example",
   contact: null,
   note: null,
 });
@@ -75,7 +75,7 @@ const inventory = inventoryFrom([f1, f2, f3], {
 console.log(inventory.parts[0].name);        // "f1" — what this lab calls it
 console.log(inventory.parts[0].checksum);    // ldseguid=... — what everyone else matches on
 
-const published = await signInventory(inventory, key, { signer: "Endy lab" });
+const published = await signInventory(inventory, key, { signer: "Wren lab" });
 // write JSON.stringify(published) to /.well-known/bionet.json
 ```
 
@@ -88,7 +88,7 @@ the same molecule. Their names for it agree with nothing.
 ```ts
 import { fetchInventory, settled, signingKeys } from "@biolibs/bionet";
 
-const found = await fetchInventory("endylab.example");
+const found = await fetchInventory("wrenlab.example");
 
 console.log(found.checks[0].ok);           // true — the signature holds
 console.log(found.fromItsOwnAddress);      // true — and it was served from the address it names
@@ -133,11 +133,11 @@ const inventory = inventoryFrom(parts, lab, {
 });
 
 // walking from a lab you were told about
-const walk = await discover(["endylab.example"], { maxDepth: 2 });
+const walk = await discover(["wrenlab.example"], { maxDepth: 2 });
 
 console.log(walk.reached.map((one) => one.path.join(" → ")));
-// [ "https://endylab.example",
-//   "https://endylab.example → https://otherlab.example" ]
+// [ "https://wrenlab.example",
+//   "https://wrenlab.example → https://otherlab.example" ]
 console.log(walk.unreachable[0]?.why);      // why an address did not answer, and who pointed at it
 ```
 
@@ -186,12 +186,12 @@ const needed = partsNeeded(plan.document);
 console.log(needed.map((part) => part.name));          // [ "f1", "f2", "f3" ]
 
 const sourcing = whoHas(needed, [found]);
-console.log(sourcing[0].holders[0].lab);               // "Endy lab"
+console.log(sourcing[0].holders[0].lab);               // "Wren lab"
 console.log(unsourced(sourcing).map((p) => p.name));   // [ "f3" ] — nobody asked has this one
 ```
 
 `partsNeeded` is the plan's leaves: the molecules no step in it makes, which is exactly what somebody
-has to already have. Matching is by checksum, so a lab that calls the same molecule `pEndy-402` is
+has to already have. Matching is by checksum, so a lab that calls the same molecule `pWren-402` is
 found anyway. `heldButNotOffered` separates "nobody has it" from "somebody has it but is not sending
 it", which are different problems for the person reading the plan.
 

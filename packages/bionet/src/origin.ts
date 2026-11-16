@@ -3,8 +3,8 @@
  *
  * A lab publishes at a fixed path on its own web address, the way a site publishes other well-known
  * files. Then the address does the work an authority would otherwise have to do: if you already know
- * that `endylab.example` is the Endy lab — because you read it in a paper, or a colleague told you, or
- * it is written on their door — then an inventory served from `https://endylab.example` and signed by
+ * that `wrenlab.example` is the Wren lab — because you read it in a paper, or a colleague told you, or
+ * it is written on their door — then an inventory served from `https://wrenlab.example` and signed by
  * a key ties that key to that lab, as firmly as you trust the address and the connection.
  *
  * That is the whole of it, and it is worth being exact about the edges:
@@ -27,11 +27,11 @@ const loopback = (host: string): boolean =>
 /**
  * Read what somebody typed as the address of a lab.
  *
- * Accepts `endylab.example`, `https://endylab.example`, or an address with a path on it, and gives
+ * Accepts `wrenlab.example`, `https://wrenlab.example`, or an address with a path on it, and gives
  * back the origin alone, which is all that identifies the lab.
  *
  * @param address - What they typed.
- * @returns The origin, like `https://endylab.example`.
+ * @returns The origin, like `https://wrenlab.example`.
  * @throws If it is not an address, or is one whose connection would prove nothing.
  */
 export function labOrigin(address: string): string {

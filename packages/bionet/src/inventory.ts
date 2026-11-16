@@ -54,9 +54,9 @@ export interface InventoryOptions {
  * import { inventoryFrom, signInventory } from "@biolibs/bionet";
  *
  * const inventory = inventoryFrom([pUC19, insert], {
- *   name: "Endy lab", origin: "https://endylab.example", contact: null, note: null,
+ *   name: "Wren lab", origin: "https://wrenlab.example", contact: null, note: null,
  * });
- * const published = await signInventory(inventory, key, { signer: "Endy lab" });
+ * const published = await signInventory(inventory, key, { signer: "Wren lab" });
  * ```
  */
 export function inventoryFrom(records: readonly Dseqrecord[], lab: LabModel,

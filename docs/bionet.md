@@ -5,7 +5,7 @@ Labs publishing what they hold, so that a cloning plan can be acted on and not j
 ```ts
 import { fetchInventory, partsNeeded, settled, whoHas } from "@biolibs/bionet";
 
-const found = await fetchInventory("endylab.example");
+const found = await fetchInventory("wrenlab.example");
 const sourcing = whoHas(partsNeeded(plan.document), settled(found) ? [found] : []);
 ```
 
@@ -17,7 +17,7 @@ A plan bottoms out in molecules nobody made — the things that were simply had.
 
 ## What an inventory is
 
-Three things and a time: who published it, the parts, and when. A part is listed by its SEGUID rather than by the lab's own name for it, which is the design decision the rest rests on. A SEGUID is the same whichever strand the molecule was written from and, for a circle, wherever it was cut open, so two labs that have never spoken publish the same string for the same molecule. Names agree with nothing. A lab that lists a fragment as `pEndy-402` is still found when a plan calls it `f3`.
+Three things and a time: who published it, the parts, and when. A part is listed by its SEGUID rather than by the lab's own name for it, which is the design decision the rest rests on. A SEGUID is the same whichever strand the molecule was written from and, for a circle, wherever it was cut open, so two labs that have never spoken publish the same string for the same molecule. Names agree with nothing. A lab that lists a fragment as `pWren-402` is still found when a plan calls it `f3`.
 
 Parts also carry whether they are on offer. A lab listing what it holds without offering all of it is normal, and `heldButNotOffered` keeps that separate from `unsourced` — "nobody has this" and "somebody has it but is not sending it" are different problems for the person reading the plan.
 
@@ -29,7 +29,7 @@ A fetch settles three things, and they are reported separately rather than flatt
 - its **signatures hold**, so not a word of it has changed since whoever holds those keys published it;
 - it was served from the **address it claims**, which is what ties those keys to that address.
 
-`settled()` is all three. None of them, and not all three together, is *this lab is who it says it is*. The address does that work, and only as far as the address was already trusted: if you know `endylab.example` is the Endy lab because you read it in a paper or saw it on their door, then a signed inventory served from there binds that key to that lab. If you do not know it, nothing in this package will tell you. There is no registry here and nobody to appeal to — that is a property of the design, not an omission from it.
+`settled()` is all three. None of them, and not all three together, is *this lab is who it says it is*. The address does that work, and only as far as the address was already trusted: if you know `wrenlab.example` is the Wren lab because you read it in a paper or saw it on their door, then a signed inventory served from there binds that key to that lab. If you do not know it, nothing in this package will tell you. There is no registry here and nobody to appeal to — that is a property of the design, not an omission from it.
 
 Two edges stated plainly in `origin.ts`, and enforced:
 
