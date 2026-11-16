@@ -176,3 +176,63 @@ describe("a lab that records what was done", () => {
     expect(await perform(lab, "recordRun", { kind: "pcr", inputs: [] })).toMatchObject({ ok: true });
   });
 });
+
+describe("a copy of the whole lab", () => {
+  it("brings the lab back on a new device with the restored key and no peer at all", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    await lab.addPart({ name: "f1", sequence: F1 });
+    const tube = await lab.addItem({ part: lab.snapshot().lab!.parts[0]!.checksum, amount: 10, unit: "µL" });
+    const box = await lab.addPlace({ kind: "box", name: "Box 1", grid: { rows: 9, columns: 9 } });
+    await lab.putItem({ item: tube, place: box, slot: { row: 0, column: 0 } });
+    const key = await lab.backUp(PASSPHRASE);
+    const copy = await lab.exportLab();
+    const before = lab.snapshot().lab!;
+    expect(JSON.parse(copy)).toMatchObject({ bionet_lab_copy: 1, lab: before.id, name: "The Wren Lab" });
+    lab.close();                                             // the laptop is gone, and there never was a peer
+
+    const fresh = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await fresh.setPerson("Ada");
+    await fresh.restore({ backup: key, passphrase: PASSPHRASE });
+    expect(await fresh.importLab(copy)).toBe(before.entries.length);
+    const after = fresh.snapshot().lab!;
+    expect(after).toMatchObject({ id: before.id, name: "The Wren Lab", member: true, keeper: true });
+    expect(after.items).toEqual(before.items);
+    expect(after.places).toEqual(before.places);
+    await fresh.adjust({ item: tube, by: -1 });              // and it carries on the same log
+    expect(fresh.snapshot().lab!.entries.map((one) => one.seq)).toEqual([...before.entries.map((one) => one.seq), before.entries.length]);
+    expect(await fresh.importLab(copy)).toBe(0);             // bringing the same copy in again adds nothing
+    fresh.close();
+  }, 20_000);
+
+  it("lets a device without the key read the lab but not change it, and refuses what is not a copy", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await expect(lab.exportLab()).rejects.toThrow(/not in a lab/);
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    await lab.addPart({ name: "f1", sequence: F1 });
+    const copy = await lab.exportLab();
+
+    const stranger = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await stranger.setPerson("Bob");
+    for (const not of ["not json", "{}", JSON.stringify({ bionet_lab_copy: 2, lab: "a".repeat(64), entries: [] }), JSON.stringify({ bionet_lab_copy: 1, lab: "short", entries: [] })]) {
+      await expect(stranger.importLab(not)).rejects.toThrow(/not a copy of a lab/);
+    }
+    // A copy that says it is of a lab its entries do not found is not believed.
+    await expect(stranger.importLab(JSON.stringify({ ...JSON.parse(copy), lab: "b".repeat(64) }))).rejects.toThrow(/Nothing in that copy belongs/);
+    expect(stranger.snapshot().lab).toBeNull();
+
+    await stranger.importLab(copy);
+    expect(stranger.snapshot().lab).toMatchObject({ name: "The Wren Lab", member: false });
+    expect(stranger.snapshot().lab!.parts.map((part) => part.name)).toEqual(["f1"]);
+    await expect(stranger.addPart({ name: "f2", sequence: F1.slice(4) })).rejects.toThrow(/not on the lab's roster/);
+
+    const other = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await other.setPerson("Cyd");
+    await other.found({ name: "Another lab" });
+    await expect(other.importLab(copy)).rejects.toThrow(/different lab/);
+    expect((await perform(lab, "exportLab")).ok).toBe(true);
+    for (const one of [lab, stranger, other]) one.close();
+  });
+});

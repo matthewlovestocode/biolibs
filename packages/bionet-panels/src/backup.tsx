@@ -6,10 +6,10 @@ import { useAct, useLab } from "@biolibs/bionet-react";
 import { Ask } from "./parts.js";
 
 /**
- * How to hand the person a file to keep. A host that cannot use the browser's own way supplies one.
- * The default offers it as a download.
+ * How to hand the person a file to keep. A host that cannot use the browser's own way supplies one,
+ * and may answer `false` if the person chose not to save it. The default offers it as a download.
  */
-export const SaveContext = createContext<(name: string, text: string) => Promise<void>>(async (name, text) => {
+export const SaveContext = createContext<(name: string, text: string) => Promise<boolean | void>>(async (name, text) => {
   const link = document.createElement("a");
   link.href = URL.createObjectURL(new Blob([text], { type: "application/json" }));
   link.download = name;
@@ -38,8 +38,9 @@ export function BackUpKey() {
         if (first !== again) { setNote("Those two passphrases are not the same."); return { ok: false }; }
         const answer = await act("backUp", first);
         if (!answer.ok) return answer;
-        await save(`bionet-key-${state.device.fingerprint}.json`, String(answer.result));
-        setNote("Sealed and handed over. Open it only on a new device, before that device joins a lab.");
+        const saved = await save(`bionet-key-${state.device.fingerprint}.json`, String(answer.result));
+        if (saved === false) { setNote("Not saved. Nothing has been written anywhere."); return { ok: false }; }
+        setNote("Sealed and saved. Keep it somewhere that is not this computer. Open it only on a new device, before that device joins a lab.");
         return answer;
       }}>
         <label>Passphrase<input name="passphrase" type="password" required minLength={12} autoComplete="new-password" /></label>
@@ -66,6 +67,59 @@ export function RestoreKey() {
         <label>Backup file<input name="backup" type="file" accept="application/json,.json" required /></label>
         <label>Passphrase<input name="passphrase" type="password" required autoComplete="off" /></label>
         <button type="submit" className="quiet">Restore key</button>
+      </Ask>
+    </details>
+  );
+}
+
+/** Write everything this device holds of the lab to a file. */
+export function BackUpLab() {
+  const state = useLab();
+  const act = useAct();
+  const save = useContext(SaveContext);
+  const [note, setNote] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const lab = state?.lab;
+  if (state === null || lab === null || lab === undefined) return null;
+  return (
+    <section className="card">
+      <h2>Keep a copy of the lab</h2>
+      <p className="dim small">
+        The key says who you are; this is the lab itself: every change anybody has signed, {lab.entries.length} so far. With the key's backup
+        and this copy, the lab can be brought back on a new computer with nothing else to ask. It is not sealed: every change in it is
+        signed, so it cannot be altered without that showing, but whoever reads the file reads the lab. Make a new copy as the lab grows.
+      </p>
+      <button type="button" disabled={busy} onClick={() => {
+        setBusy(true);
+        setNote(null);
+        void (async () => {
+          const answer = await act("exportLab");
+          if (answer.ok) {
+            const name = (lab.name ?? "lab").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() || "lab";
+            const saved = await save(`bionet-lab-${name}-${new Date().toISOString().slice(0, 10)}.json`, String(answer.result));
+            setNote(saved === false ? "Not saved. Nothing has been written anywhere." : `Saved a copy holding ${lab.entries.length} ${lab.entries.length === 1 ? "change" : "changes"}.`);
+          }
+          setBusy(false);
+        })();
+      }}>Save a copy</button>
+      {note !== null && <p className="small" role="status">{note}</p>}
+    </section>
+  );
+}
+
+/** Bring a lab back from a copy, on a device that is in no lab. */
+export function RestoreLab() {
+  const act = useAct();
+  return (
+    <details className="restore">
+      <summary>Have a copy of a lab? Bring it back</summary>
+      <p className="dim small">Choose a file saved with "Keep a copy of the lab". If this device signs with a key on that lab's roster — restore the key first — it carries on where the lab left off. If not, the lab can be read here and not changed.</p>
+      <Ask className="stack" onAsk={async (data) => {
+        const file = data.get("copy");
+        return act("importLab", file instanceof File ? await file.text() : "");
+      }}>
+        <label>Copy of the lab<input name="copy" type="file" accept="application/json,.json" required /></label>
+        <button type="submit" className="quiet">Bring it back</button>
       </Ask>
     </details>
   );

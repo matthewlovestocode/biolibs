@@ -15,7 +15,7 @@ import { Logo, Mark, useAct, useLab } from "@biolibs/bionet-react";
 import { Freezer } from "./freezer.js";
 import { History } from "./history.js";
 import { Ask, CopyContext, DeviceKey, SyncStatus, Trouble } from "./parts.js";
-import { RestoreKey, SaveContext } from "./backup.js";
+import { RestoreKey, RestoreLab, SaveContext } from "./backup.js";
 import { People } from "./people.js";
 import { Places } from "./places.js";
 import { Sharing } from "./sharing.js";
@@ -44,7 +44,7 @@ export interface ExtraTab {
  *   shown after the window's own.
  */
 export function LabWindow({ tab: first = "freezer", copy, save, extra = [] }: {
-  tab?: Tab | string; copy?: (words: string) => Promise<void>; save?: (name: string, text: string) => Promise<void>; extra?: readonly ExtraTab[];
+  tab?: Tab | string; copy?: (words: string) => Promise<void>; save?: (name: string, text: string) => Promise<boolean | void>; extra?: readonly ExtraTab[];
 }) {
   let window = <Body first={first} extra={extra} />;
   if (save !== undefined) window = <SaveContext.Provider value={save}>{window}</SaveContext.Provider>;
@@ -137,6 +137,7 @@ export function NoLab() {
           <button type="submit">Join</button>
         </Ask>
         <RestoreKey />
+        <RestoreLab />
       </section>
     </div>
   );

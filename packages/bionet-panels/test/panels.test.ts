@@ -7,7 +7,7 @@
  */
 import { readFileSync } from "node:fs";
 import { Lab, memoryKeys, memoryStore, sourceOf, type LabSnapshot, type LabSource, type PeerView } from "@biolibs/bionet-client";
-import { BackUpKey, Freezer, History, LabWindow, People, Places, RestoreKey, Sharing, SyncStatus, TABS, amountOf, describeEntry,
+import { BackUpKey, BackUpLab, Freezer, History, LabWindow, People, Places, RestoreKey, RestoreLab, Sharing, SyncStatus, TABS, amountOf, describeEntry,
          listedParts, madeFrom, placePath, placeTree, syncWords, whereWords } from "@biolibs/bionet-panels";
 import { LabProvider } from "@biolibs/bionet-react";
 import { cssVariable, MEANINGS } from "@biolibs/bionet-theme";
@@ -149,6 +149,11 @@ describe("backing up the key", () => {
     const joining = await fresh();
     await joining.setPerson("Ada");
     expect(draw(joining, h(LabWindow))).toContain("Restore its key");
+    expect(draw(joining, h(LabWindow))).toContain("Have a copy of a lab? Bring it back");
+    expect(draw(joining, h(BackUpLab))).toBe("");
+    expect(draw(lab, h(People))).toContain("Keep a copy of the lab");
+    expect(draw(lab, h(BackUpLab))).toContain(`${lab.snapshot().lab!.entries.length} so far`);
+    expect(draw(lab, h(RestoreLab))).toContain("restore the key first");
   });
 });
 

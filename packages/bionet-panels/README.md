@@ -50,7 +50,9 @@ Every colour comes from `@biolibs/bionet-theme`, and no rule reaches outside `.b
 
 `Places` shows the tree of places and adds to it; each tube in `Freezer` says where it is and can be
 put somewhere, by place and by position (`C4`). `BackUpKey` and `RestoreKey` seal the device's key to
-a file and take one up again.
+a file and take one up again; `BackUpLab` and `RestoreLab` do the same for the lab itself. A host
+that cannot offer a download supplies `save` to `LabWindow`, and may answer `false` if the person
+chose not to save.
 
 `LabWindow` takes views of the host's own, shown as tabs after its own:
 

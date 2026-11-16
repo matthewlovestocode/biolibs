@@ -88,6 +88,19 @@ await fresh.restore({ backup, passphrase: "several unrelated words" });
 await fresh.join(invite);                                      // and it carries on the same log
 ```
 
+The key is who you are; the lab itself is every signed change. `exportLab` writes all of them to a
+file and `importLab` brings them back, so with both files a lab comes back on a new device with no
+peer to ask:
+
+```ts
+const copy = await lab.exportLab();          // every signed entry, as JSON
+await fresh.restore({ backup, passphrase });
+await fresh.importLab(copy);                 // the same lab, and it carries on the same log
+```
+
+The copy is not sealed. Every entry in it is signed, so it cannot be altered without that showing,
+but whoever reads the file reads the lab.
+
 The key is sealed with AES-256-GCM under a key stretched from the passphrase by PBKDF2 (600,000
 rounds of SHA-256). Nothing remembers the passphrase. `restore` is refused once a device is in a
 lab: one key on two devices writes two histories the lab cannot tell apart.

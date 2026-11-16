@@ -737,8 +737,14 @@ The real lab had one member and one device, so losing the laptop would have lost
 device's key can now be sealed under a passphrase (PBKDF2-SHA-256, 600,000 rounds; AES-256-GCM)
 into a file, and taken up by a new device before it joins. The window is handed only the sealed
 text. Restoring is refused once a device is in a lab, since one key on two devices writes two
-histories. A restored device is sent its own old log by the peer and carries on from its end; a lab
-with no peer has nowhere to get that log from, so its backup restores the key but not the lab.
+histories. A restored device is sent its own old log by the peer and carries on from its end.
+
+A key is not the lab. A lab with no peer, or whose peer has lost its copy, has nowhere to get the
+log from, so the app can also write the whole log to a file ("Keep a copy of the lab") and bring a
+lab back from one. The copy is every signed entry, unsealed: it cannot be altered without that
+showing, and whoever reads it reads the lab. With both files a lab comes back on a new device with
+nothing else to ask, which is what the real Wren Lab needed, since its peer's disk is emptied on
+every deploy. The real lab's key was backed up by its keeper on 2026-11-16.
 
 ### The builder
 

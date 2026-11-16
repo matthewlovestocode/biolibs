@@ -103,6 +103,9 @@ export interface LabOptions {
   WebSocket?: typeof globalThis.WebSocket;
 }
 
+/** The version of the document `exportLab` writes. */
+export const LAB_COPY_VERSION = 1;
+
 /** @param peer - The peer's socket address. @returns The web address it serves from. */
 export function originOf(peer: string): string {
   const url = new URL(peer);
@@ -343,6 +346,53 @@ export class Lab {
     this.key = await importSigningKey(exported);
     this.fingerprint = await keyFingerprint(this.key.publicKey);
     this.changed();
+  }
+
+  /**
+   * Everything this device holds of the lab, as text to keep in a file.
+   *
+   * It is every signed entry, so it is the whole lab: with it and a key on the roster, the lab can
+   * be brought back on a new device with no peer to ask. It is not sealed. Every entry is signed,
+   * so a copy cannot be altered without that showing, but anybody who reads it reads the lab.
+   *
+   * @returns The copy, as JSON.
+   */
+  async exportLab(): Promise<string> {
+    const lab = this.labId;
+    if (lab === null || this.state === null) throw new Error("This device is not in a lab yet.");
+    if (this.held.length === 0) throw new Error("None of the lab has reached this device yet, so there is nothing to keep a copy of.");
+    return JSON.stringify({ bionet_lab_copy: LAB_COPY_VERSION, lab, name: this.state.name, copied_at: new Date().toISOString(), entries: this.held });
+  }
+
+  /**
+   * Bring a lab in from a copy made by `exportLab`.
+   *
+   * On a device that is in no lab, this puts it in the copy's lab, with no peer. On a device already
+   * in that lab, it adds whatever the copy has that the device lacks. Entries are checked exactly as
+   * ones from a peer are: badly signed ones, and ones from keys the roster never knew, are dropped.
+   *
+   * @param text - The text of the file.
+   * @returns How many entries were new to this device.
+   * @throws If it is not a copy of a lab, is a copy of a different lab, or holds nothing of use.
+   */
+  async importLab(text: string): Promise<number> {
+    let copy: { bionet_lab_copy?: unknown; lab?: unknown; entries?: unknown };
+    try { copy = JSON.parse(text) as typeof copy; } catch { throw new Error("That is not a copy of a lab."); }
+    if (typeof copy !== "object" || copy === null || copy.bionet_lab_copy !== LAB_COPY_VERSION || typeof copy.lab !== "string"
+        || !/^[0-9a-f]{64}$/.test(copy.lab) || !Array.isArray(copy.entries)) {
+      throw new Error("That is not a copy of a lab.");
+    }
+    const here = this.labId;
+    if (here !== null && here !== copy.lab) throw new Error("That is a copy of a different lab from the one this device is in.");
+    if (here === null) {
+      // Nothing is believed about the copy until its entries have been checked against its own ID.
+      const { kept } = await takeEntries(copy.lab, [], copy.entries);
+      if (kept.length === 0) throw new Error("Nothing in that copy belongs to the lab it says it is of.");
+      this.store.set("lab", copy.lab);
+    }
+    const added = await this.take(copy.entries);
+    this.connect();
+    return added;
   }
 
   /** Stop talking to the peer, until `goOnline`. The device goes on working. */

@@ -45,6 +45,8 @@ The design gives each device its own key and never moves one. The exception is l
 
 Two things keep that from undoing the rest. A window is handed only the sealed text, so the rule that the window never sees the key still holds. And `restore` is refused once a device is in a lab: a backup is for a device standing in for a lost one, and a key in use on two devices at once writes two histories under one name. A restored device joins as usual, is sent its own old log by the peer, and carries on from where that stopped.
 
+A key alone does not bring a lab back; the log does, and a device that has lost its copy has to get the log from somewhere. If the lab has a peer that still holds it, joining is enough. If it has none, or the peer has lost it, `exportLab` is the other source: every signed entry in one file. It is checked on the way in exactly as entries from a peer are, and a copy is not believed about which lab it is of until its own entries have founded that lab. A device without a roster key can import a copy and read the lab, and cannot change it.
+
 The fingerprint written on the outside of a backup is not sealed, so it is checked against the key inside before the key is used.
 
 ## Source layout
