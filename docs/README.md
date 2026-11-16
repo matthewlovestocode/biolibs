@@ -62,6 +62,7 @@ Labs keeping a freezer together and sharing what they hold, with no server in ch
 | `@biolibs/bionet-panels` | The parts of a lab application, a whole window that takes a host's own views, and a lab's public page | [bionet-panels.md](bionet-panels.md) |
 | `@biolibs/bionet-space` | Where things are in a lab: a tree of places, the positions inside a box, where a camera should look, and arranging by hand. Plain data | [bionet-space.md](bionet-space.md) |
 | `@biolibs/bionet-tools` | The tools a lab uses at the bench, tied to its freezer: PCR and a check digest with its gel, recorded as runs | [bionet-tools.md](bionet-tools.md) |
+| `@biolibs/bionet-demo` | A made-up lab that is real in every way that matters, and a walk through it that uses each tool in turn | [bionet-demo.md](bionet-demo.md) |
 | `@biolibs/bionet-scene` | A lab in three dimensions, from the whole room down to one position in a box, and arranged by hand | [bionet-scene.md](bionet-scene.md) |
 
 ## Dependency graph
@@ -105,6 +106,7 @@ dseqrecord, opencloning  <-- bionet  <-- bionet-peer
 bionet-theme  (nothing)  <------------------------------------'               (and as a peer)
 bionet-space  (nothing)  <-- bionet-scene  (also uses bionet-theme, three.js)
 assembly2, restriction, gel, seqtools, bionet-panels, glossary-react  <-- bionet-tools
+bionet-client, bionet-scene, bionet-tools  <-- bionet-demo
 core  <-- glossary  <-- glossary-react  (also uses seq, seqtools, restriction, gel)
 ```
 

@@ -4,9 +4,9 @@ TypeScript ports of Python bioengineering libraries, verified case by case again
 packages that have no Python equivalent, and [Bionet](#bionet): labs keeping a freezer together and
 sharing what they hold, with no server in charge.
 
-- **38 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
+- **39 packages**, npm workspaces, ESM only, Node 20 or later, generated `.d.ts`
 - **2,837 API items at parity** across three upstream libraries, of 2,859 applicable
-- **19,454 tests**, most of them replaying answers recorded from the real Python libraries
+- **19,465 tests**, most of them replaying answers recorded from the real Python libraries
 
 ## Install
 
@@ -150,7 +150,7 @@ Why it is built this way, what was decided and what is still open:
 ```bash
 npm install
 npm run build      # tsc -b
-npm test           # vitest — 19,454 tests
+npm test           # vitest — 19,465 tests
 npm run coverage   # per-file coverage
 ```
 

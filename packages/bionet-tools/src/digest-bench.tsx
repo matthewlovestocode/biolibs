@@ -48,7 +48,7 @@ const endWords = (end: PieceEnd): ReactNode => (end.enzyme === null ? <span clas
 /**
  * A digest and its gel, at the gel station.
  *
- * @param options - `instrument` is the gel station it is run at, if the lab has one; `onDone` adds a way to leave.
+ * @param options - `start` says what to open on, for a tour or a link; `instrument` is the gel station it is run at, if the lab has one; `onDone` adds a way to leave.
  * @returns `stage`, to spread onto `InstrumentStage` from `@biolibs/bionet-scene`, and `panel`, to put inside it.
  *
  * @example
@@ -60,12 +60,16 @@ const endWords = (end: PieceEnd): ReactNode => (end.enzyme === null ? <span clas
  * <InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage>
  * ```
  */
-export function useDigestBench({ instrument = null, onDone }: { instrument?: { id: string; name: string } | null; onDone?: () => void } = {}): { stage: DigestStage; panel: ReactNode } {
+export function useDigestBench({ instrument = null, onDone, start }: {
+  instrument?: { id: string; name: string } | null; onDone?: () => void;
+  /** What to open on: the view, the tube and enzymes already chosen, the pieces to keep. Read once. */
+  start?: { view?: DigestView; tube?: string; enzymes?: readonly string[]; keep?: readonly number[]; ran?: number };
+} = {}): { stage: DigestStage; panel: ReactNode } {
   const lab = useLab()?.lab;
   const act = useAct();
-  const [view, setView] = useState<DigestView>("machine");
-  const [tube, setTube] = useState("");
-  const [chosen, setChosen] = useState<string[]>([]);
+  const [view, setView] = useState<DigestView>(start?.view ?? "machine");
+  const [tube, setTube] = useState(start?.tube ?? "");
+  const [chosen, setChosen] = useState<string[]>([...(start?.enzymes ?? [])]);
   const [other, setOther] = useState("");
   const [unknown, setUnknown] = useState<string | null>(null);
   const [used, setUsed] = useState("1");
@@ -73,11 +77,11 @@ export function useDigestBench({ instrument = null, onDone }: { instrument?: { i
   const [ladder, setLadder] = useState("1kb");
   const [volts, setVolts] = useState("100");
   const [minutes, setMinutes] = useState("45");
-  const [ran, setRan] = useState(100);
+  const [ran, setRan] = useState(start?.ran ?? 100);
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [said, setSaid] = useState<string | null>(null);
-  const [keep, setKeep] = useState<number[]>([]);
+  const [keep, setKeep] = useState<number[]>([...(start?.keep ?? [])]);
   const [amount, setAmount] = useState("20");
 
   const tubes = useMemo(() => (lab === null || lab === undefined ? [] : digestTubes(lab)), [lab]);

@@ -50,7 +50,7 @@ const productWords = (product: LigationProduct): string =>
 /**
  * A ligation, at the heat block it is left in.
  *
- * @param options - `instrument` is the block it is set up at, if the lab has one; `onDone` adds a way to leave.
+ * @param options - `start` says what to open on, for a tour or a link; `instrument` is the block it is set up at, if the lab has one; `onDone` adds a way to leave.
  * @returns `stage`, to spread onto `InstrumentStage` from `@biolibs/bionet-scene`, and `panel`, to put inside it.
  *
  * @example
@@ -62,15 +62,19 @@ const productWords = (product: LigationProduct): string =>
  * <InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage>
  * ```
  */
-export function useLigationBench({ instrument = null, onDone }: { instrument?: { id: string; name: string } | null; onDone?: () => void } = {}): { stage: LigationStage; panel: ReactNode } {
+export function useLigationBench({ instrument = null, onDone, start }: {
+  instrument?: { id: string; name: string } | null; onDone?: () => void;
+  /** What to open on: the view, the pieces already in the tube, and how far along to be. Read once. */
+  start?: { view?: LigationView; tubes?: readonly string[]; joined?: number };
+} = {}): { stage: LigationStage; panel: ReactNode } {
   const lab = useLab()?.lab;
   const act = useAct();
-  const [view, setView] = useState<LigationView>("machine");
-  const [tubes, setTubes] = useState<string[]>([]);
+  const [view, setView] = useState<LigationView>(start?.view ?? "machine");
+  const [tubes, setTubes] = useState<string[]>([...(start?.tubes ?? [])]);
   const [blunt, setBlunt] = useState(false);
   const [linear, setLinear] = useState(false);
   const [chosen, setChosen] = useState(0);
-  const [joined, setJoined] = useState(100);
+  const [joined, setJoined] = useState(start?.joined ?? 100);
   const [celsius, setCelsius] = useState("16");
   const [hours, setHours] = useState("16");
   const [ratio, setRatio] = useState("3");

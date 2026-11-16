@@ -139,7 +139,8 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  *   a theme; `neighbours` are other labs to draw beside it; `onStand`, if given, adds a way to
  *   arrange the lab by hand, and is told each standing to say; `onAdd` and `onRetire`, if given,
  *   let places be added and retired while arranging; `onUse` is told when an instrument is to be used;
- *   `molecule` is asked for the construct in a picked tube, to draw it.
+ *   `molecule` is asked for the construct in a picked tube, to draw it;
+ *   `focus` is where to look, for a host driving the view.
  *
  * @example
  * ```tsx
@@ -149,11 +150,13 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  * <LabView lab={lab} name={lab.name ?? "Lab"} />
  * ```
  */
-export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, onRetire, onUse, molecule }: {
+export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, onRetire, onUse, molecule, focus }: {
   lab: RecordedLab; name?: string; theme?: Theme; neighbours?: readonly Neighbour[];
   onStand?: (place: string, standing: Standing | null) => Promise<unknown> | void;
   onAdd?: (place: NewPlace) => Promise<unknown> | void; onRetire?: (place: string) => Promise<unknown> | void;
   onUse?: (place: string) => void; molecule?: (item: string) => StageMolecule | null;
+  /** Where to look, for a host that is driving the view, such as a tour. */
+  focus?: Focus;
 }) {
   const layout = useMemo(() => layoutFrom(lab, { room: name }), [lab.places, lab.items, lab.parts, name]);
   const [arranging, setArranging] = useState(false);
@@ -176,7 +179,8 @@ export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, 
   }
   return (
     <div className="bionet-view">
-      <LabExplorer layout={layout} labName={name} {...pinned} {...(neighbours === undefined ? {} : { neighbours })} {...(onUse === undefined ? {} : { onUse })} {...(molecule === undefined ? {} : { molecule })} />
+      <LabExplorer layout={layout} labName={name} {...pinned} {...(neighbours === undefined ? {} : { neighbours })} {...(onUse === undefined ? {} : { onUse })} {...(molecule === undefined ? {} : { molecule })}
+                   {...(focus === undefined ? {} : { focus, key: `${focus.place ?? "lab"} ${focus.item ?? ""}` })} />
       {onStand !== undefined && <button type="button" className="bionet-arrange" onClick={() => setArranging(true)}>Arrange</button>}
     </div>
   );

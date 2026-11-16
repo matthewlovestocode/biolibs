@@ -2,118 +2,121 @@
   "files": [],
   "references": [
     {
-      "path": "packages/core"
-    },
-    {
-      "path": "packages/seq"
-    },
-    {
       "path": "packages/align"
-    },
-    {
-      "path": "packages/phylo"
-    },
-    {
-      "path": "packages/seqtools"
-    },
-    {
-      "path": "packages/seqfeature"
-    },
-    {
-      "path": "packages/seqrecord"
-    },
-    {
-      "path": "packages/seqio"
-    },
-    {
-      "path": "packages/nexus"
-    },
-    {
-      "path": "packages/svdsuperimposer"
-    },
-    {
-      "path": "packages/pdb"
-    },
-    {
-      "path": "packages/restriction"
-    },
-    {
-      "path": "packages/motifs"
-    },
-    {
-      "path": "packages/dseq"
-    },
-    {
-      "path": "packages/seguid"
     },
     {
       "path": "packages/assembly"
     },
     {
-      "path": "packages/dseqrecord"
-    },
-    {
-      "path": "packages/gel"
-    },
-    {
-      "path": "packages/seqmap"
-    },
-    {
-      "path": "packages/pcr"
-    },
-    {
-      "path": "packages/seqedit"
-    },
-    {
-      "path": "packages/features"
-    },
-    {
-      "path": "packages/cloning"
-    },
-    {
-      "path": "packages/entrez"
-    },
-    {
-      "path": "packages/pdblist"
-    },
-    {
       "path": "packages/assembly2"
-    },
-    {
-      "path": "packages/opencloning"
     },
     {
       "path": "packages/bionet"
     },
     {
-      "path": "packages/bionet-theme"
-    },
-    {
-      "path": "packages/bionet-peer"
-    },
-    {
       "path": "packages/bionet-client"
     },
     {
-      "path": "packages/bionet-react"
+      "path": "packages/bionet-demo"
     },
     {
       "path": "packages/bionet-panels"
     },
     {
-      "path": "packages/bionet-space"
+      "path": "packages/bionet-peer"
+    },
+    {
+      "path": "packages/bionet-react"
     },
     {
       "path": "packages/bionet-scene"
     },
     {
+      "path": "packages/bionet-space"
+    },
+    {
+      "path": "packages/bionet-theme"
+    },
+    {
       "path": "packages/bionet-tools"
+    },
+    {
+      "path": "packages/cloning"
+    },
+    {
+      "path": "packages/core"
+    },
+    {
+      "path": "packages/dseq"
+    },
+    {
+      "path": "packages/dseqrecord"
+    },
+    {
+      "path": "packages/entrez"
+    },
+    {
+      "path": "packages/features"
+    },
+    {
+      "path": "packages/gel"
     },
     {
       "path": "packages/glossary"
     },
     {
       "path": "packages/glossary-react"
+    },
+    {
+      "path": "packages/motifs"
+    },
+    {
+      "path": "packages/nexus"
+    },
+    {
+      "path": "packages/opencloning"
+    },
+    {
+      "path": "packages/pcr"
+    },
+    {
+      "path": "packages/pdb"
+    },
+    {
+      "path": "packages/pdblist"
+    },
+    {
+      "path": "packages/phylo"
+    },
+    {
+      "path": "packages/restriction"
+    },
+    {
+      "path": "packages/seguid"
+    },
+    {
+      "path": "packages/seq"
+    },
+    {
+      "path": "packages/seqedit"
+    },
+    {
+      "path": "packages/seqfeature"
+    },
+    {
+      "path": "packages/seqio"
+    },
+    {
+      "path": "packages/seqmap"
+    },
+    {
+      "path": "packages/seqrecord"
+    },
+    {
+      "path": "packages/seqtools"
+    },
+    {
+      "path": "packages/svdsuperimposer"
     }
   ]
 }

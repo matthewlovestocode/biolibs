@@ -959,6 +959,21 @@ cut it, keep the pieces, join them back up, and have what comes out be a part th
 - **Not modelled:** time and temperature beyond keeping them, ligase units, buffer, how much of each
   is really in the tube.
 
+### A demo that is a lab
+
+Built because the thing is hard to see whole: one window at a time it looks like several ordinary
+programs, and what makes it worth anything is that the freezer, the tools and the record are one
+thing.
+
+- **A real lab, in memory**, founded and filled by ordinary signed entries, so every stop mounts
+  the real tool and anybody can take the controls.
+- **Twelve stops**, room to tube to each tool and back, ending with three tubes that were not there
+  at the start — because three of the stops really record runs.
+- **The molecules are made from a written-down number**, with every site that was not planted
+  patched out, and the package's tests check what the walk says out loud.
+- **The only thing the tools needed** was to be able to open on a given state (`start`), read once
+  at mount.
+
 ## A first slice
 
 Two instances of the desktop app for the Wren Lab:

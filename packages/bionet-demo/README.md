@@ -1,0 +1,75 @@
+# @biolibs/bionet-demo
+
+A lab that shows what Bionet is, and a walk through it. The lab is made up and real at the same
+time: it is opened on a key held in memory, founded, and filled by the same signed entries a
+person's app writes, so the tools, the scene and the history all work on it for real. Closing the
+window forgets the lot.
+
+```
+npm install @biolibs/bionet-demo @biolibs/bionet-theme react react-dom
+```
+
+## The whole thing
+
+```tsx
+import "@biolibs/bionet-theme/theme.css";
+import "@biolibs/bionet-scene/scene.css";
+import "@biolibs/bionet-tools/tools.css";
+import "@biolibs/glossary-react/glossary.css";
+import "@biolibs/bionet-demo/demo.css";
+import { Demo } from "@biolibs/bionet-demo";
+
+<Demo />
+```
+
+Twelve stops, from the room down to one tube and back again: the lab, the freezer, a tube with the
+molecule in it drawn over it, its map, a PCR at the thermocycler, a digest at the gel station, a
+ligation at the heat block, and the freezer again with three tubes in it that were not there at the
+start. Each stop mounts the real tool, opened on what the stop is about, so anybody can take the
+controls at any point. Nothing is a recording and nothing is a screenshot.
+
+## The lab on its own
+
+```ts
+import { demoLab } from "@biolibs/bionet-demo";
+
+const demo = await demoLab();
+demo.lab.snapshot().lab?.parts.map((one) => one.name);   // pGene, pWren backbone, wrenA-F, wrenA-R
+```
+
+`demo.source` goes straight into `LabProvider`. `demo.tubes`, `demo.instruments` and `demo.places`
+name what is in it, for anything that wants to point at a particular tube or machine.
+
+## The molecules
+
+```ts
+import { demoMolecules } from "@biolibs/bionet-demo";
+
+const { pGene, backbone, forward, reverse } = demoMolecules();
+```
+
+Made, not pasted: built from a number that is written down, with the gene and the two sites put
+where the tour needs them and every other site patched out, so a site on one of these plasmids is
+always one somebody planted. `pGene` is a small plasmid holding one gene between an EcoRI site and a
+BamHI site; `backbone` is a bigger plasmid already cut with the same two, waiting as a linear piece
+with sticky ends. The package's tests check that the enzymes still cut where the tour says, that the
+primers still make one product of 502 bases, and that the pieces still close into one circle — so a
+demo that quietly stopped being true would fail the build rather than be shown to somebody.
+
+## The walk on its own
+
+```tsx
+import { DemoTour, demoTour } from "@biolibs/bionet-demo";
+
+demoTour(demo).map((step) => step.title);
+<DemoTour demo={demo} />
+```
+
+A step is where to be, what to say, and what to do there. Three of them record a run — the PCR, the
+digest that keeps the gene, and the ligation — so the lab really changes as the walk goes on, and
+the last stop is true. They check the lab first, so going back and forward over a step does not do
+it twice, and **Start again** opens a fresh lab.
+
+## License
+
+MIT.

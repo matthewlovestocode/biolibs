@@ -111,7 +111,7 @@ function Pick({ label, choices, value, onChange }: { label: string; choices: Tub
 /**
  * A PCR at the machine.
  *
- * @param options - `instrument` is the thermocycler it is run on, if the lab has placed one;
+ * @param options - `start` says what to open on, for a tour or a link; `instrument` is the thermocycler it is run on, if the lab has placed one;
  *   `onDone` adds a way to leave.
  * @returns `stage`, to spread onto whatever draws the instrument, and `panel`, to put beside it.
  *
@@ -124,17 +124,21 @@ function Pick({ label, choices, value, onChange }: { label: string; choices: Tub
  * <InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage>
  * ```
  */
-export function usePcrBench({ instrument = null, onDone }: { instrument?: { id: string; name: string } | null; onDone?: () => void } = {}): { stage: BenchStage; panel: ReactNode } {
+export function usePcrBench({ instrument = null, onDone, start }: {
+  instrument?: { id: string; name: string } | null; onDone?: () => void;
+  /** What to open on: the view, the tubes already chosen, and where in the programme to be. Read once. */
+  start?: { view?: BenchView; template?: string; forward?: string; reverse?: string; step?: PcrStepName; cycle?: number };
+} = {}): { stage: BenchStage; panel: ReactNode } {
   const lab = useLab()?.lab;
   const act = useAct();
-  const [view, setView] = useState<BenchView>("machine");
-  const [template, setTemplate] = useState("");
-  const [forward, setForward] = useState("");
-  const [reverse, setReverse] = useState("");
+  const [view, setView] = useState<BenchView>(start?.view ?? "machine");
+  const [template, setTemplate] = useState(start?.template ?? "");
+  const [forward, setForward] = useState(start?.forward ?? "");
+  const [reverse, setReverse] = useState(start?.reverse ?? "");
   const [least, setLeast] = useState("18");
   const [set, setSet] = useState<PcrProgramme | null>(null);
-  const [step, setStep] = useState<PcrStepName>("denature");
-  const [cycle, setCycle] = useState(1);
+  const [step, setStep] = useState<PcrStepName>(start?.step ?? "denature");
+  const [cycle, setCycle] = useState(start?.cycle ?? 1);
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("50");
   const [note, setNote] = useState("");

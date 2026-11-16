@@ -1,0 +1,14 @@
+/* The demo: a strip saying where the walk has got to, and under it the thing itself, at full width. */
+.demo { position: relative; display: grid; grid-template-rows: auto 1fr; height: 100%; min-height: 32rem }
+.demo .demosay { padding: .7rem 1.1rem .8rem; border-bottom: 1px solid var(--bionet-rule); background: var(--bionet-surface); color: var(--bionet-ink) }
+.demo .demohead { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem 1rem }
+.demo .demosay h2 { margin: 0; font-size: 1.05rem }
+.demo .demowhere { margin: 0; font-size: .7rem; letter-spacing: .09em; text-transform: uppercase; color: var(--bionet-dim) }
+.demo .demohead .row { margin-left: auto }
+.demo .demoprose { margin: .35rem 0 0; max-width: 72ch; line-height: 1.5; font-size: .88rem; color: var(--bionet-dim) }
+.demo .demopick { display: inline-flex; align-items: center; gap: .35rem }
+.demo .demopick select { font-size: .8rem }
+.demo .demoshow { position: relative; min-height: 0 }
+.demo .demoshow .scene { position: absolute; inset: 0 }
+.demo .demoscroll { position: absolute; inset: 0; overflow: auto; padding: 1rem }
+@media (max-width: 760px) { .demo .demohead .row { margin-left: 0 } }

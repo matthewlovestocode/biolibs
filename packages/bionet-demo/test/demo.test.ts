@@ -1,0 +1,95 @@
+/**
+ * The demo lab, and that everything the tour does on it really works.
+ *
+ * A demo that quietly stopped working would be the worst thing in the repository: it is the first
+ * thing anybody sees. So the molecules are checked against the engines that the tour's own tools
+ * use — the enzymes cut where it says, the primers make one product, and the pieces join into one
+ * circle — and the lab is checked for having really been founded and filled.
+ */
+import { cutsOf, cutSites, digestPieces, planLigation, planPcr, primerTm } from "@biolibs/bionet-tools";
+import { demoLab, demoMolecules, otherStrand } from "@biolibs/bionet-demo";
+import { describe, expect, it } from "vitest";
+
+const molecules = demoMolecules();
+
+describe("the demo lab's molecules", () => {
+  it("are the same every time", () => {
+    expect(demoMolecules().pGene.sequence).toBe(molecules.pGene.sequence);
+    expect(molecules.pGene.sequence.length).toBe(1712);
+    // Every base either strand has: the piece runs 2,706 on a gel, and carries four unpaired at each end.
+    expect(molecules.backbone.sequence.length).toBe(2710);
+  });
+
+  it("carry only the sites the demo planted", () => {
+    const cut = (name: string): number[] => cutsOf(molecules.pGene, name)?.positions ?? [];
+    expect(cut("EcoRI")).toHaveLength(1);
+    expect(cut("BamHI")).toHaveLength(1);
+    for (const name of ["HindIII", "XhoI", "NotI", "KpnI", "SalI", "PstI", "NcoI", "SmaI", "BglII"]) expect(cut(name)).toHaveLength(0);
+  });
+
+  it("let the primers make one product, of a size the tour can say", () => {
+    const plan = planPcr(molecules.pGene, molecules.forward.sequence, molecules.reverse.sequence);
+    expect(plan.problem).toBeNull();
+    expect(plan.products[0]!.length).toBe(502);
+    // Near enough each other that one annealing temperature suits both.
+    const [one, other] = [primerTm(molecules.forward.sequence)!, primerTm(molecules.reverse.sequence)!];
+    expect(Math.abs(one - other)).toBeLessThanOrEqual(6);
+  });
+
+  it("cut into a gene the gel can tell from the rest of the plasmid", () => {
+    const sites = ["EcoRI", "BamHI"].flatMap((name) => cutSites(molecules.pGene, cutsOf(molecules.pGene, name)!));
+    const pieces = digestPieces(molecules.pGene, sites);
+    expect(pieces.map((one) => one.length)).toEqual([926, 786]);
+    // Far enough apart in size to be two bands and not one.
+    expect(926 - 786).toBeGreaterThan(786 * 0.03);
+  });
+
+  it("join the gene to the waiting backbone, one way only", () => {
+    const sites = ["EcoRI", "BamHI"].flatMap((name) => cutSites(molecules.pGene, cutsOf(molecules.pGene, name)!));
+    const gene = digestPieces(molecules.pGene, sites).find((one) => one.length === 786)!;
+    const plan = planLigation([
+      { id: "b", name: "backbone", sequence: molecules.backbone.sequence, ends: molecules.backbone.ends! },
+      { id: "g", name: "the gene", sequence: gene.sequence, ends: gene.ends },
+    ]);
+    expect(plan.problem).toBeNull();
+    // One circle, because the two ends differ: no question of which way round the gene went in.
+    expect(plan.products).toHaveLength(1);
+    expect(plan.products[0]).toMatchObject({ circular: true, length: 3492 });
+  });
+
+  it("read the same from either strand", () => {
+    expect(otherStrand("GAATTC")).toBe("GAATTC");
+    expect(otherStrand(molecules.forward.sequence)).toBe(otherStrand(molecules.forward.sequence));
+    expect(otherStrand(otherStrand(molecules.reverse.sequence))).toBe(molecules.reverse.sequence);
+  });
+});
+
+describe("the demo lab", () => {
+  it("is a real lab, founded and filled", async () => {
+    const demo = await demoLab();
+    const lab = demo.lab.snapshot().lab!;
+    expect(lab.name).toBe("The Wren Lab");
+    expect(lab.member).toBe(true);
+    expect(lab.parts.map((one) => one.name)).toEqual(["pGene", "pWren backbone", "wrenA-F", "wrenA-R"]);
+    expect(lab.places.map((one) => one.name)).toEqual(["Main lab", "The bench", "−80", "Box 1", "Thermocycler", "Gel station", "Heat block"]);
+    expect(lab.items).toHaveLength(4);
+    // Every tube is somewhere, so the scene has something to draw.
+    expect(lab.items.every((one) => one.where?.place === demo.places.box)).toBe(true);
+    expect(lab.crowded).toEqual([]);
+  });
+
+  it("holds the backbone as a cut piece with its ends, and the gene's plasmid as a circle", async () => {
+    const demo = await demoLab();
+    const lab = demo.lab.snapshot().lab!;
+    const part = (name: string) => lab.parts.find((one) => one.name === name)!;
+    expect(part("pWren backbone")).toMatchObject({ circular: false, ends: { left: 4, right: 4 } });
+    expect(part("pGene")).toMatchObject({ circular: true, ends: { left: 0, right: 0 } });
+    expect(part("pGene").features.map((one) => one.label)).toEqual(["wrenA", "lac promoter", "ori"]);
+  });
+
+  it("gives two labs that do not share anything", async () => {
+    const [one, other] = await Promise.all([demoLab(), demoLab({ person: "Bob", name: "Another lab" })]);
+    expect(one.lab.snapshot().lab!.id).not.toBe(other.lab.snapshot().lab!.id);
+    expect(other.lab.snapshot().lab!.name).toBe("Another lab");
+  });
+});
