@@ -120,3 +120,16 @@
 .bionet-scene .lens .pairs .pair { color: var(--bionet-ink); opacity: .7 }
 .bionet-scene .lens .end { display: inline-block; width: 1.7em; font-size: 10px; font-weight: 400; color: var(--bionet-dim); text-align: center }
 .bionet-scene .lens .what { margin-left: .5rem; font: 400 11px/1.2 "Geist", -apple-system, system-ui, sans-serif; color: var(--bionet-dim) }
+/* A molecule drawn in the scene: what it is, and what is marked on it. */
+.bionet-scene .molecule-name { display: grid; justify-items: center; font-weight: 600; font-size: 13px; color: var(--bionet-ink); text-shadow: 0 0 6px var(--bionet-ground), 0 0 2px var(--bionet-ground) }
+.bionet-scene .molecule-name small { font-weight: 400; font-size: 11px; color: var(--bionet-dim); font-family: ui-monospace, monospace }
+.bionet-scene .molecule-mark { font-size: 11px; padding: 0 .3rem; border-radius: 3px; background: color-mix(in srgb, var(--bionet-ground) 78%, transparent); white-space: nowrap }
+.bionet-scene .molecule-mark.tone-yours { color: var(--bionet-yours) } .bionet-scene .molecule-mark.tone-theirs { color: var(--bionet-theirs) }
+.bionet-scene .molecule-mark.tone-held { color: var(--bionet-held) } .bionet-scene .molecule-mark.tone-found { color: var(--bionet-found) }
+.bionet-scene .molecule-mark.tone-good { color: var(--bionet-good) } .bionet-scene .molecule-mark.tone-attention { color: var(--bionet-attention) }
+.bionet-scene .molecule-mark.tone-dim { color: var(--bionet-dim) }
+.bionet-scene .measure { font-size: 11px; font-family: ui-monospace, monospace; color: var(--bionet-ink); padding: 0 .3rem; border-radius: 3px; background: color-mix(in srgb, var(--bionet-ground) 78%, transparent); white-space: nowrap }
+.bionet-scene .molecule-cut { font-size: 11px; font-family: ui-monospace, monospace; color: var(--bionet-attention); padding: 0 .25rem; border-radius: 3px; background: color-mix(in srgb, var(--bionet-ground) 78%, transparent); white-space: nowrap }
+.bionet-scene .gel-lane { font-size: 11px; color: var(--bionet-dim); white-space: nowrap }
+.bionet-scene .gel-size { display: inline-block; font-size: 11px; font-family: ui-monospace, monospace; white-space: nowrap; color: var(--bionet-ink) }
+.bionet-scene .gel-size.left { transform: translateX(-60%); color: var(--bionet-dim) } .bionet-scene .gel-size.right { transform: translateX(60%) }

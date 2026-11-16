@@ -12,7 +12,9 @@ import { THEME_ATTRIBUTE, type Theme } from "@biolibs/bionet-theme";
 import { useMotion, type Motion } from "./motion.js";
 import { needsArranging, placeToAdd, type NewPlace } from "./arranging.js";
 import { LabBuilder } from "./builder.js";
+import { Molecule, moleculeLabels } from "./molecule.js";
 import { LabScene, useSystemTheme, type Neighbour } from "./scene.js";
+import { placeMolecule, type StageMolecule } from "./shapes.js";
 import { focusOn, sceneView, type Focus } from "./view.js";
 
 /**
@@ -38,7 +40,8 @@ export function MotionSwitch({ motion, onFlip }: { motion: Motion; onFlip: () =>
  * @param props - `layout` is the lab; `labName` is what to call it; `neighbours` are other labs to
  *   draw beside it; `theme` pins a theme, which otherwise follows the system; `focus` is where to
  *   start; `onNeighbour` is told when another lab is pressed; `onUse`, if given, puts a way to use
- *   an instrument beside it once it has been pressed, and is told which; `motion` pins whether the
+ *   an instrument beside it once it has been pressed, and is told which; `molecule`, if given, is asked for the construct in a tube
+ *   that has been picked, and it is drawn over the tube as a map; `motion` pins whether the
  *   camera travels or cuts, which otherwise follows the system and the switch.
  *
  * @example
@@ -51,9 +54,9 @@ export function MotionSwitch({ motion, onFlip }: { motion: Motion; onFlip: () =>
  * <LabExplorer layout={exampleLab()} labName="The Wren Lab" />
  * ```
  */
-export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus: start, onNeighbour, onUse, motion: pinned }: {
+export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus: start, onNeighbour, onUse, molecule, motion: pinned }: {
   layout: Layout; labName?: string; neighbours?: readonly Neighbour[]; theme?: Theme; focus?: Focus; onNeighbour?: (id: string) => void;
-  onUse?: (place: string) => void; motion?: Motion;
+  onUse?: (place: string) => void; molecule?: (item: string) => StageMolecule | null; motion?: Motion;
 }) {
   const [motion, flipMotion] = useMotion(pinned);
   const system = useSystemTheme();
@@ -65,13 +68,26 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
   const wrong = useMemo(() => needsArranging(layout), [layout]);
   const view = useMemo(() => sceneView(layout, focus, { matches, labName, attention: wrong.attention }), [layout, focus, matches, labName, wrong]);
   const picked = view.tubes.find((tube) => tube.selected);
+  // The tube picked, as the construct in it: drawn between the tube and whoever is looking.
+  const drawn = useMemo(() => {
+    const what = picked === undefined ? null : molecule?.(picked.item) ?? null;
+    if (picked === undefined || what === null) return null;
+    const from = view.pose.position;
+    const away = Math.hypot(from[0] - picked.center[0], from[1] - picked.center[1], from[2] - picked.center[2]) || 1;
+    const radius = Math.max(picked.radius * 3.2, 0.02);
+    const out = picked.height + radius * 0.4;
+    const centre: [number, number, number] = [0, 1, 2].map((axis) => picked.center[axis]! + ((from[axis]! - picked.center[axis]!) / away) * out) as [number, number, number];
+    return placeMolecule(what, centre, from, radius);
+  }, [picked, molecule, view.pose]);
   const instrument = layout.places.find((place) => place.id === focus.place && place.kind === "instrument");
   const where = view.crumbs.at(-1)!;
 
   return (
     <div className="bionet-scene" {...{ [THEME_ATTRIBUTE]: shown }}>
       <LabScene view={view} theme={shown} motion={motion} onFocus={setFocus} {...(neighbours === undefined ? {} : { neighbours })}
-                {...(onNeighbour === undefined ? {} : { onNeighbour })} />
+                {...(onNeighbour === undefined ? {} : { onNeighbour })} {...(drawn === null ? {} : { more: moleculeLabels(drawn, false) })}>
+        {drawn !== null && <Molecule placed={drawn} theme={shown} />}
+      </LabScene>
       <nav className="crumbs" aria-label="Where you are">
         {view.crumbs.map((crumb, at) => (
           <span key={crumb.id ?? "lab"}>
@@ -122,7 +138,8 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  * @param props - `lab` is the lab's places, items and parts; `name` is what to call it; `theme` pins
  *   a theme; `neighbours` are other labs to draw beside it; `onStand`, if given, adds a way to
  *   arrange the lab by hand, and is told each standing to say; `onAdd` and `onRetire`, if given,
- *   let places be added and retired while arranging; `onUse` is told when an instrument is to be used.
+ *   let places be added and retired while arranging; `onUse` is told when an instrument is to be used;
+ *   `molecule` is asked for the construct in a picked tube, to draw it.
  *
  * @example
  * ```tsx
@@ -132,11 +149,11 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  * <LabView lab={lab} name={lab.name ?? "Lab"} />
  * ```
  */
-export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, onRetire, onUse }: {
+export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, onRetire, onUse, molecule }: {
   lab: RecordedLab; name?: string; theme?: Theme; neighbours?: readonly Neighbour[];
   onStand?: (place: string, standing: Standing | null) => Promise<unknown> | void;
   onAdd?: (place: NewPlace) => Promise<unknown> | void; onRetire?: (place: string) => Promise<unknown> | void;
-  onUse?: (place: string) => void;
+  onUse?: (place: string) => void; molecule?: (item: string) => StageMolecule | null;
 }) {
   const layout = useMemo(() => layoutFrom(lab, { room: name }), [lab.places, lab.items, lab.parts, name]);
   const [arranging, setArranging] = useState(false);
@@ -159,7 +176,7 @@ export function LabView({ lab, name = "Lab", theme, neighbours, onStand, onAdd, 
   }
   return (
     <div className="bionet-view">
-      <LabExplorer layout={layout} labName={name} {...pinned} {...(neighbours === undefined ? {} : { neighbours })} {...(onUse === undefined ? {} : { onUse })} />
+      <LabExplorer layout={layout} labName={name} {...pinned} {...(neighbours === undefined ? {} : { neighbours })} {...(onUse === undefined ? {} : { onUse })} {...(molecule === undefined ? {} : { molecule })} />
       {onStand !== undefined && <button type="button" className="bionet-arrange" onClick={() => setArranging(true)}>Arrange</button>}
     </div>
   );

@@ -93,6 +93,33 @@ The strands are thousands of bases long and are lines. `lens` gives the real bas
 them for any moment of the step, and they are written out over the scene as two rows of letters, each
 base above the one it pairs with, with the stretch they are of outlined on the strands.
 
+`measures` marks lengths off under the strands in the tube: a bar from one base to another with a
+tick at each end and a label, such as the subtraction that gives a product's length.
+
+Each model of instrument names the five views in its own words (`stageViewName`): a gel station's
+are the gel box, the gel, the power supply, in the tube, and the gel, run. `gel` is a gel that has
+been run, drawn above the instrument in the result view: lanes of bands with their sizes beside
+them, and `ran` from 0 to 1 for how far it has got. A molecule may carry `marks`, places named
+across its backbone, such as where an enzyme cuts; with no strands to draw, it is shown in the tube
+view.
+
+## A molecule in the scene
+
+```tsx
+import { InstrumentStage, LabView } from "@biolibs/bionet-scene";
+
+<LabView lab={lab} molecule={(item) => moleculeFor(item)} />
+<InstrumentStage model="thermocycler" name="Thermocycler" view="result" onView={setView} molecule={product} />
+```
+
+A `StageMolecule` is a name, a length, whether it is a circle, and the stretches marked on it, each
+with a colour's meaning. It is drawn as a plasmid map is: a ring read from the top and clockwise, or
+a bar, with overlapping stretches in lanes and a barb on the ones that point. In the lab it is drawn
+over a tube that has been picked, so the tube in the box and the construct in it are seen together.
+On an instrument's stage it is drawn above the machine in the result view, as what the run made.
+`placeMolecule` works one out into lines facing whoever is looking, and is plain arithmetic.
+`moleculeOf` in `@biolibs/bionet-tools` makes one from a part.
+
 ## Motion can be turned off
 
 Every scene has a switch, and starts as the system's "reduce motion" setting says. With motion off a

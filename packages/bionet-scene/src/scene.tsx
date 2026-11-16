@@ -375,9 +375,9 @@ export function Rig({ view, motion = "on" }: { view: Pick<SceneView, "pose" | "f
  *   when one is pressed; `drag` lets some places be dragged across the floor; `motion` says whether
  *   the camera travels between views or cuts.
  */
-export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, drag, motion = "on" }: {
+export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, drag, motion = "on", more = [], children }: {
   view: SceneView; theme: Theme; onFocus: (focus: Focus) => void; neighbours?: readonly Neighbour[]; onNeighbour?: (id: string) => void;
-  drag?: Dragging; motion?: Motion;
+  drag?: Dragging; motion?: Motion; more?: readonly Label[]; children?: ReactNode;
 }) {
   const rooms = view.places.filter((place) => place.kind === "room");
   const right = Math.max(0, ...rooms.map((room) => room.center[0] + room.size[0] / 2));
@@ -408,6 +408,7 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
       content: <span className="tag tone-ink raised">{picked.name} · {picked.position}</span>,
       rank: 0,
     }]),
+    ...more,
   ];
   const layer = useRef<HTMLDivElement>(null);
   return (
@@ -423,6 +424,7 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
       {beside.map(({ neighbour, from, to }) => (
         <NeighbourLab key={neighbour.id} neighbour={neighbour} theme={theme} onPick={onNeighbour} from={from} to={to} />
       ))}
+      {children}
       <Follow labels={labels} layer={layer} />
       <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.03} minDistance={0.08} maxDistance={60} />
       <Rig view={view} motion={motion} />

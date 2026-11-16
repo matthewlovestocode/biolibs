@@ -10,6 +10,7 @@
  * Nothing here draws anything. The same data places the camera for each view of the instrument.
  */
 import type { Pose } from "@biolibs/bionet-space";
+import type { Meaning } from "@biolibs/bionet-theme";
 
 /** A box that is part of an instrument: where its middle is and how big it is, as fractions of the whole. */
 export interface Part {
@@ -80,15 +81,29 @@ export function lidOpen(view: StageView): number {
 /** How far above the instrument's top the strands in the tube are drawn, and how tall the space they take is, in metres. */
 export const TUBE_SPACE = { above: 0.22, height: 0.2, width: 0.62 } as const;
 
+/** How big a molecule is drawn above an instrument: a ring's radius, or half a bar's length, in metres. */
+export const MOLECULE_RADIUS = 0.2;
+
+/**
+ * Where the middle of a molecule drawn above an instrument is.
+ *
+ * @param size - How wide, tall and deep the instrument is, in metres.
+ * @returns The point, for an instrument on the floor at the origin.
+ */
+export function moleculeCentre(size: readonly [number, number, number]): [number, number, number] {
+  return [0, size[1] + MOLECULE_RADIUS * 1.35, 0];
+}
+
 /**
  * Where to stand for a view of an instrument that sits on the floor at the origin.
  *
  * @param view - The view.
  * @param size - How wide, tall and deep the instrument is, in metres.
  * @param shape - What it is made of, for where its screen and block are.
+ * @param molecule - Whether what was made is drawn above the instrument in the result view, and so needs to be in the view.
  * @returns Where the camera stands, what it looks at, and its field of view in degrees.
  */
-export function stagePose(view: StageView, size: readonly [number, number, number], shape: Shape | null): Pose & { fov: number } {
+export function stagePose(view: StageView, size: readonly [number, number, number], shape: Shape | null, molecule = false): Pose & { fov: number } {
   const [w, h, d] = size;
   const point = (at: readonly [number, number, number]): [number, number, number] => [at[0] * w, h / 2 + at[1] * h, at[2] * d];
   const reach = Math.max(w, h, d);
@@ -106,6 +121,10 @@ export function stagePose(view: StageView, size: readonly [number, number, numbe
     const middle = h + TUBE_SPACE.above + TUBE_SPACE.height / 2;
     // Far enough back that the whole template fits across a view that may be taller than it is wide.
     return { target: [0, middle, 0], position: [0, middle + 0.04, (TUBE_SPACE.width * 1.45) / Math.tan((30 * Math.PI) / 360) / 2 / 0.85], fov: 30 };
+  }
+  if (view === "result" && molecule) {
+    const at = moleculeCentre(size);
+    return { target: [0, (at[1] + h * 0.7) / 2, 0], position: [reach * 0.45, at[1] + reach * 0.1, reach * 1.2 + MOLECULE_RADIUS * 4.4], fov: 40 };
   }
   // The machine and the result are seen as somebody standing at the bench sees it.
   return { target: [0, h * 0.55, 0], position: [reach * 1.25, h + reach * 0.85, reach * 2.1], fov: 40 };
@@ -302,4 +321,203 @@ export function lensFrame(lens: Pick<StageLens, "from" | "to" | "rows">, length:
   const half = Math.max(0.012, (across(lens.to) - across(lens.from)) / 2);
   const [high, low] = [height(Math.min(...lens.rows)) + 0.012, height(Math.max(...lens.rows)) - 0.012];
   return [[middle - half, high, 0], [middle + half, high, 0], [middle + half, low, 0], [middle - half, low, 0], [middle - half, high, 0]];
+}
+
+/** A molecule to draw: a ring for a circle, a bar for anything else, with what is marked on it. */
+export interface StageMolecule {
+  /** What it is called. */
+  name: string;
+  /** How many base pairs long it is. */
+  length: number;
+  /** Whether it is a circle. */
+  circular: boolean;
+  /** What is marked on it. `strand` is 1 if it points rightwards or clockwise, -1 the other way, 0 if it does not point. */
+  features: readonly { start: number; end: number; strand: -1 | 0 | 1; tone: Meaning; label: string }[];
+  /** Places on it to mark and name, such as where an enzyme cuts: the number of bases before each. */
+  marks?: readonly { at: number; label: string }[];
+}
+
+type Point = [number, number, number];
+
+/** A molecule worked out into lines in the scene. */
+export interface PlacedMolecule {
+  /** The backbone, as points along it. A circle's last point is its first. */
+  backbone: Point[];
+  /** Each stretch marked on it: the line to draw, a barb at the end it points to, and where to write its name. */
+  features: { points: Point[]; barb: Point[] | null; tone: Meaning; label: string; at: Point }[];
+  /** Each place marked: a short line across the backbone, and where to write its name. */
+  marks: { points: Point[]; label: string; at: Point }[];
+  /** Where to write what it is: the middle of a ring, under a bar. */
+  middle: Point;
+  /** What to call it there. */
+  name: string;
+  /** How long it is, said for a person. */
+  size: string;
+}
+
+/**
+ * Work a molecule out into lines, facing whoever is looking.
+ *
+ * A circle is read like a clock, from the top and clockwise, as a plasmid map is. Stretches that
+ * overlap are drawn in lanes, the first on the backbone and the rest inside it, so both can be seen.
+ *
+ * @param molecule - What to draw.
+ * @param centre - Where its middle is.
+ * @param toward - Where it is looked at from: it is drawn flat on to there.
+ * @param radius - A ring's radius, or half a bar's length, in metres.
+ * @returns The lines, and where to write the names.
+ */
+export function placeMolecule(molecule: StageMolecule, centre: readonly [number, number, number], toward: readonly [number, number, number], radius: number): PlacedMolecule {
+  const unit = (v: Point): Point => { const n = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / n, v[1] / n, v[2] / n]; };
+  const cross = (a: Point, b: Point): Point => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const facing = unit([toward[0] - centre[0], toward[1] - centre[1], toward[2] - centre[2]]);
+  // Looked at from straight above, "up" on screen is away from the viewer along the floor.
+  const right = unit(cross(Math.abs(facing[1]) > 0.98 ? [0, 0, -1] : [0, 1, 0], facing));
+  const up = cross(facing, right);
+  const at = (x: number, y: number): Point => [centre[0] + right[0] * x + up[0] * y, centre[1] + right[1] * x + up[1] * y, centre[2] + right[2] * x + up[2] * y];
+  const length = Math.max(1, molecule.length);
+  const lane = radius * 0.13;
+  // Along the molecule at a position, `out` further from the backbone: outwards on a ring, upwards on a bar.
+  const on = (position: number, out: number): Point => {
+    if (!molecule.circular) return at((position / length) * 2 * radius - radius, out);
+    const angle = (position / length) * 2 * Math.PI;
+    return at(Math.sin(angle) * (radius + out), Math.cos(angle) * (radius + out));
+  };
+  const along = (from: number, to: number, out: number): Point[] => {
+    const steps = Math.max(1, Math.ceil(((to - from) / length) * (molecule.circular ? 96 : 1)));
+    return Array.from({ length: steps + 1 }, (_, step) => on(from + ((to - from) * step) / steps, out));
+  };
+  // Lanes: each stretch takes the first lane where it overlaps nothing already there.
+  const taken: { start: number; end: number }[][] = [];
+  const features = molecule.features.filter((one) => one.end > one.start && one.end <= length).map((one) => {
+    let depth = taken.findIndex((row) => row.every((other) => one.end <= other.start || one.start >= other.end));
+    if (depth === -1) { depth = Math.min(taken.length, 3); taken[depth] ??= []; }
+    taken[depth]!.push(one);
+    const out = molecule.circular ? -depth * lane : (depth + 0.6) * lane;
+    const [tip, back] = one.strand === -1 ? [one.start, Math.min(one.end, one.start + length * 0.012)] : [one.end, Math.max(one.start, one.end - length * 0.012)];
+    return {
+      points: along(one.start, one.end, out), tone: one.tone, label: one.label,
+      barb: one.strand === 0 ? null : [on(back, out + lane * 0.45), on(tip, out), on(back, out - lane * 0.45)],
+      at: on((one.start + one.end) / 2, molecule.circular ? lane * 1.6 : out + lane * 1.1),
+    };
+  });
+  return {
+    backbone: along(0, length, 0), features,
+    // A mark crosses the backbone and is named outside it, clear of the features inside.
+    marks: (molecule.marks ?? []).filter((one) => one.at >= 0 && one.at <= length).map((one) => ({
+      points: [on(one.at, -lane * 0.9), on(one.at, lane * 1.3)], label: one.label, at: on(one.at, molecule.circular ? lane * 2.4 : -lane * 1.5),
+    })),
+    middle: molecule.circular ? at(0, 0) : at(0, -lane * 2.6),
+    name: molecule.name, size: `${molecule.length.toLocaleString("en-US")} bp`,
+  };
+}
+
+/** A length to mark off under the strands in the tube: from one base to another, with what it comes to. */
+export interface StageMeasure {
+  /** Where it starts and ends, in bases along the template. */
+  from: number;
+  to: number;
+  /** What to write under it, such as the subtraction that gives the length. */
+  label: string;
+}
+
+/**
+ * A measure worked out into a line to draw: a bar under the strands with a tick at each end.
+ *
+ * It is how a length is shown to be a difference of two positions: the bar's ends stand under the
+ * bases it is measured between.
+ *
+ * @param measure - What to mark off.
+ * @param length - How long the template is, in bases.
+ * @param size - How wide, tall and deep the instrument is, in metres.
+ * @param nth - Which measure this is, counting from 0, so that several sit one under another.
+ * @returns The points of the line, in order, and where to write its label.
+ */
+export function measureLine(measure: StageMeasure, length: number, size: readonly [number, number, number], nth = 0): { points: [number, number, number][]; at: [number, number, number] } {
+  const across = (base: number): number => (length <= 0 ? 0 : (base / length - 0.5) * TUBE_SPACE.width);
+  const y = size[1] + TUBE_SPACE.above - 0.03 - nth * 0.03;
+  const [left, right] = [across(Math.min(measure.from, measure.to)), across(Math.max(measure.from, measure.to))];
+  const tick = 0.008;
+  return { points: [[left, y + tick, 0], [left, y - tick, 0], [left, y, 0], [right, y, 0], [right, y + tick, 0], [right, y - tick, 0]], at: [(left + right) / 2, y - 0.012, 0] };
+}
+
+/** What each view is called for a model of instrument, where it differs from a thermocycler's. */
+const VIEW_NAMES: Readonly<Record<string, Partial<Record<StageView, string>>>> = {
+  "gel-station": { machine: "The gel box", block: "The gel", screen: "The power supply", tube: "In the tube", result: "The gel, run" },
+};
+
+/**
+ * What a view is called on its button, for a model of instrument.
+ *
+ * The five views are the same for every instrument: the machine, what is under its lid, what it
+ * displays, what is in the tube, and the result. What they are called depends on the machine.
+ *
+ * @param model - The instrument's model.
+ * @param view - The view.
+ * @returns Its name.
+ */
+export function stageViewName(model: string, view: StageView): string {
+  return VIEW_NAMES[model]?.[view] ?? STAGE_VIEW_NAMES[view];
+}
+
+/** A gel that has been run, to draw: lanes of bands, as somebody reading it would see them. */
+export interface StageGel {
+  /** The lanes, left to right. */
+  lanes: readonly {
+    /** What was loaded. */
+    name: string;
+    /** What its bands mean, which decides their colour. */
+    tone: Meaning;
+    /** Its bands: how far down each is, from 0 at the wells to 1 at the front; how bright, from 0 to 1; and what to write beside it. */
+    bands: readonly { position: number; intensity: number; label: string }[];
+  }[];
+  /** How far the gel has run, from 0 (just loaded) to 1 (stopped). Bands are drawn that fraction of the way to where they end up. */
+  ran?: number;
+}
+
+/** A gel worked out into lines in the scene. */
+export interface PlacedGel {
+  /** The slab's outline, as a closed line. */
+  slab: Point[];
+  /** Each well: a short line at the top of its lane. */
+  wells: Point[][];
+  /** Each band: the line to draw, how strongly, in what colour, and where to write its label. */
+  bands: { points: Point[]; strength: number; tone: Meaning; label: string; at: Point; lane: number }[];
+  /** Where to write each lane's name. */
+  names: { name: string; at: Point }[];
+}
+
+/**
+ * Work a gel out into lines, facing whoever is looking, wells at the top.
+ *
+ * @param gel - The lanes and their bands.
+ * @param centre - Where the slab's middle is.
+ * @param toward - Where it is looked at from.
+ * @param size - How wide and tall the slab is, in metres.
+ * @returns The lines. Labels of the first lane are written to its left and the rest to their right.
+ */
+export function placeGel(gel: StageGel, centre: readonly [number, number, number], toward: readonly [number, number, number], size: readonly [number, number]): PlacedGel {
+  const unit = (v: Point): Point => { const n = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / n, v[1] / n, v[2] / n]; };
+  const cross = (a: Point, b: Point): Point => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const facing = unit([toward[0] - centre[0], toward[1] - centre[1], toward[2] - centre[2]]);
+  const right = unit(cross(Math.abs(facing[1]) > 0.98 ? [0, 0, -1] : [0, 1, 0], facing));
+  const up = cross(facing, right);
+  const at = (x: number, y: number): Point => [centre[0] + right[0] * x + up[0] * y, centre[1] + right[1] * x + up[1] * y, centre[2] + right[2] * x + up[2] * y];
+  const [w, h] = size;
+  const lanes = Math.max(1, gel.lanes.length);
+  const pitch = w / (lanes + 0.6);
+  const half = pitch * 0.36;
+  const x = (lane: number): number => (lane - (lanes - 1) / 2) * pitch;
+  const [first, last] = [h / 2 - h * 0.1, -h / 2 + h * 0.06];
+  const ran = Math.min(1, Math.max(0, gel.ran ?? 1));
+  return {
+    slab: [at(-w / 2, h / 2), at(w / 2, h / 2), at(w / 2, -h / 2), at(-w / 2, -h / 2), at(-w / 2, h / 2)],
+    wells: gel.lanes.map((_, lane) => [at(x(lane) - half, first + h * 0.035), at(x(lane) + half, first + h * 0.035)]),
+    names: gel.lanes.map((one, lane) => ({ name: one.name, at: at(x(lane), h / 2 + h * 0.06) })),
+    bands: gel.lanes.flatMap((one, lane) => one.bands.map((band) => {
+      const y = first + (last - first) * Math.min(1, Math.max(0, band.position)) * ran;
+      return { points: [at(x(lane) - half, y), at(x(lane) + half, y)], strength: 0.35 + 0.65 * Math.min(1, Math.max(0, band.intensity)), tone: one.tone, label: band.label, lane,
+               at: at(lane === 0 ? x(lane) - half - w * 0.02 : x(lane) + half + w * 0.02, y) };
+    })),
+  };
 }

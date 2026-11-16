@@ -21,7 +21,9 @@ import { THEME_ATTRIBUTE, colour, type Meaning, type Theme } from "@biolibs/bion
 import { MotionSwitch } from "./explorer.js";
 import { InstrumentShape } from "./instruments.js";
 import { useMotion, type Motion } from "./motion.js";
+import { GelSlab, Molecule, gelLabels, moleculeLabels } from "./molecule.js";
 import { Follow, Rig, paint, useSystemTheme, type Label } from "./scene.js";
+import { MOLECULE_RADIUS, measureLine, moleculeCentre, placeGel, placeMolecule, stageViewName, type StageGel, type StageMeasure, type StageMolecule } from "./shapes.js";
 import { STAGE_VIEWS, STAGE_VIEW_NAMES, STEP_SECONDS, lensFrame, lidOpen, pairsOf, placeStrands, polymerasesOf, shapeOf, stagePose, type StageLens,
          type StageTube, type StageView, type StepSpeed } from "./shapes.js";
 
@@ -48,7 +50,10 @@ export interface StageLine {
  *   of the step; `legend` names the kinds of strand drawn there; `theme` and `motion` pin
  *   what otherwise follows the system; `seconds` sets how long a step in the tube takes to play, in
  *   place of the speed chosen in the scene, and `onPlayed` is told each time one finishes playing,
- *   which is how a host runs one step into the next; `children` is drawn beside the scene.
+ *   which is how a host runs one step into the next; `measures` are lengths to mark off under the
+ *   strands in the tube, each from one base to another; `gel` is a gel that has been run, drawn above the
+ *   instrument in the result view; `molecule` is what was made, drawn above the
+ *   instrument in the result view as a map of it; `children` is drawn beside the scene.
  *
  * @example
  * ```tsx
@@ -93,18 +98,24 @@ export function BaseLens({ lens }: { lens: StageLens }) {
   );
 }
 
-export function InstrumentStage({ model, name, view, onView, screen = [], well, tube, lens, legend, theme, motion: pinned, seconds, onPlayed, children }: {
+export function InstrumentStage({ model, name, view, onView, screen = [], well, tube, lens, legend, molecule, gel, measures = [], theme, motion: pinned, seconds, onPlayed, children }: {
   model: string; name: string; view: StageView; onView: (view: StageView) => void; screen?: readonly StageLine[];
   well?: { row: number; column: number }; tube?: StageTube; lens?: (through: number) => StageLens | null;
   legend?: Partial<Record<StageTube["strands"][number]["kind"], string>>;
-  theme?: Theme; motion?: Motion; seconds?: number; onPlayed?: () => void; children?: ReactNode;
+  molecule?: StageMolecule; gel?: StageGel; measures?: readonly StageMeasure[]; theme?: Theme; motion?: Motion; seconds?: number; onPlayed?: () => void; children?: ReactNode;
 }) {
   const system = useSystemTheme();
   const shown = theme ?? system;
   const [motion, flipMotion] = useMotion(pinned);
   const shape = shapeOf(model);
   const size = useMemo((): [number, number, number] => [...(INSTRUMENT_SIZE[model] ?? [0.4, 0.3, 0.4])] as [number, number, number], [model]);
-  const pose = useMemo(() => stagePose(view, size, shape), [view, size, shape]);
+  // A molecule is pictured, not seen: it is drawn where the DNA is thought about, in the tube if nothing else is drawn there, and as the result.
+  const made = molecule !== undefined && (view === "result" || (view === "tube" && tube === undefined));
+  const ran = view === "result" && gel !== undefined;
+  const pose = useMemo(() => stagePose(made || ran ? "result" : view, size, shape, made || ran), [view, size, shape, made, ran]);
+  const slab = useMemo(() => (ran ? placeGel(gel, moleculeCentre(size), pose.position, [MOLECULE_RADIUS * 2.3, MOLECULE_RADIUS * 2.1]) : null), [ran, gel, size, pose]);
+  // What was made, drawn above the machine as a map of it: nothing the machine shows, and what the run was for.
+  const placed = useMemo(() => (made ? placeMolecule(molecule, moleculeCentre(size), pose.position, MOLECULE_RADIUS) : null), [made, molecule, size, pose]);
   // What is in the tube plays out over a few seconds, slowly enough to follow: strands part, primers
   // land, copies grow. It can be paused, slowed, and dragged to any moment. With motion off it does
   // not play by itself, and shows the step finished until somebody drags it.
@@ -145,6 +156,8 @@ export function InstrumentStage({ model, name, view, onView, screen = [], well, 
   const close = useMemo(() => (view === "tube" && tube !== undefined ? lens?.(through) ?? null : null), [view, tube, lens, through]);
   const pairs = useMemo(() => pairsOf(strands), [strands]);
   const polymerases = useMemo(() => polymerasesOf(strands), [strands]);
+  // Lengths marked off under the strands, each a bar from one base to another.
+  const marked = useMemo(() => (view === "tube" && tube !== undefined ? measures.map((one, at) => ({ ...measureLine(one, tube.length, size, at), label: one.label })) : []), [view, tube, measures, size]);
   const layer = useRef<HTMLDivElement>(null);
   const rule = paint("rule", shown, 0.5);
 
@@ -165,6 +178,9 @@ export function InstrumentStage({ model, name, view, onView, screen = [], well, 
       { key: `five ${at}`, at: one.points === "right" ? one.start : one.end, rank: 2, content: <span className="end">5′</span> },
       { key: `three ${at}`, at: one.points === "right" ? one.end : one.start, rank: 2, content: <span className="end">3′</span> },
     ] : [])),
+    ...(placed === null ? [] : moleculeLabels(placed)),
+    ...(slab === null ? [] : gelLabels(slab)),
+    ...marked.map((one, at): Label => ({ key: `measure ${at}`, at: one.at, rank: 1, content: <span className="measure">{one.label}</span> })),
   ];
   const kinds = [...new Set(strands.map((one) => one.kind))];
 
@@ -212,6 +228,9 @@ export function InstrumentStage({ model, name, view, onView, screen = [], well, 
               <meshBasicMaterial color={paint("found", shown, 1).color} toneMapped={false} />
             </mesh>
           ))}
+          {placed !== null && <Molecule placed={placed} theme={shown} />}
+          {slab !== null && <GelSlab placed={slab} theme={shown} />}
+          {marked.map((one, at) => <Line key={at} points={one.points} color={paint("ink", shown, 0.6).color} lineWidth={1.5} transparent opacity={0.8} toneMapped={false} />)}
           <Follow labels={labels} layer={layer} />
           <OrbitControls makeDefault enableDamping={motion === "on"} dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.03} minDistance={0.15} maxDistance={8} />
           <Rig view={{ pose, fov: pose.fov }} motion={motion} />
@@ -223,7 +242,7 @@ export function InstrumentStage({ model, name, view, onView, screen = [], well, 
       <nav className="crumbs views" aria-label={`Views of ${name}`}>
         <strong>{name}</strong>
         {STAGE_VIEWS.map((one) => (
-          <button key={one} type="button" aria-pressed={one === view} className={one === view ? "on" : undefined} onClick={() => onView(one)}>{STAGE_VIEW_NAMES[one]}</button>
+          <button key={one} type="button" aria-pressed={one === view} className={one === view ? "on" : undefined} onClick={() => onView(one)}>{stageViewName(model, one)}</button>
         ))}
       </nav>
       {close !== null && <BaseLens lens={close} />}

@@ -26,4 +26,5 @@ export * from "./builder.js";
 export * from "./shapes.js";
 export * from "./motion.js";
 export * from "./instruments.js";
+export * from "./molecule.js";
 export * from "./stage.js";

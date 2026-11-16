@@ -5,7 +5,7 @@
  * they are checked as numbers: a shape stays inside the instrument it is a shape of, each view looks
  * at the part it is named for, and a strand's place along the template can be compared across rows.
  */
-import { BaseLens, STAGE_VIEWS, STAGE_VIEW_NAMES, STEP_SECONDS, TUBE_SPACE, lensFrame, lidOpen, pairsOf, placeStrands, polymerasesOf, sceneView, shapeOf,
+import { placeGel, stageViewName, measureLine, MOLECULE_RADIUS, moleculeCentre, placeMolecule, BaseLens, STAGE_VIEWS, STAGE_VIEW_NAMES, STEP_SECONDS, TUBE_SPACE, lensFrame, lidOpen, pairsOf, placeStrands, polymerasesOf, sceneView, shapeOf,
          stagePose, type Part, type StageLens } from "@biolibs/bionet-scene";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -238,5 +238,128 @@ describe("the real bases, magnified", () => {
     expect(frame[0]![1]).toBeLessThan(rows[1]!.start[1]);                               // and not row 1
     const wide = lensFrame({ from: 0, to: 1000, rows: [0, 3] }, 1000, SIZE);
     expect(wide[1]![0] - wide[0]![0]).toBeCloseTo(TUBE_SPACE.width, 6);
+  });
+});
+
+describe("a molecule drawn in the scene", () => {
+  const ring = { name: "p", length: 4000, circular: true, features: [
+    { start: 0, end: 1000, strand: 1 as const, tone: "yours" as const, label: "a" },
+    { start: 500, end: 1500, strand: -1 as const, tone: "held" as const, label: "b" },
+    { start: 2000, end: 3000, strand: 0 as const, tone: "found" as const, label: "c" },
+  ] };
+  const far = (a: readonly number[], b: readonly number[]): number => Math.hypot(a[0]! - b[0]!, a[1]! - b[1]!, a[2]! - b[2]!);
+
+  it("draws a circle as a ring that closes, read from the top and clockwise", () => {
+    const placed = placeMolecule(ring, [0, 1, 0], [0, 1, 5], 0.2);
+    expect(far(placed.backbone[0]!, placed.backbone.at(-1)!)).toBeCloseTo(0, 6);
+    for (const point of placed.backbone) expect(far(point, [0, 1, 0])).toBeCloseTo(0.2, 6);
+    // The origin is at the top, and a quarter of the way round is to the right of whoever is looking.
+    expect(placed.backbone[0]![1]).toBeCloseTo(1.2, 6);
+    expect(placed.features[0]!.points.at(-1)![0]).toBeCloseTo(0.2, 6);
+  });
+
+  it("lies flat on to whoever is looking, from the side or from above", () => {
+    for (const from of [[0, 1, 5], [4, 3, 2], [0, 9, 0]] as const) {
+      const placed = placeMolecule(ring, [0, 1, 0], from, 0.2);
+      const facing = [from[0] - 0, from[1] - 1, from[2] - 0];
+      for (const point of placed.backbone) expect((point[0] - 0) * facing[0]! + (point[1] - 1) * facing[1]! + (point[2] - 0) * facing[2]!).toBeCloseTo(0, 6);
+    }
+  });
+
+  it("puts stretches that overlap in different lanes, the second inside the first", () => {
+    const placed = placeMolecule(ring, [0, 0, 0], [0, 0, 5], 0.2);
+    const reach = placed.features.map((one) => far(one.points[0]!, [0, 0, 0]));
+    expect(reach[0]).toBeCloseTo(0.2, 6);
+    expect(reach[1]).toBeLessThan(0.2);
+    expect(reach[2]).toBeCloseTo(0.2, 6);
+  });
+
+  it("gives a stretch a barb only if it points", () => {
+    const placed = placeMolecule(ring, [0, 0, 0], [0, 0, 5], 0.2);
+    expect(placed.features.map((one) => one.barb !== null)).toEqual([true, true, false]);
+  });
+
+  it("draws anything else as a bar, with what is marked above it and its name below", () => {
+    const placed = placeMolecule({ ...ring, circular: false }, [0, 1, 0], [0, 1, 5], 0.2);
+    expect(placed.backbone).toEqual([[-0.2, 1, 0], [0.2, 1, 0]]);
+    expect(placed.features[0]!.points[0]![1]).toBeGreaterThan(1);
+    expect(placed.middle[1]).toBeLessThan(1);
+    expect(placed.size).toBe("4,000 bp");
+  });
+
+  it("makes room for it in the result view", () => {
+    const size = [0.3, 0.25, 0.4] as const;
+    const [plain, roomy] = [stagePose("result", size, null), stagePose("result", size, null, true)];
+    expect(roomy.target[1]).toBeGreaterThan(plain.target[1]);
+    expect(moleculeCentre(size)[1]).toBeGreaterThan(size[1] + MOLECULE_RADIUS);
+  });
+});
+
+describe("a length marked off under the strands", () => {
+  it("stands under the bases it is measured between", () => {
+    const size = [0.3, 0.25, 0.4] as const;
+    const { points, at } = measureLine({ from: 250, to: 750, label: "500" }, 1000, size);
+    expect(points[0]![0]).toBeCloseTo(-TUBE_SPACE.width / 4, 6);
+    expect(points.at(-1)![0]).toBeCloseTo(TUBE_SPACE.width / 4, 6);
+    expect(at[0]).toBeCloseTo(0, 6);
+    // Below the lowest strand, and above the machine.
+    expect(points[2]![1]).toBeLessThan(size[1] + TUBE_SPACE.above);
+    expect(points[2]![1]).toBeGreaterThan(size[1]);
+  });
+
+  it("puts a second one under the first", () => {
+    const size = [0.3, 0.25, 0.4] as const;
+    expect(measureLine({ from: 0, to: 10, label: "" }, 100, size, 1).at[1]).toBeLessThan(measureLine({ from: 0, to: 10, label: "" }, 100, size, 0).at[1]);
+  });
+});
+
+describe("a gel that has been run, drawn", () => {
+  const gel = { lanes: [
+    { name: "ladder", tone: "dim" as const, bands: [{ position: 0, intensity: 1, label: "10,000" }, { position: 1, intensity: 1, label: "250" }] },
+    { name: "digest", tone: "held" as const, bands: [{ position: 0.5, intensity: 0.5, label: "1,581" }] },
+  ] };
+
+  it("has the wells at the top and the small pieces at the bottom", () => {
+    const placed = placeGel(gel, [0, 1, 0], [0, 1, 5], [0.4, 0.4]);
+    const [large, small, mid] = placed.bands.map((band) => band.points[0]![1]);
+    expect(large!).toBeGreaterThan(mid!);
+    expect(mid!).toBeGreaterThan(small!);
+    expect(placed.wells[0]![0]![1]).toBeGreaterThan(large!);
+    expect(placed.names.map((one) => one.name)).toEqual(["ladder", "digest"]);
+    // Every band is inside the slab.
+    for (const band of placed.bands) for (const point of band.points) { expect(Math.abs(point[0])).toBeLessThan(0.2); expect(Math.abs(point[1] - 1)).toBeLessThan(0.2); }
+  });
+
+  it("writes the ladder's sizes to its left and the sample's to its right", () => {
+    const placed = placeGel(gel, [0, 1, 0], [0, 1, 5], [0.4, 0.4]);
+    expect(placed.bands[0]!.at[0]).toBeLessThan(placed.bands[0]!.points[0]![0]);
+    expect(placed.bands[2]!.at[0]).toBeGreaterThan(placed.bands[2]!.points[1]![0]);
+  });
+
+  it("starts every band at the well and draws them apart as it runs", () => {
+    const start = placeGel({ ...gel, ran: 0 }, [0, 1, 0], [0, 1, 5], [0.4, 0.4]).bands.map((band) => band.points[0]![1]);
+    expect(new Set(start.map((y) => y.toFixed(6))).size).toBe(1);
+    const half = placeGel({ ...gel, ran: 0.5 }, [0, 1, 0], [0, 1, 5], [0.4, 0.4]).bands.map((band) => band.points[0]![1]);
+    const done = placeGel(gel, [0, 1, 0], [0, 1, 5], [0.4, 0.4]).bands.map((band) => band.points[0]![1]);
+    expect(half[1]!).toBeGreaterThan(done[1]!);
+    expect(half[1]!).toBeLessThan(start[1]!);
+  });
+
+  it("calls the views by what the machine is", () => {
+    expect(stageViewName("gel-station", "block")).toBe("The gel");
+    expect(stageViewName("gel-station", "result")).toBe("The gel, run");
+    expect(stageViewName("thermocycler", "block")).toBe("The block");
+    expect(stageViewName("something else", "screen")).toBe("The screen");
+  });
+
+  it("marks a place on a molecule across its backbone, named outside it", () => {
+    const placed = placeMolecule({ name: "p", length: 4000, circular: true, features: [], marks: [{ at: 1000, label: "EcoRI" }, { at: 9000, label: "past the end" }] }, [0, 0, 0], [0, 0, 5], 0.2);
+    expect(placed.marks.map((one) => one.label)).toEqual(["EcoRI"]);
+    const [inner, outer] = placed.marks[0]!.points;
+    expect(Math.hypot(...inner!)).toBeLessThan(0.2);
+    expect(Math.hypot(...outer!)).toBeGreaterThan(0.2);
+    expect(Math.hypot(...placed.marks[0]!.at)).toBeGreaterThan(Math.hypot(...outer!));
+    // A quarter of the way round is to the right.
+    expect(placed.marks[0]!.at[0]).toBeGreaterThan(0.2);
   });
 });
