@@ -56,7 +56,9 @@ export function useVerifyBench({ start }: {
     if (start.read !== undefined) setRead(start.read);
   }, [asked]);
 
-  const part = lab?.parts.find((one) => one.checksum === design);
+  // A read is of DNA; a protein is not something to compare bases against.
+  const dna = useMemo(() => (lab?.parts ?? []).filter((one) => one.kind !== "protein"), [lab?.parts]);
+  const part = dna.find((one) => one.checksum === design);
   const checked = useMemo(() => (part === undefined || read.trim() === "" ? null : checkRead(part, read)), [part, read]);
   const working = useMemo(() => (checked === null || checked.problem !== null || part === undefined ? [] : verifyWorking(checked, part)), [checked, part]);
   const tubes = useMemo(() => (lab?.items ?? []).filter((one) => one.part === design && !one.retired), [lab?.items, design]);
@@ -78,12 +80,12 @@ export function useVerifyBench({ start }: {
         <h2>Check a construct</h2>
         <p className="small"><Glossed text="Sequencing reads the bases of a piece of DNA, one read covering a few hundred bases from where its primer sat." /></p>
         <p className="dim small">Paste what came back from the facility and it is compared with the design, base by base. Either strand will do. What the read does not reach is not checked, and is said so rather than passed.</p>
-        {lab.parts.length === 0 ? <p className="empty">The lab has no parts to check against.</p> : (
+        {dna.length === 0 ? <p className="empty">The lab has no DNA to check against.</p> : (
           <fieldset disabled={busy} className="stack">
             <label>It was supposed to be
               <select value={design} onChange={(event) => { setDesign(event.target.value); setSaid(null); }} aria-label="The design">
                 <option value="">Choose a part…</option>
-                {lab.parts.map((one) => <option key={one.checksum} value={one.checksum}>{one.name} · {count(one.length)} bp</option>)}
+                {dna.map((one) => <option key={one.checksum} value={one.checksum}>{one.name} · {count(one.length)} bp</option>)}
               </select>
             </label>
             <label>The read

@@ -309,12 +309,24 @@ export interface PartEnds {
 }
 
 /**
- * @param part - Its sequence, its name, whether it is a circle, and its ends if they are not blunt.
+ * What a part is made of.
+ *
+ * A lab keeps protein as well as DNA, and the two cannot be told apart by looking: `ACGT` is a
+ * perfectly good peptide — alanine, cysteine, glycine, threonine — as well as a perfectly good
+ * piece of DNA. So which it is has to be said, and the two are counted by different checksums, as
+ * they should be: a gene and the protein it codes for are not the same thing.
+ */
+export type PartKind = "dna" | "protein";
+
+/**
+ * @param part - Its sequence, its name, whether it is a circle, its ends if they are not blunt, and
+ *   what it is made of if it is not DNA.
  * @returns The change that adds a part, by its sequence. Its checksum is computed when applied, and
  *   takes the ends in: the same bases with different ends are a different molecule.
  */
-export const addPart = (part: { sequence: string; circular?: boolean; name: string; ends?: PartEnds }): Operation =>
+export const addPart = (part: { sequence: string; circular?: boolean; name: string; ends?: PartEnds; kind?: PartKind }): Operation =>
   ({ type: "part.add", sequence: part.sequence, circular: part.circular === true, name: part.name,
+     ...(part.kind === undefined || part.kind === "dna" ? {} : { kind: part.kind }),
      ...(part.ends === undefined || (part.ends.left === 0 && part.ends.right === 0) ? {} : { ends: { left: part.ends.left, right: part.ends.right } }) });
 
 /** Something marked on a part's sequence: a gene, a promoter, an origin, a primer's binding site. */

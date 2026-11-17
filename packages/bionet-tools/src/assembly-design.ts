@@ -82,7 +82,7 @@ const count = (value: number): string => value.toLocaleString("en-US");
 
 /** Parts worth offering as a piece: anything long enough to carry an overlap and a primer. */
 export function assemblyParts(lab: Pick<ToolLab, "parts">, overlap = 25, shortest = 18): PartState[] {
-  return lab.parts.filter((one) => one.length >= overlap + shortest);
+  return lab.parts.filter((one) => one.kind !== "protein" && one.length >= overlap + shortest);
 }
 
 /**
@@ -108,6 +108,8 @@ export function designAssembly(lab: Pick<ToolLab, "parts">, choice: AssemblyChoi
   const held = choice.pieces.map((one) => ({ piece: one, part: lab.parts.find((each) => each.checksum === one.part) }));
   const missing = held.find((one) => one.part === undefined);
   if (missing !== undefined) return nothing("One of the pieces is not a part the lab has.");
+  const protein = held.filter((one) => one.part!.kind === "protein");
+  if (protein.length > 0) return nothing(`${protein.map((one) => one.part!.name).join(" and ")} ${protein.length === 1 ? "is a protein" : "are proteins"}, which cannot be a piece of a ring of DNA.`);
   if (held.length < 2) return nothing("An assembly is of at least two pieces, in the order they go round the ring.");
   const circles = held.filter((one) => one.part!.circular && !one.piece.amplify);
   if (circles.length > 0) {

@@ -28,10 +28,11 @@
  */
 import { Dseq } from "@biolibs/dseq";
 import { Dseqrecord } from "@biolibs/dseqrecord";
+import { seguid } from "@biolibs/seguid";
 import type { SignOptions, SigningKey } from "@biolibs/opencloning";
 import { entryId, readEntry, verifyEntry, writeEntry, type Operation, type PartEnds, type PartFeature, type PlanInput, type Role, type RunInput, type StandingMm,
-         type SignedEntry } from "./log.js";
-export type { StrainRecord } from "./log.js";
+         type PartKind, type SignedEntry } from "./log.js";
+export type { PartKind, StrainRecord } from "./log.js";
 import { INVENTORY_VERSION, type InventoryDocument, type InventoryPart, type LabModel,
          type PeerModel } from "./model.js";
 
@@ -54,10 +55,12 @@ export interface RosterKey {
   removed: { by: string; cutoff: number } | null;
 }
 
-/** One part the lab knows of. */
+/** One part the lab knows of: a piece of DNA, or a protein. */
 export interface PartState {
-  /** Its checksum, which is its identity. */
+  /** Its checksum, which is its identity. A protein's is counted differently from DNA's. */
   checksum: string;
+  /** What it is made of. */
+  kind: PartKind;
   /** Its bases. */
   sequence: string;
   /** Whether it is a circle. */
@@ -348,8 +351,15 @@ const MOST_PIECES = 100;
  * @returns The molecule's length, checksum and ends.
  * @throws If that is not a sequence, or the ends are not ones a linear molecule of that length can have.
  */
-function moleculeOf(sequence: string, circular: boolean, ends: unknown): { length: number; checksum: string; ends: PartEnds } {
+function moleculeOf(sequence: string, circular: boolean, ends: unknown, kind: PartKind = "dna"): { length: number; checksum: string; ends: PartEnds } {
   const blunt = { left: 0, right: 0 };
+  if (kind === "protein") {
+    // A protein has no strands, so no ends and no circle, and its checksum is counted over the
+    // amino acids. The same letters as DNA must never give the same checksum.
+    if (circular || (ends !== undefined && ends !== null && (ends as PartEnds).left !== 0)) throw new Error("protein");
+    if (!/^[ACDEFGHIKLMNPQRSTVWYBXZJUO*]+$/i.test(sequence)) throw new Error("protein");
+    return { length: sequence.length, checksum: String(seguid(sequence.toUpperCase(), "{protein}")), ends: blunt };
+  }
   if (ends === undefined) { const record = new Dseqrecord(sequence, circular); return { length: record.length, checksum: record.seguid(), ends: blunt }; }
   const given = ends as Partial<PartEnds> | null;
   if (typeof given !== "object" || given === null || !amountOf(given.left) || !amountOf(given.right)) throw new Error("ends");
@@ -395,7 +405,7 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
   "roster.add": { key: true, person: true, role: true },
   "roster.remove": { key: true, cutoff: true },
   "roster.role": { key: true, role: true },
-  "part.add": { sequence: true, circular: true, name: true, ends: { left: true, right: true } },
+  "part.add": { sequence: true, circular: true, name: true, kind: true, ends: { left: true, right: true } },
   "part.annotate": { part: true, features: [{ type: true, label: true, strand: true, parts: [{ start: true, end: true }] }] },
   "part.offer": { part: true, available: true },
   "item.add": { item: true, part: true, strain: true, amount: true, unit: true },
@@ -865,17 +875,20 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       }
       // Both the molecule and its checksum are worked out inside the guard: an entry from another
       // machine must never be able to stop the merge, only to be refused by it.
+      const kind = op["kind"] === undefined ? "dna" : op["kind"];
+      if (kind !== "dna" && kind !== "protein") { refuse("A part is made of dna or of protein."); continue; }
       let molecule: ReturnType<typeof moleculeOf>;
       try {
-        molecule = moleculeOf(op["sequence"], op["circular"], op["ends"]);
+        molecule = moleculeOf(op["sequence"], op["circular"], op["ends"], kind);
       } catch {
-        refuse("What it carries is not a sequence, with ends a molecule of that length can have.");
+        refuse(kind === "protein" ? "What it carries is not a protein: a protein is written in amino acids, is not a circle and has no ends."
+                                  : "What it carries is not a sequence, with ends a molecule of that length can have.");
         continue;
       }
       const checksum = molecule.checksum;
       if (!parts.has(checksum)) {
         parts.set(checksum, {
-          part: { checksum, sequence: op["sequence"], circular: op["circular"], length: molecule.length,
+          part: { checksum, kind, sequence: op["sequence"], circular: op["circular"], length: molecule.length,
                   name: op["name"], offered: false, features: [], ends: molecule.ends, fields: {}, added: node.id },
           set: new Map([["name", { node, value: op["name"] }]]),
         });
@@ -1006,7 +1019,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       for (const { output, record, checksum, ends } of made) {
         if (!parts.has(checksum)) {
           parts.set(checksum, {
-            part: { checksum, sequence: output.sequence, circular: output.circular, length: record.length, name: output.name, offered: false, features: [], ends, fields: {}, added: node.id },
+            part: { checksum, kind: "dna", sequence: output.sequence, circular: output.circular, length: record.length, name: output.name, offered: false, features: [], ends, fields: {}, added: node.id },
             set: new Map([["name", { node, value: output.name }]]),
           });
         }

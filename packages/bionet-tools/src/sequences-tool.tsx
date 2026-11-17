@@ -71,7 +71,7 @@ export function SequencesTool({ part: first }: { part?: string }) {
           <div className="toolhead">
             <label>Part
               <select value={part.checksum} onChange={(event) => setChosen(event.target.value)} aria-label="Part">
-                {lab.parts.map((one) => <option key={one.checksum} value={one.checksum}>{one.name} · {count(one.length)} bp{one.circular ? " · circular" : ""}</option>)}
+                {lab.parts.map((one) => <option key={one.checksum} value={one.checksum}>{one.name} · {count(one.length)} {one.kind === "protein" ? "aa" : "bp"}{one.circular ? " · circular" : ""}</option>)}
               </select>
             </label>
             {endsWords(part) !== null && <span className="small">ends <code>{endsWords(part)}</code></span>}

@@ -21,6 +21,22 @@ export interface ToolLab {
   places: readonly PlaceState[];
 }
 
+/**
+ * The DNA part a tube holds, if it holds one.
+ *
+ * A lab keeps protein as well as DNA, and a tube of protein is nothing a polymerase, an enzyme or a
+ * ligase can be pointed at. Everything in this file works on DNA, so everything in it asks for a
+ * part this way and a protein is simply not offered.
+ *
+ * @param lab - The lab.
+ * @param checksum - What the tube is of, or `null` for a culture.
+ * @returns The part, or `undefined` if it is not one, or is not DNA.
+ */
+export function dnaOf(lab: Pick<ToolLab, "parts">, checksum: string | null): PartState | undefined {
+  const part = checksum === null ? undefined : lab.parts.find((one) => one.checksum === checksum);
+  return part === undefined || part.kind === "protein" ? undefined : part;
+}
+
 /** One tube that could be chosen. */
 export interface TubeChoice {
   /** The tube. */
@@ -44,7 +60,7 @@ export interface TubeChoice {
 export function pcrTubes(lab: ToolLab): { templates: TubeChoice[]; primers: TubeChoice[] } {
   const all: TubeChoice[] = [];
   for (const item of lab.items) {
-    const part = lab.parts.find((one) => one.checksum === item.part);
+    const part = dnaOf(lab, item.part);
     if (part === undefined || item.retired || item.amount <= 0) continue;
     all.push({ item: item.item, part, label: `${part.name} · ${amountOf(item)} · ${whereWords(item, lab.places)}` });
   }
@@ -139,7 +155,7 @@ export function pcrFeatures(template: Pick<PartState, "sequence" | "features">, 
 export function pcrRun(lab: ToolLab, choice: PcrChoice): PcrRun {
   const partOf = (id: string): PartState | undefined => {
     const item = lab.items.find((one) => one.item === id);
-    return item === undefined ? undefined : lab.parts.find((one) => one.checksum === item.part);
+    return item === undefined ? undefined : dnaOf(lab, item.part);
   };
   const [template, forward, reverse] = [partOf(choice.template), partOf(choice.forward), partOf(choice.reverse)];
   const typed = choice.name?.trim() ?? "";
@@ -237,7 +253,7 @@ export interface DigestRun {
  */
 export function digestRun(lab: ToolLab, choice: DigestChoice): DigestRun {
   const item = lab.items.find((one) => one.item === choice.tube);
-  const part = item === undefined ? undefined : lab.parts.find((one) => one.checksum === item.part);
+  const part = item === undefined ? undefined : dnaOf(lab, item.part);
   if (part === undefined) return { plan: null, pieces: [], matched: null, differed: null };
   const plan = planDigest(part, choice.enzymes, { ...(choice.gel === undefined ? {} : { gel: choice.gel }), ...(choice.ladder === undefined ? {} : { ladder: choice.ladder }) });
   if (plan.problem !== null) return { plan, pieces: [], matched: null, differed: null };
@@ -333,7 +349,7 @@ export function ligationRun(lab: ToolLab, choice: LigationChoice): LigationRun {
   const pieces: LigationPiece[] = [];
   for (const item of choice.tubes) {
     const held = lab.items.find((one) => one.item === item);
-    const part = held === undefined ? undefined : lab.parts.find((one) => one.checksum === held.part);
+    const part = held === undefined ? undefined : dnaOf(lab, held.part);
     if (part === undefined || part.circular) return { plan: null, pieces: [], product: null, name: "", worked: null, failed: null };
     pieces.push({ id: item, name: part.name, sequence: part.sequence, ends: part.ends ?? { left: 0, right: 0 }, features: part.features });
   }

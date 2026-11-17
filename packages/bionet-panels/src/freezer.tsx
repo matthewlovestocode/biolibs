@@ -32,6 +32,15 @@ export function endsWords(part: { sequence: string; ends?: { left: number; right
 export const amountOf = (item: Pick<ItemState, "amount" | "unit">): string => `${item.amount}${item.unit === null ? "" : ` ${item.unit}`}`;
 
 /**
+ * How long a part is, in the units of what it is made of.
+ *
+ * @param part - The part.
+ * @returns `1,712 bp` for DNA, `402 aa` for a protein.
+ */
+export const lengthOf = (part: Pick<PartState, "kind" | "length">): string =>
+  `${part.length.toLocaleString("en-US")} ${part.kind === "protein" ? "aa" : "bp"}`;
+
+/**
  * Where a tube came from, if a run made it.
  *
  * @param item - The tube.
@@ -82,7 +91,7 @@ export function PartCard({ part, items }: { part: PartState; items: ItemState[] 
       <div className="parthead">
         <div>
           <h2>{part.name}</h2>
-          <p className="dim small">{part.length} bp{part.circular ? " · circular" : ""}{endsWords(part) === null ? "" : ` · ends ${endsWords(part)}`} · <code>{part.checksum.slice(0, 26)}…</code></p>
+          <p className="dim small">{lengthOf(part)}{part.kind === "protein" ? " · protein" : ""}{part.circular ? " · circular" : ""}{endsWords(part) === null ? "" : ` · ends ${endsWords(part)}`} · <code>{part.checksum.slice(0, 26)}…</code></p>
         </div>
         <label className="check" title="Whether other labs are told this part can be asked for">
           <input type="checkbox" checked={part.offered} onChange={(event) => void act("offer", { part: part.checksum, available: event.target.checked })} />

@@ -61,7 +61,7 @@ export function useCodonBench({ start }: {
   }, [asked]);
 
   // Anything that is a whole number of codons could be a coding sequence; nothing else can.
-  const coding = useMemo(() => (lab?.parts ?? []).filter((one) => !one.circular && one.length >= CODON && one.length % CODON === 0), [lab?.parts]);
+  const coding = useMemo(() => (lab?.parts ?? []).filter((one) => one.kind !== "protein" && !one.circular && one.length >= CODON && one.length % CODON === 0), [lab?.parts]);
   const usage = useMemo(() => {
     const chosen = coding.filter((one) => hostGenes.includes(one.checksum));
     return chosen.length === 0 ? null : countCodonUsage(chosen.map((one) => one.sequence), {

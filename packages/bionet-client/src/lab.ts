@@ -14,7 +14,7 @@ import { addItem, addPart, addPlace, addStrain, addToRoster, adjustItem, annotat
          movePlace, newItemId, newPlaceId, newPlanId, newRunId, newStrainId, nextEntry, offerPart, planRun, publicInventory, putItem, recordRun, recountItem, retireItem, retirePlace,
          setField, settlePlan, signInventory, standPlace,
          takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type PartEnds, type PartFeature, type PartState, type PlaceState, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type StrainState } from "@biolibs/bionet";
+         type PartEnds, type PartFeature, type PartState, type PlaceState, type PartKind, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type StrainState } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
 import { openKey, sealKey } from "./backup.js";
@@ -478,7 +478,7 @@ export class Lab {
    * @throws On use, if this device hosts no adviser, or the key is in the lab as anything else.
    */
   get advise(): {
-    addPart: (part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[] }) => Promise<{ marked: boolean }>;
+    addPart: (part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[]; kind?: PartKind }) => Promise<{ marked: boolean }>;
     planRun: (plan: Parameters<Lab["planRun"]>[0]) => Promise<{ plan: string }>;
     settlePlan: (which: { plan: string }) => Promise<void>;
   } {
@@ -489,20 +489,25 @@ export class Lab {
     };
   }
 
-  /** Add a part, by its sequence, with whatever is marked on it. */
-  async addPart(part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[]; ends?: PartEnds }, advising = false): Promise<boolean | undefined> {
+  /** Add a part, by its sequence, with whatever is marked on it. A protein says so with `kind`. */
+  async addPart(part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[]; ends?: PartEnds; kind?: PartKind }, advising = false): Promise<boolean | undefined> {
     const bases = part.sequence.replace(/\s+/g, "");
     // The library underneath accepts any letters as a sequence. A freezer should not: a part named
-    // by a checksum of the wrong letters is a part nobody else will ever match.
-    if (!/^[ACGTURYSWKMBDHVN]+$/i.test(bases)) {
+    // by a checksum of the wrong letters is a part nobody else will ever match. Which letters are
+    // right depends on what it is made of, since the two overlap: ACGT is DNA and a peptide both.
+    if (part.kind === "protein") {
+      if (!/^[ACDEFGHIKLMNPQRSTVWYBXZJUO]+$/i.test(bases)) throw new Error("A protein is written in the letters for amino acids.");
+      if (part.circular === true) throw new Error("A protein is not a circle.");
+    } else if (!/^[ACGTURYSWKMBDHVN]+$/i.test(bases)) {
       throw new Error("A sequence is written in the letters for bases: A, C, G, T, and the codes for an uncertain base.");
     }
-    await this.write(addPart({ name: part.name.trim(), sequence: bases, circular: part.circular === true, ...(part.ends === undefined ? {} : { ends: part.ends }) }), advising);
+    await this.write(addPart({ name: part.name.trim(), sequence: bases, circular: part.circular === true,
+                               ...(part.kind === undefined ? {} : { kind: part.kind }), ...(part.ends === undefined ? {} : { ends: part.ends }) }), advising);
     if (part.features === undefined || part.features.length === 0) return advising ? false : undefined;
     // A part is known by its sequence, so the one just added is the one with these bases. Somebody
     // else may have added it first under another name; what is marked on it is said either way.
     const added = this.state?.parts.find((one) => one.sequence.toUpperCase() === bases.toUpperCase() && one.circular === (part.circular === true)
-      && one.ends.left === (part.ends?.left ?? 0) && one.ends.right === (part.ends?.right ?? 0));
+      && one.kind === (part.kind ?? "dna") && one.ends.left === (part.ends?.left ?? 0) && one.ends.right === (part.ends?.right ?? 0));
     if (added === undefined) return advising ? false : undefined;
     // An adviser may describe a part nobody has described. Where somebody has, theirs stands and the
     // entry would be refused, so it is not written and the caller is told it was not.

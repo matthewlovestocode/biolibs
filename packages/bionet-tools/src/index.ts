@@ -15,6 +15,7 @@
  * - `pcr-tool.tsx`, `digest-tool.tsx` — the tools
  * - `pcr-bench.tsx` — a PCR at the machine: what is beside the scene, and what the scene is told to show
  * - `pcr-working.ts` — the working behind what the PCR tool says: each figure with the steps that give it
+ * - `protein.ts` — the protein a gene codes for, and what its sequence says about it
  * - `verify-bench.tsx` — checking a construct against the design at a desk, saying what was not covered
  * - `verify.ts` — a sequencing read against the design it was meant to be, and what each difference costs
  * - `codons.ts` — a gene rewritten in a host's codons, from usage counted over that host's own genes
@@ -48,6 +49,7 @@ export * from "./pcr-tool.js";
 export * from "./digest-tool.js";
 export * from "./pcr-working.js";
 export * from "./digest-working.js";
+export * from "./protein.js";
 export * from "./verify.js";
 export * from "./verify-bench.js";
 export * from "./codons.js";

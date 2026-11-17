@@ -229,7 +229,7 @@ export function usePrimerBench({ start, onPcr }: {
   latest.current = lab;
 
   // Templates worth designing on: anything long enough to hold a pair with something between them.
-  const parts = useMemo(() => (lab?.parts ?? []).filter((one) => one.length >= 2 * DEFAULT_DESIGN.minLength + 1), [lab?.parts]);
+  const parts = useMemo(() => (lab?.parts ?? []).filter((one) => one.kind !== "protein" && one.length >= 2 * DEFAULT_DESIGN.minLength + 1), [lab?.parts]);
   const part = parts.find((one) => one.checksum === chosen) ?? parts.find((one) => one.features.length > 0) ?? parts[0];
   const offered = useMemo(() => (part === undefined ? [] : featureStretches(part)), [part]);
   const choose = (stretch: Stretch): void => { setFrom(String(stretch.start + 1)); setTo(String(stretch.end)); setLengths({}); setSaid(null); };

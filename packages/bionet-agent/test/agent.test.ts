@@ -279,6 +279,77 @@ describe("an adviser rewriting a gene for a host", () => {
   });
 });
 
+describe("an adviser and protein", () => {
+  const SIGNAL = "ATGAAAGTTTTAATTTTAGCTTGTTTAGTTGCTTTAGCT";
+  const MATURE = "AGAGAATTAGAAGAATTAAATGTTCCAGGTAAAGTTTTA";
+  const withGene = async (): Promise<Wren> => {
+    const w = await wren();
+    await w.lab.addPart({ name: "CSN2 gene", sequence: `${SIGNAL}${MATURE}TAA`, features: [
+      { type: "CDS", label: "casein", strand: 1, parts: [{ start: 0, end: SIGNAL.length + MATURE.length + 3 }] },
+      { type: "sig_peptide", label: "signal", strand: 1, parts: [{ start: 0, end: SIGNAL.length }] },
+    ] });
+    return w;
+  };
+
+  it("reads a gene as its protein, and says what the sequence tells you about it", async () => {
+    const w = await withGene();
+    const made = await w.use("translate_gene", { gene: "CSN2 gene", cds: "casein" });
+    const { translate } = await import("@biolibs/seq");
+    expect(made.protein).toBe(String(translate(`${SIGNAL}${MATURE}`)));
+    expect(made.amino_acids).toBe(26);
+    expect(made.ends_in_a_stop).toBe(true);
+    expect(made.read_from).toEqual({ bases: `1-${SIGNAL.length + MATURE.length + 3}`, strand: "top" });
+    expect(made.known.weight_daltons).toBeGreaterThan(2_000);
+    expect(made.known.isoelectric_point).toBeGreaterThan(0);
+    expect(made.working.find((one: { of: string }) => one.of === "what is known of it").rests).toMatch(/not what anybody has measured/);
+    // Reading it changes nothing: keeping it is a separate, deliberate act.
+    expect(w.lab.snapshot().lab!.parts.some((one) => one.kind === "protein")).toBe(false);
+  });
+
+  it("takes off the signal peptide when asked, which is what the cell lets out", async () => {
+    const w = await withGene();
+    const whole = await w.use("translate_gene", { gene: "CSN2 gene", cds: "casein" });
+    const mature = await w.use("translate_gene", { gene: "CSN2 gene", cds: "casein", cut_signal: true });
+    expect(mature.signal_peptide_cut).toMatchObject({ label: "signal", amino_acids: 13 });
+    expect(mature.protein).toBe(whole.protein.slice(13));
+    expect(mature.amino_acids).toBe(13);
+  });
+
+  it("keeps a protein as a part of its own, told apart from the same letters as DNA", async () => {
+    const w = await withGene();
+    const made = await w.use("translate_gene", { gene: "CSN2 gene", cds: "casein", cut_signal: true });
+    const kept = await w.use("add_part", { name: "mature casein", sequence: made.protein, kind: "protein" });
+    expect(kept.checksum).toMatch(/^seguid=/);
+    const seen = w.lab.snapshot().lab!;
+    const protein = seen.parts.find((one) => one.name === "mature casein")!;
+    expect(protein.kind).toBe("protein");
+    // The same letters as DNA would be a different part, which is the point of saying which it is.
+    const both = await w.use("add_part", { name: "as DNA", sequence: "ACGTACGTACGT" });
+    const asProtein = await w.use("add_part", { name: "as protein", sequence: "ACGTACGTACGT", kind: "protein" });
+    expect(both.checksum).not.toBe(asProtein.checksum);
+    // And a protein is not something the DNA tools will offer to cut or copy.
+    await expect(w.use("work_out_digest", { of: protein.checksum, enzymes: ["EcoRI"] })).rejects.toThrow();
+    await expect(w.use("translate_gene", { gene: "mature casein" })).rejects.toThrow(/is already a protein/);
+  });
+
+  it("says what is wrong with a gene rather than handing back a protein that looks fine", async () => {
+    const w = await wren();
+    await w.lab.addPart({ name: "broken", sequence: `${SIGNAL}TAA${MATURE}` });
+    const made = await w.use("translate_gene", { gene: "broken" });
+    expect(made.warnings.some((one: string) => /stop at amino acid 14, before the end/.test(one))).toBe(true);
+    expect(made.ends_in_a_stop).toBe(false);
+  });
+
+  it("lists what each part is made of", async () => {
+    const w = await withGene();
+    const made = await w.use("translate_gene", { gene: "CSN2 gene", cds: "casein" });
+    await w.use("add_part", { name: "casein", sequence: made.protein, kind: "protein" });
+    const parts = await w.use("list_parts");
+    expect(parts.find((one: { name: string }) => one.name === "casein").kind).toBe("protein");
+    expect(parts.find((one: { name: string }) => one.name === "CSN2 gene").kind).toBe("dna");
+  });
+});
+
 describe("what an adviser cannot do", () => {
   it("has no tool that uses, moves, retires or records anything", async () => {
     const { tools } = await wren();

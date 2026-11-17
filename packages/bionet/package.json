@@ -5,7 +5,8 @@
   "dependencies": {
     "@biolibs/dseq": "^1.0.0",
     "@biolibs/dseqrecord": "^1.1.1",
-    "@biolibs/opencloning": "^2.0.0"
+    "@biolibs/opencloning": "^2.0.0",
+    "@biolibs/seguid": "^1.0.0"
   },
   "description": "The Bionet protocol: a lab's signed logs and how they merge, with parts and tubes, where each tube is and what was done at the bench; and what a lab holds, signed and published at its own address, so a cloning plan can be checked against who actually has the parts",
   "engines": {
@@ -46,5 +47,5 @@
   },
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "1.7.0"
+  "version": "1.8.0"
 }
