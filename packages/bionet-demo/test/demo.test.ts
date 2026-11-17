@@ -134,3 +134,22 @@ describe("the primers", () => {
     expect(state().parts.find((one) => one.name === "wrenA check")?.length).toBe(780);
   });
 });
+
+describe("where to stand to see what was done", () => {
+  it("looks at a part's tube where the lab has put one, and counts a stretch the way the tools do", async () => {
+    const { stopFor } = await import("@biolibs/bionet-demo");
+    const lab = {
+      parts: [{ checksum: "p", length: 900 }],
+      items: [{ item: "retired", part: "p", retired: true, where: { place: "box" } }, { item: "loose", part: "p", retired: false, where: null },
+              { item: "t", part: "p", retired: false, where: { place: "box" } }],
+    };
+    expect(stopFor({ at: "sequences", part: "p" }, lab)).toEqual({ at: "sequences", part: "p", focus: { place: "box", item: "t" } });
+    expect(stopFor({ at: "sequences", part: "other" }, lab)).toEqual({ at: "sequences", part: "other" });
+    // People count from 1 and include both ends: 101 to 600 is 500 bases, with 100 before it.
+    expect(stopFor({ at: "primers", part: "p", from: 101, to: 600 }, lab)).toEqual({ at: "primers", start: { part: "p", stretch: { start: 100, end: 600 } } });
+    // A stretch that runs through a circle's origin ends past the part's length.
+    expect(stopFor({ at: "primers", part: "p", from: 851, to: 50 }, lab)).toEqual({ at: "primers", start: { part: "p", stretch: { start: 850, end: 950 } } });
+    const digest = { at: "digest" as const, start: { view: "tube" as const, tube: "t", enzymes: ["EcoRI"] } };
+    expect(stopFor(digest, lab)).toBe(digest);
+  });
+});

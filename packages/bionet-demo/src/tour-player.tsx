@@ -12,65 +12,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LabView as LabHeld } from "@biolibs/bionet-client";
 
 import { LabProvider, useLab } from "@biolibs/bionet-react";
-import { LabView, type Focus } from "@biolibs/bionet-scene";
-import { SequencesTool, moleculeOf, useDigestBench, useLigationBench, usePcrBench, usePrimerBench } from "@biolibs/bionet-tools";
+import { LabAt } from "./lab-at.js";
 import { demoLab, type DemoLab } from "./lab.js";
 import { demoTour, type TourStep, type TourStop } from "./tour.js";
 
 /** How long a stop is held when the tour plays itself, in seconds. */
 export const STOP_SECONDS = 11;
-
-/**
- * The whole walk, in one scene.
- *
- * Every stop is this: the lab's own room, pointed somewhere, with whatever is in use drawn where it
- * stands and the tool for it beside the scene. Nothing is swapped for anything else as the walk
- * goes on, which is the point — the room is never built again, so the camera travels from the far
- * side of it to inside a tube without a single cut, and a tool left open at one stop is still open,
- * where it was left, when the walk comes back to it.
- */
-function Walk({ stop, demo, lab }: { stop: TourStop; demo: DemoLab; lab: LabHeld }) {
-  const at = useMemo(() => ({
-    pcr: { id: demo.instruments.pcr, name: "Thermocycler" },
-    digest: { id: demo.instruments.digest, name: "Gel station" },
-    ligation: { id: demo.instruments.ligation, name: "Heat block" },
-  }), [demo]);
-  // Each tool is asked for at every stop and told what to show only at its own. A tool nobody is at
-  // works nothing out afresh; the one being walked up to is already there to be looked at.
-  const pcr = usePcrBench({ instrument: at.pcr, ...(stop.at === "pcr" && stop.start !== undefined ? { start: stop.start } : {}) });
-  const digest = useDigestBench({ instrument: at.digest, ...(stop.at === "digest" && stop.start !== undefined ? { start: stop.start } : {}) });
-  const ligation = useLigationBench({ instrument: at.ligation, ...(stop.at === "ligation" && stop.start !== undefined ? { start: stop.start } : {}) });
-
-  // Primers are designed at a desk, so that tool has no machine to stand at: it is beside the room,
-  // and what it hands over is the template's tube to look at and the pair drawn on its molecule.
-  const primers = usePrimerBench(stop.at === "primers" && stop.start !== undefined ? { start: stop.start } : {});
-  const desk = stop.at === "primers" ? primers.desk : null;
-
-  const worked = stop.at === "pcr" ? { place: at.pcr.id, bench: pcr }
-               : stop.at === "digest" ? { place: at.digest.id, bench: digest }
-               : stop.at === "ligation" ? { place: at.ligation.id, bench: ligation }
-               : null;
-  const focus: Focus = worked !== null ? { place: worked.place }
-                     : stop.at === "lab" || stop.at === "sequences" ? stop.focus ?? { place: null }
-                     : desk !== null ? desk.focus ?? { place: null }
-                     : { place: null };
-  return (
-    <div className="scene">
-      <LabView lab={lab} name={lab.name ?? "Lab"} focus={focus}
-               molecule={(item) => {
-                 if (desk !== null && desk.focus?.item === item && desk.molecule !== null) return desk.molecule;
-                 const part = lab.parts.find((one) => one.checksum === lab.items.find((each) => each.item === item)?.part);
-                 return part === undefined ? null : moleculeOf(part);
-               }}
-               {...(worked === null ? {} : { using: { place: worked.place, ...worked.bench.stage, panel: worked.bench.panel } })}
-               {...(stop.at !== "primers" ? {} : { wide: true, beside: primers.panel })}
-               {...(stop.at !== "sequences" ? {} : {
-                 wide: true,
-                 beside: <div className="bionet"><SequencesTool {...(stop.part === undefined ? {} : { part: stop.part })} /></div>,
-               })} />
-    </div>
-  );
-}
 
 /**
  * The tour, over a demo lab that has already been opened.
@@ -138,7 +85,7 @@ export function DemoTour({ demo, onDone, onAgain }: { demo: DemoLab; onDone?: ()
       <div className="demoshow">
         {/* One scene for the whole walk, never keyed and never swapped, so that every stop is the
             camera moving through the room it is already in rather than a new room being built. */}
-        {state !== null && state !== undefined && <Walk stop={stop} demo={demo} lab={state} />}
+        {state !== null && state !== undefined && <LabAt stop={stop} />}
       </div>
     </div>
   );

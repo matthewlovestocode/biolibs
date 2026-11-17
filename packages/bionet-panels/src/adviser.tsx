@@ -19,6 +19,8 @@ export interface AdviserSeen {
   ok: boolean;
   /** When, as an ISO date. */
   at: string;
+  /** Where in the lab it would be seen, if it has a place there, as the adviser's tools report it. */
+  shows?: unknown;
 }
 
 /** The way an agent reaches the adviser's tools on this device, as a host offers it. */
@@ -45,12 +47,21 @@ const TOOL_WORDS: Readonly<Record<string, string>> = {
 };
 
 /**
+ * What the adviser did, in a few words.
+ *
+ * @param tool - Which of its tools it used.
+ * @returns Something like `worked out a digest`.
+ */
+export const adviserDid = (tool: string): string => TOOL_WORDS[tool] ?? `used ${tool}`;
+
+/**
  * The adviser this device hosts, and the door to it.
  *
  * @param props - `door` is the way an agent reaches it, for a host that has one to offer. Without
  *   it the adviser can still be hosted and let in, and something else has to carry what it says.
+ *   `onWatch`, if given, adds a way to go and watch the adviser at work in the lab.
  */
-export function Adviser({ door }: { door?: AdviserDoor }): ReactNode {
+export function Adviser({ door, onWatch }: { door?: AdviserDoor; onWatch?: () => void }): ReactNode {
   const state = useLab();
   const act = useAct();
   const [person, setPerson] = useState("Claude");
@@ -133,16 +144,52 @@ export function Adviser({ door }: { door?: AdviserDoor }): ReactNode {
                 {[...door.seen].reverse().slice(0, 12).map((one, at) => (
                   <tr key={`${one.at} ${at}`}>
                     <td className="dim">{new Date(one.at).toLocaleTimeString()}</td>
-                    <td>{TOOL_WORDS[one.tool] ?? one.tool}</td>
+                    <td>{adviserDid(one.tool)}</td>
                     <td>{one.ok ? "" : <span className="badge">could not</span>}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
+          {onWatch !== undefined && (
+            <div className="row">
+              <button type="button" onClick={onWatch}>Watch it work</button>
+              <span className="dim small">The lab, with the view going wherever the adviser is looking.</span>
+            </div>
+          )}
           <p className="dim small">Everything it writes is in History under its own name, like anybody's.</p>
         </section>
       )}
     </>
+  );
+}
+
+/**
+ * What the adviser is doing, said over the lab while it is being watched.
+ *
+ * Watching is following: the view goes where the adviser last looked. A person can stop following
+ * and take the controls, since what is drawn under this is the lab and its tools and not a film of them.
+ *
+ * @param props - `last` is the latest thing it did, if it has done anything; `following` is whether
+ *   the view is going where it looks, and `onFollow` changes that; `onBack` leaves.
+ */
+export function AdviserStrip({ last, following, onFollow, onBack }: {
+  last: AdviserSeen | null; following: boolean; onFollow: (following: boolean) => void; onBack: () => void;
+}): ReactNode {
+  const state = useLab();
+  const hosting = state?.hosting ?? null;
+  const name = state?.lab?.roster.find((one) => one.key === hosting?.key)?.person ?? "The adviser";
+  return (
+    <section className="card adviserstrip" aria-live="polite">
+      <div className="row">
+        <p>
+          {last === null ? <span className="dim">{name} has not done anything yet. What it does will be shown here, where it does it.</span>
+            : <><strong>{name}</strong> {adviserDid(last.tool)}{last.ok ? "" : ", and could not"} <span className="dim small">at {new Date(last.at).toLocaleTimeString()}</span></>}
+        </p>
+        <label className="check small"><input type="checkbox" checked={following} onChange={(event) => onFollow(event.target.checked)} /> Follow it</label>
+        <button type="button" className="quiet" onClick={onBack}>Back</button>
+      </div>
+      {!following && <p className="dim small">You have the controls. What it does next is still listed, and the view stays where you put it.</p>}
+    </section>
   );
 }

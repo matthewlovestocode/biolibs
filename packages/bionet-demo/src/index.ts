@@ -9,9 +9,11 @@
  * - `molecules.ts` — the molecules the lab holds, made from a number that is written down
  * - `lab.ts` — the lab itself: opened, founded and filled by the same entries a person's app writes
  * - `tour.ts` — the walk, as plain data: where to be, what to say, and what to do there
- * - `tour.tsx` — the walk, drawn and played
+ * - `lab-at.tsx` — the lab shown at one stop: the one scene a walk, a list of tools and watching an adviser all use
+ * - `tour-player.tsx` — the walk, drawn and played
  */
 export * from "./molecules.js";
 export * from "./lab.js";
 export * from "./tour.js";
+export * from "./lab-at.js";
 export * from "./tour-player.js";
