@@ -69,6 +69,9 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `list_tubes` | Every tube: what it is, how much is left, where it is |
 | `list_runs` | What has been done at the bench, failures included |
 | `list_proposals` | What has been proposed, by whom, and what became of it |
+| `the_work` | Those proposals in the order they have to be done, in chains, by project, with what to get first |
+| `file_the_work` | Say which project one of its own proposals is part of |
+| `write_out_the_method` | Write the plan so another lab could carry it out, every tube named by its checksum |
 | `find_cutters` | Which enzymes cut a part, and where |
 | `design_primers` | A pair for a stretch or a feature, with why each won and what to watch for |
 | `work_out_pcr`, `work_out_digest`, `work_out_ligation` | What each would give, from the lab's own engines |
@@ -89,10 +92,28 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `fetch_from_ncbi` | Read one record by accession: its sequence, and what it says is marked on it |
 | `keep_from_ncbi` | Keep one as a part, with what the record says is marked on it. No tube |
 
-`add_part`, `keep_from_ncbi`, the `propose_` tools and `withdraw_proposal` are the only ones
-that write. A
+`add_part`, `keep_from_ncbi`, the `propose_` tools, `file_the_work` and `withdraw_proposal` are the
+only ones that write. A
 proposal may count on a part there is no tube of yet; it then says that the part has to be ordered
 or made first.
+
+### Making a plan, and not just proposals
+
+`the_work` is what turns a pile of proposals into a plan. It reads them in the order they have to be
+carried out, in chains, says which could be done now, and — the part that matters most — names the
+parts nothing proposed makes and the lab has no tube of. A plan that does not say what to order
+first is not a plan anybody can act on.
+
+A lab has several things on at once, so the adviser files each proposal under its project with
+`file_the_work` as it makes it. That part is a decision, not a derivation: four caseins are four
+chains in one project, and nothing can tell two projects apart by looking at what they make. It may
+file a proposal of its own and nothing else, and a person's filing stands over its own.
+
+The order itself is derived from what each proposal expects to make and what each one
+needs, so it cannot drift from the truth. The one thing an adviser has to remember is that a
+proposal may only name a part the lab knows of, so `add_part` what an earlier step would make before
+proposing the step that needs it — otherwise the two are unrelated and no order can be read from
+them.
 
 ### Whether the protein will work, not just whether it gets made
 

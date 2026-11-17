@@ -204,6 +204,8 @@ export interface PlanState {
    * would use. The plan is kept and shown; somebody has to look before carrying it out.
    */
   wanting: string[];
+  /** Anything else set on it, such as which project it is part of. */
+  fields: Record<string, string | number | null>;
   /** The entry that proposed it. */
   added: string;
 }
@@ -312,6 +314,16 @@ const text = (value: unknown, most: number): value is string =>
 const PLACE_RESERVED = new Set(["place", "kind", "parent", "grid", "standing", "retired", "adrift"]);
 /** The same, for a strain: what it is and came from is fixed when it is added. */
 const STRAIN_RESERVED = new Set(["strain", "host", "carries", "parent", "from"]);
+
+/**
+ * What a plan's fields may not be called.
+ *
+ * A plan is a proposal somebody made, and what it would do is not a label on it: letting a field
+ * rewrite the kind of run, what it would use or what it expects would turn a proposal into
+ * something nobody proposed. A field says what a plan is *about* — which project it is part of,
+ * say — and nothing about what carrying it out would do.
+ */
+const PLAN_RESERVED = new Set(["plan", "kind", "instrument", "inputs", "expects", "settings", "note", "by", "settled", "wanting", "added"]);
 
 /** The most positions a box may have along one side, and the farthest a place may stand or reach, in millimetres. */
 const MOST_SIDE = 100;
@@ -469,7 +481,7 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
  * the parts are known: an adviser may say what is on a part that nothing is marked on, and may not
  * change what somebody has already marked.
  */
-const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle"]);
+const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle", "field.set"]);
 
 /**
  * The first field in a change that this version does not know, if there is one.
@@ -809,7 +821,7 @@ function walk(founding: Node, chains: Map<string, Node[]>, chained: Map<string, 
       // An adviser proposes and describes. It is turned away here, where the roster is known as it
       // stood when the entry was written, from anything that would change what the lab holds.
       if (author.role === "adviser") {
-        if (!ADVISER_MAY.has(op.type)) { say("refused", "Its key is an adviser, which may add and describe parts and propose runs, and nothing else."); continue; }
+        if (!ADVISER_MAY.has(op.type)) { say("refused", "Its key is an adviser, which may add and describe parts, propose runs and file its own proposals, and nothing else."); continue; }
         node.adviser = true;
       }
       say("applied");       // whether the change itself makes sense is settled when the inventory is folded
@@ -886,8 +898,8 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
 
   const places = new Map<string, { place: PlaceState; set: Map<string, Register> }>();
   const strains = new Map<string, { strain: StrainState; set: Map<string, Register> }>();
-  /** Each plan, with the entry that settled it, if one has. */
-  const plans = new Map<string, { plan: PlanState; settled: Node | null }>();
+  /** Each plan, with the entry that settled it, if one has, and anything set on it. */
+  const plans = new Map<string, { plan: PlanState; settled: Node | null; set: Map<string, Register> }>();
   /** Where each item was last put. */
   const put = new Map<string, Map<string, Register>>();
 
@@ -1099,12 +1111,12 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         continue;
       }
       plans.set(op["plan"] as string, {
-        settled: null,
+        settled: null, set: new Map(),
         plan: {
           plan: op["plan"] as string, kind: op["kind"] as string, instrument: op["instrument"] as string | null,
           inputs: (op["inputs"] as PlanInput[]).map((input) => ({ ...(input.item === undefined ? { part: input.part! } : { item: input.item }), amount: input.amount, role: input.role })),
           expects, settings: { ...(op["settings"] as Record<string, string | number>) }, note: op["note"] as string | null,
-          by: node.author, settled: null, wanting: [], added: node.id,
+          by: node.author, settled: null, wanting: [], fields: {}, added: node.id,
         },
       });
     } else if (op.type === "plan.settle") {
@@ -1129,10 +1141,20 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       const target = op["on"] === "part" && typeof op["id"] === "string" ? parts.get(op["id"])
                    : op["on"] === "item" && typeof op["id"] === "string" ? items.get(op["id"])
                    : op["on"] === "place" && typeof op["id"] === "string" ? places.get(op["id"])
-                   : op["on"] === "strain" && typeof op["id"] === "string" ? strains.get(op["id"]) : undefined;
-      if (target === undefined) { refuse("It does not name a part, an item, a place or a strain the lab has."); continue; }
+                   : op["on"] === "strain" && typeof op["id"] === "string" ? strains.get(op["id"])
+                   : op["on"] === "plan" && typeof op["id"] === "string" ? plans.get(op["id"]) : undefined;
+      if (target === undefined) { refuse("It does not name a part, an item, a place, a strain or a plan the lab has."); continue; }
       if (op["on"] === "place" && typeof field === "string" && PLACE_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "strain" && typeof field === "string" && STRAIN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
+      if (op["on"] === "plan" && typeof field === "string" && PLAN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
+      // An adviser may file its own proposals and nothing else. It proposes the work, so leaving it
+      // unable to say which project the work is for would have a person filing every step by hand;
+      // letting it set any field at all would let it rename the lab's parts. This is the same line
+      // `plan.settle` draws: a plan of its own, and no further.
+      if (node.adviser === true && !(op["on"] === "plan" && (target as { plan: PlanState }).plan.by === node.author)) {
+        refuse("An adviser may only set a field on a plan of its own.");
+        continue;
+      }
       if (field === "name" && (op["on"] === "place" || op["on"] === "strain") && !text(value, 200)) { refuse("A name has to be some text."); continue; }
       if (typeof field !== "string" || !FIELD.test(field) || RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (!(value === null || amountOf(value) || (typeof value === "string" && value.length <= 2_000))) { refuse("Its value is not text, a whole number or nothing."); continue; }
@@ -1171,7 +1193,8 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
   }
   // A plan counts on tubes that go on being used after it is written. It is not refused for that:
   // it is kept, and says which of them are no longer what it needs.
-  for (const { plan } of plans.values()) {
+  for (const { plan, set } of plans.values()) {
+    for (const [field, held] of set) plan.fields[field] = held.value as string | number | null;
     if (plan.settled === null) {
       plan.wanting = plan.inputs.flatMap((input) => {
         const held = input.item === undefined ? undefined : items.get(input.item)?.item;

@@ -552,8 +552,16 @@ export const addStrain = (strain: StrainRecord): Operation => ({ type: "strain.a
 /** @returns A new ID for a strain, made the way an item's is. */
 export const newStrainId = (): string => newItemId();
 
-/** @returns The change that sets one field on a part (by checksum), or an item, a place or a strain (by ID). */
-export const setField = (on: "part" | "item" | "place" | "strain", id: string, field: string, value: string | number | null): Operation =>
+/**
+ * @returns The change that sets one field on a part (by checksum), or an item, a place, a strain or
+ *   a plan (by ID).
+ *
+ * A plan can carry one because a lab's proposals are not one undifferentiated pile: a lab with
+ * several projects on at once needs to know which is which, and that is a thing people decide
+ * rather than something the molecules say. A device too old to know a plan can be filed refuses
+ * the entry and still reads the plan itself, so it loses the label and nothing else.
+ */
+export const setField = (on: "part" | "item" | "place" | "strain" | "plan", id: string, field: string, value: string | number | null): Operation =>
   ({ type: "field.set", on, id, field, value });
 
 /** @returns A new ID for a place, made the way an item's is. */

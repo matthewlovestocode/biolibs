@@ -38,6 +38,8 @@
  * - `primer-working.ts` — the working behind a design: the melting temperature's sum, the GC count, the bases that pair
  * - `primer-bench.tsx` — designing primers at a desk: the panel, and the template with the pair marked on it for a scene
  * - `plans.tsx` — runs that have been proposed, at the tool that would carry them out
+ * - `ordering.ts` — those proposals read as one piece of work: what order, what can start, what is waiting
+ * - `work.tsx` — that work drawn: the chains, in order, with what has to be got first
  * - `tools.tsx` — getting to one: from an instrument, or from a list of them all
  *
  * The tools are drawn with the styles of `@biolibs/bionet-panels` and belong inside its `LabWindow`.
@@ -71,6 +73,8 @@ export * from "./working.js";
 export * from "./map.js";
 export * from "./sequences-tool.js";
 export * from "./plans.js";
+export * from "./ordering.js";
+export * from "./work.js";
 export * from "./tools.js";
 export * from "./pcr-bench.js";
 export * from "./primer-design.js";

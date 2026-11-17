@@ -349,6 +349,76 @@ checksum nobody else arrives at is a part nobody else will ever match. It refuse
 entry refuses — a protein said to be a circle, a chain with a stop codon in the middle of it — rather
 than returning a name no other device would agree with.
 
+## Publishing the method, not just the molecules
+
+An inventory says what a lab *holds*. A method says what it *did* — and that was the half a lab
+could not give away. You could publish that you had a molecule; you could not publish how to make
+one.
+
+```ts
+import { publicMethod, readMethod, signMethod, verifyMethod } from "@biolibs/bionet";
+
+const method = publicMethod(lab, { name: "The Wren Lab", origin: "https://wrenlab.example", contact: null, note: null },
+                            { project: "Real Vegan Cheese" });
+const published = await signMethod(method, adasKey, { signer: "Ada" });
+
+method.steps.map((one) => [one.step, one.kind, one.after]);
+// [[1, "pcr", []], [2, "pcr", []], [3, "assembly", [1, 2]]]
+method.needs.map((one) => one.name);     // ["pGene", "pBackbone"] — what you must have to start
+method.makes.map((one) => one.name);     // ["pWren-CSN2"] — what following it leaves you with
+```
+
+The whole of the difficulty is one translation. **Inside a lab a plan points at tubes**, which is
+what a person at that bench needs, and a tube's ID means nothing anywhere else. Published, every
+tube is replaced by the checksum of what is in it — the one name two labs that have never spoken
+already agree on. So a method says "use the molecule whose checksum is this", and a lab reading it
+looks in its own freezer, or asks the network with `whoHas`.
+
+Two things cannot make that crossing, and the document says so rather than pretending:
+
+- **Anything alive.** A strain is the lab's own, deliberately — the same plasmid in the same
+  published host twice is two strains — so a culture has no checksum to travel under. A step that
+  uses one says what it would have to be a culture *of*, and whoever follows it makes their own.
+- **A starting molecule's sequence, unless the publisher gives it.** What the steps *make* is always
+  written out, because a later step has to name it. What the method *starts from* carries its
+  sequence only if the lab said to share it. Without them it still tells somebody holding the same
+  molecules exactly what to do; it will not tell somebody holding none what to order.
+
+The other half is `takeMethod` in [`@biolibs/bionet-client`](../bionet-client), which proposes the
+steps in a second lab, matching every molecule by checksum against what that lab has, and saying
+plainly what it would have to get first.
+
+### Filing work under a project
+
+A lab does not have one pile of work. BioCurious has a vegan cheese project and a bioprinting
+project and others, and a proposal that does not say which it belongs to lands in a heap with
+everybody else's.
+
+```ts
+import { setField } from "@biolibs/bionet";
+
+await write(ada, adasKey, setField("plan", plan, "project", "Real Vegan Cheese"));
+(await mergeLog(ada)).plans[0]?.fields["project"];    // "Real Vegan Cheese"
+```
+
+A plan carries fields as a part, an item, a place and a strain already do — it was the only one of
+them that could not, which looked more like a gap than a decision. A field says what a plan is
+*about*; it cannot rewrite what carrying it out would do, so `kind`, `inputs`, `expects` and the
+rest are refused.
+
+Which work belongs together is a thing people decide, not something the molecules say, so it is
+filed rather than worked out. Two chains of proposals that make four different proteins are four
+chains and one project; two unrelated projects are also chains. Nothing can tell them apart by
+looking at what they make.
+
+An **adviser may file a proposal of its own and nothing else** — the same line `plan.settle` draws.
+It proposes the work, so leaving it unable to say what the work is for would have somebody filing
+every step by hand; letting it set any field at all would let it rename the lab's parts. A person's
+filing stands over an adviser's, as everything of a person's does.
+
+A device that does not know a plan can be filed **refuses the label and reads the plan itself** —
+its kind, what it would use, what it expects — exactly as before. It loses a word and nothing else.
+
 ### A change this version cannot read
 
 ```ts

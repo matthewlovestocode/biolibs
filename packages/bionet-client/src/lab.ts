@@ -11,10 +11,11 @@
  * that have been apart agree the moment they have each other's entries.
  */
 import { addItem, addPart, addPlace, addStrain, addToRoster, adjustItem, annotatePart, entryId, fetchInventory, foundLab, isMember, mergeLog,
-         movePlace, newItemId, newPlaceId, newPlanId, newRunId, newStrainId, nextEntry, offerPart, planRun, publicInventory, putItem, recordRun, recountItem, retireItem, retirePlace,
+         movePlace, newItemId, newPlaceId, newPlanId, newRunId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
+         readMethod, signMethod,
          setField, settlePlan, signInventory, standPlace,
          takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type PartEnds, type PartFeature, type PartState, type PlaceState, type PartKind, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type StrainState } from "@biolibs/bionet";
+         type LabModel, type MethodDocument, type MethodOptions, type PartEnds, type PartFeature, type PartState, type PlaceState, type PartKind, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type SignedMethod, type StrainState } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
 import { openKey, sealKey } from "./backup.js";
@@ -481,11 +482,15 @@ export class Lab {
     addPart: (part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[]; kind?: PartKind }) => Promise<{ marked: boolean }>;
     planRun: (plan: Parameters<Lab["planRun"]>[0]) => Promise<{ plan: string }>;
     settlePlan: (which: { plan: string }) => Promise<void>;
+    filePlan: (which: { plan: string; field: string; value: string | null }) => Promise<void>;
   } {
     return {
       addPart: async (part) => ({ marked: (await this.addPart(part, true)) === true }),
       planRun: (plan) => this.planRun(plan, true),
       settlePlan: (which) => this.write(settlePlan(which.plan, null), true),
+      // An adviser may set a field on a plan it proposed and nothing else, which is the same line
+      // `settlePlan` draws. The lab holds it to that whatever is written here.
+      filePlan: (which) => this.write(setField("plan", which.plan, which.field, which.value), true),
     };
   }
 
@@ -666,11 +671,127 @@ export class Lab {
     return { plan: id };
   }
 
+  /**
+   * Publish the lab's open plans as a method another lab could carry out.
+   *
+   * @param what - Which plans or project, what to call it, whether to write out the sequences of
+   *   what it starts from, and `lab`: who is publishing, as an inventory says it.
+   * @returns The method, signed with this device's key.
+   *
+   * @example
+   * ```ts
+   * const method = await lab.publishMethod({ project: "Real Vegan Cheese",
+   *                                          lab: { name: "The Wren Lab", origin: "https://wrenlab.example", contact: null, note: null } });
+   * ```
+   */
+  async publishMethod(what: MethodOptions & { lab?: LabModel } = {}): Promise<SignedMethod> {
+    if (this.key === null) throw new Error("This device has no key yet.");
+    const { lab: who, ...options } = what;
+    return signMethod(this.methodFor(options, who), this.key, { ...(this.person === null ? {} : { signer: this.person }) });
+  }
+
+  /**
+   * The method, written out and not signed.
+   *
+   * Publishing is a keeper's act — it puts a lab's name and key behind something — so writing the
+   * method out and standing behind it are kept apart. An adviser may do the first and not the second.
+   *
+   * @param options - Which plans or project, what to call it, and whether to write out the
+   *   sequences of what it starts from.
+   * @param who - The lab, as an inventory says it. The lab's own name and no address, if not given.
+   * @returns The method.
+   */
+  methodFor(options: MethodOptions = {}, who?: LabModel): MethodDocument {
+    if (this.state === null) throw new Error("This device is not in a lab yet.");
+    return publicMethod(this.state, who ?? { name: this.state.name ?? "a lab", origin: "", contact: null, note: null }, options);
+  }
+
+  /**
+   * Take a method somebody published and propose its steps here.
+   *
+   * This is the other half of publishing one, and the half that says whether publishing was worth
+   * anything. Every step's tubes were replaced by checksums when it was published, so taking it is
+   * the reverse: for each thing a step uses, look for the molecule in this lab by checksum, and use
+   * a tube of it where there is one, name the part where the lab knows it but has none, and say it
+   * is missing where the lab has never heard of it.
+   *
+   * A part the method wrote a sequence for is added here if the lab does not know it, since a plan
+   * may only name a part the lab knows of. One it named only by checksum cannot be: a checksum is
+   * not something a molecule can be made from, and `whoHas` is the way to find who holds one.
+   *
+   * Nothing is used and nothing is recorded as done: what lands is proposals, as if somebody here
+   * had made them.
+   *
+   * @param what - `method` is the method, as text or as the document; `project` files every step
+   *   under a project here.
+   * @returns What was proposed, and what the lab would have to get before any of it can start.
+   */
+  async takeMethod(what: { method: unknown; project?: string }): Promise<{
+    proposed: string[]; missing: { checksum: string | null; name: string; forSteps: number[] }[]; alive: { name: string; forSteps: number[] }[];
+  }> {
+    if (this.state === null) throw new Error("This device is not in a lab yet.");
+    // What arrives may be text from anywhere, so it is read and checked before anything uses it.
+    const method = readMethod(what.method);
+    const options = { ...(what.project === undefined ? {} : { project: what.project }) };
+    const missing = new Map<string, { checksum: string | null; name: string; forSteps: number[] }>();
+    const alive = new Map<string, { name: string; forSteps: number[] }>();
+    const proposed: string[] = [];
+    // What a step of the method makes, once it has been proposed here, is a part this lab knows of.
+    for (const step of method.method.steps) {
+      for (const made of step.makes) {
+        if (made.sequence === undefined) continue;
+        if (this.state.parts.some((one) => one.checksum === made.checksum)) continue;
+        await this.addPart({ name: made.name, sequence: made.sequence, circular: made.circular,
+                             ...(made.ends.left === 0 && made.ends.right === 0 ? {} : { ends: made.ends }) });
+      }
+    }
+    // And so is anything it starts from that was written out in full.
+    for (const need of method.method.needs) {
+      if (need.part === null || need.sequence === undefined) continue;
+      if (this.state.parts.some((one) => one.checksum === need.part)) continue;
+      await this.addPart({ name: need.name, sequence: need.sequence });
+    }
+    for (const step of method.method.steps) {
+      const inputs: PlanInput[] = [];
+      let canPropose = true;
+      for (const used of step.uses) {
+        if (used.part === null) {
+          // Something alive, which has no checksum and cannot be matched. It has to be made here.
+          const held = alive.get(used.name) ?? { name: used.name, forSteps: [] };
+          held.forSteps.push(step.step);
+          alive.set(used.name, held);
+          canPropose = false;
+          continue;
+        }
+        const known = this.state.parts.find((one) => one.checksum === used.part);
+        if (known === undefined) {
+          const held = missing.get(used.part) ?? { checksum: used.part, name: used.name, forSteps: [] };
+          held.forSteps.push(step.step);
+          missing.set(used.part, held);
+          canPropose = false;
+          continue;
+        }
+        // A tube of it if there is one, and otherwise the part, which says it has to be got first.
+        const tube = this.state.items.find((one) => one.part === known.checksum && !one.retired && one.amount >= used.amount);
+        inputs.push({ ...(tube === undefined ? { part: known.checksum } : { item: tube.item }), amount: used.amount, role: used.role });
+      }
+      if (!canPropose) continue;
+      const { plan } = await this.planRun({
+        kind: step.kind, instrument: null, inputs,
+        expects: step.makes.flatMap((made) => (made.sequence === undefined ? [] : [{ sequence: made.sequence, circular: made.circular, name: made.name, ends: made.ends }])),
+        settings: { ...step.settings }, note: step.note,
+      });
+      proposed.push(plan);
+      if (options.project !== undefined) await this.setField({ on: "plan", id: plan, field: "project", value: options.project });
+    }
+    return { proposed, missing: [...missing.values()], alive: [...alive.values()] };
+  }
+
   /** Close a plan: as carried out by a run, or, with no run, as set aside. */
   settlePlan(which: { plan: string; run?: string | null }): Promise<void> { return this.write(settlePlan(which.plan, which.run ?? null)); }
 
   /** Set one field on a part (by checksum), or an item, a place or a strain (by ID). */
-  setField(change: { on: "part" | "item" | "place" | "strain"; id: string; field: string; value: string | number | null }): Promise<void> {
+  setField(change: { on: "part" | "item" | "place" | "strain" | "plan"; id: string; field: string; value: string | number | null }): Promise<void> {
     return this.write(setField(change.on, change.id, change.field, change.value));
   }
 

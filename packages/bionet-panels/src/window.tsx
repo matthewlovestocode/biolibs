@@ -10,7 +10,7 @@
  * It walks a person through the three places they can be: nobody has said who is at this device,
  * the device is in no lab, the device is waiting to be let into one — and then the lab itself.
  */
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { Logo, Mark, useAct, useLab } from "@biolibs/bionet-react";
 import { Freezer } from "./freezer.js";
 import { History } from "./history.js";
@@ -43,18 +43,29 @@ export interface ExtraTab {
  *   over a file, for a host that cannot use the browser's own way; `extra` are views the host adds,
  *   shown after the window's own.
  */
-export function LabWindow({ tab: first = "freezer", copy, save, extra = [] }: {
-  tab?: Tab | string; copy?: (words: string) => Promise<void>; save?: (name: string, text: string) => Promise<boolean | void>; extra?: readonly ExtraTab[];
+export function LabWindow({ tab: first = "freezer", at, copy, save, extra = [] }: {
+  tab?: Tab | string;
+  /**
+   * A tab to move to, followed whenever it changes.
+   *
+   * `tab` says where to open; this says where to go. Without it nothing in the window can send
+   * anybody anywhere — a list of work could show that a step is ready and had no way to take
+   * somebody to the machine that would do it.
+   */
+  at?: string;
+  copy?: (words: string) => Promise<void>; save?: (name: string, text: string) => Promise<boolean | void>; extra?: readonly ExtraTab[];
 }) {
-  let window = <Body first={first} extra={extra} />;
+  let window = <Body first={first} extra={extra} {...(at === undefined ? {} : { at })} />;
   if (save !== undefined) window = <SaveContext.Provider value={save}>{window}</SaveContext.Provider>;
   if (copy !== undefined) window = <CopyContext.Provider value={copy}>{window}</CopyContext.Provider>;
   return <div className="bionet">{window}</div>;
 }
 
-function Body({ first, extra }: { first: string; extra: readonly ExtraTab[] }) {
+function Body({ first, at, extra }: { first: string; at?: string; extra: readonly ExtraTab[] }) {
   const state = useLab();
   const [tab, setTab] = useState<string>(first);
+  // Followed rather than read once, so that a host asking for the same tab twice still moves there.
+  useEffect(() => { if (at !== undefined && at !== "") setTab(at); }, [at]);
   if (state === null) return <main className="centre"><p className="dim">Opening the lab…</p></main>;
   if (state.device.person === null) return <main className="centre"><Logo /><Trouble /><Who /></main>;
   if (state.lab === null) return <main className="centre"><Logo /><Trouble /><NoLab /></main>;

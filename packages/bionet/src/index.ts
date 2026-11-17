@@ -39,6 +39,7 @@
 
 export * from "./model.js";
 export * from "./inventory.js";
+export * from "./method.js";
 export * from "./origin.js";
 export * from "./fetch.js";
 export * from "./discover.js";

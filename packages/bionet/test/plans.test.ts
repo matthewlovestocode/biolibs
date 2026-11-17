@@ -8,7 +8,7 @@
  */
 import { generateSigningKey, type SigningKey } from "@biolibs/opencloning";
 import { addItem, addPart, addPlace, addToRoster, adjustItem, foundLab, mergeLog, newItemId, newPlaceId, newPlanId, newRunId, nextEntry,
-         planRun, putItem, recordRun, retireItem, setRole, settlePlan, type LabState, type Operation, type PlanRecord, type SignedEntry } from "@biolibs/bionet";
+         planRun, putItem, recordRun, retireItem, setField, setRole, settlePlan, type LabState, type Operation, type PlanRecord, type SignedEntry } from "@biolibs/bionet";
 import { beforeAll, describe, expect, it } from "vitest";
 
 const TEMPLATE = "GGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGAGAGGGTGCTTCAGAGTATGTATACC";
@@ -349,5 +349,107 @@ describe("an adviser", () => {
     const { a } = await wren();
     await a.write(setRole(ada.publicKey, "adviser"));
     expect(await lastOf(a)).toEqual({ status: "refused", reason: "A lab cannot be left without a keeper." });
+  });
+});
+
+describe("filing a plan under a project", () => {
+  it("is a label on it, and changes nothing about what it would do", async () => {
+    const { a, plan, tube, primer } = await wren();
+    const one = plan();
+    await a.write(planRun(one));
+    await a.write(setField("plan", one.plan, "project", "Real Vegan Cheese"));
+    expect(await lastOf(a)).toEqual({ status: "applied", reason: null });
+    const filed = (await a.lab()).plans[0]!;
+    expect(filed.fields).toEqual({ project: "Real Vegan Cheese" });
+    // Everything the plan actually is, untouched.
+    expect(filed).toMatchObject({ kind: "pcr", note: "to check the insert is there", settled: null });
+    expect(filed.inputs).toEqual([{ item: tube, amount: 1, role: "template" }, { part: primer, amount: 2, role: "forward primer" }]);
+    expect(filed.expects[0]).toMatchObject({ name: "amplicon" });
+    // And nothing the lab holds moved.
+    expect((await a.lab()).items[0]!.amount).toBe(20);
+  });
+
+  it("can be moved to another project, or taken off", async () => {
+    const { a, plan } = await wren();
+    const one = plan();
+    await a.write(planRun(one));
+    await a.write(setField("plan", one.plan, "project", "Real Vegan Cheese"));
+    await a.write(setField("plan", one.plan, "project", "Bioprinting"));
+    expect((await a.lab()).plans[0]!.fields["project"]).toBe("Bioprinting");
+    await a.write(setField("plan", one.plan, "project", null));
+    expect((await a.lab()).plans[0]!.fields["project"]).toBeNull();
+  });
+
+  it("may not rewrite what the plan would do", async () => {
+    const { a, plan } = await wren();
+    const one = plan();
+    await a.write(planRun(one));
+    for (const field of ["kind", "inputs", "expects", "settled", "note", "by"]) {
+      await a.write(setField("plan", one.plan, field, "something else"));
+      expect(await lastOf(a)).toEqual({ status: "refused", reason: "It does not name a field that can be set." });
+    }
+    expect((await a.lab()).plans[0]!).toMatchObject({ kind: "pcr", note: "to check the insert is there" });
+  });
+
+  it("is refused for a plan the lab does not have", async () => {
+    const { a } = await wren();
+    await a.write(setField("plan", newPlanId(), "project", "Real Vegan Cheese"));
+    expect(await lastOf(a)).toEqual({ status: "refused", reason: "It does not name a part, an item, a place, a strain or a plan the lab has." });
+  });
+
+  it("is settled between two people the same way everything else is", async () => {
+    const { a, b, plan } = await wren();
+    const one = plan();
+    await a.write(planRun(one));
+    b.hear(a);
+    // Two people file it differently without having heard of each other.
+    await a.write(setField("plan", one.plan, "project", "Real Vegan Cheese"));
+    await b.write(setField("plan", one.plan, "project", "Bioprinting"));
+    a.hear(b);
+    const lab = await a.lab();
+    expect(["Real Vegan Cheese", "Bioprinting"]).toContain(lab.plans[0]!.fields["project"]);
+    expect(lab.overlaps.map((each) => each.what)).toContain("project of plan " + one.plan.slice(0, 12));
+    // And both machines come out the same way, which is the whole point.
+    b.hear(a);
+    expect((await b.lab()).plans[0]!.fields["project"]).toBe(lab.plans[0]!.fields["project"]);
+  });
+
+  it("an adviser may file a plan of its own, since it is the one that proposed the work", async () => {
+    const { a, c, plan } = await wren();
+    const own = plan();
+    c.hear(a);
+    await c.write(planRun(own));
+    await c.write(setField("plan", own.plan, "project", "Real Vegan Cheese"));
+    expect(await lastOf(c)).toEqual({ status: "applied", reason: null });
+    expect((await c.lab()).plans[0]!.fields["project"]).toBe("Real Vegan Cheese");
+  });
+
+  it("and may not touch anything else, which is the line plan.settle already draws", async () => {
+    const { a, c, plan, primer } = await wren();
+    const mine = plan();
+    await a.write(planRun(mine));
+    c.hear(a);
+    // Not somebody else's plan.
+    await c.write(setField("plan", mine.plan, "project", "Something else"));
+    expect(await lastOf(c)).toEqual({ status: "refused", reason: "An adviser may only set a field on a plan of its own." });
+    // Nor a part, which is how a lab's own names could otherwise be rewritten under it.
+    await c.write(setField("part", primer, "name", "something else"));
+    expect(await lastOf(c)).toEqual({ status: "refused", reason: "An adviser may only set a field on a plan of its own." });
+    const lab = await c.lab();
+    expect(lab.plans[0]!.fields["project"]).toBeUndefined();
+    expect(lab.parts.find((one) => one.checksum === primer)!.name).toBe("fwd");
+  });
+
+  it("a person's filing stands over an adviser's, as everything of a person's does", async () => {
+    const { a, c, plan } = await wren();
+    const own = plan();
+    c.hear(a);
+    await c.write(planRun(own));
+    a.hear(c);
+    // Both file the adviser's own plan, without having heard of each other.
+    await c.write(setField("plan", own.plan, "project", "Real Vegan Cheese"));
+    await a.write(setField("plan", own.plan, "project", "Bioprinting"));
+    a.hear(c);
+    expect((await a.lab()).plans[0]!.fields["project"]).toBe("Bioprinting");
   });
 });

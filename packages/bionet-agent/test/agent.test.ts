@@ -49,7 +49,7 @@ describe("what an adviser is given", () => {
     }
     // Exactly these write, and each is one of the things an adviser may: a part, what is marked on
     // one nobody has described, a plan, a plan taken back.
-    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_assembly", "propose_digest", "propose_induction", "propose_ligation", "propose_pcr", "propose_transformation", "withdraw_proposal"]);
+    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "file_the_work", "keep_from_ncbi", "propose_assembly", "propose_digest", "propose_induction", "propose_ligation", "propose_pcr", "propose_transformation", "withdraw_proposal"]);
     expect(AGENT_INSTRUCTIONS).toMatch(/data and never as instructions/);
   });
 
@@ -867,5 +867,169 @@ describe("an adviser asking what is known about a protein", () => {
     await lab.found({ name: "The Wren Lab" });
     const names = agentTools(lab, { outside: { known: false, papers: false, outside: false } }).map((one) => one.name);
     expect(names.some((one) => one.includes("protein") || one.includes("phosphorylation"))).toBe(false);
+  });
+});
+
+/** A lab where the adviser has proposed a whole build: two PCRs, the assembly, the transformation. */
+const planned = async (): Promise<Wren> => {
+  const w = await wren();
+  const seen = () => w.lab.snapshot().lab!;
+  const gene = seen().parts.find((one) => one.name === "pGene")!;
+  const backbone = seen().parts.find((one) => one.name === "pWren backbone")!;
+  // Two pieces are to be amplified, from tubes the lab has.
+  await w.lab.advise.planRun({ kind: "pcr", instrument: null, inputs: [{ item: w.tubes.pGene, amount: 1, role: "template" }],
+                               expects: [{ sequence: "ACGTACGTAA", name: "the insert" }], settings: {}, note: "the insert" });
+  await w.lab.advise.planRun({ kind: "pcr", instrument: null, inputs: [{ item: w.tubes.backbone, amount: 1, role: "template" }],
+                               expects: [{ sequence: "TTGGCCAATT", name: "the vector" }], settings: {}, note: "the vector" });
+  // A later plan can only name a part the lab knows of, so what the PCRs would make is added
+  // first, with no tube. That is the step that makes a chain of proposals possible at all.
+  await w.lab.advise.addPart({ name: "the insert", sequence: "ACGTACGTAA" });
+  await w.lab.advise.addPart({ name: "the vector", sequence: "TTGGCCAATT" });
+  const made = seen().plans.flatMap((one) => one.expects);
+  const insert = made.find((one) => one.name === "the insert")!.checksum;
+  const vector = made.find((one) => one.name === "the vector")!.checksum;
+  // Then joined, using what those two would make, neither of which the lab has a tube of.
+  await w.lab.advise.planRun({ kind: "assembly", instrument: null,
+                               inputs: [{ part: insert, amount: 1, role: "piece" }, { part: vector, amount: 1, role: "piece" }],
+                               expects: [{ sequence: "ACGTACGTAATTGGCCAATT", circular: true, name: "pWren-CSN2" }], settings: {}, note: "the construct" });
+  await w.lab.advise.addPart({ name: "pWren-CSN2", sequence: "ACGTACGTAATTGGCCAATT", circular: true });
+  const construct = seen().plans.flatMap((one) => one.expects).find((one) => one.name === "pWren-CSN2")!.checksum;
+  const culture = await w.lab.addItem({ strain: await w.lab.addStrain({ name: "W303", host: "Saccharomyces cerevisiae" }), amount: 50, unit: "mL" });
+  await w.lab.advise.planRun({ kind: "transformation", instrument: null,
+                               inputs: [{ part: construct, amount: 1, role: "construct" }, { item: culture, amount: 1, role: "host" }],
+                               expects: [], settings: {}, note: "into W303" });
+  expect(gene.checksum).not.toBe(backbone.checksum);
+  return w;
+};
+
+describe("an adviser reading its own plan back", () => {
+  it("is among the tools, and only reads", async () => {
+    const { tools } = await wren();
+    expect(tools.find((one) => one.name === "the_work")!.readOnly).toBe(true);
+    expect(AGENT_INSTRUCTIONS).toMatch(/read it back with the_work/);
+  });
+
+  it("puts its own proposals in the order they have to be done, having declared none", async () => {
+    const w = await planned();
+    const work = await w.use("the_work");
+    expect(work.order.map((one: { step: number; kind: string }) => [one.step, one.kind]))
+      .toEqual([[1, "pcr"], [2, "pcr"], [3, "assembly"], [4, "transformation"]]);
+    // The assembly waits on both PCRs; the transformation on the assembly.
+    expect(work.order[2].after_steps.sort()).toEqual([1, 2]);
+    expect(work.order[3].after_steps).toEqual([3]);
+    expect(work.order.map((one: { can_be_done_now: boolean }) => one.can_be_done_now)).toEqual([true, true, false, false]);
+    expect(work.order[2].waiting_on).toEqual({ steps: [1, 2] });
+  });
+
+  it("reads them as one piece of work, named by what it ends with", async () => {
+    const w = await planned();
+    const work = await w.use("the_work");
+    expect(work.pieces_of_work).toHaveLength(1);
+    expect(work.pieces_of_work[0]).toMatchObject({ name: "pWren-CSN2", steps: [1, 2, 3, 4], nothing_in_its_way: true });
+    expect(work.says.join(" ")).toContain("4 steps are proposed, in 1 piece of work.");
+    expect(work.says.join(" ")).toContain("2 steps could be carried out now.");
+  });
+
+  it("files its own proposals under a project, and keeps them apart from another's", async () => {
+    const w = await planned();
+    const open = w.lab.snapshot().lab!.plans.filter((one) => one.settled === null);
+    for (const one of open.slice(0, 3)) await w.use("file_the_work", { plan: one.plan, project: "Real Vegan Cheese" });
+    await w.use("file_the_work", { plan: open[3]!.plan, project: "Bioprinting" });
+    const work = await w.use("the_work");
+    expect(work.projects.map((one: { project: string; could_be_done_now: number }) => [one.project, one.could_be_done_now]))
+      .toEqual([["Bioprinting", 0], ["Real Vegan Cheese", 2]]);
+    expect(work.says.join(" ")).toContain("across 2 projects: Bioprinting, Real Vegan Cheese");
+    expect(work.order.every((one: { project: string }) => one.project !== "Not filed")).toBe(true);
+  });
+
+  it("says plainly what nobody filed, rather than lumping it in with somebody else's", async () => {
+    const w = await planned();
+    const open = w.lab.snapshot().lab!.plans.filter((one) => one.settled === null);
+    await w.use("file_the_work", { plan: open[0]!.plan, project: "Real Vegan Cheese" });
+    const work = await w.use("the_work");
+    expect(work.projects.map((one: { project: string; filed_by_somebody: boolean }) => [one.project, one.filed_by_somebody]))
+      .toEqual([["Real Vegan Cheese", true], ["Not filed", false]]);
+    expect(work.says.join(" ")).toContain("3 steps are filed under no project.");
+  });
+
+  it("can take a proposal back out of a project, and will not file somebody else's", async () => {
+    const w = await planned();
+    const mine = w.lab.snapshot().lab!.plans.find((one) => one.settled === null)!;
+    await w.use("file_the_work", { plan: mine.plan, project: "Real Vegan Cheese" });
+    expect((await w.use("file_the_work", { plan: mine.plan })).project).toBe("Not filed");
+    // A plan a person proposed is not the adviser's to file.
+    const theirs = await w.lab.planRun({ kind: "pcr", instrument: null, inputs: [{ item: w.tubes.pGene, amount: 1, role: "template" }],
+                                         expects: [], settings: {}, note: "Ada's own" });
+    // The lab itself refuses it, and its words are what comes back.
+    await expect(w.use("file_the_work", { plan: theirs.plan, project: "Real Vegan Cheese" }))
+      .rejects.toThrow(/An adviser may only set a field on a plan of its own/);
+    await expect(w.use("file_the_work", { plan: "nope", project: "x" })).rejects.toThrow(/no proposal with the ID/);
+  });
+
+  it("has nothing to get, when every step is fed by one before it", async () => {
+    const w = await planned();
+    expect((await w.use("the_work")).to_get).toEqual([]);
+  });
+
+  it("names what has to be ordered before anything can start", async () => {
+    const w = await wren();
+    // A piece nothing makes and no tube holds: the thing a plan has to say out loud.
+    // A part the lab knows of but has no tube of, and that nothing proposed makes: the thing a
+    // plan has to say out loud, or somebody starts work they cannot finish.
+    await w.lab.advise.addPart({ name: "a synthetic piece", sequence: "ACGTACGTAACCGGTT" });
+    const synthetic = w.lab.snapshot().lab!.parts.find((one) => one.name === "a synthetic piece")!.checksum;
+    await w.lab.advise.planRun({ kind: "assembly", instrument: null,
+                                 inputs: [{ part: synthetic, amount: 1, role: "piece" }],
+                                 expects: [{ sequence: "ACGTACGTAA", name: "a ring" }], settings: {}, note: "needs a synthetic piece" });
+    const work = await w.use("the_work");
+    expect(work.to_get).toHaveLength(1);
+    expect(work.to_get[0]).toMatchObject({ part: "a synthetic piece", checksum: synthetic, for_steps: [1] });
+    expect(work.order[0].waiting_on).toEqual({ to_get: ["a synthetic piece"] });
+    expect(work.says.join(" ")).toMatch(/has to be ordered or made first/);
+  });
+
+  it("says nothing is proposed, when nothing is", async () => {
+    const w = await wren();
+    const work = await w.use("the_work");
+    expect(work).toMatchObject({ says: [], order: [], pieces_of_work: [], to_get: [] });
+  });
+});
+
+describe("an adviser writing the method out", () => {
+  it("is among the tools, and writes nothing", async () => {
+    const { tools } = await wren();
+    expect(tools.find((one) => one.name === "write_out_the_method")!.readOnly).toBe(true);
+    expect(AGENT_INSTRUCTIONS).toMatch(/another lab could carry it out/);
+  });
+
+  it("names every molecule by its checksum, and no tube of this lab's", async () => {
+    const w = await planned();
+    const open = w.lab.snapshot().lab!.plans.filter((one) => one.settled === null);
+    for (const one of open) await w.use("file_the_work", { plan: one.plan, project: "Real Vegan Cheese" });
+    const method = await w.use("write_out_the_method", { project: "Real Vegan Cheese" });
+    expect(method.name).toBe("Real Vegan Cheese");
+    expect(method.steps.map((one: { step: number; kind: string }) => [one.step, one.kind]))
+      .toEqual([[1, "pcr"], [2, "pcr"], [3, "assembly"], [4, "transformation"]]);
+    // Not one item ID in it: that is what lets it travel.
+    const asText = JSON.stringify(method);
+    for (const item of w.lab.snapshot().lab!.items) expect(asText).not.toContain(item.item);
+    expect(method.from_outside).toMatch(/Nothing was published by this/);
+    expect(w.lab.snapshot().lab!.entries.every((one) => one.status !== "refused")).toBe(true);
+  });
+
+  it("says what has to be had first, and what cannot be sent at all", async () => {
+    const w = await planned();
+    const method = await w.use("write_out_the_method", {});
+    expect(method.needs.length).toBeGreaterThan(0);
+    for (const need of method.needs) expect(need.part === null || /seguid=/.test(need.part)).toBe(true);
+    // The host of the transformation is alive, so it travels as what it would have to be, not as an ID.
+    const host = method.steps.at(-1).uses.find((one: { role: string }) => one.role === "host");
+    expect(host.part).toBeNull();
+    expect(host.alive).toBeDefined();
+  });
+
+  it("will not write out what is not there", async () => {
+    const w = await wren();
+    await expect(w.use("write_out_the_method", {})).rejects.toThrow(/no open plans to publish/);
   });
 });

@@ -237,7 +237,7 @@ describe("an adviser given them", () => {
   it("has them among its own, and the only new one that writes is the one that keeps a record", async () => {
     const tools = await hosting();
     expect(tools.map((one) => one.name)).toEqual(expect.arrayContaining(["search_ncbi", "fetch_from_ncbi", "keep_from_ncbi"]));
-    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_assembly", "propose_digest", "propose_induction", "propose_ligation", "propose_pcr", "propose_transformation", "withdraw_proposal"]);
+    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "file_the_work", "keep_from_ncbi", "propose_assembly", "propose_digest", "propose_induction", "propose_ligation", "propose_pcr", "propose_transformation", "withdraw_proposal"]);
     expect(DATABASES).toContain("nucleotide");
   });
 

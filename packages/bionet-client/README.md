@@ -81,6 +81,35 @@ done.items;    // the IDs of the tubes it made
 lab already has. `addPart` and a run's outputs take `ends` too, for a linear piece whose ends are not blunt. An output of a run may carry `features`; they are said for the product if nobody
 has marked that molecule yet.
 
+## Giving the method to another lab
+
+A lab can publish what it holds. This is how it publishes what it *did*, which is the other half and
+the one that was missing.
+
+```ts
+const method = await wren.publishMethod({ project: "Real Vegan Cheese",
+                                          lab: { name: "The Wren Lab", origin: "https://wrenlab.example", contact: null, note: null } });
+
+// Somewhere else entirely: another key, another store, another lab.
+const taken = await finch.takeMethod({ method: JSON.stringify(method), project: "Cheese, ours" });
+taken.proposed;    // the steps, now proposed here, naming this lab's own tubes
+taken.missing;     // molecules this lab has never heard of, by checksum, and which steps want them
+taken.alive;       // what cannot be sent at all, so this lab has to make its own
+```
+
+Taking one is the reverse of publishing it. Every tube became a checksum on the way out, so on the
+way in each checksum is looked for in this lab: a tube of it where there is one, the part where the
+lab knows the molecule but holds none — which is Bionet's way of saying "get this first" — and said
+to be missing where the lab has never heard of it. Nothing is used and nothing is recorded as done;
+what lands is proposals, as if somebody here had made them.
+
+Two labs that share no key, no store and no peer come out expecting the same molecules. That is what
+reproducible means here, and `test/method.test.ts` is written as exactly that: two labs, one
+document crossing between them.
+
+`methodFor` writes the method out without signing it, which is what an adviser may do — publishing
+puts a lab's name and key behind something, and that is a keeper's act.
+
 ## Backing up the key
 
 A device's key never leaves it, with one exception: a lab with one member and one device ends when

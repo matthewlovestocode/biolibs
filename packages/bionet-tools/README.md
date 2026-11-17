@@ -360,6 +360,66 @@ about the usual expression hosts, says how firmly, and says plainly that it is a
 check — which a lab's own literature tools can now do. It is there to stop somebody discovering at the
 end of a month that the protein was never going to be phosphorylated.
 
+## Several proposals read as one piece of work
+
+A proposal is one run. Nothing in the log says that eleven of them are one build, or which comes
+first — and until this, nothing read them as anything but eleven unrelated cards spread over four
+tabs, in whatever order they happened to be made.
+
+But the order is not missing from the data. It is simply never followed. A proposal says what it
+expects to make, each thing with the checksum that would be its identity; another says what it
+needs, and may name a part there is no tube of yet by that same checksum. Where one expects what
+another needs, the first has to happen first.
+
+```ts
+import { planOfWork, saysWork } from "@biolibs/bionet-tools";
+
+const work = planOfWork(lab);
+saysWork(work);
+// ["4 steps are proposed, in 2 pieces of work.", "2 steps could be carried out now.", …]
+
+work.ready.map((one) => one.plan.kind);    // what somebody could go and do now
+work.toGet;                                // what has to be ordered before any of it can start
+work.threads.map((one) => one.name);       // ["pWren-CSN2", "a terminator cassette"]
+```
+
+```tsx
+import { WorkToDo } from "@biolibs/bionet-tools";
+
+<WorkToDo onOpen={(plan) => goToTheToolFor(plan.kind)} />
+```
+
+Three things are worth knowing about it.
+
+**Which project it is for is filed, not derived.** The order is a fact about molecules and is worked
+out; which work belongs together is a decision and is not. Four caseins are four chains in one
+project, and two unrelated projects are also chains — nothing can tell them apart by looking at what
+they make. So `planOfWork` groups by the `project` field on each plan, and anything nobody filed goes
+under `Not filed` rather than being lumped in with somebody else's.
+
+```ts
+work.projects.map((one) => [one.name, one.ready.length]);
+// [["Bioprinting", 0], ["Real Vegan Cheese", 2], ["Not filed", 1]]
+```
+
+**Nothing else is declared, so nothing can drift.** The order is derived, not asserted. There is no new
+kind of entry, nothing an older device has to understand, and no way for a stated order and the real
+one to disagree.
+
+**A chain never crosses into another.** A piece of work is every step joined to every other by what
+they make and need, so a step can only ever wait on one in its own chain. That is what lets the
+steps be numbered within a chain rather than across the lot, and a test asserts it.
+
+**The chain stops at a transformation.** What a transformation makes is alive, so it has no checksum
+for a later proposal to point at, and the culture an induction would use does not exist until
+somebody has grown it. The work up to putting a construct into a host can be proposed as one chain;
+what follows is proposed afresh once there is something growing. That is a real limit, and it is
+said in the panel rather than left to be discovered.
+
+One thing has to be done for a chain to be possible at all: **a proposal may only name a part the
+lab knows of**, so what an earlier step would make has to be added with `addPart` — no tube, just
+the sequence under a name — before a later step can say it needs it.
+
 ## The tool
 
 ```tsx

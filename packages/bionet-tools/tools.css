@@ -167,3 +167,14 @@
   color: var(--bionet-ink); padding: .4rem .5rem; border: 1px solid var(--bionet-rule); border-radius: 6px; background: var(--bionet-field, var(--bionet-ground)) }
 .bionet .verify .attention { color: var(--bionet-attention) }
 .bionet .verify .checks .stop { color: var(--bionet-attention) }
+
+/* The whole of a lab's open work, in chains and in order. A step that could be done now is marked
+   by its rule, not only by its words, so the shape of what is ready can be seen at a glance. */
+.bionet .work ol.steps { margin: .4rem 0 0; padding: 0; list-style: none; display: grid; gap: .5rem }
+.bionet .work ol.steps > li { border-left: 3px solid var(--bionet-rule); padding: .2rem 0 .2rem .7rem }
+.bionet .work ol.steps > li.ready { border-left-color: var(--bionet-good) }
+.bionet .work ol.steps > li.held { border-left-color: var(--bionet-dim) }
+.bionet .work ol.steps > li p { margin: .15rem 0 }
+.bionet .work ol.steps > li .row { margin-top: .35rem }
+.bionet .work .why { color: var(--bionet-dim); font-style: italic }
+.bionet .work textarea.method { width: 100%; font-family: ui-monospace, monospace; font-size: .7rem; margin-top: .5rem }

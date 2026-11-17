@@ -1,7 +1,7 @@
 "use client";
 
 /** Getting to a tool: from the instrument it is used at, or from a list of them all. */
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useLab } from "@biolibs/bionet-react";
 import { DigestTool } from "./digest-tool.js";
 import { InductionTool } from "./induce-bench.js";
@@ -65,6 +65,9 @@ export function InstrumentTool({ place, onDone }: { place: string; onDone?: () =
 export function Tools({ tool: first = "pcr", views = {} }: { tool?: ToolName | DeskTool; views?: Partial<Record<ToolName | DeskTool, ReactNode | ((go: (tool: ToolName | DeskTool) => void) => ReactNode)>> }) {
   const lab = useLab()?.lab;
   const [tool, setTool] = useState<ToolName | DeskTool>(first);
+  // Followed rather than read once, so that something elsewhere in the window — a list of the work
+  // to be done, say — can send somebody to the tool that would carry a step out.
+  useEffect(() => { setTool(first); }, [first]);
   if (lab === null || lab === undefined) return null;
   const shown = views[tool];
   const names: [ToolName | DeskTool, string][] = [["sequences", "Sequences"], ["primers", "Primers"], ["codons", "Codons"], ["assembly", "Assembly"], ["verify", "Check"], ...(Object.keys(TOOL_NAMES) as ToolName[]).map((one): [ToolName, string] => [one, TOOL_NAMES[one]])];
