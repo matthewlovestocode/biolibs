@@ -272,7 +272,9 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
                 <p className="dim small">
                   Uses {step.plan.inputs.map((one) => `${one.item === undefined ? partName(one.part) : tubeName(one.item)} as ${one.role}`).join(", ") || "nothing the lab holds"}
                   {step.plan.expects.length > 0 && <>, making {step.plan.expects.map((one) => `${one.name} (${one.length.toLocaleString("en-US")} bp${one.circular ? ", circular" : ""})`).join(" and ")}</>}
-                  {step.plan.expects.length === 0 && <>, making nothing the lab can name: what comes of it is alive</>}
+                  {step.plan.expects.length === 0 && (step.plan.kind === "transformation"
+                    ? <>, making nothing the lab can name: what comes of it is alive</>
+                    : <>, making nothing it has declared</>)}
                   . Proposed by {person(step.plan.by)}.
                 </p>
                 {step.plan.note !== null && <p className="small why">{step.plan.note}</p>}
