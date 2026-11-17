@@ -186,6 +186,35 @@ describe("another lab taking the method", () => {
     expect(proposed[1]!.inputs.every((one) => one.item === undefined)).toBe(true);
   });
 
+  it("rebuilds a starting molecule that is a ring as a ring, and not as a line", async () => {
+    // A backbone is nearly always a circle, and the same bases closed into a ring and left as a
+    // line are two different molecules with two different checksums. If the shape does not travel
+    // beside the sequence, a lab holding none of the starting material rebuilds every ring as a
+    // line and then matches nothing — so the method would be useless for exactly the molecule
+    // almost every real method starts from.
+    const wren = await open("Ada", "The Wren Lab");
+    await wren.addPart({ name: "pBackbone", sequence: VECTOR, circular: true });
+    const backbone = wren.snapshot().lab!.parts[0]!.checksum;
+    expect(backbone).toMatch(/^cdseguid=/);
+    await wren.planRun({ kind: "assembly", inputs: [{ part: backbone, amount: 1, role: "backbone" }],
+                         expects: [{ sequence: RING, circular: true, name: "pWren-CSN2" }], note: "Build it." });
+    const published = await wren.publishMethod({ lab: WREN });
+
+    // The shape is written out alongside the sequence, because it is part of what the molecule is.
+    const need = published.method.needs.find((one) => one.name === "pBackbone")!;
+    expect(need.sequence).toBe(VECTOR);
+    expect(need.circular).toBe(true);
+
+    // A lab holding none of it rebuilds it from the document alone and arrives at the same molecule.
+    const lab = await finch();
+    const taken = await lab.takeMethod({ method: JSON.stringify(published) });
+    expect(taken.missing).toEqual([]);
+    expect(taken.proposed).toHaveLength(1);
+    const rebuilt = lab.snapshot().lab!.parts.find((one) => one.name === "pBackbone")!;
+    expect(rebuilt.circular).toBe(true);
+    expect(rebuilt.checksum).toBe(backbone);
+  });
+
   it("brings the starting molecules in where the method wrote them out", async () => {
     const wren = await building();
     const published = await wren.publishMethod({ lab: WREN, project: "Real Vegan Cheese" });

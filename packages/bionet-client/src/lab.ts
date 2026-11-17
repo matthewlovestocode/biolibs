@@ -749,7 +749,8 @@ export class Lab {
     for (const need of method.method.needs) {
       if (need.part === null || need.sequence === undefined) continue;
       if (this.state.parts.some((one) => one.checksum === need.part)) continue;
-      await this.addPart({ name: need.name, sequence: need.sequence });
+      await this.addPart({ name: need.name, sequence: need.sequence, circular: need.circular === true,
+                           ...(need.ends === undefined ? {} : { ends: need.ends }) });
     }
     for (const step of method.method.steps) {
       const inputs: PlanInput[] = [];

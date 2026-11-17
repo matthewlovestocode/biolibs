@@ -148,6 +148,16 @@ export interface MethodInput {
    * order, which is why it is written out unless a lab says otherwise.
    */
   sequence?: string;
+  /**
+   * Whether that sequence is a ring, where it was written out.
+   *
+   * It travels with the sequence because it is part of what the molecule is: the same bases closed
+   * into a ring and left as a line are two different molecules with two different checksums. A lab
+   * taking a method without it rebuilds every ring as a line, and then matches none of them.
+   */
+  circular?: boolean;
+  /** What is left overhanging at each end, where that is not blunt and the sequence was written out. */
+  ends?: PartEnds;
   /** The step that makes it, counting from 1, where a step of this method does. */
   from?: number;
   /**

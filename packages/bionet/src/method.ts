@@ -30,6 +30,7 @@ import { signUnder, verifyUnder, type SignatureCheck, type SignOptions, type Sig
 import { METHOD_VERSION, type LabModel, type MethodDocument, type MethodInput, type MethodStep,
          type SignedMethod } from "./model.js";
 import type { LabState, PlanState } from "./merge.js";
+import type { PartEnds } from "./log.js";
 
 /** What the bytes of a signed method are for. */
 export const METHOD_DOMAIN = "biolibs/bionet signed method v1";
@@ -138,9 +139,15 @@ export function publicMethod(state: LabState, lab: LabModel, options: MethodOpti
   for (const one of chosen) if (left.has(one.plan)) order.push(one);
   const numberOf = new Map(order.map((one, at) => [one.plan, at + 1]));
 
-  const sequenceOf = (checksum: string): string | undefined => {
+  // A sequence on its own is not an identity: the same bases as a ring and as a line are two
+  // different molecules with two different checksums. So whatever is written out goes with the
+  // shape it was written out as, or a lab taking it rebuilds a ring as a line and matches nothing.
+  const moleculeOf = (checksum: string): { sequence: string; circular: boolean; ends?: PartEnds } | undefined => {
     if (!withSequences) return undefined;
-    return state.parts.find((one) => one.checksum === checksum)?.sequence;
+    const part = state.parts.find((one) => one.checksum === checksum);
+    if (part === undefined) return undefined;
+    return { sequence: part.sequence, circular: part.circular,
+             ...(part.ends.left === 0 && part.ends.right === 0 ? {} : { ends: part.ends }) };
   };
 
   const steps: MethodStep[] = order.map((plan, at) => ({
@@ -175,8 +182,8 @@ export function publicMethod(state: LabState, lab: LabModel, options: MethodOpti
       if (used.from !== undefined) continue;
       const key = used.part ?? `alive:${used.name}`;
       if (needs.has(key)) continue;
-      const sequence = used.part === null ? undefined : sequenceOf(used.part);
-      needs.set(key, { ...used, ...(sequence === undefined ? {} : { sequence }) });
+      const molecule = used.part === null ? undefined : moleculeOf(used.part);
+      needs.set(key, { ...used, ...(molecule === undefined ? {} : molecule) });
     }
   }
   const made = new Set(steps.flatMap((one) => one.makes.map((each) => each.checksum)));
