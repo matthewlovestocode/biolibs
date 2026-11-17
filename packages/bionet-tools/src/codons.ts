@@ -181,6 +181,59 @@ function trouble(sequence: string, codon: string, avoid: readonly { name: string
 }
 
 /**
+ * Write a gene for a protein, in a host's own codons.
+ *
+ * This is how a lab gets something it can order. A protein is what somebody wants — read out of
+ * UniProt, or worked out, or decided on — and a synthesis company needs DNA. Going the other way
+ * round cannot be done exactly, because a protein does not say which of its synonymous codons was
+ * used and it does not matter; what matters is which the host reads best, and that is what this
+ * chooses.
+ *
+ * It is the optimiser underneath. A gene is written with any codon per residue and then rewritten
+ * into the host's own, so the host's preferences, the sites kept out and the runs of one base are
+ * handled by the same code that handles them for a gene somebody already had.
+ *
+ * @param protein - The amino acids, with or without a stop on the end.
+ * @param usage - How the host uses its codons, from `countCodonUsage`.
+ * @param options - `avoid` are sites to keep out; `longestRun` is the longest run of one base
+ *   allowed; `stop` adds a stop codon on the end, which it does unless told not to.
+ * @returns The gene. `changes` is empty, because nothing was changed from anything.
+ *
+ * @example
+ * ```ts
+ * import { countCodonUsage, reverseTranslate } from "@biolibs/bionet-tools";
+ *
+ * const gene = reverseTranslate(casein, countCodonUsage(pichiaGenes), { avoid: [{ name: "EcoRI", site: "GAATTC" }] });
+ * gene.sequence;    // what to send to be synthesised
+ * ```
+ */
+export function reverseTranslate(protein: string, usage: CodonUsage,
+                                 options: { avoid?: readonly { name: string; site: string }[]; longestRun?: number; stop?: boolean } = {}): CodonOptimised {
+  const chain = protein.replace(/\s+/g, "").toUpperCase().replace(/\*$/, "");
+  const nothing = (problem: string): CodonOptimised =>
+    ({ sequence: "", protein: "", changes: [], codons: 0, gcBefore: 0, gcAfter: 0, avoided: [], warnings: [], problem });
+  if (chain === "") return nothing("There is no protein here to write a gene for.");
+  if (!/^[ACDEFGHIKLMNPQRSTVWY]+$/.test(chain)) return nothing("A protein to write a gene for is written in the twenty standard amino acids.");
+  if (usage.codons === 0) return nothing("The codon usage was counted over nothing, so there is nothing to prefer.");
+
+  // Any codon per residue, since what matters is only that the protein is right: `optimiseCodons`
+  // then rewrites it into the host's own, which is the whole of the work and is already tested.
+  const { byAminoAcid, stops } = synonyms(usage.table);
+  const first: string[] = [];
+  for (const residue of chain) {
+    const choices = byAminoAcid.get(residue);
+    if (choices === undefined || choices.length === 0) return nothing(`Nothing in genetic code ${usage.table} reads as ${residue}.`);
+    first.push([...choices].sort()[0]!);
+  }
+  if (options.stop !== false) first.push([...stops].sort()[0] ?? "TAA");
+  const made = optimiseCodons(first.join(""), usage, options);
+  if (made.problem !== null) return made;
+  // Nothing was rewritten from anything: every codon here was chosen, so a list of changes would be
+  // a list of what an arbitrary starting point happened to be, which says nothing about anything.
+  return { ...made, changes: [], warnings: [...made.warnings, `Written from the protein, not rewritten from a gene: every codon is the host's own choice, so there is nothing it was changed from.${options.stop === false ? "" : " A stop codon is on the end."}`] };
+}
+
+/**
  * Rewrite a coding sequence in a host's codons, without changing the protein.
  *
  * Each codon becomes the one the host uses most for that amino acid, unless that would make a long

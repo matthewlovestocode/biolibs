@@ -20,7 +20,7 @@ import { lookupTools, type LookupOptions } from "./lookup.js";
 import { paperTools, type PaperOptions } from "./papers.js";
 import { knownTools, type KnownOptions } from "./known.js";
 import { COMMON_ENZYMES, assemblyWorking, codonWorking, countCodonUsage, cutSites, cutsOf, cutters, designAssembly, designPair, digestPieces,
-         ROLES, designFusion, fusionWorking, digestRun, featureStretches, inductionChecks, inductionRun, inductionWorking, instrumentFor, ligationRun, optimiseCodons,
+         ROLES, designFusion, fusionWorking, digestRun, featureStretches, inductionChecks, reverseTranslate, inductionRun, inductionWorking, instrumentFor, ligationRun, optimiseCodons,
          planInduction, planPcr, primerTm, toPlan, toolFor,
          FILED_UNDER, UNFILED, planOfWork, protocolText, protocolsFor, saysWork, saysDifference, checkRead, verifyWorking, proteinFacts, proteinWorking, translateGene,
          type AssemblyDesign, type CodonUsage, type InductionChoice, type Stretch } from "@biolibs/bionet-tools";
@@ -656,15 +656,17 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
       },
     },
     {
-      name: "optimise_codons", title: "Rewrite a gene in a host's codons", readOnly: true,
+      name: "optimise_codons", title: "Write or rewrite a gene in a host's codons", readOnly: true,
       description: [
-        "Rewrite a coding sequence in the codons a host actually uses, without changing one amino acid of the protein it makes. A gene taken from one organism and expressed in another is read slowly in its own codons, which is why a mammalian gene often gives poor yields in yeast.",
-        "`gene` is the coding sequence to rewrite: a part's checksum or name, a whole number of codons starting at the first. `host_genes` are the host's own coding sequences the preferences are counted from, the same as count_codon_usage takes.",
+        "Write a gene for a protein in the codons a host actually uses, or rewrite an existing gene into them, without changing one amino acid of the protein.",
+        "`gene` is what to write: a part's checksum or name. Give it a **protein** — one kept with add_part, or read out of UniProt and kept — and a gene is written for it from nothing, which is what a lab sends to be synthesised. Give it **DNA** and that gene is rewritten; a gene taken from one organism is read slowly in another's codons, which is why a mammalian gene often gives poor yields in yeast.",
+        "Writing a gene for a protein is the usual way into a project like this. What somebody wants is a protein; what a synthesis company needs is DNA; and the cow's own codons are not what you would order for a yeast.",
+        "`host_genes` are the host's own coding sequences the preferences are counted from, the same as count_codon_usage takes.",
         "`avoid` keeps sites out of the rewritten gene, which matters if it is to be cut later. Give them by name and sequence.",
-        "Gives the new sequence, every codon that changed and what each was worth, what it did to the GC content, and the working. The protein is translated before and after and compared, so the promise is checked and not assumed. Nothing is written: use add_part to keep the result, and say in its name that it is codon optimised.",
+        "Gives the new sequence, every codon that changed and what each was worth, what it did to the GC content, and the working. Rewriting a gene translates the protein before and after and compares them, so the promise is checked and not assumed; writing one from a protein has nothing to change from, so `changed` is empty. Nothing is written: use add_part to keep the result, and say in its name that it is codon optimised.",
       ].join(" "),
       input: { type: "object", required: ["gene", "host_genes"], additionalProperties: false, properties: {
-        gene: { type: "string", description: "The coding sequence to rewrite: a part's checksum or exact name." },
+        gene: { type: "string", description: "What to write a gene for, or rewrite: a part's checksum or exact name. A protein has a gene written for it; DNA is rewritten." },
         host_genes: { type: "array", items: { type: "string" }, description: "The host's own coding sequences, by checksum or name." },
         avoid: { type: "array", description: "Sites to keep out of the result.",
                  items: { type: "object", required: ["name", "site"], additionalProperties: false, properties: {
@@ -675,16 +677,21 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
       shows: (args) => ({ at: "sequences", part: partBy(now(), text(args["gene"], "The gene")).checksum }),
       run: (args) => {
         const seen = now();
-        const gene = dnaBy(seen, text(args["gene"], "The gene"));
+        // A protein has a gene written for it; DNA is rewritten. It is the same question asked at
+        // two points of the same work, so it is the same tool: a lab that has decided on a protein
+        // and has no DNA yet is the usual way into this, not a special case.
+        const gene = partBy(seen, text(args["gene"], "The gene"));
         const { usage, named } = counted(seen, args);
         const avoid = (Array.isArray(args["avoid"]) ? args["avoid"] : []) as { name?: unknown; site?: unknown }[];
-        const done = optimiseCodons(gene.sequence, usage, {
+        const how = {
           avoid: avoid.map((one) => ({ name: text(one.name, "Each site's name"), site: text(one.site, "Each site") })),
           ...(args["longest_run"] === undefined ? {} : { longestRun: whole(args["longest_run"], "longest_run") }),
-        });
+        };
+        const done = gene.kind === "protein" ? reverseTranslate(gene.sequence, usage, how) : optimiseCodons(gene.sequence, usage, how);
         if (done.problem !== null) throw new Error(done.problem);
         return {
-          gene: gene.name, counted_from: named, length: done.sequence.length, codons: done.codons,
+          gene: gene.name, written_from: gene.kind === "protein" ? "a protein, so this gene is new" : "a gene, rewritten",
+          counted_from: named, length: done.sequence.length, codons: done.codons,
           changed: done.changes.length, unchanged: done.codons - done.changes.length,
           gc_before: Math.round(done.gcBefore * 100), gc_after: Math.round(done.gcAfter * 100),
           ...(done.avoided.length === 0 ? {} : { kept_out: done.avoided }),

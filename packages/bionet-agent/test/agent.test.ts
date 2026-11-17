@@ -252,6 +252,21 @@ describe("an adviser rewriting a gene for a host", () => {
     await expect(w.use("count_codon_usage", { genes: [] })).rejects.toThrow(/There is no table built in/);
   });
 
+  it("writes a gene for a protein, which is how a lab with no DNA yet gets something to order", async () => {
+    // Found by putting a model in front of these tools: it had the protein from UniProt, knew the
+    // host and the sites, and could not produce one base of DNA, because every road to a gene
+    // needed a gene. The tool it reached for was this one, so this one does it.
+    const { w, host } = await withHost();
+    await w.lab.advise.addPart({ name: "beta-casein, mature", sequence: "RELEELNVPGEIVESLSSSEESITR", kind: "protein" });
+    const said = await w.use("optimise_codons", { gene: "beta-casein, mature", host_genes: host });
+    expect(said.written_from).toBe("a protein, so this gene is new");
+    expect(said.protein).toBe("RELEELNVPGEIVESLSSSEESITR*");
+    expect(said.length).toBe(26 * 3);
+    expect(said.changed).toBe(0);
+    const { translate } = await import("@biolibs/seq");
+    expect(String(translate(said.sequence))).toBe("RELEELNVPGEIVESLSSSEESITR*");
+  });
+
   it("rewrites the gene without changing the protein, and shows what it counted", async () => {
     const { w, host, gene } = await withHost();
     const done = await w.use("optimise_codons", { gene, host_genes: host, avoid: [{ name: "EcoRI", site: "GAATTC" }] });

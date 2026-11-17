@@ -7,7 +7,7 @@
  * sequences that were handed in, never asserted, and a table counted over too little says so,
  * because a figure nobody can check is worse than no figure.
  */
-import { CODON, FEW_CODONS, FEW_GENES, LONGEST_RUN, codonWorking, countCodonUsage, optimiseCodons } from "@biolibs/bionet-tools";
+import { CODON, FEW_CODONS, FEW_GENES, LONGEST_RUN, codonWorking, countCodonUsage, optimiseCodons, reverseTranslate } from "@biolibs/bionet-tools";
 import { CodonTable, translate } from "@biolibs/seq";
 import { describe, expect, it } from "vitest";
 
@@ -180,5 +180,70 @@ describe("the working behind it", () => {
 
   it("uses whole codons throughout", () => {
     expect(CODON).toBe(3);
+  });
+});
+
+describe("writing a gene for a protein", () => {
+  /** A host that uses one codon per amino acid, so what it prefers is never in doubt. */
+  const plainly = (): ReturnType<typeof countCodonUsage> => {
+    const forward = new Map<string, string>(CodonTable.unambiguousDnaById.get(1)!.forwardTable as unknown as Iterable<[string, string]>);
+    const first = new Map<string, string>();
+    for (const [codon, aminoAcid] of [...forward].sort(([a], [b]) => (a < b ? -1 : 1))) if (!first.has(aminoAcid)) first.set(aminoAcid, codon);
+    // Every gene of this host is written in its one favourite codon each.
+    const gene = [...first.values()].join("").repeat(3);
+    return countCodonUsage([gene], { from: "a host that has made up its mind" });
+  };
+
+  it("writes a gene that really encodes the protein, which is the whole promise", () => {
+    const protein = "MKVLILACLVALALARELEELNVPGEIVESLSSSEESITR";
+    const made = reverseTranslate(protein, plainly());
+    expect(made.problem).toBeNull();
+    // Translated back, it is the protein that was asked for, with the stop it was given.
+    expect(String(translate(made.sequence))).toBe(`${protein}*`);
+    expect(made.sequence).toHaveLength((protein.length + 1) * CODON);
+    expect(made.codons).toBe(protein.length + 1);
+  });
+
+  it("uses the host's own codons, since that is the point of writing it", () => {
+    const usage = plainly();
+    const made = reverseTranslate("MKV", usage);
+    const codons = made.sequence.match(/.{3}/g)!;
+    const forward = new Map<string, string>(CodonTable.unambiguousDnaById.get(1)!.forwardTable as unknown as Iterable<[string, string]>);
+    for (const [at, residue] of [..."MKV"].entries()) {
+      // The codon chosen reads as the right amino acid, and is one the host actually uses.
+      expect(forward.get(codons[at]!)).toBe(residue);
+      expect(usage.counts[codons[at]!]!.count).toBeGreaterThan(0);
+    }
+  });
+
+  it("keeps a site out of a gene it writes, as it would out of one it rewrites", () => {
+    const protein = "MEFEFEFEFEFEFMEFEFEF";
+    const kept = reverseTranslate(protein, countCodonUsage(["ATGGAATTCGAATTTGAGTTT".repeat(4)], { from: "a host" }),
+                                  { avoid: [{ name: "EcoRI", site: "GAATTC" }] });
+    expect(kept.problem).toBeNull();
+    expect(kept.sequence).not.toContain("GAATTC");
+    expect(kept.avoided).toEqual(["EcoRI"]);
+    expect(String(translate(kept.sequence))).toBe(`${protein}*`);
+  });
+
+  it("leaves the stop off when told to, for something that is part of a fusion", () => {
+    const made = reverseTranslate("MKV", plainly(), { stop: false });
+    expect(made.sequence).toHaveLength(3 * CODON);
+    expect(String(translate(made.sequence))).toBe("MKV");
+    // And takes a stop that was written on the end of the protein as meaning the same thing.
+    expect(reverseTranslate("MKV*", plainly(), { stop: false }).sequence).toHaveLength(3 * CODON);
+  });
+
+  it("claims no changes, because nothing was changed from anything", () => {
+    const made = reverseTranslate("MKVLIL", plainly());
+    expect(made.changes).toEqual([]);
+    expect(made.warnings.join(" ")).toMatch(/Written from the protein, not rewritten from a gene/);
+    expect(made.warnings.join(" ")).toMatch(/A stop codon is on the end/);
+  });
+
+  it("says why it cannot, rather than writing something wrong", () => {
+    expect(reverseTranslate("", plainly()).problem).toMatch(/no protein here/);
+    expect(reverseTranslate("MKV1", plainly()).problem).toMatch(/twenty standard amino acids/);
+    expect(reverseTranslate("MKV", countCodonUsage([], { from: "nothing" })).problem).toMatch(/counted over nothing/);
   });
 });

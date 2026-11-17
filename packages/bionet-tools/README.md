@@ -324,6 +324,30 @@ the protein is added afterwards as a part in its own right. The run names it in 
 checksum that part will have, which `inducedBy` reads back: so a device that was not there when it
 happened arrives at the same answer from the log alone, without a new kind of entry.
 
+## Getting something to order
+
+A project usually begins with a protein, not a gene: somebody reads it out of UniProt, or works it
+out, or decides on it. A synthesis company needs DNA, and the organism the protein came from is not
+the one it is going into, so its own codons are not what you would order.
+
+```ts
+import { countCodonUsage, reverseTranslate } from "@biolibs/bionet-tools";
+
+const gene = reverseTranslate(casein, countCodonUsage(pichiaGenes), { avoid: [{ name: "EcoRI", site: "GAATTC" }] });
+gene.sequence;    // 630 bases, in Pichia's own codons, with a stop on the end
+```
+
+It is the optimiser underneath: a gene is written with any codon per residue and then rewritten into
+the host's own, so the preferences, the sites kept out and the runs of one base are handled by the
+same code that handles them for a gene somebody already had. `changes` comes back empty, because
+nothing was changed from anything.
+
+This exists because of what happened when a model was put in front of these tools. It had the
+protein, knew the host, knew the sites and knew the problem — and could not produce one base of DNA,
+because every road to a gene needed a gene. The tool it reached for was `optimise_codons`, so that
+is the tool that now does it: **give it a protein and a gene is written; give it DNA and that gene
+is rewritten.**
+
 ## Putting a construct together, and keeping the frame
 
 The assembly desk is about the molecules: which pieces go round a ring and what primers make them
