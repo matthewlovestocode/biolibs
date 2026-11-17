@@ -45,6 +45,15 @@ const SHAPES: Readonly<Record<string, Shape>> = {
     screen: { at: [0.36, 0.2, 0.205], size: [0.18, 0.2], leans: 0 },
     block: { at: [-0.18, 0.105, 0], size: [0.46, 0.7], rows: 1, columns: 8 },
   },
+  // A cabinet with a lid that lifts, a platform of flask clamps inside it, and a control panel
+  // leaning up at the front. What it shows is a temperature, a speed and a time; what is going on
+  // inside it is cells growing, which no part of it displays.
+  "shaking-incubator": {
+    body: [{ at: [0, -0.22, 0], size: [1, 0.56, 1] }, { at: [0, 0.14, 0.4], size: [0.96, 0.12, 0.2] }],
+    lid: { part: { at: [0, 0.28, -0.1], size: [0.94, 0.3, 0.78] }, hinge: [0, 0.13, -0.49], opens: 72 },
+    screen: { at: [0, 0.2, 0.4], size: [0.44, 0.14], leans: 55 },
+    block: { at: [0, 0.1, -0.1], size: [0.8, 0.66], rows: 2, columns: 3 },
+  },
   // A metal block with two rows of holes for tubes, and a small display on the front of its base.
   "heat-block": {
     body: [{ at: [0, -0.28, 0], size: [1, 0.44, 1] }, { at: [0, 0.02, 0], size: [0.86, 0.16, 0.86] }],
@@ -456,6 +465,7 @@ export function measureLine(measure: StageMeasure, length: number, size: readonl
 const VIEW_NAMES: Readonly<Record<string, Partial<Record<StageView, string>>>> = {
   "gel-station": { machine: "The gel box", block: "The gel", screen: "The power supply", tube: "In the tube", result: "The gel, run" },
   "heat-block": { machine: "The heat block", block: "The wells", screen: "The temperature", tube: "In the tube", result: "What it makes" },
+  "shaking-incubator": { machine: "The incubator", block: "The flasks", screen: "The display", tube: "In the cells", result: "The gel" },
 };
 
 /**

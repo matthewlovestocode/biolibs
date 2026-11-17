@@ -23,6 +23,12 @@ const AVOID = ["GAATTC", "GGATCC", "AAGCTT", "CTCGAG", "GCGGCCGC", "ACCGGT", "GG
 
 const PAIR: Readonly<Record<string, string>> = { A: "T", T: "A", G: "C", C: "G" };
 
+/** The three codons that stop a protein, which a gene being read in the right frame has only at its end. */
+const STOPS = ["TAA", "TAG", "TGA"];
+
+/** How many of a secreted protein's first codons are the signal peptide that is cut off on the way out. */
+const SIGNAL_CODONS = 19;
+
 /**
  * The other strand of a stretch of DNA, read 5′ to 3′.
  *
@@ -51,6 +57,39 @@ function bases(seed: { at: number }, many: number): string {
     if (!again) return made;
   }
   throw new Error("The filler could not be made free of the sites the demo plants.");
+}
+
+/**
+ * A stretch that really reads as a gene: a start codon, codons that are all amino acids, and one
+ * stop at the end.
+ *
+ * Filler would not do here. The demo's gene is translated, run on a protein gel and weighed, and
+ * random bases have a stop every twenty codons or so: a tool told to express them would be right to
+ * say the gene was broken, and the demo would be showing a fault rather than a gene. So the codons
+ * are drawn one at a time, stops are never among them, and a codon that would make one of the sites
+ * the demo keeps out is drawn again.
+ *
+ * @param seed - The number the demo is built from.
+ * @param codons - How many codons, the start and the stop included.
+ * @returns The bases, `codons × 3` of them.
+ */
+function coding(seed: { at: number }, codons: number): string {
+  const next = (): number => (seed.at = (seed.at * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const patterns = [...new Set(AVOID.flatMap((site) => [site, otherStrand(site)]))];
+  const sense: string[] = [];
+  for (const one of "ACGT") for (const two of "ACGT") for (const three of "ACGT") {
+    const codon = `${one}${two}${three}`;
+    if (!STOPS.includes(codon)) sense.push(codon);
+  }
+  let made = "ATG";
+  // The longest site kept out is eight bases, so the last five and the new three are enough to see one.
+  for (let guard = 0; made.length < (codons - 1) * 3 && guard < codons * 100; guard++) {
+    const codon = sense[Math.floor(next() * sense.length)]!;
+    if (patterns.some((site) => `${made.slice(-5)}${codon}`.includes(site))) continue;
+    made += codon;
+  }
+  if (made.length !== (codons - 1) * 3) throw new Error("The demo's gene could not be made free of the sites it keeps out.");
+  return `${made}TAA`;
 }
 
 /** One molecule the demo lab holds. */
@@ -103,7 +142,7 @@ export interface DemoMolecules {
  */
 export function demoMolecules(): DemoMolecules {
   const seed = { at: 20261116 };
-  const gene = bases(seed, 780);
+  const gene = coding(seed, 260);
   const before = bases(seed, 300);
   const pGene = `${before}${PLANTED.ecoRI}${gene}${PLANTED.bamHI}${bases(seed, 620)}`;
   const vector = `${bases(seed, 1500)}${PLANTED.ecoRI}${bases(seed, 140)}${PLANTED.bamHI}${bases(seed, 1200)}`;
@@ -121,6 +160,10 @@ export function demoMolecules(): DemoMolecules {
     name: "pGene", sequence: pGene, circular: true,
     features: [
       mark("CDS", "wrenA", 1, geneAt.start, geneAt.end),
+      // The protein is one the lab means to collect from the medium, so it begins with the stretch
+      // the cell cuts off on the way out. What is collected is what is left, which is what the
+      // induction tool weighs when it is asked to take the signal peptide off.
+      mark("sig_peptide", "wrenA signal", 1, geneAt.start, geneAt.start + SIGNAL_CODONS * 3),
       mark("promoter", "lac promoter", 1, before.length - 90, before.length - 20),
       mark("rep_origin", "ori", 1, geneAt.end + 60, geneAt.end + 480),
     ],

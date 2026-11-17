@@ -25,7 +25,8 @@ export type TourStop =
   | { at: "primers"; start?: { part?: string; stretch?: { start: number; end: number }; feature?: string; name?: string; section?: "choose" | "pair" | "considered" | "working" | "order" } }
   | { at: "pcr"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; template?: string; forward?: string; reverse?: string; step?: "denature" | "anneal" | "extend"; cycle?: number } }
   | { at: "digest"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tube?: string; enzymes?: readonly string[]; keep?: readonly number[]; ran?: number } }
-  | { at: "ligation"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tubes?: readonly string[]; joined?: number } };
+  | { at: "ligation"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tubes?: readonly string[]; joined?: number } }
+  | { at: "induction"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; culture?: string; gene?: string; cds?: string; ran?: number } };
 
 /** One stop on the walk. */
 export interface TourStep {

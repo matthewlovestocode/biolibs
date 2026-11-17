@@ -379,3 +379,101 @@ export function RmsdDiagram(options: FigureOptions) {
     </Figure>
   );
 }
+
+/**
+ * Induction, and the protein gel that answers it.
+ *
+ * One picture serves both terms because at the bench they are one step: the flask is fed something
+ * that turns the promoter on, and a few hours later two lanes of a gel are compared. The band to
+ * look for is the one that is in the induced lane and not in the uninduced one, which is why both
+ * lanes are drawn. The masses are the marker's own nominal weights.
+ */
+export function InductionDiagram(options: FigureOptions) {
+  const marker = [100, 75, 50, 37, 25, 20, 15];
+  const gel = { largest: 100, smallest: 10, top: 44, bottom: 196 };
+  // The same log-linear rule `@biolibs/gel` reads a gel by, so the picture is not drawn by eye.
+  const y = (kda: number): number => {
+    const [high, low] = [Math.log10(gel.largest), Math.log10(gel.smallest)];
+    return gel.top + ((high - Math.log10(kda)) / (high - low)) * (gel.bottom - gel.top);
+  };
+  const made = 28;
+  const housekeeping = [62, 44, 18];
+  const lane = (x: number, bands: number[], strong: number | null) => bands.map((kda) => (
+    <rect key={`${x} ${kda}`} x={x} y={y(kda) - (kda === strong ? 3 : 2)} width={44} height={kda === strong ? 6 : 4} rx={1.5}
+          fill={kda === strong ? "var(--base-c)" : "#f6f1df"} opacity={kda === strong ? 1 : 0.45} />
+  ));
+  return (
+    <Figure
+      width={520}
+      height={248}
+      description="On the left a flask on a shaker with an arrow labelled inducer going into it. On the right a protein gel with three lanes: a marker of known masses from 100 down to 15 kilodaltons, a lane of uninduced cells with three faint bands, and a lane of induced cells with the same three bands and one more, drawn heavier, at 28 kilodaltons."
+      caption="The inducer turns the promoter on and the cells make the protein. The gel sorts proteins by mass, and the answer is the band that is in the induced lane and not in the uninduced one — here at 28 kDa. Everything the cell was already making is in both lanes, which is why the comparison is what makes a band mean anything."
+      {...options}
+    >
+      {/* The flask on its shaking platform. */}
+      <path d="M 54 56 L 54 86 L 32 134 A 30 30 0 0 0 76 134 L 54 86 L 54 56 Z" fill="var(--sunken)" stroke="var(--ink)" strokeWidth={1.5} />
+      <path d="M 37 124 A 30 30 0 0 0 71 124 A 30 30 0 0 1 37 124 Z" fill="var(--base-c)" opacity={0.3} />
+      <rect x={18} y={148} width={72} height={7} rx={2} fill="none" stroke="var(--ink)" strokeWidth={1.5} />
+      <Arrow from={[104, 74]} to={[62, 62]} width={2} color="var(--base-c)" />
+      <Note x={110} y={70} bold fill="var(--ink)">inducer</Note>
+      <Note x={110} y={86}>turns the promoter on</Note>
+      <Note x={54} y={178} anchor="middle">shaking, a few hours</Note>
+
+      {/* The gel, on its own dark ground, the way a gel is looked at. */}
+      <rect x={196} y={24} width={310} height={182} rx={6} fill="#12161a" />
+      {["marker", "uninduced", "induced"].map((label, at) => (
+        <g key={label}>
+          <Note x={236 + at * 94} y={18} anchor="middle" fill="#8f979f" size={10} mono>{label}</Note>
+          <rect x={214 + at * 94} y={30} width={44} height={6} rx={1.5} fill="#05070a" stroke="#2c343c" />
+        </g>
+      ))}
+      {marker.map((kda) => (
+        <g key={kda}>
+          <rect x={214} y={y(kda) - 1.25} width={44} height={2.5} rx={1} fill="#cfd6dc" opacity={0.75} />
+          <Note x={208} y={y(kda) + 3} anchor="end" fill="#8f979f" size={9} mono>{kda}</Note>
+        </g>
+      ))}
+      {lane(308, housekeeping, null)}
+      {lane(402, [...housekeeping, made], made)}
+      <Note x={462} y={y(made) + 3} fill="var(--base-c)" size={9} mono>{made} kDa</Note>
+      <Note x={350} y={228} anchor="middle">the same bands in both lanes:</Note>
+      <Note x={350} y={242} anchor="middle">what the cell was making anyway</Note>
+    </Figure>
+  );
+}
+
+/**
+ * A signal peptide, and what is left once it is cut off.
+ *
+ * The thing worth seeing is that the protein the gene codes for and the protein anybody collects
+ * are two different lengths, and so two different masses on a gel.
+ */
+export function SignalPeptideDiagram(options: FigureOptions) {
+  const [x, y, height] = [30, 42, 26];
+  const signal = 86;
+  const whole = 380;
+  return (
+    <Figure
+      width={460}
+      height={196}
+      description="A bar representing a protein, its first short stretch shaded as the signal peptide and the rest as the mature protein. Below, the same protein after it has crossed a membrane, with the short stretch gone and only the mature part left."
+      caption="A protein the cell means to let out begins with a short stretch that works as a label. The machinery that pushes the chain out cuts that stretch off on the way, so what is collected from the medium is shorter than what the gene codes for — and runs lower on a gel."
+      {...options}
+    >
+      <rect x={x} y={y} width={signal} height={height} rx={4} fill="var(--base-c)" opacity={0.35} stroke="var(--ink)" strokeWidth={1.5} />
+      <rect x={x + signal} y={y} width={whole - signal} height={height} rx={4} fill="var(--sunken)" stroke="var(--ink)" strokeWidth={1.5} />
+      <Note x={x + signal / 2} y={y - 8} anchor="middle" bold fill="var(--ink)">signal</Note>
+      <Note x={x + signal + (whole - signal) / 2} y={y - 8} anchor="middle" bold fill="var(--ink)">the mature protein</Note>
+      <Note x={x} y={y + height + 16}>what the gene codes for</Note>
+
+      {/* The membrane the chain is pushed through, and the cut. */}
+      <line x1={20} x2={440} y1={108} y2={108} stroke="var(--ink)" strokeWidth={1.5} strokeDasharray="5 4" />
+      <Note x={440} y={104} anchor="end">the membrane, and the cut</Note>
+      <Arrow from={[x + signal, y + height + 24]} to={[x + signal, 100]} width={2} color="var(--base-c)" />
+
+      <rect x={x + signal} y={134} width={whole - signal} height={height} rx={4} fill="var(--sunken)" stroke="var(--ink)" strokeWidth={1.5} />
+      <Note x={x} y={150}>what is collected</Note>
+      <Note x={x + signal + (whole - signal) / 2} y={134 + height + 16} anchor="middle">shorter, and lighter on a gel</Note>
+    </Figure>
+  );
+}

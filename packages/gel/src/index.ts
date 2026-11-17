@@ -8,10 +8,11 @@
  * resolves, described in `bands.ts`. The figures are conventional working values for agarose in TAE, enough to show
  * which fragments would be distinguishable, not measurements of a particular rig.
  *
- * - `gels.ts`: `GelType`, `GELS`, `gelById` — agarose concentrations and their resolving ranges
+ * - `gels.ts`: `Resolving`, `GelType`, `GELS`, `gelById` — agarose concentrations and their resolving ranges
  * - `ladders.ts`: `Ladder`, `LADDERS`, `ladderById` — size markers
  * - `bands.ts`: `bandPosition`, `resolves`, `Band`, `bandsOf`, `ladderBands` — fragment sizes to visible bands
  * - `fragments.ts`: `Topology`, `fragmentSizes` — cut positions to fragment lengths
+ * - `protein.ts`: `ProteinGel`, `PROTEIN_GELS`, `PROTEIN_LADDERS`, `proteinBands` — the same, for protein on acrylamide
  *
  * @example
  * ```ts
@@ -29,3 +30,4 @@ export * from "./gels.js";
 export * from "./ladders.js";
 export * from "./bands.js";
 export * from "./fragments.js";
+export * from "./protein.js";

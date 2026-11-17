@@ -13,7 +13,7 @@
  */
 
 import { ValueError } from "@biolibs/core";
-import type { GelType } from "./gels.js";
+import type { Resolving } from "./gels.js";
 
 /** Default band-merging tolerance: fragments within 3% of each other run as one band. */
 export const DEFAULT_TOLERANCE = 0.03;
@@ -21,10 +21,10 @@ export const DEFAULT_TOLERANCE = 0.03;
 /**
  * How far down the gel a fragment of `size` runs, as a fraction of the distance from the wells to the front.
  *
- * @param size - Fragment length in base pairs.
- * @param gel - The gel being run.
- * @returns 0 at the wells, 1 at the front. Fragments larger than {@link GelType.largest} clamp to 0 and ones
- *   smaller than {@link GelType.smallest} clamp to 1, since the gel does not separate them.
+ * @param size - Fragment length in base pairs, or a protein's mass in kilodaltons.
+ * @param gel - The range the gel separates.
+ * @returns 0 at the wells, 1 at the front. Fragments larger than {@link Resolving.largest} clamp to 0 and ones
+ *   smaller than {@link Resolving.smallest} clamp to 1, since the gel does not separate them.
  * @throws {@link ValueError} for a size that is not a positive finite number.
  * @example
  * ```ts
@@ -34,7 +34,7 @@ export const DEFAULT_TOLERANCE = 0.03;
  * bandPosition(1581, gel);  // ~0.5 (the geometric mean of the two ends)
  * ```
  */
-export function bandPosition(size: number, gel: GelType): number {
+export function bandPosition(size: number, gel: Resolving): number {
   if (!Number.isFinite(size) || size <= 0) throw new ValueError(`fragment size must be a positive number, got ${size}`);
   const high = Math.log10(gel.largest);
   const low = Math.log10(gel.smallest);
@@ -52,19 +52,19 @@ export function bandPosition(size: number, gel: GelType): number {
  * @param gel - The gel being run.
  * @returns `true` when `gel.smallest <= size <= gel.largest`.
  */
-export const resolves = (size: number, gel: GelType): boolean => size <= gel.largest && size >= gel.smallest;
+export const resolves = (size: number, gel: Resolving): boolean => size <= gel.largest && size >= gel.smallest;
 
 /** One visible band: the fragments that run together at a single place on the gel. */
 export interface Band {
-  /** Representative size in base pairs — the largest fragment in the band. */
+  /** Representative size — the largest in the band, in whatever the gel sorts by: base pairs for DNA, kilodaltons for protein. */
   size: number;
-  /** Every fragment size merged into this band, largest first. */
+  /** Every size merged into this band, largest first. */
   sizes: readonly number[];
   /** Distance from the wells, 0 to 1, as {@link bandPosition} gives it. */
   position: number;
-  /** Total base pairs in the band; a band holding more DNA stains more brightly. */
+  /** The sizes in the band added up; a band holding more of what is stained shows more brightly. */
   totalBases: number;
-  /** Brightness from 0 to 1, the band's share of the lane's base pairs, scaled so the heaviest band is 1. */
+  /** Brightness from 0 to 1, the band's share of the lane's total, scaled so the heaviest band is 1. */
   intensity: number;
   /**
    * True when every fragment in the band is outside the gel's resolving range, so the gel does not separate them:
@@ -88,7 +88,7 @@ export interface Band {
  * bandsOf([2000, 2010, 500], gel).length; // 2 — 2000 and 2010 run together
  * ```
  */
-export function bandsOf(sizes: readonly number[], gel: GelType, tolerance = DEFAULT_TOLERANCE): Band[] {
+export function bandsOf(sizes: readonly number[], gel: Resolving, tolerance = DEFAULT_TOLERANCE): Band[] {
   if (!Number.isFinite(tolerance) || tolerance < 0) throw new ValueError(`tolerance must be zero or more, got ${tolerance}`);
   for (const size of sizes) {
     if (!Number.isFinite(size) || size <= 0) throw new ValueError(`fragment size must be a positive number, got ${size}`);
@@ -135,7 +135,7 @@ export function bandsOf(sizes: readonly number[], gel: GelType, tolerance = DEFA
  *   marked `unresolved` but, unlike a sample lane, are never merged: a ladder's bands are known sizes and worth
  *   showing individually even where the gel would not separate them.
  */
-export function ladderBands(ladderSizes: readonly number[], gel: GelType): Band[] {
+export function ladderBands(ladderSizes: readonly number[], gel: Resolving): Band[] {
   return [...ladderSizes]
     .sort((a, b) => b - a)
     .map((size) => ({

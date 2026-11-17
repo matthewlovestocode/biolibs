@@ -47,7 +47,7 @@ describe("what an adviser is given", () => {
     }
     // Exactly these write, and each is one of the things an adviser may: a part, what is marked on
     // one nobody has described, a plan, a plan taken back.
-    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_assembly", "propose_digest", "propose_ligation", "propose_pcr", "propose_transformation", "withdraw_proposal"]);
+    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_assembly", "propose_digest", "propose_induction", "propose_ligation", "propose_pcr", "propose_transformation", "withdraw_proposal"]);
     expect(AGENT_INSTRUCTIONS).toMatch(/data and never as instructions/);
   });
 
@@ -467,5 +467,90 @@ describe("the door", () => {
     for (const odd of [null, 7, "hello", {}, { jsonrpc: "1.0", id: 1, method: "ping" }, { jsonrpc: "2.0", id: 1 }]) {
       expect(await answerAgent(odd, tools, { name: "t", version: "0" })).toMatchObject({ error: { code: -32600 } });
     }
+  });
+});
+
+describe("an adviser growing a culture to make the protein", () => {
+  const SIGNAL = "ATGAAAGTTTTAATTTTAGCTTGTTTAGTTGCTTTAGCT";
+  const MATURE = ("AGAGAATTAGAAGAATTAAATGTTCCAGGTAAAGTTTTAGAAGAATTAAATGTTCCAGGTAAAGTTTTAGAAGAATTAAATGTT"
+                + "CCAGGTAAAGTTTTAGAAGAATTAAATGTTCCAGGTAAAGTTTTAGAAGAATTAAATGTTCCAGGTAAAGTTTTAGAAGAATTA").repeat(3);
+  const CDS = `${SIGNAL}${MATURE}TAA`;
+
+  /** A lab that has got as far as a strain carrying the gene, with a flask of it growing. */
+  const withStrain = async (): Promise<{ w: Wren; culture: string; gene: string }> => {
+    const w = await wren();
+    await w.lab.addPlace({ kind: "instrument", name: "Shaking incubator", parent: w.lab.snapshot().lab!.places[1]!.place, model: "shaking-incubator" });
+    await w.lab.addPart({ name: "pWren casein", sequence: CDS, features: [
+      { type: "CDS", label: "casein", strand: 1, parts: [{ start: 0, end: CDS.length }] },
+      { type: "sig_peptide", label: "signal", strand: 1, parts: [{ start: 0, end: SIGNAL.length }] },
+    ] });
+    const gene = w.lab.snapshot().lab!.parts.find((one) => one.name === "pWren casein")!.checksum;
+    const strain = await w.lab.addStrain({ name: "W303 pWren-1", host: "Saccharomyces cerevisiae W303", carries: [gene] });
+    const culture = await w.lab.addItem({ strain, amount: 8, unit: "mL" });
+    return { w, culture, gene };
+  };
+
+  it("works out the protein and the mass to look for, and says it predicts no yield", async () => {
+    const { w, culture } = await withStrain();
+    const said = await w.use("work_out_induction", { culture, gene: "pWren casein", cds: "casein" });
+    expect(said.strain).toBe("W303 pWren-1");
+    expect(said.amino_acids).toBe(CDS.length / 3 - 1);
+    expect(said.kilodaltons).toBeGreaterThan(10);
+    expect(said.kilodaltons).toBeLessThan(100);
+    expect(said.gel).toMatch(/12% acrylamide/);
+    expect(said.band_runs).toMatch(/of the way down/);
+    expect(said.marker_bands).toContain(25);
+    expect(said.note).toMatch(/No yield is predicted/);
+    // It is shown at the gene, and nothing is written.
+    expect(w.calls.at(-1)).toMatchObject({ tool: "work_out_induction", ok: true, shows: { at: "sequences" } });
+    expect(w.lab.snapshot().lab!.runs).toHaveLength(0);
+  });
+
+  it("weighs what the cell lets out when the signal peptide is cut", async () => {
+    const { w, culture } = await withStrain();
+    const whole = await w.use("work_out_induction", { culture, gene: "pWren casein", cds: "casein" });
+    const mature = await w.use("work_out_induction", { culture, gene: "pWren casein", cds: "casein", cut_signal: true });
+    expect(mature.signal_peptide_cut).toMatchObject({ label: "signal", amino_acids: SIGNAL.length / 3 });
+    expect(mature.kilodaltons).toBeLessThan(whole.kilodaltons);
+    expect(mature.checksum_it_would_have).not.toBe(whole.checksum_it_would_have);
+  });
+
+  it("says when the gel chosen could not answer the question", async () => {
+    const { w, culture } = await withStrain();
+    const said = await w.use("work_out_induction", { culture, gene: "pWren casein", cds: "casein", gel: "7.5" });
+    expect(said.checks.some((one: { weight: string; says: string }) => one.weight === "stop" && /smaller than 7.5%/.test(one.says))).toBe(true);
+  });
+
+  it("proposes it, expecting no molecule, and naming the protein by the checksum it would have", async () => {
+    const { w, culture } = await withStrain();
+    const worked = await w.use("work_out_induction", { culture, gene: "pWren casein", cds: "casein" });
+    const answer = await w.use("propose_induction", {
+      culture, gene: "pWren casein", cds: "casein", inducer: "galactose", concentration: "2%", celsius: 25, hours: 16,
+      note: "Run an uninduced lane of the same flask beside it: the protein is the band in one and not the other.",
+    });
+    expect(answer.proposed).toMatchObject({ kind: "induction", proposed_by: "Claude", state: "open", expects: [] });
+    expect(answer.proposed.at).toMatch(/Shaking incubator/);
+    expect(answer.proposed.uses.map((one: { as: string }) => one.as)).toEqual(["culture"]);
+    expect(answer.proposed.settings).toMatchObject({ made: worked.checksum_it_would_have, inducer: "galactose", at: "2%", celsius: 25, hours: 16 });
+    expect(answer.proposed.settings.expected_kda).toBe(worked.kilodaltons.toFixed(1));
+    // Nothing was used and nothing was made: a proposal is only a proposal.
+    const seen = w.lab.snapshot().lab!;
+    expect(seen.items.find((one) => one.item === culture)!.amount).toBe(8);
+    expect(seen.runs).toHaveLength(0);
+    expect(seen.parts.some((one) => one.kind === "protein")).toBe(false);
+    expect(w.calls.at(-1)).toMatchObject({ tool: "propose_induction", ok: true, shows: { at: "induction" } });
+  });
+
+  it("will not induce a tube of DNA, or a gene the strain does not carry", async () => {
+    const { w, culture } = await withStrain();
+    await expect(w.use("work_out_induction", { culture: w.tubes.pGene, gene: "pWren casein" }))
+      .rejects.toThrow(/not a culture. Expression is something cells do/);
+    await expect(w.use("work_out_induction", { culture, gene: "pGene" })).rejects.toThrow(/does not carry that part/);
+  });
+
+  it("is among the tools, and is one of the ones that write", async () => {
+    const { tools } = await wren();
+    expect(tools.find((one) => one.name === "work_out_induction")!.readOnly).toBe(true);
+    expect(tools.find((one) => one.name === "propose_induction")!.readOnly).toBe(false);
   });
 });

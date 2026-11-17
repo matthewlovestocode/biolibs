@@ -30,6 +30,8 @@ import {
   RmsdDiagram,
   SecondaryStructureDiagram,
   SequencingDiagram,
+  InductionDiagram,
+  SignalPeptideDiagram,
   TransformationDiagram,
   VectorInsertDiagram,
 } from "./more.js";
@@ -1163,6 +1165,11 @@ export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string
     case "transformation":
     case "selection":
       return <TransformationDiagram {...options} />;
+    case "induction":
+    case "sds-page":
+      return <InductionDiagram {...options} />;
+    case "signal-peptide":
+      return <SignalPeptideDiagram {...options} />;
     case "gibson-assembly":
       return <GibsonDiagram {...options} />;
     case "homology":

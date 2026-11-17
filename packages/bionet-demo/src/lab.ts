@@ -18,9 +18,11 @@ export interface DemoLab {
   /** The molecules it holds. */
   molecules: DemoMolecules;
   /** The tubes it starts with, by what they are of. The primers are not among them: the tour designs those. */
-  tubes: { pGene: string; backbone: string };
+  tubes: { pGene: string; backbone: string; culture: string };
+  /** The strain it keeps alive, which carries the gene and so has something to express. */
+  strain: string;
   /** The instruments, by the tool used at each. */
-  instruments: { pcr: string; digest: string; ligation: string };
+  instruments: { pcr: string; digest: string; ligation: string; induction: string };
   /** The box the tubes are in, and the room. */
   places: { room: string; bench: string; freezer: string; box: string };
 }
@@ -54,6 +56,7 @@ export async function demoLab({ person = "Ada", name = "The Wren Lab" }: { perso
     pcr: await lab.addPlace({ kind: "instrument", name: "Thermocycler", parent: bench, model: "thermocycler" }),
     digest: await lab.addPlace({ kind: "instrument", name: "Gel station", parent: bench, model: "gel-station" }),
     ligation: await lab.addPlace({ kind: "instrument", name: "Heat block", parent: bench, model: "heat-block" }),
+    induction: await lab.addPlace({ kind: "instrument", name: "Shaking incubator", parent: bench, model: "shaking-incubator" }),
   };
 
   /** Add a molecule and a tube of it, and put the tube in the box. @returns The tube's ID. */
@@ -70,5 +73,14 @@ export async function demoLab({ person = "Ada", name = "The Wren Lab" }: { perso
     pGene: await stock(molecules.pGene, 30, { row: 1, column: 1 }),
     backbone: await stock(molecules.backbone, 20, { row: 1, column: 2 }),
   };
-  return { lab, source: sourceOf(lab), molecules, tubes, instruments, places: { room, bench, freezer, box } };
+  // A strain, so that there is something alive to grow and induce. It carries pGene, which is where
+  // the gene is: the lab is partway through its own story, as a real one always is.
+  const gene = lab.snapshot().lab?.parts.find((one) => one.name === molecules.pGene.name);
+  if (gene === undefined) throw new Error("The demo lab lost the gene it was given.");
+  const strain = await lab.addStrain({ name: "W303 pGene-1", host: "Saccharomyces cerevisiae W303", carries: [gene.checksum] });
+  const culture = await lab.addItem({ strain, amount: 8, unit: "mL" });
+  // On the bench, not in the −80: a culture that is being worked with is alive and growing.
+  await lab.putItem({ item: culture, place: bench });
+
+  return { lab, source: sourceOf(lab), molecules, tubes: { ...tubes, culture }, strain, instruments, places: { room, bench, freezer, box } };
 }

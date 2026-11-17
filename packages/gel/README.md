@@ -1,8 +1,9 @@
 # @biolibs/gel
 
-A virtual agarose gel: where DNA fragments of a given size would run, and which of them a gel would tell
-apart. This is the data behind the gel photograph that a tool such as SnapGene or Benchling draws beside
-a digest.
+A virtual gel: where a molecule of a given size would run, and which sizes a gel would tell apart.
+Agarose for DNA, sorted by length in base pairs; polyacrylamide for protein, sorted by mass in
+kilodaltons. This is the data behind the gel photograph that a tool such as SnapGene or Benchling draws
+beside a digest.
 
 - **`bandPosition`** — log-linear migration over the range a gel resolves, 0 at the wells and 1 at the
   front
@@ -12,6 +13,8 @@ a digest.
 - **`LADDERS`** — the generic 1 kb and 100 bp size markers, and `ladderBands` to run them
 - **`fragmentSizes`** — cut positions to fragment lengths, linear or circular, with no enzyme library
   needed
+- **`PROTEIN_GELS`** — four acrylamide concentrations (7.5, 10, 12, 15%) and the kilodalton range each
+  one resolves, with `PROTEIN_LADDERS`, `proteinBands` and `proteinBandPosition`
 - **One dependency**, `@biolibs/core`, for the error class
 
 ## What is verified
@@ -288,6 +291,37 @@ on their ratio and the width of the gel's range in logs — which for the 1.0% a
 the same (both span a factor of 40). Picking a gel is about which fragments fall **inside** the range,
 not about stretching the ones that already do.
 
+## Protein on acrylamide
+
+A protein gel is read the same way, and the functions are shared rather than copied: `bandPosition` and
+`bandsOf` take a `Resolving` — a largest and a smallest — and not a kind of gel. What changes is the
+unit. SDS coats a chain with much the same charge for every unit of mass and undoes its shape, so what
+is left to sort proteins by is size, and over the range a gel resolves the distance run is again close
+to a straight line against the logarithm of it.
+
+```ts
+import { bandPosition, proteinBandPosition, proteinBands, proteinGelById, proteinLadderById } from "@biolibs/gel";
+
+const gel = proteinGelById("12");
+[gel.percent, gel.largest, gel.smallest];           // [12, 100, 10] — kilodaltons, not base pairs
+
+proteinBandPosition(100, gel);                      // 0 — at the well
+proteinBandPosition(10, gel);                       // 1 — at the front
+proteinBandPosition(Math.sqrt(100 * 10), gel)
+  .toFixed(4);                                      // "0.5000" — the geometric mean, halfway
+
+// The same arithmetic, which is the point of sharing it.
+proteinBandPosition(28, gel) === bandPosition(28, { largest: 100, smallest: 10 });   // true
+
+proteinLadderById("broad").sizes;                   // [250, 150, 100, 75, 50, 37, 25, 20, 15, 10]
+proteinBands([28, 28.5, 62], gel).length;           // 2 — 28 and 28.5 run as one band
+```
+
+Two things about a real protein gel that this model does not know, and that matter when a band is read
+against it: a prestained marker's bands are themselves calibrated and run a little off their printed
+weights, and a protein that is glycosylated or not fully reduced runs at a size that is not the mass its
+sequence comes to.
+
 ## Testing
 
 ```bash
@@ -324,6 +358,8 @@ Coverage from this package's own tests — `npx vitest run --coverage packages/g
 - **Cuts are 0-based boundaries**, one less than Biopython reports. `@biolibs/cloning`'s `cutsIn`
   converts for you.
 - **A ladder is drawn evenly.** Every marker gets `intensity: 1`, which no real ladder does.
+- **The unit is the caller's to remember.** A `Band`'s `size` is base pairs on agarose and kilodaltons on
+  acrylamide; nothing in the type says which, so say it when you print it.
 
 ## License
 

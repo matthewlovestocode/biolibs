@@ -1,7 +1,8 @@
 import { ValueError } from "@biolibs/core";
 import { describe, expect, it } from "vitest";
 import {
-  DEFAULT_TOLERANCE, GELS, LADDERS, bandPosition, bandsOf, fragmentSizes, gelById, ladderBands, ladderById, resolves,
+  DEFAULT_TOLERANCE, GELS, LADDERS, PROTEIN_GELS, bandPosition, bandsOf, fragmentSizes, gelById, ladderBands, ladderById,
+  proteinBandPosition, proteinBands, proteinGelById, proteinLadderBands, proteinLadderById, resolves,
 } from "@biolibs/gel";
 
 const gel = gelById("1.0");
@@ -262,5 +263,49 @@ describe("a digest on a gel", () => {
     expect(bands).toHaveLength(2);
     expect(bands.every((b) => !b.unresolved)).toBe(true);
     expect(bands[0]!.position).toBeLessThan(bands[1]!.position);
+  });
+});
+
+describe("protein gels", () => {
+  it("separates the range each acrylamide concentration is sold for, in kilodaltons", () => {
+    expect(PROTEIN_GELS.map((one) => one.id)).toEqual(["7.5", "10", "12", "15"]);
+    // A higher percentage holds smaller proteins and lets go of larger ones.
+    for (const [a, b] of PROTEIN_GELS.slice(1).map((one, at) => [PROTEIN_GELS[at]!, one])) {
+      expect(b.smallest).toBeLessThan(a.smallest);
+      expect(b.largest).toBeLessThan(a.largest);
+    }
+    expect(proteinGelById("12")).toMatchObject({ percent: 12, largest: 100, smallest: 10 });
+    expect(() => proteinGelById("9")).toThrow(ValueError);
+  });
+
+  it("puts a band at the wells, the front, and the geometric mean in between", () => {
+    const gel = proteinGelById("12");
+    expect(proteinBandPosition(100, gel)).toBe(0);
+    expect(proteinBandPosition(10, gel)).toBe(1);
+    expect(proteinBandPosition(Math.sqrt(100 * 10), gel)).toBeCloseTo(0.5, 10);
+    // Outside the range it is not separated, so it clamps rather than running off the picture.
+    expect(proteinBandPosition(400, gel)).toBe(0);
+    expect(proteinBandPosition(1, gel)).toBe(1);
+  });
+
+  it("is the same arithmetic as agarose, which is the point of sharing it", () => {
+    const acrylamide = proteinGelById("12");
+    const agarose = { largest: acrylamide.largest, smallest: acrylamide.smallest };
+    expect(proteinBandPosition(24, acrylamide)).toBe(bandPosition(24, agarose));
+  });
+
+  it("gives the markers as bands of known mass, heaviest first and none merged", () => {
+    const gel = proteinGelById("12");
+    const bands = proteinLadderBands(proteinLadderById("broad").sizes, gel);
+    expect(bands.map((one) => one.size)).toEqual([250, 150, 100, 75, 50, 37, 25, 20, 15, 10]);
+    // 250 and 150 are both above what this gel separates and are still shown apart: they are known sizes.
+    expect(bands.filter((one) => one.unresolved).map((one) => one.size)).toEqual([250, 150]);
+    expect(() => proteinLadderById("huge")).toThrow(ValueError);
+  });
+
+  it("merges two proteins too close in mass to be told apart by eye", () => {
+    const gel = proteinGelById("12");
+    expect(proteinBands([24, 24.5, 50], gel)).toHaveLength(2);
+    expect(proteinBands([24, 24.5, 50], gel, 0)).toHaveLength(3);
   });
 });

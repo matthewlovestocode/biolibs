@@ -10,13 +10,28 @@
 import { ValueError } from "@biolibs/core";
 
 /**
+ * The range of sizes a gel separates, whatever is being run on it.
+ *
+ * It is this and not a kind of gel because the arithmetic of a band's position is the same
+ * arithmetic either way: the two ends bracket the range over which the log-linear model in
+ * {@link bandPosition} holds, and the unit they are in is whatever the gel sorts by — base pairs for
+ * DNA on agarose, kilodaltons for protein on acrylamide.
+ */
+export interface Resolving {
+  /** The largest the gel still separates. */
+  largest: number;
+  /** The smallest the gel still separates. */
+  smallest: number;
+}
+
+/**
  * One agarose concentration and the fragment sizes it resolves.
  *
  * `largest` and `smallest` bracket the range over which the log-linear model in {@link bandPosition} holds. Outside
  * it, fragments still migrate but are not separated: above `largest` they stay bunched near the wells, below
  * `smallest` they run off together at the front.
  */
-export interface GelType {
+export interface GelType extends Resolving {
   /** Short identifier, e.g. `"1.0"`. */
   id: string;
   /** Agarose concentration as a percentage (w/v). */

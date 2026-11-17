@@ -72,6 +72,11 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `find_cutters` | Which enzymes cut a part, and where |
 | `design_primers` | A pair for a stretch or a feature, with why each won and what to watch for |
 | `work_out_pcr`, `work_out_digest`, `work_out_ligation` | What each would give, from the lab's own engines |
+| `list_strains` | What the lab keeps alive, what has been put into it, and the cultures of each |
+| `translate_gene` | The protein a gene codes for, and what its sequence says about it |
+| `work_out_induction` | The protein growing a culture would make, its mass, and where its band should run |
+| `propose_transformation` | Propose putting a construct into a living host |
+| `propose_induction` | Propose growing a culture and turning its promoter on |
 | `add_part` | Say a sequence is a part, such as a primer just designed. Adds no tube |
 | `propose_pcr`, `propose_digest`, `propose_ligation` | Propose a run. Nothing is used or recorded as done |
 | `withdraw_proposal` | Take back a proposal of its own |
@@ -79,10 +84,16 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `fetch_from_ncbi` | Read one record by accession: its sequence, and what it says is marked on it |
 | `keep_from_ncbi` | Keep one as a part, with what the record says is marked on it. No tube |
 
-`add_part`, `keep_from_ncbi`, the three `propose_` tools and `withdraw_proposal` are the only ones
+`add_part`, `keep_from_ncbi`, the `propose_` tools and `withdraw_proposal` are the only ones
 that write. A
 proposal may count on a part there is no tube of yet; it then says that the part has to be ordered
 or made first.
+
+The arc the tools are for runs from a gene to a protein: find it, design the primers, work out the PCR,
+design the assembly, rewrite it in the host's codons, check the read against the design, put it into a
+host, and grow that host to make the protein. The last step is the one where the adviser has least to
+say and should say so: `work_out_induction` gives the protein the gene codes for and the mass to look
+for, and predicts no yield, because nothing in a sequence predicts one.
 
 ### Looking something up
 

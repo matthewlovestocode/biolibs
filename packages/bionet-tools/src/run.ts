@@ -386,10 +386,10 @@ export function ligationRun(lab: ToolLab, choice: LigationChoice): LigationRun {
 }
 
 /** The tools there are. */
-export type ToolName = "pcr" | "digest" | "ligation";
+export type ToolName = "pcr" | "digest" | "ligation" | "induction";
 
 /** The model of instrument each tool is used at. */
-export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station", ligation: "heat-block" };
+export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station", ligation: "heat-block", induction: "shaking-incubator" };
 
 /**
  * Which tool an instrument opens.

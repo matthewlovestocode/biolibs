@@ -15,11 +15,19 @@ import { cutters, enzymeNamed } from "./digest.js";
 import { digestRun, digestTubes } from "./run.js";
 
 /**
- * A gel, drawn: a ladder in one lane and the digest in the next.
+ * A gel, drawn: a marker in one lane and the sample in the next.
  *
- * @param props - `ladder` and `bands` are what `planDigest` gave; `name` is what the sample is called.
+ * The same picture serves agarose and acrylamide, because reading one is reading the other: bands
+ * down a lane, read against a lane of known sizes. What differs is what the numbers are, and that
+ * has to be said rather than assumed, or a screen reader is told base pairs about a protein.
+ *
+ * @param props - `ladder` and `bands` are what a plan gave; `name` is what the sample is called;
+ *   `unit` is what the sizes are in, base pairs unless it says otherwise; `marker` names the first
+ *   lane, and `says` describes what the lane shows, for anybody who cannot see it.
  */
-export function Gel({ ladder, bands, name }: { ladder: readonly Band[]; bands: readonly Band[]; name: string }) {
+export function Gel({ ladder, bands, name, unit = "base pairs", marker = "ladder", says }: {
+  ladder: readonly Band[]; bands: readonly Band[]; name: string; unit?: string; marker?: string; says?: string;
+}) {
   const [top, height] = [26, 250];
   const lane = (x: number, drawn: readonly Band[], tone: string, labelled: "left" | "right"): React.ReactNode => drawn.map((band, at) => {
     const y = top + 10 + band.position * (height - 24);
@@ -33,9 +41,10 @@ export function Gel({ ladder, bands, name }: { ladder: readonly Band[]; bands: r
     );
   });
   return (
-    <svg className="gel" viewBox="0 0 330 290" role="img" aria-label={`A gel: a ladder beside ${name}, cut into pieces of ${bands.flatMap((band) => band.sizes).join(", ")} base pairs`}>
+    <svg className="gel" viewBox="0 0 330 290" role="img"
+         aria-label={says ?? `A gel: a ${marker} beside ${name}, showing bands at ${bands.flatMap((band) => band.sizes).join(", ")} ${unit}`}>
       <rect x={52} y={top} width={176} height={height} rx={6} className="slab" />
-      <text x={89} y={16} textAnchor="middle" className="lane">ladder</text>
+      <text x={89} y={16} textAnchor="middle" className="lane">{marker}</text>
       <text x={177} y={16} textAnchor="middle" className="lane">{name.length > 16 ? `${name.slice(0, 15)}…` : name}</text>
       <rect x={62} y={top + 4} width={54} height={4} className="well" />
       <rect x={150} y={top + 4} width={54} height={4} className="well" />

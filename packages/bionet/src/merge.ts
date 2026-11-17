@@ -357,7 +357,11 @@ function moleculeOf(sequence: string, circular: boolean, ends: unknown, kind: Pa
     // A protein has no strands, so no ends and no circle, and its checksum is counted over the
     // amino acids. The same letters as DNA must never give the same checksum.
     if (circular || (ends !== undefined && ends !== null && (ends as PartEnds).left !== 0)) throw new Error("protein");
-    if (!/^[ACDEFGHIKLMNPQRSTVWYBXZJUO*]+$/i.test(sequence)) throw new Error("protein");
+    // A stop is not an amino acid and a part is a molecule somebody holds: there is no tube of a
+    // chain with a stop in the middle of it. It was refused before this said so, because the
+    // checksum underneath has no letter for it, but it was refused by an exception from two layers
+    // down rather than by a rule that can be read.
+    if (!/^[ACDEFGHIKLMNPQRSTVWYBXZJUO]+$/i.test(sequence)) throw new Error("protein");
     return { length: sequence.length, checksum: String(seguid(sequence.toUpperCase(), "{protein}")), ends: blunt };
   }
   if (ends === undefined) { const record = new Dseqrecord(sequence, circular); return { length: record.length, checksum: record.seguid(), ends: blunt }; }
@@ -368,6 +372,32 @@ function moleculeOf(sequence: string, circular: boolean, ends: unknown, kind: Pa
   if (circular || Math.abs(given.left) + Math.abs(given.right) >= sequence.length) throw new Error("ends");
   const record = new Dseqrecord(Dseq.fromFullSequenceAndOverhangs(sequence, -given.left, -given.right));
   return { length: sequence.length, checksum: record.seguid(), ends: { left: given.left, right: given.right } };
+}
+
+/**
+ * The checksum a part would have: what its identity will be once it is in the log.
+ *
+ * It is here because a tool sometimes has to name a molecule before the lab holds it — to say in a
+ * run's settings which protein the run is expected to make, or to look for a part the lab may
+ * already have. The alternative is each tool counting a checksum its own way, and a part named by a
+ * checksum nobody else arrives at is a part nobody else will ever match. So the rule lives in one
+ * place and this is the way to it.
+ *
+ * @param part - Its bases or amino acids, whether it is a circle, what ends it has, and what it is
+ *   made of. DNA if nothing says.
+ * @returns The checksum.
+ * @throws If that is not a sequence of what it says it is, or a linear molecule of that length
+ *   cannot have those ends, or it is a protein said to be a circle.
+ *
+ * @example
+ * ```ts
+ * import { partChecksum } from "@biolibs/bionet";
+ *
+ * partChecksum({ sequence: "MKVLILACLVALALA", kind: "protein" });    // the protein's identity
+ * ```
+ */
+export function partChecksum(part: { sequence: string; circular?: boolean; ends?: PartEnds; kind?: PartKind }): string {
+  return moleculeOf(part.sequence.replace(/\s+/g, ""), part.circular === true, part.ends, part.kind ?? "dna").checksum;
 }
 
 /** Whether something is a list of features that lie within a part of a given length. */

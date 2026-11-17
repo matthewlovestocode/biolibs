@@ -193,7 +193,9 @@ export function proteinWorking(made: Translated, facts: ProteinFacts | null): Wo
       steps: [
         `the weight is the amino acids added up, less a water for each bond: ${count(Math.round(facts.weight))} Da`,
         `the isoelectric point is where its charges cancel: pH ${facts.isoelectric.toFixed(2)}`,
-        `it absorbs at 280 nm with ${count(facts.extinction.reduced)} M⁻¹cm⁻¹, which is how a concentration is read off`,
+        facts.extinction.reduced > 0
+          ? `it absorbs at 280 nm with ${count(facts.extinction.reduced)} M⁻¹cm⁻¹, which is how a concentration is read off`
+          : "it has no tryptophan, tyrosine or cystine, so it does not absorb at 280 nm and a concentration cannot be read there",
         `the instability index is ${facts.instability.toFixed(1)}; over 40 is reckoned unstable in a tube`,
         `${Math.round(facts.structure.helix * 100)}% helix, ${Math.round(facts.structure.turn * 100)}% turn, ${Math.round(facts.structure.sheet * 100)}% sheet`,
       ],

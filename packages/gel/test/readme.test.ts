@@ -6,7 +6,7 @@
  * comments, so changing one without changing the other fails here.
  */
 import { bandPosition, bandsOf, DEFAULT_TOLERANCE, fragmentSizes, GELS, gelById, LADDERS, ladderBands,
-  ladderById, resolves } from "@biolibs/gel";
+  ladderById, PROTEIN_GELS, proteinBandPosition, proteinBands, proteinGelById, proteinLadderById, resolves } from "@biolibs/gel";
 import { describe, expect, it } from "vitest";
 
 const gel = gelById("1.0");
@@ -140,5 +140,26 @@ describe("README: choosing a gel", () => {
     expect(squeezed.toFixed(4)).toBe("0.2158");
     expect(gelById("1.0").largest / gelById("1.0").smallest).toBe(40);
     expect(gelById("2.0").largest / gelById("2.0").smallest).toBe(40);
+  });
+});
+
+describe("README: protein on acrylamide", () => {
+  it("is the same arithmetic in another unit", () => {
+    const acrylamide = proteinGelById("12");
+    expect([acrylamide.percent, acrylamide.largest, acrylamide.smallest]).toEqual([12, 100, 10]);
+
+    expect(proteinBandPosition(100, acrylamide)).toBe(0);
+    expect(proteinBandPosition(10, acrylamide)).toBe(1);
+    expect(proteinBandPosition(Math.sqrt(100 * 10), acrylamide).toFixed(4)).toBe("0.5000");
+
+    expect(proteinBandPosition(28, acrylamide)).toBe(bandPosition(28, { largest: 100, smallest: 10 }));
+
+    expect(proteinLadderById("broad").sizes).toEqual([250, 150, 100, 75, 50, 37, 25, 20, 15, 10]);
+    expect(proteinBands([28, 28.5, 62], acrylamide)).toHaveLength(2);
+  });
+
+  it("lists the concentrations it ships", () => {
+    expect(PROTEIN_GELS.map((one) => [one.percent, one.largest, one.smallest]))
+      .toEqual([[7.5, 200, 40], [10, 150, 20], [12, 100, 10], [15, 60, 5]]);
   });
 });

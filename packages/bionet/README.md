@@ -324,6 +324,31 @@ overhang, negative a 3′ one, 0 blunt. The checksum takes the ends in, so the s
 different ends are different parts, and a piece is the same part whichever strand it was written
 from. A part with blunt ends is recorded and named exactly as it always was.
 
+### What a part is made of, and the name every device arrives at
+
+```ts
+import { partChecksum } from "@biolibs/bionet";
+
+// A lab keeps protein as well as DNA, and which has to be said, because the two cannot be told apart
+// by looking: ACGT is a perfectly good peptide as well as a perfectly good piece of DNA.
+await write(ada, adasKey, addPart({ sequence: "ACGTACGTACGT", name: "as DNA" }));
+await write(ada, adasKey, addPart({ sequence: "ACGTACGTACGT", name: "as protein", kind: "protein" }));
+const kept = (await mergeLog(ada)).parts.filter((one) => one.sequence === "ACGTACGTACGT");
+kept.map((one) => one.kind);                              // [ "dna", "protein" ]
+kept[0]!.checksum === kept[1]!.checksum;                  // false — two parts, as they must be
+
+// The same rule, before anything is written: what a molecule's name will be.
+partChecksum({ sequence: "ACGTACGTACGT" }) === kept[0]!.checksum;                    // true
+partChecksum({ sequence: "ACGTACGTACGT", kind: "protein" }) === kept[1]!.checksum;   // true
+```
+
+`partChecksum` is there because a tool sometimes has to name a molecule before the lab holds one: to
+say in a run's settings which protein the run is expected to make, or to look for a part the lab may
+already have. The alternative is each tool counting a checksum its own way, and a part named by a
+checksum nobody else arrives at is a part nobody else will ever match. It refuses exactly what an
+entry refuses — a protein said to be a circle, a chain with a stop codon in the middle of it — rather
+than returning a name no other device would agree with.
+
 ### A change this version cannot read
 
 ```ts

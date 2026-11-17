@@ -8,7 +8,7 @@
  * letters as DNA and counting a checksum nobody else would agree with.
  */
 import { generateSigningKey, type SigningKey } from "@biolibs/opencloning";
-import { addItem, addPart, foundLab, mergeLog, newItemId, nextEntry, type LabState, type Operation, type SignedEntry } from "@biolibs/bionet";
+import { addItem, addPart, foundLab, mergeLog, newItemId, nextEntry, partChecksum, type LabState, type Operation, type SignedEntry } from "@biolibs/bionet";
 import { beforeAll, describe, expect, it } from "vitest";
 
 /** Letters that read as DNA and as protein both: alanine, cysteine, glycine, threonine. */
@@ -110,5 +110,43 @@ describe("a part that is protein", () => {
     // And a protein says so by carrying the field, which is what an older device turns away on.
     await a.write(addPart({ name: "a protein", sequence: CASEIN, kind: "protein" }));
     expect((a.held.at(-1)!.entry.op as Record<string, unknown>)["kind"]).toBe("protein");
+  });
+});
+
+describe("the checksum a part would have", () => {
+  it("is the one the lab gives it, for DNA and for protein alike", async () => {
+    const a = await wren();
+    await a.write(addPart({ name: "both as DNA", sequence: BOTH }));
+    await a.write(addPart({ name: "both as protein", sequence: BOTH, kind: "protein" }));
+    const dna = (await a.lab()).parts.find((one) => one.name === "both as DNA")!;
+    const peptide = (await a.lab()).parts.find((one) => one.name === "both as protein")!;
+    expect(partChecksum({ sequence: BOTH })).toBe(dna.checksum);
+    expect(partChecksum({ sequence: BOTH, kind: "protein" })).toBe(peptide.checksum);
+    // Which is the whole point: the same letters, two parts.
+    expect(dna.checksum).not.toBe(peptide.checksum);
+  });
+
+  it("reads a sequence the way an entry does: whitespace out, ends part of it", async () => {
+    const a = await wren();
+    await a.write(addPart({ name: "cut", sequence: "AATTCGGGGGGGGGG", ends: { left: 4, right: 0 } }));
+    const cut = (await a.lab()).parts[0]!;
+    expect(partChecksum({ sequence: "AATTC GGGGG\nGGGGG", ends: { left: 4, right: 0 } })).toBe(cut.checksum);
+    // Blunt ends are the checksum the bases alone always gave.
+    expect(partChecksum({ sequence: "AATTCGGGGGGGGGG", ends: { left: 0, right: 0 } })).toBe(partChecksum({ sequence: "AATTCGGGGGGGGGG" }));
+    expect(partChecksum({ sequence: "AATTCGGGGGGGGGG" })).not.toBe(cut.checksum);
+  });
+
+  it("refuses what the lab refuses, rather than counting a checksum nobody would agree with", () => {
+    // A stop is not an amino acid: there is no tube of a chain with one in the middle.
+    expect(() => partChecksum({ sequence: "MKV*LIL", kind: "protein" })).toThrow();
+    expect(() => partChecksum({ sequence: CASEIN, kind: "protein", circular: true })).toThrow();
+    expect(() => partChecksum({ sequence: "ZZZZ" })).toThrow();
+  });
+
+  it("is refused as an entry on the same terms", async () => {
+    const a = await wren();
+    await a.write(addPart({ name: "has a stop", sequence: "MKV*LIL", kind: "protein" }));
+    expect((await lastOf(a)).status).toBe("refused");
+    expect((await a.lab()).parts).toHaveLength(0);
   });
 });

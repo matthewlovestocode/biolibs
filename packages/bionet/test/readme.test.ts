@@ -10,7 +10,7 @@ import { gibsonAssembly } from "@biolibs/assembly2";
 import { CloningStrategy, generateSigningKey, keyFingerprint } from "@biolibs/opencloning";
 import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, discover, entryId, fetchInventory, foundLab,
          introducedDifferently, inventoryFrom, labMemory, mergeLog, newItemId, newPlaceId, newRunId, nextEntry, partsNeeded,
-         peer, publicInventory, putItem, recordRun, remember, settled, settledLabs, signInventory, verifyInventory,
+         partChecksum, peer, publicInventory, putItem, recordRun, remember, settled, settledLabs, signInventory, verifyInventory,
          type Operation, type SignedEntry,
          signingKeys, unsourced, whoHas, type SignedInventory } from "@biolibs/bionet";
 import { describe, expect, it } from "vitest";
@@ -164,6 +164,22 @@ describe("README: inside a lab", () => {
 
     const published = await signInventory(inventory, adasKey, { signer: "Ada" });
     expect((await verifyInventory(published)).every((check) => check.ok)).toBe(true);
+  });
+
+  it("gives the same name to a part before it holds one, and never to DNA and protein alike", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+
+    await write(ada, adasKey, addPart({ sequence: "ACGTACGTACGT", name: "as DNA" }));
+    await write(ada, adasKey, addPart({ sequence: "ACGTACGTACGT", name: "as protein", kind: "protein" }));
+    const kept = (await mergeLog(ada)).parts.filter((one) => one.sequence === "ACGTACGTACGT");
+    expect(kept.map((one) => one.kind)).toEqual(["dna", "protein"]);
+    expect(kept[0]!.checksum === kept[1]!.checksum).toBe(false);
+
+    expect(partChecksum({ sequence: "ACGTACGTACGT" })).toBe(kept[0]!.checksum);
+    expect(partChecksum({ sequence: "ACGTACGTACGT", kind: "protein" })).toBe(kept[1]!.checksum);
   });
 
   it("knows where a tube is", async () => {

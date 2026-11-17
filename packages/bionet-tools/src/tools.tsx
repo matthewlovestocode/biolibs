@@ -4,6 +4,7 @@
 import { useState, type ReactNode } from "react";
 import { useLab } from "@biolibs/bionet-react";
 import { DigestTool } from "./digest-tool.js";
+import { InductionTool } from "./induce-bench.js";
 import { PcrTool } from "./pcr-tool.js";
 import { instrumentFor, toolFor, type ToolName } from "./run.js";
 import { LigationTool } from "./ligate-bench.js";
@@ -17,12 +18,13 @@ import { SequencesTool } from "./sequences-tool.js";
 export type DeskTool = "sequences" | "primers" | "codons" | "assembly" | "verify";
 
 /** What each tool is called. */
-export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation" };
+export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation", induction: "Induction" };
 
 function Tool({ tool, instrument, onDone }: { tool: ToolName; instrument: { id: string; name: string } | null; onDone?: (() => void) | undefined }) {
   const more = onDone === undefined ? {} : { onDone };
   return tool === "pcr" ? <PcrTool instrument={instrument} {...more} />
     : tool === "ligation" ? <LigationTool instrument={instrument} {...more} />
+    : tool === "induction" ? <InductionTool instrument={instrument} {...more} />
     : <DigestTool instrument={instrument} {...more} />;
 }
 
@@ -42,7 +44,7 @@ export function InstrumentTool({ place, onDone }: { place: string; onDone?: () =
       <div className="toolhead">
         <div>
           <h2>{found?.name ?? "This place"}</h2>
-          <p className="dim">There is no tool for this yet. A thermocycler opens PCR, and a gel station opens digest and gel.</p>
+          <p className="dim">There is no tool for this yet. A thermocycler opens PCR, a gel station opens digest and gel, and a shaking incubator opens induction.</p>
         </div>
         {onDone !== undefined && <button type="button" className="quiet" onClick={onDone}>Back to the lab</button>}
       </div>

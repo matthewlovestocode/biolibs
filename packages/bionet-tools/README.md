@@ -1,6 +1,6 @@
 # @biolibs/bionet-tools
 
-The tools a lab uses at the bench, tied to its freezer: its sequences and their maps, PCR, a check digest with its gel, and a ligation that joins the pieces back up. Sequences come in from the SnapGene, GenBank, EMBL and FASTA files a lab already has, with their features. For PCR, choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
+The tools a lab uses at the bench, tied to its freezer: its sequences and their maps, PCR, a check digest with its gel, a ligation that joins the pieces back up, and an induction that grows a strain to make the protein the whole thing was for. Sequences come in from the SnapGene, GenBank, EMBL and FASTA files a lab already has, with their features. For PCR, choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
 
 ```
 npm install @biolibs/bionet-tools @biolibs/bionet-panels @biolibs/bionet-react @biolibs/bionet-theme react
@@ -283,6 +283,47 @@ const run = digestRun(lab, { tube, enzymes: ["EcoRI"] });  // what to record, if
 tube and notes which enzymes, what was expected and whether the gel showed it. Pieces can be kept
 as tubes, each a part with the ends the enzymes left.
 
+## Growing a culture to get the protein
+
+A lab that stops at DNA has stopped one step short of what the DNA was for. An induction is the step
+across: a culture of a strain that carries the construct is grown, fed something that turns the
+promoter on, and a few hours later a lane of a polyacrylamide gel either has a band at the right mass
+or it does not.
+
+```ts
+import { inductionCultures, inductionGenes, inductionRun, planInduction } from "@biolibs/bionet-tools";
+
+inductionCultures(lab);                     // the cultures there are, the ones carrying something first
+inductionGenes(lab, culture);               // what that strain carries, and the coding sequences marked on each
+
+const plan = planInduction(lab, { culture, gene, cds: "casein", cutSignal: true });
+plan.kilodaltons;                           // what the band should run at
+plan.bands[0].position;                     // where on the gel, beside plan.ladder
+plan.checksum;                              // the identity the protein will have in the lab
+
+const run = inductionRun(lab, { culture, gene, cds: "casein", inducer: "galactose", concentration: "2%" });
+run.showed;                                 // what to record if the band was there
+run.nothing;                                // what to record if it was grown and nothing was at that mass
+run.keep;                                   // the protein to add as a part, and the tube of it
+```
+
+Two things here are unlike every other tool in this package, and both are deliberate.
+
+**Nothing that comes out is worked out from what went in.** A PCR's product is the stretch between the
+primers and arithmetic gives it. A culture's product is whatever the cells chose to make, and no
+sequence predicts the yield, the solubility or whether the thing folded. So what is computed is the
+protein the gene *codes for* and the mass its band *should* run at. Whether the band is there is read
+off a gel by a person, and is the one thing recorded. `inductionChecks` says when the gel chosen could
+not answer the question at all — a band below what it separates runs off the front, one above it stays
+in the well, and one that lands on a marker band cannot be told from it.
+
+**The protein is not an output of the run.** A run's outputs are DNA — every device that reads the log
+agrees on that, and an entry saying otherwise would be refused by the older ones. So an induction is
+recorded as a run with no outputs that used some of a culture, the same shape a transformation has, and
+the protein is added afterwards as a part in its own right. The run names it in its settings by the
+checksum that part will have, which `inducedBy` reads back: so a device that was not there when it
+happened arrives at the same answer from the log alone, without a new kind of entry.
+
 ## The tool
 
 ```tsx
@@ -294,7 +335,7 @@ import { InstrumentTool, PcrTool } from "@biolibs/bionet-tools";
 <PcrTool />                                                // or one tool on its own; DigestTool likewise
 ```
 
-The tools use the lab's hooks and are drawn with the panels' styles, so they go inside a `LabProvider` and a `LabWindow`. `InstrumentTool` opens PCR for a place whose `model` is `thermocycler` and digest and gel for a `gel-station`, and says so when there is no tool for an instrument yet. `Tools` lists them all, and still records a run at the lab's instrument for that tool if it has placed one.
+The tools use the lab's hooks and are drawn with the panels' styles, so they go inside a `LabProvider` and a `LabWindow`. `InstrumentTool` opens PCR for a place whose `model` is `thermocycler`, digest and gel for a `gel-station`, a ligation for a `heat-block` and an induction for a `shaking-incubator`, and says so when there is no tool for an instrument yet. `Tools` lists them all, and still records a run at the lab's instrument for that tool if it has placed one.
 
 The tools' own descriptions explain their terms on hover, with a picture, through
 [`@biolibs/glossary-react`](../glossary-react). Import its `glossary.css` once as well.

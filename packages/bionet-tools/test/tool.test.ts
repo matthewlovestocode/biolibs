@@ -172,7 +172,7 @@ describe("a check digest", () => {
   it("is drawn as a gel that says what is on it", () => {
     const plan = planDigest({ sequence: PLASMID, circular: true }, ["EcoRI", "BamHI"]);
     const gel = renderToStaticMarkup(h(Gel, { ladder: plan.ladder, bands: plan.bands, name: "pBig" }));
-    expect(gel).toContain('aria-label="A gel: a ladder beside pBig, cut into pieces of 2806, 2206 base pairs"');
+    expect(gel).toContain('aria-label="A gel: a ladder beside pBig, showing bands at 2806, 2206 base pairs"');
     expect(gel).toContain(">2806<");
     expect(gel).toContain(">ladder<");
     expect(gel.match(/<rect /g)!.length).toBe(3 + plan.ladder.length + plan.bands.length);

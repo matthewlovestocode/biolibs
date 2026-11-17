@@ -72,10 +72,15 @@ describe("the demo lab", () => {
     expect(lab.member).toBe(true);
     // No primers: the tour designs them, and they arrive.
     expect(lab.parts.map((one) => one.name)).toEqual(["pGene", "pWren backbone"]);
-    expect(lab.places.map((one) => one.name)).toEqual(["Main lab", "The bench", "−80", "Box 1", "Thermocycler", "Gel station", "Heat block"]);
-    expect(lab.items).toHaveLength(2);
-    // Every tube is somewhere, so the scene has something to draw.
-    expect(lab.items.every((one) => one.where?.place === demo.places.box)).toBe(true);
+    expect(lab.places.map((one) => one.name)).toEqual(["Main lab", "The bench", "−80", "Box 1", "Thermocycler", "Gel station", "Heat block", "Shaking incubator"]);
+    // Two tubes and one culture: the lab keeps something alive, so there is something to induce.
+    expect(lab.items).toHaveLength(3);
+    expect(lab.items.filter((one) => one.part !== null).every((one) => one.where?.place === demo.places.box)).toBe(true);
+    // The culture is on the bench and not in the −80, because it is growing.
+    const culture = lab.items.find((one) => one.part === null)!;
+    expect(culture).toMatchObject({ item: demo.tubes.culture, strain: demo.strain, where: { place: demo.places.bench } });
+    expect(lab.strains.map((one) => one.name)).toEqual(["W303 pGene-1"]);
+    expect(lab.strains[0]!.carries).toEqual([lab.parts.find((one) => one.name === "pGene")!.checksum]);
     expect(lab.crowded).toEqual([]);
   });
 
@@ -85,7 +90,7 @@ describe("the demo lab", () => {
     const part = (name: string) => lab.parts.find((one) => one.name === name)!;
     expect(part("pWren backbone")).toMatchObject({ circular: false, ends: { left: 4, right: 4 } });
     expect(part("pGene")).toMatchObject({ circular: true, ends: { left: 0, right: 0 } });
-    expect(part("pGene").features.map((one) => one.label)).toEqual(["wrenA", "lac promoter", "ori"]);
+    expect(part("pGene").features.map((one) => one.label)).toEqual(["wrenA", "wrenA signal", "lac promoter", "ori"]);
   });
 
   it("gives two labs that do not share anything", async () => {
@@ -101,10 +106,10 @@ describe("the primers", () => {
     expect(molecules.forward).toMatchObject({ name: "wrenA-F", sequence: design.forward.chosen.report.sequence });
     expect(molecules.reverse).toMatchObject({ name: "wrenA-R", sequence: design.reverse.chosen.report.sequence });
     expect(design.length).toBe(780);
-    // What the tour says about the design: nothing that would stop it, and one thing flagged.
-    expect(design.warnings.map((one) => [one.weight, one.about])).toEqual([["look", "pair"]]);
-    expect(design.warnings[0]!.says).toContain("apart");
+    // What the tour says about the design: nothing to warn of at all, out of thirteen candidates each way.
+    expect(design.warnings).toEqual([]);
     expect(design.forward.candidates).toHaveLength(13);
+    expect(design.reverse.candidates).toHaveLength(13);
   });
 
   it("are not in the lab until the tour's stop has them arrive, and then the PCR is recorded with them", async () => {
@@ -121,7 +126,7 @@ describe("the primers", () => {
     await arrive.does!(demo, state());
     await arrive.does!(demo, state());                       // going back over the stop adds nothing more
     expect(state().parts.map((one) => one.name)).toEqual(["pGene", "pWren backbone", "wrenA-F", "wrenA-R"]);
-    const primers = state().items.filter((one) => one.item !== demo.tubes.pGene && one.item !== demo.tubes.backbone);
+    const primers = state().items.filter((one) => one.part !== null && one.item !== demo.tubes.pGene && one.item !== demo.tubes.backbone);
     expect(primers).toHaveLength(2);
     // A tube that arrived is not the output of a run, and the record does not say it was.
     expect(primers.every((one) => one.from === null && one.where?.place === demo.places.box)).toBe(true);
