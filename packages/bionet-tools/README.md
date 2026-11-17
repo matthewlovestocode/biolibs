@@ -420,6 +420,52 @@ One thing has to be done for a chain to be possible at all: **a proposal may onl
 lab knows of**, so what an earlier step would make has to be added with `addPart` — no tube, just
 the sequence under a name — before a later step can say it needs it.
 
+## Taking it to a bench
+
+Everything else here is for a screen: a panel that knows the lab, with the tubes in dropdowns and the
+working folded away. None of it is any use at a bench with gloves on, and a plan nobody can follow
+standing up is not finished.
+
+```ts
+import { protocolText, protocolsFor } from "@biolibs/bionet-tools";
+
+for (const sheet of protocolsFor(lab, { project: "Real Vegan Cheese" })) console.log(protocolText(sheet));
+```
+
+```markdown
+## 1. Copy it by PCR
+
+**Take out**
+- 1 µL of pGene — in Box 1 (the tube holds 30 µL)
+
+**Set**
+- Denature: 98 °C
+- Anneal: 55 °C for 30 s
+- Cycles: 30
+
+**Do**
+1. Set up the reaction with 1 µL of pGene as the template.
+2. Run the programme above.
+
+**This plan does not say**
+- which polymerase and which buffer
+- the final volume of the reaction, and how much water
+```
+
+The last list is the whole point. A protocol wants rather more than a plan records — a polymerase, a
+buffer, a final volume, a way of making cells competent — and a tool that wrote in plausible ones
+would be **making things up on a page somebody carries to a bench and trusts**. So each step keeps
+two lists apart: what the plan says, which is exact, and what it does not say, which is named so the
+lab supplies its own and finds the hole before starting rather than halfway through.
+
+Nothing here invents a number. If a volume is on the page, somebody set that volume; if a programme
+is missing, the step says so and tells you to set it as the lab usually does.
+
+Two smaller things it does because the chain already knows them. A part the lab has no tube of says
+**"what step 1 makes"** where an earlier step makes it, rather than sending somebody shopping for it.
+And a piece of work that makes nothing — a digest, a check — is titled by what it is done *to*,
+since it has no product to be named by.
+
 ## The tool
 
 ```tsx

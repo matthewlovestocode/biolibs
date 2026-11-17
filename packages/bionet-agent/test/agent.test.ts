@@ -1031,5 +1031,20 @@ describe("an adviser writing the method out", () => {
   it("will not write out what is not there", async () => {
     const w = await wren();
     await expect(w.use("write_out_the_method", {})).rejects.toThrow(/no open plans to publish/);
+    await expect(w.use("write_out_the_protocol", {})).rejects.toThrow(/no open work to write out/);
+  });
+
+  it("writes a sheet for a person, with what the plan does not say left for the lab", async () => {
+    const w = await planned();
+    const said = await w.use("write_out_the_protocol", {});
+    expect(said.sheets.length).toBeGreaterThan(0);
+    const sheet = said.sheets[0];
+    expect(sheet.steps[0].title).toBe("Copy it by PCR");
+    expect(sheet.steps[0].notSaid).toContain("which polymerase and which buffer");
+    expect(sheet.as_text).toContain("**This plan does not say**");
+    // And it does not invent any of them.
+    for (const invented of ["master mix", "Taq", "nuclease-free", "50 µL reaction"]) expect(sheet.as_text).not.toContain(invented);
+    expect(said.note).toMatch(/leave those for the lab to fill in/);
+    expect(AGENT_INSTRUCTIONS).toMatch(/a sheet to carry to a bench/);
   });
 });

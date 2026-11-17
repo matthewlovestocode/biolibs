@@ -72,6 +72,7 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `the_work` | Those proposals in the order they have to be done, in chains, by project, with what to get first |
 | `file_the_work` | Say which project one of its own proposals is part of |
 | `write_out_the_method` | Write the plan so another lab could carry it out, every tube named by its checksum |
+| `write_out_the_protocol` | Write it as a sheet for a person to carry to a bench |
 | `find_cutters` | Which enzymes cut a part, and where |
 | `design_primers` | A pair for a stretch or a feature, with why each won and what to watch for |
 | `work_out_pcr`, `work_out_digest`, `work_out_ligation` | What each would give, from the lab's own engines |
@@ -103,6 +104,13 @@ or made first.
 carried out, in chains, says which could be done now, and — the part that matters most — names the
 parts nothing proposed makes and the lab has no tube of. A plan that does not say what to order
 first is not a plan anybody can act on.
+
+A plan has two readers who need different things. `write_out_the_method` gives another lab's software
+something it can turn into its own proposals; `write_out_the_protocol` gives a person a sheet to
+print — what to fetch, what to set, what to do, what to record. Every figure on it is one somebody
+set, and what the plan does not say is listed under each step rather than filled in. The adviser is
+told not to fill those gaps on the sheet: advice about a polymerase is worth giving, and belongs
+beside the sheet as advice, not written onto a page somebody trusts.
 
 A lab has several things on at once, so the adviser files each proposal under its project with
 `file_the_work` as it makes it. That part is a decision, not a derivation: four caseins are four

@@ -178,3 +178,4 @@
 .bionet .work ol.steps > li .row { margin-top: .35rem }
 .bionet .work .why { color: var(--bionet-dim); font-style: italic }
 .bionet .work textarea.method { width: 100%; font-family: ui-monospace, monospace; font-size: .7rem; margin-top: .5rem }
+.bionet .work textarea.sheet { font-size: .74rem; line-height: 1.45 }

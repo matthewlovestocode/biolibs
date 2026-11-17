@@ -15,6 +15,7 @@ import { useState, type ReactNode } from "react";
 import { useAct, useLab } from "@biolibs/bionet-react";
 import { Glossed } from "@biolibs/glossary-react";
 import { FILED_UNDER, UNFILED, planOfWork, saysWork, type Project, type Step } from "./ordering.js";
+import { protocolText, protocolsFor } from "./protocol.js";
 
 /** What a step is called, by what kind of run it is. */
 const CALLED: Readonly<Record<string, string>> = {
@@ -44,6 +45,9 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
   const [into, setInto] = useState("");
   // Writing the method out, and taking one somebody else wrote.
   const [method, setMethod] = useState<string | null>(null);
+  // The sheet to carry to a bench, which is a different thing from the method: one is for another
+  // lab's software to read, the other for a person standing up with gloves on.
+  const [sheet, setSheet] = useState<string | null>(null);
   const [taking, setTaking] = useState("");
   const [told, setTold] = useState<string | null>(null);
   if (lab === null || lab === undefined) return null;
@@ -69,6 +73,10 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
   const filedAs = (plan: Step["plan"]): string => {
     const says = plan.fields[FILED_UNDER];
     return typeof says === "string" && says.trim() !== "" ? says.trim() : UNFILED;
+  };
+  const asASheet = (): void => {
+    const sheets = protocolsFor(lab, { ...(only === null || only === UNFILED ? {} : { project: only }) });
+    setSheet(sheets.length === 0 ? null : sheets.map(protocolText).join("\n\n---\n\n"));
   };
   const writeOut = async (): Promise<void> => {
     const answer = await act("publishMethod", { ...(only === null ? {} : { project: only }) });
@@ -162,7 +170,23 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
           <h2>The work</h2>
           <p className="empty">Nothing is proposed here. A proposal is a run somebody could carry out, and a lab member or its adviser makes one at the tool that would do it. Several together are read as one piece of work.</p>
         </section>
-        {crossing}
+        {work.order.length > 0 && (
+        <section className="card">
+          <h2>Taking it to the bench</h2>
+          <p className="small">The same work as a sheet to print or carry: what to fetch, what to set a machine to, what to do, and what to record afterwards.</p>
+          <p className="dim small">
+            Every number on it — a volume, a temperature, a time — is one somebody set or one the lab&rsquo;s own tools worked out.
+            Nothing is filled in to make it look finished: what a plan does not say is listed under each step instead, so the hole is found standing at a bench and not halfway through.
+          </p>
+          <div className="row tight">
+            <button type="button" onClick={asASheet}>Write {only === null ? "it all" : only} as a protocol</button>
+            {sheet !== null && <button type="button" className="quiet" onClick={() => setSheet(null)}>Hide it</button>}
+          </div>
+          {sheet !== null && <textarea className="method sheet" value={sheet} readOnly rows={18} aria-label="The protocol, to print or carry" onFocus={(event) => event.currentTarget.select()} />}
+        </section>
+      )}
+
+      {crossing}
       </div>
     );
   }
@@ -188,6 +212,22 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
           The chain stops at a transformation: what that makes is alive and has no checksum to point at, so what follows is proposed afresh once there is something growing.
         </p>
       </section>
+
+      {work.order.length > 0 && (
+        <section className="card">
+          <h2>Taking it to the bench</h2>
+          <p className="small">The same work as a sheet to print or carry: what to fetch, what to set a machine to, what to do, and what to record afterwards.</p>
+          <p className="dim small">
+            Every number on it — a volume, a temperature, a time — is one somebody set or one the lab&rsquo;s own tools worked out.
+            Nothing is filled in to make it look finished: what a plan does not say is listed under each step instead, so the hole is found standing at a bench and not halfway through.
+          </p>
+          <div className="row tight">
+            <button type="button" onClick={asASheet}>Write {only === null ? "it all" : only} as a protocol</button>
+            {sheet !== null && <button type="button" className="quiet" onClick={() => setSheet(null)}>Hide it</button>}
+          </div>
+          {sheet !== null && <textarea className="method sheet" value={sheet} readOnly rows={18} aria-label="The protocol, to print or carry" onFocus={(event) => event.currentTarget.select()} />}
+        </section>
+      )}
 
       {crossing}
 

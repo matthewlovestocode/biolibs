@@ -22,7 +22,7 @@ import { knownTools, type KnownOptions } from "./known.js";
 import { COMMON_ENZYMES, assemblyWorking, codonWorking, countCodonUsage, cutSites, cutsOf, cutters, designAssembly, designPair, digestPieces,
          digestRun, featureStretches, inductionChecks, inductionRun, inductionWorking, instrumentFor, ligationRun, optimiseCodons,
          planInduction, planPcr, primerTm, toPlan, toolFor,
-         FILED_UNDER, UNFILED, planOfWork, saysWork, saysDifference, checkRead, verifyWorking, proteinFacts, proteinWorking, translateGene,
+         FILED_UNDER, UNFILED, planOfWork, protocolText, protocolsFor, saysWork, saysDifference, checkRead, verifyWorking, proteinFacts, proteinWorking, translateGene,
          type AssemblyDesign, type CodonUsage, type InductionChoice, type Stretch } from "@biolibs/bionet-tools";
 
 /** A JSON schema for what a tool takes: always an object, with these properties. */
@@ -78,6 +78,7 @@ export interface AgentCall {
 export const AGENT_INSTRUCTIONS = [
   "You are an adviser to a molecular biology lab that keeps its freezer in Bionet. You have no hands: you cannot run anything, use a tube or move one.",
   "What you can do is read what the lab holds, work things out with the lab's own tools (the same engines its members' windows use), add a part by its sequence, and propose a run for a person to carry out.",
+  "A plan is for two different readers and they need different things. write_out_the_protocol gives a person a sheet to carry to a bench; write_out_the_method gives another lab's software something it can turn into its own proposals. Offer the first to whoever is going to do the work.",
   "Once a plan is whole, write_out_the_method writes it so that another lab could carry it out: every tube replaced by the checksum of what is in it, which is the one name two labs that have never spoken already agree on. A plan nobody outside this lab could follow is not a result anybody can build on.",
   "File each proposal under its project with file_the_work as you make it. A lab has several things on at once, and work that does not say which it belongs to lands in a heap with everybody else's.",
   "Build a plan one proposal at a time, and then read it back with the_work before you hand it over. A proposal is a single run; what makes several of them a plan is that one expects what another needs, which the_work follows to put them in order and to say what has to be ordered before anything can start. A plan nobody can act on is one that does not say what to get first.",
@@ -915,6 +916,29 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
         const run = ligationRun(seen, { tubes, blunt: args["let_blunt_ends_join"] === true, instrument: instrumentFor(seen, "ligation")?.id ?? null,
                                         ...(args["which"] === undefined ? {} : { chosen: whole(args["which"], "`which`") }), ...(name === undefined ? {} : { name }) });
         return proposed(seen, run.worked, text(args["note"], "The note saying why"), `There is nothing to propose. ${run.plan?.problem ?? "Each piece has to be linear, with ends that fit another's."}`);
+      },
+    },
+    {
+      name: "write_out_the_protocol", title: "Write the plan out as a sheet for a bench", readOnly: true,
+      description: [
+        "Write a project's work out as a protocol: what to fetch, what to set each machine to, what to do, and what to record afterwards, in the order to do it.",
+        "This is for a person, not for software. the_work is for you and write_out_the_method is for another lab's app; this is what somebody prints and carries to a bench with gloves on, and a plan nobody can follow standing up is not finished.",
+        "Every number on it is one somebody set or one the lab's own tools worked out. Nothing is filled in to make it read as complete, and each step carries a list of what the plan does not say — the polymerase, the buffer, the final volume, how cells are made competent — so whoever follows it supplies their own and finds the gap before starting rather than halfway through.",
+        "Do not fill those gaps in yourself when you pass it on. If you know a reasonable polymerase, say so as your own advice beside the sheet; writing it onto the sheet would put a figure nobody chose on a page somebody trusts.",
+        "Nothing is written to the lab.",
+      ].join(" "),
+      input: { type: "object", additionalProperties: false, properties: {
+        project: { type: "string", description: "Only the work filed under this project. All of it if not given." },
+      } },
+      run: (args) => {
+        const seen = now();
+        const sheets = protocolsFor(seen, { ...(args["project"] === undefined ? {} : { project: text(args["project"], "The project") }) });
+        if (sheets.length === 0) throw new Error("There is no open work to write out. the_work gives what is proposed.");
+        return {
+          sheets: sheets.map((one) => ({ title: one.title, about: one.about, have_ready: one.haveReady,
+                                         steps: one.steps, at_the_end: one.atTheEnd, as_text: protocolText(one) })),
+          note: "Every figure here is one somebody set. What each step does not say is listed under it; leave those for the lab to fill in, and give your own advice as your own.",
+        };
       },
     },
     {
