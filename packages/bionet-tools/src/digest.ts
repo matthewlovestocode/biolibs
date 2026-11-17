@@ -65,6 +65,25 @@ export function enzymeNamed(name: string): string | null {
 }
 
 /**
+ * One enzyme's recognition sequence.
+ *
+ * @param name - The enzyme, by name, in any case.
+ * @returns The bases it recognises, in IUPAC letters, or `null` if there is no such enzyme.
+ *
+ * @example
+ * ```ts
+ * import { siteOf } from "@biolibs/bionet-tools";
+ *
+ * siteOf("EcoRI");    // "GAATTC"
+ * ```
+ */
+export function siteOf(name: string): string | null {
+  const found = enzymeNamed(name);
+  const enzyme = found === null || !Object.hasOwn(enzymes, found) ? undefined : enzymes[found];
+  return enzyme === undefined ? null : String(enzyme.site).toUpperCase();
+}
+
+/**
  * Where one enzyme cuts a molecule.
  *
  * @param part - The molecule.

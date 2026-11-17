@@ -19,6 +19,7 @@ import { PRIMERS } from "./molecules.js";
 export type TourStop =
   | { at: "lab"; focus?: { place: string | null; item?: string } }
   | { at: "sequences"; part?: string; focus?: { place: string | null; item?: string } }
+  | { at: "codons"; start?: { gene?: string; hostGenes?: readonly string[]; avoid?: readonly string[] } }
   | { at: "assembly"; start?: { pieces?: readonly string[]; overlap?: number; name?: string; section?: "pieces" | "ring" | "junctions" | "primers" | "working" } }
   | { at: "primers"; start?: { part?: string; stretch?: { start: number; end: number }; feature?: string; name?: string; section?: "choose" | "pair" | "considered" | "working" | "order" } }
   | { at: "pcr"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; template?: string; forward?: string; reverse?: string; step?: "denature" | "anneal" | "extend"; cycle?: number } }

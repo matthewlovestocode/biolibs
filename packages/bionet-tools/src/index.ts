@@ -15,6 +15,8 @@
  * - `pcr-tool.tsx`, `digest-tool.tsx` — the tools
  * - `pcr-bench.tsx` — a PCR at the machine: what is beside the scene, and what the scene is told to show
  * - `pcr-working.ts` — the working behind what the PCR tool says: each figure with the steps that give it
+ * - `codons.ts` — a gene rewritten in a host's codons, from usage counted over that host's own genes
+ * - `codon-bench.tsx` — writing a gene in a host's codons at a desk, with the counting on the screen
  * - `assembly-design.ts` — a ring designed from a lab's own parts: the pieces in order, and the primers that make them fit
  * - `assembly-bench.tsx` — building a ring at a desk: the pieces in order, and the primers that make them fit
  * - `ligate.ts` — pieces that have already been cut, joined where their ends fit
@@ -44,6 +46,8 @@ export * from "./pcr-tool.js";
 export * from "./digest-tool.js";
 export * from "./pcr-working.js";
 export * from "./digest-working.js";
+export * from "./codons.js";
+export * from "./codon-bench.js";
 export * from "./assembly-design.js";
 export * from "./assembly-bench.js";
 export * from "./ligate.js";

@@ -17,8 +17,9 @@
  */
 import type { Lab, LabView } from "@biolibs/bionet-client";
 import { lookupTools, type LookupOptions } from "./lookup.js";
-import { COMMON_ENZYMES, assemblyWorking, cutSites, cutsOf, cutters, designAssembly, designPair, digestPieces, digestRun,
-         featureStretches, instrumentFor, ligationRun, planPcr, primerTm, toPlan, toolFor, type AssemblyDesign, type Stretch } from "@biolibs/bionet-tools";
+import { COMMON_ENZYMES, assemblyWorking, codonWorking, countCodonUsage, cutSites, cutsOf, cutters, designAssembly, designPair, digestPieces,
+         digestRun, featureStretches, instrumentFor, ligationRun, optimiseCodons, planPcr, primerTm, toPlan, toolFor,
+         type AssemblyDesign, type CodonUsage, type Stretch } from "@biolibs/bionet-tools";
 
 /** A JSON schema for what a tool takes: always an object, with these properties. */
 export interface ToolInput {
@@ -191,6 +192,17 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
     return { start: from - 1, end: to < from ? to + part.length : to };
   };
   const adviser = (): Lab["advise"] => lab.advise;
+  /** The codon usage a set of arguments asks for, counted from the lab's own parts. */
+  const counted = (seen: LabView, args: Record<string, unknown>): { usage: CodonUsage; named: string[] } => {
+    const given = Array.isArray(args["genes"]) ? args["genes"] : Array.isArray(args["host_genes"]) ? args["host_genes"] : [];
+    if (given.length === 0) throw new Error("Name the host's own coding sequences to count its preferences from. There is no table built in: it is counted from genes this lab holds.");
+    const parts = (given as unknown[]).map((one) => partBy(seen, text(one, "Each gene")));
+    const usage = countCodonUsage(parts.map((one) => one.sequence), {
+      from: `${parts.length} ${parts.length === 1 ? "sequence" : "sequences"} this lab holds: ${parts.map((one) => one.name).join(", ")}`,
+      ...(args["table"] === undefined ? {} : { table: whole(args["table"], "The genetic code") }),
+    });
+    return { usage, named: parts.map((one) => one.name) };
+  };
   /** The assembly a set of arguments asks for, worked out by the lab's own engine. */
   const asked = (seen: LabView, args: Record<string, unknown>): AssemblyDesign => {
     const given = (Array.isArray(args["pieces"]) ? args["pieces"] : []) as { part?: unknown; amplify?: unknown }[];
@@ -448,6 +460,75 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
         if (run.plan === null) throw new Error("Each piece has to be linear: a circle has no ends to join. Cut it first.");
         return { problem: run.plan.problem, products: run.plan.products.map((one) => ({
           length: one.length, circular: one.circular, pieces: one.pieces.map((piece) => ({ name: piece.name, flipped: piece.flipped })), joins: one.joins.length })) };
+      },
+    },
+    {
+      name: "count_codon_usage", title: "Count how a host uses its codons", readOnly: true,
+      description: [
+        "Count a host's codon preferences from its own coding sequences, which have to be parts this lab holds: fetch a handful of the host's genes with keep_from_ncbi first, or ask the lab which it has.",
+        "There is no table of codon usage built into these tools and none is asserted from memory. A table is counted, here, from the genes you name, so anybody can check it against those genes.",
+        "Gives each codon's count and its share of its amino acid, how many genes and codons it was counted over, and warnings where it was counted over too little to lean on.",
+      ].join(" "),
+      input: { type: "object", required: ["genes"], additionalProperties: false, properties: {
+        genes: { type: "array", items: { type: "string" }, description: "The host's coding sequences, each a part's checksum or exact name." },
+        table: { type: "integer", description: "The NCBI genetic code. 1 unless said." },
+      } },
+      run: (args) => {
+        const { usage, named } = counted(now(), args);
+        const sorted = Object.entries(usage.counts).filter(([, one]) => one.count > 0).sort((a, b) => b[1].count - a[1].count);
+        return {
+          counted_from: named, genes: usage.genes, codons: usage.codons, genetic_code: usage.table,
+          favourite_per_amino_acid: Object.fromEntries([...new Set(sorted.map(([, one]) => one.aminoAcid))].sort().map((aminoAcid) => [
+            aminoAcid, sorted.filter(([, one]) => one.aminoAcid === aminoAcid).map(([codon, one]) => ({ codon, count: one.count, share: Math.round(one.share * 100) / 100 })),
+          ])),
+          warnings: usage.warnings,
+          note: "This is only as good as those genes are as a sample of the host. It is not a published table.",
+        };
+      },
+    },
+    {
+      name: "optimise_codons", title: "Rewrite a gene in a host's codons", readOnly: true,
+      description: [
+        "Rewrite a coding sequence in the codons a host actually uses, without changing one amino acid of the protein it makes. A gene taken from one organism and expressed in another is read slowly in its own codons, which is why a mammalian gene often gives poor yields in yeast.",
+        "`gene` is the coding sequence to rewrite: a part's checksum or name, a whole number of codons starting at the first. `host_genes` are the host's own coding sequences the preferences are counted from, the same as count_codon_usage takes.",
+        "`avoid` keeps sites out of the rewritten gene, which matters if it is to be cut later. Give them by name and sequence.",
+        "Gives the new sequence, every codon that changed and what each was worth, what it did to the GC content, and the working. The protein is translated before and after and compared, so the promise is checked and not assumed. Nothing is written: use add_part to keep the result, and say in its name that it is codon optimised.",
+      ].join(" "),
+      input: { type: "object", required: ["gene", "host_genes"], additionalProperties: false, properties: {
+        gene: { type: "string", description: "The coding sequence to rewrite: a part's checksum or exact name." },
+        host_genes: { type: "array", items: { type: "string" }, description: "The host's own coding sequences, by checksum or name." },
+        avoid: { type: "array", description: "Sites to keep out of the result.",
+                 items: { type: "object", required: ["name", "site"], additionalProperties: false, properties: {
+                   name: { type: "string" }, site: { type: "string" } } } },
+        table: { type: "integer" },
+        longest_run: { type: "integer", description: "The longest run of one base allowed. 6 unless said." },
+      } },
+      shows: (args) => ({ at: "sequences", part: partBy(now(), text(args["gene"], "The gene")).checksum }),
+      run: (args) => {
+        const seen = now();
+        const gene = partBy(seen, text(args["gene"], "The gene"));
+        const { usage, named } = counted(seen, args);
+        const avoid = (Array.isArray(args["avoid"]) ? args["avoid"] : []) as { name?: unknown; site?: unknown }[];
+        const done = optimiseCodons(gene.sequence, usage, {
+          avoid: avoid.map((one) => ({ name: text(one.name, "Each site's name"), site: text(one.site, "Each site") })),
+          ...(args["longest_run"] === undefined ? {} : { longestRun: whole(args["longest_run"], "longest_run") }),
+        });
+        if (done.problem !== null) throw new Error(done.problem);
+        return {
+          gene: gene.name, counted_from: named, length: done.sequence.length, codons: done.codons,
+          changed: done.changes.length, unchanged: done.codons - done.changes.length,
+          gc_before: Math.round(done.gcBefore * 100), gc_after: Math.round(done.gcAfter * 100),
+          ...(done.avoided.length === 0 ? {} : { kept_out: done.avoided }),
+          // The rewrite is refused outright if the protein would change, so what comes back is
+          // always the same protein. It is given here so that it can be read rather than believed.
+          protein: done.protein.length <= 2_000 ? done.protein : `${done.protein.slice(0, 2_000)}…`,
+          sequence: done.sequence,
+          changes: done.changes.slice(0, 40).map((one) => ({ codon: one.at, amino_acid: one.aminoAcid, from: one.from, to: one.to,
+                                                             from_share: Math.round(one.fromShare * 100), to_share: Math.round(one.toShare * 100), ...(one.instead === null ? {} : { instead: one.instead }) })),
+          ...(done.changes.length > 40 ? { more_changes: done.changes.length - 40 } : {}),
+          working: codonWorking(done, usage).map((one) => ({ of: one.of, comes: one.comes, kind: one.kind, steps: one.steps, ...(one.rests === undefined ? {} : { rests: one.rests }) })),
+          warnings: done.warnings,
+        };
       },
     },
     {

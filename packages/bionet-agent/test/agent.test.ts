@@ -219,6 +219,66 @@ describe("an adviser and what the lab keeps alive", () => {
   });
 });
 
+describe("an adviser rewriting a gene for a host", () => {
+  /** A host whose genes are written in whichever codon the demo's plasmid does not use much. */
+  const withHost = async (): Promise<{ w: Wren; host: string[]; gene: string }> => {
+    const w = await wren();
+    const { CodonTable } = await import("@biolibs/seq");
+    const forward = new Map<string, string>(CodonTable.unambiguousDnaById.get(1)!.forwardTable as unknown as Iterable<[string, string]>);
+    const family = (aminoAcid: string): string[] => [...forward].filter(([, one]) => one === aminoAcid).map(([codon]) => codon);
+    const protein = "MKVLILACLVALALARELEELNVPGEIVESLSSSEESITRINKKIEK";
+    const geneOf = (pick: (one: string[]) => string): string => [...protein].map((one) => pick(family(one))).join("");
+    await w.lab.addPart({ name: "CSN2 cds", sequence: geneOf((one) => one[0]!) });
+    const host: string[] = [];
+    for (let at = 0; at < 6; at++) {
+      await w.lab.addPart({ name: `host gene ${at + 1}`, sequence: `${geneOf((one) => one.at(-1)!)}${"ACG".repeat(at + 1)}` });
+      host.push(`host gene ${at + 1}`);
+    }
+    return { w, host, gene: "CSN2 cds" };
+  };
+
+  it("counts a host's preferences from the lab's own genes, and says so", async () => {
+    const { w, host } = await withHost();
+    const counted = await w.use("count_codon_usage", { genes: host });
+    expect(counted.genes).toBe(6);
+    expect(counted.codons).toBeGreaterThan(200);
+    expect(counted.counted_from).toEqual(host);
+    expect(counted.note).toMatch(/not a published table/);
+    // Every amino acid's codons are listed with a share, commonest first.
+    const leucine = counted.favourite_per_amino_acid["L"];
+    expect(leucine[0].share).toBeGreaterThanOrEqual(leucine.at(-1).share);
+    await expect(w.use("count_codon_usage", { genes: [] })).rejects.toThrow(/There is no table built in/);
+  });
+
+  it("rewrites the gene without changing the protein, and shows what it counted", async () => {
+    const { w, host, gene } = await withHost();
+    const done = await w.use("optimise_codons", { gene, host_genes: host, avoid: [{ name: "EcoRI", site: "GAATTC" }] });
+    const { translate } = await import("@biolibs/seq");
+    const before = w.lab.snapshot().lab!.parts.find((one) => one.name === gene)!.sequence;
+    expect(done.sequence).toHaveLength(before.length);
+    expect(String(translate(done.sequence))).toBe(String(translate(before)));
+    expect(done.protein).toBe(String(translate(before)));
+    expect(done.changed + done.unchanged).toBe(done.codons);
+    expect(done.changed).toBeGreaterThan(10);
+    expect(done.sequence).not.toContain("GAATTC");
+    expect(done.kept_out).toEqual(["EcoRI"]);
+    expect(done.counted_from).toEqual(host);
+    // The working says where the preferences came from and does not claim more.
+    const table = done.working.find((one: { of: string }) => one.of === "the host's preferences");
+    expect(table.kind).toBe("estimate");
+    expect(table.rests).toMatch(/Nothing here is a published table/);
+    expect(table.steps.some((one: string) => one.includes("host gene 1"))).toBe(true);
+    // It writes nothing: keeping the result is add_part, deliberately.
+    expect(w.lab.snapshot().lab!.parts.some((one) => one.sequence === done.sequence)).toBe(false);
+  });
+
+  it("refuses a gene that is not whole codons rather than guessing", async () => {
+    const { w, host } = await withHost();
+    await w.lab.addPart({ name: "ragged", sequence: "ATGAAAG" });
+    await expect(w.use("optimise_codons", { gene: "ragged", host_genes: host })).rejects.toThrow(/not a whole number of codons/);
+  });
+});
+
 describe("what an adviser cannot do", () => {
   it("has no tool that uses, moves, retires or records anything", async () => {
     const { tools } = await wren();
