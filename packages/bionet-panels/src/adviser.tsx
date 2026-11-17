@@ -43,7 +43,7 @@ const TOOL_WORDS: Readonly<Record<string, string>> = {
   lab_overview: "looked over the lab", list_parts: "read the list of parts", get_part: "read a part closely", list_tubes: "read the list of tubes",
   list_runs: "read what has been done", list_proposals: "read what is proposed", find_cutters: "looked for enzymes that cut a part",
   design_primers: "designed a pair of primers", work_out_pcr: "worked out a PCR", work_out_digest: "worked out a digest", work_out_ligation: "worked out a ligation",
-  add_part: "added a part", propose_pcr: "proposed a PCR", propose_digest: "proposed a digest", propose_ligation: "proposed a ligation", withdraw_proposal: "took a proposal back",
+  search_ncbi: "searched NCBI", fetch_from_ncbi: "read a sequence from NCBI", add_part: "added a part", propose_pcr: "proposed a PCR", propose_digest: "proposed a digest", propose_ligation: "proposed a ligation", withdraw_proposal: "took a proposal back",
 };
 
 /**

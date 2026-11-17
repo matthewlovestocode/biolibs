@@ -75,9 +75,35 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `add_part` | Say a sequence is a part, such as a primer just designed. Adds no tube |
 | `propose_pcr`, `propose_digest`, `propose_ligation` | Propose a run. Nothing is used or recorded as done |
 | `withdraw_proposal` | Take back a proposal of its own |
+| `search_ncbi` | Search NCBI's nucleotide, protein, gene or pubmed databases by keyword |
+| `fetch_from_ncbi` | Read one record by accession: its sequence, and what it says is marked on it |
 
-The last five are the only ones that write. A proposal may count on a part there is no tube of yet;
-it then says that the part has to be ordered or made first.
+`add_part`, the three `propose_` tools and `withdraw_proposal` are the only ones that write. A
+proposal may count on a part there is no tube of yet; it then says that the part has to be ordered
+or made first.
+
+### Looking something up
+
+The last two are the only ones that reach outside the lab, to NCBI's public databases. They are
+what lets an adviser answer a question the freezer says nothing about: which genes a protein is
+made by, what a reference sequence for one is called, what has been published about it.
+
+```ts
+const tools = agentTools(lab, { outside: { tool: "bionet-adviser" } });
+// or leave them out entirely:
+agentTools(lab, { outside: { outside: false } });
+```
+
+- **Nothing of the lab's goes out.** Only the search term or the accession is sent. A term is capped
+  at 200 characters, which is short enough that a sequence cannot be pasted into one.
+- **NCBI is told the software's name** and nothing about the lab or the person at it. It asks every
+  client for an address to contact about heavy use; pass `email` only if somebody has given one for
+  that, and never take one from the lab.
+- **Nothing comes in by itself.** A fetched record is handed back to be read. It becomes a part only
+  if the adviser then uses `add_part`, and what the record claims is marked on the sequence does not
+  come with it: an adviser may not mark a part.
+- **What comes back is what somebody deposited**, not something the lab has checked. The adviser is
+  told to say so.
 
 ## Showing it at work
 

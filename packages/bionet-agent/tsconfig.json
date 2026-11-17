@@ -2,5 +2,5 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": { "rootDir": "src", "outDir": "dist", "types": ["node"] },
   "include": ["src"],
-  "references": [ { "path": "../bionet-client" }, { "path": "../bionet-tools" } ]
+  "references": [ { "path": "../bionet-client" }, { "path": "../bionet-tools" }, { "path": "../entrez" } ]
 }

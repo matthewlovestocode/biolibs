@@ -8,6 +8,7 @@
  * merges the lab's logs holds it to that.
  *
  * - `tools.ts` — what an adviser is given: the lab to read, the engines, and three things to write
+ * - `lookup.ts` — the two that reach outside it, to NCBI's public databases
  * - `serve.ts` — those tools served over the Model Context Protocol, on this machine only
  *
  * The device that hosts the adviser keeps its key (`hostAdviser` in `@biolibs/bionet-client`), and
@@ -15,4 +16,5 @@
  * anything it tries to write says what is missing.
  */
 export * from "./tools.js";
+export * from "./lookup.js";
 export * from "./serve.js";
