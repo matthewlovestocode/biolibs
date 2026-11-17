@@ -17,6 +17,8 @@
  */
 import type { Lab, LabView } from "@biolibs/bionet-client";
 import { lookupTools, type LookupOptions } from "./lookup.js";
+import { paperTools, type PaperOptions } from "./papers.js";
+import { knownTools, type KnownOptions } from "./known.js";
 import { COMMON_ENZYMES, assemblyWorking, codonWorking, countCodonUsage, cutSites, cutsOf, cutters, designAssembly, designPair, digestPieces,
          digestRun, featureStretches, inductionChecks, inductionRun, inductionWorking, instrumentFor, ligationRun, optimiseCodons,
          planInduction, planPcr, primerTm, toPlan, toolFor,
@@ -82,7 +84,9 @@ export const AGENT_INSTRUCTIONS = [
   "The point of a construct is the protein, and a lab that stops at DNA has stopped one step short. An induction is the step across: a culture is grown, its promoter is turned on, and a protein gel either has a band at the right mass or it does not. Nothing predicts a yield or whether the protein folded, so what the tools work out is the protein the gene codes for and the mass to look for; the rest is read off the gel by a person.",
   "A lab keeps two kinds of thing. A part is a molecule, known by its sequence, so two labs that made the same one agree without having spoken. A strain is something alive — an organism with something put into it — known by an ID and by what it came from, because the same plasmid put into the same published host twice is two strains. A tube holds a part; a culture holds a strain.",
   "Amounts are whole numbers of each tube's own unit. Positions on a sequence are given as people count them: the first base is 1, and a stretch from 101 to 600 includes both.",
-  "Three tools reach outside the lab to NCBI's public databases, to find out what is known about a gene or a protein that the freezer says nothing about. They send only what you type into them: never put the lab's own sequences, part names or notes in a search. What comes back is what somebody deposited, not something this lab has checked, so say where a sequence came from when you use one.",
+  "Some tools reach outside the lab. Three go to NCBI's public databases, to find out what is known about a gene or a protein the freezer says nothing about. Three go to Europe PMC, to read what people have published. They send only what you type into them: never put the lab's own sequences, part names or notes in a search. What comes back is what somebody deposited or published, not something this lab has checked, so say where it came from when you use it.",
+  "A protein is made of more than its sequence. look_up_protein says what a curator has recorded about one — where the mature chain lies, which residues carry a phosphate or a sugar after it is made, where it varies between breeds — and work_out_phosphorylation says whether the host you have in mind has the enzyme that would put those on. A host will happily make a protein of exactly the right mass that does not work, because the modification that made it work was never applied. Ask that before a construct is built, not after a month at the bench.",
+  "Prefer a paper to your own recollection. When the question is which host, which promoter, what the medium was or what a sensible yield is, search_papers and read_paper can give an answer with a group, a date and a link behind it, and that is a different thing to hand a lab member than something you half remember. A method that worked for one group may not work here; say whose result it is.",
   "If a tool says the adviser is not in the lab, a keeper has to let it in, from the app's Adviser tab; say so to the person rather than trying another way.",
 ].join("\n");
 
@@ -108,8 +112,9 @@ export const MOST_BASES = 20_000;
  *
  * @param lab - The lab, opened, on a device that hosts an adviser.
  * @param options - `watch` is told of each use, with what it would look like in the lab, so that a
- *   window can show the adviser at work; `outside` says whether to offer the tools that look
- *   something up at NCBI, and what to tell NCBI about who is asking.
+ *   window can show the adviser at work; `outside` says whether to offer the tools that reach past
+ *   the lab — NCBI's databases and the literature at Europe PMC — and what to tell them about who
+ *   is asking.
  * @returns The tools, in the order to list them.
  *
  * @example
@@ -120,7 +125,7 @@ export const MOST_BASES = 20_000;
  * const overview = await tools.find((one) => one.name === "lab_overview")!.run({});
  * ```
  */
-export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => void; outside?: LookupOptions } = {}): AgentTool[] {
+export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => void; outside?: LookupOptions & PaperOptions & KnownOptions } = {}): AgentTool[] {
   /** The lab as it stands now. Asked for at each use, since it changes under the adviser. */
   const now = (): LabView => {
     const seen = lab.snapshot().lab;
@@ -874,7 +879,7 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
   ];
 
   // What is looked up outside has no place in the lab to be shown at, so those tools report none.
-  const outside: typeof tools = lookupTools(options.outside ?? {}, lab);
+  const outside: typeof tools = [...lookupTools(options.outside ?? {}, lab), ...paperTools(options.outside ?? {}), ...knownTools(options.outside ?? {})];
   return [...tools, ...outside].map(({ shows, run, ...tool }) => ({
     ...tool,
     run: async (args) => {

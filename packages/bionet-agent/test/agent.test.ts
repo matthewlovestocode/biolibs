@@ -9,7 +9,9 @@
 import { agentTools, answerAgent, newAgentToken, serveAgent, AGENT_INSTRUCTIONS, MOST_BASES, PROTOCOL_VERSIONS, type AgentCall, type AgentTool } from "@biolibs/bionet-agent";
 import { Lab, memoryKeys, memoryStore } from "@biolibs/bionet-client";
 import { demoMolecules } from "@biolibs/bionet-demo";
-import { describe, expect, it } from "vitest";
+import * as europepmc from "@biolibs/europepmc";
+import * as uniprot from "@biolibs/uniprot";
+import { afterEach, describe, expect, it } from "vitest";
 
 interface Wren { lab: Lab; tools: AgentTool[]; calls: AgentCall[]; tubes: { pGene: string; backbone: string }; cycler: string; use: (name: string, args?: Record<string, unknown>) => Promise<any> }
 
@@ -552,5 +554,318 @@ describe("an adviser growing a culture to make the protein", () => {
     const { tools } = await wren();
     expect(tools.find((one) => one.name === "work_out_induction")!.readOnly).toBe(true);
     expect(tools.find((one) => one.name === "propose_induction")!.readOnly).toBe(false);
+  });
+});
+
+describe("an adviser reading the literature", () => {
+  /** A paper, with the shapes that make a real one awkward to read. */
+  const JATS = `<?xml version="1.0"?>
+<article xmlns:xlink="http://www.w3.org/1999/xlink">
+  <front><journal-meta><journal-title-group><journal-title>Biomolecules</journal-title></journal-title-group></journal-meta>
+  <article-meta>
+    <title-group><article-title>Casein in <italic>Pichia pastoris</italic></article-title></title-group>
+    <contrib-group><contrib contrib-type="author"><name><surname>Hopper</surname><given-names>Grace</given-names></name></contrib></contrib-group>
+    <pub-date><year>2024</year></pub-date>
+    <permissions><license><license-p>Under <ext-link xlink:href="https://creativecommons.org/licenses/by/4.0/">CC BY</ext-link>.</license-p></license></permissions>
+    <abstract><p>We expressed CSN2 and got a band.</p></abstract>
+    <kwd-group><kwd>casein</kwd></kwd-group>
+  </article-meta></front>
+  <body>
+    <sec><title>1. Introduction</title><p>Cheese is old [<xref ref-type="bibr" rid="b1">1</xref>].</p></sec>
+    <sec><title>2. Materials and Methods</title>
+      <sec><title>2.1. Induction</title><p>Induced with 1% methanol at 28 °C for 48 h.</p></sec>
+    </sec>
+    <sec><title>3. Results</title><p>We saw 24 kDa.</p>
+      <table-wrap id="t1"><label>Table 1</label><caption><p>Yields.</p></caption>
+        <table><thead><tr><th>Strain</th><th>Yield</th></tr></thead><tbody><tr><td>GS115</td><td>0.6 mg/L</td></tr></tbody></table>
+      </table-wrap>
+      <fig id="f1"><label>Figure 1</label><caption><p>A gel.</p></caption></fig>
+    </sec>
+  </body>
+</article>`;
+
+  const answered = (reply: (url: string) => string): { asked: string[] } => {
+    const asked: string[] = [];
+    europepmc.settings.transport = async (url: string) => { asked.push(url); return { contentType: "application/json", body: reply(url) }; };
+    return { asked };
+  };
+  const searchReply = (results: Record<string, unknown>[]): string =>
+    JSON.stringify({ hitCount: results.length, resultList: { result: results } });
+  const paper = (over: Record<string, unknown> = {}): Record<string, unknown> => ({
+    id: "40723902", source: "MED", pmid: "40723902", pmcid: "PMC12292773", doi: "10.3390/x",
+    title: "Casein in yeast.", authorString: "Hopper G.", journalTitle: "Biomolecules", pubYear: "2024",
+    citedByCount: 4, isOpenAccess: "Y", inEPMC: "Y", hasSuppl: "Y", hasReferences: "Y", ...over,
+  });
+
+  afterEach(() => { europepmc.settings.transport = europepmc.fetchTransport; europepmc.settings.email = null; });
+
+  it("is among the tools, and none of the three writes", async () => {
+    const { tools } = await wren();
+    const literature = tools.filter((one) => ["search_papers", "read_paper", "papers_around"].includes(one.name));
+    expect(literature.map((one) => one.name)).toEqual(["search_papers", "read_paper", "papers_around"]);
+    expect(literature.every((one) => one.readOnly)).toBe(true);
+    expect(AGENT_INSTRUCTIONS).toMatch(/Europe PMC/);
+  });
+
+  it("searches, and sends nothing but what it was asked to search for", async () => {
+    const w = await wren();
+    const { asked } = answered(() => searchReply([paper({ abstractText: "We expressed CSN2." })]));
+    const said = await w.use("search_papers", { query: '"kappa-casein" AND "Pichia pastoris"', corpus: "open-access", abstracts: true });
+    expect(said.results[0]).toMatchObject({
+      id: "40723902", source: "MED", pmcid: "PMC12292773", title: "Casein in yeast",
+      journal: "Biomolecules", year: 2024, cited_by: 4, can_read_in_full: true,
+      has_supplementary_data: true, abstract: "We expressed CSN2.",
+      look_at: "https://europepmc.org/article/MED/40723902",
+    });
+    expect(said.from_outside).toMatch(/has been checked by this lab/);
+    // Only the query went, and it went narrowed to open access as it was asked to be.
+    expect(new URL(asked[0]!).searchParams.get("query")).toBe('("kappa-casein" AND "Pichia pastoris") AND OPEN_ACCESS:Y');
+    expect(new URL(asked[0]!).searchParams.get("email")).toBeNull();
+    // Nothing of the lab's is anywhere in what was sent.
+    const lab = w.lab.snapshot().lab!;
+    for (const part of lab.parts) expect(asked[0]!).not.toContain(part.sequence.slice(0, 20));
+    expect(w.lab.snapshot().lab!.runs).toHaveLength(0);
+  });
+
+  it("will not let a sequence be pasted into a query", async () => {
+    const w = await wren();
+    answered(() => searchReply([]));
+    await expect(w.use("search_papers", { query: "A".repeat(401) })).rejects.toThrow(/at most 400 characters/);
+  });
+
+  it("says when nothing matched, and what to try instead", async () => {
+    const w = await wren();
+    answered(() => searchReply([]));
+    const said = await w.use("search_papers", { query: '"a phrase nobody wrote"' });
+    expect(said).toMatchObject({ matched: 0, results: [] });
+    expect(said.note).toMatch(/a phrase has to appear exactly as written/i);
+  });
+
+  it("reads a paper's methods, which is where the recipe is", async () => {
+    const w = await wren();
+    const { asked } = answered(() => JATS);
+    const said = await w.use("read_paper", { pmcid: "PMC12292773", section: "methods" });
+    expect(said).toMatchObject({ pmcid: "PMC12292773", title: "Casein in Pichia pastoris", journal: "Biomolecules", year: 2024,
+                                 licence: "https://creativecommons.org/licenses/by/4.0/", section: "methods" });
+    expect(said.parts.map((one: { heading: string }) => one.heading)).toEqual(["2. Materials and Methods", "2.1. Induction"]);
+    expect(said.parts[1].text).toBe("Induced with 1% methanol at 28 °C for 48 h.");
+    expect(said.from_outside).toMatch(/not something this lab has seen/);
+    expect(asked[0]).toBe("https://www.ebi.ac.uk/europepmc/webservices/rest/PMC12292773/fullTextXML");
+  });
+
+  it("gives the abstract and the headings when no section is asked for", async () => {
+    const w = await wren();
+    answered(() => JATS);
+    const said = await w.use("read_paper", { pmcid: "PMC12292773" });
+    expect(said.abstract).toBe("We expressed CSN2 and got a band.");
+    expect(said.keywords).toEqual(["casein"]);
+    // The headings come back as a list, not run together into a sentence: a review has forty.
+    expect(said.what_else.sections).toEqual([
+      { heading: "1. Introduction", under: 0, characters: 14 },
+      { heading: "2. Materials and Methods", under: 0, characters: 0 },
+      { heading: "2.1. Induction", under: 1, characters: 43 },
+      { heading: "3. Results", under: 0, characters: 14 },
+    ]);
+    expect(said.what_else.tables).toBe(1);
+    expect(said.what_else.ask_for).toContain("methods");
+  });
+
+  it("gives the tables as rows, since a yield is as often in one as in a sentence", async () => {
+    const w = await wren();
+    answered(() => JATS);
+    const said = await w.use("read_paper", { pmcid: "PMC12292773", section: "tables" });
+    expect(said.tables).toEqual([{ label: "Table 1", caption: "Yields.", headings: ["Strain", "Yield"], rows: [["GS115", "0.6 mg/L"]] }]);
+  });
+
+  it("says what a paper has rather than nothing, when the section asked for is not in it", async () => {
+    const w = await wren();
+    answered(() => JATS);
+    const said = await w.use("read_paper", { pmcid: "PMC12292773", section: "supplementary note" });
+    expect(said.found_nothing).toMatch(/no section matching/);
+    expect(said.what_else.sections.map((one: { heading: string }) => one.heading)).toContain("3. Results");
+  });
+
+  it("says when a heading only contained the word, rather than passing a guess off as the section", async () => {
+    const w = await wren();
+    // This paper has no methods section; one heading merely has the word in it.
+    answered(() => JATS.replace("<title>2. Materials and Methods</title>", "<title>2. Notes on our methods of counting</title>"));
+    const said = await w.use("read_paper", { pmcid: "PMC12292773", section: "methods" });
+    expect(said.parts[0].heading).toBe("2. Notes on our methods of counting");
+    expect(said.not_an_exact_match).toMatch(/merely contain the word/);
+    // And where it is the section, nothing casts doubt on it.
+    answered(() => JATS);
+    expect((await w.use("read_paper", { pmcid: "PMC12292773", section: "methods" })).not_an_exact_match).toBeUndefined();
+  });
+
+  it("says plainly that a paper which is not open cannot be read here", async () => {
+    const w = await wren();
+    europepmc.settings.transport = async (url: string) => { throw new europepmc.EuropePmcError("Europe PMC answered 404.", url, 404); };
+    await expect(w.use("read_paper", { pmcid: "PMC1" })).rejects.toThrow(/Only open-access papers can be read in full/);
+    await expect(w.use("read_paper", { pmcid: "40723902" })).rejects.toThrow(/not a PubMed Central ID/);
+  });
+
+  it("walks back to the paper that has the method, and forward to who repeated it", async () => {
+    const w = await wren();
+    const { asked } = answered((url) => url.includes("/references")
+      ? JSON.stringify({ hitCount: 52, referenceList: { reference: [{ id: "3286696", source: "MED", title: "Cloning bovine kappa-casein.", authorString: "Kang Y.", pubYear: 1988 }] } })
+      : JSON.stringify({ hitCount: 1, citationList: { citation: [{ id: "9", source: "MED", title: "We repeated it." }] } }));
+    const back = await w.use("papers_around", { id: "40723902", source: "MED", direction: "back", limit: 1 });
+    expect(back).toMatchObject({ of: "MED/40723902", direction: "what it cited", count: 52, more: true });
+    expect(back.papers[0]).toMatchObject({ id: "3286696", title: "Cloning bovine kappa-casein", year: 1988 });
+    const forward = await w.use("papers_around", { id: "40723902", source: "MED", direction: "forward" });
+    expect(forward).toMatchObject({ direction: "what has cited it", count: 1, more: false });
+    expect(asked[0]).toContain("/MED/40723902/references?");
+    expect(asked[1]).toContain("/MED/40723902/citations?");
+  });
+
+  it("says when Europe PMC cannot be reached, rather than failing as itself", async () => {
+    const w = await wren();
+    europepmc.settings.transport = async (url: string) => { throw new europepmc.EuropePmcError("down", url, null, true); };
+    await expect(w.use("search_papers", { query: "casein" })).rejects.toThrow(/could not be reached. This device may be offline/);
+    europepmc.settings.transport = async (url: string) => { throw new europepmc.EuropePmcError("slow down", url, 429); };
+    await expect(w.use("search_papers", { query: "casein" })).rejects.toThrow(/being asked too often/);
+  });
+
+  it("can be left out by a host that does not want the lab reaching outside", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    const names = agentTools(lab, { outside: { papers: false, outside: false } }).map((one) => one.name);
+    expect(names.some((one) => one.endsWith("_papers") || one === "papers_around" || one.includes("ncbi"))).toBe(false);
+  });
+});
+
+describe("an adviser asking what is known about a protein", () => {
+  const SEQ = "MKVLILACLVALALARELEELNVPGEIVESLSSSEESITRINKKIE";
+  const ENTRY = `<?xml version="1.0" encoding="UTF-8"?>
+<uniprot xmlns="http://uniprot.org/uniprot">
+<entry dataset="Swiss-Prot" created="1986-07-21" modified="2024-01-24" version="1">
+  <accession>P02666</accession>
+  <name>CASB_BOVIN</name>
+  <protein><recommendedName><fullName>Beta-casein</fullName></recommendedName></protein>
+  <gene><name type="primary">CSN2</name></gene>
+  <organism><name type="scientific">Bos taurus</name><name type="common">Bovine</name>
+    <lineage><taxon>Eukaryota</taxon></lineage></organism>
+  <keyword id="KW-0597">Phosphoprotein</keyword>
+  <feature type="signal peptide"><location><begin position="1"/><end position="15"/></location></feature>
+  <feature type="chain" description="Beta-casein"><location><begin position="16"/><end position="46"/></location></feature>
+  <feature type="modified residue" description="Phosphoserine" evidence="2"><location><position position="30"/></location></feature>
+  <feature type="modified residue" description="Phosphoserine" evidence="2"><location><position position="32"/></location></feature>
+  <feature type="modified residue" description="Phosphoserine" evidence="2"><location><position position="33"/></location></feature>
+  <feature type="modified residue" description="Phosphoserine" evidence="2"><location><position position="34"/></location></feature>
+  <feature type="sequence variant" description="In variant D." original="S" variation="K"><location><position position="33"/></location></feature>
+  <sequence length="46" mass="5107" checksum="X" modified="1986-07-21" version="1">${SEQ}</sequence>
+</entry></uniprot>`;
+
+  const answeringUniProt = (body: string): { asked: string[] } => {
+    const asked: string[] = [];
+    uniprot.settings.transport = async (url: string) => { asked.push(url); return { contentType: "application/xml", body: new TextEncoder().encode(body) }; };
+    return { asked };
+  };
+  afterEach(() => { uniprot.settings.transport = uniprot.fetchTransport; uniprot.settings.email = null; });
+
+  it("is among the tools, and none of the three writes", async () => {
+    const { tools } = await wren();
+    const known = tools.filter((one) => ["search_proteins", "look_up_protein", "work_out_phosphorylation"].includes(one.name));
+    expect(known.map((one) => one.name)).toEqual(["search_proteins", "look_up_protein", "work_out_phosphorylation"]);
+    expect(known.every((one) => one.readOnly)).toBe(true);
+    expect(AGENT_INSTRUCTIONS).toMatch(/right mass that does not work/);
+  });
+
+  it("gives the mature chain apart from the precursor, since they are different masses", async () => {
+    const w = await wren();
+    const { asked } = answeringUniProt(ENTRY);
+    const said = await w.use("look_up_protein", { accession: "P02666" });
+    expect(said).toMatchObject({ accession: "P02666", name: "Beta-casein", gene: "CSN2", reviewed_by_a_curator: true, precursor_length: 46 });
+    expect(said.mature_chain).toMatchObject({ lies: "16-46", residues: 31 });
+    expect(said.mature_sequence).toBe(SEQ.slice(15));
+    expect(said.mature_sequence).not.toBe(said.sequence);
+    expect(asked[0]).toBe("https://rest.uniprot.org/uniprotkb/P02666.xml");
+  });
+
+  it("gives every modified residue counted both ways, because the two are confused", async () => {
+    const w = await wren();
+    answeringUniProt(ENTRY);
+    const said = await w.use("look_up_protein", { accession: "P02666" });
+    expect(said.modified_residues).toEqual([
+      { on_the_entry: 30, on_the_mature_chain: 15, residue: "S", what: "Phosphoserine", evidence_cited: true },
+      { on_the_entry: 32, on_the_mature_chain: 17, residue: "S", what: "Phosphoserine", evidence_cited: true },
+      { on_the_entry: 33, on_the_mature_chain: 18, residue: "S", what: "Phosphoserine", evidence_cited: true },
+      { on_the_entry: 34, on_the_mature_chain: 19, residue: "S", what: "Phosphoserine", evidence_cited: true },
+    ]);
+    // The variants are long, so they are counted and not listed until asked for.
+    expect(said.variants).toBeUndefined();
+    expect(said.variants_not_shown).toMatch(/difference between one milk and another/);
+    const more = await w.use("look_up_protein", { accession: "P02666", include: "variants" });
+    expect(more.variants[0]).toMatchObject({ on_the_entry: 33, was: "S", now: "K", note: "In variant D." });
+  });
+
+  it("says when an entry was made by machine rather than read by anybody", async () => {
+    const w = await wren();
+    answeringUniProt(ENTRY.replace('dataset="Swiss-Prot"', 'dataset="TrEMBL"'));
+    const said = await w.use("look_up_protein", { accession: "P02666" });
+    expect(said.reviewed_by_a_curator).toBe(false);
+    expect(said.unreviewed_note).toMatch(/made by machine from similarity/);
+  });
+
+  it("will not ask for something that is not an accession", async () => {
+    const w = await wren();
+    const { asked } = answeringUniProt(ENTRY);
+    await expect(w.use("look_up_protein", { accession: "beta-casein" })).rejects.toThrow(/not a UniProt accession/);
+    expect(asked).toHaveLength(0);
+  });
+
+  it("works the sites out and checks them against what the curator recorded", async () => {
+    const w = await wren();
+    answeringUniProt(ENTRY);
+    const said = await w.use("work_out_phosphorylation", { uniprot: "P02666", host: "Pichia pastoris GS115" });
+    expect(said).toMatchObject({ protein: "Beta-casein", accession: "P02666", counted_on: "the whole entry, precursor included" });
+    // The rule reproduces every site the curator recorded, which is the reason to trust it elsewhere.
+    expect(said.against_what_is_recorded).toMatchObject({ recorded: [30, 32, 33, 34], the_rule_missed: [], caught: "100% of the recorded sites" });
+    expect(said.against_what_is_recorded.note).toMatch(/reason to believe it on a sequence nobody has studied/);
+    expect(said.sites.some((one: { round: number }) => one.round > 1)).toBe(true);
+  });
+
+  it("counts on the mature chain when asked, and moves the recorded sites with it", async () => {
+    const w = await wren();
+    answeringUniProt(ENTRY);
+    const said = await w.use("work_out_phosphorylation", { uniprot: "P02666", on_the_mature_chain: true });
+    expect(said.counted_on).toBe("the mature chain");
+    expect(said.residues).toBe(31);
+    // The same four residues, counted from the start of what the lab holds.
+    expect(said.against_what_is_recorded.recorded).toEqual([15, 17, 18, 19]);
+    expect(said.against_what_is_recorded.the_rule_missed).toEqual([]);
+  });
+
+  it("says whether the host has the enzyme, and that it did not work that out", async () => {
+    const w = await wren();
+    answeringUniProt(ENTRY);
+    const said = await w.use("work_out_phosphorylation", { uniprot: "P02666", host: "Komagataella phaffii" });
+    expect(said.host).toMatchObject({ host: "Komagataella phaffii", has_the_secretory_kinase: "not known", has_casein_kinase_2: true, how_firmly: "reported" });
+    expect(said.host.check_it).toMatch(/not worked out from anything/);
+    // A bacterium is the clear case, and is said clearly.
+    const coli = await w.use("work_out_phosphorylation", { sequence: SEQ, host: "E. coli BL21" });
+    expect(coli.host).toMatchObject({ has_the_secretory_kinase: "no", how_firmly: "well established" });
+    // A host nothing is known about is not a host that does nothing.
+    const other = await w.use("work_out_phosphorylation", { sequence: SEQ, host: "Dictyostelium discoideum" });
+    expect(other.host_not_known).toMatch(/not the same as its doing nothing/);
+  });
+
+  it("works on a sequence alone, with no record to check against", async () => {
+    const w = await wren();
+    const said = await w.use("work_out_phosphorylation", { sequence: SEQ });
+    expect(said.counted_on).toBe("the sequence given");
+    expect(said.against_what_is_recorded).toBeUndefined();
+    expect(said.sites.length).toBeGreaterThan(0);
+    expect(said.working[0].rests).toMatch(/not that it is/);
+    await expect(w.use("work_out_phosphorylation", {})).rejects.toThrow(/Give a sequence, or a UniProt accession/);
+  });
+
+  it("can be left out by a host that does not want the lab reaching outside", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    const names = agentTools(lab, { outside: { known: false, papers: false, outside: false } }).map((one) => one.name);
+    expect(names.some((one) => one.includes("protein") || one.includes("phosphorylation"))).toBe(false);
   });
 });

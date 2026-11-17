@@ -80,6 +80,11 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `add_part` | Say a sequence is a part, such as a primer just designed. Adds no tube |
 | `propose_pcr`, `propose_digest`, `propose_ligation` | Propose a run. Nothing is used or recorded as done |
 | `withdraw_proposal` | Take back a proposal of its own |
+| `search_proteins`, `look_up_protein` | What UniProt knows about a protein: its mature chain, its modified residues, its variants |
+| `work_out_phosphorylation` | Which residues would be phosphorylated, and whether the host has the enzyme |
+| `search_papers` | Search the literature at Europe PMC: PubMed, PMC, preprints and patents together |
+| `read_paper` | Read an open-access paper: its abstract, a named section such as the methods, or its tables |
+| `papers_around` | What a paper cited, and who has cited it since |
 | `search_ncbi` | Search NCBI's nucleotide, protein, gene or pubmed databases by keyword |
 | `fetch_from_ncbi` | Read one record by accession: its sequence, and what it says is marked on it |
 | `keep_from_ncbi` | Keep one as a part, with what the record says is marked on it. No tube |
@@ -88,6 +93,35 @@ system's keychain, and puts that command on the clipboard without showing the to
 that write. A
 proposal may count on a part there is no tube of yet; it then says that the part has to be ordered
 or made first.
+
+### Whether the protein will work, not just whether it gets made
+
+`look_up_protein` and `work_out_phosphorylation` go to UniProt and to the motif rules. They answer the
+question a project to make a milk protein actually turns on, which is not the question of whether the
+host will express it.
+
+`look_up_protein` gives the **mature chain** apart from the precursor — different lengths, different
+masses, and the band a lab should look for is the chain's — and every residue that carries something
+after the protein is made, counted both on the entry (how a paper cites it) and on the chain (how a
+lab holding it counts). It says whether a curator read the entry or a machine inferred it.
+
+`work_out_phosphorylation` applies the kinase motifs, compares them against what the curator recorded,
+and says whether the host has the enzyme at all. The comparison is the useful part: on bovine
+β-casein the rule reproduces every recorded site, which is the reason to believe it on a variant
+nobody has studied. The host answer is explicitly not computed, and says so.
+
+### Reading what other people did
+
+`search_papers`, `read_paper` and `papers_around` go to Europe PMC. They are what turns "which host
+should we express this in?" from something an adviser answers out of whatever it happens to know into
+something it answers with a paper: this group used this host with this promoter and got this much,
+here is the section that says so, here is where to read it.
+
+`read_paper` with `section: "methods"` is the one that earns its place. A paper's methods are where
+the recipe is — which strain, which plasmid, what the medium was, what it was induced with and for how
+long — and it comes back as prose, with the citation markers taken out and the tables kept apart.
+Most papers are not open access; a search result says plainly whether its full text can be read, and
+for the rest there is the abstract and a link.
 
 The arc the tools are for runs from a gene to a protein: find it, design the primers, work out the PCR,
 design the assembly, rewrite it in the host's codons, check the read against the design, put it into a

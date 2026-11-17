@@ -1,6 +1,6 @@
 # @biolibs/bionet-tools
 
-The tools a lab uses at the bench, tied to its freezer: its sequences and their maps, PCR, a check digest with its gel, a ligation that joins the pieces back up, and an induction that grows a strain to make the protein the whole thing was for. Sequences come in from the SnapGene, GenBank, EMBL and FASTA files a lab already has, with their features. For PCR, choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
+The tools a lab uses at the bench, tied to its freezer: its sequences and their maps, PCR, a check digest with its gel, a ligation that joins the pieces back up, an induction that grows a strain to make the protein the whole thing was for, and a check on whether that protein will be modified into something that works. Sequences come in from the SnapGene, GenBank, EMBL and FASTA files a lab already has, with their features. For PCR, choose a template and two primers from the tubes the lab holds, see what they would make, and record the run. The template and primers drop by what was used, and the product becomes a new tube that knows which run made it.
 
 ```
 npm install @biolibs/bionet-tools @biolibs/bionet-panels @biolibs/bionet-react @biolibs/bionet-theme react
@@ -323,6 +323,42 @@ recorded as a run with no outputs that used some of a culture, the same shape a 
 the protein is added afterwards as a part in its own right. The run names it in its settings by the
 checksum that part will have, which `inducedBy` reads back: so a device that was not there when it
 happened arrives at the same answer from the log alone, without a new kind of entry.
+
+## Whether the protein will actually work
+
+A band of the right mass is not the same as a protein that does its job, and for a milk protein the
+difference is the whole project. Casein builds a micelle — which is what makes it behave like cheese
+rather than like dissolved protein — through clusters of phosphorylated serines binding calcium. A
+host can make casein of exactly the right mass, giving exactly the right band, that will not do the
+job, because the kinase that puts the phosphates on is one the host does not have.
+
+```ts
+import { comparedWithKnown, hostPhosphorylation, phosphoSites, phosphoWorking } from "@biolibs/bionet-tools";
+
+const found = phosphoSites(casein.sequence);
+found.sites.map((one) => [one.at, one.by, one.round]);
+// [[30, "S-x-E", 3], [32, "S-x-E", 2], [33, "S-x-E", 1], [34, "S-x-E", 1], [50, "S-x-E", 1]]
+
+comparedWithKnown(found.sites.map((one) => one.at), [30, 32, 33, 34, 50]).caught;   // 1
+hostPhosphorylation("Pichia pastoris GS115")?.secretoryKinase;                      // "not known"
+```
+
+Two things come back and they are different in kind, which is why they are worked out separately.
+
+**The sites are a rule over the sequence.** The kinase of the secretory pathway reads Ser-x-Glu, and
+once a serine is phosphorylated it carries the negative charge a glutamate does for the one two
+residues before it — so the sites march backwards along a cluster, which is why casein's serines come
+in runs. `round` says which pass found each, and `phosphoWorking` shows the rule and every pass.
+
+Applied to bovine β-casein, that rule gives back exactly the five phosphoserines a curator recorded in
+UniProt, and nothing else. A test asserts it, because that agreement is the only reason to believe the
+rule on a sequence nobody has studied — a variant, or the same gene rewritten in another host's
+codons. `comparedWithKnown` is how to make that check for any protein that has a record.
+
+**Whether the host has the enzyme is not a rule.** `hostPhosphorylation` says what is generally held
+about the usual expression hosts, says how firmly, and says plainly that it is a claim to go and
+check — which a lab's own literature tools can now do. It is there to stop somebody discovering at the
+end of a month that the protein was never going to be phosphorylated.
 
 ## The tool
 

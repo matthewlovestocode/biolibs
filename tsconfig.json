@@ -59,6 +59,9 @@
       "path": "packages/entrez"
     },
     {
+      "path": "packages/europepmc"
+    },
+    {
       "path": "packages/features"
     },
     {
@@ -111,6 +114,9 @@
     },
     {
       "path": "packages/seqmap"
+    },
+    {
+      "path": "packages/uniprot"
     },
     {
       "path": "packages/seqrecord"

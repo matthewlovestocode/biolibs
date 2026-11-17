@@ -1,0 +1,49 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0",
+    "@biolibs/seqio": "^1.0.0"
+  },
+  "description": "Europe PMC client: search the literature, and read an open-access paper's full text as sections, tables and figures rather than as JATS XML",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/europepmc#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "typescript",
+    "europepmc",
+    "pubmed",
+    "literature",
+    "jats",
+    "open-access",
+    "full-text"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/europepmc",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/europepmc"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}

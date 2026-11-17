@@ -1,0 +1,48 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/core": "^1.0.0",
+    "@biolibs/seqio": "^1.0.0"
+  },
+  "description": "UniProt client: what is known about a protein — its mature chain, its modified residues, its variants and its domains — read into positions people count",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/uniprot#readme",
+  "keywords": [
+    "bioinformatics",
+    "biology",
+    "typescript",
+    "uniprot",
+    "swiss-prot",
+    "protein",
+    "annotation",
+    "post-translational-modification"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/uniprot",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/uniprot"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}

@@ -5,7 +5,9 @@
   "dependencies": {
     "@biolibs/bionet-client": "^0.2.4",
     "@biolibs/bionet-tools": "^0.1.7",
-    "@biolibs/entrez": "^1.0.0"
+    "@biolibs/entrez": "^1.0.0",
+    "@biolibs/europepmc": "^0.1.0",
+    "@biolibs/uniprot": "^0.1.0"
   },
   "description": "A lab's adviser: what an agent with no hands can read of a Bionet lab, look up at NCBI, work out with the lab's own tools, and propose for a person to carry out, served to it over the Model Context Protocol from the device that hosts it",
   "engines": {
