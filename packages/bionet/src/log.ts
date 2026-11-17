@@ -335,9 +335,13 @@ export const annotatePart = (part: string, features: PartFeature[]): Operation =
 /** @returns The change that says whether a part is on offer to other labs. */
 export const offerPart = (part: string, available: boolean): Operation => ({ type: "part.offer", part, available });
 
-/** @returns The change that adds one physical item of a part. `amount` is a whole number of `unit`. */
-export const addItem = (item: { item: string; part: string; amount: number; unit?: string | null }): Operation =>
-  ({ type: "item.add", item: item.item, part: item.part, amount: item.amount, unit: item.unit ?? null });
+/**
+ * @returns The change that adds one physical lot: a tube of a part, or a culture of a strain.
+ *   Exactly one of `part` and `strain` is given, and `amount` is a whole number of `unit`.
+ */
+export const addItem = (item: { item: string; part?: string; strain?: string; amount: number; unit?: string | null }): Operation =>
+  ({ type: "item.add", item: item.item, ...(item.part === undefined ? {} : { part: item.part }),
+     ...(item.strain === undefined ? {} : { strain: item.strain }), amount: item.amount, unit: item.unit ?? null });
 
 /** @returns The change that adds to or takes from an item. `by` is a whole-number difference, never a total. */
 export const adjustItem = (item: string, by: number): Operation => ({ type: "item.adjust", item, by });
@@ -504,8 +508,40 @@ export const settlePlan = (plan: string, run: string | null): Operation => ({ ty
 /** @returns A new ID for a plan, made the way an item's is. */
 export const newPlanId = (): string => newItemId();
 
-/** @returns The change that sets one field on a part (by checksum), an item or a place (by ID). */
-export const setField = (on: "part" | "item" | "place", id: string, field: string, value: string | number | null): Operation =>
+/**
+ * A living thing the lab keeps: an organism, and what has been put into it.
+ *
+ * A part is known by its sequence, so two labs that made the same molecule call it the same thing
+ * without ever having spoken. A strain is not like that. Two labs that put the same plasmid into
+ * the same published host have two strains, which may behave differently and did not come from each
+ * other, so a strain is known by an ID the way a tube or a place is, and says what it came from.
+ */
+export interface StrainRecord {
+  /** The strain's ID. */
+  strain: string;
+  /** What the lab calls it. */
+  name: string;
+  /** The organism it is, as a person would say it: `Saccharomyces cerevisiae W303`. */
+  host: string;
+  /** The checksums of the parts it carries. None, for a host nothing has been put into. */
+  carries: string[];
+  /** The strain it was made from, if the lab has that one. */
+  parent: string | null;
+  /** The run that made it, if one did. */
+  from: string | null;
+}
+
+/**
+ * @returns The change that says the lab has a strain. It makes no culture of it: `addItem` with the
+ *   strain does that, the way a tube of a part is added after the part.
+ */
+export const addStrain = (strain: StrainRecord): Operation => ({ type: "strain.add", ...strain });
+
+/** @returns A new ID for a strain, made the way an item's is. */
+export const newStrainId = (): string => newItemId();
+
+/** @returns The change that sets one field on a part (by checksum), or an item, a place or a strain (by ID). */
+export const setField = (on: "part" | "item" | "place" | "strain", id: string, field: string, value: string | number | null): Operation =>
   ({ type: "field.set", on, id, field, value });
 
 /** @returns A new ID for a place, made the way an item's is. */

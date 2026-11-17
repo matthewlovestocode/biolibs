@@ -23,7 +23,10 @@ export interface RecordedPlace {
 /** An item, as a lab records it. */
 export interface RecordedItem {
   item: string;
-  part: string;
+  /** The part it is an item of, or `null` if it is a culture of a strain. */
+  part: string | null;
+  /** The strain it is a culture of, if it is one. */
+  strain?: string | null;
   unit: string | null;
   amount: number;
   retired: boolean;
@@ -36,6 +39,8 @@ export interface RecordedLab {
   places: readonly RecordedPlace[];
   items: readonly RecordedItem[];
   parts: readonly { checksum: string; name: string }[];
+  /** The strains, for naming a culture. A lab that keeps none need not say so. */
+  strains?: readonly { strain: string; name: string }[];
 }
 
 /** The ID of the room that is made up when a lab has places standing in no room. */
@@ -94,11 +99,15 @@ export function layoutFrom(lab: RecordedLab, options: { room?: string } = {}): L
   }
 
   const names = new Map(lab.parts.map((part) => [part.checksum, part.name]));
+  // A culture is a tube like any other; what it is a tube of is a strain, which has its own name.
+  const strains = new Map((lab.strains ?? []).map((one) => [one.strain, one.name]));
   const stored: Stored[] = [];
   for (const item of lab.items) {
     if (item.retired || item.where === null || !byId.has(item.where.place) || !kept(item.where.place)) continue;
+    const called = item.part === null ? strains.get(item.strain ?? "") ?? "A strain the lab no longer lists"
+                                      : names.get(item.part) ?? "A part the lab no longer lists";
     stored.push({ item: item.item, place: item.where.place, slot: item.where.slot, part: item.part,
-                  name: names.get(item.part) ?? "A part the lab no longer lists", amount: item.amount, unit: item.unit,
+                  name: called, amount: item.amount, unit: item.unit,
                   needsRecount: item.needsRecount });
   }
   return { places, stored };

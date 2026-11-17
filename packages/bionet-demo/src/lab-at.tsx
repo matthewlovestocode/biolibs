@@ -44,7 +44,7 @@ export type ShownAt =
  * // { at: "primers", start: { part: checksum, stretch: { start: 100, end: 600 } } }
  * ```
  */
-export function stopFor(shown: ShownAt, lab: { parts: readonly { checksum: string; length: number }[]; items: readonly { item: string; part: string; retired: boolean; where: { place: string } | null }[] }): TourStop {
+export function stopFor(shown: ShownAt, lab: { parts: readonly { checksum: string; length: number }[]; items: readonly { item: string; part: string | null; retired: boolean; where: { place: string } | null }[] }): TourStop {
   if (shown.at === "sequences") {
     const tube = lab.items.find((one) => one.part === shown.part && !one.retired && one.where !== null);
     return { at: "sequences", part: shown.part, ...(tube === undefined ? {} : { focus: { place: tube.where!.place, item: tube.item } }) };

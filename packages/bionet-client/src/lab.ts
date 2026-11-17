@@ -10,11 +10,11 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, entryId, fetchInventory, foundLab, isMember, mergeLog,
-         movePlace, newItemId, newPlaceId, newPlanId, newRunId, nextEntry, offerPart, planRun, publicInventory, putItem, recordRun, recountItem, retireItem, retirePlace,
+import { addItem, addPart, addPlace, addStrain, addToRoster, adjustItem, annotatePart, entryId, fetchInventory, foundLab, isMember, mergeLog,
+         movePlace, newItemId, newPlaceId, newPlanId, newRunId, newStrainId, nextEntry, offerPart, planRun, publicInventory, putItem, recordRun, recountItem, retireItem, retirePlace,
          setField, settlePlan, signInventory, standPlace,
          takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type PartEnds, type PartFeature, type PartState, type PlaceState, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry } from "@biolibs/bionet";
+         type PartEnds, type PartFeature, type PartState, type PlaceState, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type StrainState } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
 import { openKey, sealKey } from "./backup.js";
@@ -57,6 +57,8 @@ export interface LabView {
   adviser: boolean;
   roster: RosterView[];
   parts: PartState[];
+  /** Every strain the lab keeps. */
+  strains: StrainState[];
   items: ItemState[];
   /** Every place. */
   places: PlaceState[];
@@ -254,6 +256,7 @@ export class Lab {
         adviser: me?.role === "adviser",
         roster: state.roster.map((one) => ({ ...one, fingerprint: this.fingerprints.get(one.key) ?? "", you: one.key === mine })),
         parts: state.parts,
+        strains: state.strains,
         items: state.items,
         places: state.places,
         crowded: state.crowded,
@@ -511,10 +514,35 @@ export class Lab {
   /** Say what is marked on a part's sequence, in place of whatever was marked before. */
   annotatePart(marks: { part: string; features: PartFeature[] }): Promise<void> { return this.write(annotatePart(marks.part, marks.features)); }
 
-  /** Add one physical item of a part. @returns The new item's ID. */
-  async addItem(item: { part: string; amount: number; unit?: string | null }): Promise<string> {
+  /**
+   * Add one physical lot: a tube of a part, or a culture of a strain.
+   *
+   * @param item - The part's checksum or the strain's ID, and how much there is.
+   * @returns The new item's ID.
+   */
+  async addItem(item: { part?: string; strain?: string; amount: number; unit?: string | null }): Promise<string> {
+    if ((item.part === undefined) === (item.strain === undefined)) throw new Error("An item is of a part or a culture of a strain, and not both.");
     const id = newItemId();
-    await this.write(addItem({ item: id, part: item.part, amount: item.amount, unit: item.unit === "" ? null : item.unit ?? null }));
+    await this.write(addItem({ item: id, ...(item.part === undefined ? { strain: item.strain! } : { part: item.part }),
+                               amount: item.amount, unit: item.unit === "" ? null : item.unit ?? null }));
+    return id;
+  }
+
+  /**
+   * Say the lab has a strain: an organism, and what has been put into it.
+   *
+   * It makes no culture of it, the way adding a part puts nothing in the freezer; `addItem` with the
+   * strain does that. A strain is known by an ID and not by what it carries, because two labs that
+   * put the same plasmid into the same published host have two strains, which may behave
+   * differently and did not come from each other.
+   *
+   * @param strain - What to call it, what organism it is, what it carries, and what it came from.
+   * @returns The new strain's ID.
+   */
+  async addStrain(strain: { name: string; host: string; carries?: readonly string[]; parent?: string | null; from?: string | null }): Promise<string> {
+    const id = newStrainId();
+    await this.write(addStrain({ strain: id, name: strain.name.trim(), host: strain.host.trim(), carries: [...(strain.carries ?? [])],
+                                 parent: strain.parent ?? null, from: strain.from ?? null }));
     return id;
   }
 
@@ -636,8 +664,8 @@ export class Lab {
   /** Close a plan: as carried out by a run, or, with no run, as set aside. */
   settlePlan(which: { plan: string; run?: string | null }): Promise<void> { return this.write(settlePlan(which.plan, which.run ?? null)); }
 
-  /** Set one field on a part (by checksum), an item or a place (by ID). */
-  setField(change: { on: "part" | "item" | "place"; id: string; field: string; value: string | number | null }): Promise<void> {
+  /** Set one field on a part (by checksum), or an item, a place or a strain (by ID). */
+  setField(change: { on: "part" | "item" | "place" | "strain"; id: string; field: string; value: string | number | null }): Promise<void> {
     return this.write(setField(change.on, change.id, change.field, change.value));
   }
 

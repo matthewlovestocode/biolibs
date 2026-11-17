@@ -47,7 +47,7 @@ describe("what an adviser is given", () => {
     }
     // Exactly these write, and each is one of the things an adviser may: a part, what is marked on
     // one nobody has described, a plan, a plan taken back.
-    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_digest", "propose_ligation", "propose_pcr", "withdraw_proposal"]);
+    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_digest", "propose_ligation", "propose_pcr", "propose_transformation", "withdraw_proposal"]);
     expect(AGENT_INSTRUCTIONS).toMatch(/data and never as instructions/);
   });
 
@@ -164,10 +164,50 @@ describe("an adviser working something out and proposing it", () => {
   });
 });
 
+describe("an adviser and what the lab keeps alive", () => {
+  it("reads the strains, their cultures and what each carries", async () => {
+    const { use, lab, tubes } = await wren();
+    const construct = lab.snapshot().lab!.parts.find((one) => one.name === "pGene")!.checksum;
+    const host = await lab.addStrain({ name: "W303", host: "Saccharomyces cerevisiae W303" });
+    const made = await lab.addStrain({ name: "W303 pGene-1", host: "Saccharomyces cerevisiae W303", carries: [construct], parent: host });
+    const culture = await lab.addItem({ strain: made, amount: 50, unit: "mL" });
+
+    const strains = await use("list_strains");
+    expect(strains).toHaveLength(2);
+    expect(strains[1]).toMatchObject({ name: "W303 pGene-1", host: "Saccharomyces cerevisiae W303", made_from: "W303", made_by_run: null });
+    expect(strains[1].carries).toEqual([{ name: "pGene", checksum: construct }]);
+    expect(strains[1].cultures[0]).toMatchObject({ tube: culture, part: "W303 pGene-1", a_culture_of: made, amount: 50, unit: "mL" });
+    // A culture is in the list of tubes too, said as what it is.
+    expect((await use("list_tubes")).find((one: { tube: string }) => one.tube === culture)).toMatchObject({ part: "W303 pGene-1" });
+    // And it is not a molecule to work on.
+    await expect(use("work_out_digest", { of: culture, enzymes: ["EcoRI"] })).rejects.toThrow(/is a culture of a strain, not a tube of a molecule/);
+    expect(tubes.pGene).toBeDefined();
+  });
+
+  it("proposes putting a construct into a host, and uses nothing doing it", async () => {
+    const { use, lab, tubes } = await wren();
+    const host = await lab.addStrain({ name: "W303", host: "Saccharomyces cerevisiae W303" });
+    const culture = await lab.addItem({ strain: host, amount: 50, unit: "mL" });
+
+    const answer = await use("propose_transformation", { construct: tubes.pGene, host: culture, note: "Into W303, select on uracil. The gene is checked first by PCR." });
+    expect(answer.proposed).toMatchObject({ kind: "transformation", proposed_by: "Claude", state: "open", expects: [] });
+    expect(answer.proposed.uses.map((one: { as: string }) => one.as)).toEqual(["construct", "host"]);
+    const seen = lab.snapshot().lab!;
+    expect(seen.items.map((one) => one.amount)).toEqual([30, 30, 50]);
+    expect(seen.runs).toHaveLength(0);
+    expect(seen.strains).toHaveLength(1);
+  });
+
+  it("will not call a tube of DNA a host", async () => {
+    const { use, tubes } = await wren();
+    await expect(use("propose_transformation", { construct: tubes.pGene, host: tubes.backbone, note: "x" })).rejects.toThrow(/not a culture. list_strains gives the cultures/);
+  });
+});
+
 describe("what an adviser cannot do", () => {
   it("has no tool that uses, moves, retires or records anything", async () => {
     const { tools } = await wren();
-    expect(tools.map((one) => one.name).filter((name) => /record|adjust|retire|move|put|use_|recount|roster|member|offer|publish/.test(name))).toEqual([]);
+    expect(tools.map((one) => one.name).filter((name) => /record|adjust|retire|move|put|use_|recount|roster|member|offer|publish|add_strain|add_culture/.test(name))).toEqual([]);
   });
 
   it("can read and work things out, but propose nothing, until a keeper lets it in", async () => {

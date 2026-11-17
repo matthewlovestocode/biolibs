@@ -69,7 +69,7 @@ export interface Stored {
   /** Its position there, if the place has positions and somebody said which. */
   slot?: Slot | null;
   /** The checksum of the part it is an item of. */
-  part: string;
+  part: string | null;
   /** What the part is called. */
   name: string;
   /** How much there is. */

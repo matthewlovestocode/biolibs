@@ -145,7 +145,7 @@ export function PcrTool({ instrument = null, onDone }: { instrument?: { id: stri
                 const from = lab.items.find((item) => item.item === one.inputs.find((input) => input.role === "template")?.item);
                 return (
                   <tr key={one.run}>
-                    <td>{from === undefined ? "a tube" : partName(from.part)}</td>
+                    <td>{from === undefined || from.part === null ? "a tube" : partName(from.part)}</td>
                     <td>{one.outcome === "worked" ? one.outputs.map((made) => partName(made.part)).join(", ") : <span className="badge">gave nothing</span>}</td>
                     <td className="dim">{one.note ?? ""}</td>
                   </tr>

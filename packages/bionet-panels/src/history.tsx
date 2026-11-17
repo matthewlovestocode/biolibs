@@ -13,12 +13,15 @@ import { slotName } from "@biolibs/bionet-space";
  * @param lab - The lab, to name the parts, tubes and people it refers to.
  * @returns A phrase that follows the name of whoever made it, like `used 2 µL of a tube of f1`.
  */
-export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "parts" | "items" | "roster"> & Partial<Pick<LabView, "places">>): string {
+export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "parts" | "items" | "roster"> & Partial<Pick<LabView, "places" | "strains">>): string {
   const op = entry.op;
   const part = (checksum: unknown): string => lab.parts.find((one) => one.checksum === checksum)?.name ?? "a part";
+  const strain = (id: unknown): string => lab.strains?.find((one) => one.strain === id)?.name ?? "a strain";
+
   const tube = (id: unknown): string => {
     const item = lab.items.find((one) => one.item === id);
-    return item === undefined ? "a tube" : `a tube of ${part(item.part)}`;
+    if (item === undefined) return "a tube";
+    return item.part === null ? `a culture of ${strain(item.strain)}` : `a tube of ${part(item.part)}`;
   };
   const unit = (id: unknown): string => lab.items.find((one) => one.item === id)?.unit ?? "";
   const who = (key: unknown): string => lab.roster.find((one) => one.key === key)?.person ?? "a device";
@@ -30,6 +33,7 @@ export function describeEntry(entry: Pick<EntryView, "op">, lab: Pick<LabView, "
     case "roster.remove": return `removed ${who(op["key"])}`;
     case "roster.role": return `made ${who(op["key"])} ${op["role"] === "adviser" ? "an" : "a"} ${String(op["role"])}`;
     case "part.add": return `added the part ${String(op["name"])}`;
+    case "strain.add": return tidy(`added the strain ${String(op["name"])}, ${String(op["host"])}${Array.isArray(op["carries"]) && op["carries"].length > 0 ? `, carrying ${(op["carries"] as unknown[]).map(part).join(" and ")}` : ""}`);
     case "part.annotate": return `marked ${Array.isArray(op["features"]) ? op["features"].length : 0} features on ${part(op["part"])}`;
     case "part.offer": return op["available"] === true ? `put ${part(op["part"])} on offer` : `took ${part(op["part"])} off offer`;
     case "item.add": return tidy(`added ${tube(op["item"])}, ${String(op["amount"])} ${String(op["unit"] ?? "")}`);

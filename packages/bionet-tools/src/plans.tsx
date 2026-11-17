@@ -92,7 +92,10 @@ export function Proposed({ kind, now, onSetUp }: { kind: string; now: Record<str
   const carried = planCarried(lab, now);
   const person = (key: string): string => lab.roster.find((one) => one.key === key)?.person ?? "A device";
   const partName = (checksum: string | undefined): string => lab.parts.find((one) => one.checksum === checksum)?.name ?? "a part";
-  const tubeName = (item: string | undefined): string => partName(lab.items.find((one) => one.item === item)?.part);
+  const tubeName = (item: string | undefined): string => {
+    const held = lab.items.find((one) => one.item === item);
+    return held?.part === null ? lab.strains.find((one) => one.strain === held.strain)?.name ?? "a culture" : partName(held?.part);
+  };
   const ask = async (action: "planRun" | "settlePlan", payload: unknown): Promise<void> => {
     setBusy(true);
     const answer = await act(action, payload);

@@ -370,6 +370,43 @@ A run is recorded whole or refused whole. One that did not work is recorded with
 out, and still takes what was used. The merge does not work the run out again: what came out is what
 its signer said came out.
 
+### What the lab keeps alive
+
+A part is known by its sequence, so two labs that made the same molecule call it the same thing
+without ever having spoken. A strain is deliberately not like that. The same plasmid put into the
+same published host twice is two strains, which may behave differently and did not come from each
+other, so a strain is known by an ID and says what it came from.
+
+```ts
+import { addStrain, newStrainId } from "@biolibs/bionet";
+
+const host = newStrainId();
+await write(ada, adasKey, addStrain({ strain: host, name: "W303", host: "Saccharomyces cerevisiae W303",
+                                      carries: [], parent: null, from: null }));
+
+// Putting a construct into it is an ordinary run that makes no molecule: what it makes is alive.
+const run = newRunId();
+await write(ada, adasKey, recordRun({ run, kind: "transformation", instrument: null,
+                                      inputs: [{ item: tube, amount: 1, role: "construct" }],
+                                      outputs: [], settings: {}, outcome: "worked", note: null }));
+
+const made = newStrainId();
+await write(ada, adasKey, addStrain({ strain: made, name: "W303 pWren1-1", host: "Saccharomyces cerevisiae W303",
+                                      carries: [part], parent: host, from: run }));
+
+// A culture is a lot of a strain, and counts, moves and retires like a tube of a part.
+await write(ada, adasKey, addItem({ item: newItemId(), strain: made, amount: 50, unit: "mL" }));
+(await mergeLog(ada)).items.at(-1)?.part;      // null: it is a culture, not a tube of a molecule
+```
+
+An item is of a part or a culture of a strain, never both and never neither, so `part` is `null` on
+a culture and `strain` is `null` on a tube. A transformation is a plain `run.record` that happens to
+make no molecule, which is why a device too old to know of strains still reads the run and takes
+what it used; only the strain and the culture are turned away, as changes it does not understand.
+
+Whether a transformation worked is whether anything grew. Nothing in the log can work that out from
+what came out, because nothing came out, so a person says it.
+
 ### What somebody proposes doing
 
 A plan is a run nobody has done. It has a run's shape with everything that says something happened
