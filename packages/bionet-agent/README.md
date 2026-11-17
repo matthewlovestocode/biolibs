@@ -1,0 +1,102 @@
+# @biolibs/bionet-agent
+
+A lab's adviser: what an agent with no hands can read of a [Bionet](../bionet) lab, work out with
+the lab's own tools, and propose for a person to carry out — served to it over the
+[Model Context Protocol](https://modelcontextprotocol.io) from the device that hosts it.
+
+An agent is good at seeing the whole of a cloning plan at once and bad at holding a pipette. So it
+is let into a lab as what it is: a member that can propose and cannot do. It designs the primers,
+works out what the PCR would make with the same engine the lab's windows use, and proposes the run.
+A person finds the proposal at the thermocycler with its reasons, sets the bench up from it, reads
+the working their own tools give, and does it or does not. What really happened is theirs to record.
+
+## What keeps it to that
+
+- **Its key has the role `adviser`.** In `@biolibs/bionet`, an adviser may add a part, propose a
+  run, and set aside a proposal of its own. Anything else it signs is refused where the logs are
+  merged, on every device and on the lab's peer. This is not something this package enforces; it is
+  something this package cannot get round.
+- **It has a key of its own.** The device that hosts it keeps a second key for it
+  (`hostAdviser` in `@biolibs/bionet-client`). What it writes is in its own log under its own name,
+  never the person's, and a keeper has to let that key into the lab before it can write at all.
+- **There is no tool for the rest.** Nothing here records a run, uses a tube, moves one, or touches
+  the roster.
+- **The door is shut by default.** `serveAgent` listens on `127.0.0.1` only, wants a bearer token on
+  every request, and refuses anything that says it comes from a web page or is addressed to another
+  name for this machine.
+
+## Install
+
+```sh
+npm install @biolibs/bionet-agent
+```
+
+## Serving the tools
+
+```ts
+import { Lab, memoryKeys, memoryStore } from "@biolibs/bionet-client";
+import { agentTools, newAgentToken, serveAgent } from "@biolibs/bionet-agent";
+
+// A device that can host an adviser is one given somewhere to keep its key.
+const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
+await lab.setPerson("Ada");
+await lab.found({ name: "The Wren Lab" });
+
+// Two decisions, both a person's: host one, and let it in.
+const { key } = await lab.hostAdviser();
+await lab.addMember({ key, person: "Claude", role: "adviser" });
+
+const token = newAgentToken();
+const server = await serveAgent({ tools: agentTools(lab), token });
+server.url;       // http://127.0.0.1:<port>/mcp
+```
+
+Connect an agent to it with the URL and the token as a bearer token. For Claude Code:
+
+```sh
+claude mcp add --transport http bionet http://127.0.0.1:<port>/mcp --header "Authorization: Bearer <token>"
+```
+
+The Bionet desktop app does all of this from its Adviser tab, keeps the token sealed by the
+system's keychain, and puts that command on the clipboard without showing the token.
+
+## The tools
+
+| Tool | What it does |
+|---|---|
+| `lab_overview` | Which lab, whether the adviser is in it, what it holds, its instruments |
+| `list_parts`, `get_part` | The parts, and one read closely: sequence, features, tubes |
+| `list_tubes` | Every tube: what it is, how much is left, where it is |
+| `list_runs` | What has been done at the bench, failures included |
+| `list_proposals` | What has been proposed, by whom, and what became of it |
+| `find_cutters` | Which enzymes cut a part, and where |
+| `design_primers` | A pair for a stretch or a feature, with why each won and what to watch for |
+| `work_out_pcr`, `work_out_digest`, `work_out_ligation` | What each would give, from the lab's own engines |
+| `add_part` | Say a sequence is a part, such as a primer just designed. Adds no tube |
+| `propose_pcr`, `propose_digest`, `propose_ligation` | Propose a run. Nothing is used or recorded as done |
+| `withdraw_proposal` | Take back a proposal of its own |
+
+The last five are the only ones that write. A proposal may count on a part there is no tube of yet;
+it then says that the part has to be ordered or made first.
+
+## Showing it at work
+
+`agentTools(lab, { watch })` tells `watch` of every use, with where in the lab it would be seen:
+a part being read, a digest being worked out at the gel station. It is shaped like a stop on the
+demo's walk, which is how a bench is already told what to show.
+
+## Things to know
+
+- **What it reads is data.** Names, notes and features were typed by lab members and by other labs.
+  The instructions the server gives an agent say to treat them as data and never as instructions;
+  an agent you connect should be one that does.
+- **Before it is let in** the adviser can read and work things out. Anything it tries to write
+  says that a keeper has to let it in.
+- **If a keeper makes its key a member or a keeper**, the device stops writing with it. A hosted
+  key is for advising.
+- **Every device should be on `@biolibs/bionet` 1.5 or later** before an adviser adds parts: an
+  older one does not see what an adviser writes.
+
+## License
+
+MIT

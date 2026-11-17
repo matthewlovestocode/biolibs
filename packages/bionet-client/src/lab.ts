@@ -86,9 +86,26 @@ export interface PeerView {
   lastSynced: string | null;
 }
 
+/**
+ * An adviser this device hosts: a second key, kept here, that something with no hands signs with.
+ *
+ * It is a key of its own and not this device's, so that what it writes is its own in the lab's
+ * history and is held to what an adviser may do by every device that merges it.
+ */
+export interface HostedAdviser {
+  /** Its key, for a keeper to let into the lab. */
+  key: string;
+  /** Its fingerprint, for a person to compare. */
+  fingerprint: string;
+  /** Where it stands in the lab: its role, `removed`, or `null` if no keeper has let it in. */
+  standing: Role | "removed" | null;
+}
+
 /** Everything a window needs to draw, as plain data. */
 export interface LabSnapshot {
   device: { key: string; fingerprint: string; person: string | null };
+  /** The adviser this device hosts, or `null` if it hosts none. */
+  hosting: HostedAdviser | null;
   lab: LabView | null;
   peer: PeerView;
   /** When this device last published the lab's inventory. */
@@ -101,6 +118,8 @@ export interface LabOptions {
   store: LabStore;
   /** Where the device's key lives. */
   keys: KeyKeeper;
+  /** Where the key of an adviser this device hosts lives. Without it the device can host none. */
+  adviserKeys?: KeyKeeper;
   /** Something to fetch the published inventory with. Defaults to the runtime's own `fetch`. */
   fetch?: typeof globalThis.fetch;
   /** Something to open sockets with. Defaults to the runtime's own `WebSocket`. */
@@ -164,6 +183,7 @@ export class Lab {
   private link: PeerLink | null = null;
   private key!: SigningKey;
   private fingerprint = "";
+  private hosted: { key: SigningKey; fingerprint: string } | null = null;
   private readonly fingerprints = new Map<string, string>();
   private readonly listeners = new Set<() => void>();
   private cached: LabSnapshot | null = null;
@@ -187,6 +207,11 @@ export class Lab {
     }
     this.key = await importSigningKey(exported);
     this.fingerprint = await keyFingerprint(this.key.publicKey);
+    const guest = await this.options.adviserKeys?.load() ?? null;
+    if (guest !== null) {
+      const key = await importSigningKey(guest);
+      this.hosted = { key, fingerprint: await keyFingerprint(key.publicKey) };
+    }
     this.held = this.store.entries();
     await this.remerge();
     this.connect();
@@ -216,6 +241,10 @@ export class Lab {
     const peer = this.store.setting("peer");
     this.cached = {
       device: { key: mine, fingerprint: this.fingerprint, person: this.person },
+      hosting: this.hosted === null ? null : {
+        key: this.hosted.key.publicKey, fingerprint: this.hosted.fingerprint,
+        standing: ((guest) => (guest === undefined ? null : guest.removed !== null ? "removed" : guest.role))(state?.roster.find((one) => one.key === this.hosted!.key.publicKey)),
+      },
       lab: state === null ? null : {
         id: state.lab,
         name: state.name,
@@ -412,16 +441,58 @@ export class Lab {
     return this.write(addToRoster(who.key.trim(), who.person.trim(), who.role ?? "member"));
   }
 
+  /**
+   * Have this device host an adviser: make a second key for one and keep it.
+   *
+   * The key is in no lab until a keeper adds it to the roster as an adviser, which is a decision
+   * for a person and is not made here. Asked again, it gives the adviser already hosted.
+   *
+   * @returns The adviser's key and its fingerprint.
+   * @throws If the device was given nowhere to keep such a key.
+   */
+  async hostAdviser(): Promise<{ key: string; fingerprint: string }> {
+    if (this.hosted === null) {
+      const keys = this.options.adviserKeys;
+      if (keys === undefined) throw new Error("This device has nowhere to keep an adviser's key.");
+      const key = await generateSigningKey();
+      await keys.save(await exportSigningKey(key));
+      this.hosted = { key, fingerprint: await keyFingerprint(key.publicKey) };
+      this.changed();
+    }
+    return { key: this.hosted.key.publicKey, fingerprint: this.hosted.fingerprint };
+  }
+
+  /**
+   * What the adviser this device hosts may do, signed with the adviser's own key.
+   *
+   * There are three things and no others: say what a part is, propose a run, and take back a
+   * proposal of its own. The lab would refuse anything else from an adviser wherever its logs are
+   * merged; this is the same limit, said where it can be read.
+   *
+   * @throws On use, if this device hosts no adviser, or the key is in the lab as anything else.
+   */
+  get advise(): {
+    addPart: (part: { name: string; sequence: string; circular?: boolean }) => Promise<void>;
+    planRun: (plan: Parameters<Lab["planRun"]>[0]) => Promise<{ plan: string }>;
+    settlePlan: (which: { plan: string }) => Promise<void>;
+  } {
+    return {
+      addPart: (part) => this.addPart(part, true),
+      planRun: (plan) => this.planRun(plan, true),
+      settlePlan: (which) => this.write(settlePlan(which.plan, null), true),
+    };
+  }
+
   /** Add a part, by its sequence, with whatever is marked on it. */
-  async addPart(part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[]; ends?: PartEnds }): Promise<void> {
+  async addPart(part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[]; ends?: PartEnds }, advising = false): Promise<void> {
     const bases = part.sequence.replace(/\s+/g, "");
     // The library underneath accepts any letters as a sequence. A freezer should not: a part named
     // by a checksum of the wrong letters is a part nobody else will ever match.
     if (!/^[ACGTURYSWKMBDHVN]+$/i.test(bases)) {
       throw new Error("A sequence is written in the letters for bases: A, C, G, T, and the codes for an uncertain base.");
     }
-    await this.write(addPart({ name: part.name.trim(), sequence: bases, circular: part.circular === true, ...(part.ends === undefined ? {} : { ends: part.ends }) }));
-    if (part.features === undefined || part.features.length === 0) return;
+    await this.write(addPart({ name: part.name.trim(), sequence: bases, circular: part.circular === true, ...(part.ends === undefined ? {} : { ends: part.ends }) }), advising);
+    if (advising || part.features === undefined || part.features.length === 0) return;
     // A part is known by its sequence, so the one just added is the one with these bases. Somebody
     // else may have added it first under another name; what is marked on it is said either way.
     const added = this.state?.parts.find((one) => one.sequence.toUpperCase() === bases.toUpperCase() && one.circular === (part.circular === true)
@@ -541,7 +612,7 @@ export class Lab {
     kind: string; instrument?: string | null; inputs: PlanInput[];
     expects?: { sequence: string; circular?: boolean; name: string; ends?: PartEnds }[];
     settings?: Record<string, string | number>; note?: string | null;
-  }): Promise<{ plan: string }> {
+  }, advising = false): Promise<{ plan: string }> {
     const id = newPlanId();
     const note = plan.note === undefined || plan.note === null || plan.note.trim() === "" ? null : plan.note.trim();
     await this.write(planRun({
@@ -550,7 +621,7 @@ export class Lab {
         sequence: expect.sequence.replace(/\s+/g, ""), circular: expect.circular === true, name: expect.name.trim(),
         ...(expect.ends === undefined || (expect.ends.left === 0 && expect.ends.right === 0) ? {} : { ends: expect.ends }),
       })),
-    }));
+    }), advising);
     return { plan: id };
   }
 
@@ -570,16 +641,27 @@ export class Lab {
    * and never written.
    *
    * @param op - The change.
+   * @param advising - Whether to sign it as the adviser this device hosts, in the adviser's own log.
    * @throws If this device may not change the lab, or the lab would refuse the change.
    */
-  write(op: Operation): Promise<void> {
+  write(op: Operation, advising = false): Promise<void> {
     return this.inTurn(async () => {
       const state = this.state;
       if (state === null || state.lab === null) throw new Error("This device is not in a lab yet.");
-      if (!isMember(state, this.key.publicKey)) {
+      let key = this.key;
+      let signer = this.person;
+      if (advising) {
+        if (this.hosted === null) throw new Error("This device hosts no adviser.");
+        const guest = state.roster.find((one) => one.key === this.hosted!.key.publicKey);
+        if (guest === undefined || guest.removed !== null) throw new Error("The adviser this device hosts is not in the lab. A keeper has to let it in first, as an adviser.");
+        // A key this device hosts is for advising and nothing more, whatever a keeper has since made it.
+        if (guest.role !== "adviser") throw new Error(`The key this device hosts is in the lab as a ${guest.role}, not as an adviser, so nothing is written with it from here.`);
+        key = this.hosted.key;
+        signer = guest.person;
+      } else if (!isMember(state, this.key.publicKey)) {
         throw new Error("This device's key is not on the lab's roster, so it cannot change the lab.");
       }
-      const signed = await nextEntry(state, this.key, op, { signer: this.person });
+      const signed = await nextEntry(state, key, op, { signer });
       const id = await entryId(signed.entry);
       const tried = (await mergeLog([...this.held, signed], { lab: state.lab })).entries.find((one) => one.id === id);
       if (tried?.status !== "applied") throw new Error(tried?.reason ?? "The lab would not accept that change.");

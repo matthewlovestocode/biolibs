@@ -15,6 +15,7 @@
  * - `people.tsx` — the roster, and letting somebody in
  * - `history.tsx` — every signed change, and what became of it
  * - `sharing.tsx` — what other labs are shown, and the lab's web peer
+ * - `adviser.tsx` — the adviser a device hosts: letting it in, and the door an agent reaches it by
  * - `parts.tsx` — the small pieces they are made of
  * - `public.tsx` — a lab's public page: what it holds, and what it can see of another lab
  *
@@ -26,6 +27,7 @@ export * from "./freezer.js";
 export * from "./places.js";
 export * from "./backup.js";
 export * from "./people.js";
+export * from "./adviser.js";
 export * from "./history.js";
 export * from "./sharing.js";
 export * from "./parts.js";

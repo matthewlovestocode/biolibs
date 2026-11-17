@@ -294,3 +294,74 @@ describe("a lab that keeps what was proposed", () => {
     await expect(lab.settlePlan({ plan })).rejects.toThrow(/already settled/);
   });
 });
+
+describe("a device that hosts an adviser", () => {
+  const hosting = async (): Promise<{ lab: Lab; tube: string; part: string }> => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    await lab.addPart({ name: "template", sequence: F1 });
+    const part = lab.snapshot().lab!.parts[0]!.checksum;
+    return { lab, part, tube: await lab.addItem({ part, amount: 20, unit: "µL" }) };
+  };
+
+  it("hosts none until asked, then keeps one key for it, which is in no lab until a keeper lets it in", async () => {
+    const { lab, tube } = await hosting();
+    expect(lab.snapshot().hosting).toBeNull();
+    await expect(lab.advise.planRun({ kind: "pcr", inputs: [] })).rejects.toThrow("This device hosts no adviser.");
+    const made = await lab.hostAdviser();
+    expect(await lab.hostAdviser()).toEqual(made);
+    expect(lab.snapshot().hosting).toEqual({ ...made, standing: null });
+    expect(made.key).not.toBe(lab.snapshot().device.key);
+    await expect(lab.advise.planRun({ kind: "pcr", inputs: [{ item: tube, amount: 1, role: "template" }] })).rejects.toThrow(/A keeper has to let it in first/);
+    expect(lab.snapshot().lab!.plans).toHaveLength(0);
+  });
+
+  it("writes what the adviser proposes in the adviser's own log, under the adviser's own key", async () => {
+    const { lab, tube } = await hosting();
+    const { key } = await lab.hostAdviser();
+    await lab.addMember({ key, person: "Claude", role: "adviser" });
+    expect(lab.snapshot().hosting!.standing).toBe("adviser");
+
+    const { plan } = await lab.advise.planRun({ kind: "pcr", inputs: [{ item: tube, amount: 1, role: "template" }], expects: [{ sequence: F1, name: "copy" }], note: "worth checking" });
+    await lab.advise.addPart({ name: "a primer it designed", sequence: F1.slice(0, 20) });
+    const seen = lab.snapshot().lab!;
+    expect(seen.plans[0]).toMatchObject({ plan, by: key, settled: null });
+    expect(seen.parts.map((one) => one.name)).toContain("a primer it designed");
+    const theirs = seen.entries.filter((one) => one.author === key);
+    expect(theirs.map((one) => [one.seq, one.op.type, one.signer, one.status])).toEqual([[0, "plan.add", "Claude", "applied"], [1, "part.add", "Claude", "applied"]]);
+    // The person's own log is untouched by it, and nothing the lab holds moved.
+    expect(seen.entries.filter((one) => one.author === lab.snapshot().device.key).every((one) => one.signer === "Ada")).toBe(true);
+    expect(seen.items[0]!.amount).toBe(20);
+
+    await lab.advise.settlePlan({ plan });
+    expect(lab.snapshot().lab!.plans[0]!.settled).toMatchObject({ run: null, by: key });
+  });
+
+  it("cannot be used to do what an adviser may not, by any road", async () => {
+    const { lab, tube } = await hosting();
+    const { key } = await lab.hostAdviser();
+    await lab.addMember({ key, person: "Claude", role: "adviser" });
+    // The three things it is given are all there is to reach for.
+    expect(Object.keys(lab.advise).sort()).toEqual(["addPart", "planRun", "settlePlan"]);
+    // And the lab itself refuses the rest, even signed as the adviser on purpose.
+    const { adjustItem } = await import("@biolibs/bionet");
+    await expect(lab.write(adjustItem(tube, -5), true)).rejects.toThrow(/an adviser, which may add parts and propose runs and nothing else/);
+    expect(lab.snapshot().lab!.items[0]!.amount).toBe(20);
+    // A window cannot ask to sign as the adviser at all: the door takes one thing, and it is not that.
+    expect(await perform(lab, "write", {})).toMatchObject({ ok: false });
+  });
+
+  it("stops writing with the hosted key if a keeper makes it anything more than an adviser", async () => {
+    const { lab, tube } = await hosting();
+    const { key } = await lab.hostAdviser();
+    await lab.addMember({ key, person: "Claude", role: "member" });
+    await expect(lab.advise.planRun({ kind: "pcr", inputs: [{ item: tube, amount: 1, role: "template" }] })).rejects.toThrow(/in the lab as a member, not as an adviser/);
+    expect(lab.snapshot().lab!.entries.some((one) => one.author === key)).toBe(false);
+  });
+
+  it("cannot host one with nowhere to keep its key", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await expect(lab.hostAdviser()).rejects.toThrow("This device has nowhere to keep an adviser's key.");
+  });
+});

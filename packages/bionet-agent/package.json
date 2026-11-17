@@ -1,0 +1,46 @@
+{
+  "bugs": {
+    "url": "https://github.com/matthewlovestocode/biolibs/issues"
+  },
+  "dependencies": {
+    "@biolibs/bionet-client": "^0.2.4",
+    "@biolibs/bionet-tools": "^0.1.7"
+  },
+  "description": "A lab's adviser: what an agent with no hands can read of a Bionet lab, work out with the lab's own tools, and propose for a person to carry out, served to it over the Model Context Protocol from the device that hosts it",
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "homepage": "https://github.com/matthewlovestocode/biolibs/tree/main/packages/bionet-agent#readme",
+  "keywords": [
+    "bionet",
+    "mcp",
+    "agent",
+    "local-first",
+    "cloning",
+    "biology"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@biolibs/bionet-agent",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthewlovestocode/biolibs.git",
+    "directory": "packages/bionet-agent"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "version": "0.1.0"
+}
