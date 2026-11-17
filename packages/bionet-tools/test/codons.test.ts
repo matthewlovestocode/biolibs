@@ -7,7 +7,7 @@
  * sequences that were handed in, never asserted, and a table counted over too little says so,
  * because a figure nobody can check is worse than no figure.
  */
-import { CODON, FEW_CODONS, FEW_GENES, LONGEST_RUN, codonWorking, countCodonUsage, optimiseCodons, reverseTranslate } from "@biolibs/bionet-tools";
+import { CODON, FEW_CODONS, FEW_GENES, LONGEST_RUN, codonWorking, countCodonUsage, gcOfHost, optimiseCodons, reverseTranslate } from "@biolibs/bionet-tools";
 import { CodonTable, translate } from "@biolibs/seq";
 import { describe, expect, it } from "vitest";
 
@@ -245,5 +245,73 @@ describe("writing a gene for a protein", () => {
     expect(reverseTranslate("", plainly()).problem).toMatch(/no protein here/);
     expect(reverseTranslate("MKV1", plainly()).problem).toMatch(/twenty standard amino acids/);
     expect(reverseTranslate("MKV", countCodonUsage([], { from: "nothing" })).problem).toMatch(/counted over nothing/);
+  });
+});
+
+describe("sitting where the host's own genes sit", () => {
+  const gc = (bases: string): number => [...bases].filter((one) => one === "G" || one === "C").length / bases.length;
+  const poorest = (family: string[]): string => [...family].sort((a, b) => gc(a) - gc(b) || (a < b ? -1 : 1))[0]!;
+  const richest = (family: string[]): string => [...family].sort((a, b) => gc(b) - gc(a) || (a < b ? -1 : 1))[0]!;
+
+  /**
+   * A host that *prefers* AT-rich codons without being made only of them: three genes written the
+   * poor way against two written the rich way. That is the shape a real host has, and the one that
+   * matters — the commonest codon is AT-rich, but the host's own genes sit well above it.
+   */
+  const atRich = (): ReturnType<typeof countCodonUsage> =>
+    countCodonUsage([geneOf(PROTEIN, poorest), geneOf(PROTEIN, poorest), geneOf(PROTEIN, poorest),
+                     geneOf(PROTEIN, richest), geneOf(PROTEIN, richest)], { from: "an AT-rich host" });
+
+  it("says where the host sits, counted from what was handed in", () => {
+    const counted = geneOf(PROTEIN, poorest);
+    expect(gcOfHost(countCodonUsage([counted], { from: "a host" }))).toBeCloseTo(gc(counted), 10);
+    // Nothing counted, nothing to say.
+    expect(gcOfHost(countCodonUsage([], { from: "nothing" }))).toBe(0);
+  });
+
+  it("takes the most-used codon every time unless asked otherwise, which overshoots", () => {
+    const usage = atRich();
+    const plain = reverseTranslate(PROTEIN, usage, { stop: false });
+    // Left alone it lands at the extreme the host's favourites imply, below the host itself.
+    expect(plain.gcAfter).toBeLessThan(gcOfHost(usage) - 0.02);
+  });
+
+  it("steers to the host's own GC when asked, without touching the protein", () => {
+    const usage = atRich();
+    const aimed = reverseTranslate(PROTEIN, usage, { stop: false, gc: "host" });
+    expect(aimed.problem).toBeNull();
+    expect(aimed.protein).toBe(PROTEIN);
+    expect(String(translate(aimed.sequence))).toBe(PROTEIN);
+    expect(aimed.gcAfter).toBeCloseTo(gcOfHost(usage), 1);
+  });
+
+  it("takes a number as readily as the host's own figure, and ignores a nonsense one", () => {
+    const usage = atRich();
+    const high = reverseTranslate(PROTEIN, usage, { stop: false, gc: 0.6 });
+    const low = reverseTranslate(PROTEIN, usage, { stop: false, gc: 0.2 });
+    expect(high.gcAfter).toBeGreaterThan(low.gcAfter);
+    expect(String(translate(high.sequence))).toBe(PROTEIN);
+    expect(String(translate(low.sequence))).toBe(PROTEIN);
+    // A target outside the range a gene can have is left alone rather than chased.
+    const silly = reverseTranslate(PROTEIN, usage, { stop: false, gc: 2 });
+    expect(silly.sequence).toBe(reverseTranslate(PROTEIN, usage, { stop: false }).sequence);
+  });
+
+  it("will not make a site or a run while steering", () => {
+    const usage = atRich();
+    const avoid = [{ name: "BsaI", site: "GGTCTC" }, { name: "NcoI", site: "CCATGG" }, { name: "SacI", site: "GAGCTC" }];
+    const aimed = reverseTranslate(PROTEIN, usage, { stop: false, gc: 0.62, avoid, longestRun: 4 });
+    expect(aimed.protein).toBe(PROTEIN);
+    for (const one of avoid) expect(aimed.sequence).not.toContain(one.site);
+    expect(/(.)\1{4}/.test(aimed.sequence)).toBe(false);
+  });
+
+  it("keeps the working honest about why a codon moved", () => {
+    const usage = atRich();
+    const gene = geneOf(PROTEIN, poorest);
+    const aimed = optimiseCodons(gene, usage, { gc: 0.6 });
+    expect(aimed.changes.length).toBeGreaterThan(0);
+    expect(aimed.changes.some((one) => one.instead === "steered toward the host's own GC")).toBe(true);
+    for (const one of aimed.changes) expect(forward.get(one.from)).toBe(forward.get(one.to));
   });
 });

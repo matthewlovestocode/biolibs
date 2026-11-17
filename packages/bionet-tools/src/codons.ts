@@ -181,6 +181,87 @@ function trouble(sequence: string, codon: string, avoid: readonly { name: string
 }
 
 /**
+ * The GC content of the genes a codon usage was counted from, from 0 to 1.
+ *
+ * Useful as a target: a gene written to sit where the host's own genes sit is a gene the host has
+ * shown it can transcribe, which is not the same as a gene made of the host's favourite codons.
+ * Taking the single most-used codon every time compounds the bias — for an AT-rich host it lands
+ * well below anything the host actually has.
+ *
+ * @param usage - How the host uses its codons, from `countCodonUsage`.
+ * @returns The GC content of what was counted, or 0 if nothing was.
+ *
+ * @example
+ * ```ts
+ * import { countCodonUsage, gcOfHost, reverseTranslate } from "@biolibs/bionet-tools";
+ *
+ * const usage = countCodonUsage(genes, { from: "Komagataella phaffii" });
+ * gcOfHost(usage);                                   // 0.421
+ * reverseTranslate(protein, usage, { gc: "host" });  // a gene that sits there too
+ * ```
+ */
+export function gcOfHost(usage: CodonUsage): number {
+  let bases = 0, strong = 0;
+  for (const [codon, one] of Object.entries(usage.counts)) {
+    bases += one.count * codon.length;
+    strong += one.count * [...codon].filter((each) => each === "G" || each === "C").length;
+  }
+  return bases === 0 ? 0 : strong / bases;
+}
+
+/** Whether swapping the codon at `at` has made a run or a site anywhere it could reach. */
+function spoils(whole: string, at: number, avoid: readonly { name: string; site: string }[], longestRun: number): boolean {
+  const reach = Math.max(longestRun + CODON, ...avoid.map((one) => one.site.length + CODON));
+  const window = whole.slice(Math.max(0, at - reach), at + CODON + reach);
+  if (new RegExp(`(.)\\1{${longestRun}}`).test(window)) return true;
+  return avoid.some((one) => window.includes(one.site));
+}
+
+/**
+ * Move a rewritten gene's GC toward a target by swapping synonymous codons, biggest step first.
+ *
+ * The protein never changes, since only synonyms are swapped, and a swap that would make a run or
+ * a site is put back. It stops when it arrives, when nothing is left to swap, or at a bound, so it
+ * always ends.
+ */
+function steer(sequence: string, target: number, usage: CodonUsage, avoid: readonly { name: string; site: string }[],
+               longestRun: number, changes: CodonChange[], forward: Map<string, string>,
+               byAminoAcid: Map<string, string[]>, stops: readonly string[]): string {
+  const codons: string[] = [];
+  for (let at = 0; at + CODON <= sequence.length; at += CODON) codons.push(sequence.slice(at, at + CODON));
+  const strong = (codon: string): number => [...codon].filter((one) => one === "G" || one === "C").length;
+  const refused = new Set<string>();
+  for (let guard = 0; guard < codons.length * 6; guard += 1) {
+    const now = gc(codons.join(""));
+    if (Math.abs(now - target) <= 0.005) break;
+    const want = now < target ? 1 : -1;
+    let best: { at: number; codon: string; gain: number } | null = null;
+    for (const [at, was] of codons.entries()) {
+      if (stops.includes(was)) continue;
+      const aminoAcid = forward.get(was);
+      if (aminoAcid === undefined) continue;
+      for (const candidate of byAminoAcid.get(aminoAcid) ?? []) {
+        if (candidate === was || refused.has(`${at} ${candidate}`)) continue;
+        const gain = (strong(candidate) - strong(was)) * want;
+        if (gain <= 0) continue;
+        const share = usage.counts[candidate]?.share ?? 0;
+        if (best === null || gain + share > best.gain + (usage.counts[best.codon]?.share ?? 0)) best = { at, codon: candidate, gain };
+      }
+    }
+    if (best === null) break;
+    const was = codons[best.at]!;
+    codons[best.at] = best.codon;
+    const whole = codons.join("");
+    if (spoils(whole, best.at * CODON, avoid, longestRun)) { codons[best.at] = was; refused.add(`${best.at} ${best.codon}`); continue; }
+    const already = changes.find((one) => one.at === best.at + 1);
+    if (already !== undefined) { already.to = best.codon; already.toShare = usage.counts[best.codon]?.share ?? 0; already.instead = "steered toward the host's own GC"; }
+    else changes.push({ at: best.at + 1, aminoAcid: forward.get(was)!, from: was, fromShare: usage.counts[was]?.share ?? 0,
+                        to: best.codon, toShare: usage.counts[best.codon]?.share ?? 0, instead: "steered toward the host's own GC" });
+  }
+  return codons.join("");
+}
+
+/**
  * Write a gene for a protein, in a host's own codons.
  *
  * This is how a lab gets something it can order. A protein is what somebody wants — read out of
@@ -208,7 +289,7 @@ function trouble(sequence: string, codon: string, avoid: readonly { name: string
  * ```
  */
 export function reverseTranslate(protein: string, usage: CodonUsage,
-                                 options: { avoid?: readonly { name: string; site: string }[]; longestRun?: number; stop?: boolean } = {}): CodonOptimised {
+                                 options: { avoid?: readonly { name: string; site: string }[]; longestRun?: number; stop?: boolean; gc?: number | "host" } = {}): CodonOptimised {
   const chain = protein.replace(/\s+/g, "").toUpperCase().replace(/\*$/, "");
   const nothing = (problem: string): CodonOptimised =>
     ({ sequence: "", protein: "", changes: [], codons: 0, gcBefore: 0, gcAfter: 0, avoided: [], warnings: [], problem });
@@ -255,7 +336,7 @@ export function reverseTranslate(protein: string, usage: CodonUsage,
  * done.protein === translate(gene);    // the same protein, which is checked
  * ```
  */
-export function optimiseCodons(cds: string, usage: CodonUsage, options: { avoid?: readonly { name: string; site: string }[]; longestRun?: number } = {}): CodonOptimised {
+export function optimiseCodons(cds: string, usage: CodonUsage, options: { avoid?: readonly { name: string; site: string }[]; longestRun?: number; gc?: number | "host" } = {}): CodonOptimised {
   const nothing = (problem: string): CodonOptimised =>
     ({ sequence: "", protein: "", changes: [], codons: 0, gcBefore: 0, gcAfter: 0, avoided: [], warnings: [], problem });
   const bases = clean(cds);
@@ -322,6 +403,13 @@ export function optimiseCodons(cds: string, usage: CodonUsage, options: { avoid?
       changes.push({ at, aminoAcid, from: was, fromShare: usage.counts[was]?.share ?? 0, to: chosen, toShare: usage.counts[chosen]!.share, instead });
     }
     out += chosen;
+  }
+
+  // Where the host's own genes sit, if that was asked for. Only synonyms move, so the protein is
+  // untouched; it is still checked below, because that is the one thing that must be true.
+  if (options.gc !== undefined) {
+    const target = options.gc === "host" ? gcOfHost(usage) : options.gc;
+    if (target > 0 && target < 1) out = steer(out, target, usage, avoid, longestRun, changes, forward, byAminoAcid, stops);
   }
 
   // The one thing that must be true. If it is not, nothing is handed back.
