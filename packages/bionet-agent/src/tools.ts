@@ -19,6 +19,7 @@ import type { Lab, LabView } from "@biolibs/bionet-client";
 import { lookupTools, type LookupOptions } from "./lookup.js";
 import { COMMON_ENZYMES, assemblyWorking, codonWorking, countCodonUsage, cutSites, cutsOf, cutters, designAssembly, designPair, digestPieces,
          digestRun, featureStretches, instrumentFor, ligationRun, optimiseCodons, planPcr, primerTm, toPlan, toolFor,
+         saysDifference, checkRead, verifyWorking,
          type AssemblyDesign, type CodonUsage, type Stretch } from "@biolibs/bionet-tools";
 
 /** A JSON schema for what a tool takes: always an object, with these properties. */
@@ -460,6 +461,44 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
         if (run.plan === null) throw new Error("Each piece has to be linear: a circle has no ends to join. Cut it first.");
         return { problem: run.plan.problem, products: run.plan.products.map((one) => ({
           length: one.length, circular: one.circular, pieces: one.pieces.map((piece) => ({ name: piece.name, flipped: piece.flipped })), joins: one.joins.length })) };
+      },
+    },
+    {
+      name: "check_read", title: "Check a sequencing read against a design", readOnly: true,
+      description: [
+        "Compare a sequencing read against the part it was supposed to be, and say every place they differ and what each difference costs.",
+        "This is the one tool here that confirms rather than proposes. Use it when somebody has had a construct sequenced and wants to know whether it is the construct that was designed, before anything is transformed with it.",
+        "The read is given as bases, either strand: a read off the other primer is not a construct that is wrong, and it says when it turned one round. It says which stretch of the design the read covers, and what lies outside it is unchecked and said to be.",
+        "A difference inside a coding sequence is told apart by what it costs: one that leaves the amino acid alone, one that changes it, one that makes a stop codon, and bases gained or lost in or out of frame. A base gained or lost inside a run of the same base has no single place, and the earliest is given.",
+        "Nothing is written. Recording that a construct was checked is a person's to do.",
+      ].join(" "),
+      input: { type: "object", required: ["design", "read"], additionalProperties: false, properties: {
+        design: { type: "string", description: "The part it was supposed to be: a checksum or exact name." },
+        read: { type: "string", description: "The read, as bases. A base that could not be called is N." },
+      } },
+      shows: (args) => ({ at: "sequences", part: partBy(now(), text(args["design"], "The design")).checksum }),
+      run: (args) => {
+        const seen = now();
+        const part = partBy(seen, text(args["design"], "The design"));
+        const checked = checkRead(part, text(args["read"], "The read"));
+        if (checked.problem !== null) throw new Error(checked.problem);
+        return {
+          design: part.name, design_length: part.length,
+          matches: checked.matches,
+          ...(checked.reversed ? { note_on_strand: "The read was turned round to line up. That is only which primer it came off, not a fault in the construct." } : {}),
+          covers: checked.covers === null ? null : { from: checked.covers.from, to: checked.covers.to, bases: checked.covers.bases,
+                                                     of_the_design: `${Math.round(checked.covered * 100)}%` },
+          identity: Math.round(checked.identity * 1000) / 10,
+          changes_a_protein: checked.changesProtein,
+          differences: checked.differences.slice(0, 50).map((one) => ({
+            at: one.at, kind: one.kind, was: one.was === "" ? null : one.was, now: one.now === "" ? null : one.now,
+            inside: one.inside.map((each) => each.label), ...(one.protein === null ? {} : { protein: one.protein }),
+            says: saysDifference(one),
+          })),
+          ...(checked.differences.length > 50 ? { more_differences: checked.differences.length - 50 } : {}),
+          working: verifyWorking(checked, part).map((one) => ({ of: one.of, comes: one.comes, kind: one.kind, steps: one.steps })),
+          warnings: checked.warnings,
+        };
       },
     },
     {

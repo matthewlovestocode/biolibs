@@ -9,11 +9,12 @@ import { instrumentFor, toolFor, type ToolName } from "./run.js";
 import { LigationTool } from "./ligate-bench.js";
 import { AssemblyTool } from "./assembly-bench.js";
 import { CodonTool } from "./codon-bench.js";
+import { VerifyTool } from "./verify-bench.js";
 import { PrimerTool } from "./primer-bench.js";
 import { SequencesTool } from "./sequences-tool.js";
 
 /** The tools used at a desk and not at an instrument: the lab's sequences, and designing primers. */
-export type DeskTool = "sequences" | "primers" | "codons" | "assembly";
+export type DeskTool = "sequences" | "primers" | "codons" | "assembly" | "verify";
 
 /** What each tool is called. */
 export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation" };
@@ -64,7 +65,7 @@ export function Tools({ tool: first = "pcr", views = {} }: { tool?: ToolName | D
   const [tool, setTool] = useState<ToolName | DeskTool>(first);
   if (lab === null || lab === undefined) return null;
   const shown = views[tool];
-  const names: [ToolName | DeskTool, string][] = [["sequences", "Sequences"], ["primers", "Primers"], ["codons", "Codons"], ["assembly", "Assembly"], ...(Object.keys(TOOL_NAMES) as ToolName[]).map((one): [ToolName, string] => [one, TOOL_NAMES[one]])];
+  const names: [ToolName | DeskTool, string][] = [["sequences", "Sequences"], ["primers", "Primers"], ["codons", "Codons"], ["assembly", "Assembly"], ["verify", "Check"], ...(Object.keys(TOOL_NAMES) as ToolName[]).map((one): [ToolName, string] => [one, TOOL_NAMES[one]])];
   return (
     <div className="tools">
       <div className="row tight pick" role="tablist" aria-label="Tools">
@@ -72,7 +73,7 @@ export function Tools({ tool: first = "pcr", views = {} }: { tool?: ToolName | D
           <button key={one} type="button" role="tab" aria-selected={one === tool} className={one === tool ? "" : "quiet"} onClick={() => setTool(one)}>{name}</button>
         ))}
       </div>
-      {(typeof shown === "function" ? shown(setTool) : shown) ?? (tool === "sequences" ? <SequencesTool /> : tool === "assembly" ? <AssemblyTool /> : tool === "codons" ? <CodonTool />
+      {(typeof shown === "function" ? shown(setTool) : shown) ?? (tool === "sequences" ? <SequencesTool /> : tool === "assembly" ? <AssemblyTool /> : tool === "codons" ? <CodonTool /> : tool === "verify" ? <VerifyTool />
         : tool === "primers" ? <PrimerTool onPcr={() => setTool("pcr")} />
         : <Tool key={tool} tool={tool} instrument={instrumentFor(lab, tool)} />)}
     </div>

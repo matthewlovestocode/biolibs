@@ -3,6 +3,7 @@
     "url": "https://github.com/matthewlovestocode/biolibs/issues"
   },
   "dependencies": {
+    "@biolibs/align": "^1.0.0",
     "@biolibs/assembly2": "^1.0.0",
     "@biolibs/bionet": "^1.5.0",
     "@biolibs/bionet-panels": "^0.3.3",
