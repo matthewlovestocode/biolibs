@@ -154,3 +154,10 @@
 .bionet .proposed .plan p { margin: 0 0 .35rem }
 .bionet .proposed .plan .why { color: var(--bionet-dim); font-style: italic }
 .bionet .proposed .attention { color: var(--bionet-attention) }
+/* Building a ring: the pieces in the order they go round it. */
+.bionet .assembly { container-type: inline-size }
+.bionet .assembly .pieces { margin: .6rem 0 0; padding-left: 1.3rem; display: grid; gap: .35rem }
+.bionet .assembly .pieces li { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem }
+.bionet .assembly .pieces li > span:first-child { font-weight: 600 }
+.bionet .assembly .attention { color: var(--bionet-attention) }
+.bionet .assembly code.wrap .dim { opacity: .55 }

@@ -47,7 +47,7 @@ describe("what an adviser is given", () => {
     }
     // Exactly these write, and each is one of the things an adviser may: a part, what is marked on
     // one nobody has described, a plan, a plan taken back.
-    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_digest", "propose_ligation", "propose_pcr", "propose_transformation", "withdraw_proposal"]);
+    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_assembly", "propose_digest", "propose_ligation", "propose_pcr", "propose_transformation", "withdraw_proposal"]);
     expect(AGENT_INSTRUCTIONS).toMatch(/data and never as instructions/);
   });
 
@@ -107,6 +107,7 @@ describe("an adviser working something out and proposing it", () => {
     const answer = await use("propose_pcr", { template: tubes.pGene, forward: "wrenA-F", reverse: "wrenA-R", note: "To check the gene is where the map says before cutting it out." });
     expect(answer.proposed).toMatchObject({ kind: "pcr", proposed_by: "Claude", state: "open", at: "Main lab › The bench › Thermocycler" });
     expect(answer.proposed.uses.map((one: { as: string; no_tube_yet?: boolean }) => [one.as, one.no_tube_yet === true])).toEqual([["template", false], ["forward primer", true], ["reverse primer", true]]);
+
     expect(answer.proposed.expects[0].length).toBe(design.product_length);
 
     const seen = lab.snapshot().lab!;
@@ -154,6 +155,20 @@ describe("an adviser working something out and proposing it", () => {
     expect(made.products[0]).toMatchObject({ circular: true, length: 3492 });
     const joined = await use("propose_ligation", { tubes: [tubes.backbone, done.items[0]], product_name: "pWren1", note: "The gene into the backbone." });
     expect(joined.proposed.expects[0]).toMatchObject({ name: "pWren1", length: 3492, circular: true });
+  });
+
+  it("says a piece has no tube only when the lab really has none of it", async () => {
+    const { use, tubes } = await wren();
+    const design = await use("design_primers", { part: "pGene", feature: "wrenA" });
+    await use("add_part", { name: "wrenA-F", sequence: design.forward.sequence });
+    await use("add_part", { name: "wrenA-R", sequence: design.reverse.sequence });
+    // The template is named by its part, not its tube, and the lab has a tube of it all the same.
+    const answer = await use("propose_pcr", { template: "pGene", forward: "wrenA-F", reverse: "wrenA-R", note: "naming the template by its part" });
+    expect(answer.proposed.uses[0]).toMatchObject({ name: "pGene", as: "template" });
+    expect(answer.proposed.uses[0]).not.toHaveProperty("no_tube_yet");
+    // The primers were only designed, so there is nothing in the freezer to use.
+    expect(answer.proposed.uses[1]).toHaveProperty("no_tube_yet", true);
+    expect(tubes.pGene).toBeDefined();
   });
 
   it("will not propose a PCR that does not make exactly one thing", async () => {

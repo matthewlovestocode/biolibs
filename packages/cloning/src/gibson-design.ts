@@ -68,7 +68,16 @@ export interface DesignedJunction {
   length: number;
   /** Its melting temperature in °C. */
   tm: number;
-  /** How much of the overlap each primer carries: the reverse primer of `from`, then the forward primer of `to`. */
+  /**
+   * How many bases of the overlap each primer carries as its tail: the reverse primer of `from`,
+   * then the forward primer of `to`.
+   *
+   * A primer's tail reaches across the junction into its neighbour, so these are the other way
+   * round from where the bases come from. `toForward` is how much the forward primer of `to`
+   * carries, and what it carries is the end of `from`; `fromReverse` is how much the reverse primer
+   * of `from` carries, and what it carries is the start of `to`. So the overlap is `from`'s last
+   * `toForward` bases followed by `to`'s first `fromReverse`.
+   */
   carried: { fromReverse: number; toForward: number };
 }
 
@@ -195,8 +204,10 @@ export function designGibson(fragments: readonly DesignFragment[], options: Desi
     });
   }
 
-  // The ring is every fragment's length, less one copy of each overlap, since each is shared.
-  const length = fragments.reduce((n, f) => n + f.residues.length, 0) - junctions.reduce((n, j) => n + j.length, 0);
+  // The ring is every fragment, end to end. An overlap is not taken out of the fragments: it is the
+  // bases either side of a junction, which the primers' tails copy so that the two products share
+  // them. Joining those products puts each of those bases back exactly once.
+  const length = fragments.reduce((n, f) => n + f.residues.length, 0);
 
   for (const junction of junctions) {
     if (junction.tm < 48) warnings.push(`the overlap between '${junction.from}' and '${junction.to}' melts at ${junction.tm.toFixed(1)} °C, which may not anneal dependably`);

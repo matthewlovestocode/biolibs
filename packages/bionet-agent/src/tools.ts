@@ -17,8 +17,8 @@
  */
 import type { Lab, LabView } from "@biolibs/bionet-client";
 import { lookupTools, type LookupOptions } from "./lookup.js";
-import { COMMON_ENZYMES, cutSites, cutsOf, cutters, designPair, digestPieces, digestRun, featureStretches, instrumentFor, ligationRun, planPcr,
-         primerTm, toPlan, toolFor, type Stretch } from "@biolibs/bionet-tools";
+import { COMMON_ENZYMES, assemblyWorking, cutSites, cutsOf, cutters, designAssembly, designPair, digestPieces, digestRun,
+         featureStretches, instrumentFor, ligationRun, planPcr, primerTm, toPlan, toolFor, type AssemblyDesign, type Stretch } from "@biolibs/bionet-tools";
 
 /** A JSON schema for what a tool takes: always an object, with these properties. */
 export interface ToolInput {
@@ -156,7 +156,14 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
   });
   const planView = (seen: LabView, plan: LabView["plans"][number]): Record<string, unknown> => ({
     plan: plan.plan, kind: plan.kind, proposed_by: personOf(seen, plan.by), at: wayTo(seen, plan.instrument), note: plan.note,
-    uses: plan.inputs.map((one) => ({ ...(one.item === undefined ? { part: one.part, name: nameOf(seen, one.part!), no_tube_yet: true } : { tube: one.item, name: whatOf(seen, tubeBy(seen, one.item)) }), amount: one.amount, as: one.role })),
+    // A plan may name a part rather than a tube. Whether the lab has a tube of it is a fact about
+    // the lab, not about the plan: saying there is none when there is would send somebody ordering.
+    uses: plan.inputs.map((one) => ({
+      ...(one.item === undefined
+        ? { part: one.part, name: nameOf(seen, one.part!), ...(seen.items.some((each) => each.part === one.part && !each.retired && each.amount > 0) ? {} : { no_tube_yet: true }) }
+        : { tube: one.item, name: whatOf(seen, tubeBy(seen, one.item)) }),
+      amount: one.amount, as: one.role,
+    })),
     expects: plan.expects.map((one) => ({ name: one.name, length: one.length, circular: one.circular, checksum: one.checksum })),
     settings: plan.settings,
     state: plan.settled === null ? "open" : plan.settled.run === null ? "set aside" : "carried out",
@@ -184,6 +191,19 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
     return { start: from - 1, end: to < from ? to + part.length : to };
   };
   const adviser = (): Lab["advise"] => lab.advise;
+  /** The assembly a set of arguments asks for, worked out by the lab's own engine. */
+  const asked = (seen: LabView, args: Record<string, unknown>): AssemblyDesign => {
+    const given = (Array.isArray(args["pieces"]) ? args["pieces"] : []) as { part?: unknown; amplify?: unknown }[];
+    if (given.length < 2) throw new Error("An assembly is of at least two pieces, in the order they go round the ring.");
+    const design = designAssembly(seen, {
+      pieces: given.map((one) => ({ part: partBy(seen, text(one.part, "Each piece")).checksum, amplify: one.amplify !== false })),
+      ...(args["overlap"] === undefined ? {} : { overlap: whole(args["overlap"], "The overlap") }),
+      ...(args["target_tm"] === undefined ? {} : { targetTm: Number(args["target_tm"]) }),
+      ...(args["name"] === undefined ? {} : { name: text(args["name"], "The name") }),
+    });
+    if (design.problem !== null) throw new Error(design.problem);
+    return design;
+  };
   const proposed = async (seen: LabView, run: Record<string, unknown> | null, note: string, nothing: string): Promise<Record<string, unknown>> => {
     if (run === null) throw new Error(nothing);
     const { plan } = await adviser().planRun(toPlan(run, note) as Parameters<Lab["planRun"]>[0]);
@@ -428,6 +448,72 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
         if (run.plan === null) throw new Error("Each piece has to be linear: a circle has no ends to join. Cut it first.");
         return { problem: run.plan.problem, products: run.plan.products.map((one) => ({
           length: one.length, circular: one.circular, pieces: one.pieces.map((piece) => ({ name: piece.name, flipped: piece.flipped })), joins: one.joins.length })) };
+      },
+    },
+    {
+      name: "design_assembly", title: "Design a ring from several pieces", readOnly: true,
+      description: [
+        "Design a circular construct from pieces in the order they are to go round it: a vector, a promoter, a coding sequence, a terminator.",
+        "A ligation only joins pieces that have already been cut and whose ends happen to fit. This is the other way round: you say what the ring should be made of and the primers are designed to give each piece the overlap it needs, so it is how a construct is actually built.",
+        "Each piece is a part's checksum or name. A piece is amplified by PCR unless you say otherwise; one used as it is — a vector opened with an enzyme — cannot be given primer tails, so its neighbours carry the whole overlap. A circle used as it is has no ends to join and is refused.",
+        "Gives the ring with what each piece carries moved to where it now is, the primers to order with their tails and binding parts, each junction with its overlap, and the working behind every figure. Nothing is written: use propose_assembly to put it to a person.",
+      ].join(" "),
+      input: { type: "object", required: ["pieces"], additionalProperties: false, properties: {
+        pieces: { type: "array", description: "The pieces, in the order they go round the ring. At least two.",
+                  items: { type: "object", required: ["part"], additionalProperties: false, properties: {
+                    part: { type: "string", description: "A part's checksum or exact name." },
+                    amplify: { type: "boolean", description: "Whether it is amplified by PCR. True unless said." },
+                  } } },
+        overlap: { type: "integer", description: "The overlap to design at each junction, in bases. 25 if not given." },
+        target_tm: { type: "number", description: "What each primer's binding part aims at, in °C. 60 if not given." },
+        name: { type: "string", description: "What to call the ring." },
+      } },
+      run: (args) => {
+        const design = asked(now(), args);
+        return {
+          ring: { name: design.name, length: design.length, circular: true,
+                  pieces: design.pieces.map((one) => ({ name: one.part.name, length: one.part.length, from: one.start + 1, to: one.end, amplified: one.amplify })),
+                  marked: design.features.map((one) => ({ label: one.label, type: one.type, from: one.parts[0]!.start + 1, to: one.parts.at(-1)!.end })) },
+          primers_to_order: design.primers.map((one) => ({
+            name: one.name, for: one.fragment, direction: one.direction, sequence: one.sequence,
+            tail: one.tail === "" ? null : one.tail, binding: one.binding, binding_tm: Math.round(one.binding_report.tm * 10) / 10,
+          })),
+          junctions: design.junctions.map((one) => ({ from: one.from, to: one.to, overlap: one.overlap, length: one.length, tm: Math.round(one.tm * 10) / 10 })),
+          working: assemblyWorking(design).map((one) => ({ of: one.of, comes: one.comes, kind: one.kind, steps: one.steps, ...(one.rests === undefined ? {} : { rests: one.rests }) })),
+          warnings: design.warnings,
+          note: "Nothing is written. The primers have to be ordered and each amplified piece made by PCR before the pieces can be joined.",
+        };
+      },
+    },
+    {
+      name: "propose_assembly", title: "Propose building a ring", readOnly: false,
+      description: [
+        "Propose that somebody build a construct designed with design_assembly. The pieces are given the same way, and the lab's engine works the ring out again, so what is proposed is what the tools say and not anything retyped.",
+        "A piece may be a tube, or a part there is no tube of yet; the proposal then says it has to be made or ordered first, which for an amplified piece means its primers and its PCR.",
+        "Say in `note` what the construct is for and anything to watch for, such as a junction that melts low.",
+      ].join(" "),
+      input: { type: "object", required: ["pieces", "note"], additionalProperties: false, properties: {
+        pieces: { type: "array", description: "The pieces, in order. Each a tube's ID, or a part's checksum or name.",
+                  items: { type: "object", required: ["part"], additionalProperties: false, properties: {
+                    part: { type: "string", description: "A tube's ID, or a part's checksum or name." },
+                    amplify: { type: "boolean" },
+                  } } },
+        overlap: { type: "integer" }, target_tm: { type: "number" }, name: { type: "string" },
+        note: { type: "string", description: "Why, for whoever carries it out." },
+      } },
+      run: async (args) => {
+        const seen = now();
+        const given = (Array.isArray(args["pieces"]) ? args["pieces"] : []) as { part?: unknown; amplify?: unknown }[];
+        const held = given.map((one) => tubeOrPart(seen, text(one.part, "Each piece")));
+        const design = asked(seen, { ...args, pieces: given.map((one, at) => ({ part: held[at]!.part.checksum, amplify: one.amplify })) });
+        // A piece with no tube cannot be an input to a run, so the proposal names the part instead,
+        // which is what says it has to be made or ordered before this can be done.
+        const inputs = held.map((one) => ({ ...(one.item === undefined ? { part: one.part.checksum } : { item: one.item }), amount: 1, role: "piece" }));
+        return proposed(seen, {
+          kind: "assembly", instrument: instrumentFor(seen, "ligation")?.id ?? null, inputs,
+          settings: { pieces: design.pieces.length, joins: design.junctions.length, overlap: design.junctions[0]?.length ?? 0 },
+          outputs: [{ sequence: design.sequence, circular: true, name: design.name }],
+        }, text(args["note"], "The note saying why"), "");
       },
     },
     {

@@ -719,13 +719,14 @@ describe("designGibson", () => {
     expect(inserted.endsWith(reverseComplement(reverse.binding))).toBe(true);
   });
 
-  it("gives the ring's length as the fragments less one copy of each overlap", () => {
+  it("gives the ring's length as the fragments end to end", () => {
     const result = designGibson([
       { name: "bb", residues: backbone, amplify: false },
       { name: "ins", residues: inserted },
     ], { overlap: 16 });
     if (!result.ok) throw new Error(result.error);
-    expect(result.design.length).toBe(backbone.length + inserted.length - 32);
+    // An overlap is copied by a primer's tail, not taken out of a fragment, so nothing is lost at a junction.
+    expect(result.design.length).toBe(backbone.length + inserted.length);
   });
 
   it("designs one junction per fragment, the last closing the ring", () => {
@@ -782,5 +783,43 @@ describe("designGibson", () => {
     ], { overlap: 25 });
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error).toMatch(/too short/);
+  });
+});
+
+describe("designGibson: the ring it says it makes", () => {
+  /** Unambiguous DNA that is not a run of one base, which would make every overlap degenerate. */
+  const dna = (count: number, seed: number): string => {
+    let x = seed;
+    let out = "";
+    for (let i = 0; i < count; i++) { x = (1103515245 * x + 12345) & 0x7fffffff; out += "ACGT"[(x >> 16) % 4]; }
+    return out;
+  };
+
+  it("is as long as the fragments end to end, which is what the assembly really makes", () => {
+    const fragments = [
+      { name: "backbone", residues: dna(900, 42), amplify: false },
+      { name: "promoter", residues: dna(300, 7) },
+      { name: "insert", residues: dna(630, 991) },
+    ];
+    const designed = designGibson(fragments);
+    expect(designed.ok).toBe(true);
+    if (!designed.ok) return;
+    const whole = fragments.reduce((sum, one) => sum + one.residues.length, 0);
+    expect(designed.design.length).toBe(whole);
+
+    // An overlap is copied by the primers' tails, not taken out of the fragments. The proof is to
+    // build the products the design asks for and let `assembleGibson` join them: what comes out is
+    // the ring, and it has to be the length the design promised.
+    const products = fragments.map((fragment) => {
+      const forward = designed.design.primers.find((one) => one.fragment === fragment.name && one.direction === "forward");
+      const reverse = designed.design.primers.find((one) => one.fragment === fragment.name && one.direction === "reverse");
+      const back = (bases: string): string => [...bases].reverse().map((base) => ({ A: "T", T: "A", G: "C", C: "G" })[base] ?? base).join("");
+      return { name: fragment.name, residues: `${forward?.tail ?? ""}${fragment.residues}${back(reverse?.tail ?? "")}` };
+    });
+    const made = assembleGibson(products);
+    expect(made.ok).toBe(true);
+    if (!made.ok) return;
+    expect(made.products).toHaveLength(1);
+    expect(String(made.products[0]!.record.seq)).toHaveLength(designed.design.length);
   });
 });

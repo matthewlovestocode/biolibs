@@ -13,7 +13,7 @@
 import { useMemo, type ReactNode } from "react";
 import { useLab } from "@biolibs/bionet-react";
 import { InstrumentStage, LabView, type Focus } from "@biolibs/bionet-scene";
-import { SequencesTool, instrumentFor, moleculeOf, useDigestBench, useLigationBench, usePcrBench, usePrimerBench } from "@biolibs/bionet-tools";
+import { SequencesTool, instrumentFor, moleculeOf, useAssemblyBench, useDigestBench, useLigationBench, usePcrBench, usePrimerBench } from "@biolibs/bionet-tools";
 import type { TourStop } from "./tour.js";
 
 /**
@@ -87,15 +87,18 @@ export function LabAt({ stop, onPcr }: { stop: TourStop; onPcr?: (tubes: { templ
   // Primers are designed at a desk, so that tool has no machine to stand at: it is beside the room,
   // and what it hands over is the template's tube to look at and the pair drawn on its molecule.
   const primers = usePrimerBench({ ...(stop.at === "primers" && stop.start !== undefined ? { start: stop.start } : {}), ...(onPcr === undefined ? {} : { onPcr }) });
+  // Building a ring is a desk too: there is no machine to walk to, and what it pictures is the ring.
+  const assembly = useAssemblyBench(stop.at === "assembly" && stop.start !== undefined ? { start: stop.start } : {});
   if (lab === null || lab === undefined) return null;
 
   const bench = stop.at === "pcr" ? pcr : stop.at === "digest" ? digest : stop.at === "ligation" ? ligation : null;
+  const desk = stop.at === "primers" ? primers.desk : stop.at === "assembly" ? assembly.desk : null;
+  const beside = stop.at === "primers" ? primers.panel : stop.at === "assembly" ? assembly.panel : null;
   const stood = stop.at === "pcr" || stop.at === "digest" || stop.at === "ligation" ? at[stop.at] : null;
   if (bench !== null && stood === null) return <div className="scene"><InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage></div>;
   const sequences = stop.at === "sequences" ? <div className="bionet"><SequencesTool {...(stop.part === undefined ? {} : { part: stop.part })} /></div> : null;
-  if (!lab.places.some((one) => !one.retired) && (stop.at === "primers" || stop.at === "sequences")) return stop.at === "primers" ? <>{primers.panel}</> : sequences;
+  if (!lab.places.some((one) => !one.retired) && (stop.at === "primers" || stop.at === "assembly" || stop.at === "sequences")) return beside === null ? sequences : <>{beside}</>;
 
-  const desk = stop.at === "primers" ? primers.desk : null;
   const focus: Focus = bench !== null && stood !== null ? { place: stood.id }
                      : stop.at === "lab" || stop.at === "sequences" ? stop.focus ?? { place: null }
                      : desk?.focus ?? { place: null };
@@ -108,7 +111,7 @@ export function LabAt({ stop, onPcr }: { stop: TourStop; onPcr?: (tubes: { templ
                  return part === undefined ? null : moleculeOf(part);
                }}
                {...(bench === null || stood === null ? {} : { using: { place: stood.id, ...bench.stage, panel: bench.panel } })}
-               {...(desk === null ? {} : { wide: true, beside: primers.panel })}
+               {...(desk === null || beside === null ? {} : { wide: true, beside })}
                {...(sequences === null ? {} : { wide: true, beside: sequences })} />
     </div>
   );

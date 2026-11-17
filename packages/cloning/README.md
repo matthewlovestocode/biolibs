@@ -379,12 +379,17 @@ const result = designGibson([
   { name: "insert", residues: GENE },
 ]);
 
-result.ok && result.design.length;                      // 150 = 128 + 72 − 2 × 25
+result.ok && result.design.length;                      // 200 = 128 + 72, the fragments end to end
 result.ok && result.design.primers.map((p) => p.name);  // ["insert-F", "insert-R"]
 result.ok && result.design.primers[0]!.tail;            // "ATTAACCCGTAACCTTAAGACACAT" — the backbone's end
 result.ok && result.design.primers[0]!.binding;         // "ATGAGTAAAGGAGAAGAACTTTTCACTGG"
 result.ok && result.design.primers[0]!.sequence.length; // 54 = 25 + 29
 ```
+
+An overlap is not taken out of the fragments. It is the bases either side of a junction, which the
+primers' tails copy so that the two products share them; joining the products puts each of those
+bases back exactly once. So the ring is every fragment end to end, and a design that asks for a
+25-base overlap makes each product 25 bases longer, not the ring 25 bases shorter.
 
 The forward primer carries the end of the fragment **before** it; the reverse primer carries the start of
 the fragment **after** it, reverse-complemented, since a reverse primer reads the bottom strand.

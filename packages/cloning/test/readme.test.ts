@@ -205,7 +205,7 @@ describe("README: designing a Gibson assembly", () => {
     ]);
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    expect(result.design.length).toBe(150);
+    expect(result.design.length).toBe(200);
     expect(result.design.primers.map((p) => p.name)).toEqual(["insert-F", "insert-R"]);
     expect(result.design.primers[0]!.tail).toBe("ATTAACCCGTAACCTTAAGACACAT");
     expect(result.design.primers[0]!.binding).toBe("ATGAGTAAAGGAGAAGAACTTTTCACTGG");
