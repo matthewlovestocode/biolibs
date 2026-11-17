@@ -18,7 +18,9 @@
  *   the lab accepts, so somebody removed cannot add to the lab afterwards by claiming not to have
  *   heard. What they wrote past the cutoff is kept, set aside, and shown.
  * - **When two changes truly overlap, the lower entry ID wins**, and the overlap is reported. It is
- *   the same choice on every machine and nobody can arrange it in advance.
+ *   the same choice on every machine and nobody can arrange it in advance. The one exception is an
+ *   adviser: where its change overlaps somebody else's, theirs stands whichever ID is lower, so that
+ *   a key that cannot change what a person wrote cannot do it by writing at the same moment either.
  * - **Between keepers, the one who has been a keeper longer is heard first.**
  *
  * It refuses quietly. An entry that is not allowed is still placed, with its status and the reason,
@@ -389,8 +391,14 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
   "field.set": { on: true, id: true, field: true, value: true },
 };
 
-/** What an adviser may write. Everything else from one is refused. */
-const ADVISER_MAY = new Set(["part.add", "plan.add", "plan.settle"]);
+/**
+ * What an adviser may write. Everything else from one is refused.
+ *
+ * `part.annotate` is here with a condition the roster cannot answer, so it is checked again where
+ * the parts are known: an adviser may say what is on a part that nothing is marked on, and may not
+ * change what somebody has already marked.
+ */
+const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle"]);
 
 /**
  * The first field in a change that this version does not know, if there is one.
@@ -730,7 +738,7 @@ function walk(founding: Node, chains: Map<string, Node[]>, chained: Map<string, 
       // An adviser proposes and describes. It is turned away here, where the roster is known as it
       // stood when the entry was written, from anything that would change what the lab holds.
       if (author.role === "adviser") {
-        if (!ADVISER_MAY.has(op.type)) { say("refused", "Its key is an adviser, which may add parts and propose runs and nothing else."); continue; }
+        if (!ADVISER_MAY.has(op.type)) { say("refused", "Its key is an adviser, which may add and describe parts and propose runs, and nothing else."); continue; }
         node.adviser = true;
       }
       say("applied");       // whether the change itself makes sense is settled when the inventory is folded
@@ -798,7 +806,9 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
   const write = (set: Map<string, Register>, field: string, node: Node, value: unknown, what: string): void => {
     const held = set.get(field);
     if (held === undefined || hadSeen(node, held.node)) { set.set(field, { node, value }); return; }
-    const wins = node.id < held.node.id;
+    // Between two that overlap, the lower ID. Between a person's and an adviser's, the person's:
+    // an adviser may not change what somebody wrote, and writing at the same moment is not a way round it.
+    const wins = (node.adviser === true) !== (held.node.adviser === true) ? node.adviser !== true : node.id < held.node.id;
     state.overlaps.push({ what, kept: wins ? node.id : held.node.id, dropped: wins ? held.node.id : node.id });
     if (wins) set.set(field, { node, value });
   };
@@ -846,6 +856,13 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       const held = typeof op["part"] === "string" ? parts.get(op["part"]) : undefined;
       if (held === undefined) { refuse("It does not name a part the lab has."); continue; }
       if (!areFeatures(op["features"], held.part.length)) { refuse("What it marks is not a list of features that lie within the part."); continue; }
+      // An adviser may describe a part nobody has described, and may not change what somebody has
+      // marked. Whether anything is marked yet is read here, where the entries are in the order
+      // every machine settled on, so each of them answers it the same way.
+      if (node.adviser === true && held.set.has("features")) {
+        refuse("Its key is an adviser, which may mark a part only while nothing is marked on it. Somebody has marked this one.");
+        continue;
+      }
       write(held.set, "features", node, op["features"], `what is marked on ${held.part.name}`);
     } else if (op.type === "item.add") {
       if (!(typeof op["item"] === "string" && ITEM_ID.test(op["item"])) || !amountOf(op["amount"]) || op["amount"] < 0

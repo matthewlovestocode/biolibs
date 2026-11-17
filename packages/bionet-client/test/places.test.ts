@@ -346,7 +346,7 @@ describe("a device that hosts an adviser", () => {
     expect(Object.keys(lab.advise).sort()).toEqual(["addPart", "planRun", "settlePlan"]);
     // And the lab itself refuses the rest, even signed as the adviser on purpose.
     const { adjustItem } = await import("@biolibs/bionet");
-    await expect(lab.write(adjustItem(tube, -5), true)).rejects.toThrow(/an adviser, which may add parts and propose runs and nothing else/);
+    await expect(lab.write(adjustItem(tube, -5), true)).rejects.toThrow(/an adviser, which may add and describe parts and propose runs, and nothing else/);
     expect(lab.snapshot().lab!.items[0]!.amount).toBe(20);
     // A window cannot ask to sign as the adviser at all: the door takes one thing, and it is not that.
     expect(await perform(lab, "write", {})).toMatchObject({ ok: false });

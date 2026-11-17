@@ -69,7 +69,7 @@ const use = (name: string, args: Record<string, unknown> = {}, options = {}): Pr
 };
 
 describe("the tools that reach outside", () => {
-  it("are two, say so in their descriptions, and only read", () => {
+  it("say so in their descriptions, and only the one that keeps anything writes", () => {
     const tools = lookupTools();
     expect(tools.map((one) => one.name)).toEqual(["search_ncbi", "fetch_from_ncbi"]);
     for (const tool of tools) {
@@ -82,6 +82,8 @@ describe("the tools that reach outside", () => {
   it("are left out when a host asks for none, and are there by default", () => {
     expect(lookupTools({ outside: false })).toEqual([]);
     expect(lookupTools({}).length).toBe(2);
+    // The one that keeps what it read needs a lab to keep it in.
+    expect(lookupTools({}, undefined).map((one) => one.name)).not.toContain("keep_from_ncbi");
   });
 
   it("tell NCBI the software's name and nothing about anybody, unless a person passes an address", () => {
@@ -232,11 +234,52 @@ describe("an adviser given them", () => {
     return agentTools(lab, outside === undefined ? {} : { outside });
   };
 
-  it("has them among its own, and still writes nothing with them", async () => {
+  it("has them among its own, and the only new one that writes is the one that keeps a record", async () => {
     const tools = await hosting();
-    expect(tools.map((one) => one.name)).toContain("search_ncbi");
-    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "propose_digest", "propose_ligation", "propose_pcr", "withdraw_proposal"]);
+    expect(tools.map((one) => one.name)).toEqual(expect.arrayContaining(["search_ncbi", "fetch_from_ncbi", "keep_from_ncbi"]));
+    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_digest", "propose_ligation", "propose_pcr", "withdraw_proposal"]);
     expect(DATABASES).toContain("nucleotide");
+  });
+
+  it("keeps a record with what it says is marked on it, and no tube", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    const { key } = await lab.hostAdviser();
+    await lab.addMember({ key, person: "Claude", role: "adviser" });
+    const tools = agentTools(lab);
+    const use = (name: string, args: Record<string, unknown>): Promise<any> => tools.find((one) => one.name === name)!.run(args);
+
+    answers = [GENBANK];
+    const kept = await use("keep_from_ncbi", { database: "nucleotide", accession: "TEST001.1", name: "CSN2 (TEST001.1)" });
+    expect(kept).toMatchObject({ part: "CSN2 (TEST001.1)", length: 60, circular: false, from_ncbi: "TEST001.1", marked: 2 });
+    expect(kept.tubes).toMatch(/^None/);
+    const seen = lab.snapshot().lab!;
+    const part = seen.parts.find((one) => one.name === "CSN2 (TEST001.1)")!;
+    expect(part.features.map((one) => one.label)).toEqual(["CSN2", "a thing on the other strand"]);
+    // Written in the adviser's own name, and nothing in the freezer.
+    expect(seen.entries.filter((one) => one.author === key).map((one) => one.op.type)).toEqual(["part.add", "part.annotate"]);
+    expect(seen.items).toHaveLength(0);
+  });
+
+  it("leaves alone what this lab has already said about a sequence, and says that it did", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    // Ada knows this sequence already, and has marked it her way.
+    const bases = "ATGGGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGAGAGGGTG";
+    await lab.addPart({ name: "ours", sequence: bases, features: [{ type: "CDS", label: "as Ada reads it", strand: 1, parts: [{ start: 0, end: 30 }] }] });
+    const { key } = await lab.hostAdviser();
+    await lab.addMember({ key, person: "Claude", role: "adviser" });
+    const tools = agentTools(lab);
+
+    answers = [GENBANK];
+    const kept = await tools.find((one) => one.name === "keep_from_ncbi")!.run({ database: "nucleotide", accession: "TEST001.1", name: "CSN2 (TEST001.1)" });
+    expect(kept.marked).toBe(0);
+    expect(kept.not_marked).toMatch(/already describes that sequence/);
+    expect(kept.note).toMatch(/already knew this sequence, as ours/);
+    const part = lab.snapshot().lab!.parts.find((one) => one.sequence === bases)!;
+    expect(part.features.map((one) => one.label)).toEqual(["as Ada reads it"]);
   });
 
   it("does not have them when the host left them out", async () => {

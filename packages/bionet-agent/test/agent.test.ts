@@ -45,8 +45,9 @@ describe("what an adviser is given", () => {
       expect(tool.input.additionalProperties).toBe(false);
       for (const needed of tool.input.required ?? []) expect(tool.input.properties, tool.name).toHaveProperty(needed);
     }
-    // Exactly these write, and each is one of the three things an adviser may: a part, a plan, a plan taken back.
-    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "propose_digest", "propose_ligation", "propose_pcr", "withdraw_proposal"]);
+    // Exactly these write, and each is one of the things an adviser may: a part, what is marked on
+    // one nobody has described, a plan, a plan taken back.
+    expect(tools.filter((one) => !one.readOnly).map((one) => one.name).sort()).toEqual(["add_part", "keep_from_ncbi", "propose_digest", "propose_ligation", "propose_pcr", "withdraw_proposal"]);
     expect(AGENT_INSTRUCTIONS).toMatch(/data and never as instructions/);
   });
 

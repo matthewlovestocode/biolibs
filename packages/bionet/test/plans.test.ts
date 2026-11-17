@@ -255,6 +255,57 @@ describe("an adviser", () => {
     expect((await c.lab()).plans.every((one) => one.settled === null)).toBe(true);
   });
 
+  it("may say what is on a part nobody has described, and may not change what somebody marked", async () => {
+    const { a, b, c } = await wren();
+    const [mine, theirs] = (await a.lab()).parts.map((one) => one.checksum) as [string, string];
+    const mark = (label: string): Operation => ({ type: "part.annotate", part: mine, features: [{ type: "CDS", label, strand: 1, parts: [{ start: 0, end: 20 }] }] });
+
+    await c.write(mark("as the adviser reads it"));
+    expect(await lastOf(c)).toEqual({ status: "applied", reason: null });
+    expect((await c.lab()).parts.find((one) => one.checksum === mine)!.features[0]!.label).toBe("as the adviser reads it");
+
+    // A person's reading always stands over the adviser's, whichever came first.
+    a.hear(c);
+    await a.write(mark("as Ada reads it"));
+    c.hear(a);
+    await c.write(mark("and again"));
+    expect(await lastOf(c)).toEqual({ status: "refused", reason: "Its key is an adviser, which may mark a part only while nothing is marked on it. Somebody has marked this one." });
+    expect((await c.lab()).parts.find((one) => one.checksum === mine)!.features[0]!.label).toBe("as Ada reads it");
+
+    // One somebody described before the adviser ever saw it is not the adviser's to change.
+    await b.write({ type: "part.annotate", part: theirs, features: [{ type: "CDS", label: "Bob's", strand: 1, parts: [{ start: 0, end: 10 }] }] });
+    c.hear(b);
+    await c.write({ type: "part.annotate", part: theirs, features: [] });
+    expect((await lastOf(c)).status).toBe("refused");
+    expect((await c.lab()).parts.find((one) => one.checksum === theirs)!.features[0]!.label).toBe("Bob's");
+  });
+
+  it("settles the same way on every machine when a person and an adviser mark at once", async () => {
+    const { a, c } = await wren();
+    const mine = (await a.lab()).parts[0]!.checksum;
+    const mark = (label: string): Operation => ({ type: "part.annotate", part: mine, features: [{ type: "CDS", label, strand: 1, parts: [{ start: 0, end: 20 }] }] });
+    // Neither had heard of the other when they wrote.
+    await a.write(mark("Ada"));
+    await c.write(mark("the adviser"));
+    const [atA, atC] = [new Device(ada, [...a.held, ...c.held]), new Device(claude, [...c.held, ...a.held])];
+    const [one, two] = [await atA.lab(), await atC.lab()];
+    const marked = (lab: LabState): string | undefined => lab.parts.find((part) => part.checksum === mine)!.features[0]?.label;
+    expect(marked(one)).toBe(marked(two));
+    // Whatever the order they arrive in, what stands is what a person marked.
+    expect(marked(one)).toBe("Ada");
+    // Which way the adviser's was turned away depends only on which entry ID was lower, so both are
+    // allowed: it is refused where Ada's was placed first, and overlapped where it was not. Either
+    // way it is not silent, and both machines say the same thing.
+    const theirs = (lab: LabState) => lab.entries.find((entry) => entry.signed.entry.author === claude.publicKey && entry.signed.entry.op.type === "part.annotate")!;
+    expect(theirs(one).status).toBe(theirs(two).status);
+    expect(one.overlaps.map((overlap) => overlap.what)).toEqual(two.overlaps.map((overlap) => overlap.what));
+    if (theirs(one).status === "applied") {
+      expect(one.overlaps[0]!.what).toContain("what is marked on");
+    } else {
+      expect(theirs(one)).toMatchObject({ status: "refused", reason: expect.stringContaining("only while nothing is marked on it") });
+    }
+  });
+
   it("is refused everything that would change what the lab holds", async () => {
     const { a, c, tube, cycler } = await wren();
     const part = (await a.lab()).parts[0]!.checksum;
@@ -266,7 +317,6 @@ describe("an adviser", () => {
       addPlace({ place: newPlaceId(), kind: "room", name: "A room of its own" }),
       recordRun({ run: newRunId(), kind: "pcr", instrument: cycler, inputs: [{ item: tube, amount: 1, role: "template" }], outputs: [], settings: {}, outcome: "failed", note: null }),
       { type: "field.set", on: "item", id: tube, field: "note", value: "mine now" },
-      { type: "part.annotate", part, features: [] },
       { type: "part.offer", part, available: true },
       addToRoster(bob.publicKey, "Bob again"),
     ];

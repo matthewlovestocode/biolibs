@@ -405,10 +405,23 @@ The link from a run to its plan is the settling entry's alone. A recorded run is
 what it always was, so a device too old to know of plans still reads the run and holds the same
 inventory.
 
-A plan is what a key with the role `adviser` is for. An adviser may add parts, propose runs, and set
-aside a plan of its own. Everything else it writes is refused where the logs are merged, on every
-device, so something with no hands at the bench can be let into a lab without being able to say
-that anything was done, used or moved.
+A plan is what a key with the role `adviser` is for. An adviser may add parts, say what is marked on
+a part that nothing is marked on, propose runs, and set aside a plan of its own. Everything else it
+writes is refused where the logs are merged, on every device, so something with no hands at the
+bench can be let into a lab without being able to say that anything was done, used or moved.
+
+Where an adviser and a person mark the same part without having heard of each other, the person's
+reading stands, whichever entry has the lower ID. Between two people it is the lower ID as usual.
+
+```ts
+// An adviser may describe a part nobody has described.
+await write(claude, claudesKey, annotatePart(checksum, [{ type: "CDS", label: "wrenA", strand: 1, parts: [{ start: 0, end: 30 }] }]));
+
+// It may not change what somebody has marked: this one is refused, and what Ada marked stands.
+await write(ada, adasKey, annotatePart(checksum, [{ type: "CDS", label: "as Ada reads it", strand: 1, parts: [{ start: 0, end: 30 }] }]));
+await write(claude, claudesKey, annotatePart(checksum, [{ type: "CDS", label: "and again", strand: 1, parts: [{ start: 0, end: 30 }] }]));
+(await mergeLog(ada)).parts.find((one) => one.checksum === checksum)?.features[0]?.label;   // "as Ada reads it"
+```
 
 ### Moving entries between machines
 

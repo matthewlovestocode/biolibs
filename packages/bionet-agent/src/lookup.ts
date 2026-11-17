@@ -13,8 +13,9 @@
  *   part only if the adviser then says so with `add_part`, which is written in its own name like
  *   anything else it writes, and what a record claims is marked on a sequence does not come with it.
  */
+import type { Lab } from "@biolibs/bionet-client";
 import { efetch, esearch, esummary, settings, HTTPError, URLError } from "@biolibs/entrez";
-import { readSequenceFile } from "@biolibs/bionet-tools";
+import { readSequenceFile, type SequenceFile } from "@biolibs/bionet-tools";
 import type { AgentTool, ToolInput } from "./tools.js";
 
 /** The databases that may be asked. Nothing else is reachable through these tools. */
@@ -104,6 +105,7 @@ function oneFound(db: Database, uid: string, summary: Summary): Record<string, u
  * The tools that look something up at NCBI.
  *
  * @param options - Whether to offer them, and what to tell NCBI about who is asking.
+ * @param lab - The lab, for the one that keeps what it read. Without it that tool is left out.
  * @returns The tools, or none if a host asked for none.
  *
  * @example
@@ -114,7 +116,7 @@ function oneFound(db: Database, uid: string, summary: Summary): Record<string, u
  * outside.map((one) => one.name);    // ["search_ncbi", "fetch_from_ncbi"]
  * ```
  */
-export function lookupTools(options: LookupOptions = {}): AgentTool[] {
+export function lookupTools(options: LookupOptions = {}, lab?: Lab): AgentTool[] {
   if (options.outside === false) return [];
   // Said once, before anything is asked. NCBI wants to know what software is calling; it is told
   // the software's name and nothing about the lab or the person at it.
@@ -124,7 +126,65 @@ export function lookupTools(options: LookupOptions = {}): AgentTool[] {
 
   const dbField: ToolInput["properties"][string] = { type: "string", enum: [...DATABASES], description: "Which database: nucleotide, protein, gene (what a gene is and where), or pubmed (papers)." };
 
+  /** Fetch one record, with everything the two tools that fetch need from it. */
+  const fetched = async (db: Database, accession: string, from?: number, to?: number): Promise<SequenceFile> => {
+    if (db !== "nucleotide" && db !== "protein") throw new Error("A sequence is fetched from nucleotide or protein. Use search_ncbi for genes and papers.");
+    if (!/^[A-Za-z0-9_.]{3,40}$/.test(accession)) throw new Error("That is not an accession. One looks like NM_181008.2 or P02666.");
+    let record: SequenceFile;
+    try {
+      const handle = await efetch(db, {
+        id: accession, rettype: db === "protein" ? "gp" : "gb", retmode: "text",
+        ...(from === undefined ? {} : { seq_start: from }), ...(to === undefined ? {} : { seq_stop: to }),
+      });
+      const body = handle.readText();
+      if (body.trim() === "") throw new Error(`NCBI has nothing under ${accession} in ${db}.`);
+      record = readSequenceFile(`${accession}.gb`, new TextEncoder().encode(body));
+    } catch (cause) { throw asTrouble(cause); }
+    if (record.sequence.length > MOST_FETCHED) {
+      throw new Error(`${accession} is ${record.sequence.length.toLocaleString("en-US")} long, which is more than one fetch brings back. Ask for a stretch of it with from and to.`);
+    }
+    return record;
+  };
+
+  const keeping: AgentTool[] = lab === undefined ? [] : [{
+    name: "keep_from_ncbi", title: "Keep a sequence from NCBI", readOnly: false,
+    description: [
+      "Fetch one record from NCBI by accession and keep it in the lab as a part, with what the record says is marked on it.",
+      "What lands is what NCBI returned and not anything retyped, so whoever reads it later is reading the record.",
+      "Put the accession in the name — `CSN2 (NM_181008.2)` — since nothing else on the part will say where it came from.",
+      "It adds no tube: there is nothing in the freezer until somebody orders or makes it and says so.",
+      "What the record says is marked on it is only added if nobody in this lab has described that sequence already; theirs stands, and the answer says so.",
+      "This reaches the internet. Only the accession is sent.",
+    ].join(" "),
+    input: { type: "object", required: ["database", "accession", "name"], additionalProperties: false, properties: {
+      database: { type: "string", enum: ["nucleotide", "protein"], description: "Which database the accession is in." },
+      accession: { type: "string", description: "The accession, such as NM_181008.2." },
+      name: { type: "string", description: "What to call it in the lab. Put the accession in it." },
+      from: { type: "integer", description: "The first base or residue to keep, counting from 1." },
+      to: { type: "integer", description: "The last one." },
+    } },
+    run: async (args) => {
+      const db = database(args["database"]);
+      const accession = text(args["accession"], "The accession");
+      const name = text(args["name"], "The name");
+      const from = args["from"] === undefined ? undefined : Math.max(1, whole(args["from"], "`from`"));
+      const to = args["to"] === undefined ? undefined : Math.max(1, whole(args["to"], "`to`"));
+      const record = await fetched(db, accession, from, to);
+      const { marked } = await lab.advise.addPart({ name, sequence: record.sequence, circular: record.circular, features: record.features });
+      const held = lab.snapshot().lab?.parts.find((one) => one.sequence.toUpperCase() === record.sequence.toUpperCase() && one.circular === record.circular);
+      return {
+        part: held?.name ?? name, checksum: held?.checksum ?? null, length: record.sequence.length, circular: record.circular,
+        from_ncbi: accession, ...(from === undefined && to === undefined ? {} : { stretch: { from: from ?? 1, to: to ?? record.sequence.length } }),
+        marked: marked ? record.features.length : 0,
+        ...(marked || record.features.length === 0 ? {} : { not_marked: "This lab already describes that sequence, and what it says stands. What the record says is not on it." }),
+        ...(held !== undefined && held.name !== name ? { note: `The lab already knew this sequence, as ${held.name}. A part is known by its sequence, so it keeps that name.` } : {}),
+        tubes: "None. Keeping a part puts nothing in the freezer.",
+      };
+    },
+  }];
+
   return [
+    ...keeping,
     {
       name: "search_ncbi", title: "Search NCBI", readOnly: true,
       description: [
@@ -174,24 +234,10 @@ export function lookupTools(options: LookupOptions = {}): AgentTool[] {
       } },
       run: async (args) => {
         const db = database(args["database"]);
-        if (db !== "nucleotide" && db !== "protein") throw new Error("A sequence is fetched from nucleotide or protein. Use search_ncbi for genes and papers.");
         const accession = text(args["accession"], "The accession");
-        if (!/^[A-Za-z0-9_.]{3,40}$/.test(accession)) throw new Error("That is not an accession. One looks like NM_181008.2 or P02666.");
         const from = args["from"] === undefined ? undefined : Math.max(1, whole(args["from"], "`from`"));
         const to = args["to"] === undefined ? undefined : Math.max(1, whole(args["to"], "`to`"));
-        let record;
-        try {
-          const handle = await efetch(db, {
-            id: accession, rettype: db === "protein" ? "gp" : "gb", retmode: "text",
-            ...(from === undefined ? {} : { seq_start: from }), ...(to === undefined ? {} : { seq_stop: to }),
-          });
-          const body = handle.readText();
-          if (body.trim() === "") throw new Error(`NCBI has nothing under ${accession} in ${db}.`);
-          record = readSequenceFile(`${accession}.gb`, new TextEncoder().encode(body));
-        } catch (cause) { throw asTrouble(cause); }
-        if (record.sequence.length > MOST_FETCHED) {
-          throw new Error(`${accession} is ${record.sequence.length.toLocaleString("en-US")} long, which is more than one fetch brings back. Ask for a stretch of it with from and to.`);
-        }
+        const record = await fetched(db, accession, from, to);
         return {
           accession, database: db, name: record.name, description: record.description,
           length: record.sequence.length, circular: record.circular,
@@ -200,7 +246,7 @@ export function lookupTools(options: LookupOptions = {}): AgentTool[] {
           marked: record.features.map((one) => ({ label: one.label, type: one.type, strand: one.strand === 1 ? "forward" : one.strand === -1 ? "reverse" : "either",
                                                   lies: one.parts.map((part) => ({ from: part.start + 1, to: part.end })) })),
           sequence: record.sequence,
-          from_outside: "This came from NCBI and says what whoever deposited it says. Nothing has been added to the lab.",
+          from_outside: "This came from NCBI and says what whoever deposited it says. Nothing has been added to the lab; keep_from_ncbi keeps it, with what is marked on it.",
         };
       },
     },

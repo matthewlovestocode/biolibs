@@ -77,14 +77,16 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `withdraw_proposal` | Take back a proposal of its own |
 | `search_ncbi` | Search NCBI's nucleotide, protein, gene or pubmed databases by keyword |
 | `fetch_from_ncbi` | Read one record by accession: its sequence, and what it says is marked on it |
+| `keep_from_ncbi` | Keep one as a part, with what the record says is marked on it. No tube |
 
-`add_part`, the three `propose_` tools and `withdraw_proposal` are the only ones that write. A
+`add_part`, `keep_from_ncbi`, the three `propose_` tools and `withdraw_proposal` are the only ones
+that write. A
 proposal may count on a part there is no tube of yet; it then says that the part has to be ordered
 or made first.
 
 ### Looking something up
 
-The last two are the only ones that reach outside the lab, to NCBI's public databases. They are
+The last three are the only ones that reach outside the lab, to NCBI's public databases. They are
 what lets an adviser answer a question the freezer says nothing about: which genes a protein is
 made by, what a reference sequence for one is called, what has been published about it.
 
@@ -99,9 +101,13 @@ agentTools(lab, { outside: { outside: false } });
 - **NCBI is told the software's name** and nothing about the lab or the person at it. It asks every
   client for an address to contact about heavy use; pass `email` only if somebody has given one for
   that, and never take one from the lab.
-- **Nothing comes in by itself.** A fetched record is handed back to be read. It becomes a part only
-  if the adviser then uses `add_part`, and what the record claims is marked on the sequence does not
-  come with it: an adviser may not mark a part.
+- **Nothing comes in by itself.** `fetch_from_ncbi` hands a record back to be read and keeps nothing.
+  `keep_from_ncbi` is the one that keeps it, and what lands is what NCBI returned rather than
+  anything the agent retyped. It adds no tube.
+- **What your lab has said stands.** An adviser may say what is marked on a part nobody has
+  described, and may not change what somebody has marked — including when the two are written at the
+  same moment. So keeping a record whose sequence your lab already describes leaves your reading
+  alone, and the answer says that it did.
 - **What comes back is what somebody deposited**, not something the lab has checked. The adviser is
   told to say so.
 

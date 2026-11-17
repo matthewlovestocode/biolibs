@@ -43,7 +43,7 @@ const TOOL_WORDS: Readonly<Record<string, string>> = {
   lab_overview: "looked over the lab", list_parts: "read the list of parts", get_part: "read a part closely", list_tubes: "read the list of tubes",
   list_runs: "read what has been done", list_proposals: "read what is proposed", find_cutters: "looked for enzymes that cut a part",
   design_primers: "designed a pair of primers", work_out_pcr: "worked out a PCR", work_out_digest: "worked out a digest", work_out_ligation: "worked out a ligation",
-  search_ncbi: "searched NCBI", fetch_from_ncbi: "read a sequence from NCBI", add_part: "added a part", propose_pcr: "proposed a PCR", propose_digest: "proposed a digest", propose_ligation: "proposed a ligation", withdraw_proposal: "took a proposal back",
+  search_ncbi: "searched NCBI", fetch_from_ncbi: "read a sequence from NCBI", keep_from_ncbi: "kept a sequence from NCBI", add_part: "added a part", propose_pcr: "proposed a PCR", propose_digest: "proposed a digest", propose_ligation: "proposed a ligation", withdraw_proposal: "took a proposal back",
 };
 
 /**
@@ -78,7 +78,7 @@ export function Adviser({ door, onWatch }: { door?: AdviserDoor; onWatch?: () =>
       <section className="card">
         <h2>An adviser on this device</h2>
         <p className="small">An adviser is a member with no hands: an agent that can read what the lab holds, work things out with the lab's own tools, add a part by its sequence, and propose a run for a person to carry out.</p>
-        <p className="dim small">It cannot say that anything was done, used or moved. That is not a setting here: its key has the role of adviser, and every device in the lab refuses anything else it writes. What it proposes is shown at the tool that would carry it out, with its reasons, and nothing happens until a person does it.</p>
+        <p className="dim small">It cannot say that anything was done, used or moved, and it cannot change what you have marked on a part. That is not a setting here: its key has the role of adviser, and every device in the lab refuses anything else it writes. What it proposes is shown at the tool that would carry it out, with its reasons, and nothing happens until a person does it.</p>
         {hosting === null ? (
           <button type="button" disabled={busy} onClick={() => void ask(() => act("hostAdviser"))}>Host an adviser on this device</button>
         ) : (

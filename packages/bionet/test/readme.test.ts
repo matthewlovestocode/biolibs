@@ -232,4 +232,25 @@ describe("README: inside a lab", () => {
     expect(after.items.find((one) => one.item === product)?.from).toBe(run);
     expect(after.runs.length).toBe(1);
   });
+
+  it("lets an adviser describe a part nobody has described, and not change what somebody marked", async () => {
+    const adasKey = await generateSigningKey();
+    const claudesKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+    await write(ada, adasKey, addToRoster(claudesKey.publicKey, "Claude", "adviser"));
+    await write(ada, adasKey, addPart({ sequence: F1, name: "f1" }));
+    const checksum = (await mergeLog(ada)).parts[0]!.checksum;
+    const claude = ada;
+
+    await write(claude, claudesKey, annotatePart(checksum, [{ type: "CDS", label: "wrenA", strand: 1, parts: [{ start: 0, end: 30 }] }]));
+    expect((await mergeLog(ada)).parts.find((one) => one.checksum === checksum)?.features[0]?.label).toBe("wrenA");
+
+    await write(ada, adasKey, annotatePart(checksum, [{ type: "CDS", label: "as Ada reads it", strand: 1, parts: [{ start: 0, end: 30 }] }]));
+    await write(claude, claudesKey, annotatePart(checksum, [{ type: "CDS", label: "and again", strand: 1, parts: [{ start: 0, end: 30 }] }]));
+    const lab = await mergeLog(ada);
+    expect(lab.parts.find((one) => one.checksum === checksum)?.features[0]?.label).toBe("as Ada reads it");
+    expect(lab.entries.at(-1)).toMatchObject({ status: "refused", reason: expect.stringContaining("only while nothing is marked on it") });
+  });
 });

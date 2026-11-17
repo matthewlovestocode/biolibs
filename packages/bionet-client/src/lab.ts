@@ -465,26 +465,29 @@ export class Lab {
   /**
    * What the adviser this device hosts may do, signed with the adviser's own key.
    *
-   * There are three things and no others: say what a part is, propose a run, and take back a
-   * proposal of its own. The lab would refuse anything else from an adviser wherever its logs are
-   * merged; this is the same limit, said where it can be read.
+   * There are three things and no others: say what a part is and what is marked on it, propose a
+   * run, and take back a proposal of its own. The lab would refuse anything else from an adviser
+   * wherever its logs are merged; this is the same limit, said where it can be read.
+   *
+   * What is marked is only said about a part nobody has described, since an adviser may not change
+   * somebody's reading of one. `addPart` answers whether it marked the part, so a caller can say so.
    *
    * @throws On use, if this device hosts no adviser, or the key is in the lab as anything else.
    */
   get advise(): {
-    addPart: (part: { name: string; sequence: string; circular?: boolean }) => Promise<void>;
+    addPart: (part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[] }) => Promise<{ marked: boolean }>;
     planRun: (plan: Parameters<Lab["planRun"]>[0]) => Promise<{ plan: string }>;
     settlePlan: (which: { plan: string }) => Promise<void>;
   } {
     return {
-      addPart: (part) => this.addPart(part, true),
+      addPart: async (part) => ({ marked: (await this.addPart(part, true)) === true }),
       planRun: (plan) => this.planRun(plan, true),
       settlePlan: (which) => this.write(settlePlan(which.plan, null), true),
     };
   }
 
   /** Add a part, by its sequence, with whatever is marked on it. */
-  async addPart(part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[]; ends?: PartEnds }, advising = false): Promise<void> {
+  async addPart(part: { name: string; sequence: string; circular?: boolean; features?: PartFeature[]; ends?: PartEnds }, advising = false): Promise<boolean | undefined> {
     const bases = part.sequence.replace(/\s+/g, "");
     // The library underneath accepts any letters as a sequence. A freezer should not: a part named
     // by a checksum of the wrong letters is a part nobody else will ever match.
@@ -492,12 +495,17 @@ export class Lab {
       throw new Error("A sequence is written in the letters for bases: A, C, G, T, and the codes for an uncertain base.");
     }
     await this.write(addPart({ name: part.name.trim(), sequence: bases, circular: part.circular === true, ...(part.ends === undefined ? {} : { ends: part.ends }) }), advising);
-    if (advising || part.features === undefined || part.features.length === 0) return;
+    if (part.features === undefined || part.features.length === 0) return advising ? false : undefined;
     // A part is known by its sequence, so the one just added is the one with these bases. Somebody
     // else may have added it first under another name; what is marked on it is said either way.
     const added = this.state?.parts.find((one) => one.sequence.toUpperCase() === bases.toUpperCase() && one.circular === (part.circular === true)
       && one.ends.left === (part.ends?.left ?? 0) && one.ends.right === (part.ends?.right ?? 0));
-    if (added !== undefined) await this.write(annotatePart(added.checksum, part.features));
+    if (added === undefined) return advising ? false : undefined;
+    // An adviser may describe a part nobody has described. Where somebody has, theirs stands and the
+    // entry would be refused, so it is not written and the caller is told it was not.
+    if (advising && added.features.length > 0) return false;
+    await this.write(annotatePart(added.checksum, part.features), advising);
+    return advising ? true : undefined;
   }
 
   /** Say what is marked on a part's sequence, in place of whatever was marked before. */
