@@ -75,6 +75,7 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `write_out_the_protocol` | Write it as a sheet for a person to carry to a bench |
 | `find_cutters` | Which enzymes cut a part, and where |
 | `design_primers` | A pair for a stretch or a feature, with why each won and what to watch for |
+| `design_the_construct` | Promoter, signal, gene and tag put together, with the frame checked at every junction |
 | `work_out_pcr`, `work_out_digest`, `work_out_ligation` | What each would give, from the lab's own engines |
 | `list_strains` | What the lab keeps alive, what has been put into it, and the cultures of each |
 | `translate_gene` | The protein a gene codes for, and what its sequence says about it |
@@ -153,7 +154,8 @@ Most papers are not open access; a search result says plainly whether its full t
 for the rest there is the abstract and a link.
 
 The arc the tools are for runs from a gene to a protein: find it, design the primers, work out the PCR,
-design the assembly, rewrite it in the host's codons, check the read against the design, put it into a
+design the construct and check its frame, design the assembly, rewrite it in the host's codons, check
+the read against the design, put it into a
 host, and grow that host to make the protein. The last step is the one where the adviser has least to
 say and should say so: `work_out_induction` gives the protein the gene codes for and the mass to look
 for, and predicts no yield, because nothing in a sequence predicts one.

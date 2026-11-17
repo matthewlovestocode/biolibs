@@ -179,3 +179,9 @@
 .bionet .work .why { color: var(--bionet-dim); font-style: italic }
 .bionet .work textarea.method { width: 100%; font-family: ui-monospace, monospace; font-size: .7rem; margin-top: .5rem }
 .bionet .work textarea.sheet { font-size: .74rem; line-height: 1.45 }
+
+/* Laying a construct out: the pieces in order, each with what it is for and a way to move it. */
+.bionet .fusion ol.pieces { margin: .4rem 0; padding: 0; list-style: none; counter-reset: piece; display: grid; gap: .3rem }
+.bionet .fusion ol.pieces > li { counter-increment: piece; display: flex; gap: .5rem; align-items: baseline; justify-content: space-between;
+                                 border-left: 3px solid var(--bionet-rule); padding: .15rem .4rem }
+.bionet .fusion ol.pieces > li .what::before { content: counter(piece) ". "; color: var(--bionet-dim) }

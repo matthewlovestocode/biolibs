@@ -1048,3 +1048,64 @@ describe("an adviser writing the method out", () => {
     expect(AGENT_INSTRUCTIONS).toMatch(/a sheet to carry to a bench/);
   });
 });
+
+describe("an adviser putting a construct together", () => {
+  const SIGNAL = "ATGAAAGTTTTAATTTTAGCTTGTTTAGTTGCTTTAGCT";
+  const MATURE = "AGAGAATTAGAAGAATTAAATGTTCCAGGTAAAGTTTTA";
+  const withPieces = async (): Promise<Wren> => {
+    const w = await wren();
+    await w.lab.addPart({ name: "pAOX1", sequence: "TTGACAGCTAGCTTGACAGCTAGCTTGACAGC" });
+    await w.lab.addPart({ name: "alpha signal", sequence: SIGNAL });
+    await w.lab.addPart({ name: "casein", sequence: `${MATURE}TAA` });
+    return w;
+  };
+
+  it("is among the tools, and writes nothing", async () => {
+    const { tools } = await wren();
+    expect(tools.find((one) => one.name === "design_the_construct")!.readOnly).toBe(true);
+    expect(AGENT_INSTRUCTIONS).toMatch(/builds perfectly, sequences exactly as designed, and makes the wrong protein/);
+  });
+
+  it("puts the pieces together and reads the protein, with the frame whole", async () => {
+    const w = await withPieces();
+    const said = await w.use("design_the_construct", { name: "pWren-CSN2", pieces: [
+      { part: "pAOX1", as: "promoter" }, { part: "alpha signal", as: "signal" }, { part: "casein", as: "coding" },
+    ] });
+    expect(said.name).toBe("pWren-CSN2");
+    expect(said.junctions).toEqual([{ between: "alpha signal → casein", at: "TTGACAGCTAGCTTGACAGCTAGCTTGACAGC".length + SIGNAL.length + 1, in_frame: true,
+                                      says: expect.stringMatching(/ends on a whole codon/) }]);
+    expect(said.checks.filter((one: { weight: string }) => one.weight === "stop")).toEqual([]);
+    expect(said.what_is_let_out).toBeDefined();
+    expect(said.its_amino_acids).toBe(said.amino_acids - SIGNAL.length / 3);
+    expect(w.lab.snapshot().lab!.parts.some((one) => one.name === "pWren-CSN2")).toBe(false);
+  });
+
+  it("catches a piece that is not a whole number of codons, which nothing else here would", async () => {
+    const w = await withPieces();
+    const said = await w.use("design_the_construct", { pieces: [
+      { part: "alpha signal", as: "signal" }, { sequence: "CACCACCACCACCACCA", name: "His6, one short", as: "tag" },
+      { part: "casein", as: "coding" },
+    ] });
+    const stop = said.checks.find((one: { weight: string }) => one.weight === "stop");
+    expect(stop.says).toMatch(/not a whole number of codons/);
+    expect(said.junctions.some((one: { in_frame: boolean }) => !one.in_frame)).toBe(true);
+  });
+
+  it("catches a tag in front of a signal peptide", async () => {
+    const w = await withPieces();
+    const said = await w.use("design_the_construct", { pieces: [
+      { sequence: "CACCACCACCACCACCAC", name: "His6", as: "tag" }, { part: "alpha signal", as: "signal" }, { part: "casein", as: "coding" },
+    ] });
+    expect(said.checks.some((one: { says: string }) => /stay inside the cell/.test(one.says))).toBe(true);
+    expect(said.what_is_let_out).toBeUndefined();
+  });
+
+  it("says why it will not design one at all, rather than giving something wrong", async () => {
+    const w = await withPieces();
+    await expect(w.use("design_the_construct", { pieces: [] })).rejects.toThrow(/made of pieces/);
+    await expect(w.use("design_the_construct", { pieces: [{ part: "pAOX1", as: "promoter" }] }))
+      .rejects.toThrow(/none of these pieces is translated/i);
+    await expect(w.use("design_the_construct", { pieces: [{ sequence: "ATGNNNAAA", name: "x", as: "coding" }] }))
+      .rejects.toThrow(/cannot be counted through an uncertain base/);
+  });
+});

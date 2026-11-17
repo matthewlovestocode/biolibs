@@ -24,6 +24,8 @@
  * - `codons.ts` — a gene rewritten in a host's codons, from usage counted over that host's own genes
  * - `codon-bench.tsx` — writing a gene in a host's codons at a desk, with the counting on the screen
  * - `assembly-design.ts` — a ring designed from a lab's own parts: the pieces in order, and the primers that make them fit
+ * - `fusion.ts` — a promoter, a signal, a gene and a tag put together, with the frame checked at every junction
+ * - `fusion-bench.tsx` — that at a desk: the pieces in order, and the frame watched as they are laid out
  * - `assembly-bench.tsx` — building a ring at a desk: the pieces in order, and the primers that make them fit
  * - `ligate.ts` — pieces that have already been cut, joined where their ends fit
  * - `ligate-working.ts` — a ligation's working: each join in its bases, the length, how much to put in
@@ -64,6 +66,8 @@ export * from "./verify-bench.js";
 export * from "./codons.js";
 export * from "./codon-bench.js";
 export * from "./assembly-design.js";
+export * from "./fusion.js";
+export * from "./fusion-bench.js";
 export * from "./assembly-bench.js";
 export * from "./ligate.js";
 export * from "./ligate-working.js";

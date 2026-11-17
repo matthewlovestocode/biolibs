@@ -13,7 +13,7 @@
 import { useMemo, type ReactNode } from "react";
 import { useLab } from "@biolibs/bionet-react";
 import { InstrumentStage, LabView, type Focus } from "@biolibs/bionet-scene";
-import { SequencesTool, instrumentFor, moleculeOf, type DrawnMolecule, useAssemblyBench, useCodonBench, useDigestBench, useInductionBench, useVerifyBench, useLigationBench, usePcrBench, usePrimerBench } from "@biolibs/bionet-tools";
+import { SequencesTool, instrumentFor, moleculeOf, type DrawnMolecule, useAssemblyBench, useCodonBench, useDigestBench, useFusionBench, useInductionBench, useVerifyBench, useLigationBench, usePcrBench, usePrimerBench } from "@biolibs/bionet-tools";
 import type { TourStop } from "./tour.js";
 
 /**
@@ -94,17 +94,21 @@ export function LabAt({ stop, onPcr }: { stop: TourStop; onPcr?: (tubes: { templ
   const primers = usePrimerBench({ ...(stop.at === "primers" && stop.start !== undefined ? { start: stop.start } : {}), ...(onPcr === undefined ? {} : { onPcr }) });
   // Building a ring is a desk too: there is no machine to walk to, and what it pictures is the ring.
   const assembly = useAssemblyBench(stop.at === "assembly" && stop.start !== undefined ? { start: stop.start } : {});
+  // Putting a construct together is a desk too: what it pictures is the construct it would make.
+  const construct = useFusionBench(stop.at === "construct" && stop.start !== undefined ? { start: stop.start } : {});
   const codons = useCodonBench(stop.at === "codons" && stop.start !== undefined ? { start: stop.start } : {});
   const verify = useVerifyBench(stop.at === "verify" && stop.start !== undefined ? { start: stop.start } : {});
   if (lab === null || lab === undefined) return null;
 
   const bench = stop.at === "pcr" ? pcr : stop.at === "digest" ? digest : stop.at === "ligation" ? ligation : stop.at === "induction" ? induction : null;
-  const desk = stop.at === "primers" ? primers.desk : stop.at === "assembly" ? assembly.desk : stop.at === "codons" ? codons.desk : stop.at === "verify" ? verify.desk : null;
-  const beside = stop.at === "primers" ? primers.panel : stop.at === "assembly" ? assembly.panel : stop.at === "codons" ? codons.panel : stop.at === "verify" ? verify.panel : null;
+  const desk = stop.at === "primers" ? primers.desk : stop.at === "assembly" ? assembly.desk : stop.at === "construct" ? construct.desk
+             : stop.at === "codons" ? codons.desk : stop.at === "verify" ? verify.desk : null;
+  const beside = stop.at === "primers" ? primers.panel : stop.at === "assembly" ? assembly.panel : stop.at === "construct" ? construct.panel
+               : stop.at === "codons" ? codons.panel : stop.at === "verify" ? verify.panel : null;
   const stood = stop.at === "pcr" || stop.at === "digest" || stop.at === "ligation" || stop.at === "induction" ? at[stop.at] : null;
   if (bench !== null && stood === null) return <div className="scene"><InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage></div>;
   const sequences = stop.at === "sequences" ? <div className="bionet"><SequencesTool {...(stop.part === undefined ? {} : { part: stop.part })} /></div> : null;
-  if (!lab.places.some((one) => !one.retired) && (stop.at === "primers" || stop.at === "assembly" || stop.at === "codons" || stop.at === "verify" || stop.at === "sequences")) return beside === null ? sequences : <>{beside}</>;
+  if (!lab.places.some((one) => !one.retired) && (stop.at === "primers" || stop.at === "assembly" || stop.at === "construct" || stop.at === "codons" || stop.at === "verify" || stop.at === "sequences")) return beside === null ? sequences : <>{beside}</>;
 
   const focus: Focus = bench !== null && stood !== null ? { place: stood.id }
                      : stop.at === "lab" || stop.at === "sequences" ? stop.focus ?? { place: null }
@@ -116,7 +120,7 @@ export function LabAt({ stop, onPcr }: { stop: TourStop; onPcr?: (tubes: { templ
                  // Two of the desks picture a molecule over the tube they are looking at. The
                  // codon and checking desks picture none: what they say is not something a map shows.
                  const pictured: DrawnMolecule | null = stop.at === "primers" ? primers.desk.molecule
-                   : stop.at === "assembly" ? assembly.desk.molecule : null;
+                   : stop.at === "assembly" ? assembly.desk.molecule : stop.at === "construct" ? construct.desk.molecule : null;
                  if (desk !== null && desk.focus?.item === item && pictured !== null) return pictured;
                  const part = lab.parts.find((one) => one.checksum === lab.items.find((each) => each.item === item)?.part);
                  return part === undefined ? null : moleculeOf(part);

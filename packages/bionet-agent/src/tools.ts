@@ -20,7 +20,7 @@ import { lookupTools, type LookupOptions } from "./lookup.js";
 import { paperTools, type PaperOptions } from "./papers.js";
 import { knownTools, type KnownOptions } from "./known.js";
 import { COMMON_ENZYMES, assemblyWorking, codonWorking, countCodonUsage, cutSites, cutsOf, cutters, designAssembly, designPair, digestPieces,
-         digestRun, featureStretches, inductionChecks, inductionRun, inductionWorking, instrumentFor, ligationRun, optimiseCodons,
+         ROLES, designFusion, fusionWorking, digestRun, featureStretches, inductionChecks, inductionRun, inductionWorking, instrumentFor, ligationRun, optimiseCodons,
          planInduction, planPcr, primerTm, toPlan, toolFor,
          FILED_UNDER, UNFILED, planOfWork, protocolText, protocolsFor, saysWork, saysDifference, checkRead, verifyWorking, proteinFacts, proteinWorking, translateGene,
          type AssemblyDesign, type CodonUsage, type InductionChoice, type Stretch } from "@biolibs/bionet-tools";
@@ -90,6 +90,7 @@ export const AGENT_INSTRUCTIONS = [
   "A lab keeps two kinds of thing. A part is a molecule, known by its sequence, so two labs that made the same one agree without having spoken. A strain is something alive — an organism with something put into it — known by an ID and by what it came from, because the same plasmid put into the same published host twice is two strains. A tube holds a part; a culture holds a strain.",
   "Amounts are whole numbers of each tube's own unit. Positions on a sequence are given as people count them: the first base is 1, and a stretch from 101 to 600 includes both.",
   "Some tools reach outside the lab. Three go to NCBI's public databases, to find out what is known about a gene or a protein the freezer says nothing about. Three go to Europe PMC, to read what people have published. They send only what you type into them: never put the lab's own sequences, part names or notes in a search. What comes back is what somebody deposited or published, not something this lab has checked, so say where it came from when you use it.",
+  "Before proposing the assembly that builds an expression construct, put its pieces through design_the_construct. It checks the reading frame at every junction and where the signal peptide sits, and those are the mistakes that do not announce themselves: a construct with a frame shifted by one base builds perfectly, sequences exactly as designed, and makes the wrong protein.",
   "A protein is made of more than its sequence. look_up_protein says what a curator has recorded about one — where the mature chain lies, which residues carry a phosphate or a sugar after it is made, where it varies between breeds — and work_out_phosphorylation says whether the host you have in mind has the enzyme that would put those on. A host will happily make a protein of exactly the right mass that does not work, because the modification that made it work was never applied. Ask that before a construct is built, not after a month at the bench.",
   "Prefer a paper to your own recollection. When the question is which host, which promoter, what the medium was or what a sensible yield is, search_papers and read_paper can give an answer with a group, a date and a link behind it, and that is a different thing to hand a lab member than something you half remember. A method that worked for one group may not work here; say whose result it is.",
   "If a tool says the adviser is not in the lab, a keeper has to let it in, from the app's Adviser tab; say so to the person rather than trying another way.",
@@ -695,6 +696,52 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
           ...(done.changes.length > 40 ? { more_changes: done.changes.length - 40 } : {}),
           working: codonWorking(done, usage).map((one) => ({ of: one.of, comes: one.comes, kind: one.kind, steps: one.steps, ...(one.rests === undefined ? {} : { rests: one.rests }) })),
           warnings: done.warnings,
+        };
+      },
+    },
+    {
+      name: "design_the_construct", title: "Put a promoter, a signal, a gene and a tag together", readOnly: true,
+      description: [
+        "Put the pieces of an expression construct together in order and check that the protein survives it: a promoter, a signal peptide, the gene, a tag, a terminator.",
+        "design_assembly is about the molecules — which pieces go round a ring and what primers make them fit. This is about the protein, and it is a different question with a different way of going wrong. A ring can be built perfectly, sequence exactly as designed, and give the wrong protein, because what was joined does not read as one chain.",
+        "Three things are checked that nothing else here checks. The reading frame at every junction: a piece that is twenty bases rather than twenty-one shifts everything after it and the cell reads a different protein without complaining. A stop codon anywhere but the end, which is usually what a shifted frame looks like. And where the signal peptide is: a signal only works at the very start of the chain, so a tag in front of one means the protein is made and stays inside the cell.",
+        "Each piece is a part the lab holds, by checksum or name, or a sequence written out for something short like a linker. `as` says what it is there to do: " + ROLES.join(", ") + ".",
+        "Nothing is written. Keep the result with add_part if it is worth having, and propose the assembly that builds it with propose_assembly.",
+      ].join(" "),
+      input: { type: "object", required: ["pieces"], additionalProperties: false, properties: {
+        pieces: { type: "array", description: "The pieces, in the order they go along the construct.",
+                  items: { type: "object", required: ["as"], additionalProperties: false, properties: {
+                    part: { type: "string", description: "A part's checksum or exact name." },
+                    sequence: { type: "string", description: "Its bases, for something short the lab keeps no tube of." },
+                    name: { type: "string", description: "What to call it, if a sequence was given." },
+                    as: { type: "string", enum: [...ROLES], description: "What it is there to do." },
+                  } } },
+        name: { type: "string", description: "What to call what comes out." },
+      } },
+      run: (args) => {
+        const seen = now();
+        const given = (Array.isArray(args["pieces"]) ? args["pieces"] : []) as Record<string, unknown>[];
+        if (given.length === 0) throw new Error("A construct is made of pieces, in the order they go along it.");
+        const made = designFusion(seen, {
+          ...(args["name"] === undefined ? {} : { name: text(args["name"], "The name") }),
+          pieces: given.map((one) => ({
+            ...(one["part"] === undefined ? {} : { part: dnaBy(seen, text(one["part"], "Each piece")).checksum }),
+            ...(one["sequence"] === undefined ? {} : { sequence: text(one["sequence"], "The sequence") }),
+            ...(one["name"] === undefined ? {} : { name: text(one["name"], "The name") }),
+            as: text(one["as"], "What each piece is for") as (typeof ROLES)[number],
+          })),
+        });
+        if (made.problem !== null) throw new Error(made.problem);
+        return {
+          name: made.name, length: made.sequence.length, sequence: made.sequence,
+          coding: made.coding === null ? null : `${made.coding.from}-${made.coding.to}`,
+          protein: made.protein, amino_acids: made.protein.length,
+          ...(made.mature === null ? {} : { what_is_let_out: made.mature, its_amino_acids: made.mature.length }),
+          marked: made.features.map((one) => ({ label: one.label, type: one.type, lies: `${one.parts[0]!.start + 1}-${one.parts[0]!.end}` })),
+          junctions: made.junctions.map((one) => ({ between: `${one.after} → ${one.before}`, at: one.at, in_frame: one.inFrame, says: one.says })),
+          checks: made.checks.map((one) => ({ weight: one.weight, says: one.says, because: one.because })),
+          working: fusionWorking(made).map((one) => ({ of: one.of, comes: one.comes, kind: one.kind, steps: one.steps, ...(one.rests === undefined ? {} : { rests: one.rests }) })),
+          note: "Nothing is written. What the sequence says the cell would read is here; whether the protein folds or is let out is not something a sequence can be asked.",
         };
       },
     },

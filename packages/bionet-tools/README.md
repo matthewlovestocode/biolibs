@@ -324,6 +324,50 @@ the protein is added afterwards as a part in its own right. The run names it in 
 checksum that part will have, which `inducedBy` reads back: so a device that was not there when it
 happened arrives at the same answer from the log alone, without a new kind of entry.
 
+## Putting a construct together, and keeping the frame
+
+The assembly desk is about the molecules: which pieces go round a ring and what primers make them
+fit. This is about the protein, and it is a different question with a different way of going wrong.
+
+```ts
+import { designFusion, fusionWorking } from "@biolibs/bionet-tools";
+
+const made = designFusion(lab, { pieces: [
+  { part: aox1, as: "promoter" }, { part: alphaFactor, as: "signal" },
+  { part: casein, as: "coding" }, { sequence: "CACCACCACCACCACCAC", name: "His6", as: "tag" },
+] });
+
+made.junctions;    // every place two pieces meet, and whether the frame survived it
+made.protein;      // what the cell would read
+made.mature;       // what is left once the signal peptide is cut off
+made.checks;       // what a careful person would stop and ask
+```
+
+**A ring can be built perfectly, sequence exactly as designed, and give the wrong protein**, because
+what was joined does not read as one chain. A piece that is twenty bases rather than twenty-one
+shifts everything after it, and the cell reads a different protein without complaining. The gel
+shows a band; the sequencing matches the design; the design was wrong. That failure is silent,
+common, and entirely computable, which is the case for doing it here.
+
+Three things are checked that nothing else here checks.
+
+**The frame at every junction.** Each translated piece is counted, and a junction is in frame only if
+everything before it comes to a whole number of codons. The arithmetic is shown: *"56 bases come
+before this, which is 2 past a whole codon, so casein and everything after it is read in the wrong
+frame."*
+
+**A stop where no stop belongs.** The whole translated stretch is read as one. A stop before the end
+means the chain finishes early, and that is usually a frame that shifted a piece or two earlier —
+which the check says, so the symptom points at the cause.
+
+**Where the signal peptide is.** A signal only works at the very beginning of the chain. Putting a
+tag in front of one is a mistake people make because the tag belongs at the N-terminus and so does
+the signal, and only one of them can be: the protein is made, and stays inside the cell.
+
+Roles that are not translated — a promoter, a terminator — sit outside the coding stretch and are
+checked only for being in a sensible place. `useFusionBench` is the same at a desk, with the pieces
+in order and the frame watched as they are laid out.
+
 ## Whether the protein will actually work
 
 A band of the right mass is not the same as a protein that does its job, and for a milk protein the

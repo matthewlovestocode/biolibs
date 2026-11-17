@@ -21,6 +21,7 @@ export type TourStop =
   | { at: "sequences"; part?: string; focus?: { place: string | null; item?: string } }
   | { at: "verify"; start?: { design?: string; read?: string } }
   | { at: "codons"; start?: { gene?: string; hostGenes?: readonly string[]; avoid?: readonly string[] } }
+  | { at: "construct"; start?: { pieces?: readonly { part: string; as: "promoter" | "signal" | "coding" | "tag" | "linker" | "terminator" | "other" }[]; name?: string } }
   | { at: "assembly"; start?: { pieces?: readonly string[]; overlap?: number; name?: string; section?: "pieces" | "ring" | "junctions" | "primers" | "working" } }
   | { at: "primers"; start?: { part?: string; stretch?: { start: number; end: number }; feature?: string; name?: string; section?: "choose" | "pair" | "considered" | "working" | "order" } }
   | { at: "pcr"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; template?: string; forward?: string; reverse?: string; step?: "denature" | "anneal" | "extend"; cycle?: number } }
