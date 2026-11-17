@@ -1109,3 +1109,54 @@ describe("an adviser putting a construct together", () => {
       .rejects.toThrow(/cannot be counted through an uncertain base/);
   });
 });
+
+describe("an adviser saying what to do about a host that will not do it", () => {
+  const CHAIN = "RELEELNVPGEIVESLSSSEESITRINKKIEKFQSEEQQQTEDELQDKIHPFAQTQSLVYPFPGPIPNSLPQNIPPLTQTPVV";
+
+  it("is among the tools, and only reads", async () => {
+    const { tools } = await wren();
+    expect(tools.find((one) => one.name === "work_round_the_host")!.readOnly).toBe(true);
+    expect(AGENT_INSTRUCTIONS).toMatch(/never let the computable one — a phosphomimetic — pass as a substitute/);
+  });
+
+  it("lays the routes out and recommends none of them", async () => {
+    const w = await wren();
+    const said = await w.use("work_round_the_host", { host: "Komagataella phaffii" });
+    expect(said.routes.map((one: { route: string }) => one.route)).toContain("a phosphomimetic");
+    expect(said.routes.map((one: { route: string }) => one.route)).toContain("measure what you actually get");
+    expect(said.says.join(" ")).toMatch(/None of these is recommended over another/);
+    // Exactly one of them is something it can work out.
+    expect(said.routes.filter((one: { worked_out_here: boolean }) => one.worked_out_here)).toHaveLength(1);
+    expect(said.note).toMatch(/Give a protein and its sites/);
+  });
+
+  it("works the mimetic out, and says what it does and does not reproduce", async () => {
+    const w = await wren();
+    const said = await w.use("work_round_the_host", { host: "Komagataella phaffii", sequence: CHAIN, sites: [15, 17, 18, 19] });
+    expect(said.phosphomimetic.swapped).toEqual(["S15E", "S17E", "S18E", "S19E"]);
+    // The charge is what moves; the weight is not, and it says not to look for it on a gel.
+    expect(said.phosphomimetic.isoelectric_point.after).toBeLessThan(said.phosphomimetic.isoelectric_point.before);
+    expect(said.phosphomimetic.on_a_gel).toMatch(/a gel will not show the difference/);
+    expect(said.phosphomimetic.warnings.join(" ")).toMatch(/not a way of making phosphorylated|charge alone is enough/);
+    expect(said.phosphomimetic.working[0].rests).toMatch(/not a question a sequence can answer/);
+  });
+
+  it("rewrites a gene the lab holds so that it encodes the mimetic", async () => {
+    const w = await wren();
+    await w.lab.addPart({ name: "a short gene", sequence: "ATGAAATCTGGTTCAAAA" });
+    const said = await w.use("work_round_the_host", { sequence: "MKSGSK", sites: [3, 5], gene: "a short gene" });
+    expect(said.gene.codons_changed).toEqual([
+      { codon: 3, was: "TCT", now: "GAA", aminoAcid: "E" },
+      { codon: 5, was: "TCA", now: "GAA", aminoAcid: "E" },
+    ]);
+    expect(said.gene.note).toMatch(/Check it through design_the_construct/);
+    // Nothing was written to the lab.
+    expect(w.lab.snapshot().lab!.parts.some((one) => one.sequence === said.gene.sequence && one.name !== "a short gene")).toBe(false);
+  });
+
+  it("says when there is nothing to change, rather than changing nothing quietly", async () => {
+    const w = await wren();
+    await expect(w.use("work_round_the_host", { sequence: CHAIN })).rejects.toThrow(/No sites were given and none is recorded/);
+    await expect(w.use("work_round_the_host", { sequence: CHAIN, sites: [1, 2] })).rejects.toThrow(/None of the sites given is a residue that is phosphorylated/);
+  });
+});

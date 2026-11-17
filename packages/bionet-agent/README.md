@@ -87,6 +87,7 @@ system's keychain, and puts that command on the clipboard without showing the to
 | `withdraw_proposal` | Take back a proposal of its own |
 | `search_proteins`, `look_up_protein` | What UniProt knows about a protein: its mature chain, its modified residues, its variants |
 | `work_out_phosphorylation` | Which residues would be phosphorylated, and whether the host has the enzyme |
+| `work_round_the_host` | The ways round a host that will not, and the one of them that can be computed |
 | `search_papers` | Search the literature at Europe PMC: PubMed, PMC, preprints and patents together |
 | `read_paper` | Read an open-access paper: its abstract, a named section such as the methods, or its tables |
 | `papers_around` | What a paper cited, and who has cited it since |

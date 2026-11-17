@@ -18,6 +18,7 @@
  * - `protein.ts` — the protein a gene codes for, and what its sequence says about it
  * - `induce.ts` — growing a strain to express what was put into it, and the mass its band should run at
  * - `modify.ts` — which residues would be phosphorylated, and whether the host has the enzyme to do it
+ * - `remedy.ts` — the ways round a host that will not, and the one of them that can be computed
  * - `induce-bench.tsx` — an induction at the shaking incubator, with the protein gel that answers it
  * - `verify-bench.tsx` — checking a construct against the design at a desk, saying what was not covered
  * - `verify.ts` — a sequencing read against the design it was meant to be, and what each difference costs
@@ -60,6 +61,7 @@ export * from "./digest-working.js";
 export * from "./protein.js";
 export * from "./induce.js";
 export * from "./modify.js";
+export * from "./remedy.js";
 export * from "./induce-bench.js";
 export * from "./verify.js";
 export * from "./verify-bench.js";

@@ -510,6 +510,43 @@ Two smaller things it does because the chain already knows them. A part the lab 
 And a piece of work that makes nothing — a digest, a check — is titled by what it is done *to*,
 since it has no product to be named by.
 
+## And what to do when the host will not
+
+Diagnosing is cheap to be honest about: either the motif is there or it is not. Proposing a way
+round is where a tool can do real damage, because the ways round are not equivalent, **the most
+computable of them is the least likely to work**, and a lab that spends a month on the wrong one has
+spent a month.
+
+```ts
+import { phosphomimetic, remediesFor } from "@biolibs/bionet-tools";
+
+remediesFor(hostPhosphorylation("Komagataella phaffii")).routes.map((one) => [one.name, one.standing]);
+// co-express the kinase · reported        a host that already has it · well established
+// phosphorylate it afterwards · reported  a phosphomimetic · worth trying
+// measure what you actually get · well established
+
+const asked = phosphomimetic(casein, [15, 17, 18, 19, 35]);
+asked.isoelectric;    // { before: 5.13, after: 4.78 } — the charge, which is what it changes
+asked.kilodaltons;    // { before: 23.6, after: 23.8 } — not something a gel will show
+```
+
+Five routes, **none of them recommended**, because which suits depends on what a lab has — a tissue
+culture room, a second selection marker, a purified kinase, time — and nothing here knows that. Each
+carries what it costs and how firmly it is held. The one held most firmly is to express it and
+measure the thing you care about, which is the only one that says where a lab really is rather than
+where the literature says it probably is.
+
+`phosphomimetic` is the one that can be computed, and the honest framing is the whole value of it. A
+phosphoserine carries about two negative charges at the pH of a cell; a glutamate carries one, in a
+smaller group of a different shape. Where phosphoserines sit in a cluster and bind calcium between
+them — which is what makes casein build a micelle — the geometry is part of the work. **It is a way
+of asking whether charge alone is enough. It is not a way of making phosphorylated protein**, and
+every answer says so.
+
+Two details that matter at a bench: what really moves is the isoelectric point, and the weight moves
+by a couple of hundred daltons, which no gel will show — so the tool says not to look for it there.
+`mimeticGene` rewrites the coding sequence to match, which is what a lab actually orders.
+
 ## The tool
 
 ```tsx

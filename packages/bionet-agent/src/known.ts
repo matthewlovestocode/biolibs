@@ -16,9 +16,11 @@
  * put on by an enzyme the host does not have. An adviser that can say that before the month is
  * spent is worth more than one that can design the construct.
  */
+import type { Lab, LabView } from "@biolibs/bionet-client";
 import { UniProtError, lookUpProtein, onTheChain, readProtein, searchProteins, settings,
          type Protein } from "@biolibs/uniprot";
-import { HOST_KINASES, PHOSPHO_MOTIFS, comparedWithKnown, hostPhosphorylation, phosphoSites, phosphoWorking } from "@biolibs/bionet-tools";
+import { HOST_KINASES, PHOSPHO_MOTIFS, comparedWithKnown, hostPhosphorylation, mimeticGene, phosphoSites, phosphoWorking,
+         phosphomimetic, phosphomimeticWorking, remediesFor } from "@biolibs/bionet-tools";
 import type { AgentTool } from "./tools.js";
 
 /** The most results one protein search gives back. */
@@ -75,6 +77,8 @@ const proteinView = (protein: Protein): Record<string, unknown> => ({
  * The tools that say what is known about a protein.
  *
  * @param options - Whether to offer them, and what to tell UniProt about who is asking.
+ * @param lab - The lab, for the one tool that can rewrite a gene it holds. Without it that tool
+ *   still lays the routes out and works the protein's side out; only the gene is left off.
  * @returns The tools, or none if a host asked for none.
  *
  * @example
@@ -85,11 +89,24 @@ const proteinView = (protein: Protein): Record<string, unknown> => ({
  * // ["search_proteins", "look_up_protein", "work_out_phosphorylation"]
  * ```
  */
-export function knownTools(options: KnownOptions = {}): AgentTool[] {
+export function knownTools(options: KnownOptions = {}, lab?: Lab): AgentTool[] {
   if (options.known === false) return [];
   settings.tool = options.tool ?? "bionet-adviser";
   if (options.email !== undefined) settings.email = options.email;
 
+  /** The lab as it stands now, for the one tool that reads it. */
+  const now = (): LabView => {
+    const seen = lab?.snapshot().lab ?? null;
+    if (seen === null) throw new Error("This device is not in a lab yet, so there is no gene here to rewrite.");
+    return seen;
+  };
+  /** A part of the lab's that is DNA, since a gene to rewrite is DNA. */
+  const dnaBy = (seen: LabView, id: string): LabView["parts"][number] => {
+    const found = seen.parts.find((one) => one.checksum === id) ?? seen.parts.find((one) => one.name === id);
+    if (found === undefined) throw new Error(`The lab has no part with the checksum or name ${JSON.stringify(id)}.`);
+    if (found.kind === "protein") throw new Error(`${found.name} is a protein. A gene to rewrite is DNA.`);
+    return found;
+  };
   /** Fetch and read one entry. */
   const entry = async (accession: string): Promise<Protein> => {
     try { return readProtein(await lookUpProtein(accession)); } catch (cause) { throw asTrouble(cause); }
@@ -234,6 +251,71 @@ export function knownTools(options: KnownOptions = {}): AgentTool[] {
               } }),
           working: phosphoWorking(found, host).map((one) => ({ of: one.of, comes: one.comes, kind: one.kind, steps: one.steps, ...(one.rests === undefined ? {} : { rests: one.rests }) })),
           hosts_this_knows_of: HOST_KINASES.map((one) => one.host),
+        };
+      },
+    },
+    {
+      name: "work_round_the_host", title: "What to do about a host that will not phosphorylate it", readOnly: true,
+      description: [
+        "Lay out the ways round a host that will not put the modification on, and work out the one of them that can be worked out.",
+        "work_out_phosphorylation says whether the host will do it. This is what follows from the answer, and it is a different kind of question. The routes are not equivalent, the most computable of them is the least likely to work, and a lab that spends a month on the wrong one has spent a month — so none of them is recommended here, and which one suits depends on what the lab has, which nothing here knows.",
+        "Five routes: co-express the kinase, use a host that already has it, phosphorylate it in a tube afterwards, use a phosphomimetic, or express it and measure the thing you actually care about. The last is the only one that tells a lab where it really is rather than where the literature says it probably is, and is worth saying out loud.",
+        "Give `sites` and a `sequence` or `uniprot`, and the phosphomimetic is computed: each of those serines becomes a glutamate, which carries a negative charge with no enzyme at all. What that really changes is the pH the protein carries no net charge at; the weight moves by a couple of hundred daltons, which no gel will show, so do not tell anybody to look for it.",
+        "Say plainly what a phosphomimetic is when you offer it. A phosphoserine carries about two negative charges and a glutamate carries one, in a smaller group of a different shape, and where phosphoserines sit in a cluster and bind calcium between them the shape is part of the work. It is a way of asking whether charge alone is enough. It is not a way of making phosphorylated protein, and presenting it as one would be worse than saying nothing.",
+      ].join(" "),
+      input: { type: "object", additionalProperties: false, properties: {
+        host: { type: "string", description: "What it would be expressed in." },
+        sequence: { type: "string", description: "The protein, if you want the phosphomimetic worked out." },
+        uniprot: { type: "string", description: "A UniProt accession to take the protein and its recorded sites from." },
+        on_the_mature_chain: { type: "boolean", description: "With an accession: work on the mature chain rather than the precursor." },
+        sites: { type: "array", items: { type: "integer" }, description: "Where the phosphosites are, counting from 1. Taken from the record if an accession was given." },
+        instead: { type: "string", enum: ["E", "D"], description: "What to put there: glutamate or aspartate. Glutamate if not given." },
+        gene: { type: "string", description: "A coding sequence to rewrite so that it encodes the mimetic: a part's checksum or exact name." },
+      } },
+      run: async (args) => {
+        const named = args["host"] === undefined ? null : text(args["host"], "The host");
+        const host = named === null ? null : hostPhosphorylation(named);
+        const { routes, says } = remediesFor(host);
+        const laid = {
+          ...(named === null ? {} : { host: named }),
+          says,
+          routes: routes.map((one) => ({ route: one.name, what: one.what, costs: one.costs, how_firmly: one.standing, worked_out_here: one.computable })),
+        };
+        const accession = args["uniprot"] === undefined ? null : text(args["uniprot"], "The accession");
+        const given = args["sequence"] === undefined ? null : text(args["sequence"], "The sequence");
+        if (accession === null && given === null) return { ...laid, note: "Give a protein and its sites to have the phosphomimetic worked out." };
+
+        const protein = accession === null ? null : await entry(accession);
+        const mature = args["on_the_mature_chain"] === true;
+        if (mature && protein?.chain == null) throw new Error("That entry marks no mature chain, so there is no chain to count on.");
+        const chain = given ?? (mature ? protein!.chain!.sequence : protein!.sequence);
+        const sites = Array.isArray(args["sites"]) && args["sites"].length > 0
+          ? (args["sites"] as unknown[]).map((one) => whole(one, "Each site"))
+          : protein === null ? []
+          : protein.modifications.filter((one) => /phospho/i.test(one.what))
+              .map((one) => (mature ? onTheChain(protein, one.at) : one.at)).filter((one): one is number => one !== null);
+        if (sites.length === 0) throw new Error("No sites were given and none is recorded, so there is nothing to change. work_out_phosphorylation finds them from the sequence.");
+
+        const made = phosphomimetic(chain, sites, { ...(args["instead"] === undefined ? {} : { instead: text(args["instead"], "What to put there") as "E" | "D" }) });
+        if (made.problem !== null) throw new Error(made.problem);
+        const cds = args["gene"] === undefined ? null : dnaBy(now(), text(args["gene"], "The gene"));
+        const rewritten = cds === null ? null : mimeticGene(cds.sequence, sites, { ...(args["instead"] === undefined ? {} : { instead: text(args["instead"], "What to put there") as "E" | "D" }) });
+        return {
+          ...laid,
+          phosphomimetic: {
+            counted_on: mature ? "the mature chain" : protein === null ? "the sequence given" : "the whole entry, precursor included",
+            sites, swapped: made.swapped.map((one) => `${one.was}${one.at}${one.now}`),
+            ...(made.notSwapped.length === 0 ? {} : { could_not_change: made.notSwapped }),
+            protein: made.protein,
+            ...(made.isoelectric === null ? {} : { isoelectric_point: { before: Math.round(made.isoelectric.before * 100) / 100, after: Math.round(made.isoelectric.after * 100) / 100 } }),
+            ...(made.kilodaltons === null ? {} : { kilodaltons: { before: Math.round(made.kilodaltons.before * 10) / 10, after: Math.round(made.kilodaltons.after * 10) / 10 },
+                                                   on_a_gel: "The weight barely moves, so a gel will not show the difference. Do not tell anybody to look for it there." }),
+            warnings: made.warnings,
+            working: phosphomimeticWorking(made).map((one) => ({ of: one.of, comes: one.comes, kind: one.kind, steps: one.steps, ...(one.rests === undefined ? {} : { rests: one.rests }) })),
+          },
+          ...(rewritten === null ? {} : { gene: rewritten.problem !== null ? { problem: rewritten.problem }
+            : { of: cds!.name, sequence: rewritten.sequence, codons_changed: rewritten.changed,
+                note: "This is what to order. Check it through design_the_construct before proposing anything built from it." } }),
         };
       },
     },

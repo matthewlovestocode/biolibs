@@ -91,6 +91,7 @@ export const AGENT_INSTRUCTIONS = [
   "Amounts are whole numbers of each tube's own unit. Positions on a sequence are given as people count them: the first base is 1, and a stretch from 101 to 600 includes both.",
   "Some tools reach outside the lab. Three go to NCBI's public databases, to find out what is known about a gene or a protein the freezer says nothing about. Three go to Europe PMC, to read what people have published. They send only what you type into them: never put the lab's own sequences, part names or notes in a search. What comes back is what somebody deposited or published, not something this lab has checked, so say where it came from when you use it.",
   "Before proposing the assembly that builds an expression construct, put its pieces through design_the_construct. It checks the reading frame at every junction and where the signal peptide sits, and those are the mistakes that do not announce themselves: a construct with a frame shifted by one base builds perfectly, sequences exactly as designed, and makes the wrong protein.",
+  "When the answer is that the host will not do it, work_round_the_host lays out what a lab can do about it, and works out the one of those that can be worked out. Say which of the five you are pointing at and why, and never let the computable one — a phosphomimetic — pass as a substitute for the real modification: it reproduces about half the charge and none of the shape, and offering it as a fix would be worse than saying nothing.",
   "A protein is made of more than its sequence. look_up_protein says what a curator has recorded about one — where the mature chain lies, which residues carry a phosphate or a sugar after it is made, where it varies between breeds — and work_out_phosphorylation says whether the host you have in mind has the enzyme that would put those on. A host will happily make a protein of exactly the right mass that does not work, because the modification that made it work was never applied. Ask that before a construct is built, not after a month at the bench.",
   "Prefer a paper to your own recollection. When the question is which host, which promoter, what the medium was or what a sensible yield is, search_papers and read_paper can give an answer with a group, a date and a link behind it, and that is a different thing to hand a lab member than something you half remember. A method that worked for one group may not work here; say whose result it is.",
   "If a tool says the adviser is not in the lab, a keeper has to let it in, from the app's Adviser tab; say so to the person rather than trying another way.",
@@ -1053,7 +1054,7 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
   ];
 
   // What is looked up outside has no place in the lab to be shown at, so those tools report none.
-  const outside: typeof tools = [...lookupTools(options.outside ?? {}, lab), ...paperTools(options.outside ?? {}), ...knownTools(options.outside ?? {})];
+  const outside: typeof tools = [...lookupTools(options.outside ?? {}, lab), ...paperTools(options.outside ?? {}), ...knownTools(options.outside ?? {}, lab)];
   return [...tools, ...outside].map(({ shows, run, ...tool }) => ({
     ...tool,
     run: async (args) => {
