@@ -248,7 +248,7 @@ export interface HostKinases {
 export const HOST_KINASES: readonly HostKinases[] = [
   {
     host: "Escherichia coli", secretoryKinase: "no", casein2: false, standing: "well established",
-    says: "A bacterium has no secretory pathway of this kind and no kinase in it. Casein made in E. coli is reported unphosphorylated, and that is the usual reason a group that wanted micelles moved away from it.",
+    says: "A bacterium has no secretory pathway of this kind and no kinase in it, so casein made in plain E. coli is unphosphorylated. That is not the end of it: co-expressing a kinase on the same plasmid has worked, and worked well — Thurmond and colleagues got every phosphorylated form of human beta-casein that the native protein has, in E. coli, with human CK2 beside it. The same trick does much less for bovine beta-casein, because CK2 reads only some of its sites. E. coli also gives the highest yields of any host tried: up to 1.45 g/L.",
   },
   {
     host: "Bacillus subtilis", secretoryKinase: "no", casein2: false, standing: "well established",
@@ -256,15 +256,15 @@ export const HOST_KINASES: readonly HostKinases[] = [
   },
   {
     host: "Saccharomyces cerevisiae", secretoryKinase: "not known", casein2: true, standing: "reported",
-    says: "Budding yeast has casein kinase I and II homologues, but no homologue of the secretory-pathway kinase has been identified. Phosphorylation of casein expressed in yeast is reported, and reported as partial and uneven between sites rather than as the full pattern.",
+    says: "Budding yeast has casein kinase I and II homologues, but no homologue of the secretory-pathway kinase has been identified. Yeast does appear to phosphorylate casein in vivo; how completely, and at which sites, is underexplored rather than measured — most studies went after secretion and yield instead. Some strains also put O-linked sugars on it, which native casein does not have.",
   },
   {
     host: "Komagataella phaffii", secretoryKinase: "not known", casein2: true, standing: "reported",
-    says: "The yeast formerly called Pichia pastoris, and the usual choice for a secreted protein because it secretes a great deal of it. The same holds as for budding yeast: the kinase of the secretory pathway has not been identified in it.",
+    says: "The yeast formerly called Pichia pastoris, and the usual choice for a secreted protein because it secretes a great deal of it: 1 g/L of bovine beta-casein has been reported, the best of any yeast. The kinase of the secretory pathway has not been identified in it, as in budding yeast, and one report of a bovine beta-casein mutant made here found it both phosphorylated and glycosylated. How completely it phosphorylates, and where, nobody has measured.",
   },
   {
     host: "Nicotiana benthamiana", secretoryKinase: "not known", casein2: true, standing: "reported",
-    says: "Plants have CK2 and a secretory pathway, and phosphorylated casein has been reported from plant expression. How complete the pattern is varies by report.",
+    says: "Plants have CK2 and a secretory pathway. What has actually been reported for casein in plants is poor: yields of a tenth of a per cent of total protein or less, and casein found unphosphorylated where anybody looked.",
   },
   {
     host: "Cricetulus griseus", secretoryKinase: "yes", casein2: true, standing: "well established",
