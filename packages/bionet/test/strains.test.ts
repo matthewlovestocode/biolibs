@@ -149,9 +149,9 @@ describe("a culture of one", () => {
     const one = strain();
     await a.write(addStrain(one));
     await a.write({ type: "item.add", item: newItemId(), part: construct, strain: one.strain, amount: 1, unit: null });
-    expect(await lastOf(a)).toEqual({ status: "refused", reason: "An item is of a part or a culture of a strain, and not both." });
+    expect(await lastOf(a)).toEqual({ status: "refused", reason: "An item is of a part, a culture of a strain, or a tube of a specimen, and only one of those." });
     await a.write({ type: "item.add", item: newItemId(), amount: 1, unit: null });
-    expect(await lastOf(a)).toEqual({ status: "refused", reason: "An item is of a part or a culture of a strain, and not both." });
+    expect(await lastOf(a)).toEqual({ status: "refused", reason: "An item is of a part, a culture of a strain, or a tube of a specimen, and only one of those." });
     await a.write(addItem({ item: newItemId(), strain: "nosuchstrain", amount: 1 }));
     expect(await lastOf(a)).toEqual({ status: "refused", reason: "The strain it is a culture of is not one the lab has." });
     expect((await a.lab()).items).toHaveLength(1);

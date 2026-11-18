@@ -348,12 +348,14 @@ export const annotatePart = (part: string, features: PartFeature[]): Operation =
 export const offerPart = (part: string, available: boolean): Operation => ({ type: "part.offer", part, available });
 
 /**
- * @returns The change that adds one physical lot: a tube of a part, or a culture of a strain.
- *   Exactly one of `part` and `strain` is given, and `amount` is a whole number of `unit`.
+ * @returns The change that adds one physical lot: a tube of a part, a culture of a strain, or a
+ *   tube of a specimen nobody has identified. Exactly one of `part`, `strain` and `specimen` is
+ *   given, and `amount` is a whole number of `unit`.
  */
-export const addItem = (item: { item: string; part?: string; strain?: string; amount: number; unit?: string | null }): Operation =>
+export const addItem = (item: { item: string; part?: string; strain?: string; specimen?: string; amount: number; unit?: string | null }): Operation =>
   ({ type: "item.add", item: item.item, ...(item.part === undefined ? {} : { part: item.part }),
-     ...(item.strain === undefined ? {} : { strain: item.strain }), amount: item.amount, unit: item.unit ?? null });
+     ...(item.strain === undefined ? {} : { strain: item.strain }),
+     ...(item.specimen === undefined ? {} : { specimen: item.specimen }), amount: item.amount, unit: item.unit ?? null });
 
 /** @returns The change that adds to or takes from an item. `by` is a whole-number difference, never a total. */
 export const adjustItem = (item: string, by: number): Operation => ({ type: "item.adjust", item, by });
@@ -542,6 +544,39 @@ export interface StrainRecord {
   /** The run that made it, if one did. */
   from: string | null;
 }
+
+/** A thing the lab physically has and cannot yet name. */
+export interface SpecimenRecord {
+  /** The specimen's ID. */
+  specimen: string;
+  /** What the lab would write on the tube: `pET from the back of the -80`. Not a claim of identity. */
+  name: string;
+  /** Anything worth saying about where it came from, or `null`. */
+  note: string | null;
+}
+
+/**
+ * @returns The change that says the lab has something it has not identified. It makes no tube of
+ *   it: `addItem` with the specimen does that, the way a tube of a part is added after the part.
+ *
+ * A specimen is the freezer's honest answer to a tube nobody has sequenced. It has no checksum,
+ * because a checksum is of a sequence and there is no sequence yet, so it cannot satisfy a plan and
+ * cannot travel in a method — the same way a culture cannot, and for the same reason.
+ */
+export const addSpecimen = (specimen: SpecimenRecord): Operation => ({ type: "specimen.add", ...specimen });
+
+/**
+ * @returns The change that says what a specimen turned out to be.
+ *
+ * The part has to be one the lab already has, so the sequence that came back is added first. The
+ * tube does not move and does not change: it keeps its place, its amount and its history, because
+ * the tube never changed — only what is known about it did.
+ */
+export const identifySpecimen = (specimen: string, part: string): Operation =>
+  ({ type: "specimen.identify", specimen, part });
+
+/** @returns A new ID for a specimen, made the way an item's is. */
+export const newSpecimenId = (): string => newItemId();
 
 /**
  * @returns The change that says the lab has a strain. It makes no culture of it: `addItem` with the

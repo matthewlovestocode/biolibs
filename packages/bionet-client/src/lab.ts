@@ -10,12 +10,12 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { addItem, addPart, addPlace, addStrain, addToRoster, adjustItem, annotatePart, entryId, fetchInventory, foundLab, isMember, mergeLog,
-         movePlace, newItemId, newPlaceId, newPlanId, newRunId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
+import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, fetchInventory, foundLab, identifySpecimen, isMember, mergeLog,
+         movePlace, newItemId, newPlaceId, newPlanId, newRunId, newSpecimenId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
          readMethod, signMethod,
          setField, settlePlan, signInventory, standPlace,
          takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type LabModel, type MethodDocument, type MethodOptions, type PartEnds, type PartFeature, type PartState, type PlaceState, type PartKind, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type SignedMethod, type StrainState } from "@biolibs/bionet";
+         type LabModel, type MethodDocument, type MethodOptions, type PartEnds, type PartFeature, type PartState, type PlaceState, type PartKind, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type SignedMethod, type SpecimenState, type StrainState } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
 import { openKey, sealKey } from "./backup.js";
@@ -60,6 +60,8 @@ export interface LabView {
   parts: PartState[];
   /** Every strain the lab keeps. */
   strains: StrainState[];
+  /** Every specimen: something the lab physically has and cannot yet name. */
+  specimens: SpecimenState[];
   items: ItemState[];
   /** Every place. */
   places: PlaceState[];
@@ -258,6 +260,7 @@ export class Lab {
         roster: state.roster.map((one) => ({ ...one, fingerprint: this.fingerprints.get(one.key) ?? "", you: one.key === mine })),
         parts: state.parts,
         strains: state.strains,
+        specimens: state.specimens,
         items: state.items,
         places: state.places,
         crowded: state.crowded,
@@ -530,12 +533,43 @@ export class Lab {
    * @param item - The part's checksum or the strain's ID, and how much there is.
    * @returns The new item's ID.
    */
-  async addItem(item: { part?: string; strain?: string; amount: number; unit?: string | null }): Promise<string> {
-    if ((item.part === undefined) === (item.strain === undefined)) throw new Error("An item is of a part or a culture of a strain, and not both.");
+  async addItem(item: { part?: string; strain?: string; specimen?: string; amount: number; unit?: string | null }): Promise<string> {
+    const of = [item.part, item.strain, item.specimen].filter((one) => one !== undefined);
+    if (of.length !== 1) throw new Error("An item is of a part, a culture of a strain, or a tube of a specimen, and only one of those.");
     const id = newItemId();
-    await this.write(addItem({ item: id, ...(item.part === undefined ? { strain: item.strain! } : { part: item.part }),
+    await this.write(addItem({ item: id, ...(item.part !== undefined ? { part: item.part }
+                                           : item.strain !== undefined ? { strain: item.strain }
+                                           : { specimen: item.specimen! }),
                                amount: item.amount, unit: item.unit === "" ? null : item.unit ?? null }));
     return id;
+  }
+
+  /**
+   * Say the lab has something it cannot yet name, so that a tube of it can be put somewhere.
+   *
+   * This is for the tube at the back of the freezer that nobody has sequenced. It has no checksum,
+   * because a checksum is of a sequence, so it cannot satisfy a plan and cannot travel in a method.
+   * `identifySpecimen` is how it stops being one of these.
+   *
+   * @param specimen - `name` is what you would write on the tube, not a claim about what is in it.
+   * @returns Its ID.
+   */
+  async addSpecimen(specimen: { name: string; note?: string | null }): Promise<string> {
+    if (specimen.name.trim() === "") throw new Error("A specimen needs something to call it.");
+    const id = newSpecimenId();
+    await this.write(addSpecimen({ specimen: id, name: specimen.name.trim().slice(0, 200),
+                                   note: specimen.note === undefined || specimen.note === null || specimen.note.trim() === "" ? null : specimen.note.trim() }));
+    return id;
+  }
+
+  /**
+   * Say what a specimen turned out to be. The part has to be one the lab already has.
+   *
+   * Afterwards its tubes read as tubes of that molecule, keeping their place, their amount and
+   * their history: the tube never changed, only what is known about it.
+   */
+  identifySpecimen(what: { specimen: string; part: string }): Promise<void> {
+    return this.write(identifySpecimen(what.specimen, what.part));
   }
 
   /**

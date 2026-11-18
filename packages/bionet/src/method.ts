@@ -106,6 +106,13 @@ export function publicMethod(state: LabState, lab: LabModel, options: MethodOpti
       const part = state.parts.find((one) => one.checksum === held.part);
       return { part: held.part, name: part?.name ?? "a part", unit: held.unit };
     }
+    // A tube of something nobody has identified. It has no checksum for the same reason a culture
+    // has none — there is no sequence to take one of — so it cannot travel either, and saying what
+    // this lab calls it is the most that can honestly be said.
+    // What a lab writes on a tube it cannot name is a private note to itself — "the one from the
+    // back of the -80" — and says nothing another lab could use. So the step says only that there
+    // was something unidentified here, which is the whole of what is honestly known about it.
+    if (held.specimen !== null) return { part: null, name: "something the publishing lab had not identified", unit: held.unit };
     // A culture. It has no checksum, so what travels is what it would have to be a culture of.
     const strain = state.strains.find((one) => one.strain === held.strain);
     return { part: null, name: strain?.name ?? "a culture", unit: held.unit,

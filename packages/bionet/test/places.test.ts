@@ -104,7 +104,7 @@ describe("places", () => {
     expect(await refused(standPlace(box, { at: [0, 0, 0], size: [130, 50, 130], turn: 45 as 90 }))).toMatch(/whole millimetres/);
     expect(await refused(setField("place", box, "grid", 3))).toMatch(/field that can be set/);
     expect(await refused(setField("place", box, "name", 3))).toMatch(/name has to be some text/);
-    expect(await refused(setField("place", "nowhere", "note", "x"))).toMatch(/part, an item, a place, a strain or a plan/);
+    expect(await refused(setField("place", "nowhere", "note", "x"))).toMatch(/part, an item, a place, a strain, a specimen or a plan/);
   });
 
   it("show a loop made by two people apart as places in nothing, and fix it with one move", async () => {

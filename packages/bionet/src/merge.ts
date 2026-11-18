@@ -101,17 +101,36 @@ export interface StrainState {
   added: string;
 }
 
-/** One physical item: a tube of a molecule, or a culture of a strain. */
+/** Something the lab physically has and cannot yet name. */
+export interface SpecimenState {
+  /** Its ID. */
+  specimen: string;
+  /** What the lab would write on the tube. Never a claim about what is in it. */
+  name: string;
+  /** Anything said about where it came from. */
+  note: string | null;
+  /** The checksum it turned out to be, once an identification said so, or `null` while unknown. */
+  is: string | null;
+  /** Anything else set on it. */
+  fields: Record<string, string | number | null>;
+  /** The entry that added it. */
+  added: string;
+}
+
+/** One physical item: a tube of a molecule, a culture of a strain, or a tube of a specimen. */
 export interface ItemState {
   /** Its ID. */
   item: string;
   /**
-   * The checksum of the part it is an item of, or `null` if it is a culture. Exactly one of this
-   * and `strain` is set.
+   * The checksum of the part it is an item of, or `null`. Exactly one of this, `strain` and
+   * `specimen` is set when it is added; a specimen that has since been identified reads with both
+   * `specimen` and `part`, because the tube is the same tube and is now known.
    */
   part: string | null;
-  /** The strain it is a culture of, or `null` if it is a tube of a molecule. */
+  /** The strain it is a culture of, or `null` if it is not a culture. */
   strain: string | null;
+  /** The specimen it is a tube of, or `null`. Set whether or not it has been identified. */
+  specimen: string | null;
   /** What one of its amount is, if anybody said: a tube, a microlitre. */
   unit: string | null;
   /** How much there is, by the log. Always a whole number of the unit. */
@@ -265,6 +284,8 @@ export interface LabState {
   parts: PartState[];
   /** Every strain. */
   strains: StrainState[];
+  /** Everything the lab has and cannot yet name. */
+  specimens: SpecimenState[];
   /** Every item. */
   items: ItemState[];
   /** Every place. */
@@ -314,6 +335,7 @@ const text = (value: unknown, most: number): value is string =>
 const PLACE_RESERVED = new Set(["place", "kind", "parent", "grid", "standing", "retired", "adrift"]);
 /** The same, for a strain: what it is and came from is fixed when it is added. */
 const STRAIN_RESERVED = new Set(["strain", "host", "carries", "parent", "from"]);
+const SPECIMEN_RESERVED = new Set(["specimen", "note", "is", "added"]);
 
 /**
  * What a plan's fields may not be called.
@@ -450,8 +472,10 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
   "part.add": { sequence: true, circular: true, name: true, kind: true, ends: { left: true, right: true } },
   "part.annotate": { part: true, features: [{ type: true, label: true, strand: true, parts: [{ start: true, end: true }] }] },
   "part.offer": { part: true, available: true },
-  "item.add": { item: true, part: true, strain: true, amount: true, unit: true },
+  "item.add": { item: true, part: true, strain: true, specimen: true, amount: true, unit: true },
   "strain.add": { strain: true, name: true, host: true, carries: true, parent: true, from: true },
+  "specimen.add": { specimen: true, name: true, note: true },
+  "specimen.identify": { specimen: true, part: true },
   "item.adjust": { item: true, by: true },
   "item.recount": { item: true, amount: true },
   "item.retire": { item: true },
@@ -633,7 +657,7 @@ const hadSeen = (later: Node, earlier: Node): boolean => (later.vc.get(earlier.a
  * ```
  */
 export async function mergeLog(entries: readonly unknown[], options: { lab?: string } = {}): Promise<LabState> {
-  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], runs: [], plans: [], strains: [], entries: [],
+  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], runs: [], plans: [], strains: [], specimens: [], entries: [],
                             waiting: [], discarded: [], overlaps: [], heads: {}, knows: {} };
 
   // Read and check every entry on its own, before any of them is believed about the others.
@@ -898,6 +922,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
 
   const places = new Map<string, { place: PlaceState; set: Map<string, Register> }>();
   const strains = new Map<string, { strain: StrainState; set: Map<string, Register> }>();
+  const specimens = new Map<string, { specimen: SpecimenState; set: Map<string, Register> }>();
   /** Each plan, with the entry that settled it, if one has, and anything set on it. */
   const plans = new Map<string, { plan: PlanState; settled: Node | null; set: Map<string, Register> }>();
   /** Where each item was last put. */
@@ -957,15 +982,18 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         refuse("It does not carry an item ID, a whole starting amount and a unit.");
       } else if (items.has(op["item"])) {
         refuse("An item with that ID already exists.");
-      } else if ((op["part"] === undefined) === (op["strain"] === undefined)) {
-        refuse("An item is of a part or a culture of a strain, and not both.");
+      } else if ([op["part"], op["strain"], op["specimen"]].filter((one) => one !== undefined).length !== 1) {
+        refuse("An item is of a part, a culture of a strain, or a tube of a specimen, and only one of those.");
       } else if (op["part"] !== undefined && (typeof op["part"] !== "string" || !parts.has(op["part"]))) {
         refuse("The part it is an item of is not one the lab has.");
       } else if (op["strain"] !== undefined && (typeof op["strain"] !== "string" || !strains.has(op["strain"]))) {
         refuse("The strain it is a culture of is not one the lab has.");
+      } else if (op["specimen"] !== undefined && (typeof op["specimen"] !== "string" || !specimens.has(op["specimen"]))) {
+        refuse("The specimen it is a tube of is not one the lab has.");
       } else {
         items.set(op["item"], {
           item: { item: op["item"], part: (op["part"] as string | undefined) ?? null, strain: (op["strain"] as string | undefined) ?? null,
+                  specimen: (op["specimen"] as string | undefined) ?? null,
                   unit: op["unit"], amount: 0, retired: false, needsRecount: false, from: null, where: null, fields: {}, added: node.id },
           set: new Map(), base: { node, amount: op["amount"], recount: false }, adjusted: [], overlapped: false,
         });
@@ -1066,7 +1094,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
           });
         }
         items.set(output.item, {
-          item: { item: output.item, part: checksum, strain: null, unit: output.unit, amount: 0, retired: false, needsRecount: false, from: op["run"] as string,
+          item: { item: output.item, part: checksum, strain: null, specimen: null, unit: output.unit, amount: 0, retired: false, needsRecount: false, from: op["run"] as string,
                   where: null, fields: {}, added: node.id },
           set: new Map(), base: { node, amount: output.amount, recount: false }, adjusted: [], overlapped: false,
         });
@@ -1096,6 +1124,29 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
                     parent: op["parent"] as string | null, from: op["from"] as string | null, fields: {}, added: node.id },
           set: new Map([["name", { node, value: op["name"] }]]),
         });
+      }
+    } else if (op.type === "specimen.add") {
+      if (!(typeof op["specimen"] === "string" && ITEM_ID.test(op["specimen"])) || !text(op["name"], 200)
+          || !(op["note"] === null || text(op["note"], 2_000))) {
+        refuse("It does not carry a specimen ID, what to call it and a note or nothing.");
+      } else if (specimens.has(op["specimen"])) {
+        refuse("A specimen with that ID already exists.");
+      } else {
+        specimens.set(op["specimen"], {
+          specimen: { specimen: op["specimen"], name: op["name"], note: op["note"] as string | null, is: null, fields: {}, added: node.id },
+          set: new Map([["name", { node, value: op["name"] }]]),
+        });
+      }
+    } else if (op.type === "specimen.identify") {
+      const held = typeof op["specimen"] === "string" ? specimens.get(op["specimen"]) : undefined;
+      if (held === undefined) {
+        refuse("The specimen it identifies is not one the lab has.");
+      } else if (!(typeof op["part"] === "string" && parts.has(op["part"]))) {
+        refuse("What it says the specimen is is not a part the lab has.");
+      } else {
+        // Two people may identify the same tube without knowing of each other. This is a register
+        // like any other, so the same rule settles it and every lab reads the same answer.
+        write(held.set, "is", node, op["part"], `what specimen ${op["specimen"]} is`);
       }
     } else if (op.type === "plan.add") {
       const problem = planProblem(op, items, parts, places, plans);
@@ -1142,10 +1193,12 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
                    : op["on"] === "item" && typeof op["id"] === "string" ? items.get(op["id"])
                    : op["on"] === "place" && typeof op["id"] === "string" ? places.get(op["id"])
                    : op["on"] === "strain" && typeof op["id"] === "string" ? strains.get(op["id"])
+                   : op["on"] === "specimen" && typeof op["id"] === "string" ? specimens.get(op["id"])
                    : op["on"] === "plan" && typeof op["id"] === "string" ? plans.get(op["id"]) : undefined;
-      if (target === undefined) { refuse("It does not name a part, an item, a place, a strain or a plan the lab has."); continue; }
+      if (target === undefined) { refuse("It does not name a part, an item, a place, a strain, a specimen or a plan the lab has."); continue; }
       if (op["on"] === "place" && typeof field === "string" && PLACE_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "strain" && typeof field === "string" && STRAIN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
+      if (op["on"] === "specimen" && typeof field === "string" && SPECIMEN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "plan" && typeof field === "string" && PLAN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       // An adviser may file its own proposals and nothing else. It proposes the work, so leaving it
       // unable to say which project the work is for would have a person filing every step by hand;
@@ -1155,7 +1208,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         refuse("An adviser may only set a field on a plan of its own.");
         continue;
       }
-      if (field === "name" && (op["on"] === "place" || op["on"] === "strain") && !text(value, 200)) { refuse("A name has to be some text."); continue; }
+      if (field === "name" && (op["on"] === "place" || op["on"] === "strain" || op["on"] === "specimen") && !text(value, 200)) { refuse("A name has to be some text."); continue; }
       if (typeof field !== "string" || !FIELD.test(field) || RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (!(value === null || amountOf(value) || (typeof value === "string" && value.length <= 2_000))) { refuse("Its value is not text, a whole number or nothing."); continue; }
       if (field === "name" && op["on"] === "part" && !text(value, 200)) { refuse("A part's name has to be some text."); continue; }
@@ -1182,11 +1235,24 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
     }
     state.strains.push(strain);
   }
+  for (const { specimen, set } of specimens.values()) {
+    for (const [field, held] of set) {
+      if (field === "name") specimen.name = held.value as string;
+      else if (field === "is") specimen.is = held.value as string;
+      else specimen.fields[field] = held.value as string | number | null;
+    }
+    state.specimens.push(specimen);
+  }
   for (const { item, set, base, adjusted, overlapped } of items.values()) {
     // A recount replaces the adjustments its author had seen. Everything else still counts.
     const since = adjusted.filter((one) => !hadSeen(base.node, one.node)).reduce((sum, one) => sum + one.by, 0);
     item.amount = base.amount + since;
     item.needsRecount = item.amount < 0 || overlapped;
+    // Once a specimen has been identified, its tubes read as tubes of that molecule. The tube is
+    // the same tube: it keeps its place, its amount and its history, and says where it came from.
+    if (item.specimen !== null && item.part === null) {
+      item.part = (specimens.get(item.specimen)?.set.get("is")?.value as string | undefined) ?? null;
+    }
     for (const [field, held] of set) item.fields[field] = held.value as string | number | null;
     item.where = (put.get(item.item)?.get("where")?.value ?? null) as ItemState["where"];
     state.items.push(item);
