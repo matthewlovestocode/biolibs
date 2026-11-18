@@ -17,6 +17,7 @@
  * - `sharing.tsx` — what other labs are shown, and the lab's web peer
  * - `adviser.tsx` — the adviser a device hosts: letting it in, and the door an agent reaches it by
  * - `strains.tsx` — what the lab keeps alive: every strain, its cultures, and what is proposed for one
+ * - `specimens.tsx` — the tubes nobody has read yet, and saying what one turned out to be
  * - `parts.tsx` — the small pieces they are made of
  * - `public.tsx` — a lab's public page: what it holds, and what it can see of another lab
  *
@@ -29,6 +30,7 @@ export * from "./places.js";
 export * from "./backup.js";
 export * from "./people.js";
 export * from "./strains.js";
+export * from "./specimens.js";
 export * from "./adviser.js";
 export * from "./history.js";
 export * from "./sharing.js";

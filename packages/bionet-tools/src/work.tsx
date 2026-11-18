@@ -69,6 +69,8 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
     };
   })();
   const said = saysWork(whole);
+  /** Tubes the lab holds and cannot name. Nothing here matches them to anything: only a read can. */
+  const unread = (lab?.specimens ?? []).filter((one) => one.is === null).length;
   const projects = whole.projects;
   const filedAs = (plan: Step["plan"]): string => {
     const says = plan.fields[FILED_UNDER];
@@ -197,6 +199,16 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
         <h2>The work</h2>
         <p className="small"><Glossed text="Each step is a proposed run: nothing has been used and nothing is recorded as done until somebody carries it out and says so." /></p>
         {said.map((one) => <p key={one} className="small">{one}</p>)}
+        {/* The lab may already hold what it is missing, without knowing it does. The panel says so
+            and stops there: which tube is which is not something a name or a size can decide, and
+            guessing would put a wrong molecule into a plan that then looks perfectly sound. */}
+        {whole.toGet.length > 0 && unread > 0 && (
+          <p className="small attention">
+            {unread === 1
+              ? <>One tube is being held unidentified. It may be something on that list &#8212; sequencing it is the only way to know.</>
+              : <>{unread} tubes are being held unidentified. One of them may be something on that list &#8212; sequencing them is the only way to know.</>}
+          </p>
+        )}
         {projects.length > 1 && (
           <div className="row tight pick" role="tablist" aria-label="Projects">
             <button type="button" role="tab" aria-selected={only === null} className={only === null ? "" : "quiet"} onClick={() => setOnly(null)}>Everything</button>
