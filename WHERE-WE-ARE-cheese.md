@@ -87,6 +87,12 @@ All of it is written up properly in [BENCH-PLAN-cheese.md](BENCH-PLAN-cheese.md)
   makes. The one published on the 18th is kept beside it as `method-2026-11-18.json`.
 - **Nine annotated GenBank files** in `cheese-constructs/`, which is what a vendor or another lab
   wants to be handed.
+- **The circle was never opened.** The five pPIC9K constructs went from assembly straight into a
+  transformation, and Pichia integrates by recombination, which needs ends. A SacI digest is now a
+  step of its own before each transformation, and all five transformations were refiled onto its
+  product. BglII, which an earlier note offered as the alternative, cuts twice and was never a
+  candidate; SacI and SalI each cut once, and SacI falls in the AOX1 promoter. §12 of the bench plan
+  has the working.
 - **Two checks shipped in the software** so the first two of those cannot happen quietly again:
   `orphaned` on a plan, and `checkRoute` in the tools.
 

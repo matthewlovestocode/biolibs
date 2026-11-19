@@ -995,3 +995,75 @@ Things the application should do that it cannot:
 - **An expectation is not a result.** Everything above is a prediction about a tube that does not
   exist. The protocol has no way to record one, and no way to record later that it was met or missed —
   which is exactly the record this project most needs to keep.
+
+## 12. The step that was missing: opening the circle
+
+The five pPIC9K constructs went from an assembly straight into a transformation. That cannot work.
+Pichia does not keep a plasmid the way *E. coli* does; pPIC9K integrates into the genome by
+homologous recombination, and recombination needs ends. A closed circle has none. The chain as filed
+would have had somebody at the bench transform a plasmid that was never going to go anywhere, and the
+record would have looked complete while doing it.
+
+### Which cut, decided by cutting
+
+Four enzymes are offered for linearising in 5′AOX1. Cutting all five constructs in silico settles it
+without an opinion:
+
+| | sites | what it does |
+|---|---|---|
+| **SacI** | 1, at 8251 | opens the circle |
+| **SalI** | 1, at 1944 | opens the circle |
+| BglII | 2 | takes a piece out |
+| StuI | 2 | takes a piece out |
+
+Identical across all five, which is what to expect: the constructs differ only in the insert. **BglII
+was never a candidate**, and had been written down as one — the earlier note framed the choice as
+SacI against BglII, from the manual rather than from the sequence. Two cuts would excise a fragment,
+not linearise.
+
+Where the two single cutters land, by each construct's own annotation:
+
+- **SacI at 8251** is inside the 938 bp regulatory region at 8019..8956 — the AOX1 promoter,
+  immediately upstream of the α-factor signal peptide and the insert. Opening it there means the
+  genome's own AOX1 promoter is the homology, so the cassette lands at the locus whose promoter is
+  driving it.
+- **SalI at 1944** is inside the 2031 bp CDS on the complement strand at 1250..3280 — the vector's
+  own marker, well away from the cassette, so it integrates at that locus instead.
+
+Both work. SacI was chosen.
+
+### What is in the lab now
+
+Per construct, a digest plan, and the transformation refiled onto its product:
+
+| construct | circle | SacI product | digest | transformation |
+|---|---|---|---|---|
+| alphaS1 | 9,851 bp | 9,851 bp line | `60d9edc1` | `e118dc7e` |
+| alphaS2 | 9,875 bp | 9,875 bp line | `f9f5b2c9` | `a1fcdcfe` |
+| beta | 9,881 bp | 9,881 bp line | `4025735c` | `bbdf7881` |
+| kappa | 9,761 bp | 9,761 bp line | `df06543e` | `dae5b299` |
+| prochymosin | 10,349 bp | 10,349 bp line | `983dad77` | `26ffb394` |
+
+Each old transformation was set aside, each new one says through `plan.replaces` what changed and
+why, and each expectation was withdrawn from the old plan and written afresh against the new one. The
+lab reports **0 adrift, 0 orphaned, 0 entries refused** — the first time a refiling here has left
+nothing hanging, because `adrift` was built after the last one did.
+
+### A number that reads oddly, and is right
+
+Each part records **four bases more** than its circle: the 9,761 bp kappa circle gives a part of
+9,765. SacI leaves a four-base 3′ overhang at each end, and a part's sequence is every base either
+strand has, read along the top strand, so a molecule opened once reads four longer than the ring it
+came from. The duplex is still 9,761 bp, which is what a gel shows and what the plan's `expected`
+setting says. The ends are recorded as `{left: -4, right: -4}`, so the molecule is unambiguous. This
+is the same convention every cut piece in the project already uses.
+
+### Left alone on purpose
+
+- **The induction plans still name the circle** as `construct` alongside the prospect they actually
+  grow. After integration what the cell carries is neither the circle nor the SacI line, so no
+  molecule in the lab is the honest answer; naming the circle records provenance. It does mean the
+  Work panel will say there is no tube of the circle yet, which is now true and was always true.
+- **The two pPICZ constructs (Fam20A, Fam20C) were not touched.** pPICZ also integrates and is
+  normally linearised, but which enzyme is a separate decision and the site counts are unverified.
+  They are the same mistake waiting in the same place.
