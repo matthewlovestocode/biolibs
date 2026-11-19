@@ -10,7 +10,7 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, isMember, meetExpectation, mergeLog, newExpectationId, newProspectId, withdrawExpectation, addProspect, realiseProspect,
+import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, isMember, meetExpectation, planReplaces, mergeLog, newExpectationId, newProspectId, withdrawExpectation, addProspect, realiseProspect,
          movePlace, newItemId, newPlaceId, newPlanId, newRunId, newSpecimenId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
          readMethod, signMethod,
          setField, settlePlan, signInventory, standPlace,
@@ -901,6 +901,17 @@ export class Lab {
       if (options.project !== undefined) await this.setField({ on: "plan", id: plan, field: "project", value: options.project });
     }
     return { proposed, missing: [...missing.values()], alive: [...alive.values()] };
+  }
+
+  /**
+   * Say this plan was filed in place of an earlier one, and what changed.
+   *
+   * The reason belongs here rather than appended to the new plan's note: a note says what a step is
+   * for, and a note that also carries every correction since grows each time one is made.
+   */
+  planReplaces(what: { plan: string; replaced: string; why: string }): Promise<void> {
+    if (what.why.trim() === "") throw new Error("Say what changed.");
+    return this.write(planReplaces(what.plan, what.replaced, what.why.trim().slice(0, 2_000)));
   }
 
   /** Close a plan: as carried out by a run, or, with no run, as set aside. */

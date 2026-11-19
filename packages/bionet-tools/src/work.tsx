@@ -52,6 +52,9 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
   const [taking, setTaking] = useState("");
   const [told, setTold] = useState<string | null>(null);
   // Which expectation is being answered, and what the person says they saw.
+  // Which step's note is open in full. A note is one field doing several jobs — what the step is
+  // for, and every correction since — so the first sentence is shown and the rest is asked for.
+  const [reading, setReading] = useState<string | null>(null);
   const [answering, setAnswering] = useState<string | null>(null);
   const [saw, setSaw] = useState("");
   // Whether each step's route has one answer. Putting a plan's pieces back together every way round
@@ -123,6 +126,13 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
     await act("meet", { expect: expectation, met: matched, saw: numbers });
     setAnswering(null); setSaw("");
   };
+  /** A note's first sentence, which is what a step is for; the rest is history and is asked for. */
+  const opening = (note: string): { first: string; rest: boolean } => {
+    const end = /[.!?](\s|$)/.exec(note.slice(0, 400));
+    if (end === null) return { first: note.slice(0, 220), rest: note.length > 220 };
+    const first = note.slice(0, end.index + 1);
+    return { first, rest: note.trim().length > first.trim().length };
+  };
   const person = (key: string): string => lab.roster.find((one) => one.key === key)?.person ?? "a device";
   const partName = (checksum: string | undefined): string => lab.parts.find((one) => one.checksum === checksum)?.name ?? "a part";
   /** A thing nobody has made, named so that it does not read as something the freezer holds. */
@@ -156,7 +166,10 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
       return <>waiting on {step.held.steps.map((one) => `step ${at(one)}`).join(" and ")}</>;
     }
     if (step.held.why === "something nobody is making") {
-      return <span className="attention">{step.held.parts.map((one) => partName(one)).join(" and ")} has to be ordered or made first</span>;
+      // The names are on the line below, under what it uses. Saying them twice reads as two
+      // different problems, so this says only that there is one.
+      const many = step.held.parts.length !== 1;
+      return <span className="attention">{many ? `${step.held.parts.length} of the things it uses have` : "something it uses has"} to be ordered or made first</span>;
     }
     return <span className="attention">{step.held.tubes.map(tubeName).join(" and ")} has been retired or run short</span>;
   };
@@ -252,7 +265,7 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
         )}
         <p className="dim small">
           Nothing here was declared. A proposal says what it expects to make and what it needs, and where one expects what another needs, the first has to happen first.
-          The chain stops at a transformation: what that makes is alive and has no checksum to point at, so what follows is proposed afresh once there is something growing.
+          What a transformation makes is alive and has no checksum, so it is named as a prospect — a thing the lab means to have and has not made — and the step after it points at that.
         </p>
       </section>
 
@@ -329,7 +342,12 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
                     : <>, making nothing it has declared</>)}
                   . Proposed by {person(step.plan.by)}.
                 </p>
-                {step.plan.note !== null && <p className="small why">{step.plan.note}</p>}
+                {step.plan.note !== null && (reading === step.plan.plan || !opening(step.plan.note).rest
+                  ? <p className="small why">{step.plan.note}{opening(step.plan.note).rest && <> <button type="button" className="quiet" onClick={() => setReading(null)}>Less</button></>}</p>
+                  : <p className="small why">{opening(step.plan.note).first} <button type="button" className="quiet" onClick={() => setReading(step.plan.plan)}>More</button></p>)}
+                {step.plan.replaces !== null && (
+                  <p className="dim small">Filed in place of an earlier plan: {step.plan.replaces.why}</p>
+                )}
                 {(lab.expectations ?? []).filter((one) => one.plan === step.plan.plan)
                   // One taken back is not shown as something to look for. It is still in the log,
                   // where somebody reading the history will find it, and the field is read too for

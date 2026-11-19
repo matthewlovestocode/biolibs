@@ -8,7 +8,7 @@
  */
 import { generateSigningKey, type SigningKey } from "@biolibs/opencloning";
 import { addItem, addPart, addPlace, addToRoster, adjustItem, foundLab, mergeLog, newItemId, newPlaceId, newPlanId, newRunId, nextEntry,
-         planRun, putItem, recordRun, retireItem, setField, setRole, settlePlan, type LabState, type Operation, type PlanRecord, type SignedEntry } from "@biolibs/bionet";
+         planReplaces, planRun, putItem, recordRun, retireItem, setField, setRole, settlePlan, type LabState, type Operation, type PlanRecord, type SignedEntry } from "@biolibs/bionet";
 import { beforeAll, describe, expect, it } from "vitest";
 
 const TEMPLATE = "GGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGAGAGGGTGCTTCAGAGTATGTATACC";
@@ -529,5 +529,51 @@ describe("a plan left over by a refiling", () => {
     const open = (await a.lab()).plans[0]!;
     expect(open.wanting).toEqual([tube]);
     expect(open.orphaned).toEqual([]);
+  });
+});
+
+describe("a plan filed in place of another", () => {
+  it("says which one, and why, without either plan depending on it", async () => {
+    const { a, plan } = await wren();
+    const old = plan(), fresh = plan();
+    await a.write(planRun(old));
+    await a.write(planRun(fresh));
+    await a.write(planReplaces(fresh.plan, old.plan, "the route is now BamHI and AvrII"));
+    const lab = await a.lab();
+    expect(await lastOf(a)).toEqual({ status: "applied", reason: null });
+    expect(lab.plans.find((one) => one.plan === fresh.plan)?.replaces)
+      .toMatchObject({ plan: old.plan, why: "the route is now BamHI and AvrII", by: ada.publicKey });
+    // The plan it replaces is untouched: closing it is a separate act, and may not have happened yet.
+    expect(lab.plans.find((one) => one.plan === old.plan)?.settled).toBeNull();
+  });
+
+  it("refuses a plan replacing itself, and one that names a plan the lab does not have", async () => {
+    const { a, plan } = await wren();
+    const one = plan();
+    await a.write(planRun(one));
+    await a.write(planReplaces(one.plan, one.plan, "a mistake"));
+    expect((await lastOf(a)).reason).toBe("A plan does not replace itself.");
+    await a.write(planReplaces(one.plan, "nosuchplan", "a mistake"));
+    expect((await lastOf(a)).reason).toBe("It does not name two plans the lab has.");
+  });
+
+  it("is said once: a plan is filed in place of one thing, not a list", async () => {
+    const { a, plan } = await wren();
+    const first = plan(), second = plan(), fresh = plan();
+    for (const one of [first, second, fresh]) await a.write(planRun(one));
+    await a.write(planReplaces(fresh.plan, first.plan, "the route changed"));
+    await a.write(planReplaces(fresh.plan, second.plan, "and the topology"));
+    expect((await lastOf(a)).reason).toBe("That plan already says what it was filed in place of.");
+    expect((await a.lab()).plans.find((one) => one.plan === fresh.plan)?.replaces?.plan).toBe(first.plan);
+  });
+
+  it("is not understood by a version that does not know it, which still reads both plans", async () => {
+    const { a, plan } = await wren();
+    const old = plan(), fresh = plan();
+    await a.write(planRun(old));
+    await a.write(planRun(fresh));
+    await a.write({ ...planReplaces(fresh.plan, old.plan, "why"), confidence: "high" });
+    expect((await lastOf(a)).status).toBe("not understood");
+    expect((await a.lab()).plans).toHaveLength(2);
   });
 });

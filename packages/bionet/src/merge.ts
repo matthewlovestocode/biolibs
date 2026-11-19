@@ -282,6 +282,11 @@ export interface PlanState {
   expects: { name: string; sequence: string; circular: boolean; ends: PartEnds; length: number; checksum: string }[];
   /** The prospects it would bring into existence: what it makes that has no sequence to expect. */
   makes: string[];
+  /**
+   * The plan this was filed in place of, and what changed. A refiling's reason belongs here rather
+   * than appended to the note, which is about what the step is for.
+   */
+  replaces: { plan: string; why: string; by: string; entry: string } | null;
   /** How to set it up. */
   settings: Record<string, string | number>;
   /** Why, and anything else said about it. */
@@ -430,7 +435,7 @@ const EXPECT_RESERVED = new Set(["expect", "plan", "kind", "says", "numbers", "s
  * something nobody proposed. A field says what a plan is *about* — which project it is part of,
  * say — and nothing about what carrying it out would do.
  */
-const PLAN_RESERVED = new Set(["plan", "kind", "instrument", "inputs", "expects", "settings", "note", "by", "settled", "wanting", "orphaned", "added"]);
+const PLAN_RESERVED = new Set(["plan", "kind", "instrument", "inputs", "expects", "makes", "settings", "note", "by", "settled", "wanting", "orphaned", "replaces", "added"]);
 
 /** The most positions a box may have along one side, and the farthest a place may stand or reach, in millimetres. */
 const MOST_SIDE = 100;
@@ -585,6 +590,7 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
     expects: [{ sequence: true, circular: true, ends: { left: true, right: true }, name: true }],
   },
   "plan.settle": { plan: true, run: true },
+  "plan.replaces": { plan: true, replaced: true, why: true },
   "field.set": { on: true, id: true, field: true, value: true },
 };
 
@@ -597,7 +603,7 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
  */
 // An adviser may say what to look for, because that is reading and working out. It may not say what
 // was seen: a reading is made by somebody standing at a bench, and nothing with no hands was there.
-const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle", "field.set", "expect.add", "expect.withdraw"]);
+const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle", "plan.replaces", "field.set", "expect.add", "expect.withdraw"]);
 
 /**
  * The first field in a change that this version does not know, if there is one.
@@ -1382,9 +1388,25 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
             amount: input.amount, role: input.role })),
           makes: [...((op["makes"] as string[] | undefined) ?? [])],
           expects, settings: { ...(op["settings"] as Record<string, string | number>) }, note: op["note"] as string | null,
-          by: node.author, settled: null, wanting: [], orphaned: [], fields: {}, added: node.id,
+          by: node.author, settled: null, wanting: [], orphaned: [], replaces: null, fields: {}, added: node.id,
         },
       });
+    } else if (op.type === "plan.replaces") {
+      const held = typeof op["plan"] === "string" ? plans.get(op["plan"]) : undefined;
+      const gone = typeof op["replaced"] === "string" ? plans.get(op["replaced"]) : undefined;
+      if (held === undefined || gone === undefined) {
+        refuse("It does not name two plans the lab has.");
+      } else if (op["plan"] === op["replaced"]) {
+        refuse("A plan does not replace itself.");
+      } else if (!text(op["why"], 2_000)) {
+        refuse("It does not say what changed.");
+      } else if (node.adviser === true && held.plan.by !== node.author) {
+        refuse("An adviser may only say that about a plan of its own.");
+      } else if (held.plan.replaces !== null) {
+        refuse("That plan already says what it was filed in place of.");
+      } else {
+        held.plan.replaces = { plan: op["replaced"] as string, why: op["why"] as string, by: node.author, entry: node.id };
+      }
     } else if (op.type === "plan.settle") {
       const held = typeof op["plan"] === "string" ? plans.get(op["plan"]) : undefined;
       const run = op["run"];

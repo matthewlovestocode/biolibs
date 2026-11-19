@@ -531,6 +531,24 @@ export const planRun = (plan: PlanRecord): Operation => ({ type: "plan.add", ...
  */
 export const settlePlan = (plan: string, run: string | null): Operation => ({ type: "plan.settle", plan, run });
 
+/**
+ * @returns The change that says one plan was filed in place of another, and why.
+ *
+ * A plan is refiled whenever a route changes, a product is corrected, a tag is added. Without this
+ * the reason goes in the new plan's note, which then carries the step's purpose and every correction
+ * since in one paragraph, growing each time. A note should say what a step is for. This says what
+ * became of an earlier one, which is a different sentence and belongs in a different place.
+ *
+ * It is a change of its own rather than a field on the plan, so that a device too old to know of it
+ * still reads both plans: the link is worth having and neither plan depends on it.
+ *
+ * @param plan - The plan filed now.
+ * @param replaced - The plan it was filed in place of.
+ * @param why - What changed, in a sentence.
+ */
+export const planReplaces = (plan: string, replaced: string, why: string): Operation =>
+  ({ type: "plan.replaces", plan, replaced, why });
+
 /** @returns A new ID for a plan, made the way an item's is. */
 export const newPlanId = (): string => newItemId();
 
