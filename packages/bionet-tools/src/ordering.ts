@@ -301,8 +301,13 @@ export function planOfWork(lab: OrderingLab): PlanOfWork {
  * ```
  */
 export function saysWork(work: PlanOfWork): string[] {
-  if (work.order.length === 0 && work.tangled.length === 0) return [];
   const count = (many: number, one: string, more: string): string => `${many} ${many === 1 ? one : more}`;
+  // Said before anything else is said, and said even when there is no work at all: a lab that set
+  // every plan aside is exactly the lab where these go unnoticed, and saying nothing then would
+  // leave the one case this is for in silence.
+  const stranded = work.adrift.length === 0 ? []
+    : [`${count(work.adrift.length, "thing somebody expected to see is", "things somebody expected to see are")} on a step that was set aside, so nobody will answer ${work.adrift.length === 1 ? "it" : "them"}.`];
+  if (work.order.length === 0 && work.tangled.length === 0) return stranded;
   const filed = work.projects.filter((one) => one.filed);
   const said: string[] = [
     `${count(work.order.length, "step is", "steps are")} proposed, in ${count(work.threads.length, "piece", "pieces")} of work`
@@ -312,11 +317,7 @@ export function saysWork(work: PlanOfWork): string[] {
   if (loose !== undefined && filed.length > 0) {
     said.push(`${count(loose.order.length, "step is", "steps are")} filed under no project.`);
   }
-  if (work.adrift.length > 0) {
-    // Not a count of work, but of something somebody meant to look for and now nobody will: the step
-    // it was written on has been set aside, most often by being refiled.
-    said.push(`${count(work.adrift.length, "thing somebody expected to see is", "things somebody expected to see are")} on a step that was set aside, so nobody will answer ${work.adrift.length === 1 ? "it" : "them"}.`);
-  }
+  said.push(...stranded);
   if (work.ready.length > 0) said.push(`${count(work.ready.length, "step", "steps")} could be carried out now.`);
   else if (work.order.length > 0) said.push("Nothing can be carried out yet.");
   const waiting = work.held.filter((one) => one.held?.why === "a step before it").length;

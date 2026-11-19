@@ -205,3 +205,20 @@ describe("work that nobody will answer", () => {
     expect(saysWork(work).some((line) => line.includes("nobody will answer"))).toBe(false);
   });
 });
+
+describe("a lab with nothing open", () => {
+  it("still says what was left on the steps it set aside", () => {
+    const gone = { plan: "b", kind: "digest", instrument: null, inputs: [], expects: [], makes: [],
+                   settings: {}, note: null, by: "k", settled: { run: null, by: "k", entry: "2" },
+                   wanting: [], orphaned: [], replaces: null, fields: {}, added: "1" };
+    const work = planOfWork({
+      plans: [gone] as never, items: [],
+      expectations: [{ expect: "one", plan: "b", kind: "digest", says: "two bands", numbers: [], settings: {},
+                       note: null, by: "k", met: null, withdrawn: null, adrift: true, fields: {}, added: "e" }] as never,
+    });
+    // A lab that refiled everything and has not filed the replacements yet is exactly the lab where
+    // these go unnoticed, so the one line that mentions them has to survive an empty work list.
+    expect(work.order).toHaveLength(0);
+    expect(saysWork(work)).toEqual(["1 thing somebody expected to see is on a step that was set aside, so nobody will answer it."]);
+  });
+});
