@@ -262,6 +262,15 @@ export interface ExpectationState {
    * than removed: the entry stays in the log, and this says it is no longer something to look for.
    */
   withdrawn: { note: string | null; by: string; entry: string } | null;
+  /**
+   * True when the plan this is about has been **set aside** and nobody ever said what they saw.
+   *
+   * Refiling a plan makes a new one, and what was expected of the old one does not follow it: the
+   * expectation goes on pointing at work nobody will do, and no single entry is wrong about it. A
+   * plan that was *carried out* is not this — then the expectation is exactly what somebody should
+   * be answering — and neither is one already met, which is history and stays.
+   */
+  adrift: boolean;
   /** Anything else set on it. */
   fields: Record<string, string | number | null>;
   /** The entry that wrote it. */
@@ -425,7 +434,7 @@ const PLACE_RESERVED = new Set(["place", "kind", "parent", "grid", "standing", "
 const STRAIN_RESERVED = new Set(["strain", "host", "carries", "parent", "from"]);
 const SPECIMEN_RESERVED = new Set(["specimen", "note", "is", "added"]);
 const PROSPECT_RESERVED = new Set(["prospect", "name", "kind", "madeOf", "note", "became", "by", "added"]);
-const EXPECT_RESERVED = new Set(["expect", "plan", "kind", "says", "numbers", "settings", "note", "by", "met", "withdrawn", "added"]);
+const EXPECT_RESERVED = new Set(["expect", "plan", "kind", "says", "numbers", "settings", "note", "by", "met", "withdrawn", "adrift", "added"]);
 
 /**
  * What a plan's fields may not be called.
@@ -1316,7 +1325,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
           seen: null,
           expectation: { expect: op["expect"], plan: op["plan"], kind: op["kind"], says: op["says"],
                          numbers: [...(numbers as number[])], settings: { ...(settings as Record<string, string | number>) },
-                         note: op["note"] as string | null, by: node.author, met: null, withdrawn: null, fields: {}, added: node.id },
+                         note: op["note"] as string | null, by: node.author, met: null, withdrawn: null, adrift: false, fields: {}, added: node.id },
           set: new Map(),
         });
       }
@@ -1499,8 +1508,15 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
     }
     state.prospects.push(prospect);
   }
+  // A plan that was set aside is one nobody will carry out, so what was expected of it is left
+  // pointing at nothing. A plan carried out by a run is the opposite: its expectation is the thing
+  // somebody should be answering, so only setting aside strands one.
+  const setAside = new Set([...plans.values()]
+    .filter(({ plan }) => plan.settled !== null && plan.settled.run === null)
+    .map(({ plan }) => plan.plan));
   for (const { expectation, set } of expectations.values()) {
     for (const [field, held] of set) expectation.fields[field] = held.value as string | number | null;
+    expectation.adrift = expectation.met === null && expectation.withdrawn === null && setAside.has(expectation.plan);
     state.expectations.push(expectation);
   }
   for (const { item, set, base, adjusted, overlapped } of items.values()) {

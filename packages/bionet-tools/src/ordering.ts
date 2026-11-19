@@ -21,7 +21,7 @@
  * something growing. That is a real limit and it is said here rather than hidden: a plan that
  * claimed to run past it would be claiming to name something nothing can name yet.
  */
-import type { ItemState, PlanState, ProspectState } from "@biolibs/bionet";
+import type { ExpectationState, ItemState, PlanState, ProspectState } from "@biolibs/bionet";
 
 /** As much of a lab as the ordering reads. */
 export interface OrderingLab {
@@ -29,6 +29,8 @@ export interface OrderingLab {
   items: readonly ItemState[];
   /** Things the lab means to have and has not made, so a chain can run on past a transformation. */
   prospects?: readonly ProspectState[];
+  /** What the lab expects to see of its plans, so work can say what has been left pointing at nothing. */
+  expectations?: readonly ExpectationState[];
 }
 
 /** Why a step cannot be carried out yet, or `null` if it can. */
@@ -107,6 +109,11 @@ export interface PlanOfWork {
    * synthesised before any of this can start, by checksum.
    */
   toGet: { checksum: string; name: string; forSteps: string[] }[];
+  /**
+   * Things somebody expected to see that are on steps now set aside. Refiling a plan makes a new
+   * one, and what was expected of the old one does not follow it; nobody will answer these.
+   */
+  adrift: { expect: string; kind: string; says: string }[];
   /** Plans that somehow depend on each other in a circle, by ID. Empty, unless something is wrong. */
   tangled: string[];
 }
@@ -273,6 +280,8 @@ export function planOfWork(lab: OrderingLab): PlanOfWork {
     ready: steps.filter((one) => one.held === null),
     held: steps.filter((one) => one.held !== null),
     toGet: [...toGet].map(([checksum, forSteps]) => ({ checksum, name: made.has(checksum) ? nameOf(checksum) : checksum.slice(0, 12), forSteps })),
+    adrift: (lab.expectations ?? []).filter((one) => one.adrift)
+      .map((one) => ({ expect: one.expect, kind: one.kind, says: one.says })),
     tangled,
   };
 }
@@ -302,6 +311,11 @@ export function saysWork(work: PlanOfWork): string[] {
   const loose = work.projects.find((one) => !one.filed);
   if (loose !== undefined && filed.length > 0) {
     said.push(`${count(loose.order.length, "step is", "steps are")} filed under no project.`);
+  }
+  if (work.adrift.length > 0) {
+    // Not a count of work, but of something somebody meant to look for and now nobody will: the step
+    // it was written on has been set aside, most often by being refiled.
+    said.push(`${count(work.adrift.length, "thing somebody expected to see is", "things somebody expected to see are")} on a step that was set aside, so nobody will answer ${work.adrift.length === 1 ? "it" : "them"}.`);
   }
   if (work.ready.length > 0) said.push(`${count(work.ready.length, "step", "steps")} could be carried out now.`);
   else if (work.order.length > 0) said.push("Nothing can be carried out yet.");

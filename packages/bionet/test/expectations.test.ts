@@ -284,3 +284,45 @@ describe("taking an expectation back", () => {
     expect(only(await a.lab()).withdrawn).toBeNull();
   });
 });
+
+describe("an expectation on a plan nobody will carry out", () => {
+  it("says it is adrift once the plan is set aside", async () => {
+    const { a, plan } = await wren();
+    const one = about(plan);
+    await a.write(expectOf(one));
+    expect(only(await a.lab()).adrift).toBe(false);
+    await a.write(settlePlan(plan, null));
+    // Refiling a plan makes a new one, and what was expected of the old one does not follow it.
+    // No entry is wrong about that; only the lab as a whole can see it.
+    expect(only(await a.lab()).adrift).toBe(true);
+  });
+
+  it("is not adrift when the plan was carried out, which is when it matters most", async () => {
+    const { a, tube, plan } = await wren();
+    const one = about(plan);
+    await a.write(expectOf(one));
+    const run = newRunId();
+    await a.write(recordRun({ run, kind: "pcr", instrument: null, inputs: [{ item: tube, amount: 1, role: "template" }],
+                              outputs: [], settings: {}, outcome: "worked", note: null }));
+    await a.write(settlePlan(plan, run));
+    expect(only(await a.lab()).adrift).toBe(false);
+  });
+
+  it("is not adrift once somebody has said what they saw, which is history and stays", async () => {
+    const { a, plan } = await wren();
+    const one = about(plan);
+    await a.write(expectOf(one));
+    await a.write(meetExpectation(one.expect, true, [4757, 614]));
+    await a.write(settlePlan(plan, null));
+    expect(only(await a.lab()).adrift).toBe(false);
+  });
+
+  it("is not adrift once it has been taken back", async () => {
+    const { a, plan } = await wren();
+    const one = about(plan);
+    await a.write(expectOf(one));
+    await a.write(withdrawExpectation(one.expect, "written on the wrong step"));
+    await a.write(settlePlan(plan, null));
+    expect(only(await a.lab()).adrift).toBe(false);
+  });
+});

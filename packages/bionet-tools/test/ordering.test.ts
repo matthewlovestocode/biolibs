@@ -176,3 +176,32 @@ describe("what it says about where things stand", () => {
     expect(said.join(" ")).toMatch(/has to be ordered or made first/);
   });
 });
+
+describe("work that nobody will answer", () => {
+  it("counts the expectations left on steps that were set aside", () => {
+    const open = { plan: "a", kind: "digest", instrument: null, inputs: [], expects: [], makes: [],
+                   settings: {}, note: null, by: "k", settled: null, wanting: [], orphaned: [],
+                   replaces: null, fields: {}, added: "1" };
+    const gone = { ...open, plan: "b", settled: { run: null, by: "k", entry: "2" } };
+    const done = { ...open, plan: "c", settled: { run: "r", by: "k", entry: "3" } };
+    const expectation = (expect: string, plan: string, adrift: boolean) => ({
+      expect, plan, kind: "digest", says: "two bands", numbers: [4757, 614], settings: {}, note: null,
+      by: "k", met: null, withdrawn: null, adrift, fields: {}, added: expect,
+    });
+    const work = planOfWork({
+      plans: [open, gone, done] as never, items: [],
+      expectations: [expectation("one", "b", true), expectation("two", "a", false), expectation("three", "c", false)] as never,
+    });
+    expect(work.adrift.map((one) => one.expect)).toEqual(["one"]);
+    expect(saysWork(work).some((line) => line.includes("nobody will answer"))).toBe(true);
+  });
+
+  it("says nothing about it when there is none, which is the ordinary case", () => {
+    const open = { plan: "a", kind: "digest", instrument: null, inputs: [], expects: [], makes: [],
+                   settings: {}, note: null, by: "k", settled: null, wanting: [], orphaned: [],
+                   replaces: null, fields: {}, added: "1" };
+    const work = planOfWork({ plans: [open] as never, items: [] });
+    expect(work.adrift).toEqual([]);
+    expect(saysWork(work).some((line) => line.includes("nobody will answer"))).toBe(false);
+  });
+});
