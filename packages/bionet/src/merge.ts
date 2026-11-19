@@ -296,6 +296,19 @@ export interface PlanState {
    * than appended to the note, which is about what the step is for.
    */
   replaces: { plan: string; why: string; by: string; entry: string } | null;
+  /**
+   * The reading this plan waits on, where it is a contingency rather than a step to be done.
+   *
+   * `met` is the answer it follows: `true` for a reading seen as expected, `false` for one missed.
+   * `standing` is worked out from whether anybody has looked yet —
+   *
+   * - `waiting`: nobody has read that expectation, so it is not yet known whether this applies.
+   * - `live`: the reading came out the way this follows. It is now a step to carry out.
+   * - `moot`: the reading came out the other way, so this is not to be done. It is not set aside:
+   *   nothing here settles a plan on its own, and somebody may still want it in the record.
+   */
+  follows: { expect: string; met: boolean; why: string; by: string; entry: string;
+             standing: "waiting" | "live" | "moot" } | null;
   /** How to set it up. */
   settings: Record<string, string | number>;
   /** Why, and anything else said about it. */
@@ -578,6 +591,7 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
   "expect.add": { expect: true, plan: true, kind: true, says: true, numbers: true, settings: true, note: true },
   "expect.meet": { expect: true, met: true, saw: true, run: true, note: true },
   "expect.withdraw": { expect: true, note: true },
+  "expect.leads": { expect: true, met: true, plan: true, why: true },
   "prospect.add": { prospect: true, name: true, kind: true, madeOf: true, note: true },
   "prospect.realise": { prospect: true, strain: true, item: true },
   "item.adjust": { item: true, by: true },
@@ -612,7 +626,7 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
  */
 // An adviser may say what to look for, because that is reading and working out. It may not say what
 // was seen: a reading is made by somebody standing at a bench, and nothing with no hands was there.
-const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle", "plan.replaces", "field.set", "expect.add", "expect.withdraw"]);
+const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle", "plan.replaces", "field.set", "expect.add", "expect.withdraw", "expect.leads"]);
 
 /**
  * The first field in a change that this version does not know, if there is one.
@@ -1397,9 +1411,34 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
             amount: input.amount, role: input.role })),
           makes: [...((op["makes"] as string[] | undefined) ?? [])],
           expects, settings: { ...(op["settings"] as Record<string, string | number>) }, note: op["note"] as string | null,
-          by: node.author, settled: null, wanting: [], orphaned: [], replaces: null, fields: {}, added: node.id,
+          by: node.author, settled: null, wanting: [], orphaned: [], replaces: null, follows: null, fields: {}, added: node.id,
         },
       });
+    } else if (op.type === "expect.leads") {
+      const reading = typeof op["expect"] === "string" ? expectations.get(op["expect"]) : undefined;
+      const held = typeof op["plan"] === "string" ? plans.get(op["plan"]) : undefined;
+      if (reading === undefined) {
+        refuse("The expectation whose answer it follows is not one the lab has.");
+      } else if (held === undefined) {
+        refuse("The plan it would have carried out is not one the lab has.");
+      } else if (typeof op["met"] !== "boolean") {
+        refuse("It does not say which answer the plan follows.");
+      } else if (!text(op["why"], 2_000)) {
+        refuse("It does not say what makes that plan the answer.");
+      } else if (reading.expectation.plan === op["plan"]) {
+        // A plan cannot be its own contingency: it would wait on a reading of itself, which nobody
+        // can take until it has been carried out, which is the thing it is waiting to be told to do.
+        refuse("A plan does not follow a reading of its own result.");
+      } else if (node.adviser === true && held.plan.by !== node.author) {
+        refuse("An adviser may only say that about a plan of its own.");
+      } else if (held.plan.follows !== null) {
+        // One reading per plan. Two would have to mean either "when both come out that way" or
+        // "when either does", and a reader cannot tell which was meant from the entries alone.
+        refuse("That plan already follows a reading.");
+      } else {
+        held.plan.follows = { expect: op["expect"] as string, met: op["met"], why: op["why"] as string,
+                              by: node.author, entry: node.id, standing: "waiting" };
+      }
     } else if (op.type === "plan.replaces") {
       const held = typeof op["plan"] === "string" ? plans.get(op["plan"]) : undefined;
       const gone = typeof op["replaced"] === "string" ? plans.get(op["replaced"]) : undefined;
@@ -1518,6 +1557,14 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
     for (const [field, held] of set) expectation.fields[field] = held.value as string | number | null;
     expectation.adrift = expectation.met === null && expectation.withdrawn === null && setAside.has(expectation.plan);
     state.expectations.push(expectation);
+  }
+  // A plan that follows a reading is waiting until somebody has read it, and then is either the
+  // thing to do or no longer applies. Worked out here rather than written down, so that it cannot
+  // disagree with the reading: the reading is the fact, and this is only what the fact means.
+  for (const { plan } of plans.values()) {
+    if (plan.follows === null) continue;
+    const reading = expectations.get(plan.follows.expect)?.expectation.met ?? null;
+    plan.follows.standing = reading === null ? "waiting" : reading.met === plan.follows.met ? "live" : "moot";
   }
   for (const { item, set, base, adjusted, overlapped } of items.values()) {
     // A recount replaces the adjustments its author had seen. Everything else still counts.

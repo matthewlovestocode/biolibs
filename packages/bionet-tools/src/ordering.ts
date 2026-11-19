@@ -37,7 +37,11 @@ export interface OrderingLab {
 export type Holding =
   | { why: "a step before it"; steps: string[] }
   | { why: "something nobody is making"; parts: string[] }
-  | { why: "a tube that has run short"; tubes: string[] };
+  | { why: "a tube that has run short"; tubes: string[] }
+  /** It answers a reading nobody has taken yet, so whether it applies is not known. */
+  | { why: "a reading nobody has taken"; expect: string }
+  /** The reading came out the other way, so it is not to be done. */
+  | { why: "a reading that went the other way"; expect: string };
 
 /** One step: a proposal, where it sits in the order, and what stands in its way. */
 export interface Step {
@@ -204,8 +208,15 @@ export function planOfWork(lab: OrderingLab): PlanOfWork {
     const plan = byId.get(id)!;
     const waits = (after.get(id) ?? []).filter((one) => byId.has(one));
     const nowhere = missing.get(id) ?? [];
+    // A contingency comes first: a step that answers a reading nobody has taken is not ready
+    // however well stocked the freezer is, and one whose reading went the other way is not a step
+    // at all. Saying it was short of a tube would send somebody to fetch one for nothing.
     const held: Holding | null =
-      waits.length > 0 ? { why: "a step before it", steps: waits }
+      // Read with a question mark: a lab state merged by a version from before conditionals carries
+      // no `follows` at all, and these tools may well be newer than the merge that made the state.
+      plan.follows?.standing === "waiting" ? { why: "a reading nobody has taken", expect: plan.follows.expect }
+      : plan.follows?.standing === "moot" ? { why: "a reading that went the other way", expect: plan.follows.expect }
+      : waits.length > 0 ? { why: "a step before it", steps: waits }
       : nowhere.length > 0 ? { why: "something nobody is making", parts: nowhere }
       : plan.wanting.length > 0 ? { why: "a tube that has run short", tubes: [...plan.wanting] }
       : null;

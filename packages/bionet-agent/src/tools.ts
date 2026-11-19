@@ -424,6 +424,8 @@ export function agentTools(lab: Lab, options: { watch?: (call: AgentCall) => voi
             can_be_done_now: one.held === null,
             ...(one.held === null ? {} : { waiting_on: one.held.why === "a step before it" ? { steps: one.held.steps.map(at) }
               : one.held.why === "something nobody is making" ? { to_get: one.held.parts.map(named) }
+              : one.held.why === "a reading nobody has taken" ? { reading_not_taken: one.held.expect }
+              : one.held.why === "a reading that went the other way" ? { reading_went_the_other_way: one.held.expect }
               : { tubes_run_short: one.held.tubes } }),
             makes: one.makes.map(named),
             project: typeof one.plan.fields[FILED_UNDER] === "string" ? one.plan.fields[FILED_UNDER] : UNFILED,

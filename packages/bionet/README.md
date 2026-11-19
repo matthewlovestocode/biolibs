@@ -746,6 +746,51 @@ Two people may read the same gel without having heard of each other. The lower e
 everywhere else, and the disagreement is shown in `overlaps` rather than quietly resolved: two people
 reading one gel differently is worth somebody looking at.
 
+### What an answer leads to
+
+An expectation says what to look for. What makes it worth looking for is knowing what either answer
+leads to, and that is a **conditional**: a plan that is only to be carried out if a reading comes out
+a given way.
+
+```ts
+import { expectLeadsTo } from "@biolibs/bionet";
+
+// If the gel shows the protein cut in half, the answer is a host whose protease has been taken out.
+await write(ada, adasKey, expectLeadsTo(gel, false, intoAnotherHost, "the answer to a cut protein"));
+
+(await mergeLog(ada)).plans.find((one) => one.plan === intoAnotherHost)?.follows;
+// { expect: gel, met: false, why: "the answer to a cut protein", standing: "waiting", … }
+```
+
+`standing` is worked out from the readings, never written down, so it cannot disagree with them:
+
+| | |
+|---|---|
+| `waiting` | nobody has read that expectation, so whether this applies is not known |
+| `live` | the reading came out the way this follows. It is a step to carry out |
+| `moot` | it came out the other way, so this is not to be done |
+
+**Nothing happens when the reading lands.** The lab works out that the plan is now the one to do, or
+that it no longer applies, and a person still carries it out and says so. A `moot` plan is **not set
+aside**: nothing here settles a plan on its own, and a lab may well want the road not taken in its
+record. `planOfWork` holds such a step back rather than calling it ready, so nobody is sent to fetch
+a tube for a step that turned out not to apply.
+
+Two rules exist to stop a reader having to guess:
+
+- **A plan follows one reading, and a second is refused.** Two would have to mean "when both come out
+  that way" or "when either does", and no reader could tell which was meant from the entries alone.
+- **A plan may not follow a reading of its own result**, which would have it wait on a reading nobody
+  can take until it has been carried out — the thing it is waiting to be told to do.
+
+An **adviser may write one about a plan of its own**, like any other proposal it makes. Saying what to
+do about a reading is working out, which is all an adviser does; carrying it out is still somebody's.
+
+It is a change of its own rather than a field on the plan, for the usual reason: a device from before
+conditionals turns that one entry down and reads the plan and the expectation as it always did. A
+field would have made the whole plan unreadable, and — worse — a plan read without its condition
+would look like a step somebody meant to do.
+
 ### Moving entries between machines
 
 `mergeLog` works on whatever it is given. `sync.ts` is how entries are given, without opening a

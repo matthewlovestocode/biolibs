@@ -666,6 +666,30 @@ export const meetExpectation = (expect: string, met: boolean, saw: readonly numb
 export const withdrawExpectation = (expect: string, note: string | null = null): Operation =>
   ({ type: "expect.withdraw", expect, note });
 
+/**
+ * @returns The change that says which plan a reading leads to, if it comes out a given way.
+ *
+ * A plan could say what it expected and nothing could say what to do about either answer. So a lab
+ * wrote down that a casein's gel might show it cut in half, and had nowhere to write down that the
+ * answer to that is a host whose own protease has been taken out. The contingency lived in
+ * somebody's head, which is where it is lost.
+ *
+ * It settles nothing by itself and nothing happens when the reading lands. The lab says the plan is
+ * the one to carry out, or that it no longer applies, and a person still carries it out and says so:
+ * the log records what people did and intend, and has never done anything on its own.
+ *
+ * It is a change of its own rather than a field on the plan, so that a device too old to know of it
+ * reads both the plan and the expectation and only turns this down — a contingency it cannot see is
+ * better than a plan it reads as unconditional.
+ *
+ * @param expect - The expectation whose answer decides it.
+ * @param met - The answer this plan follows: `true` for seen as expected, `false` for missed.
+ * @param plan - The plan to carry out if the answer comes out that way.
+ * @param why - What makes that the answer to it, in a sentence.
+ */
+export const expectLeadsTo = (expect: string, met: boolean, plan: string, why: string): Operation =>
+  ({ type: "expect.leads", expect, met, plan, why });
+
 /** @returns A new ID for an expectation, made the way an item's is. */
 export const newExpectationId = (): string => newItemId();
 

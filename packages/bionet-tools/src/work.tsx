@@ -171,6 +171,12 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
       const many = step.held.parts.length !== 1;
       return <span className="attention">{many ? `${step.held.parts.length} of the things it uses have` : "something it uses has"} to be ordered or made first</span>;
     }
+    if (step.held.why === "a reading nobody has taken") {
+      return <span className="attention">Only to be done depending on a reading nobody has taken yet.</span>;
+    }
+    if (step.held.why === "a reading that went the other way") {
+      return <span className="dim small">The reading this answers came out the other way, so this is not to be done.</span>;
+    }
     return <span className="attention">{step.held.tubes.map(tubeName).join(" and ")} has been retired or run short</span>;
   };
 

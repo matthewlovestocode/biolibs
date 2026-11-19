@@ -10,7 +10,7 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, isMember, meetExpectation, planReplaces, mergeLog, newExpectationId, newProspectId, withdrawExpectation, addProspect, realiseProspect,
+import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, expectLeadsTo, isMember, meetExpectation, planReplaces, mergeLog, newExpectationId, newProspectId, withdrawExpectation, addProspect, realiseProspect,
          movePlace, newItemId, newPlaceId, newPlanId, newRunId, newSpecimenId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
          readMethod, signMethod,
          setField, settlePlan, signInventory, standPlace,
@@ -622,6 +622,19 @@ export class Lab {
    */
   withdraw(what: { expect: string; note?: string | null }): Promise<void> {
     return this.write(withdrawExpectation(what.expect, what.note ?? null));
+  }
+
+  /**
+   * Say which plan a reading leads to, if it comes out a given way.
+   *
+   * The contingency a protocol is full of and a plan could not hold: if the gel shows the protein
+   * cut, this is the step that answers it. Nothing happens when the reading lands — the lab works
+   * out that the plan is now the one to do, or that it no longer applies, and somebody still
+   * carries it out and says so.
+   */
+  leadsTo(what: { expect: string; met: boolean; plan: string; why: string }): Promise<void> {
+    if (what.why.trim() === "") throw new Error("Say what makes that plan the answer.");
+    return this.write(expectLeadsTo(what.expect, what.met, what.plan, what.why.trim().slice(0, 2_000)));
   }
 
   /**
