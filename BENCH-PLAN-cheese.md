@@ -779,12 +779,19 @@ why BamHI rather than XhoI, what the leave-one-out test said, which packages wer
 
 ### Three things doing it taught
 
-**The protein-gel expectation has no proper home.** It is attached to the transformation, because
-that is where the lab's own plan notes already describe the readout — *"Into GS115. Read out with
-Phos-tag acrylamide electrophoresis"*. But a transformation makes colonies, not protein. The protein
-appears after an induction, and **there is no induction plan**. So the expectation went where the
-existing plans put the readout, and what it revealed is a missing step rather than a missing field.
-Filing the nine inductions would give each of these a plan that is actually about it.
+**The protein-gel expectation had no proper home.** It went on the transformation, because that is
+where the lab's own plan notes already describe the readout — *"Into GS115. Read out with Phos-tag
+acrylamide electrophoresis"*. But a transformation makes colonies, not protein. The protein appears
+after an induction, and there was no induction plan. So what it revealed was a missing step rather
+than a missing field.
+
+**The nine inductions are filed now**, one per construct, each naming its host and what to induce
+with — methanol for the seven in GS115, IPTG for the two in BL21(DE3). None names a culture, because
+there is no culture: what a transformation makes is alive and has no checksum, so the chain stops
+there, and these are proposed ahead of it rather than joined to it. Each names its construct at
+nothing used, the way the transformation names its plasmid, so it is clear which strain it is about.
+The nine protein expectations were written again on them, and the lab now shows **27 steps carrying
+27 things to look for**.
 
 **A reading with a fraction forced a better unit.** The protein masses are 23.0 kDa and so on, which
 cannot be signed. Rather than rounding to 23, they went in as whole daltons — 22,975 for αS1, 40,477
@@ -795,6 +802,20 @@ there.
 `from: "BENCH-PLAN-cheese.md §1"` beside the enzymes and the gel. That is what a settings field is
 for. Three days ago the same field was carrying four paragraphs of reasoning under invented keys,
 because there was nowhere else; the difference is the whole point of the change.
+
+### An expectation cannot be taken back
+
+Writing those nine again left the first nine sitting on the transformations, and there is no change
+that withdraws one. A plan can be set aside; an expectation has no equivalent. So each was marked
+with a `superseded` field, the way a superseded part is, saying where the live one went.
+
+**That did nothing to the window**, which went on showing all eighteen as things to look for. The
+panel was taught to skip a marked one — it stays in the log, where somebody reading the history finds
+it, and stops being offered as something to go and check. The window shows 27 of the 36 in the log.
+
+The field is the right record and the wrong mechanism. A proper `expect.withdraw`, written only by
+whoever wrote the expectation, is what the protocol actually wants, and it is the next thing this
+change asks for.
 
 ### And one mistake worth recording
 
