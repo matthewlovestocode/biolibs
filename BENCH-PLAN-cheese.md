@@ -1250,6 +1250,76 @@ untouched by any of this. But two findings bear on them, and both need no bench:
   calibrated **while the DNA is in synthesis**, substituting one recombinant protein at a time. The
   usual way a project like this dies is that the material arrives and the readout is not ready.
 
+## 15. Nothing can be bought, so stop asking for all of it
+
+The order was one line of 11 fragments, 11,001 bases, three plasmids and two strains, and it read as
+a single purchase. It is not one. Walking each arm backwards from its end product shows nine
+independent routes, and **every one of them needs exactly one DNA fragment and one plasmid**:
+
+| arm | DNA | steps |
+|---|---|---|
+| bovine β-casein S22E Q38E, in *E. coli* | 627 bp | 2 |
+| κ-casein, secreted | 798 bp | 4 |
+| αS1-casein, secreted | 888 bp | 4 |
+| αS2-casein R114Q, secreted | 912 bp | 4 |
+| β-casein, secreted | 918 bp | 4 |
+| **prochymosin, secreted** | **1,386 bp** | **5** |
+| Fam20C kinase | 1,476 bp | 3 |
+| Fam20A kinase | 1,524 bp | 3 |
+| human β-casein with CK2 | 2,472 bp | 2 |
+
+The cheapest arm is **94% less DNA** than the whole project. That changes what the ask is: one
+fragment of under a kilobase is the kind of thing that fits in another lab's synthesis run as a
+favour, which 11,001 bases is not.
+
+### Published on its own: rennet
+
+`publishMethod` already takes a list of plans, so no new code was needed to cut the project down —
+the prochymosin arm is now its own signed method, *Vegan rennet in Pichia: one gene, one plasmid, one
+strain*. Five steps. Its entire `needs` list is:
+
+```
+prochymosin cassette, orderable   1,386 bp
+pPIC9K (Z46234.1)                 published, so a repository or the lab that made it
+a strain the publishing lab had not made   alive, so it never travels
+```
+
+43 KB of method against 226 KB for the whole thing, and small enough to put in an email.
+
+Checked the way the big one was: a throwaway lab founded with nothing in it was handed the file and
+**proposed 4 of the 5 steps, 0 missing**, the fifth being the induction that rests on a strain
+nobody has made. A stranger can start this tomorrow if they have the fragment.
+
+### Why this arm
+
+Chymosin is the only part of the project with industrial precedent — it is already made
+recombinantly at scale — and three things follow from that:
+
+- **It needs no kinase.** Prochymosin carries **zero** `SxE` motifs, against six in αS1 and seven in
+  αS2, so the project's central unknown is not on this path at all.
+- **The readout needs no instrument.** Whether it worked is whether milk clots.
+- **It is the positive control for everything else.** A host that will not secrete prochymosin was
+  never going to secrete a casein, so a negative result here is worth as much as a positive one: it
+  says the problem is the host, the media or the hands, not the biology of caseins.
+
+And it is a result on its own. Rennet is the product; cheese is the programme.
+
+The 627 bp phosphomimetic arm is the genuine alternative — a third of the DNA, two steps, no
+secretion and no Pichia, and it sidesteps the kinase by building the phosphate mimicry into the
+sequence. It tests less and it tests it sooner.
+
+### The ask is now mechanical
+
+Every molecule in that method is named by the checksum of its sequence, so a lab that holds one can
+say so without any conversation about naming, which is what `whoHas` in `@biolibs/bionet` is for. It
+matches a needs list against other labs' signed inventories and reports, per molecule, who has it,
+who has it but will not send it, and what nobody has. There is one gap: `partsNeeded` reads an
+OpenCloning document rather than a published method's `needs`, so the two halves do not yet meet in
+one call. That is the next small piece of software, and the first one this project has wanted for a
+reason that is not a mistake.
+
+[cheese-constructs/rennet/](cheese-constructs/rennet/) has the fragment and the reasoning.
+
 ### Left alone on purpose
 
 - **The induction plans still name the circle** as `construct` alongside the prospect they actually
