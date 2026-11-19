@@ -59,6 +59,9 @@
       "path": "packages/entrez"
     },
     {
+      "path": "packages/blast"
+    },
+    {
       "path": "packages/europepmc"
     },
     {

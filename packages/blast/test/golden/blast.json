@@ -1,0 +1,439 @@
+{
+ "programs": [
+  {
+   "ok": true,
+   "program": "blastn"
+  },
+  {
+   "error": {
+    "message": "Program specified is BLASTN. Expected one of blastn, blastp, blastx, tblastn, tblastx",
+    "type": "ValueError"
+   },
+   "program": "BLASTN"
+  },
+  {
+   "error": {
+    "message": "Program specified is blast. Expected one of blastn, blastp, blastx, tblastn, tblastx",
+    "type": "ValueError"
+   },
+   "program": "blast"
+  },
+  {
+   "error": {
+    "message": "Program specified is . Expected one of blastn, blastp, blastx, tblastn, tblastx",
+    "type": "ValueError"
+   },
+   "program": ""
+  },
+  {
+   "error": {
+    "message": "Program specified is megablast. Expected one of blastn, blastp, blastx, tblastn, tblastx",
+    "type": "ValueError"
+   },
+   "program": "megablast"
+  },
+  {
+   "ok": true,
+   "program": "blastp"
+  }
+ ],
+ "refpages": [
+  {
+   "page": "<html><!--\n    QBlastInfoBegin\n    RID = ABC123XYZ\n    RTOE = 27\n    QBlastInfoEnd\n--></html>\n",
+   "rid": "ABC123XYZ",
+   "rtoe": 27
+  },
+  {
+   "page": "    RID = XYZ\n    RTOE = 3\n",
+   "rid": "XYZ",
+   "rtoe": 3
+  },
+  {
+   "error": {
+    "message": "Error message from NCBI: Message ID#24 Error: Failed to read the Blast query",
+    "type": "ValueError"
+   },
+   "page": "<div class=\"error msInf\">Message ID#24 Error: Failed to read the Blast query</div>"
+  },
+  {
+   "error": {
+    "message": "Error message from NCBI: Message ID#32 Error: Query contains no data",
+    "type": "ValueError"
+   },
+   "page": "<p class=\"error\">Message ID#32 Error: Query contains no data</p>"
+  },
+  {
+   "error": {
+    "message": "Error message from NCBI: Message ID#99 Error: something went wrong",
+    "type": "ValueError"
+   },
+   "page": "Some preamble Message ID#99 Error: something went wrong<br/>"
+  },
+  {
+   "error": {
+    "message": "No RID and no RTOE found in the 'please wait' page, there was probably an error in your request but we could not extract a helpful error message.",
+    "type": "ValueError"
+   },
+   "page": "<html>nothing useful at all</html>"
+  },
+  {
+   "error": {
+    "message": "No RTOE found in the 'please wait' page. (although RID = 'ONLYRID')",
+    "type": "ValueError"
+   },
+   "page": "    RID = ONLYRID\n"
+  },
+  {
+   "error": {
+    "message": "No RID found in the 'please wait' page. (although RTOE = '9')",
+    "type": "ValueError"
+   },
+   "page": "    RTOE = 9\n"
+  }
+ ],
+ "searches": [
+  {
+   "search": {
+    "database": "nt",
+    "program": "blastn",
+    "sequence": "ACGTACGTACGT"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nt&ENTREZ_QUERY=%28none%29&EXPECT=10.0&HITLIST_SIZE=50&PROGRAM=blastn&QUERY=ACGTACGTACGT&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "database": "nr",
+    "program": "blastp",
+    "sequence": "MKVLILACLVALALARELEELNVPGEIVE"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nr&ENTREZ_QUERY=%28none%29&EXPECT=10.0&HITLIST_SIZE=50&PROGRAM=blastp&QUERY=MKVLILACLVALALARELEELNVPGEIVE&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "database": "nr",
+    "expect": 1e-05,
+    "hitlist_size": 10,
+    "program": "blastx",
+    "sequence": "ACGT"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nr&ENTREZ_QUERY=%28none%29&EXPECT=1e-05&HITLIST_SIZE=10&PROGRAM=blastx&QUERY=ACGT&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "database": "nt",
+    "filter": "none",
+    "matrix_name": "BLOSUM80",
+    "program": "tblastn",
+    "sequence": "MKVL"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nt&ENTREZ_QUERY=%28none%29&EXPECT=10.0&FILTER=none&HITLIST_SIZE=50&MATRIX_NAME=BLOSUM80&PROGRAM=tblastn&QUERY=MKVL&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "database": "nt",
+    "entrez_query": "Homo sapiens[orgn]",
+    "program": "tblastx",
+    "sequence": "ACGTACGT"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nt&ENTREZ_QUERY=Homo+sapiens%5Borgn%5D&EXPECT=10.0&HITLIST_SIZE=50&PROGRAM=tblastx&QUERY=ACGTACGT&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "database": "nt",
+    "megablast": "TRUE",
+    "program": "blastn",
+    "sequence": "ACGTACGTAC",
+    "word_size": 28
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nt&ENTREZ_QUERY=%28none%29&EXPECT=10.0&HITLIST_SIZE=50&MEGABLAST=TRUE&PROGRAM=blastn&QUERY=ACGTACGTAC&WORD_SIZE=28&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "database": "nt",
+    "program": "blastn",
+    "sequence": "ACGT",
+    "short_query": "TRUE"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nt&ENTREZ_QUERY=%28none%29&EXPECT=1000&HITLIST_SIZE=50&NUCL_REWARD=1&PROGRAM=blastn&QUERY=ACGT&WORD_SIZE=7&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": [
+    "\"SHORT_QUERY_ADJUST\" is incorrectly implemented (by NCBI) for blastn. We bypass the problem by manually adjusting the search parameters. Thus, results may slightly differ from web page searches."
+   ]
+  },
+  {
+   "search": {
+    "database": "nt",
+    "program": "blastn",
+    "sequence": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "short_query": "TRUE"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nt&ENTREZ_QUERY=%28none%29&EXPECT=10.0&HITLIST_SIZE=50&PROGRAM=blastn&QUERY=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "alignments": 5,
+    "database": "nr",
+    "descriptions": 5,
+    "format_type": "Tabular",
+    "program": "blastp",
+    "sequence": "MKVL"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nr&ENTREZ_QUERY=%28none%29&EXPECT=10.0&HITLIST_SIZE=50&PROGRAM=blastp&QUERY=MKVL&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=5&DESCRIPTIONS=5&FORMAT_TYPE=Tabular&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "database": "swissprot",
+    "program": "blastp",
+    "sequence": "MKVL",
+    "url_base": "https://blast.example/Blast.cgi"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=swissprot&ENTREZ_QUERY=%28none%29&EXPECT=10.0&HITLIST_SIZE=50&PROGRAM=blastp&QUERY=MKVL&CMD=Put",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.example/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.example/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "database": "nt",
+    "gapcosts": "11 1",
+    "program": "blastn",
+    "sequence": "ACGT with spaces & symbols=1"
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nt&ENTREZ_QUERY=%28none%29&EXPECT=10.0&GAPCOSTS=11+1&HITLIST_SIZE=50&PROGRAM=blastn&QUERY=ACGT+with+spaces+%26+symbols%3D1&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  },
+  {
+   "search": {
+    "database": "nr",
+    "i_thresh": 0.002,
+    "program": "blastp",
+    "sequence": "MKVL",
+    "service": "psi",
+    "threshold": 11
+   },
+   "sent": [
+    {
+     "body": "DATABASE=nr&ENTREZ_QUERY=%28none%29&EXPECT=10.0&HITLIST_SIZE=50&I_THRESH=0.002&PROGRAM=blastp&QUERY=MKVL&SERVICE=psi&THRESHOLD=11&CMD=Put&tool=biopython",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    },
+    {
+     "body": "ALIGNMENTS=500&DESCRIPTIONS=500&FORMAT_TYPE=XML&RID=ABC123XYZ&SERVICE=psi&CMD=Get",
+     "headers": {
+      "User-agent": "BiopythonClient"
+     },
+     "method": "POST",
+     "url": "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
+    }
+   ],
+   "slept": [],
+   "warnings": []
+  }
+ ]
+}

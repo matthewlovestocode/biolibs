@@ -14,6 +14,7 @@ biolibs is a set of small, dependency-free TypeScript libraries for bioinformati
 | `@biolibs/align` | `Bio.Align`: `MultipleSeqAlignment`, the 30 substitution matrices and `PairwiseAligner` with scoring and alignment and `Alignment` (printing, indexing, counts, mapping and more; `fasta`, `a2m`, `clustal`, `phylip`, `nexus`, `msf`, `emboss`, `tabular`, `stockholm`, `psl`, `bed`, `chain`, `sam`, `maf`, `mauve`, `hhr` and `exonerate` file formats (only the binary `big*` formats remain) and `CodonAligner`) | [align.md](align.md) |
 | `@biolibs/nexus` | `Bio.Nexus`: NEXUS reader/writer and editor, `Tree`/`Node`/`Chain`, `StandardData`, `StepMatrix`, `combine`, `consensus`. Powers the `nexus` format in `seqio` | [nexus.md](nexus.md) |
 | `@biolibs/svdsuperimposer` | `Bio.SVDSuperimposer`: least-squares superposition of two point sets | [svdsuperimposer.md](svdsuperimposer.md) |
+| `@biolibs/blast` | `Bio.Blast`: `qblast`, NCBI's remote BLAST over HTTP — submit a search, wait, fetch the results. Reading BLAST XML (`Bio.Blast.parse`) is not ported; `align` already reads its tabular output | [blast.md](blast.md) |
 | `@biolibs/entrez` | `Bio.Entrez`: the eight NCBI E-utilities, with the requests, rate limit and retries Biopython uses. Fetches text for `seqio` to parse; `read` and `parse` not ported | [entrez.md](entrez.md) |
 | `@biolibs/opencloning` | `pydna.opencloning_models`: a cloning plan in the OpenCloning data model — written, sent, and checked by replaying every step. Steps it cannot run are carried as data | [opencloning.md](opencloning.md) |
 | `@biolibs/assembly2` | `pydna.assembly2`, `pydna.primer`: the assembly engine — Gibson, In-Fusion, fusion PCR, in-vivo assembly, ligation, Golden Gate and PCR, with the provenance each product carries. Recombination is not ported | [assembly2.md](assembly2.md) |
@@ -110,7 +111,7 @@ bionet-client, bionet-scene, bionet-tools  <-- bionet-demo
 core  <-- glossary  <-- glossary-react  (also uses seq, seqtools, restriction, gel)
 ```
 
-Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none. Only `entrez` and `pdblist` touch the network, each through one function that can be replaced (`settings.transport`, and the `fetcher` a `PDBList` is given); no other package does any I/O.
+Only `core` is depended on by every package; `seqio` and `seqtools` also use `seq`. External runtime dependencies: none. Only `entrez`, `blast` and `pdblist` touch the network, each through one function that can be replaced (`settings.transport`, and the `fetcher` a `PDBList` is given); no other package does any I/O.
 
 ## Conventions
 
