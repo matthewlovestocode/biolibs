@@ -37,6 +37,76 @@ const CALLED: Readonly<Record<string, string>> = {
  * <WorkToDo onOpen={(plan) => goToTool(plan.kind)} />
  * ```
  */
+/**
+ * What a reading leads to: the steps that answer it, and a way to say another one does.
+ *
+ * An expectation that says what to look for and nothing about what either answer means leaves the
+ * contingency in somebody's head. This is where it gets written down instead. It settles nothing:
+ * the step it names is still a proposal, and a person still carries it out and says so.
+ *
+ * @param props - `expect` is the expectation whose answers these are.
+ */
+function Answers({ expect }: { expect: string }) {
+  const lab = useLab()?.lab;
+  const act = useAct();
+  const [open, setOpen] = useState(false);
+  const [plan, setPlan] = useState("");
+  const [met, setMet] = useState("missed");
+  const [why, setWhy] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [trouble, setTrouble] = useState<string | null>(null);
+  if (lab === null || lab === undefined) return null;
+  const reading = (lab.expectations ?? []).find((one) => one.expect === expect);
+  const already = lab.plans.filter((one) => one.settled === null && one.follows?.expect === expect);
+  // A step may answer one reading, so one already answering another is not on offer here. Nor is
+  // the step this reading is about: it cannot wait on a reading of its own result.
+  const offered = lab.plans.filter((one) => one.settled === null && one.follows == null && one.plan !== reading?.plan);
+  const named = (one: (typeof offered)[number]): string => {
+    const makes = one.expects.map((each) => each.name).join(" and ");
+    const project = typeof one.fields[FILED_UNDER] === "string" ? one.fields[FILED_UNDER] : "";
+    return `${CALLED[one.kind] ?? one.kind}${makes === "" ? "" : `: ${makes}`}${project === "" ? "" : ` · ${project}`}`.slice(0, 90);
+  };
+  const file = async (): Promise<void> => {
+    setBusy(true);
+    const answer = await act("leadsTo", { expect, met: met === "as expected", plan, why });
+    setBusy(false);
+    setTrouble(answer.ok ? null : answer.error);
+    if (answer.ok) { setOpen(false); setPlan(""); setWhy(""); }
+  };
+  return (
+    <>
+      {already.map((one) => (
+        <p key={one.plan} className="dim small">
+          If this is {one.follows!.met ? "as expected" : "missed"}: <strong>{named(one)}</strong>. {one.follows!.why}
+          {one.follows!.standing === "live" && <span className="attention"> That is what the reading said, so it is the step to do.</span>}
+          {one.follows!.standing === "moot" && <span> The reading went the other way, so it is not to be done.</span>}
+        </p>
+      ))}
+      {reading?.met == null && (offered.length === 0
+        ? already.length === 0 && <p className="dim small">Nothing says what either answer leads to. Propose the step that would answer it, and it can be said here.</p>
+        : open
+          ? (
+            <form className="row tight" onSubmit={(event) => { event.preventDefault(); void file(); }}>
+              <select value={met} onChange={(event) => setMet(event.target.value)} aria-label="Which answer">
+                <option value="missed">If this is missed</option>
+                <option value="as expected">If this is as expected</option>
+              </select>
+              <select value={plan} onChange={(event) => setPlan(event.target.value)} aria-label="The step that answers it" required>
+                <option value="">Then do…</option>
+                {offered.map((one) => <option key={one.plan} value={one.plan}>{named(one)}</option>)}
+              </select>
+              <input value={why} onChange={(event) => setWhy(event.target.value)} maxLength={2_000} required
+                     placeholder="What makes that the answer" aria-label="What makes that the answer" />
+              <button type="submit" disabled={busy || plan === "" || why.trim() === ""}>Say so</button>
+              <button type="button" className="quiet" disabled={busy} onClick={() => setOpen(false)}>Cancel</button>
+            </form>
+          )
+          : <p className="dim small"><button type="button" className="quiet" onClick={() => setOpen(true)}>Say what an answer leads to</button></p>)}
+      {trouble !== null && <p className="trouble small" role="alert">{trouble}</p>}
+    </>
+  );
+}
+
 export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } = {}) {
   const lab = useLab()?.lab;
   const act = useAct();
@@ -383,6 +453,7 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
                           {one.met.note !== null && <> {one.met.note}</>}
                         </p>
                       )}
+                    <Answers expect={one.expect} />
                   </div>
                 ))}
                 {step.plan.orphaned.length > 0 && <p className="small attention">Nothing is going to make {step.plan.orphaned.map(partName).join(" or ")} any more: the only plan that would have has been set aside. If it was refiled, this step is still asking for what the old plan would have made.</p>}

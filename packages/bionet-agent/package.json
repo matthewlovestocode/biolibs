@@ -4,7 +4,7 @@
   },
   "dependencies": {
     "@biolibs/bionet-client": "^0.2.14",
-    "@biolibs/bionet-tools": "^0.1.19",
+    "@biolibs/bionet-tools": "^0.1.22",
     "@biolibs/entrez": "^1.0.0",
     "@biolibs/europepmc": "^0.1.0",
     "@biolibs/uniprot": "^0.1.0"
@@ -45,5 +45,5 @@
   },
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.1.8"
+  "version": "0.1.9"
 }
