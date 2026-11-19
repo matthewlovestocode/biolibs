@@ -1320,6 +1320,71 @@ reason that is not a mistake.
 
 [cheese-constructs/rennet/](cheese-constructs/rennet/) has the fragment and the reasoning.
 
+## 16. Rennet is a preamble to the method, not to the problem
+
+The rennet arm was published on the argument that a host which will not secrete prochymosin was
+never going to secrete a casein. That argument was carried for several messages before anyone
+checked whether the two molecules are comparable. They are not, in the one way that decides the
+question.
+
+What determines whether a secreted protein survives is whether it is folded. A compact, stitched
+protein resists the cell's proteases; a floppy one is chewed. Two proxies read straight off the
+sequences:
+
+| | disulfide stitches | proline | order-breaking residues |
+|---|---|---|---|
+| **prochymosin** | **3** | 4.4% | **21.9%** |
+| αS2-casein | 1 | 4.8% | 36.2% |
+| αS1-casein | 0 | 8.5% | 36.2% |
+| κ-casein | 1 | 11.8% | 32.0% |
+| β-casein | 0 | **16.7%** | 38.8% |
+
+β-casein is one residue in six proline, which is nature actively preventing it from folding.
+Prochymosin is a different class of molecule entirely.
+
+So rennet validates the **system** — same host, same backbone, same signal peptide, same promoter,
+same integration, same induction, same harvest, and literally the same five bench steps — and
+validates **nothing about the molecules**. Its real value is narrower than claimed and still worth
+having: without it, an empty tube has two explanations tangled together, the method failing and the
+protein being destroyed. With it, that fork collapses.
+
+Two caveats that should have led: recombinant chymosin is already made industrially and sold, so
+making it contributes confidence to this lab and nothing to the world — the novel part is entirely
+the caseins. And rennet is the second-most DNA of any Pichia arm, so it is not the cheap option
+either.
+
+### αS2 published as the other first arm
+
+The same numbers point at a better casein than the one recommended earlier. §15 and the first
+version of the state page called β-casein a reasonable first casein on the grounds that the
+literature says least about it going wrong. That is true of the literature and false of the
+molecule: it is the floppiest of the four. **αS2 is the most protein-like** — one disulfide, the
+least proline — and it is also the one repaired this afternoon.
+
+So it is published as its own five-step method, *Alpha-S2-casein in Pichia: the casein most likely to
+survive*: one fragment of 912 bases, pPIC9K, GS115. A third less DNA than rennet. A throwaway lab
+founded with nothing proposed 4 of its 5 steps with nothing missing, the same as rennet.
+
+Its note carries the R114Q warning in the strongest terms available, because the failure mode is a
+helpful substitution: **order the fragment as written; putting the native αS2 gene back puts the Kex2
+site back with it.**
+
+[cheese-constructs/alphaS2/](cheese-constructs/alphaS2/) has the fragment and the reasoning.
+
+### A gap worth naming: expectations do not travel
+
+Writing that method turned up something the protocol cannot do. A published method carries
+`bionet_method_version`, `lab`, `name`, `makes`, `needs`, `steps`, `note`, `published_at`, and each
+step carries `uses`, `makes`, `settings`, `note`, `after`. **There is nowhere to put an
+expectation.** The 13 protein-gel predictions filed this afternoon — the intact mass and every
+fragment a dibasic cut would leave — are the most useful thing added to the lab today, and they reach
+another lab only because they were typed into the prose note by hand. A taking lab's software cannot
+read them; only a person can.
+
+That was nearly missed too: the check for it was a regex over the published file for `expect`, which
+matched the phrase "what to expect" in the note that had just been written. The honest check was to
+strip the note and look again.
+
 ### Left alone on purpose
 
 - **The induction plans still name the circle** as `construct` alongside the prospect they actually
