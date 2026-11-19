@@ -1085,6 +1085,77 @@ that does not exist anywhere, so they cannot be proposed in a lab that has not m
 method says so instead of naming something imaginary. A stranger gets every step that can be followed
 from molecules, and is told plainly which ones wait on a living thing they have to make themselves.
 
+## 13. The order, and five molecules nobody could have supplied
+
+With the chain repaired, the method's `needs` is the shopping list: everything a step uses that no
+step makes. Reading it is how the next problem surfaced.
+
+| | | |
+|---|---|---|
+| 3 plasmid backbones | pJTFlag `MN534898.1`, pPIC9K `Z46234.1`, pPICZαH6E `KM035419.1` | obtain |
+| 11 linear fragments | 11,001 bp | synthesise |
+| 2 host strains | GS115, BL21(DE3) | obtain, and absent from any method |
+
+### Five of them could not be bought
+
+The casein and prochymosin cassettes are recorded as a BamHI/AvrII digest leaves them — a duplex with
+a four-base 5′ overhang at each end, and **neither site whole**, because cutting consumed both. No
+synthesiser ships DNA in that state and no repository holds it. The method named five molecules nobody
+could supply and gave no step that would make them, which is the same class of fault as the missing
+linearisation: a record that reads as complete and cannot be acted on.
+
+Which end was which was read off the molecules rather than assumed:
+
+```
+begins GATCCAAACGAT…      ends …GTGGTAACCTAG
+       └ BamHI left G^GATCC          AvrII right C^CTAGG ┘
+```
+
+So each needs exactly one base restored — a `G` at each end — inside enough flanking DNA for the
+enzymes to bind. The design is `TTAATTGC` + `G` + cassette + `G` + `GCAATTAA`, eighteen bases longer.
+
+### Proved by cutting, not by reasoning
+
+Every design was cut in silico and had to give back the molecule already in the record:
+
+| | order | pieces | keeps |
+|---|---|---|---|
+| αS1 | 888 bp | 866 + 13 + 9 | 870 bp cassette |
+| αS2 | 912 bp | 890 + 13 + 9 | 894 bp |
+| β | 918 bp | 896 + 13 + 9 | 900 bp |
+| κ | 798 bp | 776 + 13 + 9 | 780 bp |
+| prochymosin | 1,386 bp | 1,364 + 13 + 9 | 1,368 bp |
+
+One BamHI site and one AvrII site in each, three pieces, and the middle piece matching the lab's
+bases **and its ends** — therefore its checksum. **5 designed, 0 failed.**
+
+The flanking pieces are 13 and 9 bases, so on a 2% gel that digest shows **one visible band**. That
+is in each plan's note, because a single band is this digest working and looks exactly like a digest
+that did not cut.
+
+### Filed, so the lab stops asking for the impossible
+
+Five orderable parts added and five digest plans filed, which makes the chain continuous from what a
+vendor can actually ship:
+
+```
+order (blunt) → BamHI+AvrII → cassette → assembly → circle → SacI → line → transformation → strain → induction
+```
+
+Checked by asking the lab for every molecule an open plan wants and holds no tube of — 35 of them —
+and whether each has a maker or can be bought. **Nothing is stuck.** 614 entries, 39 open plans, 12
+digests, 0 refused, 0 adrift, 0 orphaned.
+
+### The order generates itself
+
+[cheese-constructs/order/](cheese-constructs/order/) is written from the published method and nothing
+else, so it cannot drift from the plans without the method drifting too. The generator refuses to
+write an order at all if any need still has a non-zero end — the fault above cannot recur silently.
+The FASTA was read back with the project's own parser: 11 records, ACGT only, each matching its design.
+
+The method was republished again on the back of this: **39 steps**, 12 digests, and `needs` no longer
+contains a single cassette. Kept beside it as `method-2026-11-19-before-orderable.json`.
+
 ### Left alone on purpose
 
 - **The induction plans still name the circle** as `construct` alongside the prospect they actually
