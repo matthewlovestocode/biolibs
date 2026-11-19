@@ -1064,6 +1064,61 @@ is the same convention every cut piece in the project already uses.
   grow. After integration what the cell carries is neither the circle nor the SacI line, so no
   molecule in the lab is the honest answer; naming the circle records provenance. It does mean the
   Work panel will say there is no tube of the circle yet, which is now true and was always true.
-- **The two pPICZ constructs (Fam20A, Fam20C) were not touched.** pPICZ also integrates and is
-  normally linearised, but which enzyme is a separate decision and the site counts are unverified.
-  They are the same mistake waiting in the same place.
+### The two pPICZ constructs, which had the same gap
+
+pPICZ integrates too, so Fam20A and Fam20C had the same hole, and counting their sites gave a
+different table from pPIC9K's — which is the argument for counting rather than reading the manual:
+
+| | Fam20C (4,871 bp) | Fam20A (4,919 bp) | |
+|---|---|---|---|
+| **SacI** | 1 cut, at 208 | 1 cut, at 208 | opens both |
+| **PmeI** | 1 cut, at 413 | 1 cut, at 413 | opens both |
+| BstXI | 1 cut, at 706 | **2 cuts**, at 706 and 2169 | out |
+| SalI | does not cut | does not cut | out |
+
+Both single cutters fall inside the 941 bp 5′AOX1 promoter at the start of the vector, so either
+would do. SacI was used, because it is now the one enzyme for all seven constructs.
+
+**BstXI is the interesting row.** It is one of the vector's own recommended linearisation sites, it
+cuts Fam20C exactly once, and in Fam20A it cuts twice — the second site at 2169, **inside the insert
+itself**, within the Fam20A CDS at 1195..2719. Nothing about pPICZ predicts that; it depends on what
+was cloned into it. Following the manual would have linearised one construct and cut the kinase gene
+out of the other, and the two gels would have differed in a way that looks like a failed digest.
+
+Filed the same way: digest `0cdfb462` and transformation `21229719` for Fam20C, digest `ac9c4ed6`
+and transformation `c6faa26d` for Fam20A.
+
+### All seven, checked together
+
+Every construct that integrates now has a digest between its assembly and its transformation, and
+each transformation carries exactly one live expectation:
+
+| construct | digest | transformation |
+|---|---|---|
+| pPIC9K alphaS1 | `60d9edc1` | `e118dc7e` |
+| pPIC9K alphaS2 | `f9f5b2c9` | `a1fcdcfe` |
+| pPIC9K beta | `4025735c` | `bbdf7881` |
+| pPIC9K kappa | `df06543e` | `dae5b299` |
+| pPIC9K prochymosin | `983dad77` | `26ffb394` |
+| pPICZ Fam20C | `0cdfb462` | `21229719` |
+| pPICZ Fam20A | `ac9c4ed6` | `c6faa26d` |
+
+604 entries, 34 open plans, 7 open digests, 9 open transformations, **27 expectations open and
+attached, 0 adrift, 0 orphaned, 0 refused**.
+
+The two transformations that are *not* in that table are the pJTFlag constructs into BL21(DE3)
+(`431fe7cb` and `df081123`), and they correctly still take a circle: *E. coli* keeps a plasmid rather
+than integrating it, so opening one there would destroy it. The check is not "every transformation
+takes a line" but "every transformation into Pichia does", and the two cases now differ in the record
+for the right reason.
+
+### Left alone on purpose
+
+- **The induction plans still name the circle** as `construct` alongside the prospect they actually
+  grow. After integration what the cell carries is neither the circle nor the SacI line, so no
+  molecule in the lab is the honest answer; naming the circle records provenance. It does mean the
+  Work panel will say there is no tube of the circle yet, which is now true and was always true.
+- **Three circular copies of each pPICZ construct sit in the parts list**, from earlier iterations,
+  and two of each are used by no open plan. The live one is the one the open assembly makes, which was
+  checked before cutting anything. An append-only log keeps its history; the panel could stand to say
+  which copy is current.

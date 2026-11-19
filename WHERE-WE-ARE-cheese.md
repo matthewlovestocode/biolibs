@@ -91,8 +91,13 @@ All of it is written up properly in [BENCH-PLAN-cheese.md](BENCH-PLAN-cheese.md)
   transformation, and Pichia integrates by recombination, which needs ends. A SacI digest is now a
   step of its own before each transformation, and all five transformations were refiled onto its
   product. BglII, which an earlier note offered as the alternative, cuts twice and was never a
-  candidate; SacI and SalI each cut once, and SacI falls in the AOX1 promoter. §12 of the bench plan
-  has the working.
+  candidate; SacI and SalI each cut once, and SacI falls in the AOX1 promoter. The two pPICZ
+  constructs had the same gap and are filed the same way, on SacI again, so one enzyme opens all
+  seven. **BstXI, one of pPICZ's own recommended sites, cuts the Fam20A construct twice** — the
+  second site inside the kinase gene — so following the manual would have cut the insert out of one
+  of the two. All seven integrating constructs now have a digest between assembly and transformation;
+  the two pJTFlag transformations into BL21(DE3) still take a circle, which is right, because E. coli
+  keeps a plasmid rather than integrating it. §12 of the bench plan has the working.
 - **Two checks shipped in the software** so the first two of those cannot happen quietly again:
   `orphaned` on a plan, and `checkRoute` in the tools.
 
