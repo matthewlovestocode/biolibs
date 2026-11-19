@@ -184,6 +184,38 @@ close on itself, the same pieces making one product with an insert in and anothe
 way round, a blunt join that will mostly not happen, and a piece that came out of a PCR, which has
 no phosphate for ligase to seal. `ratioWorking` is the arithmetic for how much of each to put in.
 
+### Whether a route has one answer
+
+A design can be right and the route to it still be wrong. `checkRoute` asks the question a sequence
+cannot: cut the finished design with the enzymes the plan names, put the pieces back together every
+way their ends allow, and count the circles. One is a route with one answer.
+
+```ts
+import { checkRoute, routeOf, saysRoute } from "@biolibs/bionet-tools";
+
+routeOf(plan);                                        // ["BamHI", "AvrII"], read from settings.cut_with
+const checked = checkRoute(plan.expects[0], routeOf(plan));
+checked.makesIt;                                      // whether the route makes what the plan expects
+checked.instead;                                      // the circles it could make instead — each one
+                                                      // the right length, so a gel will not tell them apart
+saysRoute(checked);                                   // the line to show somebody, or null if there is nothing to say
+```
+
+The case it catches is quiet. An enzyme that cuts the vector twice gives a piece with the same
+overhang at both ends; it goes in either way round, both ways close into a plasmid of exactly the
+right length, and a check digest with those same enzymes shows the same bands for either. The wrong
+plasmid looks right. Cutting with something that cuts once instead makes the ligation directional
+and leaves one product.
+
+A plan has no field for its enzymes, so `routeOf` reads the words somebody wrote in `settings`,
+usually `cut_with`. That is a convention rather than a promise: it returns what it could make of the
+words and nothing for words that are not enzymes.
+
+This is asked for rather than worked out for you. Putting a plasmid's pieces back together every way
+round takes tens of milliseconds, and a lab's log is merged on every change and every sync, so it
+does not belong there. The panels that show it keep the answer until the plan's product or its
+enzymes change.
+
 ## Designing primers
 
 Primers are designed at a desk and ordered, so this tool has no instrument. It takes a part from the

@@ -236,7 +236,9 @@ const everything = [...new Set([...ada, ...bob])];
 ```
 
 `mergeLog` takes every entry held, in any order, and returns the lab: its roster, its parts, its
-items and how much of each, and for every entry whether it counted and why not if not.
+items and how much of each, the places they are kept in, the strains it grows and the specimens it
+has not read yet, what was done at the bench and what is proposed — and for every entry whether it
+counted and why not if not.
 
 | Rule | Why |
 |---|---|
@@ -502,6 +504,45 @@ what it used; only the strain and the culture are turned away, as changes it doe
 Whether a transformation worked is whether anything grew. Nothing in the log can work that out from
 what came out, because nothing came out, so a person says it.
 
+### A tube nobody has sequenced
+
+Every freezer has them: something handed over at a meeting, something from the back of the −80 with a
+name on the lid and nothing behind it. A part is known by its sequence, so a tube whose sequence
+nobody has read cannot be a tube of a part — and writing down a guess would make the lab's own record
+the place the guess became a fact. So it is a specimen: a tube that is held, counted and moved like
+any other, and says only what is written on the lid.
+
+```ts
+import { addSpecimen, identifySpecimen, newSpecimenId } from "@biolibs/bionet";
+
+const unknown = newSpecimenId();
+await write(ada, adasKey, addSpecimen({ specimen: unknown, name: "pET from the back of the -80",
+                                        note: "handed over at a meetup, no map" }));
+await write(ada, adasKey, addItem({ item: newItemId(), specimen: unknown, amount: 15, unit: "µL" }));
+(await mergeLog(ada)).items.at(-1)?.part;          // null: nobody knows what is in it
+(await mergeLog(ada)).specimens[0]?.is;            // null: and the lab does not pretend to
+
+// Sequencing it says what it is. The sequence is added as a part, and the specimen points at it.
+await write(ada, adasKey, addPart({ sequence: F2, name: "pET-wrenA" }));
+const read = (await mergeLog(ada)).parts.find((one) => one.name === "pET-wrenA")!.checksum;
+await write(ada, adasKey, identifySpecimen(unknown, read));
+(await mergeLog(ada)).items.at(-1)?.part;          // the checksum: the tube now reads as a tube of it
+```
+
+The tube does not move and does not change. It keeps its place, its amount and its history, because
+the tube never changed — only what is known about it did. An item is of a part, a strain **or** a
+specimen, never more than one.
+
+A specimen has no checksum, because a checksum is of a sequence and there is no sequence yet. Two
+things follow, and both are the point rather than a limitation. It cannot satisfy a plan: a plan
+names what it needs by checksum, and an unread tube matches nothing. And it cannot travel in a
+method, for the same reason a culture cannot — a step that used one says there was something
+unidentified there, and not what the lid said, because what a lab writes on a tube it cannot name is
+a private note to itself and says nothing another lab could use.
+
+Two people may sequence the same tube at once and get the same answer, which is the ordinary case and
+settles itself. Where they disagree, the lower entry ID stands, as everywhere else.
+
 ### What somebody proposes doing
 
 A plan is a run nobody has done. It has a run's shape with everything that says something happened
@@ -530,8 +571,39 @@ await write(ada, adasKey, settlePlan(proposed, done));     // or settlePlan(prop
 
 An input may name a `part` in place of an `item`, for something there is no tube of yet. A plan
 carries what it expects and not how that was worked out: each reader's own tools work it out again
-and can say whether they agree. A plan whose tubes have since been retired or run short is not
-refused; it lists them in `wanting`.
+and can say whether they agree.
+
+A plan is kept whatever happens around it, and says what has gone wrong rather than being refused for
+it. Two of those are worked out from the lab as a whole, which is the only place either is visible:
+
+- **`wanting`** — the tubes it counts on that have since been retired or run short.
+- **`orphaned`** — the molecules it would use that only a plan the lab has **set aside** would have
+  made. Refiling a plan leaves the ones downstream of it naming what the old plan would have made;
+  no entry is wrong for saying so, and no reader of one entry can see it. Something still to be
+  ordered is not listed: nothing here was ever going to make it.
+
+```ts
+// The molecule is designed, so the lab can name it; whether anything is going to make it is a
+// separate question, and the answer is whichever plans are open.
+await write(ada, adasKey, addPart({ sequence: F3, name: "ligated" }));
+const built = (await mergeLog(ada)).parts.find((one) => one.name === "ligated")!.checksum;
+
+const makes = newPlanId();
+await write(ada, adasKey, planRun({ plan: makes, kind: "ligation", instrument: null,
+                                    inputs: [{ item: tube, amount: 1, role: "backbone" }],
+                                    expects: [{ sequence: F3, circular: false, name: "ligated" }],
+                                    settings: {}, note: "join the pieces" }));
+const next = newPlanId();
+await write(ada, adasKey, planRun({ plan: next, kind: "transformation", instrument: null,
+                                    inputs: [{ part: built, amount: 0, role: "plasmid" }],
+                                    expects: [], settings: {}, note: "into BL21" }));
+(await mergeLog(ada)).plans.find((one) => one.plan === next)?.orphaned;   // []: the ligation makes it
+
+// She thinks better of the ligation and sets it aside. The transformation is still asking for what
+// it would have made, and now says so.
+await write(ada, adasKey, settlePlan(makes, null));
+(await mergeLog(ada)).plans.find((one) => one.plan === next)?.orphaned;   // [built]
+```
 
 The link from a run to its plan is the settling entry's alone. A recorded run is, field for field,
 what it always was, so a device too old to know of plans still reads the run and holds the same
@@ -601,6 +673,12 @@ npx vitest run packages/bionet/test
   the messages is for whatever uses this.
 - **Nothing here fetches a part.** Finding out who has a plasmid is as far as software goes; the rest
   is an email and a padded envelope.
+- **Two things a lab holds cannot leave it in a method**: a culture, because it is alive, and a
+  specimen, because nobody has read it. A step that used a specimen says there was something
+  unidentified there — not what the lid said, which is a private note and no use to anybody else.
+- **A plan is never refused for what happened around it.** It is kept, and says what is wrong:
+  `wanting` for tubes retired or run short, `orphaned` for a molecule only a plan now set aside would
+  have made. Both are worked out from the whole lab, because neither is visible in any one entry.
 
 ## License
 

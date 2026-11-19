@@ -12,6 +12,7 @@ import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, disc
          introducedDifferently, inventoryFrom, labMemory, mergeLog, newItemId, newPlaceId, newRunId, nextEntry, partsNeeded,
          partChecksum, peer, publicInventory, putItem, recordRun, remember, settled, settledLabs, signInventory, verifyInventory,
          type Operation, type SignedEntry,
+         addSpecimen, identifySpecimen, newSpecimenId, newPlanId, planRun, settlePlan,
          signingKeys, unsourced, whoHas, type SignedInventory } from "@biolibs/bionet";
 import { describe, expect, it } from "vitest";
 
@@ -268,5 +269,51 @@ describe("README: inside a lab", () => {
     const lab = await mergeLog(ada);
     expect(lab.parts.find((one) => one.checksum === checksum)?.features[0]?.label).toBe("as Ada reads it");
     expect(lab.entries.at(-1)).toMatchObject({ status: "refused", reason: expect.stringContaining("only while nothing is marked on it") });
+  });
+
+  it("holds a tube nobody has sequenced, and lets it become a tube of a part", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+
+    const unknown = newSpecimenId();
+    await write(ada, adasKey, addSpecimen({ specimen: unknown, name: "pET from the back of the -80",
+                                            note: "handed over at a meetup, no map" }));
+    await write(ada, adasKey, addItem({ item: newItemId(), specimen: unknown, amount: 15, unit: "µL" }));
+    expect((await mergeLog(ada)).items.at(-1)?.part).toBeNull();
+    expect((await mergeLog(ada)).specimens[0]?.is).toBeNull();
+
+    await write(ada, adasKey, addPart({ sequence: F2, name: "pET-wrenA" }));
+    const read = (await mergeLog(ada)).parts.find((one) => one.name === "pET-wrenA")!.checksum;
+    await write(ada, adasKey, identifySpecimen(unknown, read));
+    expect((await mergeLog(ada)).items.at(-1)?.part).toBe(read);
+  });
+
+  it("says when a plan is left asking for what a plan now set aside would have made", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+    await write(ada, adasKey, addPart({ sequence: F1, name: "f1" }));
+    const tube = newItemId();
+    await write(ada, adasKey, addItem({ item: tube, part: (await mergeLog(ada)).parts[0]!.checksum, amount: 10, unit: "µL" }));
+
+    await write(ada, adasKey, addPart({ sequence: F3, name: "ligated" }));
+    const built = (await mergeLog(ada)).parts.find((one) => one.name === "ligated")!.checksum;
+
+    const makes = newPlanId();
+    await write(ada, adasKey, planRun({ plan: makes, kind: "ligation", instrument: null,
+                                        inputs: [{ item: tube, amount: 1, role: "backbone" }],
+                                        expects: [{ sequence: F3, circular: false, name: "ligated" }],
+                                        settings: {}, note: "join the pieces" }));
+    const next = newPlanId();
+    await write(ada, adasKey, planRun({ plan: next, kind: "transformation", instrument: null,
+                                        inputs: [{ part: built, amount: 0, role: "plasmid" }],
+                                        expects: [], settings: {}, note: "into BL21" }));
+    expect((await mergeLog(ada)).plans.find((one) => one.plan === next)?.orphaned).toEqual([]);
+
+    await write(ada, adasKey, settlePlan(makes, null));
+    expect((await mergeLog(ada)).plans.find((one) => one.plan === next)?.orphaned).toEqual([built]);
   });
 });
