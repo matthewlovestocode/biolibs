@@ -21,12 +21,14 @@
  * something growing. That is a real limit and it is said here rather than hidden: a plan that
  * claimed to run past it would be claiming to name something nothing can name yet.
  */
-import type { ItemState, PlanState } from "@biolibs/bionet";
+import type { ItemState, PlanState, ProspectState } from "@biolibs/bionet";
 
 /** As much of a lab as the ordering reads. */
 export interface OrderingLab {
   plans: readonly PlanState[];
   items: readonly ItemState[];
+  /** Things the lab means to have and has not made, so a chain can run on past a transformation. */
+  prospects?: readonly ProspectState[];
 }
 
 /** Why a step cannot be carried out yet, or `null` if it can. */
@@ -136,6 +138,10 @@ export function planOfWork(lab: OrderingLab): PlanOfWork {
   const makers = new Map<string, string[]>();
   for (const plan of open) {
     for (const expected of plan.expects) makers.set(expected.checksum, [...(makers.get(expected.checksum) ?? []), plan.plan]);
+    // And what it would bring into existence that has no checksum: a strain, a culture, a curd.
+    // Named as a prospect, these join the chain the same way a molecule does, which is what lets it
+    // carry on past a transformation instead of stopping there.
+    for (const made of plan.makes ?? []) makers.set(made, [...(makers.get(made) ?? []), plan.plan]);
   }
   const nameOf = (checksum: string): string =>
     open.flatMap((one) => one.expects).find((one) => one.checksum === checksum)?.name ?? checksum.slice(0, 12);
@@ -147,6 +153,16 @@ export function planOfWork(lab: OrderingLab): PlanOfWork {
     const waits: string[] = [];
     const nowhere: string[] = [];
     for (const input of plan.inputs) {
+      // A prospect is something nobody has made. If another plan would bring it into existence, this
+      // one waits for that; if it has already been made, it is not waiting on anything any more.
+      if (input.prospect !== undefined) {
+        const already = (lab.prospects ?? []).find((one) => one.prospect === input.prospect)?.became ?? null;
+        if (already !== null) continue;
+        const made = (makers.get(input.prospect) ?? []).filter((one) => one !== plan.plan);
+        if (made.length > 0) waits.push(...made);
+        else nowhere.push(input.prospect);
+        continue;
+      }
       if (input.part === undefined) continue;
       // A plan names a part rather than a tube when there was no tube of it when it was proposed.
       // There may be one now, and that is a fact about the lab, not about the plan.

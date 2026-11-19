@@ -10,12 +10,12 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, isMember, meetExpectation, mergeLog, newExpectationId, withdrawExpectation,
+import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, isMember, meetExpectation, mergeLog, newExpectationId, newProspectId, withdrawExpectation, addProspect, realiseProspect,
          movePlace, newItemId, newPlaceId, newPlanId, newRunId, newSpecimenId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
          readMethod, signMethod,
          setField, settlePlan, signInventory, standPlace,
          takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type LabModel, type MethodDocument, type MethodOptions, type PartEnds, type PartFeature, type PartState, type PlaceState, type PartKind, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type SignedMethod, type ExpectationState, type SpecimenState, type StrainState } from "@biolibs/bionet";
+         type LabModel, type MethodDocument, type MethodOptions, type PartEnds, type PartFeature, type PartState, type PlaceState, type PartKind, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type SignedMethod, type ProspectState, type ExpectationState, type SpecimenState, type StrainState } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
 import { openKey, sealKey } from "./backup.js";
@@ -64,6 +64,8 @@ export interface LabView {
   specimens: SpecimenState[];
   /** What the lab expects to see of its plans, and what was seen. */
   expectations: ExpectationState[];
+  /** Things the lab means to have and has not made. */
+  prospects: ProspectState[];
   items: ItemState[];
   /** Every place. */
   places: PlaceState[];
@@ -264,6 +266,7 @@ export class Lab {
         strains: state.strains,
         specimens: state.specimens,
         expectations: state.expectations,
+        prospects: state.prospects,
         items: state.items,
         places: state.places,
         crowded: state.crowded,
@@ -622,6 +625,32 @@ export class Lab {
   }
 
   /**
+   * Name something the lab understands the makeup of and has not made.
+   *
+   * The mirror of a specimen: that is a tube you hold and cannot name, this is a thing you can name
+   * and do not hold. It has no checksum, so it cannot satisfy a plan the way a part does and cannot
+   * travel in a method — but a plan may name it, which is what lets the steps after a transformation
+   * be written down before anything is growing.
+   *
+   * @returns Its ID.
+   */
+  async addProspect(prospect: { name: string; kind: string; madeOf: string; note?: string | null }): Promise<string> {
+    if (prospect.name.trim() === "") throw new Error("A prospect needs something to call it.");
+    if (prospect.madeOf.trim() === "") throw new Error("A prospect needs to say what it would be made of.");
+    const id = newProspectId();
+    await this.write(addProspect({ prospect: id, name: prospect.name.trim().slice(0, 200),
+                                   kind: prospect.kind.trim().slice(0, 40), madeOf: prospect.madeOf.trim().slice(0, 2_000),
+                                   note: prospect.note === undefined || prospect.note === null || prospect.note.trim() === "" ? null : prospect.note.trim() }));
+    return id;
+  }
+
+  /** Say a prospect has come into existence, and what it turned out to be. */
+  realiseProspect(what: { prospect: string; strain?: string; item?: string }): Promise<void> {
+    return this.write(realiseProspect(what.prospect, { ...(what.strain === undefined ? {} : { strain: what.strain }),
+                                                      ...(what.item === undefined ? {} : { item: what.item }) }));
+  }
+
+  /**
    * Say the lab has a strain: an organism, and what has been put into it.
    *
    * It makes no culture of it, the way adding a part puts nothing in the freezer; `addItem` with the
@@ -740,12 +769,15 @@ export class Lab {
   async planRun(plan: {
     kind: string; instrument?: string | null; inputs: PlanInput[];
     expects?: { sequence: string; circular?: boolean; name: string; ends?: PartEnds }[];
+    /** The prospects it would bring into existence: what it makes that has no sequence to expect. */
+    makes?: readonly string[];
     settings?: Record<string, string | number>; note?: string | null;
   }, advising = false): Promise<{ plan: string }> {
     const id = newPlanId();
     const note = plan.note === undefined || plan.note === null || plan.note.trim() === "" ? null : plan.note.trim();
     await this.write(planRun({
       plan: id, kind: plan.kind, instrument: plan.instrument ?? null, inputs: plan.inputs, settings: plan.settings ?? {}, note,
+      ...(plan.makes === undefined || plan.makes.length === 0 ? {} : { makes: [...plan.makes] }),
       expects: (plan.expects ?? []).map((expect) => ({
         sequence: expect.sequence.replace(/\s+/g, ""), circular: expect.circular === true, name: expect.name.trim(),
         ...(expect.ends === undefined || (expect.ends.left === 0 && expect.ends.right === 0) ? {} : { ends: expect.ends }),

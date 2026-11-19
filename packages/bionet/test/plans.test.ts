@@ -95,8 +95,8 @@ describe("a plan", () => {
   it.each([
     ["an item the lab does not have", (p: PlanRecord): void => { p.inputs[0] = { item: "nosuchitem", amount: 1, role: "template" }; }, "A tube it would use is not an item the lab has."],
     ["a part the lab does not have", (p: PlanRecord): void => { p.inputs[1] = { part: "nosuchpart", amount: 1, role: "primer" }; }, "A part it would use is not one the lab has."],
-    ["an input that is both", (p: PlanRecord): void => { p.inputs[0] = { item: p.inputs[0]!.item!, part: p.inputs[1]!.part!, amount: 1, role: "template" }; }, "Each thing it would use has to be a tube or a part, and not both."],
-    ["an input that is neither", (p: PlanRecord): void => { p.inputs[0] = { amount: 1, role: "template" }; }, "Each thing it would use has to be a tube or a part, and not both."],
+    ["an input that is both", (p: PlanRecord): void => { p.inputs[0] = { item: p.inputs[0]!.item!, part: p.inputs[1]!.part!, amount: 1, role: "template" }; }, "Each thing it would use has to be a tube, a part or a prospect, and only one of those."],
+    ["an input that is neither", (p: PlanRecord): void => { p.inputs[0] = { amount: 1, role: "template" }; }, "Each thing it would use has to be a tube, a part or a prospect, and only one of those."],
     ["less than nothing of a tube", (p: PlanRecord): void => { p.inputs[0]!.amount = -1; }, "It does not say how many whole units of each thing it would use, and as what."],
     ["an instrument the lab does not have", (p: PlanRecord): void => { p.instrument = "nowhere"; }, "The place it would be done at is not one the lab has."],
     ["something that is not a sequence", (p: PlanRecord): void => { p.expects[0]!.sequence = "not dna!"; }, "Something it expects to make is not a sequence, with ends a molecule of that length can have."],
@@ -396,7 +396,7 @@ describe("filing a plan under a project", () => {
   it("is refused for a plan the lab does not have", async () => {
     const { a } = await wren();
     await a.write(setField("plan", newPlanId(), "project", "Real Vegan Cheese"));
-    expect(await lastOf(a)).toEqual({ status: "refused", reason: "It does not name a part, an item, a place, a strain, a specimen, a plan or an expectation the lab has." });
+    expect(await lastOf(a)).toEqual({ status: "refused", reason: "It does not name a part, an item, a place, a strain, a specimen, a plan, an expectation or a prospect the lab has." });
   });
 
   it("is settled between two people the same way everything else is", async () => {

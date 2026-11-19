@@ -161,7 +161,13 @@ export function publicMethod(state: LabState, lab: LabModel, options: MethodOpti
     step: at + 1,
     kind: plan.kind,
     uses: plan.inputs.map((input): MethodInput => {
-      const what = input.item === undefined
+      // A prospect has no checksum, for the same reason a culture and a specimen have none: there
+      // is no sequence to count one over. So it cannot travel either. What is honest to say is that
+      // the step rests on something nobody had made, and what kind of thing that was — a taking lab
+      // can then see where the method stops being something it can follow.
+      const what = input.prospect !== undefined
+        ? { part: null, name: `something the publishing lab had not made: a ${state.prospects.find((one) => one.prospect === input.prospect)?.kind ?? "thing"}`, unit: null }
+        : input.item === undefined
         ? { part: input.part!, name: state.parts.find((one) => one.checksum === input.part)?.name ?? "a part", unit: null }
         : whatIsIn(input.item);
       const maker = what.part === null ? undefined : madeBy.get(what.part);

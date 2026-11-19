@@ -199,6 +199,39 @@ export interface RunState {
 }
 
 /**
+ * Something the lab understands the makeup of and has not made.
+ *
+ * The mirror of a specimen: a specimen is a tube the lab holds and cannot name, this is a thing the
+ * lab can name and does not hold. It has no checksum, because there is no sequence to count one
+ * over, so like a culture and like a specimen it cannot travel in a method.
+ *
+ * It exists so that the steps after it can be written down while it is still hypothetical. The chain
+ * of work used to stop at a transformation — what that makes is alive and has nothing to point at —
+ * and a plan after it could name nothing at all. Now it can name this, and say plainly that it rests
+ * on something nobody is holding.
+ */
+export interface ProspectState {
+  /** Its ID. */
+  prospect: string;
+  /** What it would be called. */
+  name: string;
+  /** What kind of thing: `strain`, `culture`, `mixture`, `curd`. */
+  kind: string;
+  /** What it would be made of, said for a person. */
+  madeOf: string;
+  /** Anything else said about it. */
+  note: string | null;
+  /** What it turned out to be once somebody made it, or `null` while it is still in prospect. */
+  became: { strain: string | null; item: string | null; by: string; entry: string } | null;
+  /** The key that named it. */
+  by: string;
+  /** Anything else set on it. */
+  fields: Record<string, string | number | null>;
+  /** The entry that named it. */
+  added: string;
+}
+
+/**
  * What a lab expects to see if a plan worked, and what was seen.
  *
  * A plan says what it would make; this says what somebody would observe. Keeping them apart is the
@@ -247,6 +280,8 @@ export interface PlanState {
   inputs: PlanInput[];
   /** What it is expected to make, each with the checksum that would be its identity. */
   expects: { name: string; sequence: string; circular: boolean; ends: PartEnds; length: number; checksum: string }[];
+  /** The prospects it would bring into existence: what it makes that has no sequence to expect. */
+  makes: string[];
   /** How to set it up. */
   settings: Record<string, string | number>;
   /** Why, and anything else said about it. */
@@ -332,6 +367,8 @@ export interface LabState {
   specimens: SpecimenState[];
   /** What the lab expects to see of its plans, and what was seen. */
   expectations: ExpectationState[];
+  /** Things the lab means to have and has not made. */
+  prospects: ProspectState[];
   /** Every item. */
   items: ItemState[];
   /** Every place. */
@@ -382,6 +419,7 @@ const PLACE_RESERVED = new Set(["place", "kind", "parent", "grid", "standing", "
 /** The same, for a strain: what it is and came from is fixed when it is added. */
 const STRAIN_RESERVED = new Set(["strain", "host", "carries", "parent", "from"]);
 const SPECIMEN_RESERVED = new Set(["specimen", "note", "is", "added"]);
+const PROSPECT_RESERVED = new Set(["prospect", "name", "kind", "madeOf", "note", "became", "by", "added"]);
 const EXPECT_RESERVED = new Set(["expect", "plan", "kind", "says", "numbers", "settings", "note", "by", "met", "withdrawn", "added"]);
 
 /**
@@ -526,6 +564,8 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
   "expect.add": { expect: true, plan: true, kind: true, says: true, numbers: true, settings: true, note: true },
   "expect.meet": { expect: true, met: true, saw: true, run: true, note: true },
   "expect.withdraw": { expect: true, note: true },
+  "prospect.add": { prospect: true, name: true, kind: true, madeOf: true, note: true },
+  "prospect.realise": { prospect: true, strain: true, item: true },
   "item.adjust": { item: true, by: true },
   "item.recount": { item: true, amount: true },
   "item.retire": { item: true },
@@ -540,8 +580,8 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
     outputs: [{ item: true, sequence: true, circular: true, ends: { left: true, right: true }, name: true, amount: true, unit: true }],
   },
   "plan.add": {
-    plan: true, kind: true, instrument: true, settings: true, note: true,
-    inputs: [{ item: true, part: true, amount: true, role: true }],
+    plan: true, kind: true, instrument: true, settings: true, note: true, makes: true,
+    inputs: [{ item: true, part: true, prospect: true, amount: true, role: true }],
     expects: [{ sequence: true, circular: true, ends: { left: true, right: true }, name: true }],
   },
   "plan.settle": { plan: true, run: true },
@@ -620,7 +660,7 @@ const areSettings = (settings: unknown): settings is Record<string, string | num
  * tools work it out again, which is why the plan carries its claim and not its working.
  */
 function planProblem(op: Operation, items: ReadonlyMap<string, unknown>, parts: ReadonlyMap<string, unknown>, places: ReadonlyMap<string, unknown>,
-                     plans: ReadonlyMap<string, unknown>): string | null {
+                     plans: ReadonlyMap<string, unknown>, prospects: ReadonlyMap<string, unknown>): string | null {
   if (!(typeof op["plan"] === "string" && ITEM_ID.test(op["plan"])) || !text(op["kind"], 40)) return "It does not carry a plan ID and what kind of run it would be.";
   if (plans.has(op["plan"])) return "A plan with that ID already exists.";
   if (!(op["instrument"] === null || (typeof op["instrument"] === "string" && places.has(op["instrument"])))) return "The place it would be done at is not one the lab has.";
@@ -630,15 +670,27 @@ function planProblem(op: Operation, items: ReadonlyMap<string, unknown>, parts: 
   if (!Array.isArray(inputs) || inputs.length > MOST_IN_A_RUN) return "It does not list what it would use.";
   for (const input of inputs as Partial<PlanInput>[]) {
     if (typeof input !== "object" || input === null || !amountOf(input.amount) || input.amount < 0 || !text(input.role, 40)) return "It does not say how many whole units of each thing it would use, and as what.";
-    if ((input.item === undefined) === (input.part === undefined)) return "Each thing it would use has to be a tube or a part, and not both.";
+    if ([input.item, input.part, input.prospect].filter((one) => one !== undefined).length !== 1) {
+      return "Each thing it would use has to be a tube, a part or a prospect, and only one of those.";
+    }
     if (input.item !== undefined && !(typeof input.item === "string" && items.has(input.item))) return "A tube it would use is not an item the lab has.";
     if (input.part !== undefined && !(typeof input.part === "string" && parts.has(input.part))) return "A part it would use is not one the lab has.";
+    if (input.prospect !== undefined && !(typeof input.prospect === "string" && prospects.has(input.prospect))) return "A prospect it would use is not one the lab has.";
   }
   const expects = op["expects"];
   if (!Array.isArray(expects) || expects.length > MOST_IN_A_RUN) return "It does not list what it expects to make.";
   for (const expect of expects as Record<string, unknown>[]) {
     if (typeof expect !== "object" || expect === null || !text(expect["sequence"], LONGEST_SEQUENCE) || typeof expect["circular"] !== "boolean" || !text(expect["name"], 200)) {
       return "It does not give each thing it expects a sequence, a name and whether it is a circle.";
+    }
+  }
+  // What a run makes that has no sequence — a strain, a culture, a curd — is named as a prospect
+  // instead, so that the step after it has something to point at.
+  const makes = op["makes"];
+  if (makes !== undefined) {
+    if (!Array.isArray(makes) || makes.length > MOST_IN_A_RUN) return "It does not list what it would bring into existence.";
+    for (const one of makes as unknown[]) {
+      if (!(typeof one === "string" && prospects.has(one))) return "Something it would bring into existence is not a prospect the lab has.";
     }
   }
   return null;
@@ -709,7 +761,7 @@ const hadSeen = (later: Node, earlier: Node): boolean => (later.vc.get(earlier.a
  * ```
  */
 export async function mergeLog(entries: readonly unknown[], options: { lab?: string } = {}): Promise<LabState> {
-  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], runs: [], plans: [], strains: [], specimens: [], expectations: [], entries: [],
+  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], runs: [], plans: [], strains: [], specimens: [], expectations: [], prospects: [], entries: [],
                             waiting: [], discarded: [], overlaps: [], heads: {}, knows: {} };
 
   // Read and check every entry on its own, before any of them is believed about the others.
@@ -976,6 +1028,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
   const strains = new Map<string, { strain: StrainState; set: Map<string, Register> }>();
   const specimens = new Map<string, { specimen: SpecimenState; set: Map<string, Register> }>();
   const expectations = new Map<string, { expectation: ExpectationState; seen: Node | null; set: Map<string, Register> }>();
+  const prospects = new Map<string, { prospect: ProspectState; set: Map<string, Register> }>();
   /** Each plan, with the entry that settled it, if one has, and anything set on it. */
   const plans = new Map<string, { plan: PlanState; settled: Node | null; set: Map<string, Register> }>();
   /** Where each item was last put. */
@@ -1201,6 +1254,39 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         // like any other, so the same rule settles it and every lab reads the same answer.
         write(held.set, "is", node, op["part"], `what specimen ${op["specimen"]} is`);
       }
+    } else if (op.type === "prospect.add") {
+      if (!(typeof op["prospect"] === "string" && ITEM_ID.test(op["prospect"])) || !text(op["name"], 200)
+          || !text(op["kind"], 40) || !text(op["madeOf"], 2_000)
+          || !(op["note"] === null || text(op["note"], 2_000))) {
+        refuse("It does not carry a prospect ID, what to call it, what kind of thing it is, what it would be made of, and a note or nothing.");
+      } else if (prospects.has(op["prospect"])) {
+        refuse("A prospect with that ID already exists.");
+      } else {
+        prospects.set(op["prospect"], {
+          prospect: { prospect: op["prospect"], name: op["name"], kind: op["kind"], madeOf: op["madeOf"],
+                      note: op["note"] as string | null, became: null, by: node.author, fields: {}, added: node.id },
+          set: new Map([["name", { node, value: op["name"] }]]),
+        });
+      }
+    } else if (op.type === "prospect.realise") {
+      const held = typeof op["prospect"] === "string" ? prospects.get(op["prospect"]) : undefined;
+      const strain = op["strain"], item = op["item"];
+      if (held === undefined) {
+        refuse("The prospect it says was made is not one the lab has.");
+      } else if ([strain, item].filter((one) => one !== null && one !== undefined).length !== 1) {
+        refuse("A prospect becomes a strain or an item, and only one of those.");
+      } else if (strain !== null && strain !== undefined && !(typeof strain === "string" && strains.has(strain))) {
+        refuse("The strain it says the prospect became is not one the lab has.");
+      } else if (item !== null && item !== undefined && !(typeof item === "string" && items.has(item))) {
+        refuse("The item it says the prospect became is not one the lab has.");
+      } else {
+        // Two people may make the same thing and say so without knowing of each other. It is a
+        // register like any other, so the same rule settles it and every lab reads the same answer.
+        // What it became and which kind of thing that is are one fact and go in one register: two
+        // registers could be won by different writers, and leave a strain's ID labelled an item.
+        const became = strain !== null && strain !== undefined ? `strain:${strain}` : `item:${item}`;
+        write(held.set, "became", node, became, `what prospect ${op["prospect"]} became`);
+      }
     } else if (op.type === "expect.add") {
       const numbers = op["numbers"], settings = op["settings"];
       if (!(typeof op["expect"] === "string" && ITEM_ID.test(op["expect"])) || !text(op["kind"], 40) || !text(op["says"], 2_000)
@@ -1275,7 +1361,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         held.expectation.withdrawn = { note: op["note"] as string | null, by: node.author, entry: node.id };
       }
     } else if (op.type === "plan.add") {
-      const problem = planProblem(op, items, parts, places, plans);
+      const problem = planProblem(op, items, parts, places, plans, prospects);
       if (problem !== null) { refuse(problem); continue; }
       const expects: PlanState["expects"] = [];
       try {
@@ -1291,7 +1377,10 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         settled: null, set: new Map(),
         plan: {
           plan: op["plan"] as string, kind: op["kind"] as string, instrument: op["instrument"] as string | null,
-          inputs: (op["inputs"] as PlanInput[]).map((input) => ({ ...(input.item === undefined ? { part: input.part! } : { item: input.item }), amount: input.amount, role: input.role })),
+          inputs: (op["inputs"] as PlanInput[]).map((input) => ({
+            ...(input.item !== undefined ? { item: input.item } : input.part !== undefined ? { part: input.part } : { prospect: input.prospect! }),
+            amount: input.amount, role: input.role })),
+          makes: [...((op["makes"] as string[] | undefined) ?? [])],
           expects, settings: { ...(op["settings"] as Record<string, string | number>) }, note: op["note"] as string | null,
           by: node.author, settled: null, wanting: [], orphaned: [], fields: {}, added: node.id,
         },
@@ -1321,13 +1410,15 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
                    : op["on"] === "strain" && typeof op["id"] === "string" ? strains.get(op["id"])
                    : op["on"] === "specimen" && typeof op["id"] === "string" ? specimens.get(op["id"])
                    : op["on"] === "plan" && typeof op["id"] === "string" ? plans.get(op["id"])
-                   : op["on"] === "expectation" && typeof op["id"] === "string" ? expectations.get(op["id"]) : undefined;
-      if (target === undefined) { refuse("It does not name a part, an item, a place, a strain, a specimen, a plan or an expectation the lab has."); continue; }
+                   : op["on"] === "expectation" && typeof op["id"] === "string" ? expectations.get(op["id"])
+                   : op["on"] === "prospect" && typeof op["id"] === "string" ? prospects.get(op["id"]) : undefined;
+      if (target === undefined) { refuse("It does not name a part, an item, a place, a strain, a specimen, a plan, an expectation or a prospect the lab has."); continue; }
       if (op["on"] === "place" && typeof field === "string" && PLACE_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "strain" && typeof field === "string" && STRAIN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "specimen" && typeof field === "string" && SPECIMEN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "plan" && typeof field === "string" && PLAN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "expectation" && typeof field === "string" && EXPECT_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
+      if (op["on"] === "prospect" && typeof field === "string" && PROSPECT_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       // An adviser may file its own proposals and nothing else. It proposes the work, so leaving it
       // unable to say which project the work is for would have a person filing every step by hand;
       // letting it set any field at all would let it rename the lab's parts. This is the same line
@@ -1370,6 +1461,21 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       else specimen.fields[field] = held.value as string | number | null;
     }
     state.specimens.push(specimen);
+  }
+  for (const { prospect, set } of prospects.values()) {
+    for (const [field, held] of set) {
+      if (field === "name") prospect.name = held.value as string;
+      else if (field === "became") { /* read below, as one value */ }
+      else prospect.fields[field] = held.value as string | number | null;
+    }
+    const became = set.get("became");
+    if (became !== undefined) {
+      const [kind, ...rest] = String(became.value).split(":");
+      const id = rest.join(":");
+      prospect.became = { strain: kind === "strain" ? id : null, item: kind === "item" ? id : null,
+                          by: became.node.author, entry: became.node.id };
+    }
+    state.prospects.push(prospect);
   }
   for (const { expectation, set } of expectations.values()) {
     for (const [field, held] of set) expectation.fields[field] = held.value as string | number | null;

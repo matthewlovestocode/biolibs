@@ -460,10 +460,16 @@ export const newRunId = (): string => newItemId();
 
 /** One thing a planned run would use: a tube the lab has, or a part it would first have to get. */
 export interface PlanInput {
-  /** The item, if the lab holds a tube of it. Exactly one of `item` and `part` is given. */
+  /** The item, if the lab holds a tube of it. Exactly one of `item`, `part` and `prospect` is given. */
   item?: string;
   /** The part's checksum, if there is no tube of it yet: something to be ordered or made first. */
   part?: string;
+  /**
+   * The prospect, for something nobody has made and nobody can checksum — the strain a transformation
+   * would give, the culture grown from it. A plan that names one is a plan that cannot be carried out
+   * yet, and says so plainly rather than naming nothing at all.
+   */
+  prospect?: string;
   /** How much of it the run would use, in the item's own unit. A whole number, which may be 0. */
   amount: number;
   /** What it would be there as: a template, a forward primer. */
@@ -498,8 +504,14 @@ export interface PlanRecord {
   instrument: string | null;
   /** What it would use. */
   inputs: PlanInput[];
-  /** What it is expected to make. */
+  /** What it is expected to make, where that is a molecule with a sequence. */
   expects: PlanExpect[];
+  /**
+   * The prospects it would bring into existence, by ID, where what it makes has no sequence to
+   * expect: a strain, a culture, a curd. Without this a transformation makes nothing the record can
+   * name, and the chain of work stops at it.
+   */
+  makes?: string[];
   /** How to set it up: whole numbers and short text, by name. */
   settings: Record<string, string | number>;
   /** Why, and anything else worth saying. */
@@ -521,6 +533,55 @@ export const settlePlan = (plan: string, run: string | null): Operation => ({ ty
 
 /** @returns A new ID for a plan, made the way an item's is. */
 export const newPlanId = (): string => newItemId();
+
+/**
+ * Something the lab understands the makeup of and has not made.
+ *
+ * A part is known by the checksum of its sequence, so everything the lab holds that *has* a sequence
+ * can be named before it exists — the nine designed plasmids are parts with no tube. What has no
+ * sequence cannot be: a strain that will carry a construct, the culture grown from it, a mixture of
+ * four proteins, curd. The chain of work stops at the first of those, and everything after it has to
+ * be proposed afresh once somebody is holding something.
+ *
+ * A prospect is how that chain carries on. It is the mirror of a specimen: a specimen is a tube the
+ * lab holds and cannot name, and this is a thing the lab can name and does not hold. It has no
+ * checksum — there is no sequence to count one over — so, exactly like a specimen and a culture, it
+ * cannot travel in a method. Saying what to do with a thing somebody else does not have is not a
+ * method, it is a wish.
+ */
+export interface ProspectRecord {
+  /** The prospect's ID. */
+  prospect: string;
+  /** What it would be called: `GS115 carrying pPIC9K-alphaS1`. */
+  name: string;
+  /** What kind of thing: `strain`, `culture`, `mixture`, `curd`. Free, like a run's kind. */
+  kind: string;
+  /** What it would be made of, said for a person. No part of this is machine-readable on purpose. */
+  madeOf: string;
+  /** Anything else worth saying, or `null`. */
+  note: string | null;
+}
+
+/**
+ * @returns The change that names something the lab means to have and has not made.
+ *
+ * It makes no tube and no part. It exists so that the steps after it can be written down while it is
+ * still hypothetical, and so that a reader can tell at a glance which parts of a plan rest on
+ * something nobody is holding.
+ */
+export const addProspect = (prospect: ProspectRecord): Operation => ({ type: "prospect.add", ...prospect });
+
+/**
+ * @returns The change that says a prospect has come into existence, and what it turned out to be.
+ *
+ * Exactly one of `strain` and `item` is given, and it has to be one the lab already has: the thing
+ * is added first, the way a specimen's part is, and then this says the prospect was it.
+ */
+export const realiseProspect = (prospect: string, became: { strain?: string; item?: string }): Operation =>
+  ({ type: "prospect.realise", prospect, strain: became.strain ?? null, item: became.item ?? null });
+
+/** @returns A new ID for a prospect, made the way an item's is. */
+export const newProspectId = (): string => newItemId();
 
 /**
  * What a lab expects to see if a plan worked, as it would be written before doing it.

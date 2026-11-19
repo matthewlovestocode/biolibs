@@ -827,6 +827,61 @@ quiet failure here. That is the sort of thing the checksum discipline is for.
 
 ---
 
+## 11. The chain no longer stops at a transformation
+
+Added 19 November 2026, on a standing instruction: when something is needed and its makeup is
+understood, mark it as not made yet so the steps after it can be worked out in software, rather than
+reporting a blocker.
+
+The blocker was real and had been stated in the lab's own words since the work panel was written: *the
+chain stops at a transformation; what that makes is alive and has no checksum to point at, so what
+follows is proposed afresh once there is something growing.* It is why §10's nine induction plans
+were filed naming nothing at all, and why the protein expectations had nowhere sensible to sit.
+
+A **prospect** is the way through. It is the mirror of a specimen: a specimen is a tube the lab holds
+and cannot name, a prospect is a thing the lab can name and does not hold — a strain that would carry
+a construct, the culture grown from it, a mixture, curd. It has a name, a kind, and what it would be
+made of in plain words. It has **no checksum**, because there is no sequence to count one over, and
+nothing ever gives it one.
+
+| | |
+|---|---|
+| a plan may **use** one | an induction names the strain it would grow |
+| a plan may say what it **makes** | a transformation names the strain it would give |
+| it **becomes** something | once somebody has made it, it points at the strain or the tube that it turned out to be |
+| it **cannot travel** | a published method says only *"something the publishing lab had not made: a strain"* |
+
+That last one matters most. Telling another lab to use a thing nobody has made is a wish, not a
+method — and the lab's own name for it, *"GS115 carrying pPIC9K-alphaS1"*, is this lab talking to
+itself about something that does not exist. The same reasoning as a culture and a specimen, for the
+same reason.
+
+### What it did to the real lab
+
+Nine strains are named that nobody has made. Every transformation says which one it would give, and
+every induction names it as what it would grow. The work panel now reads:
+
+> 27 steps are proposed, in **9 pieces of work**, across 2 projects.
+> 3. Grow it and look for the protein · induction — **waiting on step 1 and step 2**
+
+Before this, the inductions were floating: filed with no inputs, because there was nothing they could
+name. Now each piece of work is three steps that know their order — build the plasmid, put it in a
+host, grow it and look — and a reader can see that nothing can start because everything waits on DNA
+that has not been ordered.
+
+### Found by using it
+
+The nine transformations were refiled with their `makes` list and all nine applied — and **not one of
+them carried it**. The protocol accepted the field, the client dropped it: `planRun` on the client
+builds its operation from a fixed list of fields, and `makes` was not on it. Every entry said "ok".
+
+That is the shape of the thing worth watching: a write that reports success while silently losing
+part of what was written. It was caught by counting the plans that carried a `makes` list afterwards
+rather than trusting nine lines of `ok` — which is the only reason this section is not describing a
+chain that still does not join up.
+
+---
+
 # The conditional: what to do about each outcome
 
 Each step says what is being asked, what the answers can be, and where each answer leads. Nothing
