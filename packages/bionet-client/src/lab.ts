@@ -10,7 +10,7 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, isMember, meetExpectation, mergeLog, newExpectationId,
+import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, isMember, meetExpectation, mergeLog, newExpectationId, withdrawExpectation,
          movePlace, newItemId, newPlaceId, newPlanId, newRunId, newSpecimenId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
          readMethod, signMethod,
          setField, settlePlan, signInventory, standPlace,
@@ -608,6 +608,17 @@ export class Lab {
   meet(what: { expect: string; met: boolean; saw?: readonly number[]; run?: string | null; note?: string | null }): Promise<void> {
     return this.write(meetExpectation(what.expect, what.met, what.saw ?? [],
                                       { run: what.run ?? null, note: what.note ?? null }));
+  }
+
+  /**
+   * Take an expectation back: one written in error, or on the wrong step.
+   *
+   * The entry stays in the log; what changes is that it is no longer something to go and look for.
+   * It cannot take back a reading — once somebody has said what they saw, the expectation is part
+   * of what happened, and an intention yields to a fact rather than the other way round.
+   */
+  withdraw(what: { expect: string; note?: string | null }): Promise<void> {
+    return this.write(withdrawExpectation(what.expect, what.note ?? null));
   }
 
   /**

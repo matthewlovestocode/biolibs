@@ -5,7 +5,7 @@
   "dependencies": {
     "@biolibs/align": "^1.0.0",
     "@biolibs/assembly2": "^1.0.0",
-    "@biolibs/bionet": "^1.8.6",
+    "@biolibs/bionet": "^1.8.7",
     "@biolibs/bionet-panels": "^0.3.3",
     "@biolibs/bionet-react": "^0.2.0",
     "@biolibs/cloning": "^1.0.1",
@@ -65,5 +65,5 @@
   ],
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.1.16"
+  "version": "0.1.17"
 }

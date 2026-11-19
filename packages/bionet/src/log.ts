@@ -575,6 +575,18 @@ export const meetExpectation = (expect: string, met: boolean, saw: readonly numb
                                 options: { run?: string | null; note?: string | null } = {}): Operation =>
   ({ type: "expect.meet", expect, met, saw: [...saw], run: options.run ?? null, note: options.note ?? null });
 
+/**
+ * @returns The change that takes an expectation back, for one written in error or on the wrong step.
+ *
+ * It cannot take back a reading. Once somebody has said what they saw, the expectation is part of
+ * what happened and stays: an intention yields to a fact, not the other way round.
+ *
+ * @param expect - The expectation.
+ * @param note - Why, or `null`.
+ */
+export const withdrawExpectation = (expect: string, note: string | null = null): Operation =>
+  ({ type: "expect.withdraw", expect, note });
+
 /** @returns A new ID for an expectation, made the way an item's is. */
 export const newExpectationId = (): string => newItemId();
 

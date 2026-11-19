@@ -663,6 +663,20 @@ An **adviser may write an expectation and may not meet one**. Saying what to loo
 working out, which is all an adviser does. Saying what was there is an act of somebody who was
 standing at a bench, and nothing with no hands was.
 
+An expectation written in error, or on the wrong step, is **taken back** rather than removed:
+
+```ts
+import { withdrawExpectation } from "@biolibs/bionet";
+
+await write(ada, adasKey, withdrawExpectation(check, "this belongs on the induction, not the transformation"));
+(await mergeLog(ada)).expectations[0]?.withdrawn?.note;   // "this belongs on the induction, ..."
+(await mergeLog(ada)).expectations[0]?.says;              // still there: the entry does not go away
+```
+
+It cannot take back a reading. Once somebody has said what they saw, the expectation is part of what
+happened and stays — and a reading that arrives *after* a withdrawal puts it back, because an
+intention yields to a fact and not the other way round.
+
 Two people may read the same gel without having heard of each other. The lower entry ID stands, as
 everywhere else, and the disagreement is shown in `overlaps` rather than quietly resolved: two people
 reading one gel differently is worth somebody looking at.

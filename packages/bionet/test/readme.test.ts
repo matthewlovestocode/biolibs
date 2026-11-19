@@ -13,7 +13,7 @@ import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, disc
          partChecksum, peer, publicInventory, putItem, recordRun, remember, settled, settledLabs, signInventory, verifyInventory,
          type Operation, type SignedEntry,
          addSpecimen, identifySpecimen, newSpecimenId, newPlanId, planRun, settlePlan,
-         expectOf, meetExpectation, newExpectationId,
+         expectOf, meetExpectation, newExpectationId, withdrawExpectation,
          signingKeys, unsourced, whoHas, type SignedInventory } from "@biolibs/bionet";
 import { describe, expect, it } from "vitest";
 
@@ -341,5 +341,26 @@ describe("README: inside a lab", () => {
 
     await write(ada, adasKey, meetExpectation(check, true, [4757, 611], { note: "the small band ran fast" }));
     expect((await mergeLog(ada)).expectations[0]?.met?.met).toBe(true);
+  });
+
+  it("takes an expectation back without taking the entry away", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+    await write(ada, adasKey, addPart({ sequence: F1, name: "f1" }));
+    const tube = newItemId();
+    await write(ada, adasKey, addItem({ item: tube, part: (await mergeLog(ada)).parts[0]!.checksum, amount: 10, unit: "µL" }));
+    const proposed = newPlanId();
+    await write(ada, adasKey, planRun({ plan: proposed, kind: "digest", instrument: null,
+                                        inputs: [{ item: tube, amount: 1, role: "plasmid" }],
+                                        expects: [], settings: {}, note: null }));
+    const check = newExpectationId();
+    await write(ada, adasKey, expectOf({ expect: check, plan: proposed, kind: "digest", says: "two bands",
+                                         numbers: [4757, 614], settings: {}, note: null }));
+
+    await write(ada, adasKey, withdrawExpectation(check, "this belongs on the induction, not the transformation"));
+    expect((await mergeLog(ada)).expectations[0]?.withdrawn?.note).toBe("this belongs on the induction, not the transformation");
+    expect((await mergeLog(ada)).expectations[0]?.says).toBe("two bands");
   });
 });

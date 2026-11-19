@@ -11,7 +11,7 @@
 import { generateSigningKey, type SigningKey } from "@biolibs/opencloning";
 import { addItem, addPart, addToRoster, entryId, expectOf, foundLab, meetExpectation, mergeLog, newExpectationId, newItemId,
          newPlanId, newRunId, nextEntry, planRun, recordRun, setField, settlePlan, type LabState, type Operation,
-         type SignedEntry } from "@biolibs/bionet";
+         withdrawExpectation, type SignedEntry } from "@biolibs/bionet";
 import { beforeAll, describe, expect, it } from "vitest";
 
 const TEMPLATE = "GGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGAGAGGGTGCTTCAGAGTATGTATACC";
@@ -215,5 +215,72 @@ describe("filing an expectation", () => {
     expect(only(await a.lab()).fields["project"]).toBe("Real Vegan Cheese");
     await a.write(setField("expectation", one.expect, "numbers", "something else"));
     expect(said(await a.lab()).reason).toBe("It does not name a field that can be set.");
+  });
+});
+
+describe("taking an expectation back", () => {
+  it("stops it being something to look for, and leaves it in the log", async () => {
+    const { a, plan } = await wren();
+    const one = about(plan);
+    await a.write(expectOf(one));
+    await a.write(withdrawExpectation(one.expect, "written on the wrong step"));
+    expect(said(await a.lab())).toEqual({ status: "applied", reason: null });
+    const lab = await a.lab();
+    expect(lab.expectations).toHaveLength(1);
+    expect(only(lab).withdrawn).toMatchObject({ note: "written on the wrong step", by: ada.publicKey });
+    expect(only(lab).says).toBe(one.says);
+  });
+
+  it("is refused once somebody has said what they saw", async () => {
+    const { a, plan } = await wren();
+    const one = about(plan);
+    await a.write(expectOf(one));
+    await a.write(meetExpectation(one.expect, true, [4757, 614]));
+    await a.write(withdrawExpectation(one.expect, "changed my mind"));
+    expect(said(await a.lab()).reason).toBe("What was seen of that expectation is recorded, so it cannot be taken back.");
+    expect(only(await a.lab()).withdrawn).toBeNull();
+  });
+
+  it("gives way to a reading that arrives after it, because a fact beats an intention", async () => {
+    const { a, b, plan } = await wren();
+    const one = about(plan);
+    await a.write(expectOf(one));
+    b.hear(a);
+    // Ada takes it back; Bob, who had not heard, had already gone and looked.
+    await a.write(withdrawExpectation(one.expect, "not worth running"));
+    await b.write(meetExpectation(one.expect, true, [4757, 614]));
+    a.hear(b);
+    const lab = await a.lab();
+    expect(only(lab).met?.met).toBe(true);
+    expect(only(lab).withdrawn).toBeNull();
+  });
+
+  it("is refused where it names an expectation the lab does not have", async () => {
+    const { a } = await wren();
+    await a.write(withdrawExpectation("nosuchexpectation"));
+    expect(said(await a.lab()).reason).toBe("The expectation it takes back is not one the lab has.");
+  });
+
+  it("lets an adviser take back its own and nobody else's", async () => {
+    const { a, c, plan } = await wren();
+    c.hear(a);
+    const mine = about(plan);
+    await a.write(expectOf(mine));
+    const theirs = about(plan);
+    c.hear(a);
+    await c.write(expectOf(theirs));
+    await c.write(withdrawExpectation(theirs.expect));
+    expect(said(await c.lab()).status).toBe("applied");
+    await c.write(withdrawExpectation(mine.expect));
+    expect(said(await c.lab()).reason).toBe("An adviser may only take back an expectation of its own.");
+  });
+
+  it("is not understood by a version that does not know it", async () => {
+    const { a, plan } = await wren();
+    const one = about(plan);
+    await a.write(expectOf(one));
+    await a.write({ ...withdrawExpectation(one.expect), why: "mistake" });
+    expect(said(await a.lab()).status).toBe("not understood");
+    expect(only(await a.lab()).withdrawn).toBeNull();
   });
 });

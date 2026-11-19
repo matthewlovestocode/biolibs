@@ -224,6 +224,11 @@ export interface ExpectationState {
   by: string;
   /** What was seen, or `null` while nobody has looked. */
   met: { met: boolean; saw: number[]; run: string | null; note: string | null; by: string; entry: string } | null;
+  /**
+   * Taken back, or `null`. An expectation written in error or on the wrong step is withdrawn rather
+   * than removed: the entry stays in the log, and this says it is no longer something to look for.
+   */
+  withdrawn: { note: string | null; by: string; entry: string } | null;
   /** Anything else set on it. */
   fields: Record<string, string | number | null>;
   /** The entry that wrote it. */
@@ -377,7 +382,7 @@ const PLACE_RESERVED = new Set(["place", "kind", "parent", "grid", "standing", "
 /** The same, for a strain: what it is and came from is fixed when it is added. */
 const STRAIN_RESERVED = new Set(["strain", "host", "carries", "parent", "from"]);
 const SPECIMEN_RESERVED = new Set(["specimen", "note", "is", "added"]);
-const EXPECT_RESERVED = new Set(["expect", "plan", "kind", "says", "numbers", "settings", "note", "by", "met", "added"]);
+const EXPECT_RESERVED = new Set(["expect", "plan", "kind", "says", "numbers", "settings", "note", "by", "met", "withdrawn", "added"]);
 
 /**
  * What a plan's fields may not be called.
@@ -520,6 +525,7 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
   "specimen.identify": { specimen: true, part: true },
   "expect.add": { expect: true, plan: true, kind: true, says: true, numbers: true, settings: true, note: true },
   "expect.meet": { expect: true, met: true, saw: true, run: true, note: true },
+  "expect.withdraw": { expect: true, note: true },
   "item.adjust": { item: true, by: true },
   "item.recount": { item: true, amount: true },
   "item.retire": { item: true },
@@ -551,7 +557,7 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
  */
 // An adviser may say what to look for, because that is reading and working out. It may not say what
 // was seen: a reading is made by somebody standing at a bench, and nothing with no hands was there.
-const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle", "field.set", "expect.add"]);
+const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle", "field.set", "expect.add", "expect.withdraw"]);
 
 /**
  * The first field in a change that this version does not know, if there is one.
@@ -1218,7 +1224,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
           seen: null,
           expectation: { expect: op["expect"], plan: op["plan"], kind: op["kind"], says: op["says"],
                          numbers: [...(numbers as number[])], settings: { ...(settings as Record<string, string | number>) },
-                         note: op["note"] as string | null, by: node.author, met: null, fields: {}, added: node.id },
+                         note: op["note"] as string | null, by: node.author, met: null, withdrawn: null, fields: {}, added: node.id },
           set: new Map(),
         });
       }
@@ -1239,6 +1245,10 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
           held.expectation.met = { met: op["met"] as boolean, saw: [...(saw as number[])], run: run as string | null,
                                    note: op["note"] as string | null, by: node.author, entry: node.id };
         };
+        // A reading beats a withdrawal. Somebody looked, and what they saw is a fact about the
+        // world; an expectation is an intention about what to look for, and an intention yields to
+        // a fact. So a reading on a withdrawn expectation stands, and puts it back.
+        held.expectation.withdrawn = null;
         if (held.seen === null) meet();
         else if (hadSeen(node, held.seen)) refuse("What was seen of that expectation is already recorded.");
         else {
@@ -1248,6 +1258,21 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
           state.overlaps.push({ what: `what was seen of expectation ${held.expectation.expect.slice(0, 12)}`, kept: wins ? node.id : held.seen.id, dropped: wins ? held.seen.id : node.id });
           if (wins) meet();
         }
+      }
+    } else if (op.type === "expect.withdraw") {
+      const held = typeof op["expect"] === "string" ? expectations.get(op["expect"]) : undefined;
+      if (held === undefined) {
+        refuse("The expectation it takes back is not one the lab has.");
+      } else if (!(op["note"] === null || text(op["note"], 2_000))) {
+        refuse("Its note is not some text.");
+      } else if (held.expectation.met !== null) {
+        // Once somebody has said what they saw, this is no longer a thing to look for: it is part
+        // of what happened, and what happened is not taken back.
+        refuse("What was seen of that expectation is recorded, so it cannot be taken back.");
+      } else if (node.adviser === true && held.expectation.by !== node.author) {
+        refuse("An adviser may only take back an expectation of its own.");
+      } else {
+        held.expectation.withdrawn = { note: op["note"] as string | null, by: node.author, entry: node.id };
       }
     } else if (op.type === "plan.add") {
       const problem = planProblem(op, items, parts, places, plans);

@@ -319,11 +319,10 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
                 </p>
                 {step.plan.note !== null && <p className="small why">{step.plan.note}</p>}
                 {(lab.expectations ?? []).filter((one) => one.plan === step.plan.plan)
-                  // An expectation cannot be withdrawn: a plan can be set aside, and there is no
-                  // change that takes one of these back. So one written on the wrong step is marked
-                  // rather than removed, and a marked one is not shown as something to look for —
-                  // it is still in the log, where somebody reading the history will find it.
-                  .filter((one) => one.fields["superseded"] === undefined || one.fields["superseded"] === null)
+                  // One taken back is not shown as something to look for. It is still in the log,
+                  // where somebody reading the history will find it, and the field is read too for
+                  // the ones marked that way before there was a change that could take one back.
+                  .filter((one) => one.withdrawn === null && (one.fields["superseded"] ?? null) === null)
                   .map((one) => (
                   <div key={one.expect} className="small expectation">
                     <p>
