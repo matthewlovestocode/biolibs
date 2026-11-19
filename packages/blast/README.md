@@ -87,6 +87,13 @@ getOf({ program: "blastn", database: "nt", sequence: "ACGT" }, "ABC123").body;
   tool name are left out, since they are NCBI's courtesy rule and nobody else's.
 - **`RTOE` is a whole number of seconds**, and a page carrying anything else is refused.
 - **Nothing is cached.** The same search twice is two searches, and NCBI will notice.
+- **`rtoe` is NCBI's guess, and it is sometimes wildly out.** A search held in their queue waits
+  there however long the queue is: estimates of 30 and 62 seconds have both gone past forty minutes
+  on a bad afternoon, and making the query smaller does not help, because what is waited on is being
+  let in rather than the search itself. When one is slow, ask NCBI rather than suspecting this code —
+  `curl "https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Get&FORMAT_OBJECT=SearchInfo&RID=<rid>"` says
+  `Status=WAITING` while it is queued, which is an answer from them and not from here. This is the
+  reason `submit` and `collect` are separate: hold the ticket, and let something else do the waiting.
 
 ## Parity
 
