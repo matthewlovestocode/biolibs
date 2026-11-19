@@ -12,7 +12,7 @@ import type { Lab, LabSnapshot } from "./lab.js";
 /** Everything a window may ask a lab to do. Nothing outside this list can be asked for. */
 export const ACTIONS = ["setPerson", "found", "join", "setPeer", "setOrigin", "addMember", "addPart", "addItem",
                         "adjust", "recount", "retire", "offer", "setField", "publish", "backUp", "restore",
-                        "addPlace", "movePlace", "standPlace", "retirePlace", "putItem", "recordRun", "planRun", "settlePlan", "hostAdviser", "addStrain", "addSpecimen", "identifySpecimen", "exportLab", "importLab", "annotatePart", "publishMethod", "takeMethod"] as const;
+                        "addPlace", "movePlace", "standPlace", "retirePlace", "putItem", "recordRun", "planRun", "settlePlan", "hostAdviser", "addStrain", "addSpecimen", "identifySpecimen", "expect", "meet", "exportLab", "importLab", "annotatePart", "publishMethod", "takeMethod"] as const;
 
 /** One thing a window may ask for. */
 export type Action = (typeof ACTIONS)[number];

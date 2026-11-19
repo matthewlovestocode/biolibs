@@ -396,7 +396,7 @@ describe("filing a plan under a project", () => {
   it("is refused for a plan the lab does not have", async () => {
     const { a } = await wren();
     await a.write(setField("plan", newPlanId(), "project", "Real Vegan Cheese"));
-    expect(await lastOf(a)).toEqual({ status: "refused", reason: "It does not name a part, an item, a place, a strain, a specimen or a plan the lab has." });
+    expect(await lastOf(a)).toEqual({ status: "refused", reason: "It does not name a part, an item, a place, a strain, a specimen, a plan or an expectation the lab has." });
   });
 
   it("is settled between two people the same way everything else is", async () => {

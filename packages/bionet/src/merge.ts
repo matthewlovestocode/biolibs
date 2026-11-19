@@ -198,6 +198,38 @@ export interface RunState {
   added: string;
 }
 
+/**
+ * What a lab expects to see if a plan worked, and what was seen.
+ *
+ * A plan says what it would make; this says what somebody would observe. Keeping them apart is the
+ * point: a correct molecule can give a reading nobody expected, and a reading that looks right can
+ * come from the wrong molecule. One is a claim about a thing, the other about looking at it.
+ */
+export interface ExpectationState {
+  /** Its ID. */
+  expect: string;
+  /** The plan it is about. */
+  plan: string;
+  /** How it would be observed: `digest`, `colony pcr`, `protein gel`. */
+  kind: string;
+  /** What to expect, for somebody at the bench to read. */
+  says: string;
+  /** The readings expected, as whole numbers. */
+  numbers: number[];
+  /** How to observe it: which enzymes, which gel. */
+  settings: Record<string, string | number>;
+  /** Anything else said about it. */
+  note: string | null;
+  /** The key that wrote it. */
+  by: string;
+  /** What was seen, or `null` while nobody has looked. */
+  met: { met: boolean; saw: number[]; run: string | null; note: string | null; by: string; entry: string } | null;
+  /** Anything else set on it. */
+  fields: Record<string, string | number | null>;
+  /** The entry that wrote it. */
+  added: string;
+}
+
 /** A run somebody has proposed, as the lab holds it. */
 export interface PlanState {
   /** Its ID. */
@@ -293,6 +325,8 @@ export interface LabState {
   strains: StrainState[];
   /** Everything the lab has and cannot yet name. */
   specimens: SpecimenState[];
+  /** What the lab expects to see of its plans, and what was seen. */
+  expectations: ExpectationState[];
   /** Every item. */
   items: ItemState[];
   /** Every place. */
@@ -343,6 +377,7 @@ const PLACE_RESERVED = new Set(["place", "kind", "parent", "grid", "standing", "
 /** The same, for a strain: what it is and came from is fixed when it is added. */
 const STRAIN_RESERVED = new Set(["strain", "host", "carries", "parent", "from"]);
 const SPECIMEN_RESERVED = new Set(["specimen", "note", "is", "added"]);
+const EXPECT_RESERVED = new Set(["expect", "plan", "kind", "says", "numbers", "settings", "note", "by", "met", "added"]);
 
 /**
  * What a plan's fields may not be called.
@@ -483,6 +518,8 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
   "strain.add": { strain: true, name: true, host: true, carries: true, parent: true, from: true },
   "specimen.add": { specimen: true, name: true, note: true },
   "specimen.identify": { specimen: true, part: true },
+  "expect.add": { expect: true, plan: true, kind: true, says: true, numbers: true, settings: true, note: true },
+  "expect.meet": { expect: true, met: true, saw: true, run: true, note: true },
   "item.adjust": { item: true, by: true },
   "item.recount": { item: true, amount: true },
   "item.retire": { item: true },
@@ -512,7 +549,9 @@ const KNOWN: Readonly<Record<string, Readonly<Record<string, Known>>>> = {
  * the parts are known: an adviser may say what is on a part that nothing is marked on, and may not
  * change what somebody has already marked.
  */
-const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle", "field.set"]);
+// An adviser may say what to look for, because that is reading and working out. It may not say what
+// was seen: a reading is made by somebody standing at a bench, and nothing with no hands was there.
+const ADVISER_MAY = new Set(["part.add", "part.annotate", "plan.add", "plan.settle", "field.set", "expect.add"]);
 
 /**
  * The first field in a change that this version does not know, if there is one.
@@ -664,7 +703,7 @@ const hadSeen = (later: Node, earlier: Node): boolean => (later.vc.get(earlier.a
  * ```
  */
 export async function mergeLog(entries: readonly unknown[], options: { lab?: string } = {}): Promise<LabState> {
-  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], runs: [], plans: [], strains: [], specimens: [], entries: [],
+  const state: LabState = { lab: options.lab ?? null, name: null, roster: [], parts: [], items: [], places: [], crowded: [], runs: [], plans: [], strains: [], specimens: [], expectations: [], entries: [],
                             waiting: [], discarded: [], overlaps: [], heads: {}, knows: {} };
 
   // Read and check every entry on its own, before any of them is believed about the others.
@@ -930,6 +969,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
   const places = new Map<string, { place: PlaceState; set: Map<string, Register> }>();
   const strains = new Map<string, { strain: StrainState; set: Map<string, Register> }>();
   const specimens = new Map<string, { specimen: SpecimenState; set: Map<string, Register> }>();
+  const expectations = new Map<string, { expectation: ExpectationState; seen: Node | null; set: Map<string, Register> }>();
   /** Each plan, with the entry that settled it, if one has, and anything set on it. */
   const plans = new Map<string, { plan: PlanState; settled: Node | null; set: Map<string, Register> }>();
   /** Where each item was last put. */
@@ -1155,6 +1195,60 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         // like any other, so the same rule settles it and every lab reads the same answer.
         write(held.set, "is", node, op["part"], `what specimen ${op["specimen"]} is`);
       }
+    } else if (op.type === "expect.add") {
+      const numbers = op["numbers"], settings = op["settings"];
+      if (!(typeof op["expect"] === "string" && ITEM_ID.test(op["expect"])) || !text(op["kind"], 40) || !text(op["says"], 2_000)
+          || !(op["note"] === null || text(op["note"], 2_000))) {
+        refuse("It does not carry an expectation ID, how it would be seen, what to expect, and a note or nothing.");
+      } else if (!(typeof op["plan"] === "string" && plans.has(op["plan"]))) {
+        refuse("The plan it is about is not one the lab has.");
+      } else if (!Array.isArray(numbers) || numbers.length > MOST_IN_A_RUN || !numbers.every((one) => amountOf(one) && one >= 0)) {
+        // A fraction never reaches here: the log will not sign one, because two devices that round
+        // differently would put their names to different documents. So a band read at 4,757.5 bases
+        // is written in the words. What this catches is a negative reading, which signs and means
+        // nothing, and a list that is not a list.
+        refuse("Its readings are not whole numbers that are not negative.");
+      } else if (typeof settings !== "object" || settings === null || Array.isArray(settings) || Object.keys(settings).length > MOST_IN_A_RUN
+                 || !Object.entries(settings).every(([name, value]) => FIELD.test(name) && (amountOf(value) || (typeof value === "string" && value.length <= 200)))) {
+        refuse("Its settings are not whole numbers and short text, by name.");
+      } else if (expectations.has(op["expect"])) {
+        refuse("An expectation with that ID already exists.");
+      } else {
+        expectations.set(op["expect"], {
+          seen: null,
+          expectation: { expect: op["expect"], plan: op["plan"], kind: op["kind"], says: op["says"],
+                         numbers: [...(numbers as number[])], settings: { ...(settings as Record<string, string | number>) },
+                         note: op["note"] as string | null, by: node.author, met: null, fields: {}, added: node.id },
+          set: new Map(),
+        });
+      }
+    } else if (op.type === "expect.meet") {
+      const held = typeof op["expect"] === "string" ? expectations.get(op["expect"]) : undefined;
+      const saw = op["saw"], run = op["run"];
+      if (held === undefined) {
+        refuse("The expectation it answers is not one the lab has.");
+      } else if (typeof op["met"] !== "boolean" || !(op["note"] === null || text(op["note"], 2_000))) {
+        refuse("It does not say whether what was seen is what was expected.");
+      } else if (!Array.isArray(saw) || saw.length > MOST_IN_A_RUN || !saw.every((one) => amountOf(one) && one >= 0)) {
+        refuse("What it says was seen is not whole numbers that are not negative.");
+      } else if (!(run === null || (typeof run === "string" && state.runs.some((one) => one.run === run)))) {
+        refuse("The run it says this was seen in is not one the lab has.");
+      } else {
+        const meet = (): void => {
+          held.seen = node;
+          held.expectation.met = { met: op["met"] as boolean, saw: [...(saw as number[])], run: run as string | null,
+                                   note: op["note"] as string | null, by: node.author, entry: node.id };
+        };
+        if (held.seen === null) meet();
+        else if (hadSeen(node, held.seen)) refuse("What was seen of that expectation is already recorded.");
+        else {
+          // Two people read the same gel without knowing of each other. One stands, and the overlap
+          // is shown: a disagreement about what was seen is worth somebody looking at.
+          const wins = node.id < held.seen.id;
+          state.overlaps.push({ what: `what was seen of expectation ${held.expectation.expect.slice(0, 12)}`, kept: wins ? node.id : held.seen.id, dropped: wins ? held.seen.id : node.id });
+          if (wins) meet();
+        }
+      }
     } else if (op.type === "plan.add") {
       const problem = planProblem(op, items, parts, places, plans);
       if (problem !== null) { refuse(problem); continue; }
@@ -1201,12 +1295,14 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
                    : op["on"] === "place" && typeof op["id"] === "string" ? places.get(op["id"])
                    : op["on"] === "strain" && typeof op["id"] === "string" ? strains.get(op["id"])
                    : op["on"] === "specimen" && typeof op["id"] === "string" ? specimens.get(op["id"])
-                   : op["on"] === "plan" && typeof op["id"] === "string" ? plans.get(op["id"]) : undefined;
-      if (target === undefined) { refuse("It does not name a part, an item, a place, a strain, a specimen or a plan the lab has."); continue; }
+                   : op["on"] === "plan" && typeof op["id"] === "string" ? plans.get(op["id"])
+                   : op["on"] === "expectation" && typeof op["id"] === "string" ? expectations.get(op["id"]) : undefined;
+      if (target === undefined) { refuse("It does not name a part, an item, a place, a strain, a specimen, a plan or an expectation the lab has."); continue; }
       if (op["on"] === "place" && typeof field === "string" && PLACE_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "strain" && typeof field === "string" && STRAIN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "specimen" && typeof field === "string" && SPECIMEN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       if (op["on"] === "plan" && typeof field === "string" && PLAN_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
+      if (op["on"] === "expectation" && typeof field === "string" && EXPECT_RESERVED.has(field)) { refuse("It does not name a field that can be set."); continue; }
       // An adviser may file its own proposals and nothing else. It proposes the work, so leaving it
       // unable to say which project the work is for would have a person filing every step by hand;
       // letting it set any field at all would let it rename the lab's parts. This is the same line
@@ -1249,6 +1345,10 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
       else specimen.fields[field] = held.value as string | number | null;
     }
     state.specimens.push(specimen);
+  }
+  for (const { expectation, set } of expectations.values()) {
+    for (const [field, held] of set) expectation.fields[field] = held.value as string | number | null;
+    state.expectations.push(expectation);
   }
   for (const { item, set, base, adjusted, overlapped } of items.values()) {
     // A recount replaces the adjustments its author had seen. Everything else still counts.

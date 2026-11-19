@@ -10,12 +10,12 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, fetchInventory, foundLab, identifySpecimen, isMember, mergeLog,
+import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, isMember, meetExpectation, mergeLog, newExpectationId,
          movePlace, newItemId, newPlaceId, newPlanId, newRunId, newSpecimenId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
          readMethod, signMethod,
          setField, settlePlan, signInventory, standPlace,
          takeEntries, type Crowded, type EntryStatus, type ItemState, type LabState, type Operation, type Overlap,
-         type LabModel, type MethodDocument, type MethodOptions, type PartEnds, type PartFeature, type PartState, type PlaceState, type PartKind, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type SignedMethod, type SpecimenState, type StrainState } from "@biolibs/bionet";
+         type LabModel, type MethodDocument, type MethodOptions, type PartEnds, type PartFeature, type PartState, type PlaceState, type PartKind, type PlanInput, type PlanState, type RunInput, type RunState, type Role, type RosterKey, type SignedEntry, type SignedMethod, type ExpectationState, type SpecimenState, type StrainState } from "@biolibs/bionet";
 import { exportSigningKey, generateSigningKey, importSigningKey, keyFingerprint,
          type SigningKey } from "@biolibs/opencloning";
 import { openKey, sealKey } from "./backup.js";
@@ -62,6 +62,8 @@ export interface LabView {
   strains: StrainState[];
   /** Every specimen: something the lab physically has and cannot yet name. */
   specimens: SpecimenState[];
+  /** What the lab expects to see of its plans, and what was seen. */
+  expectations: ExpectationState[];
   items: ItemState[];
   /** Every place. */
   places: PlaceState[];
@@ -261,6 +263,7 @@ export class Lab {
         parts: state.parts,
         strains: state.strains,
         specimens: state.specimens,
+        expectations: state.expectations,
         items: state.items,
         places: state.places,
         crowded: state.crowded,
@@ -570,6 +573,41 @@ export class Lab {
    */
   identifySpecimen(what: { specimen: string; part: string }): Promise<void> {
     return this.write(identifySpecimen(what.specimen, what.part));
+  }
+
+  /**
+   * Write down what a plan's result should look like, before doing it.
+   *
+   * A plan says what it would make; this says what somebody would see if it worked — the bands a
+   * check digest should show, the size a colony PCR should give. Writing it beforehand is the point:
+   * an expectation set down afterwards is a description of what happened, which is a different and
+   * much weaker thing.
+   *
+   * @param expectation - The plan it is about, how it would be seen, what to expect in words, and
+   *   the readings as whole numbers. Anything with a fraction in it belongs in `says`.
+   * @returns Its ID.
+   */
+  async expect(expectation: { plan: string; kind: string; says: string; numbers?: readonly number[];
+                              settings?: Record<string, string | number>; note?: string | null }): Promise<string> {
+    if (expectation.says.trim() === "") throw new Error("An expectation needs to say what to look for.");
+    const id = newExpectationId();
+    await this.write(expectOf({ expect: id, plan: expectation.plan, kind: expectation.kind.trim().slice(0, 40),
+                                says: expectation.says.trim().slice(0, 2_000), numbers: [...(expectation.numbers ?? [])],
+                                settings: { ...(expectation.settings ?? {}) },
+                                note: expectation.note === undefined || expectation.note === null || expectation.note.trim() === "" ? null : expectation.note.trim() }));
+    return id;
+  }
+
+  /**
+   * Say what was actually seen, and whether it was what was expected.
+   *
+   * Whether a reading matches is yours to say, not the lab's: a gel is read by eye, and two bands a
+   * tool would call different may be one band to the person who ran it. A reading that was not what
+   * was expected is a result and is recorded the same way.
+   */
+  meet(what: { expect: string; met: boolean; saw?: readonly number[]; run?: string | null; note?: string | null }): Promise<void> {
+    return this.write(meetExpectation(what.expect, what.met, what.saw ?? [],
+                                      { run: what.run ?? null, note: what.note ?? null }));
   }
 
   /**

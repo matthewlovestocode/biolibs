@@ -523,6 +523,63 @@ export const settlePlan = (plan: string, run: string | null): Operation => ({ ty
 export const newPlanId = (): string => newItemId();
 
 /**
+ * What a lab expects to see if a plan worked, as it would be written before doing it.
+ *
+ * A plan says what it would make. This says what somebody at the bench would *observe* — the bands a
+ * check digest should show, the size a colony PCR should give, where a protein should run. The two
+ * are different claims: one is about a molecule, the other about a reading, and a reading can be
+ * wrong about a molecule that is perfectly correct.
+ */
+export interface ExpectationRecord {
+  /** The expectation's ID. */
+  expect: string;
+  /** The plan it is about. */
+  plan: string;
+  /** How it would be observed: `digest`, `colony pcr`, `protein gel`, `sequencing`. Free, like a run's kind. */
+  kind: string;
+  /** What to expect, for somebody standing at the bench to read. */
+  says: string;
+  /**
+   * The readings themselves, as whole numbers: band sizes in bases, a product's length, a mass in
+   * daltons. An entry carries only whole numbers, so anything with a fraction belongs in `says`.
+   */
+  numbers: readonly number[];
+  /** How it would be observed: which enzymes, which gel, which ladder. */
+  settings: Record<string, string | number>;
+  /** Anything else worth saying, or `null`. */
+  note: string | null;
+}
+
+/**
+ * @returns The change that writes down what a plan's result should look like.
+ *
+ * It is a change of its own rather than a field on the plan, so that a device too old to know of
+ * expectations still reads the plan, and so that an adviser may write one: saying what to look for
+ * is reading and working out, which is all an adviser does.
+ */
+export const expectOf = (expectation: ExpectationRecord): Operation => ({ type: "expect.add", ...expectation });
+
+/**
+ * @returns The change that says what was actually seen, and whether it was what was expected.
+ *
+ * Whether a reading matches is a person's call, not the log's: a gel photograph is read by eye, and
+ * two bands a tool would call different may be one band to the person who ran it. So `met` is said,
+ * the way a run's outcome is said, and `saw` records the reading it was said about.
+ *
+ * @param expect - The expectation.
+ * @param met - Whether what was seen is what was expected.
+ * @param saw - The reading, as whole numbers. Empty where there is nothing to count.
+ * @param options - The run it was seen in, and anything to say about it.
+ */
+export const meetExpectation = (expect: string, met: boolean, saw: readonly number[] = [],
+                                options: { run?: string | null; note?: string | null } = {}): Operation =>
+  ({ type: "expect.meet", expect, met, saw: [...saw], run: options.run ?? null, note: options.note ?? null });
+
+/** @returns A new ID for an expectation, made the way an item's is. */
+export const newExpectationId = (): string => newItemId();
+
+
+/**
  * A living thing the lab keeps: an organism, and what has been put into it.
  *
  * A part is known by its sequence, so two labs that made the same molecule call it the same thing
