@@ -3,8 +3,8 @@
     "url": "https://github.com/matthewlovestocode/biolibs/issues"
   },
   "dependencies": {
-    "@biolibs/bionet": "^1.8.7",
-    "@biolibs/bionet-client": "^0.2.12",
+    "@biolibs/bionet": "^1.9.0",
+    "@biolibs/bionet-client": "^0.2.13",
     "@biolibs/bionet-react": "^0.2.0",
     "@biolibs/bionet-space": "^0.3.0",
     "@biolibs/opencloning": "^2.0.0"
@@ -54,5 +54,5 @@
   ],
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.3.14"
+  "version": "0.3.15"
 }
