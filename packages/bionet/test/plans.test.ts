@@ -14,6 +14,8 @@ import { beforeAll, describe, expect, it } from "vitest";
 const TEMPLATE = "GGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGAGAGGGTGCTTCAGAGTATGTATACC";
 const FORWARD = "GGATCACAGTCTACACTG";
 const REVERSE = "GGTATACATACTCTGAAG";
+/** Something a plan can be expected to make, so that another plan can be written to use it. */
+const PRODUCT = "GGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGAGAGGGTGCTTCAGAGTATGTATACCTTTAAACCCGGGAAATTTCCCGGG";
 
 let ada: SigningKey;
 let bob: SigningKey;
@@ -451,5 +453,81 @@ describe("filing a plan under a project", () => {
     await a.write(setField("plan", own.plan, "project", "Bioprinting"));
     a.hear(c);
     expect((await a.lab()).plans[0]!.fields["project"]).toBe("Bioprinting");
+  });
+
+});
+
+describe("a plan left over by a refiling", () => {
+  /**
+   * A lab with a product in it as a part, a plan that would make it, and a plan that would use it.
+   * This is the shape every corrected design takes: the molecule is known, so a plan may name it,
+   * but whether anything is going to make it depends on which plans are still open.
+   */
+  async function downstream(): Promise<{ a: Device; product: string; makes: string; uses: string; plan: (more?: Partial<PlanRecord>) => PlanRecord }> {
+    const { a, plan } = await wren();
+    await a.write(addPart({ sequence: PRODUCT, name: "ligated" }));
+    const product = (await a.lab()).parts.find((one) => one.length === PRODUCT.length)!.checksum;
+    const makes = plan({ expects: [{ sequence: PRODUCT, circular: false, name: "ligated" }] });
+    await a.write(planRun(makes));
+    const uses = plan({ kind: "transformation", inputs: [{ part: product, amount: 0, role: "plasmid" }], expects: [] });
+    await a.write(planRun(uses));
+    return { a, product, makes: makes.plan, uses: uses.plan, plan };
+  }
+  const openPlan = async (a: Device, id: string): Promise<PlanRecord & { orphaned: string[] }> =>
+    (await a.lab()).plans.find((one) => one.plan === id)! as never;
+
+  it("says which molecule it would use that only a plan now set aside would have made", async () => {
+    const { a, product, makes, uses } = await downstream();
+    // While both plans are open this is the ordinary case, and nothing is flagged.
+    expect((await openPlan(a, uses)).orphaned).toEqual([]);
+    // Setting the first aside is what breaks the pair: the second still names what it would have
+    // made. Neither entry is wrong, so neither is refused, and the one left pointing says so.
+    await a.write(settlePlan(makes, null));
+    expect((await openPlan(a, uses)).orphaned).toEqual([product]);
+    expect((await lastOf(a)).status).toBe("applied");
+  });
+
+  it("stops saying it once another open plan would make that molecule again", async () => {
+    const { a, product, makes, uses, plan } = await downstream();
+    await a.write(settlePlan(makes, null));
+    expect((await openPlan(a, uses)).orphaned).toEqual([product]);
+    await a.write(planRun(plan({ expects: [{ sequence: PRODUCT, circular: false, name: "ligated" }] })));
+    expect((await openPlan(a, uses)).orphaned).toEqual([]);
+  });
+
+  it("stops saying it once a tube of that molecule exists, however it got there", async () => {
+    const { a, product, makes, uses } = await downstream();
+    await a.write(settlePlan(makes, null));
+    const tube = newItemId();
+    await a.write(addItem({ item: tube, part: product, amount: 5, unit: "µL" }));
+    expect((await openPlan(a, uses)).orphaned).toEqual([]);
+    // An empty tube is not a tube of it, so retiring the last one brings the warning back.
+    await a.write(retireItem(tube));
+    expect((await openPlan(a, uses)).orphaned).toEqual([product]);
+  });
+
+  it("says nothing about a molecule still to be ordered, which nothing here was ever going to make", async () => {
+    const { a, primer, plan } = await wren();
+    await a.write(planRun(plan()));
+    const open = (await a.lab()).plans[0]!;
+    expect(open.inputs.some((one) => one.part === primer)).toBe(true);
+    expect(open.orphaned).toEqual([]);
+  });
+
+  it("says nothing once it is settled itself, since nobody is going to carry it out", async () => {
+    const { a, product, makes, uses } = await downstream();
+    await a.write(settlePlan(makes, null));
+    expect((await openPlan(a, uses)).orphaned).toEqual([product]);
+    await a.write(settlePlan(uses, null));
+    expect((await openPlan(a, uses)).orphaned).toEqual([]);
+  });
+
+  it("is told apart from a tube that has merely run short, which is what wanting says", async () => {
+    const { a, tube, plan } = await wren();
+    await a.write(planRun(plan({ inputs: [{ item: tube, amount: 15, role: "template" }] })));
+    await a.write(adjustItem(tube, -10));
+    const open = (await a.lab()).plans[0]!;
+    expect(open.wanting).toEqual([tube]);
+    expect(open.orphaned).toEqual([]);
   });
 });

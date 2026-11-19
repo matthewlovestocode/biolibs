@@ -223,6 +223,13 @@ export interface PlanState {
    * would use. The plan is kept and shown; somebody has to look before carrying it out.
    */
   wanting: string[];
+  /**
+   * For a plan still open: the molecules it would use that only a plan the lab has set aside would
+   * have made. Refiling a plan leaves the ones downstream of it naming what the old plan would have
+   * made, which no entry is wrong for saying and no reader of one entry can see. A molecule still to
+   * be ordered is not listed: nothing was ever going to make it here.
+   */
+  orphaned: string[];
   /** Anything else set on it, such as which project it is part of. */
   fields: Record<string, string | number | null>;
   /** The entry that proposed it. */
@@ -345,7 +352,7 @@ const SPECIMEN_RESERVED = new Set(["specimen", "note", "is", "added"]);
  * something nobody proposed. A field says what a plan is *about* — which project it is part of,
  * say — and nothing about what carrying it out would do.
  */
-const PLAN_RESERVED = new Set(["plan", "kind", "instrument", "inputs", "expects", "settings", "note", "by", "settled", "wanting", "added"]);
+const PLAN_RESERVED = new Set(["plan", "kind", "instrument", "inputs", "expects", "settings", "note", "by", "settled", "wanting", "orphaned", "added"]);
 
 /** The most positions a box may have along one side, and the farthest a place may stand or reach, in millimetres. */
 const MOST_SIDE = 100;
@@ -1167,7 +1174,7 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
           plan: op["plan"] as string, kind: op["kind"] as string, instrument: op["instrument"] as string | null,
           inputs: (op["inputs"] as PlanInput[]).map((input) => ({ ...(input.item === undefined ? { part: input.part! } : { item: input.item }), amount: input.amount, role: input.role })),
           expects, settings: { ...(op["settings"] as Record<string, string | number>) }, note: op["note"] as string | null,
-          by: node.author, settled: null, wanting: [], fields: {}, added: node.id,
+          by: node.author, settled: null, wanting: [], orphaned: [], fields: {}, added: node.id,
         },
       });
     } else if (op.type === "plan.settle") {
@@ -1257,6 +1264,12 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
     item.where = (put.get(item.item)?.get("where")?.value ?? null) as ItemState["where"];
     state.items.push(item);
   }
+  // Which molecules the lab could actually put into a plan: one a live tube holds, or one a plan
+  // still open is expected to make. And, separately, the ones whose only maker has been set aside.
+  const heldNow = new Set(state.items.filter((one) => !one.retired && one.amount > 0 && one.part !== null).map((one) => one.part!));
+  const willBeMade = new Set<string>(), wasToBeMade = new Set<string>();
+  for (const { plan } of plans.values())
+    for (const expect of plan.expects) (plan.settled === null ? willBeMade : wasToBeMade).add(expect.checksum);
   // A plan counts on tubes that go on being used after it is written. It is not refused for that:
   // it is kept, and says which of them are no longer what it needs.
   for (const { plan, set } of plans.values()) {
@@ -1266,6 +1279,14 @@ function fold(state: LabState, placed: Placed[], chained: Map<string, Node>): vo
         const held = input.item === undefined ? undefined : items.get(input.item)?.item;
         return held !== undefined && (held.retired || held.amount < input.amount) ? [held.item] : [];
       });
+      // Refiling a plan leaves the plans downstream of it pointing at what the old one would have
+      // made. Nothing about either plan is wrong on its own, so neither is refused; what is wrong is
+      // the pair, and only the lab as a whole can see it. A molecule still to be ordered is not this:
+      // it was never any plan's output, so it is left alone. This is the molecule a plan the lab has
+      // set aside would have made, and that nothing open makes now.
+      plan.orphaned = plan.inputs.flatMap((input) =>
+        input.part !== undefined && !heldNow.has(input.part) && !willBeMade.has(input.part) && wasToBeMade.has(input.part)
+          ? [input.part] : []);
     }
     state.plans.push(plan);
   }

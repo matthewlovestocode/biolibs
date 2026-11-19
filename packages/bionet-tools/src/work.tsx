@@ -11,11 +11,12 @@
  * It asserts nothing. Everything here comes from `planOfWork`, which works the order out from what
  * each proposal makes and what each one needs, so what is drawn cannot drift from what is true.
  */
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useAct, useLab } from "@biolibs/bionet-react";
 import { Glossed } from "@biolibs/glossary-react";
 import { FILED_UNDER, UNFILED, planOfWork, saysWork, type Project, type Step } from "./ordering.js";
 import { protocolText, protocolsFor } from "./protocol.js";
+import { checkRoute, routeOf, saysRoute } from "./route.js";
 
 /** What a step is called, by what kind of run it is. */
 const CALLED: Readonly<Record<string, string>> = {
@@ -50,6 +51,18 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
   const [sheet, setSheet] = useState<string | null>(null);
   const [taking, setTaking] = useState("");
   const [told, setTold] = useState<string | null>(null);
+  // Whether each step's route has one answer. Putting a plan's pieces back together every way round
+  // costs tens of milliseconds, so it is worked out once per plan and kept until that plan's product
+  // or its enzymes change.
+  const open = lab?.plans.filter((one) => one.settled === null) ?? [];
+  const routes = useMemo(
+    () => new Map(open.flatMap((plan) => {
+      const enzymes = routeOf(plan);
+      const design = plan.expects[0];
+      return enzymes.length === 0 || design === undefined ? [] : [[plan.plan, checkRoute(design, enzymes)] as const];
+    })),
+    [open.map((plan) => `${plan.plan}:${plan.expects[0]?.checksum ?? ""}:${String(plan.settings["cut_with"] ?? "")}`).join("|")],
+  );
   if (lab === null || lab === undefined) return null;
   const whole = planOfWork(lab);
   const shown: Project | undefined = only === null ? undefined : whole.projects.find((one) => one.name === only);
@@ -274,7 +287,10 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
           </div>
           {!thread.clear && <p className="small attention">Something in this one has to be dealt with before it can be finished.</p>}
           <ol className="steps">
-            {thread.steps.map((step) => (
+            {thread.steps.map((step) => {
+              const checked = routes.get(step.plan.plan);
+              const aboutRoute = checked === undefined ? null : saysRoute(checked);
+              return (
               <li key={step.plan.plan} className={step.held === null ? "ready" : "held"}>
                 <p className="small">
                   <strong>{at(step.plan.plan)}. {stepName(step.plan)}</strong>
@@ -290,6 +306,8 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
                   . Proposed by {person(step.plan.by)}.
                 </p>
                 {step.plan.note !== null && <p className="small why">{step.plan.note}</p>}
+                {step.plan.orphaned.length > 0 && <p className="small attention">Nothing is going to make {step.plan.orphaned.map(partName).join(" or ")} any more: the only plan that would have has been set aside. If it was refiled, this step is still asking for what the old plan would have made.</p>}
+                {aboutRoute !== null && <p className="small attention">{aboutRoute}</p>}
                 <div className="row tight">
                   {onOpen !== undefined && step.held === null && <button type="button" onClick={() => onOpen(step.plan)}>Set it up</button>}
                   <button type="button" className="quiet" onClick={() => { setFiling(filing === step.plan.plan ? null : step.plan.plan); setInto(filedAs(step.plan) === UNFILED ? "" : filedAs(step.plan)); }}>
@@ -306,7 +324,8 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
                   </form>
                 )}
               </li>
-            ))}
+              );
+            })}
           </ol>
           {thread.ends.length > 0 && (
             <p className="dim small">It ends with {thread.ends.map((one) => partName(one.checksum) === "a part" ? one.name : partName(one.checksum)).join(" and ")}.</p>

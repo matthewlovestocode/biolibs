@@ -13,8 +13,9 @@
  * names. That is decided from what is set up, not from a button pressed earlier, so a bench that is
  * changed after being set up from a plan stops claiming to be that plan.
  */
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useAct, useLab } from "@biolibs/bionet-react";
+import { checkRoute, routeOf, saysRoute } from "./route.js";
 
 /** One proposed run, as the lab holds it. */
 export type Plan = NonNullable<NonNullable<ReturnType<typeof useLab>>["lab"]>["plans"][number];
@@ -87,8 +88,19 @@ export function Proposed({ kind, now, onSetUp }: { kind: string; now: Record<str
   const [why, setWhy] = useState("");
   const [busy, setBusy] = useState(false);
   const [trouble, setTrouble] = useState<string | null>(null);
+  const open = lab?.plans.filter((one) => one.settled === null && one.kind === kind) ?? [];
+  // Putting a plan's pieces back together every way round costs tens of milliseconds, which is
+  // nothing to ask for and too much to pay on every render. So it is worked out once per plan and
+  // kept until that plan's product or its enzymes change.
+  const routes = useMemo(
+    () => new Map(open.flatMap((plan) => {
+      const enzymes = routeOf(plan);
+      const design = plan.expects[0];
+      return enzymes.length === 0 || design === undefined ? [] : [[plan.plan, checkRoute(design, enzymes)] as const];
+    })),
+    [open.map((plan) => `${plan.plan}:${plan.expects[0]?.checksum ?? ""}:${String(plan.settings["cut_with"] ?? "")}`).join("|")],
+  );
   if (lab === null || lab === undefined) return null;
-  const open = lab.plans.filter((one) => one.settled === null && one.kind === kind);
   const carried = planCarried(lab, now);
   const person = (key: string): string => lab.roster.find((one) => one.key === key)?.person ?? "A device";
   const partName = (checksum: string | undefined): string => lab.parts.find((one) => one.checksum === checksum)?.name ?? "a part";
@@ -109,7 +121,11 @@ export function Proposed({ kind, now, onSetUp }: { kind: string; now: Record<str
       <h2>Proposed</h2>
       {open.length === 0 && <p className="dim small">Nothing is proposed here. What is set up now can be proposed, for somebody to carry out: nothing is used and nothing is recorded as done.</p>}
       {open.map((plan) => {
-        const missing = plan.inputs.filter((one) => one.item === undefined);
+        // Something there is no tube of has to be ordered or made — unless nothing is going to make
+        // it any more, which is a different thing to be told and is said on its own line below.
+        const missing = plan.inputs.filter((one) => one.item === undefined && !plan.orphaned.includes(one.part!));
+        const route = routes.get(plan.plan);
+        const aboutRoute = route === undefined ? null : saysRoute(route);
         return (
           <article key={plan.plan} className={plan === carried ? "plan now" : "plan"}>
             <p className="small"><strong>{person(plan.by)}</strong> proposes using {plan.inputs.map((one) => `${one.item === undefined ? partName(one.part) : tubeName(one.item)} as ${one.role}`).join(", ")}
@@ -117,6 +133,8 @@ export function Proposed({ kind, now, onSetUp }: { kind: string; now: Record<str
             {plan.note !== null && <p className="small why">{plan.note}</p>}
             {missing.length > 0 && <p className="small attention">There is no tube yet of {missing.map((one) => partName(one.part)).join(" or ")}. It has to be ordered or made before this can be done.</p>}
             {plan.wanting.length > 0 && <p className="small attention">Since this was proposed, {plan.wanting.map(tubeName).join(" and ")} {plan.wanting.length === 1 ? "has" : "have"} been retired or run short of what it would use.</p>}
+            {plan.orphaned.length > 0 && <p className="small attention">Nothing is going to make {plan.orphaned.map(partName).join(" or ")} any more: the only plan that would have has been set aside. If it was refiled, this plan is still asking for what the old one would have made.</p>}
+            {aboutRoute !== null && <p className="small attention">{aboutRoute}</p>}
             {plan === carried && <p className="small good">This is what is set up now. Recording the run will say this proposal was carried out.</p>}
             <div className="row tight">
               {plan !== carried && <button type="button" disabled={busy || missing.length > 0} onClick={() => onSetUp(plan)}>Set it up</button>}

@@ -68,6 +68,7 @@ export function Strains() {
               <p className="small"><strong>{person(plan.by)}</strong> proposes {plan.inputs.map((one) => `${one.item === undefined ? carried([one.part!]) : tubeName(one.item)} as ${one.role}`).join(", ")}.</p>
               {plan.note !== null && <p className="small why">{plan.note}</p>}
               {plan.wanting.length > 0 && <p className="small attention">Since this was proposed, {plan.wanting.map(tubeName).join(" and ")} has been retired or run short.</p>}
+              {plan.orphaned.length > 0 && <p className="small attention">Nothing is going to make {plan.orphaned.map((one) => carried([one])).join(" or ")} any more: the only plan that would have has been set aside. If it was refiled, this one is still asking for what the old plan would have made.</p>}
               <div className="row tight">
                 {/* A transformation makes no molecule, so whether it worked is not something the
                     record can tell from what came out: it is whether anything grew, and only a

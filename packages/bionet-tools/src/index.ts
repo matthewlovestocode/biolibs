@@ -29,6 +29,7 @@
  * - `fusion-bench.tsx` — that at a desk: the pieces in order, and the frame watched as they are laid out
  * - `assembly-bench.tsx` — building a ring at a desk: the pieces in order, and the primers that make them fit
  * - `ligate.ts` — pieces that have already been cut, joined where their ends fit
+ * - `route.ts` — whether the cut and ligation a plan names could make more than one thing
  * - `ligate-working.ts` — a ligation's working: each join in its bases, the length, how much to put in
  * - `ligate-bench.tsx` — a ligation at the heat block: what is shown beside it, and what the scene draws
  * - `digest-working.ts` — a digest looked at closely: each cut in its bases, each piece with its ends, the working
@@ -72,6 +73,7 @@ export * from "./fusion.js";
 export * from "./fusion-bench.js";
 export * from "./assembly-bench.js";
 export * from "./ligate.js";
+export * from "./route.js";
 export * from "./ligate-working.js";
 export * from "./ligate-bench.js";
 export * from "./running.js";
