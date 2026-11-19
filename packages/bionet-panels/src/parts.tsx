@@ -47,14 +47,21 @@ export function Trouble() {
  * @returns One line.
  */
 export function syncWords(peer: PeerView): string {
-  const waiting = peer.pending === 0 ? "" : ` · ${peer.pending} ${peer.pending === 1 ? "change" : "changes"} to send`;
+  // A count of unsent changes is a backlog only once this device has been in step with the peer.
+  // Before that it is just the size of the log, and saying "643 changes to send" while the first
+  // connection is still being made reports a problem nobody has established: on a cold peer the
+  // line sits there for as long as the peer takes to wake, and it reads as a failure to sync rather
+  // than as not having tried yet. So the count waits until there is something to count from.
+  const inStepBefore = peer.lastSynced !== null;
+  const waiting = peer.pending === 0 || !inStepBefore
+    ? "" : ` · ${peer.pending} ${peer.pending === 1 ? "change" : "changes"} to send`;
   if (peer.url === null) return "No peer set · working on this device only";
   switch (peer.status) {
     case "synced": return "In step with the lab";
     case "syncing": return "Syncing…";
-    case "connecting": return `Reaching the lab's peer…${waiting}`;
+    case "connecting": return inStepBefore ? `Reaching the lab's peer…${waiting}` : "Reaching the lab's peer…";
     case "waiting": return "Waiting to be let in";
-    default: return `Offline${waiting}`;
+    default: return inStepBefore ? `Offline${waiting}` : "Offline · nothing sent to the peer yet";
   }
 }
 

@@ -281,16 +281,38 @@ describe("how the connection is going", () => {
   const peer = (given: Partial<PeerView>): PeerView =>
     ({ url: "wss://lab.example/sync", origin: null, invite: null, status: "offline", problem: null, pending: 0, lastSynced: null, ...given });
 
+  /** A device that has been in step with the peer at least once since it started. */
+  const since = "2026-11-19T14:00:00.000Z";
+
   it("is said the way a person would want to hear it", () => {
     expect(syncWords(peer({ url: null }))).toBe("No peer set · working on this device only");
     expect(syncWords(peer({ status: "synced" }))).toBe("In step with the lab");
     expect(syncWords(peer({ status: "syncing" }))).toBe("Syncing…");
     expect(syncWords(peer({ status: "waiting" }))).toBe("Waiting to be let in");
-    expect(syncWords(peer({ status: "connecting", pending: 2 }))).toBe("Reaching the lab's peer… · 2 changes to send");
-    expect(syncWords(peer({ status: "offline", pending: 1 }))).toBe("Offline · 1 change to send");
-    expect(syncWords(peer({ status: "offline" }))).toBe("Offline");
     expect(renderToStaticMarkup(h(SyncStatus, { peer: peer({ status: "synced", problem: "a reason" }) })))
       .toBe('<div class="sync" title="a reason"><span class="dot synced"></span><span>In step with the lab</span></div>');
+  });
+
+  it("counts what is unsent once there has been a sync to count from", () => {
+    expect(syncWords(peer({ status: "connecting", pending: 2, lastSynced: since })))
+      .toBe("Reaching the lab's peer… · 2 changes to send");
+    expect(syncWords(peer({ status: "offline", pending: 1, lastSynced: since }))).toBe("Offline · 1 change to send");
+    expect(syncWords(peer({ status: "offline", lastSynced: since }))).toBe("Offline");
+  });
+
+  it("does not call the whole log a backlog before the first connection is made", () => {
+    // What the window showed at launch was "Reaching the lab's peer… · 643 changes to send", which
+    // is every entry the lab has ever had. Nothing had failed; nothing had been tried. On a peer
+    // that takes a while to wake, that line sits there long enough to be read as a broken sync.
+    expect(syncWords(peer({ status: "connecting", pending: 643 }))).toBe("Reaching the lab's peer…");
+    expect(syncWords(peer({ status: "connecting", pending: 0 }))).toBe("Reaching the lab's peer…");
+    // Offline and never in step is worth saying plainly, since there a number would be misleading
+    // in the other direction: it is not a queue that built up, it is everything.
+    expect(syncWords(peer({ status: "offline", pending: 643 }))).toBe("Offline · nothing sent to the peer yet");
+    expect(syncWords(peer({ status: "offline", pending: 0 }))).toBe("Offline · nothing sent to the peer yet");
+    // And once it has been in step, the same numbers mean what they say again.
+    expect(syncWords(peer({ status: "connecting", pending: 643, lastSynced: since })))
+      .toBe("Reaching the lab's peer… · 643 changes to send");
   });
 });
 
