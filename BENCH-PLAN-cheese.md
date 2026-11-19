@@ -476,6 +476,85 @@ receive, rather than a bare string.
 
 ---
 
+## 7. All forty-two, counted
+
+Added 19 November 2026. Twice now this project has recorded something as impossible to know when the
+answer was in a package nobody had opened. Once is a mistake; twice is a habit, and a habit is not
+fixed by resolving to read the documentation. So here is the list, and from now on a claim that
+something cannot be known has to be made against it rather than against memory.
+
+### Used, and what for
+
+| | |
+|---|---|
+| `bionet` | the protocol: the signed log, parts, tubes, plans, checksums |
+| `bionet-client`, `bionet-react`, `bionet-panels`, `bionet-tools`, `bionet-scene`, `bionet-space`, `bionet-theme` | the lab on this device, and the window onto it |
+| `seq` | translation, every reading-frame check in §3 |
+| `seqtools` | GC content, melting temperatures, molecular weights |
+| `seguid` | the checksum that is a molecule's identity |
+| `restriction` | all 1,088 enzymes; the panel searched in §1 |
+| `cloning` | where they cut, and the pieces |
+| `gel` | the bands each digest would show, and which a gel resolves |
+| `pcr` | the colony-PCR pairs in §2, and what they would amplify |
+| `dseq`, `dseqrecord` | sticky ends that refuse to fit — the route check in §6 |
+| `assembly2` | the ligation engine under it |
+| `opencloning` | the signing keys the log is written with |
+| `entrez` | the three vectors' GenBank records |
+| `uniprot` | chains, modified residues, cofactors, structures — §5 |
+| `europepmc` | the literature, searched rather than remembered |
+| `features` | the vector's own elements, found in each construct rather than assumed |
+| `motifs` | the scored FAM20C matrix, and its leave-one-out test |
+| `align` | bovine casein against human, and the phosphosites between them |
+| `seqio`, `seqrecord`, `seqfeature` | the nine annotated GenBank files |
+| `core` | Python's semantics, under all of it |
+| **`pdb`, `pdblist`** | **new today — see below** |
+
+### Not applicable, and why
+
+- `phylo`, `nexus` — trees and the files that carry them. Nothing here asks a tree question; which
+  species' casein to make was settled by wanting cheese.
+- `bionet-peer` — the server side. `lab-wren` runs it; this project is a client of it.
+- `bionet-demo`, `glossary`, `glossary-react` — a made-up lab and the words, for somebody learning
+  the app rather than using it.
+
+### Unused, applicable, and still worth doing
+
+- **`seqmap`** — the geometry behind a plasmid map. The figure generator for the BioCurious document
+  was lost with a scratchpad, and this is what would rebuild it properly rather than by hand.
+- **`seqedit`** — edits a record while keeping its features true, moving every location. Adding the
+  His tag was done by slicing strings, which is how the features were left behind.
+- **`bionet-agent`** — an adviser with no hands, which may add parts and propose runs and nothing
+  else. Every proposal in this lab was written by a person at a keyboard; this is the thing that
+  could have written them.
+- `assembly`, `svdsuperimposer` — the common-substring matcher and least-squares superposition. Both
+  marginal here: the routes are restriction-based, and superposition wants two structures to compare.
+
+So: 28 used, 5 that genuinely do not apply, 4 that apply and have not been used. Not one of those 4
+is a blocker — they are work not yet done, which is a different thing and should be said differently.
+
+### What the two new ones found
+
+`uniprot` lists one structure for FAM20C and four for FAM20A, and **5YH3 is both of them together**:
+chains A and B are FAM20A 63–529, chains C and D are FAM20C 141–578. FAM20A is a pseudokinase that
+binds FAM20C, and the two are being co-expressed here on the strength of that. Whether the stretch of
+each protein that touches the other is inside what these constructs actually make is not a question a
+sequence can answer.
+
+`pdblist` fetches it and `pdb` reads it, so it was asked. Every residue of one chain with an atom
+within 4 Å of the other:
+
+| | our construct | contact residues | spanning | outside our construct |
+|---|---|---|---|---|
+| FAM20C | 93–584 | 19 | 297–413 | **none** |
+| FAM20A | 34–541 | 18 | 214–365 | **none** |
+
+The whole interface is inside both constructs, with room either side. So the mature-chain boundaries
+taken from UniProt in §5 are not merely the right chains — they keep the surface by which these two
+proteins recognise each other. That does not say the complex will form in a yeast secretory pathway,
+which remains the project's central bet. It does say the parts needed for it to form are being made.
+
+---
+
 # The conditional: what to do about each outcome
 
 Each step says what is being asked, what the answers can be, and where each answer leads. Nothing
@@ -555,7 +634,8 @@ Said plainly, because the list above might suggest more than it should.
   list: several items once on it were not unknowable, only unlooked-up.)
 - **Whether a protein folds.** Caseins are meant not to; chymosin and the kinase are meant to.
 - **Whether the kinase and its substrate meet in the same compartment.** This is the project's central
-  bet and it is not computable.
+  bet and it is not computable. §7 narrows it a little further: the surface by which FAM20A and
+  FAM20C recognise each other is inside both constructs, so the parts are being made.
 - **Secretion efficiency, proteolysis, glycosylation extent, integration copy number.** All host
   behaviour.
 - **Micelle formation and curd.** Colloid chemistry at a scale no sequence tool touches.
