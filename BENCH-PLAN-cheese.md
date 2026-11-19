@@ -1156,6 +1156,100 @@ The FASTA was read back with the project's own parser: 11 records, ACGT only, ea
 The method was republished again on the back of this: **39 steps**, 12 digests, and `needs` no longer
 contains a single cassette. Kept beside it as `method-2026-11-19-before-orderable.json`.
 
+## 14. A protein changed, and a gel taught to say something
+
+The first thirteen sections fix plans. This one changes a protein, which is a different kind of
+decision and was taken deliberately.
+
+### The signal peptide's own enzyme was going to cut the protein in half
+
+These constructs secrete through the α-factor pre-pro signal, which is released by **Kex2**, a
+protease that cuts after Lys-Arg. That is the intended mechanism: Kex2 liberates the mature chain.
+Scanning the five mature chains for dibasic pairs:
+
+| | sites | |
+|---|---|---|
+| αS1 | 1 | `KK`@102 — a poor Kex2 substrate |
+| **αS2** | 4 | **`KR`@113** — canonical, plus `KK`@136, `KK`@149, `KK`@165 |
+| β | 1 | `KK`@28 |
+| κ | 1 | `KK`@111 |
+| prochymosin | 2 | `RK`@15, `RK`@103 |
+
+Only αS2 carries a canonical site, and it sits mid-chain. The construct was relying on Kex2 to
+release the protein while handing that same enzyme, in that same compartment, a clean site inside the
+protein. αS2 would have arrived as roughly 113 and 94 residues. **Arg114 is now Gln**: the site dies,
+the charge profile stays close, and residue 114 is in none of the phosphoserine clusters.
+
+This makes the lab's αS2 a variant of the bovine protein rather than the native sequence, and that is
+the trade: a native chain cut in half is worth less than a one-residue variant that survives. The
+project was already comfortable here — `pJTFlag-bovine-S22E-Q38E` is a phosphomimetic variant — so
+this is not a new kind of decision, but it is one that belongs in writing rather than in a diff.
+
+### One codon moved four molecules and five plans
+
+Because every molecule is known by the checksum of its sequence, a single codon invalidated the
+cassette, the fragment to be ordered, the plasmid and the linearised plasmid. All five plans naming
+one of them were refiled with `plan.replaces`, and their expectations moved across.
+
+Verified by comparing the two plasmids base by base rather than by reasoning:
+
+```
+bases that differ: 2 -> 9585:G>A  9586:C>A        (codon 114, CGC -> CAA)
+protein difference: R114Q
+context: DQVKRNAVP -> DQVKQNAVP
+canonical Kex2 sites — old: 113; new: none
+```
+
+**A note on how this was nearly got wrong.** A first verification script located the reading frame by
+scanning for an ORF with a sloppy guard, and reported *no protein difference and two Kex2 sites in
+both*. The change was fine; the check was broken. Comparing the two sequences directly needs no frame
+at all, and that is the version to trust. The rule held again: a negative is a claim about the
+instrument until the instrument has been tested.
+
+### The gel can now say something other than "nothing"
+
+Published work on κ-casein in this host found heavy degradation, and caseins are the textbook
+disordered family, so expect it across all four. The failure mode that matters is not degradation —
+it is that a degraded prep and a prep that never expressed look **identical** on a gel.
+
+So each casein induction step now carries the intact mass and the masses of every fragment a dibasic
+cut would leave:
+
+| | intact | if cut |
+|---|---|---|
+| αS1 | 22,975 Da | 11.9 + 11.1 kDa at `KK`@103 |
+| αS2 (R114Q) | 24,320 Da | 15.8 + 8.6 · 17.3 + 7.1 · 19.3 + 5.1 kDa |
+| β | 23,583 Da | 3.3 + 20.3 kDa at `KK`@29 |
+| κ | 18,974 Da | 13.1 + 5.9 kDa at `KK`@112 |
+
+Masses are of the bare chain, before phosphate or sugar. With these written down beforehand, a
+smaller band is **a reading about a named site**, and an empty lane becomes the only outcome that
+says nothing at all. That is the whole point: it converts the project's biggest known risk from a
+dead end into a measurement.
+
+### Where it leaves the lab
+
+643 entries, 39 open plans, 12 digests, **31 expectations open and attached, 13 of them protein
+gels**, 0 adrift, 0 orphaned, 0 refused, and nothing in the lab that cannot be made or bought. The
+method was republished a third time and the order regenerated from it; the αS2 fragment in
+[cheese-constructs/order/](cheese-constructs/order/) now reads `R114Q` and says why.
+
+### What this does not touch
+
+The three gates after expression — yeast's own glycosylation, micelle assembly, curdling — are
+untouched by any of this. But two findings bear on them, and both need no bench:
+
+- **64% of κ-casein's Ser and Thr, including 12 of its 15 threonines, sit on the macropeptide that
+  chymosin cuts off and discards.** Yeast's wrong sugars therefore land mostly on the piece that does
+  not end up in cheese. That splits the glycosylation risk in two: it still threatens micelle
+  stability, since the macropeptide is the hairy layer, but largely not curdling.
+- **κ-casein residues 105/106 are `FM`** — the bond chymosin cuts. The mechanism of curdling is
+  present in the construct, so the last gate is at least reachable.
+- Micelles can be reconstituted in vitro from purified caseins and calcium phosphate, and commercial
+  bovine caseins are buyable today. The assays for the last three gates can therefore be built and
+  calibrated **while the DNA is in synthesis**, substituting one recombinant protein at a time. The
+  usual way a project like this dies is that the material arrives and the readout is not ready.
+
 ### Left alone on purpose
 
 - **The induction plans still name the circle** as `construct` alongside the prospect they actually

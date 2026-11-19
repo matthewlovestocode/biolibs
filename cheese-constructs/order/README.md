@@ -19,10 +19,10 @@ product is enough; nothing needs to arrive in a vector.
 | human CK2α, E. coli codons | 1173 | use as supplied |
 | human CK2β, E. coli codons | 642 | use as supplied |
 | αS1-casein cassette, orderable | 888 | cut on arrival, step 5 |
-| αS2-casein cassette, orderable | 912 | cut on arrival, step 6 |
-| β-casein cassette, orderable | 918 | cut on arrival, step 7 |
-| κ-casein cassette, orderable | 798 | cut on arrival, step 8 |
-| prochymosin cassette, orderable | 1386 | cut on arrival, step 9 |
+| β-casein cassette, orderable | 918 | cut on arrival, step 6 |
+| κ-casein cassette, orderable | 798 | cut on arrival, step 7 |
+| prochymosin cassette, orderable | 1386 | cut on arrival, step 8 |
+| αS2-casein cassette, orderable, R114Q | 912 | cut on arrival, step 9 |
 
 **Five of these are cut before use, and that is not a detail to skip.** The lab records each casein
 and prochymosin cassette as a BamHI/AvrII digest leaves it — a duplex with a four-base 5′ overhang at
@@ -31,6 +31,11 @@ base each cut removed put back so both sites are whole, inside eight bases of fl
 enzymes have somewhere to sit. Cut each with BamHI and AvrII and you hold exactly the molecule the
 method names, by checksum. **On a 2% gel that digest shows one visible band** — the two flanking
 pieces are 13 and 9 bases and will not be seen — so a single band is the digest working, not failing.
+
+**The αS2 cassette is marked R114Q, and that is on purpose.** The native chain carries Lys-Arg at
+113/114, and the α-factor signal these constructs use is released by Kex2, which cuts after Lys-Arg —
+so the native protein would be cut in half on its way out of the cell. Arg114 is Gln here. It makes
+the lab's αS2 a variant rather than the native bovine sequence; order it as written.
 
 ## Obtain — 3 plasmids
 
