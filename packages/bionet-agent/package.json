@@ -3,8 +3,8 @@
     "url": "https://github.com/matthewlovestocode/biolibs/issues"
   },
   "dependencies": {
-    "@biolibs/bionet-client": "^0.2.9",
-    "@biolibs/bionet-tools": "^0.1.12",
+    "@biolibs/bionet-client": "^0.2.14",
+    "@biolibs/bionet-tools": "^0.1.19",
     "@biolibs/entrez": "^1.0.0",
     "@biolibs/europepmc": "^0.1.0",
     "@biolibs/uniprot": "^0.1.0"
@@ -45,5 +45,5 @@
   },
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.1.7"
+  "version": "0.1.8"
 }
