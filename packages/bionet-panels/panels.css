@@ -12,10 +12,34 @@
 .bionet header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem 1.5rem .6rem }
 .bionet header p { margin: .1rem 0 0 }
 .bionet .title { display: flex; align-items: center; gap: .8rem } .bionet .title svg { display: block; flex: none }
-.bionet nav { display: flex; gap: .25rem; padding: 0 1.5rem; border-bottom: 1px solid var(--bionet-rule) }
-.bionet .tab { background: none; border: 0; border-bottom: 2px solid transparent; color: var(--bionet-dim); padding: .55rem .8rem; font: inherit; cursor: pointer; border-radius: 0 }
-.bionet .tab.on { color: var(--bionet-ink); border-bottom-color: var(--bionet-yours); font-weight: 600 }
-.bionet main { flex: 1; overflow: auto; padding: 1.25rem 1.5rem 3rem }
+/* The views run down the side rather than along the top. Along the top they did not fit: thirteen
+   of them ran past a 1,100px window, and the bench's own pickers need the full width besides. */
+.bionet .shell > .body { flex: 1; display: grid; grid-template-columns: 11.5rem 1fr; min-height: 0;
+  border-top: 1px solid var(--bionet-rule) }
+.bionet nav { padding: .6rem .6rem 2rem; overflow: auto; border-right: 1px solid var(--bionet-rule);
+  display: flex; flex-direction: column; gap: .15rem }
+.bionet nav .group { display: contents }
+.bionet nav .heading { margin: .7rem 0 .2rem; padding: 0 .6rem; font-size: .72rem; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--bionet-dim) }
+.bionet nav .group:first-child .heading { margin-top: 0 }
+.bionet .tab { background: none; border: 0; border-left: 2px solid transparent; color: var(--bionet-dim);
+  padding: .34rem .6rem; font: inherit; cursor: pointer; border-radius: 0; text-align: left; width: 100% }
+.bionet .tab:hover { color: var(--bionet-ink) }
+.bionet .tab.on { color: var(--bionet-ink); border-left-color: var(--bionet-yours); font-weight: 600;
+  background: var(--bionet-surface) }
+/* Narrow: the side list becomes a wrapping row above the content, so it can never be cut off. */
+@media (max-width: 860px) {
+  .bionet .shell > .body { grid-template-columns: 1fr; grid-template-rows: auto 1fr }
+  .bionet nav { flex-direction: column; gap: .2rem; padding: .5rem 1rem;
+    border-right: 0; border-bottom: 1px solid var(--bionet-rule); overflow: visible }
+  /* Each heading keeps its own views on one wrapping line. Given a line of its own it read well
+     and cost two thirds of a 720px-tall window before any of the lab showed. */
+  .bionet nav .group { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .4rem }
+  .bionet nav .heading { margin: 0; padding: 0 }
+  .bionet .tab { width: auto; border-left: 0; border-bottom: 2px solid transparent; padding: .3rem .55rem }
+  .bionet .tab.on { border-left: 0; border-bottom-color: var(--bionet-yours) }
+}
+.bionet main { overflow: auto; padding: 1.25rem 1.5rem 3rem; min-width: 0 }
 .bionet main.centre { display: grid; place-content: center; justify-items: center; gap: 1rem; padding: 2rem; min-height: 100% }
 .bionet .card { background: var(--bionet-surface); border: 1px solid var(--bionet-rule); border-radius: 10px; padding: 1.1rem 1.25rem; margin: 0 0 1rem }
 .bionet .card.narrow { max-width: 34rem } .bionet .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1rem; max-width: 60rem; width: 100% }

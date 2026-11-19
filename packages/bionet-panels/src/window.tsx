@@ -26,12 +26,39 @@ export const TABS = ["freezer", "places", "people", "history", "sharing"] as con
 /** One of them. */
 export type Tab = (typeof TABS)[number];
 
+/**
+ * The headings the views are gathered under, in the order they are shown.
+ *
+ * A flat list of views says nothing about what they are. Thirteen of them say nothing and do not
+ * fit: the bar they used to sit in ran 16 pixels past a 1,100 pixel window, and further with every
+ * digit the counts gained. Gathered, a person can see at a glance that the freezer and the strains
+ * are the same kind of thing and the glossary is not.
+ */
+export const GROUPS = ["What is here", "At the bench", "The lab", "Reference"] as const;
+
+/** One of them, or any other heading a host sends. */
+export type Group = (typeof GROUPS)[number] | string;
+
+/** Which heading each of the window's own views belongs under. */
+const UNDER: Record<Tab, Group> = {
+  freezer: "What is here", places: "What is here",
+  people: "The lab", history: "The lab", sharing: "The lab",
+};
+
 /** A view a host adds to the window beside its own, such as a drawing of the lab. */
 export interface ExtraTab {
   /** What tells it apart. */
   id: string;
   /** What its tab says. */
   label: string;
+  /**
+   * The heading to gather it under. One of {@link GROUPS}, or any words of the host's own, which
+   * are then shown as their own heading after the ones the window knows.
+   *
+   * A view with none is shown under no heading at the end, so a host that says nothing still gets
+   * every one of its views.
+   */
+  group?: Group;
   /** What it shows. It is inside the lab's provider, so it may use the hooks. */
   view: ReactNode;
 }
@@ -91,20 +118,72 @@ function Body({ first, at, extra }: { first: string; at?: string; extra: readonl
         </div>
         <SyncStatus peer={state.peer} />
       </header>
-      <nav>
-        {TABS.map((one) => <button key={one} type="button" className={one === tab ? "tab on" : "tab"} onClick={() => setTab(one)}>{label[one]}</button>)}
-        {extra.map((one) => <button key={one.id} type="button" className={one.id === tab ? "tab on" : "tab"} onClick={() => setTab(one.id)}>{one.label}</button>)}
-      </nav>
-      <main>
-        <Trouble />
-        {tab === "freezer" && <Freezer />}
-        {tab === "places" && <Places />}
-        {tab === "people" && <People />}
-        {tab === "history" && <History />}
-        {tab === "sharing" && <Sharing />}
-        {extra.find((one) => one.id === tab)?.view}
-      </main>
+      <div className="body">
+        <Ways tab={tab} setTab={setTab} label={label} extra={extra} />
+        <main>
+          <Trouble />
+          {tab === "freezer" && <Freezer />}
+          {tab === "places" && <Places />}
+          {tab === "people" && <People />}
+          {tab === "history" && <History />}
+          {tab === "sharing" && <Sharing />}
+          {extra.find((one) => one.id === tab)?.view}
+        </main>
+      </div>
     </div>
+  );
+}
+
+/** One thing a person can go to. */
+interface Way { id: string; label: string; group: Group }
+
+/**
+ * Every view, in order, gathered under its heading.
+ *
+ * The headings the window knows come first, in {@link GROUPS} order; a heading a host invented
+ * follows them, in the order its views were given; and anything with no heading comes last under
+ * none, so nothing a host sends can go missing by saying nothing about where it belongs.
+ *
+ * @param ways - Every view, in the order they were declared.
+ * @returns Each heading with its views, headings a person should not be shown marked `null`.
+ */
+export function gather(ways: readonly Way[]): { group: Group | null; ways: Way[] }[] {
+  const held = new Map<Group | null, Way[]>();
+  for (const one of ways) {
+    const under = one.group === "" ? null : one.group;
+    held.set(under, [...(held.get(under) ?? []), one]);
+  }
+  const known = GROUPS.filter((one) => held.has(one)).map((one) => ({ group: one as Group | null, ways: held.get(one)! }));
+  const theirs = [...held.keys()]
+    .filter((one): one is Group => one !== null && !(GROUPS as readonly string[]).includes(one))
+    .map((one) => ({ group: one as Group | null, ways: held.get(one)! }));
+  const loose = held.has(null) ? [{ group: null, ways: held.get(null)! }] : [];
+  return [...known, ...theirs, ...loose];
+}
+
+/** The way through the window: every view, under its heading, down the side. */
+function Ways({ tab, setTab, label, extra }: {
+  tab: string; setTab: (to: string) => void;
+  label: Record<Tab, string>; extra: readonly ExtraTab[];
+}) {
+  const gathered = gather([
+    ...TABS.map((one) => ({ id: one, label: label[one], group: UNDER[one] })),
+    ...extra.map((one) => ({ id: one.id, label: one.label, group: one.group ?? "" })),
+  ]);
+  return (
+    <nav aria-label="The lab">
+      {gathered.map(({ group, ways }) => (
+        <div className="group" key={group ?? "loose"}>
+          {group !== null && <p className="heading">{group}</p>}
+          {ways.map((one) => (
+            <button key={one.id} type="button" className={one.id === tab ? "tab on" : "tab"}
+                    aria-current={one.id === tab ? "page" : undefined} onClick={() => setTab(one.id)}>
+              {one.label}
+            </button>
+          ))}
+        </div>
+      ))}
+    </nav>
   );
 }
 

@@ -8,7 +8,7 @@
 import { readFileSync } from "node:fs";
 import { Lab, memoryKeys, memoryStore, sourceOf, type LabSnapshot, type LabSource, type PeerView } from "@biolibs/bionet-client";
 import { BackUpKey, BackUpLab, Freezer, History, LabWindow, People, Places, RestoreKey, RestoreLab, Sharing, SyncStatus, TABS, amountOf, describeEntry,
-         endsWords, listedParts, madeFrom, placePath, placeTree, syncWords, whereWords } from "@biolibs/bionet-panels";
+         endsWords, gather, listedParts, madeFrom, placePath, placeTree, syncWords, whereWords } from "@biolibs/bionet-panels";
 import { LabProvider } from "@biolibs/bionet-react";
 import { cssVariable, MEANINGS } from "@biolibs/bionet-theme";
 import { createElement as h, type ReactElement } from "react";
@@ -56,6 +56,49 @@ describe("the window", () => {
     expect(inLab.startsWith('<div class="bionet">')).toBe(true);
   });
 
+  it("gathers the views under headings, and loses none of them", () => {
+    const ways = [
+      { id: "freezer", label: "Freezer · 9", group: "What is here" },
+      { id: "history", label: "History · 680", group: "The lab" },
+      { id: "work", label: "Work", group: "At the bench" },
+      { id: "places", label: "Places · 11", group: "What is here" },
+      { id: "glossary", label: "Glossary", group: "Reference" },
+    ];
+    const gathered = gather(ways);
+    // The headings come in the order the window declares them, not the order the views arrived.
+    expect(gathered.map((one) => one.group)).toEqual(["What is here", "At the bench", "The lab", "Reference"]);
+    // And within a heading, the order they were declared.
+    expect(gathered[0]!.ways.map((one) => one.id)).toEqual(["freezer", "places"]);
+    expect(gathered.flatMap((one) => one.ways)).toHaveLength(ways.length);
+  });
+
+  it("still shows a view whose host said nothing about where it belongs", () => {
+    // A host that does not know about headings must not have its views disappear: the whole point
+    // of gathering is that a person can see everything at once.
+    const gathered = gather([
+      { id: "freezer", label: "Freezer", group: "What is here" },
+      { id: "mystery", label: "Something a host added", group: "" },
+      { id: "theirs", label: "Under their own heading", group: "The machine shop" },
+    ]);
+    expect(gathered.map((one) => one.group)).toEqual(["What is here", "The machine shop", null]);
+    expect(gathered.at(-1)!.ways.map((one) => one.id)).toEqual(["mystery"]);
+    expect(gathered.flatMap((one) => one.ways)).toHaveLength(3);
+  });
+
+  it("draws every view the host adds, under its heading", async () => {
+    const { lab } = await wren();
+    const drawn = draw(lab, h(LabWindow, {
+      extra: [{ id: "scene", group: "At the bench", label: "Lab", view: null },
+              { id: "loose", label: "No heading given", view: null }],
+    }));
+    for (const words of ["What is here", "At the bench", "The lab", "Freezer · 1", "Lab", "No heading given"]) {
+      expect(drawn).toContain(words);
+    }
+    // Nothing is shown under a heading a host never asked for.
+    expect(drawn).not.toContain("Reference");
+    lab.close();
+  });
+
   it("tells somebody who has not been let in to wait, and shows their key", async () => {
     const lab = await fresh();
     await lab.setPerson("Bob");
@@ -71,7 +114,7 @@ describe("the window", () => {
     expect(TABS).toEqual(["freezer", "places", "people", "history", "sharing"]);
     expect(draw(lab, h(LabWindow, { tab: "places" }))).toContain("Where things are kept");
     const withExtra = draw(lab, h(LabWindow, { tab: "scene", extra: [{ id: "scene", label: "Lab", view: h("p", null, "a drawing of the lab") }] }));
-    expect(withExtra).toContain('<button type="button" class="tab on">Lab</button>');
+    expect(withExtra).toContain('<button type="button" class="tab on" aria-current="page">Lab</button>');
     expect(withExtra).toContain("a drawing of the lab");
     expect(draw(lab, h(LabWindow, { tab: "people" }))).toContain("Who is in the lab");
     expect(draw(lab, h(LabWindow, { tab: "history" }))).toContain("Everything that has happened");
@@ -320,7 +363,12 @@ describe("the stylesheet", () => {
   const css = readFileSync(new URL("../panels.css", import.meta.url), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
 
   it("reaches nothing outside the panels", () => {
-    for (const rule of css.split("}")) {
+    // Only a media query may wrap rules: anything else at-rule shaped would hide a selector from
+    // the check below, or reach outside the panels on its own the way @import does.
+    for (const [at] of css.matchAll(/@[a-z-]+/g)) expect(at, at).toBe("@media");
+    // Its prelude is not a selector, so it is dropped; the rules nested inside it are still read
+    // one by one, and each has to name the panels like any other.
+    for (const rule of css.replace(/@media[^{]*\{/g, "").split("}")) {
       const selector = rule.split("{")[0]!.trim();
       if (selector === "") continue;
       for (const one of selector.split(",")) expect(one.trim(), one).toMatch(/^\.bionet(\s|$)/);
