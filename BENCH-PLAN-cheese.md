@@ -88,6 +88,9 @@ from either side.
 
 ## 3. Every construct's reading frame, checked by machine
 
+> Derived again through pydna's own open-reading-frame search on 19 November, which agrees with this
+> exactly — see §9. What follows is unchanged.
+
 Until now the designs had been read through by hand. Done properly this time: for each construct, find
 the open reading frame that runs through the insert, translate it, and check it contains the intended
 protein exactly.
@@ -632,6 +635,72 @@ The ten that write are how a key with no hands proposes work: `propose_assembly`
 `propose_digest`, `propose_ligation`, `propose_transformation`, `propose_induction`, `add_part`,
 `keep_from_ncbi`, `file_the_work`, `withdraw_proposal`. Everything in this lab was proposed by a
 person at a keyboard. Nothing says it had to be.
+
+---
+
+## 9. Where this was hand-rolled over a port, and what happened when it was not
+
+Added 19 November 2026, on a standing instruction: **where biolibs carries a port of something the
+bio community already supports, use the port.** Not because the port is faster to reach for, but
+because a result that came out of it is one anybody working in Biopython or pydna can check against
+the upstream they already trust. A result from five lines written here is a claim rather than a
+property.
+
+Three places in this document were derived by hand. They were gone back over.
+
+### The reading frames — a genuine violation, now fixed
+
+§3 said every construct's frame had been "checked by machine". The machine was an open-reading-frame
+walk written here, a loop over codons. pydna has one — `threeFrameOrfs`, ported in `@biolibs/dseq`
+along with the surprising way pydna turns a length limit into a codon count. So §3 was derived again
+through it, over each ring read twice so a frame may wrap the origin:
+
+| | start | frame | leader | gene | tail |
+|---|---|---|---|---|---|
+| pPIC9K × 4 caseins | 8990 | 2 | 85 | 169–209 | 0 |
+| pPIC9K-prochymosin | 8990 | 2 | 85 | 365 | 0 |
+| pPICZ-Fam20C / Fam20A | 940 | 1 | 85 | 492 / 508 | 0 |
+| pJTFlag-bovine-S22E-Q38E | 5070 | 0 | 2 | 209 | 8 |
+
+**It agrees with the hand-written search exactly** — the same starts, the same leaders, the same
+genes, the same tails. So §3's claim stands, and now stands on something somebody else can check.
+
+### The junction — not a violation, and worth saying why
+
+The other hand-written piece finds where a construct stops matching the vector it came from: a common
+prefix and a common suffix. `Bio.Align` is a port and looks like the tool for it, so it was tried.
+
+It is the wrong tool, and the reason is instructive. An aligner optimises a score, so with ordinary
+gap penalties it finds five blocks rather than two — eleven bases of the gene happen to match eleven
+bases of the vector, and matching them beats opening a gap. With a gap penalty stiff enough to stop
+that, it settles on two blocks and describes pPIC9K-alphaS1 as **578 bases inserted at 9264, with the
+vector losing nothing**, where the prefix-and-suffix walk says **600 bases replacing 22, from 9245**.
+
+Both describe the same molecule. The difference is that the alignment's blocks are ungapped but not
+identical: that first block of 9,264 bases carries **12 mismatches**, and the 9-base block after the
+insert carries 2 more. Fourteen bases the aligner calls aligned are bases that differ.
+
+That is the right answer to "what is the best alignment of these two" and the wrong answer to "which
+bases are identical". The second question is exact and has no Biopython counterpart, so the short
+exact function is correct here. The rule is to use the port where one exists for the question being
+asked — not to force the nearest port and quietly change the question.
+
+### What stays hand-written, and why
+
+- **The insert span**, as above.
+- **Scanning a protein with a position-weight matrix** (§6). `@biolibs/motifs` builds the matrix over
+  a protein alphabet quite happily; its `calculate` refuses one, because `Bio.motifs` scanning is
+  DNA-only and the port is faithful to that. The matrix is the port's; only the summing is not.
+- **The S-x-E and S/T-x-x-D/E tests** (§6) and the N-glycosylation sequon search (§4). These are
+  rules read out of the literature, not algorithms with an upstream.
+- **Band comparison** (§1) and the **virtual gel** it rests on. `@biolibs/gel` says plainly it has no
+  Biopython counterpart; there is nothing to defer to.
+
+Everything else in this document went through a port: translation and the genetic codes through
+`seq`, enzymes through `restriction`, cutting and ligation through `cloning`, `dseq` and `assembly2`,
+primers and products through `pcr`, alignment through `align`, matrices through `motifs`, files
+through `seqio`, structures through `pdb` and `pdblist`, and the records themselves through `uniprot`
+and `entrez`.
 
 ---
 
