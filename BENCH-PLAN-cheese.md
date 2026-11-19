@@ -532,6 +532,9 @@ something cannot be known has to be made against it rather than against memory.
 So: 28 used, 5 that genuinely do not apply, 4 that apply and have not been used. Not one of those 4
 is a blocker — they are work not yet done, which is a different thing and should be said differently.
 
+**Three of the four were used the same day; §8 says what each found.** Superposition is the one left,
+and it stays marginal until there is a second structure worth comparing against.
+
 ### What the two new ones found
 
 `uniprot` lists one structure for FAM20C and four for FAM20A, and **5YH3 is both of them together**:
@@ -552,6 +555,83 @@ The whole interface is inside both constructs, with room either side. So the mat
 taken from UniProt in §5 are not merely the right chains — they keep the surface by which these two
 proteins recognise each other. That does not say the complex will form in a yeast secretory pathway,
 which remains the project's central bet. It does say the parts needed for it to form are being made.
+
+---
+
+## 8. The three that were left, used
+
+Added 19 November 2026, straight after §7 listed them. Each took under an hour, which is itself the
+finding: none of these was a hard thing waiting on a decision.
+
+### `seqedit` — the tag, put in properly
+
+The His tag was added by slicing strings. `insertBases` does it on a record and moves every feature
+after the cut, so the same edit was done again as a check: insert 24 bases at 5709 of the untagged
+construct.
+
+```
+before   casein 5076..5709   CK2α 5729..6902   CK2β 6922..7564
+after    casein 5076..5709   CK2α 5753..6926   CK2β 6946..7588
+```
+
+The molecule that comes out is `cdseguid=dPXCUWTr_AwEEjOtS_UDtStw9WE` — the one the lab plans to
+make, so the string surgery was right.
+
+**But look at the casein.** Both subunits moved by exactly 24 and the casein did not grow. That is
+not a bug: an insertion exactly at a feature's end is ambiguous, and `seqedit` resolves it by leaving
+the feature alone. Checked on a bare case — a feature at 10..20, three bases inserted:
+
+| inserted at | the feature becomes |
+|---|---|
+| 9, before it | 13..23 — moved |
+| 15, inside it | 10..23 — grown |
+| 20, its end | 10..20 — **unchanged** |
+| 21, after it | 10..20 — unchanged |
+
+So **a C-terminal tag added this way sits outside the coding sequence it belongs to** unless somebody
+extends the feature deliberately. The exported GenBank in `cheese-constructs/` has it right, because
+those features are found by matching parts rather than carried through an edit. Anyone editing a
+record by hand should know this.
+
+### `seqmap` — the maps that were lost
+
+The figure generator for the BioCurious document went with a cleared scratchpad, and the document has
+been waiting on it. `seqmap` is the geometry: `ringPath` for a feature's arc, `packLanes` to stack
+what sits inside something else, `tickStep` and `tickPositions` for the scale.
+
+Nine plasmid maps are in `cheese-constructs/maps/`, drawn from each construct's GenBank features —
+every feature an arc pointing the way it is read, labelled around the ring, with the nested ones in
+lanes above their parent, the scale ticked, and the length and topology in the middle. Each says
+*designed, not yet made* on its face, because every one of them is.
+
+### `bionet-agent` — what an adviser can already do
+
+Opened against a copy of the real lab, with nothing reaching outside it, an adviser is handed **41
+tools, 10 of which write**. Among the ones that only read:
+
+| | |
+|---|---|
+| `design_the_construct` | "Put a promoter, a signal, a gene and a tag together… and check that the protein survives it" |
+| `design_assembly` | design a ring from several pieces, through the ligation engine |
+| `work_out_digest`, `work_out_ligation`, `work_out_pcr` | the benches, without a bench |
+| `check_read` | a sequencing read against the design |
+| `write_out_the_method`, `write_out_the_protocol` | the method, and the sheet to carry |
+| `count_codon_usage`, `optimise_codons`, `translate_gene` | the codon work |
+
+Run on the casein, `design_the_construct` gives back the assembled sequence, the protein, each piece
+marked with where it lies, the junctions between them, and weighted checks — on the bare gene it says
+"The translated stretch does not begin with methionine" and "There is no stop codon at the end",
+both true of it and both answered by the vector.
+
+**This is the sharpest thing in the audit.** The construct designer that checks the protein survives
+the assembly already existed, and every construct in this project was put together by hand instead,
+including the one where the tag went missing. That is not a limitation of the software. It is a tool
+that was there and was not picked up.
+
+The ten that write are how a key with no hands proposes work: `propose_assembly`, `propose_pcr`,
+`propose_digest`, `propose_ligation`, `propose_transformation`, `propose_induction`, `add_part`,
+`keep_from_ncbi`, `file_the_work`, `withdraw_proposal`. Everything in this lab was proposed by a
+person at a keyboard. Nothing says it had to be.
 
 ---
 

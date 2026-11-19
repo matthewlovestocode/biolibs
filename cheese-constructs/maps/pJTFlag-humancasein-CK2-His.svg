@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 760" width="760" height="760" font-family="ui-sans-serif, system-ui, sans-serif">
+<rect width="760" height="760" fill="#ffffff"/>
+<path d="M380,184 L380,174" stroke="#94a3b8" stroke-width="1" fill="none"/>
+<text x="380.0" y="198.0" font-size="11" fill="#64748b" text-anchor="middle" dominant-baseline="middle">0 kb</text>
+<path d="M522.003,244.903 L529.248,238.01" stroke="#94a3b8" stroke-width="1" fill="none"/>
+<text x="511.9" y="254.6" font-size="11" fill="#64748b" text-anchor="middle" dominant-baseline="middle">1 kb</text>
+<path d="M575.757,389.763 L585.744,390.262" stroke="#94a3b8" stroke-width="1" fill="none"/>
+<text x="561.8" y="389.1" font-size="11" fill="#64748b" text-anchor="middle" dominant-baseline="middle">2 kb</text>
+<path d="M507.855,528.556 L514.379,536.136" stroke="#94a3b8" stroke-width="1" fill="none"/>
+<text x="498.7" y="517.9" font-size="11" fill="#64748b" text-anchor="middle" dominant-baseline="middle">3 kb</text>
+<path d="M360.497,575.027 L359.502,584.978" stroke="#94a3b8" stroke-width="1" fill="none"/>
+<text x="361.9" y="561.1" font-size="11" fill="#64748b" text-anchor="middle" dominant-baseline="middle">4 kb</text>
+<path d="M225.259,500.297 L217.364,506.434" stroke="#94a3b8" stroke-width="1" fill="none"/>
+<text x="236.3" y="491.7" font-size="11" fill="#64748b" text-anchor="middle" dominant-baseline="middle">5 kb</text>
+<path d="M186.186,350.806 L176.298,349.317" stroke="#94a3b8" stroke-width="1" fill="none"/>
+<text x="200.0" y="352.9" font-size="11" fill="#64748b" text-anchor="middle" dominant-baseline="middle">6 kb</text>
+<path d="M267.561,219.459 L261.824,211.268" stroke="#94a3b8" stroke-width="1" fill="none"/>
+<text x="275.6" y="230.9" font-size="11" fill="#64748b" text-anchor="middle" dominant-baseline="middle">7 kb</text>
+<circle cx="380" cy="380" r="206" fill="none" stroke="#cbd5e1" stroke-width="2"/>
+<path d="M382.05,150.009 L461.648,174.636 L381.89,168.008 Z" fill="#047857" fill-opacity="0.82" stroke="#047857" stroke-width="1"><title>F1 origin — 12..467 (456 bp)</title></path>
+<text x="426.6" y="142.5" font-size="11" fill="#047857" text-anchor="start" dominant-baseline="middle" transform="rotate(11.1 426.6 142.5)">F1 origin</text>
+<path d="M609.773,267.127 L488.096,157.909 L593.617,275.063 Z" fill="#1d4ed8" fill-opacity="0.82" stroke="#1d4ed8" stroke-width="1"><title>aph — 560..1375 (816 bp)</title></path>
+<text x="569.2" y="190.2" font-size="11" fill="#1d4ed8" text-anchor="start" dominant-baseline="middle" transform="rotate(44.9 569.2 190.2)">aph</text>
+<path d="M595.372,299.286 L599.445,406.174 L578.517,305.603 Z" fill="#047857" fill-opacity="0.82" stroke="#047857" stroke-width="1"><title>pBR322 origin — 1497..2085 (589 bp)</title></path>
+<text x="620.3" y="351.0" font-size="11" fill="#047857" text-anchor="start" dominant-baseline="middle" transform="rotate(83.1 620.3 351.0)">pBR322 origin</text>
+<path d="M626.819,447.943 L608.966,472.647 L609.465,443.165 Z" fill="#6d28d9" fill-opacity="0.82" stroke="#6d28d9" stroke-width="1"><title>bom — 2271..2413 (143 bp)</title></path>
+<text x="633.8" y="466.0" font-size="11" fill="#6d28d9" text-anchor="end" dominant-baseline="middle" transform="rotate(288.7 633.8 466.0)">bom</text>
+<path d="M566.936,513.997 L577.402,479.365 L552.306,503.51 Z" fill="#1d4ed8" fill-opacity="0.82" stroke="#1d4ed8" stroke-width="1"><title>Rop — 2515..2706 (192 bp)</title></path>
+<text x="587.1" y="505.3" font-size="11" fill="#1d4ed8" text-anchor="end" dominant-baseline="middle" transform="rotate(301.2 587.1 505.3)">Rop</text>
+<path d="M273.025,583.608 L444.073,591.508 L281.397,567.674 Z" fill="#1d4ed8" fill-opacity="0.82" stroke="#1d4ed8" stroke-width="1"><title>lacI — 3515..4474 (960 bp)</title></path>
+<text x="357.1" y="620.9" font-size="11" fill="#1d4ed8" text-anchor="end" dominant-baseline="middle" transform="rotate(365.4 357.1 620.9)">lacI</text>
+<path d="M238.973,593.652 L231.182,577.135 L248.889,578.63 Z" fill="#b45309" fill-opacity="0.82" stroke="#b45309" stroke-width="1"><title>lacI promoter — 4598..4675 (78 bp)</title></path>
+<text x="225.4" y="598.9" font-size="11" fill="#b45309" text-anchor="end" dominant-baseline="middle" transform="rotate(395.2 225.4 598.9)">lacI promoter</text>
+<path d="M198.188,520.87 L202.596,511.791 L212.417,509.845 Z" fill="#6d28d9" fill-opacity="0.82" stroke="#6d28d9" stroke-width="1"><title>lac operator — 5003..5027 (25 bp)</title></path>
+<text x="187.2" y="526.3" font-size="11" fill="#6d28d9" text-anchor="end" dominant-baseline="middle" transform="rotate(412.8 187.2 526.3)">lac operator</text>
+<path d="M172.782,530.322 L177.399,521.286 L187.352,519.752 Z" fill="#b45309" fill-opacity="0.82" stroke="#b45309" stroke-width="1"><title>regulatory — 5042..5064 (23 bp)</title></path>
+<text x="161.6" y="535.3" font-size="11" fill="#b45309" text-anchor="end" dominant-baseline="middle" transform="rotate(414.6 161.6 535.3)">regulatory</text>
+<path d="M147.133,539.049 L107.61,398.237 L161.996,528.897 Z" fill="#1d4ed8" fill-opacity="0.82" stroke="#1d4ed8" stroke-width="1"><title>human β-casein with C-terminal His6, E. coli codons — 5077..5733 (657 bp)</title></path>
+<text x="102.2" y="476.1" font-size="11" fill="#1d4ed8" text-anchor="end" dominant-baseline="middle" transform="rotate(430.9 102.2 476.1)">human β-casein with C-terminal His</text>
+<path d="M150.295,391.643 L242.599,206.905 L168.272,390.732 Z" fill="#1d4ed8" fill-opacity="0.82" stroke="#1d4ed8" stroke-width="1"><title>human CK2α, E. coli codons — 5754..6926 (1173 bp)</title></path>
+<text x="159.5" y="280.3" font-size="11" fill="#1d4ed8" text-anchor="start" dominant-baseline="middle" transform="rotate(294.3 159.5 280.3)">human CK2α, E. coli codons</text>
+<path d="M224.109,176.938 L346.876,135.231 L235.07,191.216 Z" fill="#1d4ed8" fill-opacity="0.82" stroke="#1d4ed8" stroke-width="1"><title>human CK2β, E. coli codons — 6947..7588 (642 bp)</title></path>
+<text x="277.0" y="132.6" font-size="11" fill="#1d4ed8" text-anchor="start" dominant-baseline="middle" transform="rotate(337.4 277.0 132.6)">human CK2β, E. coli codons</text>
+<path d="M366.403,150.402 L375.523,159.045 L367.467,168.371 Z" fill="#b45309" fill-opacity="0.82" stroke="#b45309" stroke-width="1"><title>T7 terminator — 7682..7729 (48 bp)</title></path>
+<text x="370.4" y="138.2" font-size="11" fill="#b45309" text-anchor="start" dominant-baseline="middle" transform="rotate(357.7 370.4 138.2)">T7 terminator</text>
+<text x="380" y="370" font-size="19" font-weight="600" fill="#0f172a" text-anchor="middle">pJTFlag-humancasein-CK2-His</text>
+<text x="380" y="394" font-size="13" fill="#64748b" text-anchor="middle">7,754 bp · circular</text>
+<text x="380" y="414" font-size="11" fill="#94a3b8" text-anchor="middle">designed, not yet made</text>
+</svg>
