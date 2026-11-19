@@ -702,6 +702,61 @@ primers and products through `pcr`, alignment through `align`, matrices through 
 through `seqio`, structures through `pdb` and `pdblist`, and the records themselves through `uniprot`
 and `entrez`.
 
+### The other READMEs are clean, and one of them caught me out
+
+All 42 package READMEs were scanned for the same fault: an example doing biology by hand that another
+package already does. Code blocks were pulled out and checked for codon walks, base loops, hand-written
+complements, melting temperatures and translations, and for helpers defined inline. **Nothing.** The
+twenty-two helpers defined across all the examples are a web server, a React component, a write sink,
+a stdout capture and a dozen lookups in a result — bookkeeping, not biology.
+
+`features` is worth singling out as the standard. It has no Biopython counterpart and says so in its
+second paragraph, and then says **"This is not alignment"** and explains that it matches base for base
+over a piece's whole length. That is the honest form: not a port, and clear about why not.
+
+But `seqtools`' own README shows `new CodonAdaptationIndex(...)` — a port of `Bio.SeqUtils` — and
+earlier in this project I recorded that biolibs had no codon adaptation index and dropped it from the
+plan. It has two: that one, and pydna's `cai` in `@biolibs/dseq`. The item was dropped on a belief,
+not a fact. So it was done.
+
+### Codon adaptation index, the item that was dropped
+
+Built with Biopython's class from each host's own genes, fetched through `entrez`. The canonical index
+uses genes known to be highly expressed; what is available here is a stretch of each genome, so these
+weights are the host's **ordinary** usage. The number is therefore "how like this host's average genes
+is it", which is the right question for whether a written gene is unusual, and not the stronger claim
+that it reads like a ribosomal protein.
+
+| host | its own genes | what we wrote |
+|---|---|---|
+| *Komagataella phaffii*, 225 genes | 0.678 – 0.824, middle 0.758 | **0.832 – 0.926** |
+| *Escherichia coli*, 360 genes | 0.465 – 0.848, middle 0.691 | **0.896 – 0.997** |
+
+| | |
+|---|---|
+| β-casein (Pichia) | 0.926 |
+| κ-casein | 0.906 |
+| prochymosin | 0.899 |
+| αS1-casein | 0.892 |
+| αS2-casein | 0.861 |
+| Fam20A / Fam20C | 0.845 / 0.832 |
+| CK2β / CK2α (*E. coli*) | 0.997 / 0.993 |
+| β-casein S22E Q38E / human β-casein | 0.916 / 0.896 |
+
+**Every gene scores above every natural gene in its host.** Two things follow.
+
+The reassuring one: none of them is unusual *downwards*. A heterologous gene that fails because it is
+full of codons the host has little tRNA for is the classic failure, and no gene here is anywhere near
+that. This does not predict yield — nothing does — but it rules that specific failure out.
+
+The one to keep in mind: scoring above every natural gene is itself unnatural, and CK2α and CK2β at
+0.993 and 0.997 are very close to using the preferred codon everywhere. There is a reported concern
+that a gene made entirely of fast codons can translate too smoothly for a chain to fold as it comes
+off, the rare codons in natural genes being read as pauses the protein uses. It is argued about rather
+than settled. It matters least for the caseins, which are meant not to fold at all, and most for
+CK2α, prochymosin and the two Fam20s, which are folded enzymes. If one of those comes out insoluble
+with everything else working, this is a thing to look at before the host or the leader.
+
 ---
 
 # The conditional: what to do about each outcome
@@ -778,8 +833,9 @@ has made cheese is worth more than someone who has read about it.
 
 Said plainly, because the list above might suggest more than it should.
 
-- **Whether anything expresses.** Codon usage, GC content and the absence of cryptic signals say a gene
-  is not obviously broken. They do not predict yield, and nothing does. (§5 revises the rest of this
+- **Whether anything expresses.** Codon usage, GC content, codon adaptation index and the absence of
+  cryptic signals say a gene is not obviously broken, and §9 now rules out rare-codon starvation
+  specifically. They do not predict yield, and nothing does. (§5 revises the rest of this
   list: several items once on it were not unknowable, only unlooked-up.)
 - **Whether a protein folds.** Caseins are meant not to; chymosin and the kinase are meant to.
 - **Whether the kinase and its substrate meet in the same compartment.** This is the project's central
