@@ -1058,6 +1058,33 @@ came from. The duplex is still 9,761 bp, which is what a gel shows and what the 
 setting says. The ends are recorded as `{left: -4, right: -4}`, so the molecule is unambiguous. This
 is the same convention every cut piece in the project already uses.
 
+### Republished, and taken by a stranger
+
+The method published earlier today said in its own note that linearising still had to happen and
+belonged in a plan of its own. It now does, so the method was republished: **34 steps**, assembly 9,
+digest 7, transformation 9, induction 9, signed, with the earlier one kept beside it as
+`method-2026-11-19-before-linearisation.json`.
+
+Checked by reading the published file back rather than by trusting the publish. Each digest step
+(21–27) makes a linearised molecule, and each Pichia transformation (28–34) takes that molecule **by
+checksum** — matched in the document, not by name. The two transformations into BL21(DE3) (19, 20)
+take the circle. The lab's private name for a strain nobody has made, `GS115 carrying …`, appears
+**0 times**: it does not travel.
+
+Then the harder check: a throwaway lab, founded fresh with nothing in it, was handed the file.
+
+| | |
+|---|---|
+| steps proposed | **25** |
+| missing | **0** |
+| cannot be sent | 1 — *something the publishing lab had not made: a strain* |
+
+**0 missing** means the method carries enough sequence for a lab holding nothing to make everything
+it starts from. **25 of 34** is right, not a shortfall: the nine inductions each rest on a strain
+that does not exist anywhere, so they cannot be proposed in a lab that has not made it yet, and the
+method says so instead of naming something imaginary. A stranger gets every step that can be followed
+from molecules, and is told plainly which ones wait on a living thing they have to make themselves.
+
 ### Left alone on purpose
 
 - **The induction plans still name the circle** as `construct` alongside the prospect they actually
