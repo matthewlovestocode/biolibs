@@ -627,6 +627,46 @@ await write(claude, claudesKey, annotatePart(checksum, [{ type: "CDS", label: "a
 (await mergeLog(ada)).parts.find((one) => one.checksum === checksum)?.features[0]?.label;   // "as Ada reads it"
 ```
 
+### What it should look like if it worked
+
+A plan says what it would **make**. It says nothing about what somebody would **see** — the bands a
+check digest should show, the size a colony PCR should give, where a protein should run. Those are a
+different kind of claim: one is about a molecule, the other about looking at one, and a reading can
+be wrong about a molecule that is perfectly correct.
+
+```ts
+import { expectOf, meetExpectation, newExpectationId } from "@biolibs/bionet";
+
+const check = newExpectationId();
+await write(ada, adasKey, expectOf({
+  expect: check, plan: proposed, kind: "digest",
+  says: "two bands: the vector at about 4,757 and the insert at 614",
+  numbers: [4757, 614], settings: { cut_with: "XhoI and AvrII", gel: "1.5" }, note: null,
+}));
+(await mergeLog(ada)).expectations[0]?.met;        // null: nobody has looked
+
+// Somebody runs the gel and says what they saw. The reading is theirs; so is the judgement.
+await write(ada, adasKey, meetExpectation(check, true, [4757, 611], { note: "the small band ran fast" }));
+(await mergeLog(ada)).expectations[0]?.met?.met;   // true
+```
+
+The readings are whole numbers, because an entry carries only whole numbers: a band measured at
+4,757.5 would have two devices rounding differently and signing different documents, so a figure with
+a fraction in it goes in `says`, where a person reads it. The log will not sign one.
+
+**Whether a reading matches is a person's call, not the log's.** A gel is read by eye, and two bands
+a tool would call different may be one band to whoever ran it — so `met` is said, the way a run's
+outcome is said, and `saw` records the reading it was said about. A reading that was not what anybody
+expected is a result and is recorded the same way; it is not an error and nothing is refused for it.
+
+An **adviser may write an expectation and may not meet one**. Saying what to look for is reading and
+working out, which is all an adviser does. Saying what was there is an act of somebody who was
+standing at a bench, and nothing with no hands was.
+
+Two people may read the same gel without having heard of each other. The lower entry ID stands, as
+everywhere else, and the disagreement is shown in `overlaps` rather than quietly resolved: two people
+reading one gel differently is worth somebody looking at.
+
 ### Moving entries between machines
 
 `mergeLog` works on whatever it is given. `sync.ts` is how entries are given, without opening a

@@ -13,6 +13,7 @@ import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, disc
          partChecksum, peer, publicInventory, putItem, recordRun, remember, settled, settledLabs, signInventory, verifyInventory,
          type Operation, type SignedEntry,
          addSpecimen, identifySpecimen, newSpecimenId, newPlanId, planRun, settlePlan,
+         expectOf, meetExpectation, newExpectationId,
          signingKeys, unsourced, whoHas, type SignedInventory } from "@biolibs/bionet";
 import { describe, expect, it } from "vitest";
 
@@ -315,5 +316,30 @@ describe("README: inside a lab", () => {
 
     await write(ada, adasKey, settlePlan(makes, null));
     expect((await mergeLog(ada)).plans.find((one) => one.plan === next)?.orphaned).toEqual([built]);
+  });
+
+  it("says what a step should look like if it worked, and what was seen", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+    await write(ada, adasKey, addPart({ sequence: F1, name: "f1" }));
+    const tube = newItemId();
+    await write(ada, adasKey, addItem({ item: tube, part: (await mergeLog(ada)).parts[0]!.checksum, amount: 10, unit: "µL" }));
+    const proposed = newPlanId();
+    await write(ada, adasKey, planRun({ plan: proposed, kind: "digest", instrument: null,
+                                        inputs: [{ item: tube, amount: 1, role: "plasmid" }],
+                                        expects: [], settings: {}, note: null }));
+
+    const check = newExpectationId();
+    await write(ada, adasKey, expectOf({
+      expect: check, plan: proposed, kind: "digest",
+      says: "two bands: the vector at about 4,757 and the insert at 614",
+      numbers: [4757, 614], settings: { cut_with: "XhoI and AvrII", gel: "1.5" }, note: null,
+    }));
+    expect((await mergeLog(ada)).expectations[0]?.met).toBeNull();
+
+    await write(ada, adasKey, meetExpectation(check, true, [4757, 611], { note: "the small band ran fast" }));
+    expect((await mergeLog(ada)).expectations[0]?.met?.met).toBe(true);
   });
 });

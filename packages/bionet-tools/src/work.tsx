@@ -51,6 +51,9 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
   const [sheet, setSheet] = useState<string | null>(null);
   const [taking, setTaking] = useState("");
   const [told, setTold] = useState<string | null>(null);
+  // Which expectation is being answered, and what the person says they saw.
+  const [answering, setAnswering] = useState<string | null>(null);
+  const [saw, setSaw] = useState("");
   // Whether each step's route has one answer. Putting a plan's pieces back together every way round
   // costs tens of milliseconds, so it is worked out once per plan and kept until that plan's product
   // or its enzymes change.
@@ -110,6 +113,15 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
   const file = async (plan: string, name: string): Promise<void> => {
     await act("setField", { on: "plan", id: plan, field: FILED_UNDER, value: name.trim() === "" ? null : name.trim() });
     setFiling(null); setInto("");
+  };
+  /**
+   * Say what was seen of an expectation. Whether it matches is the person's call, so the two buttons
+   * say what they saw and not whether the step passed: a reading that was not expected is a result.
+   */
+  const met = async (expectation: string, matched: boolean): Promise<void> => {
+    const numbers = saw.split(/[^0-9]+/).filter((one) => one !== "").map(Number).slice(0, 40);
+    await act("meet", { expect: expectation, met: matched, saw: numbers });
+    setAnswering(null); setSaw("");
   };
   const person = (key: string): string => lab.roster.find((one) => one.key === key)?.person ?? "a device";
   const partName = (checksum: string | undefined): string => lab.parts.find((one) => one.checksum === checksum)?.name ?? "a part";
@@ -306,6 +318,32 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
                   . Proposed by {person(step.plan.by)}.
                 </p>
                 {step.plan.note !== null && <p className="small why">{step.plan.note}</p>}
+                {(lab.expectations ?? []).filter((one) => one.plan === step.plan.plan).map((one) => (
+                  <div key={one.expect} className="small expectation">
+                    <p>
+                      <strong>Expect</strong> · {one.kind} — {one.says}
+                      {one.numbers.length > 0 && <span className="dim"> · {one.numbers.map((n) => n.toLocaleString("en-US")).join(", ")}</span>}
+                    </p>
+                    {one.met === null
+                      ? (answering === one.expect
+                          ? (
+                            <form className="row tight" onSubmit={(event) => { event.preventDefault(); void met(one.expect, true); }}>
+                              <input value={saw} onChange={(event) => setSaw(event.target.value)} maxLength={200}
+                                     placeholder="What was seen, as numbers" aria-label="What was seen, as numbers" />
+                              <button type="submit">That is what I saw</button>
+                              <button type="button" className="quiet" onClick={() => void met(one.expect, false)}>I saw something else</button>
+                            </form>
+                          )
+                          : <p className="dim">Nobody has looked yet. <button type="button" className="quiet" onClick={() => { setAnswering(one.expect); setSaw(""); }}>Say what was seen</button></p>)
+                      : (
+                        <p className={one.met.met ? "good" : "attention"}>
+                          {person(one.met.by)} saw {one.met.saw.length > 0 ? one.met.saw.map((n) => n.toLocaleString("en-US")).join(", ") : "it"}
+                          {one.met.met ? ", which is what was expected." : ", which is not what was expected."}
+                          {one.met.note !== null && <> {one.met.note}</>}
+                        </p>
+                      )}
+                  </div>
+                ))}
                 {step.plan.orphaned.length > 0 && <p className="small attention">Nothing is going to make {step.plan.orphaned.map(partName).join(" or ")} any more: the only plan that would have has been set aside. If it was refiled, this step is still asking for what the old plan would have made.</p>}
                 {aboutRoute !== null && <p className="small attention">{aboutRoute}</p>}
                 <div className="row tight">

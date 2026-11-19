@@ -3,7 +3,7 @@
     "url": "https://github.com/matthewlovestocode/biolibs/issues"
   },
   "dependencies": {
-    "@biolibs/bionet": "^1.8.4",
+    "@biolibs/bionet": "^1.8.6",
     "@biolibs/opencloning": "^2.0.0"
   },
   "description": "One device in one lab: its key, its copy of the lab's signed log, everything a member can do, and the connection to the lab's web peer. Works offline and syncs when it can, and backs up the key and the lab. Storage and key keeping are plugged in",
@@ -46,5 +46,5 @@
   },
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.2.10"
+  "version": "0.2.11"
 }

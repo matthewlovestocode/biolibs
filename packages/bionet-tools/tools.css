@@ -177,6 +177,12 @@
 .bionet .work ol.steps > li p { margin: .15rem 0 }
 .bionet .work ol.steps > li .row { margin-top: .35rem }
 .bionet .work .why { color: var(--bionet-dim); font-style: italic }
+/* What a step should show if it worked, set apart from the step itself: the plan is a claim about a
+   molecule, this is a claim about looking at one, and the two are not the same kind of thing. */
+.bionet .work .expectation { border-left: 2px solid var(--bionet-held); margin: .35rem 0 .35rem .2rem; padding: .1rem 0 .1rem .55rem }
+.bionet .work .expectation .good { color: var(--bionet-good) }
+.bionet .work .expectation .attention { color: var(--bionet-attention) }
+.bionet .work .expectation button.quiet { padding: 0 .3rem }
 .bionet .work textarea.method { width: 100%; font-family: ui-monospace, monospace; font-size: .7rem; margin-top: .5rem }
 .bionet .work textarea.sheet { font-size: .74rem; line-height: 1.45 }
 
