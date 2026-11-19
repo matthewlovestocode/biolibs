@@ -627,6 +627,47 @@ await write(claude, claudesKey, annotatePart(checksum, [{ type: "CDS", label: "a
 (await mergeLog(ada)).parts.find((one) => one.checksum === checksum)?.features[0]?.label;   // "as Ada reads it"
 ```
 
+### A thing the lab has not made
+
+A part is known by the checksum of its sequence, so anything with a sequence can be named before it
+exists: a designed plasmid is a part with no tube. What has **no** sequence cannot be named that way —
+the strain a transformation would give, the culture grown from it, a mixture, curd. So the chain of
+work stopped at the first of those, and every step after it had to be proposed afresh once somebody
+was holding something.
+
+A **prospect** is how the chain carries on. It is the mirror of a specimen: a specimen is a tube the
+lab holds and cannot name, this is a thing the lab can name and does not hold.
+
+```ts
+import { addProspect, newProspectId, planRun, realiseProspect } from "@biolibs/bionet";
+
+const strain = newProspectId();
+await write(ada, adasKey, addProspect({
+  prospect: strain, name: "GS115 carrying pWren1", kind: "strain",
+  madeOf: "GS115, with pWren1 integrated at AOX1", note: null,
+}));
+
+// The transformation says what it would bring into existence; the induction after it says it uses it.
+await write(ada, adasKey, planRun({ plan: putting, kind: "transformation", instrument: null,
+                                    inputs: [{ item: tube, amount: 1, role: "construct" }],
+                                    expects: [], makes: [strain], settings: {}, note: null }));
+await write(ada, adasKey, planRun({ plan: growing, kind: "induction", instrument: null,
+                                    inputs: [{ prospect: strain, amount: 0, role: "culture" }],
+                                    expects: [], settings: {}, note: null }));
+
+// And once somebody has made it, it says what it turned out to be.
+await write(ada, adasKey, realiseProspect(strain, { strain: made }));
+(await mergeLog(ada)).prospects[0]?.became?.strain;    // the strain it became
+```
+
+It has **no checksum**, and nothing ever gives it one. Two things follow, and both are the point.
+It cannot satisfy a plan the way a part does — a plan that names one is a plan that cannot be carried
+out yet, and says so. And **it cannot travel in a method**, for the same reason a culture and a
+specimen cannot: telling another lab to use a thing nobody has made is a wish, not a method. A
+published step that rested on one says only *"something the publishing lab had not made: a strain"*.
+The lab's own name for it does not travel either — `GS115 carrying pWren1` is this lab talking to
+itself about something that does not exist.
+
 ### What it should look like if it worked
 
 A plan says what it would **make**. It says nothing about what somebody would **see** — the bands a

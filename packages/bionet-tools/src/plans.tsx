@@ -104,6 +104,10 @@ export function Proposed({ kind, now, onSetUp }: { kind: string; now: Record<str
   const carried = planCarried(lab, now);
   const person = (key: string): string => lab.roster.find((one) => one.key === key)?.person ?? "A device";
   const partName = (checksum: string | undefined): string => lab.parts.find((one) => one.checksum === checksum)?.name ?? "a part";
+  const prospectName = (id: string | undefined): string => {
+    const one = (lab.prospects ?? []).find((each) => each.prospect === id);
+    return one === undefined ? "something not made yet" : one.became === null ? `${one.name}, which nobody has made yet` : one.name;
+  };
   const tubeName = (item: string | undefined): string => {
     const held = lab.items.find((one) => one.item === item);
     return held?.part === null ? lab.strains.find((one) => one.strain === held.strain)?.name ?? "a culture" : partName(held?.part);
@@ -123,12 +127,14 @@ export function Proposed({ kind, now, onSetUp }: { kind: string; now: Record<str
       {open.map((plan) => {
         // Something there is no tube of has to be ordered or made — unless nothing is going to make
         // it any more, which is a different thing to be told and is said on its own line below.
-        const missing = plan.inputs.filter((one) => one.item === undefined && !plan.orphaned.includes(one.part!));
+        // Something with no tube has to be ordered or made. A prospect is neither: nobody can order
+        // a strain that does not exist, and the step that would bring it into existence is a step.
+        const missing = plan.inputs.filter((one) => one.item === undefined && one.prospect === undefined && !plan.orphaned.includes(one.part!));
         const route = routes.get(plan.plan);
         const aboutRoute = route === undefined ? null : saysRoute(route);
         return (
           <article key={plan.plan} className={plan === carried ? "plan now" : "plan"}>
-            <p className="small"><strong>{person(plan.by)}</strong> proposes using {plan.inputs.map((one) => `${one.item === undefined ? partName(one.part) : tubeName(one.item)} as ${one.role}`).join(", ")}
+            <p className="small"><strong>{person(plan.by)}</strong> proposes using {plan.inputs.map((one) => `${one.prospect !== undefined ? prospectName(one.prospect) : one.item === undefined ? partName(one.part) : tubeName(one.item)} as ${one.role}`).join(", ")}
               {plan.expects.length > 0 && <>, expecting {plan.expects.map((one) => `${one.name} (${one.length.toLocaleString("en-US")} bp${one.circular ? ", circular" : ""})`).join(" and ")}</>}.</p>
             {plan.note !== null && <p className="small why">{plan.note}</p>}
             {missing.length > 0 && <p className="small attention">There is no tube yet of {missing.map((one) => partName(one.part)).join(" or ")}. It has to be ordered or made before this can be done.</p>}

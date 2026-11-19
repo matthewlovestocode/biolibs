@@ -67,3 +67,8 @@
 .bionet details.restore summary { cursor: pointer; color: var(--bionet-dim) }
 .bionet details.restore summary:hover { color: var(--bionet-ink) }
 .bionet .origin { max-width: 14rem; margin-top: .15rem }
+
+/* Things the lab means to have and has not made. Dashed, because nothing here is in a freezer. */
+.bionet .prospects .prospect { border: 1px dashed var(--bionet-rule); border-radius: 8px; padding: .5rem .7rem; margin: .5rem 0 }
+.bionet .prospects .prospect p { margin: 0 0 .25rem }
+.bionet .prospects .prospect .why { color: var(--bionet-dim); font-style: italic }

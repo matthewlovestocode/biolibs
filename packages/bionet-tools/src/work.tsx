@@ -125,6 +125,12 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
   };
   const person = (key: string): string => lab.roster.find((one) => one.key === key)?.person ?? "a device";
   const partName = (checksum: string | undefined): string => lab.parts.find((one) => one.checksum === checksum)?.name ?? "a part";
+  /** A thing nobody has made, named so that it does not read as something the freezer holds. */
+  const prospectName = (id: string | undefined): string => {
+    const one = (lab.prospects ?? []).find((each) => each.prospect === id);
+    if (one === undefined) return "something not made yet";
+    return one.became === null ? `${one.name}, which nobody has made yet` : one.name;
+  };
   const tubeName = (item: string | undefined): string => {
     const held = lab.items.find((one) => one.item === item);
     if (held === undefined) return "a tube";
@@ -310,9 +316,15 @@ export function WorkToDo({ onOpen }: { onOpen?: (plan: Step["plan"]) => void } =
                   {" — "}{why(step)}
                 </p>
                 <p className="dim small">
-                  Uses {step.plan.inputs.map((one) => `${one.item === undefined ? partName(one.part) : tubeName(one.item)} as ${one.role}`).join(", ") || "nothing the lab holds"}
+                  Uses {step.plan.inputs.map((one) => `${one.prospect !== undefined ? prospectName(one.prospect) : one.item === undefined ? partName(one.part) : tubeName(one.item)} as ${one.role}`).join(", ") || "nothing the lab holds"}
                   {step.plan.expects.length > 0 && <>, making {step.plan.expects.map((one) => `${one.name} (${one.length.toLocaleString("en-US")} bp${one.circular ? ", circular" : ""})`).join(" and ")}</>}
-                  {step.plan.expects.length === 0 && (step.plan.kind === "transformation"
+                  {/* What it brings into existence that has no sequence: a strain, a culture, a curd.
+                      Said plainly, because a step that says it makes nothing nameable reads as a dead
+                      end, and this one is not — the step after it points at exactly this. */}
+                  {step.plan.expects.length === 0 && (step.plan.makes ?? []).length > 0 && (
+                    <>, bringing {(step.plan.makes ?? []).map(prospectName).join(" and ")} into existence</>
+                  )}
+                  {step.plan.expects.length === 0 && (step.plan.makes ?? []).length === 0 && (step.plan.kind === "transformation"
                     ? <>, making nothing the lab can name: what comes of it is alive</>
                     : <>, making nothing it has declared</>)}
                   . Proposed by {person(step.plan.by)}.

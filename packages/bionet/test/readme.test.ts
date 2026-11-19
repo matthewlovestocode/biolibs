@@ -14,6 +14,7 @@ import { addItem, addPart, addPlace, addToRoster, adjustItem, annotatePart, disc
          type Operation, type SignedEntry,
          addSpecimen, identifySpecimen, newSpecimenId, newPlanId, planRun, settlePlan,
          expectOf, meetExpectation, newExpectationId, withdrawExpectation,
+         addProspect, newProspectId, realiseProspect, addStrain, newStrainId,
          signingKeys, unsourced, whoHas, type SignedInventory } from "@biolibs/bionet";
 import { describe, expect, it } from "vitest";
 
@@ -362,5 +363,34 @@ describe("README: inside a lab", () => {
     await write(ada, adasKey, withdrawExpectation(check, "this belongs on the induction, not the transformation"));
     expect((await mergeLog(ada)).expectations[0]?.withdrawn?.note).toBe("this belongs on the induction, not the transformation");
     expect((await mergeLog(ada)).expectations[0]?.says).toBe("two bands");
+  });
+
+  it("names a thing it has not made, so the step after it has something to point at", async () => {
+    const adasKey = await generateSigningKey();
+    const ada: SignedEntry[] = [await foundLab(adasKey, { name: "The Wren Lab", person: "Ada" })];
+    const write = async (held: SignedEntry[], key: typeof adasKey, op: Operation) =>
+      held.push(await nextEntry(await mergeLog(held), key, op));
+    await write(ada, adasKey, addPart({ sequence: F1, name: "pWren1" }));
+    const part = (await mergeLog(ada)).parts[0]!.checksum;
+    const tube = newItemId();
+    await write(ada, adasKey, addItem({ item: tube, part, amount: 10, unit: "µL" }));
+
+    const strain = newProspectId();
+    await write(ada, adasKey, addProspect({ prospect: strain, name: "GS115 carrying pWren1", kind: "strain",
+                                            madeOf: "GS115, with pWren1 integrated at AOX1", note: null }));
+    const putting = newPlanId(), growing = newPlanId();
+    await write(ada, adasKey, planRun({ plan: putting, kind: "transformation", instrument: null,
+                                        inputs: [{ item: tube, amount: 1, role: "construct" }],
+                                        expects: [], makes: [strain], settings: {}, note: null }));
+    await write(ada, adasKey, planRun({ plan: growing, kind: "induction", instrument: null,
+                                        inputs: [{ prospect: strain, amount: 0, role: "culture" }],
+                                        expects: [], settings: {}, note: null }));
+    expect((await mergeLog(ada)).plans.find((one) => one.plan === growing)?.inputs[0]?.prospect).toBe(strain);
+
+    const made = newStrainId();
+    await write(ada, adasKey, addStrain({ strain: made, name: "GS115 pWren1-1", host: "Komagataella phaffii GS115",
+                                          carries: [part], parent: null, from: null }));
+    await write(ada, adasKey, realiseProspect(strain, { strain: made }));
+    expect((await mergeLog(ada)).prospects[0]?.became?.strain).toBe(made);
   });
 });

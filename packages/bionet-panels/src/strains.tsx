@@ -100,6 +100,23 @@ export function Strains() {
         );
       })}
 
+      {/* Things the lab means to grow and has not. They sit with the strains because that is what
+          most of them would become, and apart from them because nothing here exists: a strain is in
+          a freezer, and these are only named. */}
+      {(lab.prospects ?? []).filter((one) => one.became === null).length > 0 && (
+        <section className="card prospects">
+          <h2>Not made yet</h2>
+          <p className="dim small">Named so that the work after them can be written down. None of these exists: there is no tube, no culture and no checksum, and a method published from this lab will not carry one.</p>
+          {(lab.prospects ?? []).filter((one) => one.became === null).map((one) => (
+            <article key={one.prospect} className="prospect">
+              <p className="small"><strong>{one.name}</strong> <span className="dim">· {one.kind}</span></p>
+              <p className="dim small">{one.madeOf}</p>
+              {one.note !== null && <p className="small why">{one.note}</p>}
+            </article>
+          ))}
+        </section>
+      )}
+
       {lab.strains.length === 0 ? <p className="empty">The lab keeps no strains yet. A strain is an organism with something put into it, and it is named here rather than worked out: two labs that put the same plasmid into the same host have two strains.</p> : (
         lab.strains.map((strain) => {
           const cultures = lab.items.filter((one) => one.strain === strain.strain && !one.retired);
