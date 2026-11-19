@@ -11,7 +11,7 @@
  */
 import { generateSigningKey, type SigningKey } from "@biolibs/opencloning";
 import { addItem, addPart, addToRoster, expectLeadsTo, expectOf, foundLab, meetExpectation, mergeLog,
-         newExpectationId, newItemId, newPlanId, nextEntry, planRun, settlePlan, withdrawExpectation,
+         newExpectationId, newItemId, newPlanId, nextEntry, planRun, publicMethod, settlePlan, withdrawExpectation,
          type LabState, type Operation, type SignedEntry } from "@biolibs/bionet";
 import { beforeAll, describe, expect, it } from "vitest";
 
@@ -216,6 +216,32 @@ describe("a version that does not know about conditionals", () => {
     expect(plan.follows).toBeNull();
     // Which is what every plan written before this existed looks like.
     expect(plan.settled).toBeNull();
+  });
+});
+
+describe("a method", () => {
+  it("leaves out a step that answers a reading, rather than number it among the rest", async () => {
+    const { a, growing, reading, answer } = await wren();
+    const before = publicMethod(await a.lab(), { name: "The Wren Lab", origin: "", contact: null, note: null }, {});
+    expect(before.steps).toHaveLength(2);
+    await a.write(expectLeadsTo(reading, false, answer, "the answer to a cut protein"));
+    const after = publicMethod(await a.lab(), { name: "The Wren Lab", origin: "", contact: null, note: null }, {});
+    // A method has nowhere to carry what a step is conditional on, so published it would be read as
+    // a step to carry out: a lab would do it because a reading somewhere else might have been bad.
+    expect(after.steps).toHaveLength(1);
+    expect(after.steps[0]!.kind).toBe("induction");
+    expect(JSON.stringify(after)).not.toContain("protease taken out");
+    expect(growing).not.toBe("");
+  });
+
+  it("says so rather than saying there is nothing, where every step answers a reading", async () => {
+    const { a, growing, reading, answer } = await wren();
+    await a.write(expectLeadsTo(reading, false, answer, "the answer to a cut protein"));
+    const lab = await a.lab();
+    expect(() => publicMethod(lab, { name: "The Wren Lab", origin: "", contact: null, note: null }, { plans: [answer] }))
+      .toThrow(/answers a reading/);
+    // And the step that answers nothing still publishes on its own.
+    expect(publicMethod(lab, { name: "The Wren Lab", origin: "", contact: null, note: null }, { plans: [growing] }).steps).toHaveLength(1);
   });
 });
 

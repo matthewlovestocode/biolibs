@@ -791,6 +791,13 @@ conditionals turns that one entry down and reads the plan and the expectation as
 field would have made the whole plan unreadable, and — worse — a plan read without its condition
 would look like a step somebody meant to do.
 
+**A published method leaves these out**, for that same reason turned outward. A method has nowhere to
+carry what a step is conditional on — the condition is an answer to an expectation, and an expectation
+has nowhere to go in a method either — so a contingency published would be numbered among the steps
+and read as one to carry out. A lab would induce at 20 °C because a gel somewhere else might have been
+bad. Leaving it out says less than the truth; publishing it says something untrue. Where *every* plan
+asked for answers a reading, `publicMethod` says so rather than claiming there is nothing to publish.
+
 ### Moving entries between machines
 
 `mergeLog` works on whatever it is given. `sync.ts` is how entries are given, without opening a

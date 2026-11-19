@@ -88,12 +88,25 @@ const PROJECT = "project";
  * ```
  */
 export function publicMethod(state: LabState, lab: LabModel, options: MethodOptions = {}): MethodDocument {
-  const chosen = state.plans.filter((one) => {
+  // A step that only applies if a reading comes out a certain way is left out, because a method
+  // has nowhere to carry the condition: published, it would be numbered among the steps and read
+  // as one to carry out. A lab would induce at 20 °C because a gel somewhere else might have been
+  // bad. Leaving it out says less than the truth; publishing it says something untrue.
+  //
+  // The condition cannot travel until an expectation can, since it is an answer to one, and an
+  // expectation has nowhere to go in a method either. When it does, these belong in the method
+  // with their condition beside them, and this goes.
+  const wanted = (one: (typeof state.plans)[number]): boolean => {
     if (one.settled !== null) return false;
     if (options.plans !== undefined) return options.plans.includes(one.plan);
     if (options.project !== undefined) return one.fields[PROJECT] === options.project;
     return true;
-  });
+  };
+  const conditional = state.plans.filter((one) => wanted(one) && one.follows != null).length;
+  const chosen = state.plans.filter((one) => wanted(one) && one.follows == null);
+  if (chosen.length === 0 && conditional > 0) {
+    throw new Error(`Every one of those ${conditional} open plans answers a reading, and a method cannot carry what a step is conditional on.`);
+  }
   if (chosen.length === 0) throw new Error("There are no open plans to publish.");
   if (chosen.length > MOST_STEPS) throw new Error(`A method carries at most ${MOST_STEPS} steps; that is ${chosen.length}.`);
   const withSequences = options.sequences !== false;

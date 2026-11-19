@@ -1385,6 +1385,66 @@ That was nearly missed too: the check for it was a regex over the published file
 matched the phrase "what to expect" in the note that had just been written. The honest check was to
 strip the note and look again.
 
+## 17. What a bad gel leads to, written down
+
+The thirteen gel predictions filed this afternoon said what to look for and nothing said what either
+answer led to. The contingency lived in somebody's head, which is where it is lost. The protocol can
+now hold one, and four are filed.
+
+| casein | if the gel shows it cut | |
+|---|---|---|
+| αS1 | the same DNA into a GS115 with YPS1 deleted | `11c7a10d` |
+| αS2 R114Q | the same, into the same host | `a4cf8602` |
+| β | the same | `c61bc5ca` |
+| **κ** | **not a host change — a colder, longer induction** | `46f12fd7` |
+
+### Why κ gets a different answer
+
+Deleting YPS1, the secretory-pathway aspartic protease, raised another secreted protein's yield in
+this host 2.5-fold, and the only dibasic pairs left in αS1, αS2 and β are the weak `KK` kind, which
+is yapsin territory rather than Kex2's. So a host with that protease out is the thing to try.
+
+For κ it is the thing **already tried and published as failing** — yapsin 1, and yapsin 1 with
+protease A, both of them, with the degradation attributed to κ being intrinsically disordered rather
+than to any one protease. Filing the knockout for κ would have recorded a route the literature
+already closed. The lever left is the induction, not the strain.
+
+That is the whole point of the feature: it made the lab's own notes and a literature search
+disagree with each other in writing, where before the disagreement had nowhere to live.
+
+### Orphaned caught me within the minute
+
+The first αS2 contingency named `pPIC9K-alphaS2-secreted SacI 9875 bp` — the plasmid **as it was
+before R114Q**, whose digest was set aside earlier the same afternoon. My script matched it by
+substring: `pPIC9K-alphaS2-secreted` is a prefix of `pPIC9K-alphaS2-secreted R114Q`, so it found the
+old part first.
+
+`orphaned` reported it on the next read. It was built in the morning because an earlier refiling
+stranded eighteen expectations silently; by the afternoon it was catching a mistake made minutes
+earlier by the person who built it. The wrong plan was replaced with one naming what an open step
+actually makes, linked with `plan.replaces`, and set aside.
+
+### The hole it opened, and closing it
+
+Filing conditionals broke the handoff artifact, which is worth recording because it was not obvious.
+A method has nowhere to carry what a step is conditional on, so the κ arm published as **six** steps
+with the colder induction numbered fifth — a lab following it would have induced at 20 °C because a
+gel somewhere else might have been bad. Nothing structured marked it conditional; the only hint was
+prose in a note.
+
+`publicMethod` now leaves a contingency out. The κ arm publishes as five steps again and the whole
+project as 39, exactly as before any of this was filed. Leaving it out says less than the truth;
+publishing it said something untrue. The condition cannot travel until an expectation can, since it
+is an answer to one — so the two gaps are really one gap, and this is the second time today that
+expectations having nowhere to go in a method has cost something.
+
+### Where it leaves the lab
+
+699 entries, 43 open steps, four of them answering a reading and all four `waiting` because nobody
+has run a gel. **0 adrift, 0 orphaned, 0 refused**, and no contingent step counted as ready — the
+Work panel holds them back under *a reading nobody has taken* rather than sending somebody to fetch
+a tube for a step that may never apply.
+
 ### Left alone on purpose
 
 - **The induction plans still name the circle** as `construct` alongside the prospect they actually
