@@ -14,6 +14,8 @@ of doing it.
 
 ## 1. Telling a correct build from a wrong one, before paying for sequencing
 
+> These are in the lab now, as expectations on the steps they are about — see §10.
+
 A digest only helps if the band that distinguishes a good build from a bad one is a band you can
 actually read: inside the gel's range, and not hiding underneath another band. Bands that merely
 co-migrate with *each other* are fine — nobody is measuring the vector's own big fragments.
@@ -756,6 +758,51 @@ off, the rare codons in natural genes being read as pauses the protein uses. It 
 than settled. It matters least for the caseins, which are meant not to fold at all, and most for
 CK2α, prochymosin and the two Fam20s, which are folded enzymes. If one of those comes out insoluble
 with everything else working, this is a thing to look at before the host or the leader.
+
+---
+
+## 10. These expectations now live in the lab
+
+Added 19 November 2026. Everything in §1, §2 and §4 was a claim about what somebody would see, written
+in this file because the lab had nowhere to put it. It has somewhere now, so **27 of them were moved**
+and all 27 applied: nine digests, nine colony PCRs, nine protein gels, across the lab's eighteen open
+steps. They show in the window under the step they are about, each saying nobody has looked yet.
+
+| on | what | how many |
+|---|---|---|
+| the step that builds the plasmid | the diagnostic digest, its gel, its bands, and what a religated vector gives instead | 9 |
+| the step that puts it in a host | the colony PCR size, and the empty-vector size that is also the reaction's own control | 9 |
+| the same step | where the protein should run after inducing, in daltons | 9 |
+
+This file is no longer the only copy. What it still holds that the lab does not is the reasoning —
+why BamHI rather than XhoI, what the leave-one-out test said, which packages were asked.
+
+### Three things doing it taught
+
+**The protein-gel expectation has no proper home.** It is attached to the transformation, because
+that is where the lab's own plan notes already describe the readout — *"Into GS115. Read out with
+Phos-tag acrylamide electrophoresis"*. But a transformation makes colonies, not protein. The protein
+appears after an induction, and **there is no induction plan**. So the expectation went where the
+existing plans put the readout, and what it revealed is a missing step rather than a missing field.
+Filing the nine inductions would give each of these a plan that is actually about it.
+
+**A reading with a fraction forced a better unit.** The protein masses are 23.0 kDa and so on, which
+cannot be signed. Rather than rounding to 23, they went in as whole daltons — 22,975 for αS1, 40,477
+for prochymosin. That is more precise than the table in §4, not less, and the rule is what pushed it
+there.
+
+**`settings` is now carrying a pointer rather than a payload.** Each expectation records
+`from: "BENCH-PLAN-cheese.md §1"` beside the enzymes and the gel. That is what a settings field is
+for. Three days ago the same field was carrying four paragraphs of reasoning under invented keys,
+because there was nowhere else; the difference is the whole point of the change.
+
+### And one mistake worth recording
+
+Building these, I filled in three plan IDs from the eight characters a listing had shown and wrote
+the rest myself. They were caught before anything was written, but it is worth noting that the
+protocol would have caught them too: an expectation that names a plan the lab does not have is
+refused, by its ID, with *"The plan it is about is not one the lab has."* A made-up ID is not a
+quiet failure here. That is the sort of thing the checksum discipline is for.
 
 ---
 
