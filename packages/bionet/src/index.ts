@@ -29,6 +29,7 @@
  * import { fetchInventory, partsNeeded, settled, whoHas } from "@biolibs/bionet";
  *
  * const found = await fetchInventory("wrenlab.example");
+ * // From a cloning plan, or, with `methodNeeds`, from a published method.
  * const sourcing = whoHas(partsNeeded(plan.document), settled(found) ? [found] : []);
  *
  * for (const { needed, holders } of sourcing) {

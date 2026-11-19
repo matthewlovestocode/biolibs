@@ -12,7 +12,7 @@
  */
 import { recordFromSequenceModel, type CloningStrategyDocument } from "@biolibs/opencloning";
 import type { FetchedInventory } from "./fetch.js";
-import type { InventoryPart } from "./model.js";
+import type { InventoryPart, MethodDocument, MethodInput, SignedMethod } from "./model.js";
 
 /** One molecule a plan starts from. */
 export interface NeededPart {
@@ -22,10 +22,27 @@ export interface NeededPart {
   name: string;
   /** Its SEGUID checksum, which is what labs are asked about. */
   checksum: string;
-  /** How many base pairs. */
-  length: number;
+  /**
+   * How many base pairs, where that is known.
+   *
+   * A published method may name a starting molecule by checksum alone, without writing its sequence
+   * out. Such a molecule can still be asked after — a checksum is all `whoHas` matches on — but
+   * nothing in the method says how long it is, and this is then absent rather than zero.
+   */
+  length?: number;
   /** Whether it is a circle. */
   circular: boolean;
+}
+
+/** Something a method rests on that no lab can send, because it is alive. */
+export interface CannotTravel {
+  /** What the publishing lab said it was, which is not a name another lab can match. */
+  name: string;
+  /** What it is there as. */
+  role: string;
+  /** What it would have to be a culture of, where the method says. */
+  carries: string[];
+  host: string | null;
 }
 
 /** A lab that has a part. */
@@ -75,6 +92,65 @@ export function partsNeeded(document: CloningStrategyDocument): NeededPart[] {
     });
   }
   return needed;
+}
+
+/** The method itself, whether or not it still has its signatures beside it. */
+const documentOf = (method: MethodDocument | SignedMethod): MethodDocument =>
+  ("method" in method ? method.method : method);
+
+/**
+ * The starting molecules of a published method, ready to ask other labs about.
+ *
+ * The other half of {@link partsNeeded}. That one reads a cloning plan and finds its leaves; a
+ * published method has already worked its leaves out and carries them as `needs`, so this only has
+ * to put them in the shape {@link whoHas} takes. Between them, anything a lab can be handed — a
+ * plan or a method — can be turned into a question for the network.
+ *
+ * What is alive is left out, because it has no checksum and no lab can send it. That is not nothing,
+ * so {@link cannotTravel} returns it: call both, or a method's hardest requirement disappears
+ * quietly, which is the one thing a sourcing list must never do.
+ *
+ * @param method - The method, signed or not.
+ * @returns One entry per molecule the method starts from, in the order the method lists them.
+ *
+ * @example
+ * ```ts
+ * import { cannotTravel, methodNeeds, unsourced, whoHas } from "@biolibs/bionet";
+ *
+ * const sourcing = whoHas(methodNeeds(published), settled(found) ? [found] : []);
+ * unsourced(sourcing);        // what nobody asked has
+ * cannotTravel(published);    // what nobody can send at all, however many labs are asked
+ * ```
+ */
+export function methodNeeds(method: MethodDocument | SignedMethod): NeededPart[] {
+  const needed: NeededPart[] = [];
+  for (const [at, one] of documentOf(method).needs.entries()) {
+    // Something with no checksum is alive. Asking a lab for it by name would match whatever that
+    // lab happened to call its own, which is exactly the mistake checksums exist to prevent.
+    if (one.part === null) continue;
+    needed.push({
+      id: at + 1, name: one.name, checksum: one.part,
+      ...(one.sequence === undefined ? {} : { length: one.sequence.replace(/\s+/g, "").length }),
+      circular: one.circular === true,
+    });
+  }
+  return needed;
+}
+
+/**
+ * What a method rests on that no lab can send.
+ *
+ * A strain is the lab's own: the same plasmid in the same published host twice is two strains, so
+ * there is no checksum to ask after and no amount of asking will find one. A method says what such a
+ * thing would have to be a culture of, and whoever follows it makes their own.
+ *
+ * @param method - The method, signed or not.
+ * @returns One entry per living requirement, in the order the method lists them.
+ */
+export function cannotTravel(method: MethodDocument | SignedMethod): CannotTravel[] {
+  return documentOf(method).needs
+    .filter((one): one is MethodInput & { part: null } => one.part === null)
+    .map((one) => ({ name: one.name, role: one.role, carries: one.alive?.carries ?? [], host: one.alive?.host ?? null }));
 }
 
 /**

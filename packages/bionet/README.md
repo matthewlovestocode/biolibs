@@ -202,6 +202,30 @@ it", which are different problems for the person reading the plan.
 Inventories whose signatures do not hold are yours to filter out before you call `whoHas` — it matches
 what it is given and claims nothing about whether the labs are to be believed.
 
+### Asking with a published method instead of a plan
+
+A method has already worked its leaves out and carries them as `needs`, so sourcing one does not mean
+reconstructing the plan behind it:
+
+```ts
+import { cannotTravel, methodNeeds, unsourced, whoHas } from "@biolibs/bionet";
+
+const sourcing = whoHas(methodNeeds(published), [found]);
+console.log(unsourced(sourcing).map((p) => p.checksum));   // what nobody asked has
+
+for (const one of cannotTravel(published)) {
+  console.log(one.name, one.host);   // what nobody can send, however many labs you ask
+}
+```
+
+`methodNeeds` leaves out anything alive, because it has no checksum and asking a lab for it by name
+would match whatever that lab happened to call its own — the mistake checksums exist to prevent. That
+is usually a method's hardest requirement, so `cannotTravel` hands it back: **call both**, or the one
+thing nobody can supply disappears from the list quietly.
+
+A method may also name a starting molecule by checksum alone, without writing its sequence out. Such
+a molecule can still be asked after, so `NeededPart.length` is absent in that case rather than zero.
+
 ## Inside a lab
 
 An inventory is what a lab shows the world. Inside it, a freezer changes every day and the people
