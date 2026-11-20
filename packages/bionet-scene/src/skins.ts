@@ -55,6 +55,18 @@ export interface Skin {
    * colour it competes with the machines standing on it.
    */
   tone?: Meaning;
+  /**
+   * How far a solid fill of this is pulled towards the room's own darkness, from 0 to 1.
+   *
+   * This is the one way a material shows in the colour rather than only in how solid it is, and it
+   * changes how dark a thing sits, never its hue — a `found` box stays pink and a `held` box amber,
+   * because colour in this scene says whose a thing is and what has happened to it. Steel is nearly
+   * unlit and glass is lit, so a sash reads as glass rather than as a thin wall, and both read as
+   * the same thing they always were.
+   *
+   * Left out, it is {@link DULLS}, which is what everything used before any material said otherwise.
+   */
+  dulls?: number;
 }
 
 /**
@@ -73,7 +85,7 @@ export const SKINS: Readonly<Record<string, Skin>> = {
   furniture: { far: 0.92, near: 0.92, tone: "dim" },
   // A window, a sash, the wall of a tank. The whole reason it is there is that you see through it,
   // so it is never solid and never hides what is behind it, at any distance.
-  glass: { far: 0.3, near: 0.05 },
+  glass: { far: 0.3, near: 0.05, dulls: 0.5 },
   // A solid piece of the machine itself: a cast base, a pressure door, a milled block. Most of an
   // instrument is this, and the few parts that are not — the chamber, the lid, the tank — are the
   // ones worth seeing into. Walking up to a casting and having it go transparent says there is
@@ -85,12 +97,15 @@ export const SKINS: Readonly<Record<string, Skin>> = {
   // because a lid is the thing that opens, and the case of anything with a block of wells, a
   // rotor, a chamber or shelves in it, because that case is what you walk up to look into. Both
   // of those are tests, not notes, because the rule is easy to apply one part too far.
-  metal: { far: 0.92, near: 0.92 },
+  metal: { far: 0.92, near: 0.92, dulls: 0.95 },
   // A shade that is opaque on purpose. A gel is imaged in the dark: the hood is there to keep light
   // out, and a hood you can see through is not doing its job. It is the one skin that is more
   // solid up close than anything else, because being at it is when it matters that it is shut.
   hood: { far: 0.96, near: 0.96, tone: "dim" },
 };
+
+/** How far a solid fill is pulled towards the room's darkness when its material does not say. */
+export const DULLS = 0.82;
 
 /** The tones that say something about the lab rather than about what a thing is made of. */
 const MEANS: ReadonlySet<Meaning> = new Set<Meaning>(["found", "attention", "held", "theirs", "good"]);
@@ -162,8 +177,10 @@ export interface Drawn {
   fill: number;
   /** Whether it hides what is behind it. */
   hides: boolean;
-  /** How far the fill's colour is pulled towards the room's own darkness, from 0 to 1. */
+  /** How far along its own range the fill is, from 0 to 1. */
   darkened: number;
+  /** How far to pull the colour towards the room's own darkness: how far along, by how dull it is. */
+  dulled: number;
 }
 
 /**
@@ -191,10 +208,11 @@ export function skinAt(skin: Skin, how: number, setting: Skins, was = skin.near)
   // Off is the wireframe as it was: whatever fill the piece was drawn with, at every distance,
   // hiding nothing. The piece passes its own `was` so that turning skins off puts back exactly
   // what was there, rather than something close to it.
-  if (setting === "off") return { fill: was, hides: false, darkened: 0 };
+  if (setting === "off") return { fill: was, hides: false, darkened: 0, dulled: 0 };
   const close = Math.min(1, Math.max(0, how));
   const fill = skin.far + (skin.near - skin.far) * close;
-  return { fill, hides: fill >= HIDES_ABOVE, darkened: Math.min(1, fill / skin.far) };
+  const darkened = Math.min(1, fill / skin.far);
+  return { fill, hides: fill >= HIDES_ABOVE, darkened, dulled: darkened * (skin.dulls ?? DULLS) };
 }
 
 /**
@@ -246,14 +264,14 @@ export function useSkins(pinned?: Skins): [Skins, () => void] {
  * @returns How solid to draw it.
  */
 export function fillAt(skin: Skin | null, setting: Skins, how: number, was: number, loud = 1): Drawn {
-  if (skin === null || setting === "off") return { fill: was, hides: false, darkened: 0 };
+  if (skin === null || setting === "off") return { fill: was, hides: false, darkened: 0, dulled: 0 };
   const drawn = skinAt(skin, how, setting, was);
   if (loud >= 1) return drawn;
   // A quiet piece is quiet in what it is made of as well as in its edges. Filling a bench leg as
   // solidly as its worktop makes four thin blocks under a slab, and with the edges already
   // quietened they read as boxes rather than as legs. A piece that recedes has to recede in both.
   const fill = drawn.fill * loud;
-  return { fill, hides: fill >= HIDES_ABOVE, darkened: drawn.darkened * loud };
+  return { fill, hides: fill >= HIDES_ABOVE, darkened: drawn.darkened * loud, dulled: drawn.dulled * loud };
 }
 
 /**

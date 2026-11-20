@@ -58,7 +58,7 @@ describe("how solid a piece is drawn", () => {
 
   it("is the wireframe as it was with skins off: the same faint fill at every distance", () => {
     for (const how of [0, 0.5, 1]) {
-      expect(skinAt(plain, how, "off")).toEqual({ fill: plain.near, hides: false, darkened: 0 });
+      expect(skinAt(plain, how, "off")).toEqual({ fill: plain.near, hides: false, darkened: 0, dulled: 0 });
     }
   });
 
@@ -95,8 +95,8 @@ describe("one fill, with no scene around it", () => {
 
   it("leaves a piece with nothing to be made of at the fill it was drawn with", () => {
     for (const setting of ["on", "off"] as const) {
-      expect(fillAt(null, setting, 0, 0.04)).toEqual({ fill: 0.04, hides: false, darkened: 0 });
-      expect(fillAt(null, setting, 1, 0.04)).toEqual({ fill: 0.04, hides: false, darkened: 0 });
+      expect(fillAt(null, setting, 0, 0.04)).toEqual({ fill: 0.04, hides: false, darkened: 0, dulled: 0 });
+      expect(fillAt(null, setting, 1, 0.04)).toEqual({ fill: 0.04, hides: false, darkened: 0, dulled: 0 });
     }
   });
 

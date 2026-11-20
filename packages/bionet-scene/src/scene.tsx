@@ -231,7 +231,7 @@ export function useSkinned(group: RefObject<Object3D | null>, how: Skinning): vo
       material.depthWrite = drawn.hides;
       // Darkened as it fills: a solid thing is an object with a lit edge, not a glowing block, and
       // a glowing block is what the bloom pass would make of a solid fill in the theme's colours.
-      material.color.copy(tints(skinTone(off ? null : own ?? null, how.tone))).lerp(ground, drawn.darkened * 0.82);
+      material.color.copy(tints(skinTone(off ? null : own ?? null, how.tone))).lerp(ground, drawn.dulled);
       one.visible = drawn.fill > 0.002;
     });
   });
