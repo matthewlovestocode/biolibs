@@ -10,7 +10,7 @@
 import { Line } from "@react-three/drei";
 import type { Theme } from "@biolibs/bionet-theme";
 import { paint, type Label } from "./scene.js";
-import type { PlacedBeam, PlacedField, PlacedGel, PlacedJoining, PlacedMolecule, PlacedRotor, PlacedScale, PlacedTrace } from "./shapes.js";
+import type { PlacedBeam, PlacedField, PlacedGel, PlacedJoining, PlacedMolecule, PlacedPlate, PlacedRotor, PlacedScale, PlacedTrace } from "./shapes.js";
 
 /**
  * The names to write over a molecule: each stretch marked on it, and what it is.
@@ -329,6 +329,45 @@ export function Rotor({ placed, theme }: { placed: PlacedRotor; theme: Theme }) 
       {placed.pull !== null && (
         <Line points={placed.pull} color={out.color} lineWidth={3} transparent opacity={0.9} toneMapped={false} />
       )}
+    </group>
+  );
+}
+
+/**
+ * What to write over a plate: what it is selected on, and whether what is on it has run together.
+ *
+ * @param placed - The plate, worked out by `placePlate`.
+ * @returns Labels for `Follow`.
+ */
+export function plateLabels(placed: PlacedPlate): Label[] {
+  return placed.labels.map((one): Label => ({
+    key: `plate ${one.key}`, at: one.at, rank: one.key === "overgrown" ? 0 : 1,
+    content: <span className={`plate-said ${one.key}`}>{one.text}</span>,
+  }));
+}
+
+/**
+ * A plate seen from above, with what has come up on it. It goes inside a canvas.
+ *
+ * A colony that took something up is drawn whole; a satellite is drawn small and faint, because
+ * that is what it looks like and what it is worth not picking. A colony touching another is drawn
+ * in the colour of something to be careful of: it is no longer one colony.
+ *
+ * @param props - `placed` is the plate, worked out by `placePlate`; `theme` is the theme.
+ */
+export function Plate({ placed, theme }: { placed: PlacedPlate; theme: Theme }) {
+  const dish = paint("dim", theme, 0.7);
+  const grown = paint("good", theme, 1);
+  const satellite = paint("dim", theme, 0.9);
+  const touching = paint("attention", theme, 1);
+  return (
+    <group>
+      <Line points={placed.rim} color={dish.color} lineWidth={1.6} transparent opacity={dish.opacity} toneMapped={false} />
+      {placed.colonies.map((one, at) => {
+        const tone = one.satellite ? satellite : one.touching ? touching : grown;
+        return <Line key={at} points={one.ring} color={tone.color} lineWidth={one.satellite ? 1.2 : 2.2}
+                     transparent opacity={one.satellite ? 0.6 : 1} toneMapped={false} />;
+      })}
     </group>
   );
 }

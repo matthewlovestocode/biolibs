@@ -875,6 +875,7 @@ const VIEW_NAMES: Readonly<Record<string, Partial<Record<StageView, string>>>> =
   electroporator: { machine: "The machine", block: "The cuvette", screen: "The pulse", tube: "In the cuvette", result: "What grew" },
   "gel-imager": { machine: "The machine", block: "The gel on the light", screen: "The exposure", tube: "What the bands hold", result: "Against what was expected" },
   centrifuge: { machine: "The machine", block: "The rotor", screen: "The speed", tube: "What separates", result: "What it leaves" },
+  incubator: { machine: "The machine", block: "The shelves", screen: "The temperature", tube: "On the plate", result: "What came up" },
 };
 
 /**
@@ -1398,6 +1399,88 @@ export function placeRotor(rotor: StageRotor, centre: readonly [number, number, 
     labels: [
       { key: "what", text: rotor.what, at: at(0, radius * 1.24) },
       { key: "offset", text: rotor.offset <= 0.02 ? "balanced" : `${Math.round(rotor.offset * 100)}% off the axis`, at: at(0, -radius * 1.24) },
+    ],
+  };
+}
+
+/** A plate seen from above, with whatever has come up on it. */
+export interface StagePlate {
+  /** What is on it, written under it. */
+  what: string;
+  /** The colonies: where on the dish, from -1 to 1 each way; how big across, as a fraction of it. */
+  colonies: readonly { at: readonly [number, number]; size: number; satellite: boolean }[];
+  /** Whether what is on it has run together, so that no one colony is one colony. */
+  overgrown: boolean;
+}
+
+/** That, worked out. */
+export interface PlacedPlate {
+  /** The dish's rim. */
+  rim: Point[];
+  /** Each colony: its outline, whether it is a satellite, and whether it is touching another. */
+  colonies: { ring: Point[]; satellite: boolean; touching: boolean }[];
+  /** What to write, and where. */
+  labels: { key: string; text: string; at: Point }[];
+}
+
+/**
+ * Where to draw a plate and what has come up on it.
+ *
+ * The two things this picture is for are the two a plate does not announce. A satellite is a small
+ * colony in the ring a real one has cleared around itself, and it took nothing up — drawn small and
+ * beside a large one, which is what it looks like. And a colony touching another is not one colony,
+ * however much it looks like one, so the ones that touch are drawn as touching.
+ *
+ * @param plate - What is on the dish.
+ * @param centre - Where the middle of it goes.
+ * @param toward - A point it should face, usually the camera.
+ * @param radius - How big across to draw the dish, in metres.
+ * @returns The rim and the colonies.
+ *
+ * @example
+ * ```ts
+ * import { placePlate } from "@biolibs/bionet-scene";
+ *
+ * placePlate({ what: "on ampicillin", colonies, overgrown: false }, centre, camera, 0.2);
+ * ```
+ */
+export function placePlate(plate: StagePlate, centre: readonly [number, number, number], toward: readonly [number, number, number],
+                           radius: number): PlacedPlate {
+  const unit = (v: Point): Point => { const n = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / n, v[1] / n, v[2] / n]; };
+  const cross = (a: Point, b: Point): Point => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const facing = unit([toward[0] - centre[0], toward[1] - centre[1], toward[2] - centre[2]]);
+  const right = unit(cross(Math.abs(facing[1]) > 0.98 ? [0, 0, -1] : [0, 1, 0], facing));
+  const up = cross(facing, right);
+  const at = (x: number, y: number): Point => [centre[0] + right[0] * x + up[0] * y, centre[1] + right[1] * x + up[1] * y, centre[2] + right[2] * x + up[2] * y];
+  const circle = (x: number, y: number, size: number, sides: number): Point[] =>
+    Array.from({ length: sides + 1 }, (_, index) => {
+      const angle = (index / sides) * Math.PI * 2;
+      return at(x + Math.cos(angle) * size, y + Math.sin(angle) * size);
+    });
+  const drawn = plate.colonies.slice(0, 200);
+  return {
+    rim: circle(0, 0, radius, 40),
+    colonies: drawn.map((one) => {
+      const size = Math.max(radius * 0.012, (one.size * radius) / 2);
+      // A dish is round, so a colony given the corner of the square is brought in to the rim, and
+      // then in again by its own width: a colony half off the edge of a plate is not a thing.
+      const out = Math.hypot(one.at[0], one.at[1]);
+      const reach = Math.max(0, radius - size - radius * 0.04);
+      const scale = out <= 1e-9 ? 0 : (Math.min(1, out) * reach) / out;
+      const [x, y] = [one.at[0] * scale, one.at[1] * scale];
+      // Touching another is the thing worth seeing, so it is worked out rather than asserted.
+      const touching = drawn.some((other) => {
+        if (other === one) return false;
+        const theirs = Math.max(radius * 0.012, (other.size * radius) / 2);
+        const away = Math.hypot(other.at[0], other.at[1]);
+        const put = away <= 1e-9 ? 0 : (Math.min(1, away) * Math.max(0, radius - theirs - radius * 0.04)) / away;
+        return Math.hypot(other.at[0] * put - x, other.at[1] * put - y) < size + theirs;
+      });
+      return { ring: circle(x, y, size, one.satellite ? 8 : 14), satellite: one.satellite, touching };
+    }),
+    labels: [
+      { key: "what", text: plate.what, at: at(0, -radius * 1.2) },
+      ...(plate.overgrown ? [{ key: "overgrown", text: "run together", at: at(0, radius * 1.2) }] : []),
     ],
   };
 }

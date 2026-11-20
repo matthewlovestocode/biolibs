@@ -1263,6 +1263,50 @@ export function RotorDiagram(options: FigureOptions) {
   );
 }
 
+
+/**
+ * One plate at three times: too early, ready, and left too long.
+ *
+ * The last of the three is the one worth drawing. The colonies have run together, so no one of them
+ * is one colony any more, and the small marks round them are satellites that took nothing up.
+ */
+export function PlateDiagram(options: FigureOptions) {
+  const plates = [
+    { x: 86, says: "too early", grown: 0.25, satellites: false, touching: false },
+    { x: 226, says: "ready", grown: 1, satellites: false, touching: false },
+    { x: 366, says: "left too long", grown: 2.4, satellites: true, touching: true },
+  ];
+  const [radius, mid] = [54, 80];
+  // The same scatter on every plate, so what changes across them is the growing and nothing else.
+  const spots = [[-0.45, -0.3], [0.2, -0.5], [0.5, 0.25], [-0.25, 0.45], [-0.6, 0.15], [0.05, 0.05]];
+  return (
+    <Figure
+      width={452}
+      height={168}
+      description="One plate at three times. Early there is almost nothing on it; ready there are six separate colonies; left too long they have grown into each other and small satellite colonies have come up around them."
+      caption="A colony is a clone, so the point of a plate is colonies that are separate. Left too long they run together and the one you pick is not one colony — and on ampicillin, small satellites come up in the ring each colony has cleared of the drug."
+      {...options}
+    >
+      {plates.map(({ x, says, grown, satellites, touching }) => (
+        <g key={says}>
+          <circle cx={x} cy={mid} r={radius} fill="none" stroke="var(--line)" strokeWidth={1.5} />
+          {spots.map(([sx, sy], at) => (
+            <g key={at}>
+              <circle cx={x + sx! * radius * 0.78} cy={mid + sy! * radius * 0.78} r={Math.max(1, 7 * grown)}
+                      fill="none" stroke={touching ? "var(--base-t)" : "var(--accent)"} strokeWidth={1.8} />
+              {satellites && [0, 1, 2].map((which) => (
+                <circle key={which} cx={x + sx! * radius * 0.78 + Math.cos(which * 2.1) * 13} cy={mid + sy! * radius * 0.78 + Math.sin(which * 2.1) * 13}
+                        r={1.8} fill="none" stroke="var(--muted)" strokeWidth={1.2} />
+              ))}
+            </g>
+          ))}
+          <Note x={x} y={mid + radius + 20} anchor="middle">{says}</Note>
+        </g>
+      ))}
+    </Figure>
+  );
+}
+
 /** The diagram for a glossary entry (or one of the extra lesson pictures), or null if it has none. */
 export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string }) {
   switch (slug) {
@@ -1351,6 +1395,10 @@ export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string
       return <GelDiagram {...options} />;
     case "saturation":
       return <ExposureDiagram {...options} />;
+    case "colony":
+    case "satellite-colony":
+    case "doubling-time":
+      return <PlateDiagram {...options} />;
     case "relative-centrifugal-force":
     case "centrifuge-balance":
     case "pellet":

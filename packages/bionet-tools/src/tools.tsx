@@ -12,6 +12,7 @@ import { SpectroTool } from "./spectro-bench.js";
 import { ElectroTool } from "./electro-bench.js";
 import { ImagerTool } from "./imager-bench.js";
 import { SpinTool } from "./spin-bench.js";
+import { GrowTool } from "./grow-bench.js";
 import { AssemblyTool } from "./assembly-bench.js";
 import { FusionTool } from "./fusion-bench.js";
 import { CodonTool } from "./codon-bench.js";
@@ -25,7 +26,7 @@ export type DeskTool = "sequences" | "primers" | "codons" | "construct" | "assem
 /** What each machine a tool is used at is called, for saying so in a sentence. */
 const MACHINE_NAMES: Readonly<Record<string, string>> = {
   thermocycler: "thermocycler", "gel-station": "gel station", "heat-block": "heat block", "shaking-incubator": "shaking incubator",
-  spectrophotometer: "spectrophotometer", electroporator: "electroporator", "gel-imager": "gel imager", centrifuge: "centrifuge",
+  spectrophotometer: "spectrophotometer", electroporator: "electroporator", "gel-imager": "gel imager", centrifuge: "centrifuge", incubator: "incubator",
 };
 
 /** A list written out the way it is said: A a, a b, and a c. A tool's name is left as it is written, so PCR stays PCR. */
@@ -35,7 +36,7 @@ const sentence = (parts: readonly string[]): string => {
 };
 
 /** What each tool is called. */
-export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation", induction: "Induction", spectro: "Reading", electro: "Transformation", imager: "Read a gel", spin: "Spin" };
+export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation", induction: "Induction", spectro: "Reading", electro: "Transformation", imager: "Read a gel", spin: "Spin", grow: "Grow a plate" };
 
 function Tool({ tool, instrument, onDone }: { tool: ToolName; instrument: { id: string; name: string } | null; onDone?: (() => void) | undefined }) {
   const more = onDone === undefined ? {} : { onDone };
@@ -46,6 +47,7 @@ function Tool({ tool, instrument, onDone }: { tool: ToolName; instrument: { id: 
     : tool === "electro" ? <ElectroTool instrument={instrument} {...more} />
     : tool === "imager" ? <ImagerTool instrument={instrument} {...more} />
     : tool === "spin" ? <SpinTool instrument={instrument} {...more} />
+    : tool === "grow" ? <GrowTool instrument={instrument} {...more} />
     : <DigestTool instrument={instrument} {...more} />;
 }
 

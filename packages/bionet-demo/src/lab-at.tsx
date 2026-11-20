@@ -13,7 +13,7 @@
 import { useMemo, type ReactNode } from "react";
 import { useLab } from "@biolibs/bionet-react";
 import { InstrumentStage, LabView, type Focus } from "@biolibs/bionet-scene";
-import { SequencesTool, instrumentFor, moleculeOf, type DrawnMolecule, useAssemblyBench, useCodonBench, useDigestBench, useFusionBench, useElectroBench, useImagerBench, useInductionBench, useSpectroBench, useSpinBench, useVerifyBench, useLigationBench, usePcrBench, usePrimerBench } from "@biolibs/bionet-tools";
+import { SequencesTool, instrumentFor, moleculeOf, type DrawnMolecule, useAssemblyBench, useCodonBench, useDigestBench, useFusionBench, useElectroBench, useGrowBench, useImagerBench, useInductionBench, useSpectroBench, useSpinBench, useVerifyBench, useLigationBench, usePcrBench, usePrimerBench } from "@biolibs/bionet-tools";
 import type { TourStop } from "./tour.js";
 
 /**
@@ -32,7 +32,8 @@ export type ShownAt =
   | { at: "spectro"; start: { view: "result" | "tube"; tube: string; shown: number } }
   | { at: "electro"; start: { view: "result" | "tube"; construct: string; host?: string } }
   | { at: "imager"; start: { view: "result" | "block"; expected?: readonly number[] } }
-  | { at: "spin"; start: { view: "block" | "screen"; what?: string; loaded?: readonly number[] } };
+  | { at: "spin"; start: { view: "block" | "screen"; what?: string; loaded?: readonly number[] } }
+  | { at: "grow"; start: { view: "tube" | "screen"; host?: string; hours?: number } };
 
 /**
  * The stop to be at, to see what was done.
@@ -86,10 +87,11 @@ export function LabAt({ stop, onPcr }: { stop: TourStop; onPcr?: (tubes: { templ
   const found = { pcr: lab ? instrumentFor(lab, "pcr") : null, digest: lab ? instrumentFor(lab, "digest") : null,
                   ligation: lab ? instrumentFor(lab, "ligation") : null, induction: lab ? instrumentFor(lab, "induction") : null,
                   spectro: lab ? instrumentFor(lab, "spectro") : null, electro: lab ? instrumentFor(lab, "electro") : null,
-                  imager: lab ? instrumentFor(lab, "imager") : null, spin: lab ? instrumentFor(lab, "spin") : null };
+                  imager: lab ? instrumentFor(lab, "imager") : null, spin: lab ? instrumentFor(lab, "spin") : null,
+                  grow: lab ? instrumentFor(lab, "grow") : null };
   // Kept the same from one draw to the next, so that a tool is not set working again by being looked at.
   const at = useMemo(() => found, [found.pcr?.id, found.pcr?.name, found.digest?.id, found.digest?.name, found.ligation?.id, found.ligation?.name,
-                                   found.induction?.id, found.induction?.name, found.spectro?.id, found.spectro?.name, found.electro?.id, found.electro?.name, found.imager?.id, found.imager?.name, found.spin?.id, found.spin?.name]);
+                                   found.induction?.id, found.induction?.name, found.spectro?.id, found.spectro?.name, found.electro?.id, found.electro?.name, found.imager?.id, found.imager?.name, found.spin?.id, found.spin?.name, found.grow?.id, found.grow?.name]);
   const pcr = usePcrBench({ instrument: at.pcr, ...(stop.at === "pcr" && stop.start !== undefined ? { start: stop.start } : {}) });
   const digest = useDigestBench({ instrument: at.digest, ...(stop.at === "digest" && stop.start !== undefined ? { start: stop.start } : {}) });
   const ligation = useLigationBench({ instrument: at.ligation, ...(stop.at === "ligation" && stop.start !== undefined ? { start: stop.start } : {}) });
@@ -103,6 +105,8 @@ export function LabAt({ stop, onPcr }: { stop: TourStop; onPcr?: (tubes: { templ
   const imager = useImagerBench({ instrument: at.imager, ...(stop.at === "imager" && stop.start !== undefined ? { start: stop.start } : {}) });
   // The one that comes between all the others, and that almost nothing used to be recorded about.
   const spin = useSpinBench({ instrument: at.spin, ...(stop.at === "spin" && stop.start !== undefined ? { start: stop.start } : {}) });
+  // The one made of time: what is in it is doing nothing anybody can watch, for a night or two days.
+  const grow = useGrowBench({ instrument: at.grow, ...(stop.at === "grow" && stop.start !== undefined ? { start: stop.start } : {}) });
   // Primers are designed at a desk, so that tool has no machine to stand at: it is beside the room,
   // and what it hands over is the template's tube to look at and the pair drawn on its molecule.
   const primers = usePrimerBench({ ...(stop.at === "primers" && stop.start !== undefined ? { start: stop.start } : {}), ...(onPcr === undefined ? {} : { onPcr }) });
@@ -115,12 +119,12 @@ export function LabAt({ stop, onPcr }: { stop: TourStop; onPcr?: (tubes: { templ
   if (lab === null || lab === undefined) return null;
 
   const bench = stop.at === "pcr" ? pcr : stop.at === "digest" ? digest : stop.at === "ligation" ? ligation : stop.at === "induction" ? induction
-              : stop.at === "spectro" ? spectro : stop.at === "electro" ? electro : stop.at === "imager" ? imager : stop.at === "spin" ? spin : null;
+              : stop.at === "spectro" ? spectro : stop.at === "electro" ? electro : stop.at === "imager" ? imager : stop.at === "spin" ? spin : stop.at === "grow" ? grow : null;
   const desk = stop.at === "primers" ? primers.desk : stop.at === "assembly" ? assembly.desk : stop.at === "construct" ? construct.desk
              : stop.at === "codons" ? codons.desk : stop.at === "verify" ? verify.desk : null;
   const beside = stop.at === "primers" ? primers.panel : stop.at === "assembly" ? assembly.panel : stop.at === "construct" ? construct.panel
                : stop.at === "codons" ? codons.panel : stop.at === "verify" ? verify.panel : null;
-  const stood = stop.at === "pcr" || stop.at === "digest" || stop.at === "ligation" || stop.at === "induction" || stop.at === "spectro" || stop.at === "electro" || stop.at === "imager" || stop.at === "spin" ? at[stop.at] : null;
+  const stood = stop.at === "pcr" || stop.at === "digest" || stop.at === "ligation" || stop.at === "induction" || stop.at === "spectro" || stop.at === "electro" || stop.at === "imager" || stop.at === "spin" || stop.at === "grow" ? at[stop.at] : null;
   if (bench !== null && stood === null) return <div className="scene"><InstrumentStage {...bench.stage}>{bench.panel}</InstrumentStage></div>;
   const sequences = stop.at === "sequences" ? <div className="bionet"><SequencesTool {...(stop.part === undefined ? {} : { part: stop.part })} /></div> : null;
   if (!lab.places.some((one) => !one.retired) && (stop.at === "primers" || stop.at === "assembly" || stop.at === "construct" || stop.at === "codons" || stop.at === "verify" || stop.at === "sequences")) return beside === null ? sequences : <>{beside}</>;

@@ -172,3 +172,6 @@
 .bionet-scene .rotor-said.offset.out { color: var(--bionet-attention) }
 .bionet-scene .rotor-hole { font-size: 10px; font-family: ui-monospace, monospace; color: var(--bionet-held) }
 .bionet-scene .rotor-hole.put { color: var(--bionet-good); font-weight: 600 }
+.bionet-scene .plate-said { font-size: 11px; white-space: nowrap; color: var(--bionet-dim); padding: 0 .3rem; border-radius: 3px;
+  background: color-mix(in srgb, var(--bionet-ground) 78%, transparent) }
+.bionet-scene .plate-said.overgrown { color: var(--bionet-attention); font-weight: 600 }
