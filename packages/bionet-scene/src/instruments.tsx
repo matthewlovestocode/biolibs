@@ -53,7 +53,7 @@ function PartBox({ part, tone, strength, theme, fill, name, within, order, picke
       {fill > 0 && (
         // Tagged as skinned, with the fill it has when skins are off, so that the skins setting can
         // drive it from how near the camera is and put this exact fill back when it is turned off.
-        <mesh name={name} geometry={round ? ROUND : BOX} userData={{ skinned: true, fill, loud }}>
+        <mesh name={name} geometry={round ? ROUND : BOX} userData={{ skinned: true, fill, loud, ...(part.skin === undefined ? {} : { skin: part.skin }) }}>
           <meshBasicMaterial color={colour(tone, theme)} transparent opacity={theme === "dark" ? fill : fill * 1.6} depthWrite={false} toneMapped={false}
                              polygonOffset polygonOffsetFactor={-order} polygonOffsetUnits={-order} />
         </mesh>

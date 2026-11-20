@@ -70,12 +70,13 @@ describe.each(stands)("what a %s stands on", (kind) => {
   });
 });
 
-describe("every piece a shape is quiet about", () => {
-  const shapes = [
-    ...(["bench", "freezer", "fridge"] as const).map((kind) => [kind, shapeFor({ kind })!] as const),
-    ...MODELS.map((model) => [model, shapeFor({ kind: "instrument", model })!] as const),
-  ].filter(([, shape]) => shape !== null);
+/** Every shape the lab draws, by name: the kinds it stands in a room, and every instrument. */
+const shapes = [
+  ...(["bench", "freezer", "fridge"] as const).map((kind) => [kind, shapeFor({ kind })!] as const),
+  ...MODELS.map((model) => [model, shapeFor({ kind: "instrument", model })!] as const),
+].filter(([, shape]) => shape !== null);
 
+describe("every piece a shape is quiet about", () => {
   it("covers every shape in the lab, so none is left glowing at its feet", () => {
     expect(shapes.length).toBeGreaterThan(12);
     const loud = shapes.flatMap(([name, shape]) =>
@@ -133,7 +134,7 @@ describe("the box you press", () => {
 });
 
 describe("what a bench is made of", () => {
-  const bench = SKINS["bench"]!;
+  const bench = SKINS["furniture"]!;
 
   it("does not thin out when somebody walks up to it, because it has no inside", () => {
     // The mistake this catches: giving a bench the plain skin, which clears as you approach and so
@@ -159,5 +160,125 @@ describe("what a bench is made of", () => {
 
   it("is still the drawing as it was with skins off", () => {
     for (const how of [0, 1]) expect(fillAt(bench, "off", how, 0.04).fill).toBe(0.04);
+  });
+});
+
+describe("a piece made of something the rest of the thing is not", () => {
+  const glass = SKINS["glass"]!;
+
+  it("never hides what is behind it, which is the whole reason it is there", () => {
+    // The mistake this catches: giving a window the skin of the door it is set in, so that across
+    // the room the fridge is a solid slab and the point of having a window in it is gone.
+    for (const how of [0, 0.5, 1]) expect(fillAt(glass, "on", how, 0.04).hides).toBe(false);
+    expect(glass.far).toBeLessThan(SKINS["plain"]!.far);
+    // The door around it still goes solid, or the window would not read as a window.
+    expect(fillAt(SKINS["plain"]!, "on", 0, 0.04).hides).toBe(true);
+  });
+
+  it("is on the pieces that are there because they are see-through, and nowhere else", () => {
+    const glazed: string[] = [];
+    for (const [name, shape] of shapes) {
+      const parts = [...shape.body, ...(shape.lid?.parts ?? [])];
+      for (const part of parts) if (part.skin === "glass") glazed.push(name);
+    }
+    // A window in a door, a cabinet's sash, the tank and lid you watch a gel run in, a balance's
+    // draft shield, a microscope's optics, and the lit surface a gel is photographed on.
+    expect([...new Set(glazed)].sort()).toEqual([
+      "balance", "biosafety-cabinet", "fridge", "gel-imager", "gel-station", "incubator", "microscope",
+    ]);
+    // A freezer has no window: what is in it is found by opening it, not by looking through it.
+    const freezer = shapeFor({ kind: "freezer" })!;
+    expect(freezer.body.some((part) => part.skin !== undefined)).toBe(false);
+  });
+
+  it("names a skin that exists, or it would quietly fall back to the thing's own", () => {
+    for (const [name, shape] of shapes) {
+      for (const part of [...shape.body, ...(shape.lid?.parts ?? [])]) {
+        if (part.skin === undefined) continue;
+        expect(Object.hasOwn(SKINS, part.skin), `${name} names a skin that is not there`).toBe(true);
+      }
+    }
+  });
+});
+
+describe("a casting, which has nothing inside it to find", () => {
+  const metal = SKINS["metal"]!;
+
+  it("stays as solid up close as it was from across the room", () => {
+    // The mistake this catches: letting a milled block or a cast base clear as somebody walks up.
+    // Thinning a thing says there is something behind it worth seeing, and in a casting there is
+    // not — so it reads as a hole in the machine rather than as the machine.
+    expect(metal.near).toBe(metal.far);
+    for (const how of [0, 0.5, 1]) expect(fillAt(metal, "on", how, 0.04).hides).toBe(true);
+  });
+
+  it("keeps the colour of whose it is, unlike furniture", () => {
+    // This is the whole difference between the two: both stay solid, but a bench is not a thing
+    // the work is about and a machine in use is.
+    expect(metal.tone).toBeUndefined();
+    expect(skinTone(metal, "yours")).toBe("yours");
+    expect(skinTone(SKINS["furniture"]!, "yours")).toBe("dim");
+  });
+
+  it("is still the drawing as it was with skins off", () => {
+    for (const how of [0, 1]) expect(fillAt(metal, "off", how, 0.04).fill).toBe(0.04);
+  });
+});
+
+describe("a hood, which is opaque on purpose", () => {
+  const hood = SKINS["hood"]!;
+
+  it("is the most solid thing in the lab, and dark with it", () => {
+    // A gel is imaged in the dark. A hood you can see through is not doing its job, and being at
+    // it is exactly when it matters that it is shut.
+    expect(hood.near).toBe(hood.far);
+    expect(hood.far).toBeGreaterThan(SKINS["metal"]!.far);
+    expect(hood.tone).toBe("dim");
+    for (const how of [0, 1]) expect(fillAt(hood, "on", how, 0.04).hides).toBe(true);
+  });
+
+  it("is on the walls and the roof, and not on the front, so the working still shows", () => {
+    // The mistake this catches: hooding the whole box. Then the imager has no mechanism at all —
+    // from any distance it is a closed crate, and the surface and camera inside it are gone.
+    const imager = shapeFor({ kind: "instrument", model: "gel-imager" })!;
+    const hooded = imager.body.filter((part) => part.skin === "hood");
+    expect(hooded.length).toBe(4);
+    // The front panel is the way in: it is left to clear as somebody comes to it.
+    const front = imager.body.find((part) => part.at[2] > 0.4 && part.size[0] > 0.8);
+    expect(front?.skin).toBeUndefined();
+    // And what is under the hood is the lit surface and the camera looking down at it.
+    expect(imager.body.some((part) => part.skin === "glass")).toBe(true);
+    expect(imager.body.some((part) => part.skin === "metal")).toBe(true);
+  });
+});
+
+describe("a skin that never clears, wherever it is put", () => {
+  const SOLID = ["furniture", "metal", "hood"];
+
+  it("is never on a lid, because a lid is the thing that opens", () => {
+    // The mistake this catches: calling a heated lid or a tank lid metal, which it is. A lid that
+    // stays solid when you are at the machine hides the one thing opening it was for.
+    for (const [name, shape] of shapes) {
+      for (const part of shape.lid?.parts ?? []) {
+        expect(SOLID.includes(part.skin ?? ""), `${name}'s lid never clears`).toBe(false);
+      }
+    }
+  });
+
+  it("is never on the box a block of wells sits in", () => {
+    // Same mistake one level down: a case is a casting, but the case of a thing with wells in it
+    // is the case you look into. The fittings on it — the fascia, the knob, the hinges — are not.
+    for (const [name, shape] of shapes) {
+      if (shape.block === undefined) continue;
+      expect(SOLID.includes(shape.body[0]?.skin ?? ""), `${name} is looked into`).toBe(false);
+      expect(shape.body.some((part) => part.skin === "metal"), `${name} has fittings too`).toBe(true);
+    }
+  });
+
+  it("is on what a machine is mostly made of, now that it is on anything", () => {
+    // A sweep that skinned three parts and stopped would leave the lab half one drawing and half
+    // another. This says the rule was carried through, without pinning which parts it reached.
+    const reached = [...shapes].filter(([, shape]) => shape.body.some((part) => part.skin === "metal"));
+    expect(reached.length).toBeGreaterThan(shapes.length / 2);
   });
 });

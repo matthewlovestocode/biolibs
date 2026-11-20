@@ -66,10 +66,30 @@ export interface Skin {
  */
 export const SKINS: Readonly<Record<string, Skin>> = {
   plain: { far: 0.92, near: 0.05 },
-  // A bench has no inside worth seeing. Thinning it as somebody walks up only puts its own shelves,
-  // legs and drawers in front of the machine they came to use, so it stays as solid up close as it
-  // is across the room — and in its own colour, so that what is standing on it is what is read.
-  bench: { far: 0.92, near: 0.92, tone: "dim" },
+  // What the work stands on, rather than a thing the work is about: a bench, the computer on it.
+  // It has no inside worth seeing, so thinning it as somebody walks up would only put its own
+  // shelves, legs and drawers in front of the machine they came to use. It stays as solid close to
+  // as it is across the room, and in its own colour, so that what stands on it is what is read.
+  furniture: { far: 0.92, near: 0.92, tone: "dim" },
+  // A window, a sash, the wall of a tank. The whole reason it is there is that you see through it,
+  // so it is never solid and never hides what is behind it, at any distance.
+  glass: { far: 0.3, near: 0.05 },
+  // A solid piece of the machine itself: a cast base, a pressure door, a milled block. Most of an
+  // instrument is this, and the few parts that are not — the chamber, the lid, the tank — are the
+  // ones worth seeing into. Walking up to a casting and having it go transparent says there is
+  // something behind it to find, and there is not, so it stays as solid as it was from the door.
+  // Unlike furniture it keeps the colour of whose it is, because it is part of a machine in use.
+  //
+  // Where it goes: the fittings. A stand, a deck, a fascia, a work surface, a knob, a hinge, a
+  // machined plate — the parts of a machine that enclose nothing. Where it does not go: a lid,
+  // because a lid is the thing that opens, and the case of anything with a block of wells, a
+  // rotor, a chamber or shelves in it, because that case is what you walk up to look into. Both
+  // of those are tests, not notes, because the rule is easy to apply one part too far.
+  metal: { far: 0.92, near: 0.92 },
+  // A shade that is opaque on purpose. A gel is imaged in the dark: the hood is there to keep light
+  // out, and a hood you can see through is not doing its job. It is the one skin that is more
+  // solid up close than anything else, because being at it is when it matters that it is shut.
+  hood: { far: 0.96, near: 0.96, tone: "dim" },
 };
 
 /** The tones that say something about the lab rather than about what a thing is made of. */
@@ -90,8 +110,8 @@ const MEANS: ReadonlySet<Meaning> = new Set<Meaning>(["found", "attention", "hel
  * ```ts
  * import { SKINS, skinTone } from "@biolibs/bionet-scene";
  *
- * skinTone(SKINS["bench"]!, "yours");      // "dim": nothing to say, so it is drawn as furniture
- * skinTone(SKINS["bench"]!, "attention");  // "attention": something on it wants a person
+ * skinTone(SKINS["furniture"]!, "yours");      // "dim": nothing to say, so it is drawn as furniture
+ * skinTone(SKINS["furniture"]!, "attention");  // "attention": something on it wants a person
  * ```
  */
 export function skinTone(skin: Skin | null, tone: Meaning): Meaning {

@@ -40,6 +40,15 @@ export interface Part {
    * with nothing outlining it, which reads as a box rather than as a leg.
    */
   loud?: number;
+  /**
+   * What this one piece is made of, where that is not what the rest of the thing is made of.
+   *
+   * Most of a thing is one material and takes the skin of the thing. The exceptions are the pieces
+   * that are there precisely because they are a different material: the window in a fridge door,
+   * the sash of a cabinet, the walls of a gel tank. Drawn in the same material as the case around
+   * them they stop being windows, and the thing they were there to show goes with them.
+   */
+  skin?: string;
 }
 
 /** What an instrument is made of. */
@@ -61,11 +70,11 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   thermocycler: {
     body: [
       { at: [0, -0.2, 0], size: [1, 0.56, 1] },
-      { at: [0, 0.16, 0.36], size: [0.92, 0.12, 0.26] },
+      { at: [0, 0.16, 0.36], size: [0.92, 0.12, 0.26], skin: "metal" },
       { at: [0, -0.2, -0.49], size: [0.66, 0.34, 0.02] },
-      { at: [-0.3, 0.1, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x" },
-      { at: [0.3, 0.1, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x" },
-      { at: [0.36, 0.17, 0.3], size: [0.1, 0.1, 0.1], round: true },
+      { at: [-0.3, 0.1, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x", skin: "metal" },
+      { at: [0.3, 0.1, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x", skin: "metal" },
+      { at: [0.36, 0.17, 0.3], size: [0.1, 0.1, 0.1], round: true, skin: "metal" },
       { at: [-0.4, -0.47, -0.36], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
       { at: [0.4, -0.47, -0.36], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
       { at: [-0.4, -0.47, 0.36], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
@@ -81,20 +90,20 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // comb that makes the wells, and beside it the power supply with its display, dial and lamp.
   "gel-station": {
     body: [
-      { at: [-0.18, -0.2, 0], size: [0.62, 0.6, 0.96] },
-      { at: [0.36, -0.05, -0.1], size: [0.26, 0.9, 0.6] },
+      { at: [-0.18, -0.2, 0], size: [0.62, 0.6, 0.96], skin: "glass" },
+      { at: [0.36, -0.05, -0.1], size: [0.26, 0.9, 0.6], skin: "metal" },
       { at: [-0.18, 0.02, 0], size: [0.5, 0.06, 0.8] },
       { at: [-0.44, 0.08, 0], size: [0.04, 0.3, 0.86] },
       { at: [0.08, 0.08, 0], size: [0.04, 0.3, 0.86] },
       { at: [-0.18, 0.14, -0.3], size: [0.46, 0.1, 0.03] },
-      { at: [0.36, -0.12, 0.205], size: [0.1, 0.1, 0.06], round: true, along: "z" },
-      { at: [0.36, -0.3, 0.205], size: [0.05, 0.05, 0.04], round: true, along: "z" },
+      { at: [0.36, -0.12, 0.205], size: [0.1, 0.1, 0.06], round: true, along: "z", skin: "metal" },
+      { at: [0.36, -0.3, 0.205], size: [0.05, 0.05, 0.04], round: true, along: "z", skin: "metal" },
       { at: [-0.4, -0.48, -0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [0.04, -0.48, -0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [-0.4, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [0.04, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
     ],
-    lid: { parts: [{ at: [-0.18, 0.22, 0], size: [0.6, 0.24, 0.94] },
+    lid: { parts: [{ at: [-0.18, 0.22, 0], size: [0.6, 0.24, 0.94], skin: "glass" },
                    { at: [-0.18, 0.35, 0.2], size: [0.22, 0.04, 0.04], round: true, along: "x" }],
            hinge: [-0.18, 0.1, -0.48], opens: 70 },
     screen: { at: [0.36, 0.2, 0.205], size: [0.18, 0.2], leans: 0 },
@@ -106,12 +115,12 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   "shaking-incubator": {
     body: [
       { at: [0, -0.22, 0], size: [1, 0.56, 1] },
-      { at: [0, 0.14, 0.4], size: [0.96, 0.12, 0.2] },
+      { at: [0, 0.14, 0.4], size: [0.96, 0.12, 0.2], skin: "metal" },
       { at: [0, -0.22, -0.49], size: [0.7, 0.4, 0.02] },
-      { at: [0, 0.06, -0.1], size: [0.84, 0.04, 0.7] },
-      { at: [-0.3, 0.13, -0.47], size: [0.18, 0.06, 0.06], round: true, along: "x" },
-      { at: [0.3, 0.13, -0.47], size: [0.18, 0.06, 0.06], round: true, along: "x" },
-      { at: [0.4, 0.15, 0.4], size: [0.09, 0.09, 0.09], round: true },
+      { at: [0, 0.06, -0.1], size: [0.84, 0.04, 0.7], skin: "metal" },
+      { at: [-0.3, 0.13, -0.47], size: [0.18, 0.06, 0.06], round: true, along: "x", skin: "metal" },
+      { at: [0.3, 0.13, -0.47], size: [0.18, 0.06, 0.06], round: true, along: "x", skin: "metal" },
+      { at: [0.4, 0.15, 0.4], size: [0.09, 0.09, 0.09], round: true, skin: "metal" },
       { at: [-0.42, -0.48, -0.42], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [0.42, -0.48, -0.42], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [-0.42, -0.48, 0.42], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
@@ -128,10 +137,10 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   centrifuge: {
     body: [
       { at: [0, -0.22, 0], size: [1, 0.56, 1], round: true },
-      { at: [0, 0.1, 0.42], size: [0.56, 0.2, 0.16] },
-      { at: [0, 0.06, -0.02], size: [0.76, 0.05, 0.76], round: true },
-      { at: [0, 0.13, -0.02], size: [0.1, 0.12, 0.1], round: true },
-      { at: [0.34, 0.08, 0.42], size: [0.1, 0.1, 0.08], round: true, along: "z" },
+      { at: [0, 0.1, 0.42], size: [0.56, 0.2, 0.16], skin: "metal" },
+      { at: [0, 0.06, -0.02], size: [0.76, 0.05, 0.76], round: true, skin: "metal" },
+      { at: [0, 0.13, -0.02], size: [0.1, 0.12, 0.1], round: true, skin: "metal" },
+      { at: [0.34, 0.08, 0.42], size: [0.1, 0.1, 0.08], round: true, along: "z", skin: "metal" },
       // Eight buckets round the rotor, at the eighth-turns of a circle of radius 0.27.
       { at: [0, 0.06, 0.25], size: [0.13, 0.14, 0.13], round: true },
       { at: [0.19, 0.06, 0.17], size: [0.13, 0.14, 0.13], round: true },
@@ -164,19 +173,19 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // is at it. It shows nothing: all it has to say is said by the person looking down it.
   microscope: {
     body: [
-      { at: [0, -0.42, 0.04], size: [0.82, 0.16, 0.9] },
-      { at: [0, -0.42, -0.38], size: [0.2, 0.1, 0.1], round: true, along: "z" },
-      { at: [0, 0.02, -0.3], size: [0.3, 0.84, 0.3] },
+      { at: [0, -0.42, 0.04], size: [0.82, 0.16, 0.9], skin: "metal" },
+      { at: [0, -0.42, -0.38], size: [0.2, 0.1, 0.1], round: true, along: "z", skin: "glass" },
+      { at: [0, 0.02, -0.3], size: [0.3, 0.84, 0.3], skin: "metal" },
       { at: [0, -0.12, 0.08], size: [0.66, 0.06, 0.5] },
-      { at: [0, -0.26, 0.08], size: [0.16, 0.16, 0.16], round: true },
-      { at: [0, -0.02, 0.04], size: [0.22, 0.1, 0.22], round: true },
-      { at: [-0.06, -0.1, 0.04], size: [0.07, 0.14, 0.07], round: true },
-      { at: [0.06, -0.1, 0.04], size: [0.07, 0.14, 0.07], round: true },
-      { at: [-0.2, 0.06, -0.3], size: [0.12, 0.12, 0.12], round: true, along: "x" },
-      { at: [0.2, 0.06, -0.3], size: [0.12, 0.12, 0.12], round: true, along: "x" },
-      { at: [0, 0.3, -0.14], size: [0.26, 0.18, 0.3] },
-      { at: [-0.07, 0.36, 0.08], size: [0.1, 0.1, 0.22], round: true, along: "z" },
-      { at: [0.07, 0.36, 0.08], size: [0.1, 0.1, 0.22], round: true, along: "z" },
+      { at: [0, -0.26, 0.08], size: [0.16, 0.16, 0.16], round: true, skin: "glass" },
+      { at: [0, -0.02, 0.04], size: [0.22, 0.1, 0.22], round: true, skin: "metal" },
+      { at: [-0.06, -0.1, 0.04], size: [0.07, 0.14, 0.07], round: true, skin: "glass" },
+      { at: [0.06, -0.1, 0.04], size: [0.07, 0.14, 0.07], round: true, skin: "glass" },
+      { at: [-0.2, 0.06, -0.3], size: [0.12, 0.12, 0.12], round: true, along: "x", skin: "metal" },
+      { at: [0.2, 0.06, -0.3], size: [0.12, 0.12, 0.12], round: true, along: "x", skin: "metal" },
+      { at: [0, 0.3, -0.14], size: [0.26, 0.18, 0.3], skin: "metal" },
+      { at: [-0.07, 0.36, 0.08], size: [0.1, 0.1, 0.22], round: true, along: "z", skin: "glass" },
+      { at: [0.07, 0.36, 0.08], size: [0.1, 0.1, 0.22], round: true, along: "z", skin: "glass" },
     ],
   },
   // A case with a lid over the cuvette well, and a sloped panel at the front. What it reads is one
@@ -185,13 +194,13 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   spectrophotometer: {
     body: [
       { at: [0, -0.22, 0], size: [1, 0.56, 1] },
-      { at: [0, 0.14, 0.36], size: [0.96, 0.14, 0.28] },
+      { at: [0, 0.14, 0.36], size: [0.96, 0.14, 0.28], skin: "metal" },
       { at: [0, -0.22, -0.49], size: [0.6, 0.3, 0.02] },
-      { at: [-0.22, 0.06, -0.1], size: [0.34, 0.06, 0.44] },
+      { at: [-0.22, 0.06, -0.1], size: [0.34, 0.06, 0.44], skin: "metal" },
       { at: [-0.22, 0.08, -0.1], size: [0.1, 0.12, 0.1] },
-      { at: [0.3, 0.16, 0.3], size: [0.1, 0.1, 0.1], round: true },
-      { at: [-0.4, 0.1, -0.35], size: [0.14, 0.06, 0.06], round: true, along: "x" },
-      { at: [-0.04, 0.1, -0.35], size: [0.14, 0.06, 0.06], round: true, along: "x" },
+      { at: [0.3, 0.16, 0.3], size: [0.1, 0.1, 0.1], round: true, skin: "metal" },
+      { at: [-0.4, 0.1, -0.35], size: [0.14, 0.06, 0.06], round: true, along: "x", skin: "metal" },
+      { at: [-0.04, 0.1, -0.35], size: [0.14, 0.06, 0.06], round: true, along: "x", skin: "metal" },
       { at: [-0.42, -0.47, -0.38], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
       { at: [0.42, -0.47, -0.38], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
       { at: [-0.42, -0.47, 0.38], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
@@ -209,10 +218,10 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   electroporator: {
     body: [
       { at: [0, -0.2, 0], size: [1, 0.6, 1] },
-      { at: [0, 0.18, 0], size: [0.9, 0.16, 0.9] },
+      { at: [0, 0.18, 0], size: [0.9, 0.16, 0.9], skin: "metal" },
       { at: [-0.25, 0.3, 0.1], size: [0.26, 0.08, 0.3] },
-      { at: [0.28, 0.32, -0.12], size: [0.22, 0.1, 0.22], round: true },
-      { at: [0.28, 0.32, 0.24], size: [0.12, 0.08, 0.12], round: true },
+      { at: [0.28, 0.32, -0.12], size: [0.22, 0.1, 0.22], round: true, skin: "metal" },
+      { at: [0.28, 0.32, 0.24], size: [0.12, 0.08, 0.12], round: true, skin: "metal" },
       { at: [0, -0.2, -0.49], size: [0.5, 0.3, 0.02] },
       { at: [-0.4, -0.47, -0.4], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
       { at: [0.4, -0.47, -0.4], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
@@ -226,9 +235,9 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   "water-bath": {
     body: [
       { at: [0, -0.2, 0], size: [1, 0.6, 1] },
-      { at: [0, 0.1, 0.42], size: [0.9, 0.16, 0.16] },
-      { at: [0, 0, -0.04], size: [0.82, 0.02, 0.78] },
-      { at: [0.4, 0.12, 0.42], size: [0.12, 0.12, 0.1], round: true },
+      { at: [0, 0.1, 0.42], size: [0.9, 0.16, 0.16], skin: "metal" },
+      { at: [0, 0, -0.04], size: [0.82, 0.02, 0.78], skin: "metal" },
+      { at: [0.4, 0.12, 0.42], size: [0.12, 0.12, 0.1], round: true, skin: "metal" },
       { at: [-0.4, -0.48, -0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [0.4, -0.48, -0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [-0.4, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
@@ -244,13 +253,13 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // the medium, the agarose, the buffer — starts on one of these.
   balance: {
     body: [
-      { at: [0, -0.38, 0.06], size: [1, 0.24, 0.86] },
-      { at: [0, -0.22, -0.08], size: [0.5, 0.08, 0.5], round: true },
-      { at: [-0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7] },
-      { at: [0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7] },
-      { at: [0, 0.06, -0.42], size: [0.88, 0.64, 0.04] },
-      { at: [0, 0.36, -0.08], size: [0.88, 0.04, 0.7] },
-      { at: [0, -0.3, 0.46], size: [0.34, 0.12, 0.06] },
+      { at: [0, -0.38, 0.06], size: [1, 0.24, 0.86], skin: "metal" },
+      { at: [0, -0.22, -0.08], size: [0.5, 0.08, 0.5], round: true, skin: "metal" },
+      { at: [-0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7], skin: "glass" },
+      { at: [0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7], skin: "glass" },
+      { at: [0, 0.06, -0.42], size: [0.88, 0.64, 0.04], skin: "glass" },
+      { at: [0, 0.36, -0.08], size: [0.88, 0.04, 0.7], skin: "glass" },
+      { at: [0, -0.3, 0.46], size: [0.34, 0.12, 0.06], skin: "metal" },
       { at: [-0.38, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [0.38, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [0, -0.48, -0.3], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
@@ -260,10 +269,10 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // A cup on a heavy foot that shakes whatever is pressed into it. Small, and in constant use.
   vortex: {
     body: [
-      { at: [0, -0.2, 0], size: [1, 0.6, 1] },
-      { at: [0, 0.18, -0.1], size: [0.6, 0.16, 0.6], round: true },
-      { at: [0.3, 0.1, 0.36], size: [0.26, 0.26, 0.2], round: true, along: "z" },
-      { at: [-0.3, 0.1, 0.42], size: [0.24, 0.1, 0.06] },
+      { at: [0, -0.2, 0], size: [1, 0.6, 1], skin: "metal" },
+      { at: [0, 0.18, -0.1], size: [0.6, 0.16, 0.6], round: true, skin: "metal" },
+      { at: [0.3, 0.1, 0.36], size: [0.26, 0.26, 0.2], round: true, along: "z", skin: "metal" },
+      { at: [-0.3, 0.1, 0.42], size: [0.24, 0.1, 0.06], skin: "metal" },
       { at: [-0.38, -0.48, -0.38], size: [0.14, 0.04, 0.14], round: true, loud: 0.18 },
       { at: [0.38, -0.48, -0.38], size: [0.14, 0.04, 0.14], round: true, loud: 0.18 },
       { at: [-0.38, -0.48, 0.38], size: [0.14, 0.04, 0.14], round: true, loud: 0.18 },
@@ -274,15 +283,15 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // gel; this is the thing that makes a picture of it, which is what the result of a digest is.
   "gel-imager": {
     body: [
-      { at: [0, -0.22, 0], size: [1, 0.56, 1] },
-      { at: [0, 0.06, 0], size: [0.8, 0.02, 0.8] },
-      { at: [-0.46, 0.18, 0], size: [0.08, 0.5, 0.9] },
-      { at: [0.46, 0.18, 0], size: [0.08, 0.5, 0.9] },
-      { at: [0, 0.18, -0.45], size: [0.92, 0.5, 0.1] },
-      { at: [0, 0.46, 0], size: [0.92, 0.08, 0.9] },
-      { at: [0, 0.32, 0], size: [0.18, 0.2, 0.18], round: true },
+      { at: [0, -0.22, 0], size: [1, 0.56, 1], skin: "metal" },
+      { at: [0, 0.06, 0], size: [0.8, 0.02, 0.8], skin: "glass" },
+      { at: [-0.46, 0.18, 0], size: [0.08, 0.5, 0.9], skin: "hood" },
+      { at: [0.46, 0.18, 0], size: [0.08, 0.5, 0.9], skin: "hood" },
+      { at: [0, 0.18, -0.45], size: [0.92, 0.5, 0.1], skin: "hood" },
+      { at: [0, 0.46, 0], size: [0.92, 0.08, 0.9], skin: "hood" },
+      { at: [0, 0.32, 0], size: [0.18, 0.2, 0.18], round: true, skin: "metal" },
       { at: [0, 0.18, 0.44], size: [0.88, 0.46, 0.04] },
-      { at: [0.3, 0.18, 0.47], size: [0.06, 0.2, 0.05], round: true },
+      { at: [0.3, 0.18, 0.47], size: [0.06, 0.2, 0.05], round: true, skin: "metal" },
     ],
     screen: { at: [-0.28, -0.3, 0.5], size: [0.3, 0.1], leans: 0 },
   },
@@ -292,9 +301,9 @@ const SHAPES: Readonly<Record<string, Shape>> = {
     body: [
       { at: [0, -0.02, -0.05], size: [1, 0.96, 0.9] },
       { at: [0, -0.06, 0.44], size: [0.96, 0.8, 0.06] },
-      { at: [0, -0.06, 0.47], size: [0.6, 0.56, 0.02] },
-      { at: [0.4, -0.06, 0.47], size: [0.06, 0.26, 0.06], round: true },
-      { at: [0, 0.42, 0.44], size: [0.96, 0.14, 0.08] },
+      { at: [0, -0.06, 0.47], size: [0.6, 0.56, 0.02], skin: "glass" },
+      { at: [0.4, -0.06, 0.47], size: [0.06, 0.26, 0.06], round: true, skin: "metal" },
+      { at: [0, 0.42, 0.44], size: [0.96, 0.14, 0.08], skin: "metal" },
       { at: [0, -0.2, -0.05], size: [0.84, 0.02, 0.78] },
       { at: [0, 0.04, -0.05], size: [0.84, 0.02, 0.78] },
       { at: [0, 0.26, -0.05], size: [0.84, 0.02, 0.78] },
@@ -309,14 +318,14 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // filtered out of the top, so that what is on the work surface stays what was put there.
   "biosafety-cabinet": {
     body: [
-      { at: [0, -0.32, 0], size: [1, 0.36, 1] },
+      { at: [0, -0.32, 0], size: [1, 0.36, 1], skin: "metal" },
       { at: [0, 0.14, -0.04], size: [1, 0.56, 0.92] },
-      { at: [0, 0.42, 0], size: [1, 0.16, 1] },
-      { at: [0, -0.12, 0], size: [0.96, 0.04, 0.96] },
+      { at: [0, 0.42, 0], size: [1, 0.16, 1], skin: "metal" },
+      { at: [0, -0.12, 0], size: [0.96, 0.04, 0.96], skin: "metal" },
       { at: [0, -0.09, 0.44], size: [0.9, 0.03, 0.08] },
-      { at: [0, 0.14, 0.46], size: [0.94, 0.42, 0.03] },
-      { at: [0, -0.06, 0.46], size: [0.3, 0.04, 0.04], round: true, along: "x" },
-      { at: [-0.42, 0.44, 0.46], size: [0.1, 0.1, 0.04], round: true, along: "z" },
+      { at: [0, 0.14, 0.46], size: [0.94, 0.42, 0.03], skin: "glass" },
+      { at: [0, -0.06, 0.46], size: [0.3, 0.04, 0.04], round: true, along: "x", skin: "metal" },
+      { at: [-0.42, 0.44, 0.46], size: [0.1, 0.1, 0.04], round: true, along: "z", skin: "metal" },
       { at: [-0.44, -0.46, -0.4], size: [0.1, 0.08, 0.1], round: true, loud: 0.18 },
       { at: [0.44, -0.46, -0.4], size: [0.1, 0.08, 0.1], round: true, loud: 0.18 },
       { at: [-0.44, -0.46, 0.4], size: [0.1, 0.08, 0.1], round: true, loud: 0.18 },
@@ -330,9 +339,9 @@ const SHAPES: Readonly<Record<string, Shape>> = {
     body: [
       { at: [0, -0.04, -0.04], size: [1, 0.92, 0.92] },
       { at: [0, -0.08, 0.44], size: [0.66, 0.66, 0.06], round: true, along: "z" },
-      { at: [0, -0.08, 0.48], size: [0.3, 0.3, 0.04], round: true, along: "z" },
-      { at: [0, 0.38, 0.44], size: [0.9, 0.16, 0.06] },
-      { at: [0.36, -0.4, 0.46], size: [0.1, 0.1, 0.06], round: true, along: "z" },
+      { at: [0, -0.08, 0.48], size: [0.3, 0.3, 0.04], round: true, along: "z", skin: "metal" },
+      { at: [0, 0.38, 0.44], size: [0.9, 0.16, 0.06], skin: "metal" },
+      { at: [0.36, -0.4, 0.46], size: [0.1, 0.1, 0.06], round: true, along: "z", skin: "metal" },
       { at: [-0.4, -0.46, -0.38], size: [0.12, 0.08, 0.12], round: true, loud: 0.18 },
       { at: [0.4, -0.46, -0.38], size: [0.12, 0.08, 0.12], round: true, loud: 0.18 },
       { at: [-0.4, -0.46, 0.38], size: [0.12, 0.08, 0.12], round: true, loud: 0.18 },
@@ -344,9 +353,9 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   "heat-block": {
     body: [
       { at: [0, -0.26, 0], size: [1, 0.48, 1] },
-      { at: [0, 0.02, 0], size: [0.86, 0.16, 0.86] },
-      { at: [-0.34, -0.24, 0.46], size: [0.18, 0.18, 0.08], round: true, along: "z" },
-      { at: [0.38, -0.4, 0.46], size: [0.07, 0.07, 0.06], round: true, along: "z" },
+      { at: [0, 0.02, 0], size: [0.86, 0.16, 0.86], skin: "metal" },
+      { at: [-0.34, -0.24, 0.46], size: [0.18, 0.18, 0.08], round: true, along: "z", skin: "metal" },
+      { at: [0.38, -0.4, 0.46], size: [0.07, 0.07, 0.06], round: true, along: "z", skin: "metal" },
     ],
     screen: { at: [0.06, -0.18, 0.5], size: [0.3, 0.14], leans: 0 },
     block: { at: [0, 0.1, 0], size: [0.72, 0.6], rows: 2, columns: 6 },
@@ -406,7 +415,7 @@ const BY_KIND: Readonly<Record<string, Shape>> = {
     body: [
       { at: [0, 0, -0.04], size: [1, 0.9, 0.92] },
       { at: [0, -0.04, 0.45], size: [0.96, 0.78, 0.05] },
-      { at: [0, -0.04, 0.475], size: [0.7, 0.6, 0.02] },
+      { at: [0, -0.04, 0.475], size: [0.7, 0.6, 0.02], skin: "glass" },
       { at: [0.36, -0.04, 0.48], size: [0.05, 0.4, 0.04], round: true },
       { at: [-0.46, 0.22, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x" },
       { at: [-0.46, -0.3, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x" },

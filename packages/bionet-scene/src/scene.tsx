@@ -159,7 +159,6 @@ const WALL = new Plane();
 
 /** Scratch, so that working out how near something is allocates nothing each frame. */
 const SPOT = new Vector3();
-const TONED = new Color();
 const GROUND = new Color();
 
 /**
@@ -193,32 +192,46 @@ export interface Skinning {
 
 export function useSkinned(group: RefObject<Object3D | null>, how: Skinning): void {
   const skin = how.skin === null ? null : SKINS[how.skin] ?? SKINS["plain"]!;
-  TONED.set(colour(skinTone(skin, how.tone), how.theme));
   GROUND.set(colour("ground", how.theme));
-  const toned = TONED.clone();
   const ground = GROUND.clone();
+  // One colour object per tone, made once: the loop below runs for every filled piece of every
+  // thing in the room, every frame, and a piece may be made of something the rest of it is not.
+  const tints = useMemo(() => {
+    const made = new Map<Meaning, Color>();
+    return (tone: Meaning): Color => {
+      const had = made.get(tone);
+      if (had !== undefined) return had;
+      const made_ = new Color(colour(tone, how.theme));
+      made.set(tone, made_);
+      return made_;
+    };
+  }, [how.theme]);
   useFrame((state) => {
     const it = group.current;
     if (it === null) return;
-    // A piece with no skin, or a scene with skins off, is drawn as it was authored: each fill goes
-    // back to the fraction it carries, so turning the setting off is a return and not an
-    // approximation of one.
-    const off = skin === null || how.skins === "off";
-    const near = off ? 1 : nearness(it.getWorldPosition(SPOT).distanceTo(state.camera.position), how.size);
+    const near = nearness(it.getWorldPosition(SPOT).distanceTo(state.camera.position), how.size);
     it.traverse((one) => {
       if (one.userData["skinned"] !== true) return;
       const material = (one as unknown as { material?: { opacity: number; depthWrite: boolean; color: Color } }).material;
       if (material === undefined) return;
       const was = typeof one.userData["fill"] === "number" ? (one.userData["fill"] as number) : 0;
       const loud = typeof one.userData["loud"] === "number" ? (one.userData["loud"] as number) : 1;
-      const drawn = fillAt(off ? null : skin, how.skins, how.clear ? 1 : near, was, loud);
+      // A piece may be made of something the rest of the thing is not — a window in a door, the
+      // wall of a tank — and then it is drawn as that and not as the case around it.
+      const named = one.userData["skin"];
+      const own = typeof named === "string" ? SKINS[named] ?? skin : skin;
+      // A piece with nothing to be made of, or a scene with skins off, is drawn as it was
+      // authored: the fill goes back to the fraction it carries, so turning the setting off is a
+      // return and not an approximation of one.
+      const off = own === null || own === undefined || how.skins === "off";
+      const drawn = fillAt(off ? null : own, how.skins, how.clear ? 1 : near, was, loud);
       // The authored fills are fractions of a per cent and were written against the dark theme's
       // multiplier, so off keeps that multiplier and only a skin's own fill uses the flatter one.
       material.opacity = how.theme === "dark" ? drawn.fill : Math.min(1, drawn.fill * (off ? 1.6 : 1.15));
       material.depthWrite = drawn.hides;
       // Darkened as it fills: a solid thing is an object with a lit edge, not a glowing block, and
       // a glowing block is what the bloom pass would make of a solid fill in the theme's colours.
-      material.color.copy(toned).lerp(ground, drawn.darkened * 0.82);
+      material.color.copy(tints(skinTone(off ? null : own ?? null, how.tone))).lerp(ground, drawn.darkened * 0.82);
       one.visible = drawn.fill > 0.002;
     });
   });

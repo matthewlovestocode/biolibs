@@ -261,7 +261,9 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
       const close = near(one) || (place.kind === "instrument" && focusedUnit === unitOf(one));
       const loudness = resting ? (place.kind === "bench" ? 0.35 : 0.5) : close ? (place.kind === "bench" ? 0.6 : 1) : 0.25;
       places.push({ ...base, tone: "yours", strength: loudness, fill: resting || close ? 0.035 : 0,
-                    skin: place.kind === "bench" ? "bench" : "plain",
+                    // A bench and the computer on it are what the work stands on rather than what it
+                    // is about, so they are drawn as furniture and everything else as a machine.
+                    skin: place.kind === "bench" || place.model === "computer" ? "furniture" : "plain",
                     opened: isFocus || focusedUnit === place.id, picked: isFocus, focusable: true, labelled: isFocus || childOfFocus || level === "lab" || level === "room" });
     } else if (place.grid !== undefined) {
       // A box. From across the room it is a small slab that says whether anything is in it.
