@@ -340,6 +340,98 @@ const SHAPES: Readonly<Record<string, Shape>> = {
 };
 
 /**
+ * What the things that are not instruments are made of, by what kind of thing they are.
+ *
+ * A bench, a freezer and a fridge are not models of anything — a lab has a bench, not a bench of a
+ * particular make — so they are shaped by kind. They were drawn as plain boxes until now, which is
+ * the right drawing of a cupboard nobody has looked at and the wrong drawing of the three things a
+ * lab is mostly made of.
+ */
+const BY_KIND: Readonly<Record<string, Shape>> = {
+  // A worktop on legs, with a splashback behind it, shelves under it and drawers in it. Everything
+  // on this bench stands on the worktop, so the worktop is where its height comes from.
+  bench: {
+    body: [
+      { at: [0, 0.42, 0], size: [1, 0.09, 1] },
+      { at: [0, 0.455, -0.46], size: [1, 0.09, 0.07] },
+      { at: [0, 0.02, -0.02], size: [0.94, 0.03, 0.86] },
+      { at: [0, -0.26, -0.02], size: [0.94, 0.03, 0.86] },
+      { at: [-0.46, -0.06, -0.4], size: [0.05, 0.88, 0.06] },
+      { at: [0.46, -0.06, -0.4], size: [0.05, 0.88, 0.06] },
+      { at: [-0.46, -0.06, 0.4], size: [0.05, 0.88, 0.06] },
+      { at: [0.46, -0.06, 0.4], size: [0.05, 0.88, 0.06] },
+      { at: [-0.26, 0.28, 0.45], size: [0.36, 0.17, 0.04] },
+      { at: [0.26, 0.28, 0.45], size: [0.36, 0.17, 0.04] },
+      { at: [-0.26, 0.28, 0.48], size: [0.18, 0.03, 0.03], round: true, along: "x" },
+      { at: [0.26, 0.28, 0.48], size: [0.18, 0.03, 0.03], round: true, along: "x" },
+    ],
+  },
+  // An upright cabinet on castors with one heavy door, a long handle, a vent at the bottom and a
+  // panel at the top. It is the thing a lab is arranged around: everything else in the room is for
+  // putting something into it or getting something out of it.
+  freezer: {
+    body: [
+      { at: [0, 0.02, -0.04], size: [1, 0.92, 0.92] },
+      { at: [0, -0.02, 0.45], size: [0.96, 0.8, 0.05] },
+      { at: [0, -0.02, 0.475], size: [0.82, 0.68, 0.02] },
+      { at: [0.36, -0.02, 0.48], size: [0.06, 0.44, 0.04], round: true },
+      { at: [-0.46, 0.26, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x" },
+      { at: [-0.46, -0.3, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x" },
+      { at: [0, 0.42, 0.45], size: [0.6, 0.12, 0.06] },
+      { at: [0, -0.4, 0.45], size: [0.8, 0.07, 0.06] },
+      { at: [-0.4, -0.47, -0.34], size: [0.1, 0.06, 0.1], round: true },
+      { at: [0.4, -0.47, -0.34], size: [0.1, 0.06, 0.1], round: true },
+      { at: [-0.4, -0.47, 0.34], size: [0.1, 0.06, 0.1], round: true },
+      { at: [0.4, -0.47, 0.34], size: [0.1, 0.06, 0.1], round: true },
+    ],
+    screen: { at: [0, 0.42, 0.49], size: [0.4, 0.08], leans: 0 },
+  },
+  // The same cabinet with a window in the door and the shelves behind it, and the compressor on
+  // top rather than underneath. What is in a fridge is meant to be found without opening it.
+  fridge: {
+    body: [
+      { at: [0, 0, -0.04], size: [1, 0.9, 0.92] },
+      { at: [0, -0.04, 0.45], size: [0.96, 0.78, 0.05] },
+      { at: [0, -0.04, 0.475], size: [0.7, 0.6, 0.02] },
+      { at: [0.36, -0.04, 0.48], size: [0.05, 0.4, 0.04], round: true },
+      { at: [-0.46, 0.22, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x" },
+      { at: [-0.46, -0.3, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x" },
+      { at: [0, 0.2, -0.04], size: [0.86, 0.02, 0.84] },
+      { at: [0, 0, -0.04], size: [0.86, 0.02, 0.84] },
+      { at: [0, -0.2, -0.04], size: [0.86, 0.02, 0.84] },
+      { at: [0, 0.42, 0.45], size: [0.3, 0.1, 0.06] },
+      { at: [0, 0.46, -0.2], size: [0.7, 0.08, 0.4] },
+      { at: [-0.4, -0.47, -0.34], size: [0.09, 0.06, 0.09], round: true },
+      { at: [0.4, -0.47, -0.34], size: [0.09, 0.06, 0.09], round: true },
+      { at: [-0.4, -0.47, 0.34], size: [0.09, 0.06, 0.09], round: true },
+      { at: [0.4, -0.47, 0.34], size: [0.09, 0.06, 0.09], round: true },
+    ],
+    screen: { at: [0, 0.42, 0.49], size: [0.22, 0.07], leans: 0 },
+  },
+};
+
+/**
+ * What a place is made of: by model for an instrument, by kind for everything else that has a shape.
+ *
+ * @param place - What kind of place it is, and which model of instrument where it is one.
+ * @returns Its shape, or `null` for a place that is drawn as a plain box — a room, a shelf, a rack,
+ *   a box of positions, and anything a lab has invented a kind for.
+ *
+ * @example
+ * ```ts
+ * import { shapeFor } from "@biolibs/bionet-scene";
+ *
+ * shapeFor({ kind: "bench" })?.body.length;                              // a worktop, legs, shelves, drawers
+ * shapeFor({ kind: "instrument", model: "thermocycler" })?.lid?.opens;   // 78
+ * shapeFor({ kind: "room" });                                            // null
+ * ```
+ */
+export function shapeFor(place: { kind: string; model?: string | undefined }): Shape | null {
+  if (place.kind === "instrument") return shapeOf(place.model);
+  return Object.hasOwn(BY_KIND, place.kind) ? BY_KIND[place.kind]! : null;
+}
+
+/**
  * What a model of instrument is made of.
  *
  * @param model - The instrument's model, such as `thermocycler`.

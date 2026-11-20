@@ -22,7 +22,7 @@ import { InUseContent, atInstrument, type PlacedInUse } from "./in-use.js";
 import { describeScene, pointOnScreen, reportScene } from "./inspect.js";
 import { InstrumentShape } from "./instruments.js";
 import type { Motion } from "./motion.js";
-import { shapeOf } from "./shapes.js";
+import { shapeFor } from "./shapes.js";
 import { legible, type DrawnPlace, type DrawnSlot, type DrawnTube, type Focus, type SceneView, type Written } from "./view.js";
 
 /** Another lab, drawn beside this one. */
@@ -179,7 +179,7 @@ function PlaceBox({ place, theme, onPick, drag, inUse }: { place: DrawnPlace; th
   };
   const edge = paint(place.tone, theme, place.strength);
   const face = colour(place.tone, theme);
-  const shape = place.kind === "instrument" ? shapeOf(place.model) : null;
+  const shape = shapeFor(place);
   // A shape is drawn at the instrument's own size and then turned, so a quarter turn is undone here.
   const own: [number, number, number] = place.turn === 90 || place.turn === 270 ? [place.size[2], place.size[1], place.size[0]] : place.size;
   const volume = place.size[0] * place.size[1] * place.size[2];

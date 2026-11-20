@@ -6,7 +6,7 @@
  * at the part it is named for, and a strand's place along the template can be compared across rows.
  */
 import { placeGel, placeJoining, stageViewName, measureLine, MOLECULE_RADIUS, moleculeCentre, placeMolecule, BaseLens, STAGE_VIEWS, STAGE_VIEW_NAMES, STEP_SECONDS, TUBE_SPACE, lensFrame, lidOpen, pairsOf, placeStrands, polymerasesOf, sceneView, shapeOf,
-         stagePose, type Part, type StageLens } from "@biolibs/bionet-scene";
+         stagePose, shapeFor, type Part, type StageLens } from "@biolibs/bionet-scene";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { INSTRUMENT_SIZE, VIEWED_FROM, exampleLab } from "@biolibs/bionet-space";
@@ -502,5 +502,61 @@ describe("what each machine calls its own views", () => {
         expect(named.join("|"), model).not.toBe(STAGE_VIEWS.map((view) => STAGE_VIEW_NAMES[view]).join("|"));
       }
     }
+  });
+});
+
+/**
+ * The three things a lab is mostly made of.
+ *
+ * A bench, a freezer and a fridge are shaped by what kind of thing they are rather than by a model,
+ * since a lab has a bench and not a bench of a particular make. The checks are the same ones every
+ * instrument gets — every piece inside the thing it is a piece of — plus the one that matters for a
+ * bench: whatever stands on it stands on its worktop, so the worktop has to be at the top.
+ */
+describe("a bench, a freezer and a fridge", () => {
+  const KINDS = ["bench", "freezer", "fridge"] as const;
+
+  it("are made of pieces rather than drawn as plain boxes", () => {
+    for (const kind of KINDS) expect(shapeFor({ kind })?.body.length, kind).toBeGreaterThan(4);
+  });
+
+  it("keep every piece inside themselves", () => {
+    for (const kind of KINDS) {
+      const shape = shapeFor({ kind })!;
+      for (const [at, part] of shape.body.entries()) {
+        for (const axis of [0, 1, 2] as const) {
+          expect(Math.abs(part.at[axis]) + part.size[axis] / 2, `${kind} piece ${at + 1} on axis ${axis}`).toBeLessThanOrEqual(0.5 + 1e-9);
+          expect(part.size[axis], `${kind} piece ${at + 1}`).toBeGreaterThan(0);
+        }
+      }
+    }
+  });
+
+  it("put a bench's worktop at the top of it, since that is what things stand on", () => {
+    const bench = shapeFor({ kind: "bench" })!;
+    const wide = bench.body.filter((one) => one.size[0] >= 0.9 && one.size[2] >= 0.9);
+    expect(wide.length).toBeGreaterThan(0);
+    const worktop = wide.sort((a, b) => b.at[1] - a.at[1])[0]!;
+    expect(worktop.at[1] + worktop.size[1] / 2).toBeGreaterThan(0.4);
+  });
+
+  it("put a cold cabinet's door on its front, where somebody opens it", () => {
+    for (const kind of ["freezer", "fridge"] as const) {
+      const shape = shapeFor({ kind })!;
+      const door = shape.body.filter((one) => one.size[0] > 0.9 && one.size[1] > 0.6 && one.size[2] < 0.1)[0];
+      expect(door, kind).toBeDefined();
+      expect(door!.at[2], kind).toBeGreaterThan(0.3);
+    }
+  });
+
+  it("still draw as a plain box the kinds that have no shape", () => {
+    for (const kind of ["room", "shelf", "rack", "box", "something a lab invented"]) {
+      expect(shapeFor({ kind }), kind).toBeNull();
+    }
+  });
+
+  it("take an instrument by its model, the way they always did", () => {
+    expect(shapeFor({ kind: "instrument", model: "thermocycler" })).toBe(shapeOf("thermocycler"));
+    expect(shapeFor({ kind: "instrument", model: "no such machine" })).toBeNull();
   });
 });

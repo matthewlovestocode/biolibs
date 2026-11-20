@@ -14,7 +14,10 @@ import type { Arranged, Layout, Place, Slot, Standing, Turn } from "./model.js";
 
 /** How big something is when nobody has said, by kind, in metres: wide, tall, deep. */
 export const DEFAULT_SIZE: Readonly<Record<string, readonly [number, number, number]>> = {
-  room: [9, 2.8, 7],
+  // A room a lab of this size actually works in. The kit alone is fifteen metres of wall, and a
+  // room that only just holds it is a room nobody can move a trolley through: this leaves the back
+  // and one side for the benches and the cold storage, with the middle of the floor clear.
+  room: [12, 3, 9],
   freezer: [0.9, 2.0, 0.85],
   fridge: [0.7, 1.8, 0.7],
   bench: [1.8, 0.9, 0.75],

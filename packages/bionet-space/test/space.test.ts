@@ -142,7 +142,7 @@ describe("arranging by default", () => {
 describe("standing where it is told", () => {
   it("puts a place exactly there", () => {
     const [, bench] = arrange(room([{ id: "b", kind: "bench", name: "B", parent: "r", standing: { position: [1, 0, -2], size: [2, 0.9, 0.7] } }]));
-    near(bench!.center, [1 + 4.5, 0.45, -2]);      // the default room is nine metres wide, so its base centre is at x = 4.5
+    near(bench!.center, [1 + 6, 0.45, -2]);        // the default room is twelve metres wide, so its base centre is at x = 6
     near(bench!.size, [2, 0.9, 0.7]);
     expect(bench!.placed).toBe("by hand");
   });
@@ -496,5 +496,49 @@ describe("a room laid out round its walls", () => {
     // Twenty will not go round four walls, so the rest stands in the middle after all.
     const crowded = roomOf(20);
     expect(crowded.some((one) => Math.hypot(...from(one)) < 1.5)).toBe(true);
+  });
+});
+
+/**
+ * The room a lab is founded with, against the kit it is founded with.
+ *
+ * The demo lab is the lab anybody is given, so what it looks like is what the software says a lab
+ * looks like. What is checked is that the kit goes round its walls with nothing left over in the
+ * middle, and that there is room between the walls to walk and work rather than only room to fit.
+ */
+describe("the room a lab comes with", () => {
+  const KIT = [
+    ["bench", 1.8], ["bench", 1.8], ["bench", 1.8], ["bench", 1.8],
+    ["freezer", 0.9], ["fridge", 0.7], ["instrument", 0.6], ["instrument", 1.3], ["instrument", 0.7],
+  ] as const;
+
+  const furnished = () => arrange({
+    places: [
+      { id: "room", kind: "room", name: "Main lab", parent: null },
+      ...KIT.map(([kind], at) => ({ id: `k${at}`, kind, name: `K${at}`, parent: "room",
+                                    ...(kind === "instrument" ? { model: ["incubator", "biosafety-cabinet", "autoclave"][at - 6] } : {}) })),
+    ], stored: [],
+  });
+
+  it("holds the whole kit round its walls, with nothing standing in the middle", () => {
+    for (const one of furnished().filter((each) => each.place.id !== "room")) {
+      // Everything against a wall is turned to face into the room; an island is not turned at all.
+      expect(Math.hypot(one.center[0], one.center[2]), one.place.name).toBeGreaterThan(2);
+    }
+  });
+
+  it("is big enough that the kit does not fill its walls", () => {
+    const room = DEFAULT_SIZE.room!;
+    const needed = KIT.reduce((sum, [, wide]) => sum + wide, 0) + 0.4 * (KIT.length - 1);
+    // The deepest thing in the kit is the freezer, and each wall loses a corner at each end to it.
+    const walls = 2 * (room[0] * 0.88 - 1.7) + 2 * (room[2] * 0.88 - 1.7);
+    expect(walls).toBeGreaterThan(needed * 1.5);
+  });
+
+  it("leaves a middle big enough to work in", () => {
+    const room = DEFAULT_SIZE.room!;
+    // The clear floor left once a metre of equipment stands against each wall.
+    expect(room[0] - 2).toBeGreaterThanOrEqual(8);
+    expect(room[2] - 2).toBeGreaterThanOrEqual(6);
   });
 });
