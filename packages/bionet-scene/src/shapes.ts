@@ -166,7 +166,10 @@ const SHAPES: Readonly<Record<string, Shape>> = {
       { at: [0, 0.12, -0.07], size: [0.98, 0.68, 0.05] },
       { at: [0.44, -0.42, 0.3], size: [0.1, 0.06, 0.16], round: true },
     ],
-    screen: { at: [0, 0.12, -0.03], size: [0.9, 0.6], leans: 6 },
+    // Upright, because the panel it is set into is: a part is an axis-aligned box, so a screen that
+    // leans a little on one swings its top edge back into the slab and its bottom edge out into the
+    // air. A monitor does tilt back, but tilting the glass without the case it is in is not that.
+    screen: { at: [0, 0.12, -0.03], size: [0.9, 0.6], leans: 0 },
   },
   // The base and its lamp, the arm up the back with the focus knobs on it, the stage a slide sits
   // on, the condenser under it, the turret of objectives, and the eyepieces leaning out at whoever

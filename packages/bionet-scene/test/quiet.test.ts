@@ -301,3 +301,28 @@ describe("a skin that never clears, wherever it is put", () => {
     expect(reached.length).toBeGreaterThan(shapes.length / 2);
   });
 });
+
+describe("a screen, which is set into a face or lies back on one", () => {
+  it("is upright or a console, and never a few degrees off a flat face", () => {
+    // The mistake this catches, which was shipped: a monitor leaning 6 degrees. A part is an
+    // axis-aligned box, so a small lean does not tilt the case — it rotates the glass inside it,
+    // sinking the top edge into the slab and pushing the bottom edge out in front of it. With the
+    // slab solid, the buried part of the screen shows or does not as the camera moves, which reads
+    // as the screen changing height. Either the screen lies flat in the face it is set into, or it
+    // lies well back as a console on a top face, where it is meant to stand away from the box.
+    for (const [name, shape] of shapes) {
+      const leans = shape.screen?.leans;
+      if (leans === undefined) continue;
+      expect(leans === 0 || leans >= 45, `${name}'s screen leans ${leans}`).toBe(true);
+    }
+  });
+
+  it("stands clear of the face it is on, so the two never fight over a pixel", () => {
+    // The standoff is in the renderer, not here; what is checked is that nothing is authored
+    // behind the face it belongs to, which no offset can rescue.
+    const computer = shapeFor({ kind: "instrument", model: "computer" })!;
+    const panel = computer.body[3]!;
+    const screen = computer.screen!;
+    expect(screen.at[2]).toBeGreaterThan(panel.at[2] + panel.size[2] / 2);
+  });
+});
