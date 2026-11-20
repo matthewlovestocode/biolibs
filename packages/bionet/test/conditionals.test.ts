@@ -11,7 +11,7 @@
  */
 import { generateSigningKey, type SigningKey } from "@biolibs/opencloning";
 import { addItem, addPart, addToRoster, expectLeadsTo, expectOf, foundLab, meetExpectation, mergeLog,
-         newExpectationId, newItemId, newPlanId, nextEntry, planRun, publicMethod, settlePlan, withdrawExpectation,
+         newExpectationId, newItemId, newPlanId, nextEntry, planRun, publicMethod, readMethod, settlePlan, withdrawExpectation,
          type LabState, type Operation, type SignedEntry } from "@biolibs/bionet";
 import { beforeAll, describe, expect, it } from "vitest";
 
@@ -220,20 +220,10 @@ describe("a version that does not know about conditionals", () => {
 });
 
 describe("a method", () => {
-  it("leaves out a step that answers a reading, rather than number it among the rest", async () => {
-    const { a, growing, reading, answer } = await wren();
-    const before = publicMethod(await a.lab(), { name: "The Wren Lab", origin: "", contact: null, note: null }, {});
-    expect(before.steps).toHaveLength(2);
-    await a.write(expectLeadsTo(reading, false, answer, "the answer to a cut protein"));
-    const after = publicMethod(await a.lab(), { name: "The Wren Lab", origin: "", contact: null, note: null }, {});
-    // A method has nowhere to carry what a step is conditional on, so published it would be read as
-    // a step to carry out: a lab would do it because a reading somewhere else might have been bad.
-    expect(after.steps).toHaveLength(1);
-    expect(after.steps[0]!.kind).toBe("induction");
-    expect(JSON.stringify(after)).not.toContain("protease taken out");
-    expect(growing).not.toBe("");
-  });
-
+  // What used to be here asserted that a contingency was left out of a published method. It was a
+  // stopgap for a method having nowhere to carry the condition, and now it has one: a contingency
+  // travels with it, which "what travels in a method" below covers. What is still left out is one
+  // whose reading is on a step the method does not carry, which the test after this one covers.
   it("says so rather than saying there is nothing, where every step answers a reading", async () => {
     const { a, growing, reading, answer } = await wren();
     await a.write(expectLeadsTo(reading, false, answer, "the answer to a cut protein"));
@@ -242,6 +232,73 @@ describe("a method", () => {
       .toThrow(/answers a reading/);
     // And the step that answers nothing still publishes on its own.
     expect(publicMethod(lab, { name: "The Wren Lab", origin: "", contact: null, note: null }, { plans: [growing] }).steps).toHaveLength(1);
+  });
+});
+
+describe("what travels in a method", () => {
+  it("carries what to look for, and leaves behind what was seen", async () => {
+    const { a, reading } = await wren();
+    await a.write(meetExpectation(reading, true, [24_320], { note: "one band, intact" }));
+    const doc = publicMethod(await a.lab(), { name: "The Wren Lab", origin: "", contact: null, note: null }, {});
+    const step = doc.steps.find((one) => (one.expects ?? []).length > 0)!;
+    expect(step.expects![0]).toMatchObject({ kind: "protein gel", numbers: [24_320, 15_800, 8_600] });
+    expect(step.expects![0]!.says).toContain("Intact at 24,320 Da");
+    // The reading stays at the bench it was taken at. A method that handed it over would invite the
+    // taking lab to record somebody else's gel as its own.
+    const text = JSON.stringify(doc);
+    expect(text).not.toContain("one band, intact");
+    expect(text).not.toContain('"met"');
+    expect(text).not.toContain(reading);   // nor the ID, which belongs to this lab
+  });
+
+  it("carries a condition by where the reading sits, not by its name", async () => {
+    const { a, reading, answer } = await wren();
+    await a.write(expectLeadsTo(reading, false, answer, "the answer to a cut protein"));
+    const doc = publicMethod(await a.lab(), { name: "The Wren Lab", origin: "", contact: null, note: null }, {});
+    const contingent = doc.steps.find((one) => one.follows !== undefined)!;
+    expect(contingent.follows).toEqual({ step: 1, expect: 0, met: false, why: "the answer to a cut protein" });
+    expect(doc.steps[0]!.expects).toHaveLength(1);
+    // Both steps travel now; the contingency is no longer left out.
+    expect(doc.steps).toHaveLength(2);
+    expect(JSON.stringify(doc)).not.toContain(reading);
+  });
+
+  it("still leaves out a contingency whose reading is on a step the method does not carry", async () => {
+    const { a, growing, reading, answer } = await wren();
+    await a.write(expectLeadsTo(reading, false, answer, "the answer to a cut protein"));
+    // Publishing only the contingency: the reading it answers is nowhere in the method, so carrying
+    // it would number it among the steps with nothing saying it was conditional.
+    const lab = await a.lab();
+    expect(() => publicMethod(lab, { name: "The Wren Lab", origin: "", contact: null, note: null }, { plans: [answer] }))
+      .toThrow(/leaves out/);
+    expect(publicMethod(lab, { name: "The Wren Lab", origin: "", contact: null, note: null }, { plans: [growing] }).steps).toHaveLength(1);
+  });
+
+  it("is refused where it answers a reading the method does not say is there", async () => {
+    const { a, reading, answer } = await wren();
+    await a.write(expectLeadsTo(reading, false, answer, "the answer to a cut protein"));
+    const doc = publicMethod(await a.lab(), { name: "The Wren Lab", origin: "", contact: null, note: null }, {});
+    const broken = JSON.parse(JSON.stringify({ method: doc, signatures: [] }));
+    broken.method.steps[0].expects = [];
+    expect(() => readMethod(broken)).toThrow(/does not say it expects one/);
+    const other = JSON.parse(JSON.stringify({ method: doc, signatures: [] }));
+    other.method.steps[1].follows.step = 99;
+    expect(() => readMethod(other)).toThrow(/which reading it answers/);
+  });
+
+  it("is read by a version that knows nothing of them, as the steps it always read", async () => {
+    const { a, reading, answer } = await wren();
+    await a.write(expectLeadsTo(reading, false, answer, "the answer to a cut protein"));
+    const doc = publicMethod(await a.lab(), { name: "The Wren Lab", origin: "", contact: null, note: null }, {});
+    // A reader from before these existed checks the fields it knows and ignores the rest, so the
+    // method still reads. That is why they were added beside the old fields and the version did
+    // not move: the version is checked exactly, and moving it would have every older lab refuse
+    // the whole document rather than read the part it understands.
+    expect(doc.bionet_method_version).toBe(1);
+    const asOlderReaderSees = doc.steps.map(({ expects, follows, ...rest }) => rest);
+    expect(asOlderReaderSees.every((one) => !("expects" in one) && !("follows" in one))).toBe(true);
+    expect(asOlderReaderSees).toHaveLength(2);
+    expect(readMethod({ method: { ...doc, steps: asOlderReaderSees }, signatures: [] })).toBeTruthy();
   });
 });
 

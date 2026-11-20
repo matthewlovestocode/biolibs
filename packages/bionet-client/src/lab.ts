@@ -880,6 +880,9 @@ export class Lab {
       await this.addPart({ name: need.name, sequence: need.sequence, circular: need.circular === true,
                            ...(need.ends === undefined ? {} : { ends: need.ends }) });
     }
+    /** Which plan each step became here, and the IDs this lab gave its expectations. */
+    const made = new Map<number, string>();
+    const readings = new Map<number, string[]>();
     for (const step of method.method.steps) {
       const inputs: PlanInput[] = [];
       let canPropose = true;
@@ -911,7 +914,27 @@ export class Lab {
         settings: { ...step.settings }, note: step.note,
       });
       proposed.push(plan);
+      made.set(step.step, plan);
+      // What the publishing lab said to look for becomes this lab's own expectations, with its own
+      // IDs. What it saw does not travel, so there is nothing here to record as having been seen.
+      const theirs: string[] = [];
+      for (const one of step.expects ?? []) {
+        theirs.push(await this.expect({ plan, kind: one.kind, says: one.says, numbers: one.numbers,
+                                        settings: one.settings, note: one.note }));
+      }
+      readings.set(step.step, theirs);
       if (options.project !== undefined) await this.setField({ on: "plan", id: plan, field: "project", value: options.project });
+    }
+    // A condition may answer a reading on a step further on, so these wait until every step has
+    // been proposed. One whose step could not be proposed here is left out rather than guessed at:
+    // a contingency with nothing to be contingent on would read as a step to carry out.
+    for (const step of method.method.steps) {
+      const on = step.follows;
+      const plan = made.get(step.step);
+      if (on === undefined || plan === undefined) continue;
+      const expect = readings.get(on.step)?.[on.expect];
+      if (expect === undefined) continue;
+      await this.leadsTo({ expect, met: on.met, plan, why: on.why });
     }
     return { proposed, missing: [...missing.values()], alive: [...alive.values()] };
   }

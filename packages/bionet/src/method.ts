@@ -27,7 +27,7 @@
  * exactly what to do with them — but it will not tell somebody who holds none of them what to order.
  */
 import { signUnder, verifyUnder, type SignatureCheck, type SignOptions, type SigningKey } from "@biolibs/opencloning";
-import { METHOD_VERSION, type LabModel, type MethodDocument, type MethodInput, type MethodStep,
+import { METHOD_VERSION, type LabModel, type MethodDocument, type MethodExpectation, type MethodInput, type MethodStep,
          type SignedMethod } from "./model.js";
 import type { LabState, PlanState } from "./merge.js";
 import type { PartEnds } from "./log.js";
@@ -102,10 +102,20 @@ export function publicMethod(state: LabState, lab: LabModel, options: MethodOpti
     if (options.project !== undefined) return one.fields[PROJECT] === options.project;
     return true;
   };
-  const conditional = state.plans.filter((one) => wanted(one) && one.follows != null).length;
-  const chosen = state.plans.filter((one) => wanted(one) && one.follows == null);
-  if (chosen.length === 0 && conditional > 0) {
-    throw new Error(`Every one of those ${conditional} open plans answers a reading, and a method cannot carry what a step is conditional on.`);
+  // A contingency travels with its condition. What cannot travel is one whose reading belongs to a
+  // step this method leaves out — publishing it then would number it among the steps with nothing
+  // saying it was conditional, and a lab would carry out the answer to a question never asked.
+  const here = new Set(state.plans.filter(wanted).map((one) => one.plan));
+  const readingOf = new Map(state.expectations.map((one) => [one.expect, one]));
+  const strandedBy = (one: PlanState): boolean => {
+    if (one.follows == null) return false;
+    const reading = readingOf.get(one.follows.expect);
+    return reading === undefined || !here.has(reading.plan);
+  };
+  const stranded = state.plans.filter((one) => wanted(one) && strandedBy(one)).length;
+  const chosen = state.plans.filter((one) => wanted(one) && !strandedBy(one));
+  if (chosen.length === 0 && stranded > 0) {
+    throw new Error(`Every one of those ${stranded} open plans answers a reading taken on a step this method leaves out, and the condition cannot travel without it.`);
   }
   if (chosen.length === 0) throw new Error("There are no open plans to publish.");
   if (chosen.length > MOST_STEPS) throw new Error(`A method carries at most ${MOST_STEPS} steps; that is ${chosen.length}.`);
@@ -170,6 +180,31 @@ export function publicMethod(state: LabState, lab: LabModel, options: MethodOpti
              ...(part.ends.left === 0 && part.ends.right === 0 ? {} : { ends: part.ends }) };
   };
 
+  /**
+   * What the publishing lab expected of a step, with its readings left behind.
+   *
+   * One taken back does not travel: it was taken back. One already read does, because what it says
+   * to look for is still what a taking lab should look for — but what was seen stays here, since a
+   * reading is an event at this bench and not at theirs.
+   */
+  const expectationsOf = (plan: PlanState): MethodExpectation[] =>
+    state.expectations
+      .filter((one) => one.plan === plan.plan && one.withdrawn === null)
+      .map((one) => ({ kind: one.kind, says: one.says, numbers: [...one.numbers],
+                       settings: { ...one.settings }, note: one.note }));
+
+  /** The reading a step answers, named by where it sits rather than by an ID of this lab's. */
+  const conditionOf = (plan: PlanState): MethodStep["follows"] | null => {
+    if (plan.follows == null) return null;
+    const reading = readingOf.get(plan.follows.expect);
+    if (reading === undefined) return null;
+    const step = numberOf.get(reading.plan);
+    if (step === undefined) return null;
+    const at = expectationsOf(order[step - 1]!).findIndex((one) => one.says === reading.says && one.kind === reading.kind);
+    if (at === -1) return null;
+    return { step, expect: at, met: plan.follows.met, why: plan.follows.why };
+  };
+
   const steps: MethodStep[] = order.map((plan, at) => ({
     step: at + 1,
     kind: plan.kind,
@@ -198,6 +233,8 @@ export function publicMethod(state: LabState, lab: LabModel, options: MethodOpti
     })),
     settings: { ...plan.settings },
     note: plan.note,
+    ...(expectationsOf(plan).length === 0 ? {} : { expects: expectationsOf(plan) }),
+    ...(conditionOf(plan) === null ? {} : { follows: conditionOf(plan)! }),
     after: (after.get(plan.plan) ?? []).map((one) => numberOf.get(one)!).sort((a, b) => a - b),
   }));
 
@@ -314,6 +351,34 @@ export function readMethod(value: unknown): SignedMethod {
       if (used.from !== undefined && (!whole(used.from) || used.from < 1 || used.from > at)) {
         throw new Error(`Step ${at + 1} says something comes from step ${String(used.from)}, which is not a step before it.`);
       }
+    }
+    if (step.expects !== undefined) {
+      if (!Array.isArray(step.expects) || step.expects.length > MOST_STEPS) throw new Error(`Step ${at + 1} does not say properly what it expects.`);
+      for (const one of step.expects as Partial<MethodExpectation>[]) {
+        if (!words(one.kind, 40) || !words(one.says, 2_000) || !(one.note === null || words(one.note, 2_000))
+            || !Array.isArray(one.numbers) || !one.numbers.every((each) => whole(each) && (each as number) >= 0)
+            || typeof one.settings !== "object" || one.settings === null || Array.isArray(one.settings)) {
+          throw new Error(`Step ${at + 1} does not say properly what it expects.`);
+        }
+      }
+    }
+    if (step.follows !== undefined) {
+      const on = step.follows as Partial<NonNullable<MethodStep["follows"]>>;
+      // Any step may carry the reading, not only an earlier one: a contingency does not use what
+      // that step makes, so it is not ordered after it and may well sort before.
+      if (!whole(on.step) || on.step! < 1 || on.step! > method.steps.length || on.step === at + 1
+          || !whole(on.expect) || on.expect! < 0 || typeof on.met !== "boolean" || !words(on.why, 2_000)) {
+        throw new Error(`Step ${at + 1} does not say properly which reading it answers.`);
+      }
+    }
+  }
+  // Checked once every step has been seen, since a condition may point at a step further on.
+  for (const [at, step] of (method.steps as Partial<MethodStep>[]).entries()) {
+    if (step.follows === undefined) continue;
+    const on = step.follows;
+    const carries = (method.steps as Partial<MethodStep>[])[on.step - 1]?.expects;
+    if (!Array.isArray(carries) || on.expect >= carries.length) {
+      throw new Error(`Step ${at + 1} answers a reading of step ${on.step}, which does not say it expects one.`);
     }
   }
   if (!Array.isArray(method.needs) || !Array.isArray(method.makes)) throw new Error("That method does not say what it needs and what it makes.");

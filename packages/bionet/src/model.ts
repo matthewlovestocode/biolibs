@@ -170,6 +170,29 @@ export interface MethodInput {
   alive?: { carries: string[]; host: string | null };
 }
 
+/**
+ * What a step's result should look like, written so another lab knows what to look for.
+ *
+ * It carries no reading. What the publishing lab saw is an event at that lab's bench, and a method
+ * that handed it over would invite the taking lab's software to record somebody else's gel as its
+ * own. What travels is the looking-for, not the having-looked.
+ *
+ * It carries no identity either. An expectation's ID is that lab's, like a plan's; a lab taking one
+ * makes its own, and a step that answers it points at it by where it sits rather than by name.
+ */
+export interface MethodExpectation {
+  /** How it would be seen: `digest`, `colony pcr`, `protein gel`. */
+  kind: string;
+  /** What to expect, for somebody at the bench to read. */
+  says: string;
+  /** The readings expected, as whole numbers. */
+  numbers: number[];
+  /** How to observe it: which enzymes, which gel. */
+  settings: Record<string, string | number>;
+  /** Anything else said about it. */
+  note: string | null;
+}
+
 /** One step of a published method. */
 export interface MethodStep {
   /** Where it comes in the order, counting from 1. */
@@ -186,6 +209,23 @@ export interface MethodStep {
   note: string | null;
   /** The steps that have to be carried out before it, by their numbers. */
   after: number[];
+  /**
+   * What the publishing lab expected of this step's result. Absent where it expected nothing said.
+   *
+   * A lab reading a method published before these existed finds none, and is no worse off than it
+   * was; a lab too old to know of them reads the step and ignores these, which is why they are
+   * added beside the fields that were always there rather than behind a new version number.
+   */
+  expects?: MethodExpectation[];
+  /**
+   * The answer this step is contingent on, where it is one: do this only if that reading comes out
+   * that way.
+   *
+   * `step` is the step whose expectation decides it and `expect` is where that expectation sits in
+   * that step's `expects`, counting from 0 — by position, like `after` and `from`, because an
+   * expectation's own ID belongs to the lab that wrote it.
+   */
+  follows?: { step: number; expect: number; met: boolean; why: string };
 }
 
 /**

@@ -791,12 +791,38 @@ conditionals turns that one entry down and reads the plan and the expectation as
 field would have made the whole plan unreadable, and — worse — a plan read without its condition
 would look like a step somebody meant to do.
 
-**A published method leaves these out**, for that same reason turned outward. A method has nowhere to
-carry what a step is conditional on — the condition is an answer to an expectation, and an expectation
-has nowhere to go in a method either — so a contingency published would be numbered among the steps
-and read as one to carry out. A lab would induce at 20 °C because a gel somewhere else might have been
-bad. Leaving it out says less than the truth; publishing it says something untrue. Where *every* plan
-asked for answers a reading, `publicMethod` says so rather than claiming there is nothing to publish.
+### Both of them travel
+
+A published method carries each step's expectations, and a contingency carries the condition with it.
+
+```ts
+const step = published.method.steps[0];
+step.expects;    // [{ kind: "protein gel", says: "Intact at 24,320 Da…", numbers: [24320, 15800], … }]
+
+published.method.steps[1].follows;
+// { step: 1, expect: 0, met: false, why: "the answer to a cut protein" }
+```
+
+Three things deliberately do **not** travel:
+
+- **The reading.** What the publishing lab saw is an event at that lab's bench. A method that handed
+  it over would invite the taking lab's software to record somebody else's gel as its own. What
+  crosses is the looking-for, not the having-looked, so a taken expectation arrives unanswered.
+- **The IDs.** An expectation's ID is its lab's, like a plan's. A taking lab makes its own, and a
+  step that answers one points at it by **where it sits** — `step` is a step number and `expect` an
+  index into that step's `expects` — the same way `after` and `from` already name steps.
+- **An expectation taken back.** It was taken back.
+
+So one method can be `live` at a lab whose gel came back cut and `moot` at the lab that published
+it, each from its own reading. That is the point of it.
+
+What is still left out is a contingency whose reading belongs to a step the method does not carry —
+publishing one would number it among the steps with nothing saying it was conditional, and a lab
+would carry out the answer to a question never asked.
+
+`bionet_method_version` stays at **1**. The version is checked exactly, so moving it would make every
+older lab refuse the whole document; the rest of the validation reads the fields it knows and ignores
+the others, so a lab from before these existed reads the method it always read, without them.
 
 ### Moving entries between machines
 
