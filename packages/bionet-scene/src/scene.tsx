@@ -15,7 +15,7 @@ import { Line, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
-import { BoxGeometry, Color, CylinderGeometry, EdgesGeometry, Object3D, Plane, QuadraticBezierCurve3, RingGeometry, Vector3,
+import { BackSide, BoxGeometry, Color, CylinderGeometry, EdgesGeometry, FrontSide, Object3D, Plane, QuadraticBezierCurve3, RingGeometry, Vector3,
          type Group, type InstancedMesh, type Mesh, type PerspectiveCamera } from "three";
 import { colour, type Meaning, type Theme } from "@biolibs/bionet-theme";
 import { InUseContent, atInstrument, type PlacedInUse } from "./in-use.js";
@@ -212,7 +212,7 @@ export function useSkinned(group: RefObject<Object3D | null>, how: Skinning): vo
     const near = nearness(it.getWorldPosition(SPOT).distanceTo(state.camera.position), how.size);
     it.traverse((one) => {
       if (one.userData["skinned"] !== true) return;
-      const material = (one as unknown as { material?: { opacity: number; depthWrite: boolean; color: Color } }).material;
+      const material = (one as unknown as { material?: { opacity: number; depthWrite: boolean; transparent: boolean; needsUpdate: boolean; color: Color } }).material;
       if (material === undefined) return;
       const was = typeof one.userData["fill"] === "number" ? (one.userData["fill"] as number) : 0;
       const loud = typeof one.userData["loud"] === "number" ? (one.userData["loud"] as number) : 1;
@@ -229,6 +229,19 @@ export function useSkinned(group: RefObject<Object3D | null>, how: Skinning): vo
       // multiplier, so off keeps that multiplier and only a skin's own fill uses the flatter one.
       material.opacity = how.theme === "dark" ? drawn.fill : Math.min(1, drawn.fill * (off ? 1.6 : 1.15));
       material.depthWrite = drawn.hides;
+      // A thing that hides has to actually hide. A fill of 0.92 lets eight per cent of whatever is
+      // behind it through, and behind a freezer door is a rack of lit edges: enough of it comes
+      // through to read as the rack poking out of the door. Worse, see-through things are drawn
+      // after everything opaque and sorted back to front, so the door was painted over lines that
+      // were already on the screen rather than keeping them off it. Drawn opaque it goes in the
+      // first pass, writes depth, and what is behind it never draws at all.
+      //
+      // Whether a material is see-through is part of the key its shader is cached under, so this
+      // is touched only when it changes, which is when a thing crosses from one to the other.
+      if (material.transparent === drawn.hides) {
+        material.transparent = !drawn.hides;
+        material.needsUpdate = true;
+      }
       // Darkened as it fills: a solid thing is an object with a lit edge, not a glowing block, and
       // a glowing block is what the bloom pass would make of a solid fill in the theme's colours.
       material.color.copy(tints(skinTone(off ? null : own ?? null, how.tone))).lerp(ground, drawn.dulled);
@@ -297,7 +310,18 @@ function PlaceBox({ place, theme, onPick, drag, inUse, skins = "off" }: { place:
                            {...(inUse === undefined ? {} : inUse)} />
         </group>
       )}
-      {(place.focusable || place.fill > 0) && (
+      {place.skin !== null && SKINS[place.skin]?.inside === true && (
+        // The floor is its own surface, not the bottom of the walls: it is what everything in the
+        // room stands on, and a room whose floor is the colour of its walls is a box, not a room.
+        // It sits just inside the floor of the box, so the two never share a plane.
+        <mesh position={[0, (-place.size[1] + Math.max(0.02, place.size[1] * 0.01)) / 2, 0]} geometry={BOX}
+              scale={[place.size[0], Math.max(0.02, place.size[1] * 0.01), place.size[2]]}
+              userData={{ skinned: true, fill: 0, skin: "floor" }}>
+          <meshBasicMaterial color={face} transparent depthWrite={false} toneMapped={false} opacity={0} />
+        </mesh>
+      )}
+      {/* A room is drawn for its walls even where nothing presses it and it carries no fill. */}
+      {(place.focusable || place.fill > 0 || (place.skin !== null && SKINS[place.skin]?.inside === true)) && (
         <mesh scale={place.size} geometry={BOX}
               // A shaped place has its own parts to skin, so skinning this box too would wrap a
               // machine in a solid cube. Here it is only the box you press, and stays clear.
@@ -331,7 +355,9 @@ function PlaceBox({ place, theme, onPick, drag, inUse, skins = "off" }: { place:
               so it is not tinted. Tinting it put a faint cube round every bench and every machine —
               the thing itself drawn once properly and once again as a crate around it. A box of
               tubes has no shape of its own, so there the tint is the box, and how full it is. */}
+          {/* A room is drawn from within, so the wall between you and it is never there. */}
           <meshBasicMaterial color={face} transparent depthWrite={false} toneMapped={false}
+                             side={place.skin !== null && SKINS[place.skin]?.inside === true ? BackSide : FrontSide}
                              opacity={shape !== null ? 0 : theme === "dark" ? place.fill : place.fill * 1.6} />
         </mesh>
       )}

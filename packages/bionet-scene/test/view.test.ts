@@ -6,7 +6,7 @@
  * that a tube needing a count is flagged, and that the way back to the whole lab is always there.
  */
 import { exampleLab, search, type Layout } from "@biolibs/bionet-space";
-import { focusOn, sceneView, BOX_FOV, ROOM_FOV, legible, type Written } from "@biolibs/bionet-scene";
+import { SKINS, fillAt, focusOn, sceneView, BOX_FOV, ROOM_FOV, legible, type Written } from "@biolibs/bionet-scene";
 import { describe, expect, it } from "vitest";
 
 const lab = exampleLab();
@@ -220,11 +220,17 @@ describe("what is written over the scene", () => {
 });
 
 describe("what the skins are told about each place", () => {
-  it("gives a thing standing in a lab something to be made of, and a frame nothing", () => {
+  it("gives a thing standing in a lab something to be made of, and the room walls and a floor", () => {
     const view = sceneView(lab, { place: null }, { labName: "The Wren Lab" });
     expect(drawn(view, "minus80")!.skin).toBe("plain");
-    // A room is the frame you are inside, so filling it would put a skin between you and everything.
-    expect(drawn(view, "main")!.skin).toBe(null);
+    // This used to say a room is made of nothing, on the grounds that filling it would put a skin
+    // between you and everything in it. That is true of a room drawn like a box and false of one
+    // drawn from within: only its far side is ever there, which is the floor and the far walls.
+    expect(drawn(view, "main")!.skin).toBe("room");
+    expect(SKINS["room"]!.inside).toBe(true);
+    // And it is still nothing with the setting off, which is the drawing this scene has always had.
+    expect(drawn(view, "main")!.fill).toBe(0);
+    expect(fillAt(SKINS["room"]!, "off", 0, 0).fill).toBe(0);
   });
 
   it("marks the freezer being looked into as opened, and the rest of the room as not", () => {

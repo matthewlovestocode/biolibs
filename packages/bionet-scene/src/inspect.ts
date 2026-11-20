@@ -122,7 +122,7 @@ export function describeScene(things: readonly DrawnThing[]): string[] {
   const mm = (size: readonly [number, number, number]): string => size.map((one) => Math.round(one * 1000)).join("×");
   return things.map((one) =>
     `${one.name}${one.copies > 1 ? ` ×${one.copies}` : ""}  ${one.colour ?? "—"}`
-    + `${one.opacity < 1 ? ` @${one.opacity.toFixed(2)}${one.hides ? " solid" : ""}` : ""}${one.shown ? "" : "  (hidden)"}`
+    + `${one.opacity < 1 || one.hides ? ` @${one.opacity.toFixed(2)}${one.hides ? " solid" : ""}` : ""}${one.shown ? "" : "  (hidden)"}`
     + `  at ${one.at.join(",")}  ${mm(one.size)} mm`);
 }
 

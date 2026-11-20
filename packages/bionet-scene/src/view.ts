@@ -254,7 +254,14 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
       if (focused.path.includes(place.id)) places.push({ ...base, tone: depth === 1 ? "dim" : "yours", strength: 0.1, fill: 0, skin: null, opened: false, picked: false, focusable: false, labelled: false });
     } else if (depth === 1) {
       // A room is the frame everything else stands in, and is drawn quietly.
-      places.push({ ...base, tone: "dim", strength: level === "lab" || level === "room" ? 0.55 : 0.28, fill: 0, skin: null,
+      // Its walls and floor are drawn from within, so they stand behind the lab rather than in
+      // front of it. The fill stays nothing, because that is what the wireframe has always drawn
+      // here: the room comes up only when skins are on, and goes back to an outline when they go.
+      places.push({ ...base, tone: "dim", strength: level === "lab" || level === "room" ? 0.55 : 0.28, fill: 0,
+                    // At every level, not only when the lab is what is being looked at: the walls
+                    // decide for themselves, by whether the camera is in the room, and being at a
+                    // bench is exactly when you are.
+                    skin: "room",
                     opened: false, picked: false, focusable: level === "lab", labelled: level === "lab" });
     } else if (depth === 2 || place.kind === "instrument") {
       // What stands in a room, and what stands on a bench.

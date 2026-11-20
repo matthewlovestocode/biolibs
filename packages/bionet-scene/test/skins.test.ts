@@ -6,25 +6,27 @@
  * thing really does hide what is behind it and a clear one does not, and that the two things which
  * must stay see-through whatever the setting says do.
  */
-import { FAR, HIDES_ABOVE, NEAR, SKINS, fillAt, nearness, skinAt, staysClear } from "@biolibs/bionet-scene";
+import { FAR, HIDES_ABOVE, NEAR, SKINS, WIDEST, fillAt, nearness, skinAt, staysClear } from "@biolibs/bionet-scene";
 import { describe, expect, it } from "vitest";
 
 const plain = SKINS["plain"]!;
 
 describe("how near the camera is", () => {
   it("is nothing across the room and everything at arm's length", () => {
-    expect(nearness(2 * FAR, 2)).toBe(0);
-    expect(nearness(2 * NEAR * 0.5, 2)).toBe(1);
+    expect(nearness(WIDEST * FAR, WIDEST)).toBe(0);
+    expect(nearness(WIDEST * NEAR * 0.5, WIDEST)).toBe(1);
   });
 
-  it("is measured in the thing's own size, so a tube and a freezer clear at the same point", () => {
-    // Half way through the range, whatever the thing is.
+  it("is measured in the thing's own size, so a tube and a bottle clear at the same point", () => {
+    // Half way through the range, whatever the thing is — up to the width past which a thing is
+    // taken to be that wide, since beyond a stride its own size stops saying how close you are.
     const half = (size: number): number => nearness(size * (NEAR + FAR) / 2, size);
-    expect(half(0.01)).toBeCloseTo(half(2), 6);
+    expect(half(0.01)).toBeCloseTo(half(WIDEST), 6);
   });
 
   it("falls all the way through the range without jumping", () => {
-    const steps = Array.from({ length: 30 }, (_, at) => nearness(2 * (NEAR + ((FAR - NEAR) * at) / 29), 2));
+    const steps = Array.from({ length: 30 },
+                             (_, at) => nearness(WIDEST * (NEAR + ((FAR - NEAR) * at) / 29), WIDEST));
     for (const [at, one] of steps.entries()) if (at > 0) expect(one).toBeLessThanOrEqual(steps[at - 1]! + 1e-9);
     expect(steps[0]).toBeCloseTo(1, 6);
     expect(steps.at(-1)).toBeCloseTo(0, 6);
@@ -121,5 +123,71 @@ describe("what stays see-through whatever the distance", () => {
     // solid box, because the distance alone decided and a freezer is big enough to still be far off.
     expect(staysClear({ opened: true })).toBe(true);
     expect(staysClear({ tone: "yours", opened: false })).toBe(false);
+  });
+});
+
+describe("how near you are to a big thing and a small thing standing together", () => {
+  const FREEZER = 1.84;
+  const BENCHTOP = 0.45;
+
+  it("is much the same, so a room does not come apart into two drawings", () => {
+    // The mistake this catches, which was reported: with how near measured in a thing's own
+    // widths and nothing else, a freezer four times the width of a thermocycler dissolved four
+    // times further out. Standing at the bench, the machine on it was solid and the cabinet
+    // behind it was half gone.
+    const apart = Math.abs(nearness(3, FREEZER) - nearness(3, BENCHTOP));
+    expect(apart).toBeLessThan(0.1);
+    for (const far of [3, 4, 6]) expect(nearness(far, FREEZER), `${far} m off`).toBeLessThan(0.1);
+  });
+
+  it("still ends in the same place, which is why it was measured in widths at all", () => {
+    // Walking up to a thing still clears it, whatever size it is: the cap is about the distance
+    // at which things start to go, not about whether being at one gets you inside it.
+    expect(nearness(0.5, FREEZER)).toBe(1);
+    expect(nearness(0.5, BENCHTOP)).toBe(1);
+  });
+
+  it("leaves everything smaller than the cap exactly as it was", () => {
+    for (const size of [0.05, 0.2, 0.45, WIDEST]) {
+      for (const distance of [0.1, 0.5, 1, 2]) {
+        const near = size * NEAR;
+        const far = size * FAR;
+        const through = distance <= near ? 1 : distance >= far ? 0 : (far - distance) / (far - near);
+        const eased = through * through * (3 - 2 * through);
+        expect(nearness(distance, size)).toBeCloseTo(eased, 10);
+      }
+    }
+  });
+});
+
+describe("a room, which is the one thing you are inside", () => {
+  const room = SKINS["room"]!;
+  const floor = SKINS["floor"]!;
+
+  it("is near solid, and the same from across the lab as from standing in it", () => {
+    // The wall you would be looking through is not drawn at all, so there is nothing for distance
+    // to decide: what is left is the walls you are not looking through, and those are walls.
+    expect(room.inside).toBe(true);
+    expect(room.near).toBe(room.far);
+    for (const how of [0, 0.5, 1]) expect(fillAt(room, "on", how, 0).hides, `at ${how}`).toBe(true);
+  });
+
+  it("has a floor that is not the colour of its walls", () => {
+    // A room whose floor is the colour of its walls is a box. The floor is the darker of the two,
+    // because a wall catches what light there is and a floor is what everything stands on.
+    expect(floor.tone).not.toBe(room.tone);
+    expect(floor.dulls).not.toBe(room.dulls);
+    // And it is a surface in the room rather than a side of it, so it is not drawn from within.
+    expect(floor.inside).toBeUndefined();
+  });
+
+  it("is still nothing at all with the setting off", () => {
+    for (const skin of [room, floor]) for (const how of [0, 1]) expect(fillAt(skin, "off", how, 0).fill).toBe(0);
+  });
+
+  it("is the only thing drawn from within", () => {
+    for (const [name, skin] of Object.entries(SKINS)) {
+      if (skin.inside === true) expect(name).toBe("room");
+    }
   });
 });

@@ -161,3 +161,18 @@ describe("whether a see-through thing hides what is behind it", () => {
     expect(describeScene([seen.get("freezer shelf")!])[0]).not.toContain("solid");
   });
 });
+
+describe("a thing drawn opaque, which is what hiding now means", () => {
+  it("is still said to be solid, rather than going quiet because it has no opacity to report", () => {
+    // The report reads a see-through thing's opacity and calls anything that writes depth solid.
+    // A fill that hides is now drawn opaque, which has no opacity at all, so without this the one
+    // thing that genuinely hides would be the one thing the report said nothing about.
+    const scene = new Scene();
+    const door = new Mesh(new BoxGeometry(0.9, 1.8, 0.05), new MeshBasicMaterial({ color: 0x0d616e }));
+    door.name = "freezer door";
+    door.material.transparent = false;
+    door.material.depthWrite = true;
+    scene.add(door);
+    expect(describeScene(reportScene(scene))[0]).toContain("@1.00 solid");
+  });
+});

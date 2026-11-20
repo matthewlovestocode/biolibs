@@ -72,8 +72,8 @@ const SHAPES: Readonly<Record<string, Shape>> = {
       { at: [0, -0.2, 0], size: [1, 0.56, 1] },
       { at: [0, 0.16, 0.36], size: [0.92, 0.12, 0.26], skin: "metal" },
       { at: [0, -0.2, -0.49], size: [0.66, 0.34, 0.02] },
-      { at: [-0.3, 0.1, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x", skin: "metal" },
-      { at: [0.3, 0.1, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x", skin: "metal" },
+      { at: [-0.3, 0.115, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x", skin: "metal" },
+      { at: [0.3, 0.115, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x", skin: "metal" },
       { at: [0.36, 0.17, 0.3], size: [0.1, 0.1, 0.1], round: true, skin: "metal" },
       { at: [-0.4, -0.47, -0.36], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
       { at: [0.4, -0.47, -0.36], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
@@ -90,12 +90,12 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // comb that makes the wells, and beside it the power supply with its display, dial and lamp.
   "gel-station": {
     body: [
-      { at: [-0.18, -0.2, 0], size: [0.62, 0.6, 0.96], skin: "glass" },
-      { at: [0.36, -0.05, -0.1], size: [0.26, 0.9, 0.6], skin: "metal" },
+      { at: [-0.18, -0.19, 0], size: [0.62, 0.58, 0.96], skin: "glass" },
+      { at: [0.36, -0.04, -0.1], size: [0.26, 0.88, 0.6], skin: "metal" },
       { at: [-0.18, 0.02, 0], size: [0.5, 0.06, 0.8] },
-      { at: [-0.44, 0.08, 0], size: [0.04, 0.3, 0.86] },
-      { at: [0.08, 0.08, 0], size: [0.04, 0.3, 0.86] },
-      { at: [-0.18, 0.14, -0.3], size: [0.46, 0.1, 0.03] },
+      { at: [-0.44, 0.08, 0], size: [0.04, 0.3, 0.86], skin: "metal" },
+      { at: [0.08, 0.08, 0], size: [0.04, 0.3, 0.86], skin: "metal" },
+      { at: [-0.18, 0.15, -0.3], size: [0.46, 0.1, 0.03] },
       { at: [0.36, -0.12, 0.205], size: [0.1, 0.1, 0.06], round: true, along: "z", skin: "metal" },
       { at: [0.36, -0.3, 0.205], size: [0.05, 0.05, 0.04], round: true, along: "z", skin: "metal" },
       { at: [-0.4, -0.48, -0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
@@ -114,7 +114,7 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // is going on inside it is cells growing, which no part of it displays.
   "shaking-incubator": {
     body: [
-      { at: [0, -0.22, 0], size: [1, 0.56, 1] },
+      { at: [0, -0.21, 0], size: [1, 0.54, 1] },
       { at: [0, 0.14, 0.4], size: [0.96, 0.12, 0.2], skin: "metal" },
       { at: [0, -0.22, -0.49], size: [0.7, 0.4, 0.02] },
       { at: [0, 0.06, -0.1], size: [0.84, 0.04, 0.7], skin: "metal" },
@@ -142,14 +142,14 @@ const SHAPES: Readonly<Record<string, Shape>> = {
       { at: [0, 0.13, -0.02], size: [0.1, 0.12, 0.1], round: true, skin: "metal" },
       { at: [0.34, 0.08, 0.42], size: [0.1, 0.1, 0.08], round: true, along: "z", skin: "metal" },
       // Eight buckets round the rotor, at the eighth-turns of a circle of radius 0.27.
-      { at: [0, 0.06, 0.25], size: [0.13, 0.14, 0.13], round: true },
-      { at: [0.19, 0.06, 0.17], size: [0.13, 0.14, 0.13], round: true },
-      { at: [0.27, 0.06, -0.02], size: [0.13, 0.14, 0.13], round: true },
-      { at: [0.19, 0.06, -0.21], size: [0.13, 0.14, 0.13], round: true },
-      { at: [0, 0.06, -0.29], size: [0.13, 0.14, 0.13], round: true },
-      { at: [-0.19, 0.06, -0.21], size: [0.13, 0.14, 0.13], round: true },
-      { at: [-0.27, 0.06, -0.02], size: [0.13, 0.14, 0.13], round: true },
-      { at: [-0.19, 0.06, 0.17], size: [0.13, 0.14, 0.13], round: true },
+      { at: [0, 0.06, 0.25], size: [0.13, 0.14, 0.13], round: true, skin: "metal" },
+      { at: [0.19, 0.06, 0.17], size: [0.13, 0.14, 0.13], round: true, skin: "metal" },
+      { at: [0.27, 0.06, -0.02], size: [0.13, 0.14, 0.13], round: true, skin: "metal" },
+      { at: [0.19, 0.06, -0.21], size: [0.13, 0.14, 0.13], round: true, skin: "metal" },
+      { at: [0, 0.06, -0.29], size: [0.13, 0.14, 0.13], round: true, skin: "metal" },
+      { at: [-0.19, 0.06, -0.21], size: [0.13, 0.14, 0.13], round: true, skin: "metal" },
+      { at: [-0.27, 0.06, -0.02], size: [0.13, 0.14, 0.13], round: true, skin: "metal" },
+      { at: [-0.19, 0.06, 0.17], size: [0.13, 0.14, 0.13], round: true, skin: "metal" },
     ],
     lid: { parts: [{ at: [0, 0.2, -0.02], size: [0.92, 0.24, 0.92], round: true },
                    { at: [0, 0.33, 0.28], size: [0.28, 0.05, 0.05], round: true, along: "x" }],
@@ -162,7 +162,7 @@ const SHAPES: Readonly<Record<string, Shape>> = {
     body: [
       { at: [0, -0.44, 0.26], size: [0.88, 0.08, 0.4] },
       { at: [0, -0.2, -0.1], size: [0.12, 0.4, 0.08] },
-      { at: [0, -0.44, -0.1], size: [0.46, 0.08, 0.34] },
+      { at: [0, -0.44, -0.11], size: [0.46, 0.08, 0.34] },
       { at: [0, 0.12, -0.07], size: [0.98, 0.68, 0.05] },
       { at: [0.44, -0.42, 0.3], size: [0.1, 0.06, 0.16], round: true },
     ],
@@ -179,7 +179,7 @@ const SHAPES: Readonly<Record<string, Shape>> = {
       { at: [0, -0.42, 0.04], size: [0.82, 0.16, 0.9], skin: "metal" },
       { at: [0, -0.42, -0.38], size: [0.2, 0.1, 0.1], round: true, along: "z", skin: "glass" },
       { at: [0, 0.02, -0.3], size: [0.3, 0.84, 0.3], skin: "metal" },
-      { at: [0, -0.12, 0.08], size: [0.66, 0.06, 0.5] },
+      { at: [0, -0.12, 0.08], size: [0.66, 0.06, 0.5], skin: "metal" },
       { at: [0, -0.26, 0.08], size: [0.16, 0.16, 0.16], round: true, skin: "glass" },
       { at: [0, -0.02, 0.04], size: [0.22, 0.1, 0.22], round: true, skin: "metal" },
       { at: [-0.06, -0.1, 0.04], size: [0.07, 0.14, 0.07], round: true, skin: "glass" },
@@ -196,7 +196,7 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // drop. The well is the whole instrument; everything else on it is for setting the wavelength.
   spectrophotometer: {
     body: [
-      { at: [0, -0.22, 0], size: [1, 0.56, 1] },
+      { at: [0, -0.2, 0], size: [1, 0.52, 1] },
       { at: [0, 0.14, 0.36], size: [0.96, 0.14, 0.28], skin: "metal" },
       { at: [0, -0.22, -0.49], size: [0.6, 0.3, 0.02] },
       { at: [-0.22, 0.06, -0.1], size: [0.34, 0.06, 0.44], skin: "metal" },
@@ -220,7 +220,7 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // machine a transformation is actually done at, which until now had no machine at all.
   electroporator: {
     body: [
-      { at: [0, -0.2, 0], size: [1, 0.6, 1] },
+      { at: [0, -0.18, 0], size: [1, 0.56, 1] },
       { at: [0, 0.18, 0], size: [0.9, 0.16, 0.9], skin: "metal" },
       { at: [-0.25, 0.3, 0.1], size: [0.26, 0.08, 0.3] },
       { at: [0.28, 0.32, -0.12], size: [0.22, 0.1, 0.22], round: true, skin: "metal" },
@@ -237,7 +237,7 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // shock is thirty seconds in one of these, and so is most of what an enzyme is left to do.
   "water-bath": {
     body: [
-      { at: [0, -0.2, 0], size: [1, 0.6, 1] },
+      { at: [0, -0.19, 0], size: [1, 0.58, 1] },
       { at: [0, 0.1, 0.42], size: [0.9, 0.16, 0.16], skin: "metal" },
       { at: [0, 0, -0.04], size: [0.82, 0.02, 0.78], skin: "metal" },
       { at: [0.4, 0.12, 0.42], size: [0.12, 0.12, 0.1], round: true, skin: "metal" },
@@ -256,7 +256,7 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // the medium, the agarose, the buffer — starts on one of these.
   balance: {
     body: [
-      { at: [0, -0.38, 0.06], size: [1, 0.24, 0.86], skin: "metal" },
+      { at: [0, -0.37, 0.06], size: [1, 0.22, 0.86], skin: "metal" },
       { at: [0, -0.22, -0.08], size: [0.5, 0.08, 0.5], round: true, skin: "metal" },
       { at: [-0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7], skin: "glass" },
       { at: [0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7], skin: "glass" },
@@ -272,7 +272,7 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // A cup on a heavy foot that shakes whatever is pressed into it. Small, and in constant use.
   vortex: {
     body: [
-      { at: [0, -0.2, 0], size: [1, 0.6, 1], skin: "metal" },
+      { at: [0, -0.19, 0], size: [1, 0.58, 1], skin: "metal" },
       { at: [0, 0.18, -0.1], size: [0.6, 0.16, 0.6], round: true, skin: "metal" },
       { at: [0.3, 0.1, 0.36], size: [0.26, 0.26, 0.2], round: true, along: "z", skin: "metal" },
       { at: [-0.3, 0.1, 0.42], size: [0.24, 0.1, 0.06], skin: "metal" },
@@ -302,8 +302,8 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // transformation and come out with colonies on them, which is the step a strain begins at.
   incubator: {
     body: [
-      { at: [0, -0.02, -0.05], size: [1, 0.96, 0.9] },
-      { at: [0, -0.06, 0.44], size: [0.96, 0.8, 0.06] },
+      { at: [0, -0.015, -0.05], size: [1, 0.95, 0.9] },
+      { at: [0, -0.06, 0.44], size: [0.96, 0.8, 0.06], skin: "metal" },
       { at: [0, -0.06, 0.47], size: [0.6, 0.56, 0.02], skin: "glass" },
       { at: [0.4, -0.06, 0.47], size: [0.06, 0.26, 0.06], round: true, skin: "metal" },
       { at: [0, 0.42, 0.44], size: [0.96, 0.14, 0.08], skin: "metal" },
@@ -312,8 +312,8 @@ const SHAPES: Readonly<Record<string, Shape>> = {
       { at: [0, 0.26, -0.05], size: [0.84, 0.02, 0.78] },
       { at: [-0.42, -0.485, -0.38], size: [0.1, 0.03, 0.1], round: true, loud: 0.18 },
       { at: [0.42, -0.485, -0.38], size: [0.1, 0.03, 0.1], round: true, loud: 0.18 },
-      { at: [-0.42, -0.485, 0.38], size: [0.1, 0.03, 0.1], round: true, loud: 0.18 },
-      { at: [0.42, -0.485, 0.38], size: [0.1, 0.03, 0.1], round: true, loud: 0.18 },
+      { at: [-0.42, -0.485, 0.33], size: [0.1, 0.03, 0.1], round: true, loud: 0.18 },
+      { at: [0.42, -0.485, 0.33], size: [0.1, 0.03, 0.1], round: true, loud: 0.18 },
     ],
     screen: { at: [0, 0.42, 0.49], size: [0.4, 0.1], leans: 0 },
   },
@@ -321,11 +321,11 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // filtered out of the top, so that what is on the work surface stays what was put there.
   "biosafety-cabinet": {
     body: [
-      { at: [0, -0.32, 0], size: [1, 0.36, 1], skin: "metal" },
+      { at: [0, -0.29, 0], size: [1, 0.3, 1], skin: "metal" },
       { at: [0, 0.14, -0.04], size: [1, 0.56, 0.92] },
       { at: [0, 0.42, 0], size: [1, 0.16, 1], skin: "metal" },
       { at: [0, -0.12, 0], size: [0.96, 0.04, 0.96], skin: "metal" },
-      { at: [0, -0.09, 0.44], size: [0.9, 0.03, 0.08] },
+      { at: [0, -0.105, 0.44], size: [0.9, 0.03, 0.08] },
       { at: [0, 0.14, 0.46], size: [0.94, 0.42, 0.03], skin: "glass" },
       { at: [0, -0.06, 0.46], size: [0.3, 0.04, 0.04], round: true, along: "x", skin: "metal" },
       { at: [-0.42, 0.44, 0.46], size: [0.1, 0.1, 0.04], round: true, along: "z", skin: "metal" },
@@ -340,15 +340,15 @@ const SHAPES: Readonly<Record<string, Shape>> = {
   // sterile goes through one, and everything that comes out of it alive goes back through.
   autoclave: {
     body: [
-      { at: [0, -0.04, -0.04], size: [1, 0.92, 0.92] },
-      { at: [0, -0.08, 0.44], size: [0.66, 0.66, 0.06], round: true, along: "z" },
+      { at: [0, -0.01, -0.04], size: [1, 0.86, 0.92] },
+      { at: [0, -0.08, 0.45], size: [0.66, 0.66, 0.06], round: true, along: "z" },
       { at: [0, -0.08, 0.48], size: [0.3, 0.3, 0.04], round: true, along: "z", skin: "metal" },
-      { at: [0, 0.38, 0.44], size: [0.9, 0.16, 0.06], skin: "metal" },
+      { at: [0, 0.38, 0.45], size: [0.9, 0.16, 0.06], skin: "metal" },
       { at: [0.36, -0.4, 0.46], size: [0.1, 0.1, 0.06], round: true, along: "z", skin: "metal" },
       { at: [-0.4, -0.46, -0.38], size: [0.12, 0.08, 0.12], round: true, loud: 0.18 },
       { at: [0.4, -0.46, -0.38], size: [0.12, 0.08, 0.12], round: true, loud: 0.18 },
-      { at: [-0.4, -0.46, 0.38], size: [0.12, 0.08, 0.12], round: true, loud: 0.18 },
-      { at: [0.4, -0.46, 0.38], size: [0.12, 0.08, 0.12], round: true, loud: 0.18 },
+      { at: [-0.4, -0.46, 0.34], size: [0.12, 0.08, 0.12], round: true, loud: 0.18 },
+      { at: [0.4, -0.46, 0.34], size: [0.12, 0.08, 0.12], round: true, loud: 0.18 },
     ],
     screen: { at: [0, 0.38, 0.48], size: [0.4, 0.1], leans: 0 },
   },
@@ -382,14 +382,14 @@ const BY_KIND: Readonly<Record<string, Shape>> = {
       { at: [0, 0.455, -0.46], size: [1, 0.09, 0.07] },
       { at: [0, 0.02, -0.02], size: [0.94, 0.03, 0.86] },
       { at: [0, -0.26, -0.02], size: [0.94, 0.03, 0.86] },
-      { at: [-0.46, -0.06, -0.4], size: [0.05, 0.88, 0.06], loud: 0.18 },
-      { at: [0.46, -0.06, -0.4], size: [0.05, 0.88, 0.06], loud: 0.18 },
-      { at: [-0.46, -0.06, 0.4], size: [0.05, 0.88, 0.06], loud: 0.18 },
-      { at: [0.46, -0.06, 0.4], size: [0.05, 0.88, 0.06], loud: 0.18 },
+      { at: [-0.46, -0.05, -0.4], size: [0.05, 0.9, 0.06], loud: 0.18 },
+      { at: [0.46, -0.05, -0.4], size: [0.05, 0.9, 0.06], loud: 0.18 },
+      { at: [-0.46, -0.05, 0.4], size: [0.05, 0.9, 0.06], loud: 0.18 },
+      { at: [0.46, -0.05, 0.4], size: [0.05, 0.9, 0.06], loud: 0.18 },
       { at: [-0.26, 0.28, 0.45], size: [0.36, 0.17, 0.04] },
       { at: [0.26, 0.28, 0.45], size: [0.36, 0.17, 0.04] },
-      { at: [-0.26, 0.28, 0.48], size: [0.18, 0.03, 0.03], round: true, along: "x" },
-      { at: [0.26, 0.28, 0.48], size: [0.18, 0.03, 0.03], round: true, along: "x" },
+      { at: [-0.26, 0.28, 0.465], size: [0.18, 0.04, 0.04], round: true, along: "x" },
+      { at: [0.26, 0.28, 0.465], size: [0.18, 0.04, 0.04], round: true, along: "x" },
     ],
   },
   // An upright cabinet on castors with one heavy door, a long handle, a vent at the bottom and a
@@ -401,8 +401,8 @@ const BY_KIND: Readonly<Record<string, Shape>> = {
       { at: [0, -0.02, 0.45], size: [0.96, 0.8, 0.05] },
       { at: [0, -0.02, 0.475], size: [0.82, 0.68, 0.02] },
       { at: [0.36, -0.02, 0.48], size: [0.06, 0.44, 0.04], round: true, skin: "metal" },
-      { at: [-0.46, 0.26, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x", skin: "metal" },
-      { at: [-0.46, -0.3, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x", skin: "metal" },
+      { at: [-0.46, 0.26, 0.455], size: [0.07, 0.07, 0.07], round: true, along: "x", skin: "metal" },
+      { at: [-0.46, -0.3, 0.455], size: [0.07, 0.07, 0.07], round: true, along: "x", skin: "metal" },
       { at: [0, 0.42, 0.45], size: [0.6, 0.12, 0.06], skin: "metal" },
       { at: [0, -0.4, 0.45], size: [0.8, 0.07, 0.06] },
       { at: [-0.4, -0.47, -0.34], size: [0.1, 0.06, 0.1], round: true, loud: 0.18 },
@@ -417,11 +417,11 @@ const BY_KIND: Readonly<Record<string, Shape>> = {
   fridge: {
     body: [
       { at: [0, 0, -0.04], size: [1, 0.9, 0.92] },
-      { at: [0, -0.04, 0.45], size: [0.96, 0.78, 0.05] },
+      { at: [0, -0.04, 0.45], size: [0.96, 0.78, 0.05], skin: "metal" },
       { at: [0, -0.04, 0.475], size: [0.7, 0.6, 0.02], skin: "glass" },
       { at: [0.36, -0.04, 0.48], size: [0.05, 0.4, 0.04], round: true, skin: "metal" },
-      { at: [-0.46, 0.22, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x", skin: "metal" },
-      { at: [-0.46, -0.3, 0.44], size: [0.07, 0.07, 0.07], round: true, along: "x", skin: "metal" },
+      { at: [-0.46, 0.22, 0.455], size: [0.07, 0.07, 0.07], round: true, along: "x", skin: "metal" },
+      { at: [-0.46, -0.3, 0.455], size: [0.07, 0.07, 0.07], round: true, along: "x", skin: "metal" },
       { at: [0, 0.2, -0.04], size: [0.86, 0.02, 0.84] },
       { at: [0, 0, -0.04], size: [0.86, 0.02, 0.84] },
       { at: [0, -0.2, -0.04], size: [0.86, 0.02, 0.84] },

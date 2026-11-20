@@ -23,8 +23,8 @@ const MODELS = [...readFileSync(new URL("../src/shapes.ts", import.meta.url), "u
 
 /** What a thing near the camera is drawn at, from `sceneView`; a bench is the quietest of them. */
 const CLOSE = 0.6;
-const edge = (part: { loud?: number }, picked: boolean): string =>
-  `#${paint("yours", "dark", CLOSE * (picked ? 1 : part.loud ?? 1)).color.getHexString()}`;
+const edge = (part: { loud?: number }): string =>
+  `#${paint("yours", "dark", CLOSE * (part.loud ?? 1)).color.getHexString()}`;
 
 /** Everything a lab stands its things on: legs under a bench, castors under a cabinet. */
 const stands = ["bench", "freezer", "fridge"] as const;
@@ -40,28 +40,49 @@ describe.each(stands)("what a %s stands on", (kind) => {
   });
 
   it("is drawn as lines, while the rest of it is drawn as light", () => {
-    for (const leg of quiet) expect(glows(edge(leg, false))).toBe(false);
-    for (const part of rest) expect(glows(edge(part, false))).toBe(true);
+    for (const leg of quiet) expect(glows(edge(leg))).toBe(false);
+    for (const part of rest) expect(glows(edge(part))).toBe(true);
   });
 
-  it("comes up with the rest when it is the thing being looked at", () => {
-    // Somebody who has walked up to a bench may well be looking at how it stands, so quiet is
-    // about what is in the way of reading a room, not about a piece mattering less.
-    for (const leg of quiet) expect(glows(edge(leg, true))).toBe(true);
+  it("stays quiet when its thing is the one being looked at, rather than coming up with it", () => {
+    // This used to say the opposite, on my own argument that somebody at a bench may be looking
+    // at how it stands. What it did in the room was make four castors the brightest thing in the
+    // picture at the moment you picked the machine they hold up, which was reported twice.
+    //
+    // Read from the source, because the rule lives in a component this cannot render — and the
+    // test that stated it reimplemented it instead, so it went on passing after the rule changed,
+    // which is the one thing a test must not do.
+    const source = readFileSync(new URL("../src/instruments.tsx", import.meta.url), "utf8");
+    expect(source).toContain("const loud = part.loud ?? 1;");
+    expect(source, "a picked thing used to bring its quiet pieces up").not.toContain("picked ? 1");
   });
 
-  it("recedes in its skin too, across the room, instead of standing there as a solid block", () => {
-    // The mistake this catches, which was shipped once: quietening the edges alone. With skins on
-    // across the room every piece fills to 0.92, so the legs stayed solid while losing the outline
-    // that said what they were — four grey boxes under a slab, louder than the glow they replaced.
+  it("recedes by going dull, and not by going see-through", () => {
+    // Both halves of this were reported. Thinning a leg let the shelving behind it show straight
+    // through, which a leg does not do; and darkening it by the same number left it brighter than
+    // the bench above it, which is the one thing a quiet piece must not be. So it stays as solid
+    // as the rest of the thing and recedes by being drawn as the dullest material in the room.
     const plain = SKINS["plain"]!;
+    const loudly = fillAt(plain, "on", 0, 0.04);
     for (const leg of quiet) {
       const far = fillAt(plain, "on", 0, 0.04, leg.loud ?? 1);
-      expect(far.fill).toBeLessThan(fillAt(plain, "on", 0, 0.04).fill);
-      expect(far.hides).toBe(false);
+      expect(far.fill, "as solid as the rest of it").toBe(loudly.fill);
+      expect(far.hides, "a leg is not a window").toBe(true);
+      expect(far.dulled, "and duller than the rest of it").toBeGreaterThan(loudly.dulled);
     }
     // And the rest of the thing is as solid as it ever was, so it still reads as an object.
     for (const part of rest) expect(fillAt(plain, "on", 0, 0.04, part.loud ?? 1).fill).toBe(plain.far);
+  });
+
+  it("is never drawn brighter than the thing it is part of, whatever it is made of", () => {
+    // The shape of the bug, rather than the one case of it: a bench leg that was lit against a
+    // dark bench. Dulling is how a quiet piece recedes, so dulling it less can never be right.
+    for (const skin of Object.values(SKINS)) {
+      for (const how of [0, 0.5, 1]) {
+        const loudly = fillAt(skin, "on", how, 0.04);
+        expect(fillAt(skin, "on", how, 0.04, 0.18).dulled).toBeGreaterThanOrEqual(loudly.dulled);
+      }
+    }
   });
 
   it("is left exactly as it was with skins off, whatever it says about being quiet", () => {
@@ -277,16 +298,21 @@ describe("a skin that never clears, wherever it is put", () => {
     }
   });
 
-  it("is on a cabinet's door furniture, and never on the door or the shelves", () => {
-    // A door clears as you walk up because that is how you see the racks; a shelf clears because
-    // what you are looking for is a box on the shelf under it. The handle, the hinges, the panel
-    // the reading is on and the compressor are none of those.
+  it("is on a cabinet's door furniture, and on the door only where there is a window in it", () => {
+    // A door with no window clears as you walk up, because opening it is the only way to see the
+    // racks. A door with a window does not: the window is how you look in, and reported from the
+    // room, a fridge whose shelves show straight through its door has no window to speak of.
+    // A shelf clears either way, because what you are looking for is a box on the one below it.
     for (const kind of ["freezer", "fridge"] as const) {
       const shape = shapeFor({ kind })!;
+      const glazed = shape.body.some((part) => part.skin === "glass");
       expect(shape.body[0]?.skin, `${kind}'s case`).toBeUndefined();
-      expect(shape.body[1]?.skin, `${kind}'s door`).toBeUndefined();
+      expect(shape.body[1]?.skin === "metal", `${kind}'s door against its window`).toBe(glazed);
       expect(shape.body.filter((part) => part.skin === "metal").length).toBeGreaterThan(2);
     }
+    // The same holds for the one instrument built as a cabinet with a window.
+    const incubator = shapeFor({ kind: "instrument", model: "incubator" })!;
+    expect(incubator.body[1]?.skin).toBe("metal");
     // The fridge's shelves, which are the three plates across the inside of it.
     const fridge = shapeFor({ kind: "fridge" })!;
     const shelves = fridge.body.filter((part) => part.size[1] < 0.05 && part.size[0] > 0.8 && part.at[2] < 0);
@@ -294,11 +320,19 @@ describe("a skin that never clears, wherever it is put", () => {
     for (const shelf of shelves) expect(shelf.skin).toBeUndefined();
   });
 
-  it("is on what a machine is mostly made of, now that it is on anything", () => {
-    // A sweep that skinned three parts and stopped would leave the lab half one drawing and half
-    // another. This says the rule was carried through, without pinning which parts it reached.
-    const reached = [...shapes].filter(([, shape]) => shape.body.some((part) => part.skin === "metal"));
-    expect(reached.length).toBeGreaterThan(shapes.length / 2);
+  it("is on every thing in the room that is not drawn as furniture", () => {
+    // The sweep is finished, so this is the shape of the finished thing rather than a count: a new
+    // instrument added with no material at all would be drawn in the old way next to a room drawn
+    // in the new one, and nothing else here would notice. A bench and the computer on it are the
+    // exceptions because their whole skin is furniture, which has no parts to tell apart.
+    const FURNITURE = ["bench", "computer"];
+    for (const [name, shape] of shapes) {
+      if (FURNITURE.includes(name)) {
+        expect(shape.body.some((part) => part.skin !== undefined), `${name} is furniture`).toBe(false);
+        continue;
+      }
+      expect(shape.body.some((part) => part.skin !== undefined), `${name} is made of nothing`).toBe(true);
+    }
   });
 });
 
@@ -324,5 +358,83 @@ describe("a screen, which is set into a face or lies back on one", () => {
     const panel = computer.body[3]!;
     const screen = computer.screen!;
     expect(screen.at[2]).toBeGreaterThan(panel.at[2] + panel.size[2] / 2);
+  });
+});
+
+describe("two pieces of one thing that overlap", () => {
+  /** How far into each other two pieces have to go, as a fraction of the thing they are part of. */
+  const ENOUGH = 0.0095;
+
+  const span = (part: { at: readonly number[]; size: readonly number[] }, axis: number) =>
+    [part.at[axis]! - part.size[axis]! / 2, part.at[axis]! + part.size[axis]! / 2] as const;
+
+  it("goes in far enough to not graze, or the two surfaces flicker against each other", () => {
+    // Reported as the bench's drawer handles flashing. The handle's back surface lay five
+    // thousandths inside the drawer front — about four millimetres — so the two surfaces nearly
+    // shared a depth, and which one won was decided again every frame as the camera moved. A
+    // handle stands proud of its drawer or goes well into it; what it cannot do is skim it.
+    for (const [name, shape] of shapes) {
+      const parts = shape.body;
+      for (let i = 0; i < parts.length; i++) {
+        for (let j = i + 1; j < parts.length; j++) {
+          const laps = [0, 1, 2].map((axis) => {
+            const [lo1, hi1] = span(parts[i]!, axis);
+            const [lo2, hi2] = span(parts[j]!, axis);
+            return Math.min(hi1, hi2) - Math.max(lo1, lo2);
+          });
+          if (laps.some((one) => one <= 1e-9)) continue;
+          const thinnest = Math.min(...laps);
+          expect(thinnest, `${name} body ${i + 1} only just reaches into body ${j + 1}`)
+            .toBeGreaterThanOrEqual(ENOUGH);
+        }
+      }
+    }
+  });
+});
+
+describe("a foot, and the face of the thing it holds up", () => {
+  it("stays within the thing's footprint, so its side never grazes a face", () => {
+    // Reported as the autoclave's feet showing through the front and the drum flashing there,
+    // which are one fault: a castor is a cylinder standing on its end, so its side is parallel to
+    // any upright face it crosses. Cross one and the two surfaces nearly share a depth all the
+    // way round the crossing, and the renderer picks between them again every frame.
+    //
+    // Below the thing is different, and allowed: a foot holds it off the floor, and the face it
+    // passes through there is the flat underside, square to the foot rather than along it.
+    for (const [name, shape] of shapes) {
+      const body = shape.body[0]!;
+      for (const [at, part] of shape.body.entries()) {
+        if ((part.loud ?? 1) === 1) continue;
+        for (const axis of [0, 2] as const) {
+          const reach = part.at[axis] + part.size[axis] / 2;
+          const back = part.at[axis] - part.size[axis] / 2;
+          expect(reach, `${name} body ${at + 1} reaches past the thing it is under`)
+            .toBeLessThanOrEqual(body.at[axis] + body.size[axis] / 2 + 1e-9);
+          expect(back, `${name} body ${at + 1} reaches past the thing it is under`)
+            .toBeGreaterThanOrEqual(body.at[axis] - body.size[axis] / 2 - 1e-9);
+        }
+      }
+    }
+  });
+});
+
+describe("what a thing actually stands on", () => {
+  it("is its feet, and not its feet and its underside at once", () => {
+    // Reported as legs protruding through two pieces of equipment, and it was ten of fourteen:
+    // the castors were authored inside the case with their undersides in the same plane as its
+    // own, so two faces pointing the same way sat at exactly one depth and the renderer chose
+    // between them again every frame. The case now comes down over the feet and the feet reach
+    // below it, which is what a foot is for and what the thermocycler always did.
+    for (const [name, shape] of shapes) {
+      const feet = shape.body.filter((part) => (part.loud ?? 1) < 1);
+      if (feet.length === 0) continue;
+      const under = (part: { at: readonly number[]; size: readonly number[] }) => part.at[1]! - part.size[1]! / 2;
+      const standsOn = Math.min(...feet.map(under));
+      const theCase = Math.min(...shape.body.filter((part) => (part.loud ?? 1) === 1).map(under));
+      expect(standsOn, `${name} rests on its own underside as well as its feet`).toBeLessThan(theCase);
+      // And the feet still reach up into it, or they are four things standing beside a machine.
+      const top = Math.max(...feet.map((part) => part.at[1]! + part.size[1]! / 2));
+      expect(top, `${name}'s feet do not reach it`).toBeGreaterThan(theCase);
+    }
   });
 });

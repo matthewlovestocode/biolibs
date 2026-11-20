@@ -67,6 +67,17 @@ export interface Skin {
    * Left out, it is {@link DULLS}, which is what everything used before any material said otherwise.
    */
   dulls?: number;
+  /**
+   * Whether it is drawn from within, because you are looking into it rather than at it.
+   *
+   * A room is the one of these. The wall between you and the lab is never drawn at all, so from
+   * outside you look straight through it, while the walls you are not looking through stand as
+   * solid as walls do. From inside, the same rule leaves you in a room with its walls around you.
+   *
+   * It is why a room can be near solid without ever hiding anything: whatever it would have hidden
+   * is on the side of it that is not there.
+   */
+  inside?: boolean;
 }
 
 /**
@@ -82,7 +93,7 @@ export const SKINS: Readonly<Record<string, Skin>> = {
   // It has no inside worth seeing, so thinning it as somebody walks up would only put its own
   // shelves, legs and drawers in front of the machine they came to use. It stays as solid close to
   // as it is across the room, and in its own colour, so that what stands on it is what is read.
-  furniture: { far: 0.92, near: 0.92, tone: "dim" },
+  furniture: { far: 0.92, near: 0.92, tone: "dim", dulls: 0.95 },
   // A window, a sash, the wall of a tank. The whole reason it is there is that you see through it,
   // so it is never solid and never hides what is behind it, at any distance.
   glass: { far: 0.3, near: 0.05, dulls: 0.5 },
@@ -98,6 +109,14 @@ export const SKINS: Readonly<Record<string, Skin>> = {
   // rotor, a chamber or shelves in it, because that case is what you walk up to look into. Both
   // of those are tests, not notes, because the rule is easy to apply one part too far.
   metal: { far: 0.92, near: 0.92, dulls: 0.95 },
+  // The walls of a room: near solid, and the same from across the lab as from standing in it,
+  // because the one that would be in the way is never drawn. Dulled nearly to the room's own
+  // darkness, so a wall reads as a surface catching a little light rather than as a lit panel.
+  room: { far: 0.85, near: 0.85, tone: "dim", dulls: 0.92, inside: true },
+  // The floor of a room, which is not the colour of its walls. A wall catches what light there is
+  // and a floor is what everything stands on, so the floor is the darker of the two and a little
+  // bluer, and the things standing on it read against it rather than merging into it.
+  floor: { far: 0.85, near: 0.85, tone: "rule", dulls: 0.7 },
   // A shade that is opaque on purpose. A gel is imaged in the dark: the hood is there to keep light
   // out, and a hood you can see through is not doing its job. It is the one skin that is more
   // solid up close than anything else, because being at it is when it matters that it is shut.
@@ -106,6 +125,14 @@ export const SKINS: Readonly<Record<string, Skin>> = {
 
 /** How far a solid fill is pulled towards the room's darkness when its material does not say. */
 export const DULLS = 0.82;
+
+/**
+ * How dull the dullest material in the room is, which is what a quiet piece is drawn as.
+ *
+ * Read from the materials themselves rather than written down, so that a new one duller than
+ * anything here takes the quiet pieces with it instead of leaving them lit against it.
+ */
+const QUIETEST: number = Math.max(...Object.values(SKINS).map((one) => one.dulls ?? DULLS));
 
 /** The tones that say something about the lab rather than about what a thing is made of. */
 const MEANS: ReadonlySet<Meaning> = new Set<Meaning>(["found", "attention", "held", "theirs", "good"]);
@@ -139,6 +166,17 @@ export const FAR = 4;
 /** How near, in its own widths, before it is drawn clear. */
 export const NEAR = 1.2;
 
+/**
+ * The widest a thing is taken to be, in metres, when working out how near you are to it.
+ *
+ * How near is measured in a thing's own widths, so that walking up to a tube and walking up to a
+ * freezer both end in the same place. Past about a stride, that stops saying anything about how
+ * close somebody is standing: a freezer is four times the width of a thermocycler, so at one
+ * camera position the freezer had dissolved while the machine on the bench beside it was solid,
+ * and a room of big things and small things came apart into two drawings.
+ */
+export const WIDEST = 0.8;
+
 /** Above this much fill, a thing hides what is behind it. */
 export const HIDES_ABOVE = 0.6;
 
@@ -162,8 +200,9 @@ export const HIDES_ABOVE = 0.6;
  */
 export function nearness(distance: number, size: number): number {
   if (!(size > 0)) return 1;
-  const near = size * NEAR;
-  const far = size * FAR;
+  const within = Math.min(size, WIDEST);
+  const near = within * NEAR;
+  const far = within * FAR;
   if (distance <= near) return 1;
   if (distance >= far) return 0;
   const through = (far - distance) / (far - near);
@@ -267,11 +306,15 @@ export function fillAt(skin: Skin | null, setting: Skins, how: number, was: numb
   if (skin === null || setting === "off") return { fill: was, hides: false, darkened: 0, dulled: 0 };
   const drawn = skinAt(skin, how, setting, was);
   if (loud >= 1) return drawn;
-  // A quiet piece is quiet in what it is made of as well as in its edges. Filling a bench leg as
-  // solidly as its worktop makes four thin blocks under a slab, and with the edges already
-  // quietened they read as boxes rather than as legs. A piece that recedes has to recede in both.
-  const fill = drawn.fill * loud;
-  return { fill, hides: fill >= HIDES_ABOVE, darkened: drawn.darkened * loud, dulled: drawn.dulled * loud };
+  // A quiet piece is as solid as the rest of the thing it belongs to. A bench leg is as opaque as
+  // the worktop it holds up, and a leg the shelves show through is not a leg. What makes it quiet
+  // is its outline, and being drawn as the dullest thing in the room rather than in its own
+  // colour, so that it is there and holding the thing up without being looked at.
+  //
+  // Thinning it instead, which is what this did, went wrong twice over: the shelving showed
+  // through the legs, and scaling how far a piece was darkened by the same number left the quiet
+  // piece *brighter* than the thing it belongs to — lit sticks under a dark bench.
+  return { ...drawn, dulled: drawn.dulled + Math.max(0, QUIETEST - drawn.dulled) * (1 - loud) };
 }
 
 /**

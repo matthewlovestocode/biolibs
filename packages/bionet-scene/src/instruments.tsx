@@ -36,7 +36,10 @@ const LYING: Readonly<Record<"x" | "y" | "z", [number, number, number]>> = { x: 
 function PartBox({ part, tone, strength, theme, fill, name, within, order, picked }: { part: Part; tone: Meaning; strength: number; theme: Theme; fill: number; name: string; within: readonly [number, number, number]; order: number; picked: boolean }) {
   // A quiet piece is quiet until the thing it belongs to is the one being looked at, and then it is
   // as loud as the rest: somebody looking at a bench may well be looking at how it stands.
-  const loud = picked ? 1 : part.loud ?? 1;
+  // A quiet piece stays quiet, picked or not. Bringing it up with the rest was my own idea about
+  // somebody looking at how a thing stands; what it does in a room is make four castors the
+  // brightest thing in the picture at exactly the moment you are looking at the machine they hold.
+  const loud = part.loud ?? 1;
   const edge = paint(tone, theme, strength * loud);
   const round = part.round === true;
   // A cylinder is modelled standing up, so lying one along x or z is a quarter turn. Its scale is
