@@ -165,6 +165,165 @@ const SHAPES: Readonly<Record<string, Shape>> = {
       { at: [0.07, 0.36, 0.08], size: [0.1, 0.1, 0.22], round: true, along: "z" },
     ],
   },
+  // A case with a lid over the cuvette well, and a sloped panel at the front. What it reads is one
+  // number — how much light got through — which is how dense a culture is and how much DNA is in a
+  // drop. The well is the whole instrument; everything else on it is for setting the wavelength.
+  spectrophotometer: {
+    body: [
+      { at: [0, -0.22, 0], size: [1, 0.56, 1] },
+      { at: [0, 0.14, 0.36], size: [0.96, 0.14, 0.28] },
+      { at: [0, -0.22, -0.49], size: [0.6, 0.3, 0.02] },
+      { at: [-0.22, 0.06, -0.1], size: [0.34, 0.06, 0.44] },
+      { at: [-0.22, 0.08, -0.1], size: [0.1, 0.12, 0.1] },
+      { at: [0.3, 0.16, 0.3], size: [0.1, 0.1, 0.1], round: true },
+      { at: [-0.4, 0.1, -0.35], size: [0.14, 0.06, 0.06], round: true, along: "x" },
+      { at: [-0.04, 0.1, -0.35], size: [0.14, 0.06, 0.06], round: true, along: "x" },
+      { at: [-0.42, -0.47, -0.38], size: [0.1, 0.06, 0.1], round: true },
+      { at: [0.42, -0.47, -0.38], size: [0.1, 0.06, 0.1], round: true },
+      { at: [-0.42, -0.47, 0.38], size: [0.1, 0.06, 0.1], round: true },
+      { at: [0.42, -0.47, 0.38], size: [0.1, 0.06, 0.1], round: true },
+    ],
+    lid: { parts: [{ at: [-0.22, 0.2, -0.1], size: [0.46, 0.16, 0.56] },
+                   { at: [-0.22, 0.3, 0.1], size: [0.2, 0.04, 0.04], round: true, along: "x" }],
+           hinge: [-0.22, 0.1, -0.38], opens: 80 },
+    screen: { at: [0, 0.22, 0.36], size: [0.5, 0.16], leans: 60 },
+  },
+  // A case with the voltage dial, the pulse button and the slide the cuvette goes into. It is the
+  // machine a transformation is actually done at, which until now had no machine at all.
+  electroporator: {
+    body: [
+      { at: [0, -0.2, 0], size: [1, 0.6, 1] },
+      { at: [0, 0.18, 0], size: [0.9, 0.16, 0.9] },
+      { at: [-0.25, 0.3, 0.1], size: [0.26, 0.08, 0.3] },
+      { at: [0.28, 0.32, -0.12], size: [0.22, 0.1, 0.22], round: true },
+      { at: [0.28, 0.32, 0.24], size: [0.12, 0.08, 0.12], round: true },
+      { at: [0, -0.2, -0.49], size: [0.5, 0.3, 0.02] },
+      { at: [-0.4, -0.47, -0.4], size: [0.1, 0.06, 0.1], round: true },
+      { at: [0.4, -0.47, -0.4], size: [0.1, 0.06, 0.1], round: true },
+      { at: [-0.4, -0.47, 0.4], size: [0.1, 0.06, 0.1], round: true },
+      { at: [0.4, -0.47, 0.4], size: [0.1, 0.06, 0.1], round: true },
+    ],
+    screen: { at: [-0.1, 0.3, 0.46], size: [0.4, 0.12], leans: 0 },
+  },
+  // A tank of water held at a temperature, with a rack of tube positions standing in it. A heat
+  // shock is thirty seconds in one of these, and so is most of what an enzyme is left to do.
+  "water-bath": {
+    body: [
+      { at: [0, -0.2, 0], size: [1, 0.6, 1] },
+      { at: [0, 0.1, 0.42], size: [0.9, 0.16, 0.16] },
+      { at: [0, 0, -0.04], size: [0.82, 0.02, 0.78] },
+      { at: [0.4, 0.12, 0.42], size: [0.12, 0.12, 0.1], round: true },
+      { at: [-0.4, -0.48, -0.4], size: [0.1, 0.04, 0.1], round: true },
+      { at: [0.4, -0.48, -0.4], size: [0.1, 0.04, 0.1], round: true },
+      { at: [-0.4, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true },
+      { at: [0.4, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true },
+    ],
+    lid: { parts: [{ at: [0, 0.22, -0.04], size: [0.9, 0.2, 0.84] },
+                   { at: [0, 0.33, 0.3], size: [0.3, 0.04, 0.04], round: true, along: "x" }],
+           hinge: [0, 0.1, -0.47], opens: 70 },
+    screen: { at: [0, 0.14, 0.5], size: [0.36, 0.1], leans: 0 },
+    block: { at: [0, 0.04, -0.04], size: [0.72, 0.64], rows: 3, columns: 8 },
+  },
+  // A pan behind glass, on a base heavy enough not to move. Everything a lab makes up by hand —
+  // the medium, the agarose, the buffer — starts on one of these.
+  balance: {
+    body: [
+      { at: [0, -0.38, 0.06], size: [1, 0.24, 0.86] },
+      { at: [0, -0.22, -0.08], size: [0.5, 0.08, 0.5], round: true },
+      { at: [-0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7] },
+      { at: [0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7] },
+      { at: [0, 0.06, -0.42], size: [0.88, 0.64, 0.04] },
+      { at: [0, 0.36, -0.08], size: [0.88, 0.04, 0.7] },
+      { at: [0, -0.3, 0.46], size: [0.34, 0.12, 0.06] },
+      { at: [-0.38, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true },
+      { at: [0.38, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true },
+      { at: [0, -0.48, -0.3], size: [0.1, 0.04, 0.1], round: true },
+    ],
+    screen: { at: [0, -0.3, 0.5], size: [0.28, 0.08], leans: 0 },
+  },
+  // A cup on a heavy foot that shakes whatever is pressed into it. Small, and in constant use.
+  vortex: {
+    body: [
+      { at: [0, -0.2, 0], size: [1, 0.6, 1] },
+      { at: [0, 0.18, -0.1], size: [0.6, 0.16, 0.6], round: true },
+      { at: [0.3, 0.1, 0.36], size: [0.26, 0.26, 0.2], round: true, along: "z" },
+      { at: [-0.3, 0.1, 0.42], size: [0.24, 0.1, 0.06] },
+      { at: [-0.38, -0.48, -0.38], size: [0.14, 0.04, 0.14], round: true },
+      { at: [0.38, -0.48, -0.38], size: [0.14, 0.04, 0.14], round: true },
+      { at: [-0.38, -0.48, 0.38], size: [0.14, 0.04, 0.14], round: true },
+      { at: [0.38, -0.48, 0.38], size: [0.14, 0.04, 0.14], round: true },
+    ],
+  },
+  // A dark hood over a lit surface, with a camera looking down into it. The gel station runs the
+  // gel; this is the thing that makes a picture of it, which is what the result of a digest is.
+  "gel-imager": {
+    body: [
+      { at: [0, -0.22, 0], size: [1, 0.56, 1] },
+      { at: [0, 0.06, 0], size: [0.8, 0.02, 0.8] },
+      { at: [-0.46, 0.18, 0], size: [0.08, 0.5, 0.9] },
+      { at: [0.46, 0.18, 0], size: [0.08, 0.5, 0.9] },
+      { at: [0, 0.18, -0.45], size: [0.92, 0.5, 0.1] },
+      { at: [0, 0.46, 0], size: [0.92, 0.08, 0.9] },
+      { at: [0, 0.32, 0], size: [0.18, 0.2, 0.18], round: true },
+      { at: [0, 0.18, 0.44], size: [0.88, 0.46, 0.04] },
+      { at: [0.3, 0.18, 0.47], size: [0.06, 0.2, 0.05], round: true },
+    ],
+    screen: { at: [-0.28, -0.3, 0.5], size: [0.3, 0.1], leans: 0 },
+  },
+  // A cabinet with a glass door and shelves, holding one temperature. Plates go in after a
+  // transformation and come out with colonies on them, which is the step a strain begins at.
+  incubator: {
+    body: [
+      { at: [0, -0.02, -0.05], size: [1, 0.96, 0.9] },
+      { at: [0, -0.06, 0.44], size: [0.96, 0.8, 0.06] },
+      { at: [0, -0.06, 0.47], size: [0.6, 0.56, 0.02] },
+      { at: [0.4, -0.06, 0.47], size: [0.06, 0.26, 0.06], round: true },
+      { at: [0, 0.42, 0.44], size: [0.96, 0.14, 0.08] },
+      { at: [0, -0.2, -0.05], size: [0.84, 0.02, 0.78] },
+      { at: [0, 0.04, -0.05], size: [0.84, 0.02, 0.78] },
+      { at: [0, 0.26, -0.05], size: [0.84, 0.02, 0.78] },
+      { at: [-0.42, -0.485, -0.38], size: [0.1, 0.03, 0.1], round: true },
+      { at: [0.42, -0.485, -0.38], size: [0.1, 0.03, 0.1], round: true },
+      { at: [-0.42, -0.485, 0.38], size: [0.1, 0.03, 0.1], round: true },
+      { at: [0.42, -0.485, 0.38], size: [0.1, 0.03, 0.1], round: true },
+    ],
+    screen: { at: [0, 0.42, 0.49], size: [0.4, 0.1], leans: 0 },
+  },
+  // A hood on a stand with a sash that slides down: air pulled through the grille at the front and
+  // filtered out of the top, so that what is on the work surface stays what was put there.
+  "biosafety-cabinet": {
+    body: [
+      { at: [0, -0.32, 0], size: [1, 0.36, 1] },
+      { at: [0, 0.14, -0.04], size: [1, 0.56, 0.92] },
+      { at: [0, 0.42, 0], size: [1, 0.16, 1] },
+      { at: [0, -0.12, 0], size: [0.96, 0.04, 0.96] },
+      { at: [0, -0.09, 0.44], size: [0.9, 0.03, 0.08] },
+      { at: [0, 0.14, 0.46], size: [0.94, 0.42, 0.03] },
+      { at: [0, -0.06, 0.46], size: [0.3, 0.04, 0.04], round: true, along: "x" },
+      { at: [-0.42, 0.44, 0.46], size: [0.1, 0.1, 0.04], round: true, along: "z" },
+      { at: [-0.44, -0.46, -0.4], size: [0.1, 0.08, 0.1], round: true },
+      { at: [0.44, -0.46, -0.4], size: [0.1, 0.08, 0.1], round: true },
+      { at: [-0.44, -0.46, 0.4], size: [0.1, 0.08, 0.1], round: true },
+      { at: [0.44, -0.46, 0.4], size: [0.1, 0.08, 0.1], round: true },
+    ],
+    screen: { at: [0.34, 0.44, 0.5], size: [0.26, 0.08], leans: 0 },
+  },
+  // A pressure vessel with a round door and a wheel to lock it. Everything that goes into a lab
+  // sterile goes through one, and everything that comes out of it alive goes back through.
+  autoclave: {
+    body: [
+      { at: [0, -0.04, -0.04], size: [1, 0.92, 0.92] },
+      { at: [0, -0.08, 0.44], size: [0.66, 0.66, 0.06], round: true, along: "z" },
+      { at: [0, -0.08, 0.48], size: [0.3, 0.3, 0.04], round: true, along: "z" },
+      { at: [0, 0.38, 0.44], size: [0.9, 0.16, 0.06] },
+      { at: [0.36, -0.4, 0.46], size: [0.1, 0.1, 0.06], round: true, along: "z" },
+      { at: [-0.4, -0.46, -0.38], size: [0.12, 0.08, 0.12], round: true },
+      { at: [0.4, -0.46, -0.38], size: [0.12, 0.08, 0.12], round: true },
+      { at: [-0.4, -0.46, 0.38], size: [0.12, 0.08, 0.12], round: true },
+      { at: [0.4, -0.46, 0.38], size: [0.12, 0.08, 0.12], round: true },
+    ],
+    screen: { at: [0, 0.38, 0.48], size: [0.4, 0.1], leans: 0 },
+  },
   // A metal block with two rows of holes for tubes, a dial, and a small display on its base.
   "heat-block": {
     body: [

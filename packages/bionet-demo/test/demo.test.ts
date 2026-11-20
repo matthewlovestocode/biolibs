@@ -8,6 +8,7 @@
  */
 import { cutsOf, cutSites, designPair, digestPieces, planLigation, planPcr, primerTm } from "@biolibs/bionet-tools";
 import { demoLab, demoMolecules, demoTour, otherStrand } from "@biolibs/bionet-demo";
+import { STANDARD_KIT } from "@biolibs/bionet-client";
 import { describe, expect, it } from "vitest";
 
 const molecules = demoMolecules();
@@ -73,11 +74,10 @@ describe("the demo lab", () => {
     // No primers: the tour designs them, and they arrive.
     expect(lab.parts.map((one) => one.name)).toEqual(["pGene", "pWren backbone"]);
     // The kit a lab is founded with, and nothing of the demo's own: a lab shown to somebody is the
-    // lab they would get. The four machines the tools are used at are the first four instruments.
-    expect(lab.places.map((one) => one.name)).toEqual([
-      "Main lab", "Bench 1", "Bench 2", "−80 freezer", "4 °C fridge",
-      "Thermocycler", "Gel station", "Heat block", "Shaking incubator",
-      "Centrifuge", "Microscope", "Computer", "Box 1", "Box F1"]);
+    // lab they would get. Asked against the kit rather than against a list written out here, so
+    // that adding a machine to a lab does not mean editing a test about the demo.
+    expect(lab.places.map((one) => one.name)).toEqual(STANDARD_KIT.map((one) => one.name));
+    expect(lab.places.every((one) => !one.retired)).toBe(true);
     // Two tubes and one culture: the lab keeps something alive, so there is something to induce.
     expect(lab.items).toHaveLength(3);
     expect(lab.items.filter((one) => one.part !== null).every((one) => one.where?.place === demo.places.box)).toBe(true);

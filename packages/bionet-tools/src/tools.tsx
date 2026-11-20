@@ -6,7 +6,7 @@ import { useLab } from "@biolibs/bionet-react";
 import { DigestTool } from "./digest-tool.js";
 import { InductionTool } from "./induce-bench.js";
 import { PcrTool } from "./pcr-tool.js";
-import { instrumentFor, toolFor, type ToolName } from "./run.js";
+import { TOOL_AT, instrumentFor, toolFor, type ToolName } from "./run.js";
 import { LigationTool } from "./ligate-bench.js";
 import { AssemblyTool } from "./assembly-bench.js";
 import { FusionTool } from "./fusion-bench.js";
@@ -17,6 +17,17 @@ import { SequencesTool } from "./sequences-tool.js";
 
 /** The tools used at a desk and not at an instrument: the lab's sequences, and designing primers. */
 export type DeskTool = "sequences" | "primers" | "codons" | "construct" | "assembly" | "verify";
+
+/** What each machine a tool is used at is called, for saying so in a sentence. */
+const MACHINE_NAMES: Readonly<Record<string, string>> = {
+  thermocycler: "thermocycler", "gel-station": "gel station", "heat-block": "heat block", "shaking-incubator": "shaking incubator",
+};
+
+/** A list written out the way it is said: A a, a b, and a c. A tool's name is left as it is written, so PCR stays PCR. */
+const sentence = (parts: readonly string[]): string => {
+  const said = parts.map((one, at) => `${at === 0 ? "A" : "a"} ${one}`);
+  return said.length < 2 ? said.join("") : `${said.slice(0, -1).join(", ")}, and ${said.at(-1)!}`;
+};
 
 /** What each tool is called. */
 export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation", induction: "Induction" };
@@ -45,7 +56,7 @@ export function InstrumentTool({ place, onDone }: { place: string; onDone?: () =
       <div className="toolhead">
         <div>
           <h2>{found?.name ?? "This place"}</h2>
-          <p className="dim">There is no tool for this yet. A thermocycler opens PCR, a gel station opens digest and gel, and a shaking incubator opens induction.</p>
+          <p className="dim">There is no tool for this yet. {sentence((Object.keys(TOOL_AT) as ToolName[]).map((tool) => `${MACHINE_NAMES[TOOL_AT[tool]] ?? TOOL_AT[tool]} opens ${TOOL_NAMES[tool]}`))}.</p>
         </div>
         {onDone !== undefined && <button type="button" className="quiet" onClick={onDone}>Back to the lab</button>}
       </div>

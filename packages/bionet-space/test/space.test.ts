@@ -142,7 +142,7 @@ describe("arranging by default", () => {
 describe("standing where it is told", () => {
   it("puts a place exactly there", () => {
     const [, bench] = arrange(room([{ id: "b", kind: "bench", name: "B", parent: "r", standing: { position: [1, 0, -2], size: [2, 0.9, 0.7] } }]));
-    near(bench!.center, [1 + 3, 0.45, -2]);        // the default room's base centre is at x = 3
+    near(bench!.center, [1 + 4.5, 0.45, -2]);      // the default room is nine metres wide, so its base centre is at x = 4.5
     near(bench!.size, [2, 0.9, 0.7]);
     expect(bench!.placed).toBe("by hand");
   });
@@ -432,5 +432,69 @@ describe("a new place among ones already stood", () => {
       { id: "f", kind: "freezer", name: "F", parent: "room" },
     ] };
     expect(overlapping(arrange(full))).toEqual([["big", "f"]]);
+  });
+});
+
+/**
+ * How a room is laid out when nobody has said.
+ *
+ * A lab stands its things against its walls and keeps the middle of the floor clear, because that
+ * is where people and trolleys go. What a room must never do is draw itself standing outside
+ * itself, which is what a single line along the back wall did once there was a dozen of anything.
+ */
+describe("a room laid out round its walls", () => {
+  const roomOf = (many: number, size: [number, number, number] = [9, 2.8, 7]) => arrange({
+    places: [
+      { id: "room", kind: "room", name: "Main lab", parent: null, standing: { position: [0, 0, 0], size } },
+      ...Array.from({ length: many }, (_, at) => ({ id: `b${at}`, kind: "bench", name: `Bench ${at + 1}`, parent: "room" })),
+    ], stored: [],
+  }).filter((one) => one.place.kind === "bench");
+
+  /** Where a thing is on the floor, the room being centred on the origin. */
+  const from = (one: Arranged): [number, number] => [one.center[0], one.center[2]];
+
+  it("keeps everything inside the room, however much is in it", () => {
+    for (const many of [1, 4, 8, 20]) {
+      for (const one of roomOf(many)) {
+        // An arranged size is the size as it lies, so a turned bench is already wide where it is wide.
+        const [x, z] = from(one);
+        expect(Math.abs(x) + one.size[0] / 2, `${many}: ${one.place.name}`).toBeLessThanOrEqual(4.501);
+        expect(Math.abs(z) + one.size[2] / 2, `${many}: ${one.place.name}`).toBeLessThanOrEqual(3.501);
+      }
+    }
+  });
+
+  it("puts one thing in the middle of the back wall, facing into the room", () => {
+    const [only] = roomOf(1);
+    const [x, z] = from(only!);
+    expect(x).toBeCloseTo(0, 6);
+    expect(z).toBeCloseTo(-3.5 + 0.1 + only!.size[2] / 2, 6);
+    expect(only!.size).toEqual([1.8, 0.9, 0.75]);
+    expect(only!.turn ?? 0).toBe(0);
+  });
+
+  it("goes on round the walls rather than along one, and turns each to face in", () => {
+    const placed = roomOf(8);
+    const turns = new Set(placed.map((one) => one.turn ?? 0));
+    expect(turns.size).toBeGreaterThan(1);
+    // Everything against a side wall is turned to face across the room, not along it.
+    for (const one of placed) {
+      const [x, z] = from(one);
+      if ((one.turn ?? 0) === 90) expect(x).toBeGreaterThan(0);
+      if ((one.turn ?? 0) === 270) expect(x).toBeLessThan(0);
+      if ((one.turn ?? 0) === 180) expect(z).toBeGreaterThan(0);
+      if ((one.turn ?? 0) === 0) expect(z).toBeLessThan(0);
+    }
+  });
+
+  it("leaves the middle of the floor clear until the walls are full", () => {
+    // Four benches in a nine-metre room: all of them against walls, nothing in the middle.
+    for (const one of roomOf(4)) {
+      const [x, z] = from(one);
+      expect(Math.hypot(x, z)).toBeGreaterThan(1.5);
+    }
+    // Twenty will not go round four walls, so the rest stands in the middle after all.
+    const crowded = roomOf(20);
+    expect(crowded.some((one) => Math.hypot(...from(one)) < 1.5)).toBe(true);
   });
 });

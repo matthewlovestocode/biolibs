@@ -14,7 +14,7 @@ import type { Arranged, Layout, Place, Slot, Standing, Turn } from "./model.js";
 
 /** How big something is when nobody has said, by kind, in metres: wide, tall, deep. */
 export const DEFAULT_SIZE: Readonly<Record<string, readonly [number, number, number]>> = {
-  room: [6, 2.8, 5],
+  room: [9, 2.8, 7],
   freezer: [0.9, 2.0, 0.85],
   fridge: [0.7, 1.8, 0.7],
   bench: [1.8, 0.9, 0.75],
@@ -31,12 +31,26 @@ export const INSTRUMENT_SIZE: Readonly<Record<string, readonly [number, number, 
   centrifuge: [0.4, 0.3, 0.45],
   computer: [0.5, 0.4, 0.25],
   microscope: [0.3, 0.45, 0.4],
+  spectrophotometer: [0.45, 0.3, 0.4],
+  electroporator: [0.3, 0.18, 0.3],
+  "water-bath": [0.45, 0.25, 0.35],
+  balance: [0.25, 0.3, 0.35],
+  vortex: [0.16, 0.14, 0.2],
+  "gel-imager": [0.5, 0.55, 0.45],
+  // The three that stand on the floor rather than on a bench.
+  incubator: [0.6, 0.9, 0.6],
+  "biosafety-cabinet": [1.3, 1.5, 0.8],
+  autoclave: [0.7, 1.2, 0.8],
 };
 
 /** How much of a place's inside is kept clear of its walls, as a fraction of each side. */
 const INSET = 0.06;
 /** The gap left between things arranged side by side, in metres. */
 const GAP = 0.02;
+/** The gap between two things standing side by side on a room's floor, in metres. */
+const ROOM_GAP = 0.4;
+/** How far off a wall a thing standing against it is, in metres. */
+const WALL = 0.1;
 
 const sizeOf = (place: Place): [number, number, number] => {
   if (place.standing !== undefined) return [...place.standing.size];
@@ -96,15 +110,62 @@ function byDefault(parent: [number, number, number], kind: string, children: Pla
     });
   }
   if (kind === "room") {
-    // Whatever stands on a room's floor lines up along the back wall, at its own size.
+    // A room is laid out round its walls, starting at the back and going on round, so the middle of
+    // it stays clear. That is how a lab is arranged and why: the floor in the middle is where people
+    // and trolleys go. Rows marching forward from the back wall fill a room the way a warehouse is
+    // filled and leave nowhere to stand. Whatever will not go round the walls stands in the middle
+    // after all, as an island, which is also what a lab does once its walls are full.
     const sizes = children.map(sizeOf);
-    const total = sizes.reduce((sum, size) => sum + size[0], 0) + 0.4 * (count - 1);
-    let x = -total / 2;
-    return sizes.map((size) => {
-      const standing: Standing = { position: [x + size[0] / 2, 0, -D / 2 + size[2] / 2 + 0.1], size };
-      x += size[0] + 0.4;
-      return standing;
-    });
+    // The corners are left out of every wall's run, so two walls do not put something in the same
+    // corner. It costs the depth of the deepest thing at each end, which is what a corner is.
+    const deepest = Math.max(...sizes.map((size) => size[2]));
+    const runs: { turn: Turn; across: 0 | 2; room: number; of: number[] }[] = [
+      { turn: 0, across: 0, room: inside[0], of: [] }, { turn: 90, across: 2, room: inside[2], of: [] },
+      { turn: 180, across: 0, room: inside[0], of: [] }, { turn: 270, across: 2, room: inside[2], of: [] },
+    ];
+    const island: number[] = [];
+    let wall = 0;
+    let along = 0;
+    for (const [at, size] of sizes.entries()) {
+      // What this wall would come to with it on the end. Starting the next wall starts that sum
+      // again, so a thing that would not fit on the end of one wall is first along the next.
+      let taken = along === 0 ? size[0] : along + ROOM_GAP + size[0];
+      while (wall < runs.length && taken > runs[wall]!.room - 2 * deepest + 1e-9) { wall++; along = 0; taken = size[0]; }
+      if (wall >= runs.length) { island.push(at); continue; }
+      runs[wall]!.of.push(at);
+      along = taken;
+    }
+    const standings: Standing[] = new Array(count);
+    for (const run of runs) {
+      // Each wall's run is centred on it, so a wall with one thing against it has it in the middle
+      // and a wall filling up stays balanced rather than crowding into one corner.
+      const width = run.of.reduce((sum, at) => sum + sizes[at]![0], 0) + ROOM_GAP * Math.max(0, run.of.length - 1);
+      let u = -width / 2;
+      for (const at of run.of) {
+        const size = sizes[at]!;
+        const middle = u + size[0] / 2;
+        const off = (run.across === 0 ? D : W) / 2 - WALL - size[2] / 2;
+        standings[at] = {
+          position: run.turn === 0 ? [middle, 0, -off] : run.turn === 90 ? [off, 0, middle]
+                  : run.turn === 180 ? [-middle, 0, off] : [-off, 0, -middle],
+          size, turn: run.turn,
+        };
+        u += size[0] + ROOM_GAP;
+      }
+    }
+    // The island: rows down the middle, kept inside the room however much is left over.
+    let back = -(island.length === 0 ? 0 : deepest);
+    let x = 0;
+    let widest = 0;
+    for (const at of island) {
+      const size = sizes[at]!;
+      if (x > 0 && x + ROOM_GAP + size[0] > inside[0]) { back += widest + ROOM_GAP; x = 0; widest = 0; }
+      const here = Math.min(back, D / 2 - WALL - deepest - size[2]);
+      standings[at] = { position: [-inside[0] / 2 + x + size[0] / 2, 0, here + size[2] / 2], size };
+      x += (x === 0 ? 0 : ROOM_GAP) + size[0];
+      widest = Math.max(widest, size[2]);
+    }
+    return standings;
   }
   if (kind === "bench") {
     // Things on a bench stand on its top, spread along it.
