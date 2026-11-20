@@ -6,7 +6,7 @@
  * at the part it is named for, and a strand's place along the template can be compared across rows.
  */
 import { placeGel, placeJoining, stageViewName, measureLine, MOLECULE_RADIUS, moleculeCentre, placeMolecule, BaseLens, STAGE_VIEWS, STAGE_VIEW_NAMES, STEP_SECONDS, TUBE_SPACE, lensFrame, lidOpen, pairsOf, placeStrands, polymerasesOf, sceneView, shapeOf,
-         stagePose, shapeFor, type Part, type StageLens } from "@biolibs/bionet-scene";
+         stagePose, shapeFor, roundScale, type Part, type StageLens } from "@biolibs/bionet-scene";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { INSTRUMENT_SIZE, VIEWED_FROM, exampleLab } from "@biolibs/bionet-space";
@@ -558,5 +558,66 @@ describe("a bench, a freezer and a fridge", () => {
   it("take an instrument by its model, the way they always did", () => {
     expect(shapeFor({ kind: "instrument", model: "thermocycler" })).toBe(shapeOf("thermocycler"));
     expect(shapeFor({ kind: "instrument", model: "no such machine" })).toBeNull();
+  });
+});
+
+/**
+ * A round piece drawn round.
+ *
+ * A piece is written as fractions of the instrument and the instrument is scaled unevenly to its
+ * own size in metres, so a disc written as a circle of fractions comes out an ellipse of metres
+ * unless something undoes that. The autoclave's door was drawn 792 mm one way and 462 mm the other.
+ */
+describe("a round piece of an instrument", () => {
+  /** The two world extents of a round piece's cross-section, in metres, as it ends up drawn. */
+  const across = (part: Part, within: [number, number, number]): [number, number] => {
+    const scale = roundScale(part, within);
+    const along = part.along ?? "y";
+    // The cylinder is modelled across its own x and z; those map to world axes by how it is turned.
+    const [first, second] = along === "y" ? [0, 2] as const : along === "x" ? [1, 2] as const : [0, 1] as const;
+    return [scale[0] * within[first], scale[2] * within[second]];
+  };
+
+  it("comes out the same width in both directions, whatever the instrument's shape", () => {
+    const within: [number, number, number] = [0.7, 1.2, 0.8];
+    for (const along of ["x", "y", "z"] as const) {
+      const [one, two] = across({ at: [0, 0, 0], size: [0.66, 0.66, 0.66], round: true, along }, within);
+      expect(one, along).toBeCloseTo(two, 9);
+    }
+  });
+
+  it("takes the smaller of the two it was written with, so it stays inside its own box", () => {
+    // The autoclave's door: 0.66 of 0.7 m is 462 mm, 0.66 of 1.2 m is 792 mm. It is the smaller.
+    const [one] = across({ at: [0, 0, 0.44], size: [0.66, 0.66, 0.06], round: true, along: "z" }, [0.7, 1.2, 0.8]);
+    expect(one).toBeCloseTo(0.462, 6);
+  });
+
+  it("leaves the length alone, which is the axis it runs along", () => {
+    expect(roundScale({ at: [0, 0, 0], size: [0.2, 0.9, 0.2], round: true }, [1, 1, 1])[1]).toBe(0.9);
+    expect(roundScale({ at: [0, 0, 0], size: [0.9, 0.2, 0.2], round: true, along: "x" }, [1, 1, 1])[1]).toBe(0.9);
+    expect(roundScale({ at: [0, 0, 0], size: [0.2, 0.2, 0.9], round: true, along: "z" }, [1, 1, 1])[1]).toBe(0.9);
+  });
+
+  it("changes nothing for an instrument that is a cube, where there was never a problem", () => {
+    const part: Part = { at: [0, 0, 0], size: [0.4, 0.5, 0.4], round: true };
+    expect(roundScale(part, [1, 1, 1])).toEqual([0.4, 0.5, 0.4]);
+  });
+
+  it("answers with nothing rather than infinity for an instrument of no size", () => {
+    expect(roundScale({ at: [0, 0, 0], size: [0.4, 0.5, 0.4], round: true }, [0, 0, 0])).toEqual([0, 0.5, 0]);
+  });
+
+  it("holds for every round piece of every instrument a lab can place", () => {
+    for (const model of Object.keys(INSTRUMENT_SIZE)) {
+      const shape = shapeOf(model);
+      if (shape === null) continue;
+      const within = [...INSTRUMENT_SIZE[model]!] as [number, number, number];
+      const parts = [...shape.body, ...(shape.lid === undefined ? [] : shape.lid.parts)];
+      for (const [at, part] of parts.entries()) {
+        if (part.round !== true) continue;
+        const [one, two] = across(part, within);
+        expect(one, `${model} piece ${at + 1}`).toBeCloseTo(two, 9);
+      }
+    }
   });
 });

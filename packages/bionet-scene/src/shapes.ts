@@ -432,6 +432,42 @@ export function shapeFor(place: { kind: string; model?: string | undefined }): S
 }
 
 /**
+ * How to scale a round piece so that it comes out round.
+ *
+ * A piece is written as fractions of the instrument it belongs to, and the instrument is drawn by
+ * scaling the whole of it to its own size in metres. That scaling is not even — an autoclave is
+ * 0.7 m wide and 1.2 m tall — and it happens after the piece has been turned, so a disc written as
+ * a circle of fractions comes out an ellipse of metres: the autoclave's door was drawn 792 mm one
+ * way and 462 mm the other.
+ *
+ * So a round piece's cross-section is given one diameter in metres and scaled back into fractions
+ * on each axis. The diameter is the smaller of the two the piece was written with, because a piece
+ * has to stay inside the box it was given a size for.
+ *
+ * @param part - The piece, with its size as fractions of the instrument.
+ * @param within - How wide, tall and deep the instrument is, in metres.
+ * @returns The scale to draw the cylinder at, in the cylinder's own axes: across, along, across.
+ *
+ * @example
+ * ```ts
+ * import { roundScale } from "@biolibs/bionet-scene";
+ *
+ * // An autoclave's door: a circle of 462 mm, not an ellipse of 792 by 462.
+ * roundScale({ at: [0, 0, 0.44], size: [0.66, 0.66, 0.06], round: true, along: "z" }, [0.7, 1.2, 0.8]);
+ * ```
+ */
+export function roundScale(part: Part, within: readonly [number, number, number]): [number, number, number] {
+  const along = part.along ?? "y";
+  // The two axes the cross-section lies in, and the one the piece runs along.
+  const [first, second] = along === "y" ? [0, 2] as const : along === "x" ? [1, 2] as const : [0, 1] as const;
+  const length = along === "y" ? 1 : along === "x" ? 0 : 2;
+  const across = Math.min(part.size[first]! * within[first]!, part.size[second]! * within[second]!);
+  // A cylinder is modelled across x and z and along y, whatever it is turned to afterwards.
+  const safe = (metres: number): number => (metres > 0 ? across / metres : 0);
+  return [safe(within[first]!), part.size[length]!, safe(within[second]!)];
+}
+
+/**
  * What a model of instrument is made of.
  *
  * @param model - The instrument's model, such as `thermocycler`.

@@ -12,7 +12,7 @@ import { BoxGeometry, CylinderGeometry, EdgesGeometry, Object3D, PlaneGeometry, 
 import { colour, type Meaning, type Theme } from "@biolibs/bionet-theme";
 import type { Motion } from "./motion.js";
 import { paint } from "./scene.js";
-import type { Part, Shape } from "./shapes.js";
+import { roundScale, type Part, type Shape } from "./shapes.js";
 
 const BOX = new BoxGeometry(1, 1, 1);
 const EDGES = new EdgesGeometry(BOX);
@@ -25,15 +25,14 @@ const ROUND_EDGES = new EdgesGeometry(ROUND);
 /** A round piece lying on its side faces its ends along x or z instead of up. */
 const LYING: Readonly<Record<"x" | "y" | "z", [number, number, number]>> = { x: [0, 0, Math.PI / 2], y: [0, 0, 0], z: [Math.PI / 2, 0, 0] };
 
-function PartBox({ part, tone, strength, theme, fill, name }: { part: Part; tone: Meaning; strength: number; theme: Theme; fill: number; name: string }) {
+function PartBox({ part, tone, strength, theme, fill, name, within }: { part: Part; tone: Meaning; strength: number; theme: Theme; fill: number; name: string; within: readonly [number, number, number] }) {
   const edge = paint(tone, theme, strength);
   const round = part.round === true;
-  // A cylinder is modelled standing up, so lying one along x or z is a quarter turn, and its own
-  // size is still given the way everything else is: how wide, how tall, how deep, in the lab.
+  // A cylinder is modelled standing up, so lying one along x or z is a quarter turn. Its scale is
+  // worked out rather than taken from its size, because the instrument it is in is scaled unevenly
+  // after it is turned, and a circle of fractions is an ellipse of metres.
   const turn = round ? LYING[part.along ?? "y"] : LYING.y;
-  const scale: [number, number, number] = !round || (part.along ?? "y") === "y" ? part.size
-    : part.along === "x" ? [part.size[1], part.size[0], part.size[2]]
-    : [part.size[0], part.size[2], part.size[1]];
+  const scale: [number, number, number] = round ? roundScale(part, within) : part.size;
   return (
     <group position={part.at} rotation={turn} scale={scale}>
       <lineSegments name={`${name} edges`} geometry={round ? ROUND_EDGES : EDGES}>
@@ -97,7 +96,7 @@ export function InstrumentShape({ shape, size, theme, tone = "yours", strength =
   const glass = paint(lit ? "found" : "dim", theme, lit ? 0.95 : 0.3);
   return (
     <group scale={[size[0], size[1], size[2]]}>
-      {shape.body.map((part, at) => <PartBox key={at} name={`${name} body ${at + 1}`} part={part} tone={tone} strength={strength} theme={theme} fill={0.04} />)}
+      {shape.body.map((part, at) => <PartBox key={at} name={`${name} body ${at + 1}`} part={part} tone={tone} strength={strength} theme={theme} fill={0.04} within={size} />)}
       {block !== undefined && (
         <>
           <instancedMesh name={`${name} wells`} ref={wells} key={count} args={[WELL, undefined, count]}>
@@ -115,7 +114,7 @@ export function InstrumentShape({ shape, size, theme, tone = "yours", strength =
         <group position={shape.lid.hinge}>
           <group ref={lid}>
             {shape.lid.parts.map((part, at) => (
-              <PartBox key={at} name={`${name} lid ${at + 1}`} tone={tone} strength={strength} theme={theme} fill={0.03}
+              <PartBox key={at} name={`${name} lid ${at + 1}`} tone={tone} strength={strength} theme={theme} fill={0.03} within={size}
                        part={{ ...part, at: [part.at[0] - shape.lid!.hinge[0], part.at[1] - shape.lid!.hinge[1], part.at[2] - shape.lid!.hinge[2]] }} />
             ))}
           </group>
