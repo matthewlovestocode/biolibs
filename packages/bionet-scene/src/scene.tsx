@@ -16,12 +16,13 @@ import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber"
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import { BoxGeometry, Color, CylinderGeometry, EdgesGeometry, Object3D, Plane, QuadraticBezierCurve3, RingGeometry, Vector3,
-         type InstancedMesh, type Mesh, type PerspectiveCamera } from "three";
+         type Group, type InstancedMesh, type Mesh, type PerspectiveCamera } from "three";
 import { colour, type Meaning, type Theme } from "@biolibs/bionet-theme";
 import { InUseContent, atInstrument, type PlacedInUse } from "./in-use.js";
 import { describeScene, pointOnScreen, reportScene } from "./inspect.js";
 import { InstrumentShape } from "./instruments.js";
 import type { Motion } from "./motion.js";
+import { SKINS, fillAt, nearness, staysClear, type Skins } from "./skins.js";
 import { shapeFor } from "./shapes.js";
 import { legible, type DrawnPlace, type DrawnSlot, type DrawnTube, type Focus, type SceneView, type Written } from "./view.js";
 
@@ -156,7 +157,87 @@ export interface Dragging {
 const FLOOR = new Plane(new Vector3(0, 1, 0), 0);
 const WALL = new Plane();
 
-function PlaceBox({ place, theme, onPick, drag, inUse }: { place: DrawnPlace; theme: Theme; onPick: (id: string) => void; drag?: Dragging | undefined;
+/** Scratch, so that working out how near something is allocates nothing each frame. */
+const SPOT = new Vector3();
+const TONED = new Color();
+const GROUND = new Color();
+
+/**
+ * Drive everything filled under a group from how near the camera is to it.
+ *
+ * It runs each frame and writes straight to the materials rather than through React, because this
+ * changes as the camera moves and a render a frame would be a render a frame. A fill is found by
+ * its `userData.skinned`, so an edge, a screen and a pick box are left alone.
+ *
+ * The whole of a machine clears together — the size and the place are the machine's and not the
+ * piece's — because a lid that went clear before its body would be a machine coming apart rather
+ * than one being looked into.
+ *
+ * @param group - What to drive, or a mesh on its own.
+ * @param how - The size to measure nearness in, what it is made of, what the scene is set to, the
+ *   colours to mix between, and whether this one stays clear whatever.
+ */
+export interface Skinning {
+  /** How big the thing is, in metres: what nearness is measured against. */
+  size: number;
+  /** What it is made of, or `null` for something that is never filled, such as a room. */
+  skin: string | null;
+  /** What the scene is set to. */
+  skins: Skins;
+  /** The colours to draw it in. */
+  tone: Meaning;
+  theme: Theme;
+  /** Whether it stays clear whatever the distance, because it is being worked or is being pointed at. */
+  clear: boolean;
+}
+
+export function useSkinned(group: RefObject<Object3D | null>, how: Skinning): void {
+  const skin = how.skin === null ? null : SKINS[how.skin] ?? SKINS["plain"]!;
+  TONED.set(colour(how.tone, how.theme));
+  GROUND.set(colour("ground", how.theme));
+  const toned = TONED.clone();
+  const ground = GROUND.clone();
+  useFrame((state) => {
+    const it = group.current;
+    if (it === null) return;
+    // A piece with no skin, or a scene with skins off, is drawn as it was authored: each fill goes
+    // back to the fraction it carries, so turning the setting off is a return and not an
+    // approximation of one.
+    const off = skin === null || how.skins === "off";
+    const near = off ? 1 : nearness(it.getWorldPosition(SPOT).distanceTo(state.camera.position), how.size);
+    it.traverse((one) => {
+      if (one.userData["skinned"] !== true) return;
+      const material = (one as unknown as { material?: { opacity: number; depthWrite: boolean; color: Color } }).material;
+      if (material === undefined) return;
+      const was = typeof one.userData["fill"] === "number" ? (one.userData["fill"] as number) : 0;
+      const drawn = fillAt(off ? null : skin, how.skins, how.clear ? 1 : near, was);
+      // The authored fills are fractions of a per cent and were written against the dark theme's
+      // multiplier, so off keeps that multiplier and only a skin's own fill uses the flatter one.
+      material.opacity = how.theme === "dark" ? drawn.fill : Math.min(1, drawn.fill * (off ? 1.6 : 1.15));
+      material.depthWrite = drawn.hides;
+      // Darkened as it fills: a solid thing is an object with a lit edge, not a glowing block, and
+      // a glowing block is what the bloom pass would make of a solid fill in the theme's colours.
+      material.color.copy(toned).lerp(ground, drawn.darkened * 0.82);
+      one.visible = drawn.fill > 0.002;
+    });
+  });
+}
+
+/**
+ * A group whose fills are driven by how near the camera is to it.
+ *
+ * It is the hook as a tag, for a host that draws one machine rather than a room of them.
+ *
+ * @param props - What to measure and colour by, and what to draw inside.
+ */
+export function Skinned({ children, ...how }: Skinning & { children?: ReactNode }) {
+  const body = useRef<Group>(null);
+  useSkinned(body, how);
+  return <group ref={body}>{children}</group>;
+}
+
+function PlaceBox({ place, theme, onPick, drag, inUse, skins = "off" }: { place: DrawnPlace; theme: Theme; onPick: (id: string) => void; drag?: Dragging | undefined;
+  skins?: Skins;
   /** For the one machine being worked: how far its lid is open, which well is taken, whether its screen is lit. */
   inUse?: { open?: number; well?: { row: number; column: number }; lit?: boolean } | undefined }) {
   const controls = useThree((state) => state.controls) as unknown as { enabled: boolean } | null;
@@ -183,8 +264,15 @@ function PlaceBox({ place, theme, onPick, drag, inUse }: { place: DrawnPlace; th
   // A shape is drawn at the instrument's own size and then turned, so a quarter turn is undone here.
   const own: [number, number, number] = place.turn === 90 || place.turn === 270 ? [place.size[2], place.size[1], place.size[0]] : place.size;
   const volume = place.size[0] * place.size[1] * place.size[2];
+  const body = useRef<Group>(null);
+  // Measured against how big the thing itself is, so that a freezer is solid from further off than
+  // a box on a shelf is, and both clear when somebody is at them.
+  useSkinned(body, {
+    size: Math.max(...place.size), skin: place.skin, skins, tone: place.tone, theme,
+    clear: staysClear({ tone: place.tone, inUse: inUse !== undefined, opened: place.opened }),
+  });
   return (
-    <group position={place.center}>
+    <group position={place.center} ref={body}>
       {shape === null ? (
         <lineSegments scale={place.size} geometry={EDGES}>
           <lineBasicMaterial color={edge.color} transparent opacity={edge.opacity} toneMapped={false} />
@@ -196,7 +284,10 @@ function PlaceBox({ place, theme, onPick, drag, inUse }: { place: DrawnPlace; th
         </group>
       )}
       {(place.focusable || place.fill > 0) && (
-        <mesh scale={place.size} geometry={BOX} userData={place.focusable ? { volume } : {}}
+        <mesh scale={place.size} geometry={BOX}
+              // A shaped place has its own parts to skin, so skinning this box too would wrap a
+              // machine in a solid cube. Here it is only the pick box, and stays clear.
+              userData={{ ...(place.focusable ? { volume } : {}), ...(shape === null && place.skin !== null ? { skinned: true, fill: place.fill } : {}) }}
               onPointerDown={!draggable ? undefined : (event) => {
                 const at = under(event);
                 if (at === null || event.button !== 0) return;
@@ -400,11 +491,11 @@ export function Rig({ view, motion = "on" }: { view: Pick<SceneView, "pose" | "f
  * @param props - `view` is what to draw; `theme` picks the colours; `onFocus` is told which place or
  *   tube was pressed; `neighbours` are other labs to draw beside this one, and `onNeighbour` is told
  *   when one is pressed; `drag` lets some places be dragged across the floor; `motion` says whether
- *   the camera travels between views or cuts.
+ *   the camera travels between views or cuts; `skins` says whether what things are made of is drawn.
  */
-export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, drag, motion = "on", more = [], using, children }: {
+export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, drag, motion = "on", skins = "off", more = [], using, children }: {
   view: SceneView; theme: Theme; onFocus: (focus: Focus) => void; neighbours?: readonly Neighbour[]; onNeighbour?: (id: string) => void;
-  drag?: Dragging; motion?: Motion; more?: readonly Label[]; children?: ReactNode;
+  drag?: Dragging; motion?: Motion; skins?: Skins; more?: readonly Label[]; children?: ReactNode;
   /**
    * One machine in the room being worked, and everything pictured around it.
    *
@@ -458,7 +549,7 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
         <lineBasicMaterial attach="material" color={rule.color} transparent opacity={theme === "dark" ? 0.5 : 0.7} toneMapped={false} />
       </gridHelper>
       {view.places.map((place) => (
-        <PlaceBox key={place.id} place={place} theme={theme} onPick={(id) => onFocus({ place: id })} drag={drag}
+        <PlaceBox key={place.id} place={place} theme={theme} onPick={(id) => onFocus({ place: id })} drag={drag} skins={skins}
                   {...(using === undefined || place.id !== using.place ? {} : { inUse: { open: using.placed.open, lit: using.placed.lit, ...(using.placed.well === undefined ? {} : { well: using.placed.well }) } })} />
       ))}
       {using !== undefined && under !== null && worked !== null && (

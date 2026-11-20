@@ -89,7 +89,7 @@ describe("what a scene is drawing", () => {
     (screen.material as MeshBasicMaterial).transparent = true;
     (screen.material as MeshBasicMaterial).opacity = 0.9;
     scene.add(screen);
-    expect(describeScene(reportScene(scene))[0]).toBe("Thermocycler screen  #f472b6 @0.90  at 0,0,0  175×19×64 mm");
+    expect(describeScene(reportScene(scene))[0]).toBe("Thermocycler screen  #f472b6 @0.90 solid  at 0,0,0  175×19×64 mm");
   });
 });
 
@@ -137,5 +137,27 @@ describe("where a drawn thing is on screen", () => {
     camera.lookAt(0, 0, 0);
     camera.updateMatrixWorld(true);
     expect(pointOnScreen(scene, camera, canvas, "freezer")).toBeNull();
+  });
+});
+
+describe("whether a see-through thing hides what is behind it", () => {
+  it("says so, because an opacity on its own does not", () => {
+    // The mistake this catches: a skin filled to look solid but left out of the depth buffer, so
+    // the mechanism it should be covering shows through it, or the other way round.
+    const scene = new Scene();
+    const covering = box("freezer body", 0x22d3ee, [0.6, 1.8, 0.7]);
+    (covering.material as MeshBasicMaterial).transparent = true;
+    (covering.material as MeshBasicMaterial).opacity = 0.92;
+    const clear = box("freezer shelf", 0x22d3ee, [0.5, 0.02, 0.6]);
+    (clear.material as MeshBasicMaterial).transparent = true;
+    (clear.material as MeshBasicMaterial).opacity = 0.05;
+    (clear.material as MeshBasicMaterial).depthWrite = false;
+    scene.add(covering, clear);
+    const seen = new Map(reportScene(scene).map((one) => [one.name, one]));
+    expect(seen.get("freezer body")!.hides).toBe(true);
+    expect(seen.get("freezer shelf")!.hides).toBe(false);
+    expect(describeScene([seen.get("freezer body")!])[0]).toContain("@0.92 solid");
+    expect(describeScene([seen.get("freezer shelf")!])[0]).toContain("@0.05");
+    expect(describeScene([seen.get("freezer shelf")!])[0]).not.toContain("solid");
   });
 });

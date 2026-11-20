@@ -25,7 +25,15 @@ const ROUND_EDGES = new EdgesGeometry(ROUND);
 /** A round piece lying on its side faces its ends along x or z instead of up. */
 const LYING: Readonly<Record<"x" | "y" | "z", [number, number, number]>> = { x: [0, 0, Math.PI / 2], y: [0, 0, 0], z: [Math.PI / 2, 0, 0] };
 
-function PartBox({ part, tone, strength, theme, fill, name, within }: { part: Part; tone: Meaning; strength: number; theme: Theme; fill: number; name: string; within: readonly [number, number, number] }) {
+/**
+ * One piece of an instrument.
+ *
+ * `order` is where it comes in the shape, and it is what settles which of two surfaces at the same
+ * depth is drawn in front. Shapes are written big first and detail after — a case, then the panel
+ * set into its face — and a panel written exactly on the face it is set into is the natural way to
+ * write it. Without this, those two surfaces are a coin toss the renderer makes again each frame.
+ */
+function PartBox({ part, tone, strength, theme, fill, name, within, order }: { part: Part; tone: Meaning; strength: number; theme: Theme; fill: number; name: string; within: readonly [number, number, number]; order: number }) {
   const edge = paint(tone, theme, strength);
   const round = part.round === true;
   // A cylinder is modelled standing up, so lying one along x or z is a quarter turn. Its scale is
@@ -36,11 +44,15 @@ function PartBox({ part, tone, strength, theme, fill, name, within }: { part: Pa
   return (
     <group position={part.at} rotation={turn} scale={scale}>
       <lineSegments name={`${name} edges`} geometry={round ? ROUND_EDGES : EDGES}>
-        <lineBasicMaterial color={edge.color} transparent opacity={edge.opacity} toneMapped={false} />
+        <lineBasicMaterial color={edge.color} transparent opacity={edge.opacity} toneMapped={false}
+                           polygonOffset polygonOffsetFactor={-order} polygonOffsetUnits={-order} />
       </lineSegments>
       {fill > 0 && (
-        <mesh name={name} geometry={round ? ROUND : BOX}>
-          <meshBasicMaterial color={colour(tone, theme)} transparent opacity={theme === "dark" ? fill : fill * 1.6} depthWrite={false} toneMapped={false} />
+        // Tagged as skinned, with the fill it has when skins are off, so that the skins setting can
+        // drive it from how near the camera is and put this exact fill back when it is turned off.
+        <mesh name={name} geometry={round ? ROUND : BOX} userData={{ skinned: true, fill }}>
+          <meshBasicMaterial color={colour(tone, theme)} transparent opacity={theme === "dark" ? fill : fill * 1.6} depthWrite={false} toneMapped={false}
+                             polygonOffset polygonOffsetFactor={-order} polygonOffsetUnits={-order} />
         </mesh>
       )}
     </group>
@@ -93,10 +105,15 @@ export function InstrumentShape({ shape, size, theme, tone = "yours", strength =
   }, [block, radius, size, wellAt]);
   const ring = paint("dim", theme, 0.5);
   const screen = shape.screen;
+  // Six tenths of a millimetre, said as a fraction of how deep this instrument is, because parts
+  // are written as fractions and scaled by the whole.
+  const proud = size[2] > 0 ? 0.0006 / size[2] : 0;
+  // In front of every piece, since it is set into whichever of them it is on.
+  const ahead = shape.body.length + (shape.lid?.parts.length ?? 0) + 1;
   const glass = paint(lit ? "found" : "dim", theme, lit ? 0.95 : 0.3);
   return (
     <group scale={[size[0], size[1], size[2]]}>
-      {shape.body.map((part, at) => <PartBox key={at} name={`${name} body ${at + 1}`} part={part} tone={tone} strength={strength} theme={theme} fill={0.04} within={size} />)}
+      {shape.body.map((part, at) => <PartBox key={at} order={at} name={`${name} body ${at + 1}`} part={part} tone={tone} strength={strength} theme={theme} fill={0.04} within={size} />)}
       {block !== undefined && (
         <>
           <instancedMesh name={`${name} wells`} ref={wells} key={count} args={[WELL, undefined, count]}>
@@ -114,7 +131,7 @@ export function InstrumentShape({ shape, size, theme, tone = "yours", strength =
         <group position={shape.lid.hinge}>
           <group ref={lid}>
             {shape.lid.parts.map((part, at) => (
-              <PartBox key={at} name={`${name} lid ${at + 1}`} tone={tone} strength={strength} theme={theme} fill={0.03} within={size}
+              <PartBox key={at} order={shape.body.length + at} name={`${name} lid ${at + 1}`} tone={tone} strength={strength} theme={theme} fill={0.03} within={size}
                        part={{ ...part, at: [part.at[0] - shape.lid!.hinge[0], part.at[1] - shape.lid!.hinge[1], part.at[2] - shape.lid!.hinge[2]] }} />
             ))}
           </group>
@@ -126,13 +143,22 @@ export function InstrumentShape({ shape, size, theme, tone = "yours", strength =
         // would make the brightest, most solid thing in a scene of thin edges the one thing in it
         // that carries no reading.
         <group position={screen.at} rotation={[-(screen.leans * Math.PI) / 180, 0, 0]}>
-          <mesh name={`${name} screen`}>
-            <planeGeometry args={[screen.size[0], screen.size[1]]} />
-            <meshBasicMaterial color={colour("field", theme)} transparent opacity={lit ? 0.92 : 0.6} toneMapped={false} side={2} depthWrite={false} />
-          </mesh>
-          <lineSegments name={`${name} screen edge`} geometry={SCREEN_EDGE} scale={[screen.size[0], screen.size[1], 1]}>
-            <lineBasicMaterial color={glass.color} opacity={glass.opacity} transparent toneMapped={false} />
-          </lineSegments>
+          {/* A screen is set in the face it is on, so every shape writes it at that face exactly.
+              Two surfaces at one depth is a coin toss the renderer makes again each frame, which is
+              a flicker across the room and nothing at all close up. So it is stood a fraction of a
+              millimetre proud of the face, and told to win the depth test besides: the offset alone
+              runs out of depth precision at a distance, which is where the flicker was. */}
+          <group position={[0, 0, proud]}>
+            <mesh name={`${name} screen`}>
+              <planeGeometry args={[screen.size[0], screen.size[1]]} />
+              <meshBasicMaterial color={colour("field", theme)} transparent opacity={lit ? 0.92 : 0.6} toneMapped={false} side={2} depthWrite={false}
+                                 polygonOffset polygonOffsetFactor={-ahead} polygonOffsetUnits={-ahead} />
+            </mesh>
+            <lineSegments name={`${name} screen edge`} geometry={SCREEN_EDGE} scale={[screen.size[0], screen.size[1], 1]}>
+              <lineBasicMaterial color={glass.color} opacity={glass.opacity} transparent toneMapped={false}
+                                 polygonOffset polygonOffsetFactor={-ahead} polygonOffsetUnits={-ahead} />
+            </lineSegments>
+          </group>
         </group>
       )}
     </group>

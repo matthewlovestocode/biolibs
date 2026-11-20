@@ -23,12 +23,13 @@ import { Canvas } from "@react-three/fiber";
 import { useRef, type ReactNode } from "react";
 import { colour, THEME_ATTRIBUTE, type Theme } from "@biolibs/bionet-theme";
 import type { RecordedLab } from "@biolibs/bionet-space";
-import { LabView, MotionSwitch } from "./explorer.js";
+import { LabView, MotionSwitch, SkinSwitch } from "./explorer.js";
 import { InstrumentShape } from "./instruments.js";
 import { useMotion, type Motion } from "./motion.js";
+import { useSkins, type Skins } from "./skins.js";
 import { InUseContent, useInUse, type InUseHere } from "./in-use.js";
 export type { StageLine } from "./in-use.js";
-import { Follow, Rig, paint, useSystemTheme } from "./scene.js";
+import { Follow, Rig, Skinned, paint, useSystemTheme } from "./scene.js";
 import type { StageBeam, StageField, StageGel, StageJoining, StageLens, StageMeasure, StageMolecule, StagePlate, StageRotor, StageScale, StageTrace, StageTube, StageView } from "./shapes.js";
 import type { StageLine } from "./in-use.js";
 
@@ -55,6 +56,8 @@ interface StageProps {
   measures?: readonly StageMeasure[];
   theme?: Theme;
   motion?: Motion;
+  /** Whether what the machine is made of is drawn. Left out, it is the stage's own setting, which starts off. */
+  skins?: Skins;
   seconds?: number;
   onPlayed?: () => void;
   children?: ReactNode;
@@ -132,6 +135,7 @@ function OnItsOwnStage(props: StageProps) {
   const system = useSystemTheme();
   const shown = theme ?? system;
   const [motion, flipMotion] = useMotion(pinned);
+  const [skins, flipSkins] = useSkins(props.skins);
   const { placed, chrome } = useInUse(handedOver(props), motion);
   const layer = useRef<HTMLDivElement>(null);
   const rule = paint("rule", shown, 0.5);
@@ -152,7 +156,13 @@ function OnItsOwnStage(props: StageProps) {
                 <boxGeometry args={[1, 1, 1]} />
                 <lineBasicMaterial color={paint("yours", shown, 1).color} toneMapped={false} />
               </lineSegments>
-            ) : <InstrumentShape shape={shape} size={size} theme={shown} open={placed.open} well={placed.well} lit={placed.lit} motion={motion} name={props.name} />}
+            ) : (
+              // On a stage there is one machine and the camera is already at it, so it goes clear as
+              // soon as somebody leans in and is solid when they stand back to see the whole of it.
+              <Skinned size={Math.max(...size)} skin="plain" skins={skins} tone="yours" theme={shown} clear={false}>
+                <InstrumentShape shape={shape} size={size} theme={shown} open={placed.open} well={placed.well} lit={placed.lit} motion={motion} name={props.name} />
+              </Skinned>
+            )}
           </group>
           <InUseContent placed={placed} theme={shown} />
           <Follow labels={labels} layer={layer} />
@@ -164,7 +174,10 @@ function OnItsOwnStage(props: StageProps) {
         </div>
       </div>
       {chrome}
-      <MotionSwitch motion={motion} onFlip={flipMotion} />
+      <div className="settings">
+        <MotionSwitch motion={motion} onFlip={flipMotion} />
+        <SkinSwitch skins={skins} onFlip={flipSkins} />
+      </div>
       {children !== undefined && <aside className="bench">{children}</aside>}
     </div>
   );

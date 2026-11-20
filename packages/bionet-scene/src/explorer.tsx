@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { layoutFrom, search, type Layout, type RecordedLab, type Standing } from "@biolibs/bionet-space";
 import { THEME_ATTRIBUTE, type Theme } from "@biolibs/bionet-theme";
 import { useMotion, type Motion } from "./motion.js";
+import { SKIN_SAYS, useSkins, type Skins } from "./skins.js";
 import { needsArranging, placeToAdd, type NewPlace } from "./arranging.js";
 import { LabBuilder } from "./builder.js";
 import { poseAtInstrument, useInUse, type InUseHere } from "./in-use.js";
@@ -34,6 +35,22 @@ export function MotionSwitch({ motion, onFlip }: { motion: Motion; onFlip: () =>
     <button type="button" className="motion" aria-pressed={motion === "on"} onClick={onFlip}
             title={motion === "on" ? "The view travels from one place to the next. Press to make it cut." : "The view cuts from one place to the next. Press to make it travel."}>
       Motion {motion}
+    </button>
+  );
+}
+
+/**
+ * The switch that turns the skins on and off.
+ *
+ * It sits beside the motion switch because it is the same kind of setting: not about the lab, but
+ * about how this window draws it, and so something an operator changes and leaves changed.
+ *
+ * @param props - `skins` is the setting; `onFlip` changes it.
+ */
+export function SkinSwitch({ skins, onFlip }: { skins: Skins; onFlip: () => void }) {
+  return (
+    <button type="button" className="motion skins" aria-pressed={skins === "on"} onClick={onFlip} title={SKIN_SAYS[skins]}>
+      Skins {skins}
     </button>
   );
 }
@@ -68,9 +85,11 @@ export function MotionSwitch({ motion, onFlip }: { motion: Motion; onFlip: () =>
  * <LabExplorer layout={exampleLab()} labName="The Wren Lab" />
  * ```
  */
-export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus: start, onNeighbour, onUse, molecule, motion: pinned, using, beside, wide }: {
+export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus: start, onNeighbour, onUse, molecule, motion: pinned, skins: pinnedSkins, using, beside, wide }: {
   layout: Layout; labName?: string; neighbours?: readonly Neighbour[]; theme?: Theme; focus?: Focus; onNeighbour?: (id: string) => void;
   onUse?: (place: string) => void; molecule?: (item: string) => StageMolecule | null; motion?: Motion;
+  /** Whether what things are made of is drawn. Left out, it is the window's own setting, which starts off. */
+  skins?: Skins;
   /** One of the lab's instruments being worked, drawn where it stands. */
   using?: Using;
   /** Something to put beside the scene: a tool's own panel, or the tool itself. */
@@ -79,6 +98,7 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
   wide?: boolean;
 }) {
   const [motion, flipMotion] = useMotion(pinned);
+  const [skins, flipSkins] = useSkins(pinnedSkins);
   const system = useSystemTheme();
   const shown = theme ?? system;
   const [focus, setFocus] = useState<Focus>(start ?? { place: null });
@@ -123,7 +143,7 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
 
   return (
     <div className={`bionet-scene${has ? " stage-of" : ""}${has && wide === true ? " widebench" : ""}`} {...{ [THEME_ATTRIBUTE]: shown }}>
-      <LabScene view={view} theme={shown} motion={motion} onFocus={setFocus} {...(neighbours === undefined ? {} : { neighbours })}
+      <LabScene view={view} theme={shown} motion={motion} skins={skins} onFocus={setFocus} {...(neighbours === undefined ? {} : { neighbours })}
                 {...(onNeighbour === undefined ? {} : { onNeighbour })} {...(drawn === null ? {} : { more: moleculeLabels(drawn, false) })}
                 {...(working ? { using: { place: using!.place, placed: placed! } } : {})}>
         {drawn !== null && <Molecule placed={drawn} theme={shown} />}
@@ -168,7 +188,10 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
           )}
         </>
       )}
-      <MotionSwitch motion={motion} onFlip={flipMotion} />
+      <div className="settings">
+        <MotionSwitch motion={motion} onFlip={flipMotion} />
+        <SkinSwitch skins={skins} onFlip={flipSkins} />
+      </div>
       {has && <aside className="bench">{aside}</aside>}
     </div>
   );
@@ -198,8 +221,8 @@ export function LabExplorer({ layout, labName = "Lab", neighbours, theme, focus:
  * <LabView lab={lab} name={lab.name ?? "Lab"} />
  * ```
  */
-export function LabView({ lab, name = "Lab", theme, motion, neighbours, onStand, onAdd, onRetire, onUse, molecule, focus, using, beside, wide }: {
-  lab: RecordedLab; name?: string; theme?: Theme; motion?: Motion; neighbours?: readonly Neighbour[];
+export function LabView({ lab, name = "Lab", theme, motion, skins, neighbours, onStand, onAdd, onRetire, onUse, molecule, focus, using, beside, wide }: {
+  lab: RecordedLab; name?: string; theme?: Theme; motion?: Motion; skins?: Skins; neighbours?: readonly Neighbour[];
   onStand?: (place: string, standing: Standing | null) => Promise<unknown> | void;
   onAdd?: (place: NewPlace) => Promise<unknown> | void; onRetire?: (place: string) => Promise<unknown> | void;
   onUse?: (place: string) => void; molecule?: (item: string) => StageMolecule | null;
@@ -233,7 +256,7 @@ export function LabView({ lab, name = "Lab", theme, motion, neighbours, onStand,
   }
   return (
     <div className="bionet-view">
-      <LabExplorer layout={layout} labName={name} {...pinned} {...(motion === undefined ? {} : { motion })} {...(neighbours === undefined ? {} : { neighbours })} {...(onUse === undefined ? {} : { onUse })} {...(molecule === undefined ? {} : { molecule })}
+      <LabExplorer layout={layout} labName={name} {...pinned} {...(motion === undefined ? {} : { motion })} {...(skins === undefined ? {} : { skins })} {...(neighbours === undefined ? {} : { neighbours })} {...(onUse === undefined ? {} : { onUse })} {...(molecule === undefined ? {} : { molecule })}
                    {...(focus === undefined ? {} : { focus })} {...(using === undefined ? {} : { using })} {...(beside === undefined ? {} : { beside })} {...(wide === undefined ? {} : { wide })} />
       {onStand !== undefined && <button type="button" className="bionet-arrange" onClick={() => setArranging(true)}>Arrange</button>}
     </div>

@@ -42,6 +42,21 @@ export interface DrawnPlace {
   strength: number;
   /** How solid its faces are, from 0 (edges only) to 1. */
   fill: number;
+  /**
+   * What it is made of, for how solid it is drawn, or `null` for something that is never filled.
+   *
+   * A room is never filled, because you are inside it; nor is a shelf or a rack, which are frames
+   * rather than objects. Everything that is a thing standing in a lab is.
+   */
+  skin: string | null;
+  /**
+   * Whether it is the thing being looked at, and so stays see-through however far off it is.
+   *
+   * Walking up to a freezer is walking up to the shelves in it. Its own skin is between the camera
+   * and them, and letting the distance alone decide would leave a solid box over the thing it was
+   * opened to show.
+   */
+  opened: boolean;
   /** Whether pressing it should look at it. */
   focusable: boolean;
   /** Whether to write its name beside it. */
@@ -219,28 +234,28 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
     if (focused !== null && focused.place.grid !== undefined && !isFocus) {
       // A box is looked into as if it had been taken out: what it was standing in is left as a faint
       // outline to say where it came from, and nothing else is drawn, since all of it would be in the way.
-      if (focused.path.includes(place.id)) places.push({ ...base, tone: depth === 1 ? "dim" : "yours", strength: 0.1, fill: 0, focusable: false, labelled: false });
+      if (focused.path.includes(place.id)) places.push({ ...base, tone: depth === 1 ? "dim" : "yours", strength: 0.1, fill: 0, skin: null, opened: false, focusable: false, labelled: false });
     } else if (depth === 1) {
       // A room is the frame everything else stands in, and is drawn quietly.
-      places.push({ ...base, tone: "dim", strength: level === "lab" || level === "room" ? 0.55 : 0.28, fill: 0,
-                    focusable: level === "lab", labelled: level === "lab" });
+      places.push({ ...base, tone: "dim", strength: level === "lab" || level === "room" ? 0.55 : 0.28, fill: 0, skin: null,
+                    opened: false, focusable: level === "lab", labelled: level === "lab" });
     } else if (depth === 2 || place.kind === "instrument") {
       // What stands in a room, and what stands on a bench.
       const close = near(one) || (place.kind === "instrument" && focusedUnit === unitOf(one));
-      places.push({ ...base, tone: "yours", strength: close ? (place.kind === "bench" ? 0.6 : 1) : 0.25, fill: close ? 0.035 : 0,
-                    focusable: true, labelled: isFocus || childOfFocus || level === "lab" || level === "room" });
+      places.push({ ...base, tone: "yours", strength: close ? (place.kind === "bench" ? 0.6 : 1) : 0.25, fill: close ? 0.035 : 0, skin: "plain",
+                    opened: isFocus || focusedUnit === place.id, focusable: true, labelled: isFocus || childOfFocus || level === "lab" || level === "room" });
     } else if (place.grid !== undefined) {
       // A box. From across the room it is a small slab that says whether anything is in it.
       const inUnit = focusedUnit !== undefined && unitOf(one) === focusedUnit;
       const found = held.some((item) => matches.has(item.item));
       const tone: Meaning = found ? "found" : held.some((item) => item.needsRecount === true) ? "attention" : held.length > 0 ? "held" : "dim";
       places.push({ ...base, tone, strength: found || isFocus ? 1 : inUnit ? (near(one) ? 0.85 : 0.5) : 0.3,
-                    fill: held.length === 0 ? 0 : isFocus ? 0.05 : 0.14, focusable: inUnit,
+                    fill: held.length === 0 ? 0 : isFocus ? 0.05 : 0.14, skin: "plain", opened: isFocus, focusable: inUnit,
                     // A box being looked into is named in the way back. Written over it, the name would cover its tubes.
                     labelled: childOfFocus });
     } else if (focusedUnit !== undefined && unitOf(one) === focusedUnit) {
       // A shelf or a rack, drawn only once its freezer is being looked into.
-      places.push({ ...base, tone: "yours", strength: near(one) ? 0.55 : 0.25, fill: 0, focusable: true, labelled: isFocus || childOfFocus });
+      places.push({ ...base, tone: "yours", strength: near(one) ? 0.55 : 0.25, fill: 0, skin: null, opened: false, focusable: true, labelled: isFocus || childOfFocus });
     }
   }
 

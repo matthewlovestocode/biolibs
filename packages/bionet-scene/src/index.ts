@@ -16,6 +16,7 @@
  * - `in-use.tsx` — a machine in use: what is drawn around it, in its own frame, for either host
  * - `stage.tsx` — one instrument in use on a stage of its own, away from any lab
  * - `motion.ts` — whether the scene moves between views, or cuts
+ * - `skins.ts` — what a thing is made of: how solid it is drawn, which depends on how near you are to it
  * - `explorer.tsx` — the lab: the scene with the way back, a search, what was picked, and whatever
  *   in it is being worked, since the room and the machine in it are one scene and not two
  *
@@ -29,6 +30,7 @@ export * from "./arranging.js";
 export * from "./builder.js";
 export * from "./shapes.js";
 export * from "./motion.js";
+export * from "./skins.js";
 export * from "./instruments.js";
 export * from "./molecule.js";
 // The shapes a host hands in come from the space package; re-exported so that anything drawing a

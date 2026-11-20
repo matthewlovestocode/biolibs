@@ -23,6 +23,14 @@ export interface DrawnThing {
   colour: string | null;
   /** How solid it is drawn, from 0 to 1. */
   opacity: number;
+  /**
+   * Whether it hides what is behind it.
+   *
+   * A see-through thing can still be written into the depth buffer, and then it hides what is
+   * behind it while looking as though it does not — which is the one way a skin can go wrong that
+   * a colour and an opacity do not show.
+   */
+  hides: boolean;
   /** Where its middle is, in the room's own metres. */
   at: [number, number, number];
   /** How wide, tall and deep it is, in metres. */
@@ -71,7 +79,7 @@ export function reportScene(scene: Object3D, only?: string): DrawnThing[] {
   const things: DrawnThing[] = [];
   scene.traverse((one) => {
     if (!drawn(one)) return;
-    const material = (one as unknown as { material?: { color?: { getHexString: () => string }; opacity?: number; transparent?: boolean } }).material;
+    const material = (one as unknown as { material?: { color?: { getHexString: () => string }; opacity?: number; transparent?: boolean; depthWrite?: boolean } }).material;
     const colour = material?.color === undefined ? null : `#${material.color.getHexString()}`;
     // An empty geometry gives an infinite box, which would say nothing; it is reported as nothing wide.
     box.setFromObject(one, true);
@@ -83,6 +91,7 @@ export function reportScene(scene: Object3D, only?: string): DrawnThing[] {
       geometry: (one as unknown as { geometry?: { type?: string } }).geometry?.type ?? null,
       colour,
       opacity: material?.transparent === true ? (material.opacity ?? 1) : 1,
+      hides: material?.depthWrite !== false,
       at: empty ? [0, 0, 0] : [round(middle.x), round(middle.y), round(middle.z)],
       size: empty ? [0, 0, 0] : [round(across.x), round(across.y), round(across.z)],
       shown: shownNow(one),
@@ -113,7 +122,7 @@ export function describeScene(things: readonly DrawnThing[]): string[] {
   const mm = (size: readonly [number, number, number]): string => size.map((one) => Math.round(one * 1000)).join("×");
   return things.map((one) =>
     `${one.name}${one.copies > 1 ? ` ×${one.copies}` : ""}  ${one.colour ?? "—"}`
-    + `${one.opacity < 1 ? ` @${one.opacity.toFixed(2)}` : ""}${one.shown ? "" : "  (hidden)"}`
+    + `${one.opacity < 1 ? ` @${one.opacity.toFixed(2)}${one.hides ? " solid" : ""}` : ""}${one.shown ? "" : "  (hidden)"}`
     + `  at ${one.at.join(",")}  ${mm(one.size)} mm`);
 }
 

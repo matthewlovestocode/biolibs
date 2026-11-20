@@ -77,6 +77,10 @@
 .bionet-scene .motion { position: absolute; left: .9rem; bottom: 2.1rem; font: inherit; font-size: 11px; color: var(--bionet-dim); padding: .2rem .55rem;
   border: 1px solid var(--bionet-rule); border-radius: 999px; background: color-mix(in srgb, var(--bionet-surface) 82%, transparent); cursor: pointer }
 .bionet-scene .motion:hover { color: var(--bionet-ink); border-color: var(--bionet-yours) }
+.bionet-scene .motion[aria-pressed="true"] { color: var(--bionet-ink) }
+/* Where the window's own settings sit, as a row: they are about the drawing and not about the lab. */
+.bionet-scene .settings { position: absolute; left: .9rem; bottom: 2.1rem; z-index: 5; display: flex; gap: .4rem }
+.bionet-scene .settings .motion { position: static; left: auto; bottom: auto }
 /* An instrument in use. The scene keeps the left, and what the host shows beside it keeps the right. */
 .bionet-scene.stage-of { min-height: 34rem }
 .bionet-scene.stage-of .stage { right: min(26rem, 46%) }

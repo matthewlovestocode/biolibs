@@ -200,3 +200,25 @@ describe("what is written over the scene", () => {
     expect(legible([])).toEqual([]);
   });
 });
+
+describe("what the skins are told about each place", () => {
+  it("gives a thing standing in a lab something to be made of, and a frame nothing", () => {
+    const view = sceneView(lab, { place: null }, { labName: "The Wren Lab" });
+    expect(drawn(view, "minus80")!.skin).toBe("plain");
+    // A room is the frame you are inside, so filling it would put a skin between you and everything.
+    expect(drawn(view, "main")!.skin).toBe(null);
+  });
+
+  it("marks the freezer being looked into as opened, and the rest of the room as not", () => {
+    const view = sceneView(lab, { place: "minus80" });
+    expect(drawn(view, "minus80")!.opened).toBe(true);
+    for (const place of view.places) {
+      if (place.id !== "minus80" && place.skin !== null) expect(place.opened).toBe(false);
+    }
+  });
+
+  it("opens nothing when the whole room is being looked at", () => {
+    const view = sceneView(lab, { place: null });
+    expect(view.places.every((place) => !place.opened)).toBe(true);
+  });
+});
