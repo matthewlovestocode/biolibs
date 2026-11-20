@@ -33,8 +33,11 @@ const LYING: Readonly<Record<"x" | "y" | "z", [number, number, number]>> = { x: 
  * set into its face — and a panel written exactly on the face it is set into is the natural way to
  * write it. Without this, those two surfaces are a coin toss the renderer makes again each frame.
  */
-function PartBox({ part, tone, strength, theme, fill, name, within, order }: { part: Part; tone: Meaning; strength: number; theme: Theme; fill: number; name: string; within: readonly [number, number, number]; order: number }) {
-  const edge = paint(tone, theme, strength);
+function PartBox({ part, tone, strength, theme, fill, name, within, order, picked }: { part: Part; tone: Meaning; strength: number; theme: Theme; fill: number; name: string; within: readonly [number, number, number]; order: number; picked: boolean }) {
+  // A quiet piece is quiet until the thing it belongs to is the one being looked at, and then it is
+  // as loud as the rest: somebody looking at a bench may well be looking at how it stands.
+  const loud = picked ? 1 : part.loud ?? 1;
+  const edge = paint(tone, theme, strength * loud);
   const round = part.round === true;
   // A cylinder is modelled standing up, so lying one along x or z is a quarter turn. Its scale is
   // worked out rather than taken from its size, because the instrument it is in is scaled unevenly
@@ -50,7 +53,7 @@ function PartBox({ part, tone, strength, theme, fill, name, within, order }: { p
       {fill > 0 && (
         // Tagged as skinned, with the fill it has when skins are off, so that the skins setting can
         // drive it from how near the camera is and put this exact fill back when it is turned off.
-        <mesh name={name} geometry={round ? ROUND : BOX} userData={{ skinned: true, fill }}>
+        <mesh name={name} geometry={round ? ROUND : BOX} userData={{ skinned: true, fill, loud }}>
           <meshBasicMaterial color={colour(tone, theme)} transparent opacity={theme === "dark" ? fill : fill * 1.6} depthWrite={false} toneMapped={false}
                              polygonOffset polygonOffsetFactor={-order} polygonOffsetUnits={-order} />
         </mesh>
@@ -67,8 +70,10 @@ function PartBox({ part, tone, strength, theme, fill, name, within, order }: { p
  *   one position of its block as taken; `lit` lights its screen; `motion` says whether the lid
  *   swings or jumps.
  */
-export function InstrumentShape({ shape, size, theme, tone = "yours", strength = 1, open = 0, well, lit = false, motion = "on", name = "instrument" }: {
+export function InstrumentShape({ shape, size, theme, tone = "yours", strength = 1, open = 0, well, lit = false, motion = "on", name = "instrument", picked = false }: {
   shape: Shape; size: readonly [number, number, number]; theme: Theme; tone?: Meaning; strength?: number; open?: number;
+  /** Whether this is the thing being looked at, which brings its quiet pieces up to full. */
+  picked?: boolean;
   well?: { row: number; column: number } | undefined; lit?: boolean; motion?: Motion;
   /** What the lab calls it, so that each part of it says whose it is in a scene report. */
   name?: string;
@@ -113,7 +118,7 @@ export function InstrumentShape({ shape, size, theme, tone = "yours", strength =
   const glass = paint(lit ? "found" : "dim", theme, lit ? 0.95 : 0.3);
   return (
     <group scale={[size[0], size[1], size[2]]}>
-      {shape.body.map((part, at) => <PartBox key={at} order={at} name={`${name} body ${at + 1}`} part={part} tone={tone} strength={strength} theme={theme} fill={0.04} within={size} />)}
+      {shape.body.map((part, at) => <PartBox key={at} order={at} picked={picked} name={`${name} body ${at + 1}`} part={part} tone={tone} strength={strength} theme={theme} fill={0.04} within={size} />)}
       {block !== undefined && (
         <>
           <instancedMesh name={`${name} wells`} ref={wells} key={count} args={[WELL, undefined, count]}>
@@ -131,7 +136,7 @@ export function InstrumentShape({ shape, size, theme, tone = "yours", strength =
         <group position={shape.lid.hinge}>
           <group ref={lid}>
             {shape.lid.parts.map((part, at) => (
-              <PartBox key={at} order={shape.body.length + at} name={`${name} lid ${at + 1}`} tone={tone} strength={strength} theme={theme} fill={0.03} within={size}
+              <PartBox key={at} order={shape.body.length + at} picked={picked} name={`${name} lid ${at + 1}`} tone={tone} strength={strength} theme={theme} fill={0.03} within={size}
                        part={{ ...part, at: [part.at[0] - shape.lid!.hinge[0], part.at[1] - shape.lid!.hinge[1], part.at[2] - shape.lid!.hinge[2]] }} />
             ))}
           </group>

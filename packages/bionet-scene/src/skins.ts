@@ -1,5 +1,7 @@
 "use client";
 
+import type { Meaning } from "@biolibs/bionet-theme";
+
 /**
  * What a thing in the scene is made of, as far as drawing it goes.
  *
@@ -43,8 +45,16 @@ export const SKIN_SAYS: Readonly<Record<Skins, string>> = {
 export interface Skin {
   /** How solid it is seen from across the room, from 0 to 1. */
   far: number;
-  /** How solid it is when you are at it. */
+  /** How solid it is when you are at it. The same as `far` for a thing with no inside worth seeing. */
   near: number;
+  /**
+   * The colour it is made of, where that is not the colour of whose it is.
+   *
+   * A lab is drawn in the colours of meaning and most things keep theirs. A bench does not: it is
+   * what the work stands on rather than a thing the work is about, and drawn in the lab's own
+   * colour it competes with the machines standing on it.
+   */
+  tone?: Meaning;
 }
 
 /**
@@ -56,7 +66,37 @@ export interface Skin {
  */
 export const SKINS: Readonly<Record<string, Skin>> = {
   plain: { far: 0.92, near: 0.05 },
+  // A bench has no inside worth seeing. Thinning it as somebody walks up only puts its own shelves,
+  // legs and drawers in front of the machine they came to use, so it stays as solid up close as it
+  // is across the room — and in its own colour, so that what is standing on it is what is read.
+  bench: { far: 0.92, near: 0.92, tone: "dim" },
 };
+
+/** The tones that say something about the lab rather than about what a thing is made of. */
+const MEANS: ReadonlySet<Meaning> = new Set<Meaning>(["found", "attention", "held", "theirs", "good"]);
+
+/**
+ * Which colour a thing is drawn in: what it is made of, or what it means.
+ *
+ * Meaning wins. A bench is drawn as a bench until one of the boxes on it is a search match or wants
+ * counting again, and then it is drawn as that, because a colour saying something about the lab is
+ * never worth giving up for one saying what a thing is made of.
+ *
+ * @param skin - What it is made of, if it has a say in its colour.
+ * @param tone - The colour the scene gave it.
+ * @returns The colour to draw it in.
+ *
+ * @example
+ * ```ts
+ * import { SKINS, skinTone } from "@biolibs/bionet-scene";
+ *
+ * skinTone(SKINS["bench"]!, "yours");      // "dim": nothing to say, so it is drawn as furniture
+ * skinTone(SKINS["bench"]!, "attention");  // "attention": something on it wants a person
+ * ```
+ */
+export function skinTone(skin: Skin | null, tone: Meaning): Meaning {
+  return skin?.tone !== undefined && !MEANS.has(tone) ? skin.tone : tone;
+}
 
 /** How far off a thing has to be, in its own widths, before it is drawn solid. */
 export const FAR = 4;
@@ -181,9 +221,52 @@ export function useSkins(pinned?: Skins): [Skins, () => void] {
  * @param setting - What the scene is set to.
  * @param how - How near the camera is, from 0 across the room to 1 at it.
  * @param was - The fill the piece is drawn with when skins are off.
+ * @param loud - How loudly the piece is drawn against the rest of the thing, 1 being as loud as it.
+ *   It does not touch the setting being off, which is the drawing as it always was.
  * @returns How solid to draw it.
  */
-export function fillAt(skin: Skin | null, setting: Skins, how: number, was: number): Drawn {
+export function fillAt(skin: Skin | null, setting: Skins, how: number, was: number, loud = 1): Drawn {
   if (skin === null || setting === "off") return { fill: was, hides: false, darkened: 0 };
-  return skinAt(skin, how, setting, was);
+  const drawn = skinAt(skin, how, setting, was);
+  if (loud >= 1) return drawn;
+  // A quiet piece is quiet in what it is made of as well as in its edges. Filling a bench leg as
+  // solidly as its worktop makes four thin blocks under a slab, and with the edges already
+  // quietened they read as boxes rather than as legs. A piece that recedes has to recede in both.
+  const fill = drawn.fill * loud;
+  return { fill, hides: fill >= HIDES_ABOVE, darkened: drawn.darkened * loud };
+}
+
+/**
+ * The brightness at which the dark theme's bloom pass starts to make a thing glow.
+ *
+ * It is the one number that decides whether an edge is a line or a light, so the scene's bloom pass
+ * and anything reasoning about whether something glows read it from here.
+ */
+export const BLOOM_ABOVE = 0.55;
+
+/**
+ * Whether a colour is bright enough to glow.
+ *
+ * Quietening a piece is not a matter of taste about a colour: below this it is drawn as a line and
+ * above it the bloom pass spreads it into the pixels around it, which is what reads as glow and
+ * what makes four thin legs louder in a room than the bench they hold up.
+ *
+ * @param hex - The colour as `#rrggbb`.
+ * @returns Whether the bloom pass would pick it up.
+ *
+ * @example
+ * ```ts
+ * import { glows } from "@biolibs/bionet-scene";
+ *
+ * glows("#2effff");   // true: a lit edge
+ * glows("#17a1b6");   // false: a line
+ * ```
+ */
+export function glows(hex: string): boolean {
+  const value = hex.replace("#", "");
+  if (!/^[0-9a-fA-F]{6}$/.test(value)) return false;
+  const [red, green, blue] = [0, 2, 4].map((at) => Number.parseInt(value.slice(at, at + 2), 16) / 255) as [number, number, number];
+  // The weights the bloom pass itself uses: a colour's brightness as an eye reads it, which is
+  // mostly its green.
+  return 0.2126 * red + 0.7152 * green + 0.0722 * blue > BLOOM_ABOVE;
 }

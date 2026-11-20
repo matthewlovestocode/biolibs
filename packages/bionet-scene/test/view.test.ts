@@ -21,9 +21,27 @@ describe("from across the room", () => {
     expect(view.tubes).toEqual([]);
     expect(view.empty).toEqual([]);
     expect(drawn(view, "main")).toMatchObject({ tone: "dim", focusable: true, labelled: true });
-    expect(drawn(view, "minus80")).toMatchObject({ tone: "yours", strength: 1, focusable: true, labelled: true });
+    expect(drawn(view, "minus80")).toMatchObject({ tone: "yours", focusable: true, labelled: true });
     expect(drawn(view, "thermocycler")).toMatchObject({ tone: "yours", labelled: true });
     expect(view.places.filter((one) => one.kind === "box")).toHaveLength(72);
+  });
+
+  it("draws a room where nothing is picked out, since nothing has been picked", () => {
+    // The mistake this catches, which was shipped: counting "nothing is focused" as "everything is
+    // near", so the whole lab was drawn at the strength one thing gets once you have walked up to
+    // it. Everything lit equally at full is a room where nothing stands out, and picking something
+    // then has nowhere to go.
+    const things = view.places.filter((one) => one.skin !== null);
+    expect(things.length).toBeGreaterThan(0);
+    for (const one of things) expect(one.strength).toBeLessThan(1);
+    const looked = sceneView(lab, { place: "minus80" });
+    expect(drawn(looked, "minus80")!.strength).toBeGreaterThan(drawn(view, "minus80")!.strength);
+  });
+
+  it("pushes the rest of the room down when one thing is looked at", () => {
+    const looked = sceneView(lab, { place: "minus80" });
+    const other = looked.places.find((one) => one.kind === "bench")!;
+    expect(other.strength).toBeLessThan(drawn(view, other.id)!.strength);
   });
 
   it("leaves shelves and racks out, and boxes unpressable, until a freezer is looked into", () => {

@@ -57,6 +57,14 @@ export interface DrawnPlace {
    * opened to show.
    */
   opened: boolean;
+  /**
+   * Whether this is the thing being looked at itself, which brings its quiet pieces up to full.
+   *
+   * It is not the same question as `opened`. Standing at a thermocycler, the bench under it is
+   * opened — its skin is between you and the machine — but it is not what you are looking at, and
+   * bringing its legs back up to full would put the glow back exactly where it was least wanted.
+   */
+  picked: boolean;
   /** Whether pressing it should look at it. */
   focusable: boolean;
   /** Whether to write its name beside it. */
@@ -216,7 +224,16 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
 
   /** Whether a place is what is looked at, something it is inside, or something inside it. */
   const near = (one: Arranged): boolean =>
-    focused === null || focused.path.includes(one.place.id) || one.path.includes(focused.place.id);
+    focused !== null && (focused.path.includes(one.place.id) || one.path.includes(focused.place.id));
+  /**
+   * Nothing is being looked at: the room at rest.
+   *
+   * This used to count as everything being near, which drew the whole lab at the strength one
+   * thing gets when you have walked up to it — a room where everything is picked out, which is a
+   * room where nothing is. At rest it is drawn evenly and below that, so that picking something
+   * still has somewhere to go.
+   */
+  const resting = focused === null;
   /** The thing standing in a room that a place belongs to: its freezer, its bench. */
   const unitOf = (one: Arranged): string | undefined => one.path[1];
   const focusedUnit = focused === null ? undefined : unitOf(focused);
@@ -234,28 +251,30 @@ export function sceneView(layout: Layout, focus: Focus, options: ViewOptions = {
     if (focused !== null && focused.place.grid !== undefined && !isFocus) {
       // A box is looked into as if it had been taken out: what it was standing in is left as a faint
       // outline to say where it came from, and nothing else is drawn, since all of it would be in the way.
-      if (focused.path.includes(place.id)) places.push({ ...base, tone: depth === 1 ? "dim" : "yours", strength: 0.1, fill: 0, skin: null, opened: false, focusable: false, labelled: false });
+      if (focused.path.includes(place.id)) places.push({ ...base, tone: depth === 1 ? "dim" : "yours", strength: 0.1, fill: 0, skin: null, opened: false, picked: false, focusable: false, labelled: false });
     } else if (depth === 1) {
       // A room is the frame everything else stands in, and is drawn quietly.
       places.push({ ...base, tone: "dim", strength: level === "lab" || level === "room" ? 0.55 : 0.28, fill: 0, skin: null,
-                    opened: false, focusable: level === "lab", labelled: level === "lab" });
+                    opened: false, picked: false, focusable: level === "lab", labelled: level === "lab" });
     } else if (depth === 2 || place.kind === "instrument") {
       // What stands in a room, and what stands on a bench.
       const close = near(one) || (place.kind === "instrument" && focusedUnit === unitOf(one));
-      places.push({ ...base, tone: "yours", strength: close ? (place.kind === "bench" ? 0.6 : 1) : 0.25, fill: close ? 0.035 : 0, skin: "plain",
-                    opened: isFocus || focusedUnit === place.id, focusable: true, labelled: isFocus || childOfFocus || level === "lab" || level === "room" });
+      const loudness = resting ? (place.kind === "bench" ? 0.35 : 0.5) : close ? (place.kind === "bench" ? 0.6 : 1) : 0.25;
+      places.push({ ...base, tone: "yours", strength: loudness, fill: resting || close ? 0.035 : 0,
+                    skin: place.kind === "bench" ? "bench" : "plain",
+                    opened: isFocus || focusedUnit === place.id, picked: isFocus, focusable: true, labelled: isFocus || childOfFocus || level === "lab" || level === "room" });
     } else if (place.grid !== undefined) {
       // A box. From across the room it is a small slab that says whether anything is in it.
       const inUnit = focusedUnit !== undefined && unitOf(one) === focusedUnit;
       const found = held.some((item) => matches.has(item.item));
       const tone: Meaning = found ? "found" : held.some((item) => item.needsRecount === true) ? "attention" : held.length > 0 ? "held" : "dim";
       places.push({ ...base, tone, strength: found || isFocus ? 1 : inUnit ? (near(one) ? 0.85 : 0.5) : 0.3,
-                    fill: held.length === 0 ? 0 : isFocus ? 0.05 : 0.14, skin: "plain", opened: isFocus, focusable: inUnit,
+                    fill: held.length === 0 ? 0 : isFocus ? 0.05 : 0.14, skin: "plain", opened: isFocus, picked: isFocus, focusable: inUnit,
                     // A box being looked into is named in the way back. Written over it, the name would cover its tubes.
                     labelled: childOfFocus });
     } else if (focusedUnit !== undefined && unitOf(one) === focusedUnit) {
       // A shelf or a rack, drawn only once its freezer is being looked into.
-      places.push({ ...base, tone: "yours", strength: near(one) ? 0.55 : 0.25, fill: 0, skin: null, opened: false, focusable: true, labelled: isFocus || childOfFocus });
+      places.push({ ...base, tone: "yours", strength: near(one) ? 0.55 : 0.25, fill: 0, skin: null, opened: false, picked: false, focusable: true, labelled: isFocus || childOfFocus });
     }
   }
 

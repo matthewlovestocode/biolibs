@@ -22,7 +22,7 @@ import { InUseContent, atInstrument, type PlacedInUse } from "./in-use.js";
 import { describeScene, pointOnScreen, reportScene } from "./inspect.js";
 import { InstrumentShape } from "./instruments.js";
 import type { Motion } from "./motion.js";
-import { SKINS, fillAt, nearness, staysClear, type Skins } from "./skins.js";
+import { BLOOM_ABOVE, SKINS, fillAt, nearness, skinTone, staysClear, type Skins } from "./skins.js";
 import { shapeFor } from "./shapes.js";
 import { legible, type DrawnPlace, type DrawnSlot, type DrawnTube, type Focus, type SceneView, type Written } from "./view.js";
 
@@ -193,7 +193,7 @@ export interface Skinning {
 
 export function useSkinned(group: RefObject<Object3D | null>, how: Skinning): void {
   const skin = how.skin === null ? null : SKINS[how.skin] ?? SKINS["plain"]!;
-  TONED.set(colour(how.tone, how.theme));
+  TONED.set(colour(skinTone(skin, how.tone), how.theme));
   GROUND.set(colour("ground", how.theme));
   const toned = TONED.clone();
   const ground = GROUND.clone();
@@ -210,7 +210,8 @@ export function useSkinned(group: RefObject<Object3D | null>, how: Skinning): vo
       const material = (one as unknown as { material?: { opacity: number; depthWrite: boolean; color: Color } }).material;
       if (material === undefined) return;
       const was = typeof one.userData["fill"] === "number" ? (one.userData["fill"] as number) : 0;
-      const drawn = fillAt(off ? null : skin, how.skins, how.clear ? 1 : near, was);
+      const loud = typeof one.userData["loud"] === "number" ? (one.userData["loud"] as number) : 1;
+      const drawn = fillAt(off ? null : skin, how.skins, how.clear ? 1 : near, was, loud);
       // The authored fills are fractions of a per cent and were written against the dark theme's
       // multiplier, so off keeps that multiplier and only a skin's own fill uses the flatter one.
       material.opacity = how.theme === "dark" ? drawn.fill : Math.min(1, drawn.fill * (off ? 1.6 : 1.15));
@@ -279,14 +280,14 @@ function PlaceBox({ place, theme, onPick, drag, inUse, skins = "off" }: { place:
         </lineSegments>
       ) : (
         <group rotation={[0, -(place.turn * Math.PI) / 180, 0]}>
-          <InstrumentShape shape={shape} size={own} theme={theme} tone={place.tone} strength={place.strength} name={place.name}
+          <InstrumentShape shape={shape} size={own} theme={theme} tone={place.tone} strength={place.strength} name={place.name} picked={place.picked}
                            {...(inUse === undefined ? {} : inUse)} />
         </group>
       )}
       {(place.focusable || place.fill > 0) && (
         <mesh scale={place.size} geometry={BOX}
               // A shaped place has its own parts to skin, so skinning this box too would wrap a
-              // machine in a solid cube. Here it is only the pick box, and stays clear.
+              // machine in a solid cube. Here it is only the box you press, and stays clear.
               userData={{ ...(place.focusable ? { volume } : {}), ...(shape === null && place.skin !== null ? { skinned: true, fill: place.fill } : {}) }}
               onPointerDown={!draggable ? undefined : (event) => {
                 const at = under(event);
@@ -313,7 +314,12 @@ function PlaceBox({ place, theme, onPick, drag, inUse, skins = "off" }: { place:
               onClick={place.focusable ? (event) => { if (meantFor(event, volume)) onPick(place.id); } : undefined}
               onPointerOver={place.focusable ? (event) => { event.stopPropagation(); document.body.style.cursor = "pointer"; } : undefined}
               onPointerOut={place.focusable ? () => { document.body.style.cursor = ""; } : undefined}>
-          <meshBasicMaterial color={face} transparent opacity={theme === "dark" ? place.fill : place.fill * 1.6} depthWrite={false} toneMapped={false} />
+          {/* A thing that is drawn from a shape is already drawn: this box is only what you press,
+              so it is not tinted. Tinting it put a faint cube round every bench and every machine —
+              the thing itself drawn once properly and once again as a crate around it. A box of
+              tubes has no shape of its own, so there the tint is the box, and how full it is. */}
+          <meshBasicMaterial color={face} transparent depthWrite={false} toneMapped={false}
+                             opacity={shape !== null ? 0 : theme === "dark" ? place.fill : place.fill * 1.6} />
         </mesh>
       )}
     </group>
@@ -571,7 +577,7 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
       <Inspectable />
       {theme === "dark" && (
         <EffectComposer>
-          <Bloom mipmapBlur intensity={0.85} luminanceThreshold={0.55} luminanceSmoothing={0.3} />
+          <Bloom mipmapBlur intensity={0.85} luminanceThreshold={BLOOM_ABOVE} luminanceSmoothing={0.3} />
         </EffectComposer>
       )}
     </Canvas>

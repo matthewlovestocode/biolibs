@@ -160,7 +160,7 @@ function OnItsOwnStage(props: StageProps) {
               // On a stage there is one machine and the camera is already at it, so it goes clear as
               // soon as somebody leans in and is solid when they stand back to see the whole of it.
               <Skinned size={Math.max(...size)} skin="plain" skins={skins} tone="yours" theme={shown} clear={false}>
-                <InstrumentShape shape={shape} size={size} theme={shown} open={placed.open} well={placed.well} lit={placed.lit} motion={motion} name={props.name} />
+                <InstrumentShape shape={shape} size={size} theme={shown} open={placed.open} well={placed.well} lit={placed.lit} motion={motion} name={props.name} picked />
               </Skinned>
             )}
           </group>
