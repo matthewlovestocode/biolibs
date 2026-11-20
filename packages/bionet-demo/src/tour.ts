@@ -11,7 +11,7 @@
  */
 import type { PartFeature } from "@biolibs/bionet";
 import type { LabView } from "@biolibs/bionet-client";
-import { cutSites, cutsOf, digestPieces, planLigation, planPcr } from "@biolibs/bionet-tools";
+import { cutSites, cutsOf, digestPieces, planLigation, planPcr, type Sample } from "@biolibs/bionet-tools";
 import type { DemoLab } from "./lab.js";
 import { PRIMERS } from "./molecules.js";
 
@@ -27,7 +27,8 @@ export type TourStop =
   | { at: "pcr"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; template?: string; forward?: string; reverse?: string; step?: "denature" | "anneal" | "extend"; cycle?: number } }
   | { at: "digest"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tube?: string; enzymes?: readonly string[]; keep?: readonly number[]; ran?: number } }
   | { at: "ligation"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tubes?: readonly string[]; joined?: number } }
-  | { at: "induction"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; culture?: string; gene?: string; cds?: string; ran?: number } };
+  | { at: "induction"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; culture?: string; gene?: string; cds?: string; ran?: number } }
+  | { at: "spectro"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tube?: string; sample?: Sample; shown?: number; dilution?: number } };
 
 /** One stop on the walk. */
 export interface TourStep {

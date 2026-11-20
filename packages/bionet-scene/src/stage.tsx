@@ -29,7 +29,7 @@ import { useMotion, type Motion } from "./motion.js";
 import { InUseContent, useInUse, type InUseHere } from "./in-use.js";
 export type { StageLine } from "./in-use.js";
 import { Follow, Rig, paint, useSystemTheme } from "./scene.js";
-import type { StageGel, StageJoining, StageLens, StageMeasure, StageMolecule, StageTube, StageView } from "./shapes.js";
+import type { StageBeam, StageGel, StageJoining, StageLens, StageMeasure, StageMolecule, StageScale, StageTube, StageView } from "./shapes.js";
 import type { StageLine } from "./in-use.js";
 
 /** What a host hands over to have one instrument's use drawn, wherever it is drawn. */
@@ -46,6 +46,8 @@ interface StageProps {
   molecule?: StageMolecule;
   gel?: StageGel;
   joining?: StageJoining;
+  beam?: StageBeam;
+  scale?: StageScale;
   measures?: readonly StageMeasure[];
   theme?: Theme;
   motion?: Motion;
@@ -64,6 +66,8 @@ const handedOver = (props: StageProps): InUseHere => ({
   ...(props.molecule === undefined ? {} : { molecule: props.molecule }),
   ...(props.gel === undefined ? {} : { gel: props.gel }),
   ...(props.joining === undefined ? {} : { joining: props.joining }),
+  ...(props.beam === undefined ? {} : { beam: props.beam }),
+  ...(props.scale === undefined ? {} : { scale: props.scale }),
   measures: props.measures ?? [],
   ...(props.seconds === undefined ? {} : { seconds: props.seconds }),
   ...(props.onPlayed === undefined ? {} : { onPlayed: props.onPlayed }),

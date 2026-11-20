@@ -187,6 +187,8 @@ const SHAPES: Readonly<Record<string, Shape>> = {
                    { at: [-0.22, 0.3, 0.1], size: [0.2, 0.04, 0.04], round: true, along: "x" }],
            hinge: [-0.22, 0.1, -0.38], opens: 80 },
     screen: { at: [0, 0.22, 0.36], size: [0.5, 0.16], leans: 60 },
+    // One well, because one cuvette goes in at a time, and a reading is of that one.
+    block: { at: [-0.22, 0.09, -0.1], size: [0.16, 0.18], rows: 1, columns: 1 },
   },
   // A case with the voltage dial, the pulse button and the slide the cuvette goes into. It is the
   // machine a transformation is actually done at, which until now had no machine at all.
@@ -741,6 +743,7 @@ const VIEW_NAMES: Readonly<Record<string, Partial<Record<StageView, string>>>> =
   "gel-station": { machine: "The gel box", block: "The gel", screen: "The power supply", tube: "In the tube", result: "The gel, run" },
   "heat-block": { machine: "The heat block", block: "The wells", screen: "The temperature", tube: "In the tube", result: "What it makes" },
   "shaking-incubator": { machine: "The incubator", block: "The flasks", screen: "The display", tube: "In the cells", result: "The gel" },
+  spectrophotometer: { machine: "The machine", block: "The cuvette well", screen: "The reading", tube: "The light through it", result: "What it means" },
 };
 
 /**
@@ -820,6 +823,184 @@ export function placeGel(gel: StageGel, centre: readonly [number, number, number
 }
 
 /** Pieces being joined, to draw: what is in the tube while a ligation is going on. */
+/** Light going through a cuvette, for the one instrument whose whole job is how much came out. */
+export interface StageBeam {
+  /** The wavelength, in nanometres, which is what the light is drawn as. */
+  nm: number;
+  /** How much of it came out the other side, from 0 (none) to 1 (all of it). */
+  through: number;
+  /** What is in the cuvette. */
+  what: string;
+  /** Whether what is in there scatters the light out of the beam rather than absorbing it. */
+  scatters?: boolean;
+}
+
+/** That, worked out: where the cuvette is, where the light goes, and how much of it is left at each step. */
+export interface PlacedBeam {
+  /** The cuvette's outline, as a closed line. */
+  cuvette: Point[];
+  /** What is in it, as a line across it where the liquid stands. */
+  surface: Point[];
+  /** The beam, in pieces from the lamp to the detector, each with how much light is left in it. */
+  pieces: { points: [Point, Point]; strength: number }[];
+  /** Light thrown out sideways, for something that scatters rather than absorbs. */
+  scattered: [Point, Point][];
+  /** The detector, as a short upright line the beam ends on. */
+  detector: Point[];
+  /** What to write, and where. */
+  labels: { key: string; text: string; at: Point }[];
+}
+
+/**
+ * Where to draw a beam of light going through a cuvette.
+ *
+ * The light is drawn in pieces so that it can fade along its path: what leaves the lamp is all of
+ * it, what reaches the detector is `through` of it, and in between it falls the way it falls. That
+ * picture is the whole of what the instrument does, and the number on its screen is the last piece.
+ *
+ * @param beam - The light and what is in the way of it.
+ * @param centre - Where the middle of the cuvette goes.
+ * @param toward - A point the picture should face, usually the camera.
+ * @param size - How wide and tall to draw the whole thing, in metres.
+ * @returns The cuvette, the light in pieces, and what to write.
+ *
+ * @example
+ * ```ts
+ * import { placeBeam } from "@biolibs/bionet-scene";
+ *
+ * placeBeam({ nm: 600, through: 0.25, what: "the culture", scatters: true }, centre, camera, [0.4, 0.26]);
+ * ```
+ */
+export function placeBeam(beam: StageBeam, centre: readonly [number, number, number], toward: readonly [number, number, number],
+                          size: readonly [number, number]): PlacedBeam {
+  const unit = (v: Point): Point => { const n = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / n, v[1] / n, v[2] / n]; };
+  const cross = (a: Point, b: Point): Point => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const facing = unit([toward[0] - centre[0], toward[1] - centre[1], toward[2] - centre[2]]);
+  const right = unit(cross(Math.abs(facing[1]) > 0.98 ? [0, 0, -1] : [0, 1, 0], facing));
+  const up = cross(facing, right);
+  const at = (x: number, y: number): Point => [centre[0] + right[0] * x + up[0] * y, centre[1] + right[1] * x + up[1] * y, centre[2] + right[2] * x + up[2] * y];
+  const [w, h] = size;
+  const [left, far] = [-w * 0.18, w * 0.18];
+  const [lamp, detector] = [-w * 0.46, w * 0.46];
+  const through = Math.min(1, Math.max(0, beam.through));
+  // How much light is left at a point along the path: all of it before the cuvette, falling across
+  // it the way light falls through a solution, and what is left of it after.
+  const leftAt = (x: number): number =>
+    x <= left ? 1 : x >= far ? through : through ** ((x - left) / (far - left));
+  const PIECES = 26;
+  const pieces = Array.from({ length: PIECES }, (_, index) => {
+    const from = lamp + ((detector - lamp) * index) / PIECES;
+    const to = lamp + ((detector - lamp) * (index + 1)) / PIECES;
+    return { points: [at(from, 0), at(to, 0)] as [Point, Point], strength: leftAt((from + to) / 2) };
+  });
+  // A sample that scatters throws light out of the beam rather than swallowing it, which is the
+  // difference between a culture and everything else read here, and the reason its number is not
+  // an absorbance. It is drawn as the light leaving sideways.
+  const scattered: [Point, Point][] = beam.scatters !== true ? [] : Array.from({ length: 8 }, (_, index) => {
+    const x = left + ((far - left) * (index + 0.5)) / 8;
+    const away = (index % 2 === 0 ? 1 : -1) * h * (0.22 + 0.12 * ((index * 7) % 3));
+    return [at(x, 0), at(x + (index % 3) * w * 0.02 - w * 0.02, away)] as [Point, Point];
+  });
+  return {
+    cuvette: [at(left, -h * 0.42), at(left, h * 0.42), at(far, h * 0.42), at(far, -h * 0.42), at(left, -h * 0.42)],
+    surface: [at(left, h * 0.24), at(far, h * 0.24)],
+    pieces, scattered,
+    detector: [at(detector, -h * 0.2), at(detector, h * 0.2)],
+    labels: [
+      { key: "lamp", text: `${beam.nm} nm`, at: at(lamp, h * 0.16) },
+      { key: "what", text: beam.what, at: at((left + far) / 2, -h * 0.52) },
+      { key: "through", text: `${Math.round(through * 100)}% through`, at: at(detector, h * 0.3) },
+    ],
+  };
+}
+
+/** A reading set on a scale, with the range it has to be in marked on it. */
+export interface StageScale {
+  /** What the scale is of, written at its middle. */
+  what: string;
+  /** The ends of it. */
+  from: number;
+  to: number;
+  /** Values to mark with a tick. */
+  ticks: readonly number[];
+  /** Bands on it that mean something: the range the instrument is linear over, the window to act in. */
+  bands: readonly { from: number; to: number; label: string; tone: Meaning }[];
+  /** Where the reading falls, and what to write there. */
+  at: number;
+  label: string;
+}
+
+/** That, worked out. */
+export interface PlacedScale {
+  /** The scale itself, as a line. */
+  line: Point[];
+  /** Each tick: the line to draw and where to write its value. */
+  ticks: { points: Point[]; at: Point; label: string }[];
+  /** Each band: the line along the scale, where to name it, and in what colour. */
+  bands: { points: Point[]; at: Point; label: string; tone: Meaning }[];
+  /** The pointer at the reading, and where its label goes. */
+  pointer: Point[];
+  /** Whether the reading is off the end of the scale, which is itself worth seeing. */
+  beyond: boolean;
+  /** What to write, and where. */
+  labels: { key: string; text: string; at: Point }[];
+}
+
+/**
+ * Where to draw a reading on a scale.
+ *
+ * One number on its own says nothing: 0.62 is a good place to induce E. coli and nowhere near
+ * enough for Pichia, and 1.6 is not a reading at all. A scale with the ranges marked on it is the
+ * number and what to make of it in the same picture, which is the whole job.
+ *
+ * @param scale - The scale, the bands on it and where the reading falls.
+ * @param centre - Where the middle of it goes.
+ * @param toward - A point it should face, usually the camera.
+ * @param size - How wide and tall to draw it, in metres.
+ * @returns The line, the ticks, the bands and the pointer.
+ *
+ * @example
+ * ```ts
+ * import { placeScale } from "@biolibs/bionet-scene";
+ *
+ * placeScale({ what: "600 nm", from: 0, to: 1, ticks: [0, 0.5, 1], at: 0.62, label: "0.62",
+ *              bands: [{ from: 0.4, to: 0.8, label: "induce", tone: "good" }] }, centre, camera, [0.5, 0.2]);
+ * ```
+ */
+export function placeScale(scale: StageScale, centre: readonly [number, number, number], toward: readonly [number, number, number],
+                           size: readonly [number, number]): PlacedScale {
+  const unit = (v: Point): Point => { const n = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / n, v[1] / n, v[2] / n]; };
+  const cross = (a: Point, b: Point): Point => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const facing = unit([toward[0] - centre[0], toward[1] - centre[1], toward[2] - centre[2]]);
+  const right = unit(cross(Math.abs(facing[1]) > 0.98 ? [0, 0, -1] : [0, 1, 0], facing));
+  const up = cross(facing, right);
+  const at = (x: number, y: number): Point => [centre[0] + right[0] * x + up[0] * y, centre[1] + right[1] * x + up[1] * y, centre[2] + right[2] * x + up[2] * y];
+  const [w, h] = size;
+  const span = scale.to - scale.from || 1;
+  // Where a value falls along the scale, kept on it so that a reading off the end is drawn at the
+  // end rather than outside the picture — and said to be off the end, which is the point of it.
+  const along = (value: number): number => (Math.min(scale.to, Math.max(scale.from, value)) - scale.from) / span * w - w / 2;
+  const short = (value: number): string => `${Math.round(value * 100) / 100}`;
+  return {
+    line: [at(-w / 2, 0), at(w / 2, 0)],
+    ticks: scale.ticks.map((value) => ({
+      points: [at(along(value), -h * 0.12), at(along(value), h * 0.12)],
+      at: at(along(value), -h * 0.3), label: short(value),
+    })),
+    bands: scale.bands.map((band) => ({
+      points: [at(along(band.from), h * 0.26), at(along(band.to), h * 0.26)],
+      at: at((along(band.from) + along(band.to)) / 2, h * 0.42), label: band.label, tone: band.tone,
+    })),
+    pointer: [at(along(scale.at), -h * 0.42), at(along(scale.at), h * 0.1)],
+    beyond: scale.at > scale.to || scale.at < scale.from,
+    labels: [
+      { key: "reading", text: scale.label, at: at(along(scale.at), -h * 0.56) },
+      { key: "what", text: scale.what, at: at(0, h * 0.68) },
+    ],
+  };
+}
+
+/** Pieces being joined, for the view into a tube where there are no strands to draw. */
 export interface StageJoining {
   /** The pieces, in the order they go round or along the product. */
   pieces: readonly { name: string; length: number; flipped: boolean; tone: Meaning }[];

@@ -5,7 +5,7 @@
  * primers, and what to ask the lab to record once somebody has chosen. It is plain data in and plain
  * data out, so the window that uses it decides nothing.
  */
-import type { ItemState, PartFeature, PartState, PlaceState } from "@biolibs/bionet";
+import type { ItemState, PartFeature, PartState, PlaceState, StrainState } from "@biolibs/bionet";
 import { amountOf, whereWords } from "@biolibs/bionet-panels";
 import { planDigest, type DigestPlan } from "./digest.js";
 import { cutSites, digestPieces, type DigestPiece } from "./digest-working.js";
@@ -13,6 +13,7 @@ import { endBases, planLigation, type LigationPiece, type LigationPlan, type Lig
 import { ANNEAL_AT_LEAST, looksLikePrimer, planPcr, type PcrPlan } from "./pcr.js";
 import { primerBinding, type PcrProgramme } from "./pcr-scene.js";
 import { carryFeatures } from "./sequence-file.js";
+import { SAMPLE_NM, trust, type Sample, type Trust } from "./spectro.js";
 
 /** As much of a lab as a tool reads. */
 export interface ToolLab {
@@ -386,10 +387,109 @@ export function ligationRun(lab: ToolLab, choice: LigationChoice): LigationRun {
 }
 
 /** The tools there are. */
-export type ToolName = "pcr" | "digest" | "ligation" | "induction";
+/** What somebody read, and off what. */
+export interface SpectroChoice {
+  /** The tube: a tube of a part, or a culture. */
+  tube: string;
+  /** What is in the cuvette, which decides the wavelength and what the number means. */
+  sample: Sample;
+  /** What the machine showed. */
+  shown: number;
+  /** How many times the sample was diluted first. */
+  dilution?: number;
+  /** The path through it, in centimetres. */
+  path?: number;
+  /** The other two wavelengths, for a nucleic acid whose purity was checked. */
+  a280?: number;
+  a230?: number;
+  /** How much of the tube was used up to read it. */
+  used?: number;
+  /** The instrument it was read on, if the lab has placed one. */
+  instrument?: string | null;
+  note?: string;
+}
+
+/** A reading, worked out. */
+export interface SpectroRun {
+  /** What is in the tube: a part, a strain's culture, or neither if the tube is not one the lab has. */
+  holds: { part: PartState } | { strain: StrainState } | null;
+  /** Whether the reading is inside the range the instrument is linear over. */
+  trust: Trust;
+  /** What to hand to the lab's `recordRun`, or `null` while there is nothing to record. */
+  record: Record<string, unknown> | null;
+}
+
+/**
+ * The tubes a reading could be taken of: everything the lab holds that is not empty.
+ *
+ * Unlike every other tool here, this one is pointed at anything. A spectrophotometer does not care
+ * what is in the cuvette; it shines light through it and says how much came out. What that number
+ * means depends on what was put in, which is why the sample is chosen separately.
+ *
+ * @param lab - The lab.
+ * @returns The tubes to offer, cultures first, since a culture is read far more often than a tube of DNA.
+ */
+export function spectroTubes(lab: ToolLab & { strains: readonly StrainState[] }): { item: string; what: string; culture: boolean; label: string }[] {
+  const found: { item: string; what: string; culture: boolean; label: string }[] = [];
+  for (const item of lab.items) {
+    if (item.retired || item.amount <= 0) continue;
+    const part = item.part === null ? undefined : lab.parts.find((one) => one.checksum === item.part);
+    const strain = item.part === null ? lab.strains.find((one) => one.strain === item.strain) : undefined;
+    const name = part?.name ?? strain?.name;
+    if (name === undefined) continue;
+    found.push({ item: item.item, what: name, culture: strain !== undefined,
+                 label: `${name} · ${amountOf(item)} · ${whereWords(item, lab.places)}` });
+  }
+  return found.sort((a, b) => Number(b.culture) - Number(a.culture));
+}
+
+/**
+ * Work a reading out into what it means and what to record.
+ *
+ * Nothing here is predicted. Every other tool on this bench works out what a machine would do from
+ * the sequences; this one is handed a number somebody read off a screen and says what it means,
+ * which is the honest shape of an instrument that measures rather than computes.
+ *
+ * @param lab - The lab.
+ * @param choice - The tube, what is in it, and what the machine showed.
+ * @returns What is in the tube, whether the number can be believed, and what to record.
+ */
+export function spectroRun(lab: ToolLab & { strains: readonly StrainState[] }, choice: SpectroChoice): SpectroRun {
+  const dilution = choice.dilution === undefined || !(choice.dilution > 0) ? 1 : choice.dilution;
+  const path = choice.path === undefined || !(choice.path > 0) ? 1 : choice.path;
+  const reading = { nm: SAMPLE_NM[choice.sample], shown: choice.shown, dilution, path };
+  const how = trust(reading);
+  const item = lab.items.find((one) => one.item === choice.tube);
+  const part = item === undefined || item.part === null ? undefined : lab.parts.find((one) => one.checksum === item.part);
+  const strain = item === undefined || item.part !== null ? undefined : lab.strains.find((one) => one.strain === item.strain);
+  const holds = part !== undefined ? { part } : strain !== undefined ? { strain } : null;
+  if (holds === null || !Number.isFinite(choice.shown)) return { holds, trust: how, record: null };
+  const used = choice.used === undefined || !Number.isSafeInteger(choice.used) || choice.used < 0 ? 1 : choice.used;
+  // Entries carry whole numbers, so every reading goes down as the text somebody would write.
+  const said = (value: number | undefined): string | undefined => (value === undefined || !Number.isFinite(value) ? undefined : `${value}`);
+  return {
+    holds, trust: how,
+    record: {
+      kind: "reading", instrument: choice.instrument ?? null,
+      inputs: [{ item: choice.tube, amount: used, role: "read" }],
+      outputs: [],
+      // A reading outside the linear range is recorded as what it was, and as not to be believed.
+      outcome: how.ok ? "worked" : "failed",
+      settings: {
+        sample: choice.sample, nm: `${reading.nm}`, shown: said(choice.shown)!, dilution: `${dilution}`, path: `${path}`,
+        ...(said(choice.a280) === undefined ? {} : { a280: said(choice.a280)! }),
+        ...(said(choice.a230) === undefined ? {} : { a230: said(choice.a230)! }),
+      },
+      note: choice.note ?? null,
+    },
+  };
+}
+
+/** A tool that is used at a machine. */
+export type ToolName = "pcr" | "digest" | "ligation" | "induction" | "spectro";
 
 /** The model of instrument each tool is used at. */
-export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station", ligation: "heat-block", induction: "shaking-incubator" };
+export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station", ligation: "heat-block", induction: "shaking-incubator", spectro: "spectrophotometer" };
 
 /**
  * Which tool an instrument opens.

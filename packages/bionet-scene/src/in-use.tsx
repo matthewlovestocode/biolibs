@@ -13,14 +13,14 @@
 import { Line } from "@react-three/drei";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { Meaning, Theme } from "@biolibs/bionet-theme";
-import { GelSlab, Joining, Molecule, gelLabels, joiningLabels, moleculeLabels } from "./molecule.js";
+import { Beam, GelSlab, Joining, Molecule, Scale, beamLabels, gelLabels, joiningLabels, moleculeLabels, scaleLabels } from "./molecule.js";
 import type { Motion } from "./motion.js";
 import { paint, type Label } from "./scene.js";
 import { INSTRUMENT_SIZE } from "@biolibs/bionet-space";
 import { MOLECULE_RADIUS, STAGE_VIEWS, STEP_SECONDS, lensFrame, lidOpen, measureLine, moleculeCentre, pairsOf, placeGel, placeJoining,
-         placeMolecule, placeStrands, polymerasesOf, shapeOf, stagePose, stageViewName, type PlacedGel, type PlacedJoining,
+         placeBeam, placeMolecule, placeScale, placeStrands, polymerasesOf, shapeOf, stagePose, stageViewName, type PlacedBeam, type PlacedGel, type PlacedJoining,
          type PlacedMolecule, type PlacedStrand, type Rung, type StageGel, type StageJoining, type StageLens,
-         type StageMeasure, type StageMolecule, type StageTube, type StageView, type StepSpeed } from "./shapes.js";
+         type PlacedScale, type StageBeam, type StageMeasure, type StageMolecule, type StageScale, type StageTube, type StageView, type StepSpeed } from "./shapes.js";
 
 /** What colour each kind of strand is drawn in. */
 const STRAND_TONE: Readonly<Record<StageTube["strands"][number]["kind"], Meaning>> = {
@@ -54,6 +54,10 @@ export interface InUse {
   gel?: StageGel;
   /** Pieces being joined. */
   joining?: StageJoining;
+  /** Light going through a cuvette, for an instrument whose whole job is how much came out. */
+  beam?: StageBeam;
+  /** A reading set on a scale, with the ranges that matter marked on it. */
+  scale?: StageScale;
   /** Lengths marked off under the strands. */
   measures?: readonly StageMeasure[];
 }
@@ -86,6 +90,10 @@ export interface PlacedInUse {
   gel: PlacedGel | null;
   /** Pieces closing, if any are. */
   joining: PlacedJoining | null;
+  /** Light going through a cuvette, if any is. */
+  beam: PlacedBeam | null;
+  /** A reading on a scale, if one is being shown. */
+  scale: PlacedScale | null;
   /** Lengths marked off, each with where to write it. */
   measures: { points: [number, number, number][]; at: [number, number, number]; label: string }[];
   /** What is written over it, at points in its own frame. */
@@ -96,6 +104,8 @@ export interface PlacedInUse {
   moving: boolean;
   /** Whether the machine's screen is saying anything, which is the only reason to light it. */
   lit: boolean;
+  /** The wavelength the beam is, in nanometres, for drawing it as the light it is. */
+  nm: number;
 }
 
 /**
@@ -106,20 +116,29 @@ export interface PlacedInUse {
  * @returns Where to look from and what to draw, all in the instrument's own frame.
  */
 export function placeInUse(what: InUse, through: number): PlacedInUse {
-  const { model, view, screen = [], tube, lens, molecule, gel, joining, measures = [] } = what;
+  const { model, view, screen = [], tube, lens, molecule, gel, joining, beam, scale, measures = [] } = what;
   const shape = shapeOf(model);
   const size: [number, number, number] = [...(INSTRUMENT_SIZE[model] ?? [0.4, 0.3, 0.4])] as [number, number, number];
   // A molecule is pictured, not seen: where the DNA is thought about, in the tube if nothing else is
   // drawn there, and as the result.
-  const made = molecule !== undefined && (view === "result" || (view === "tube" && tube === undefined));
+  // Light going through the cuvette is what is in the tube for the one instrument that reads one,
+  // and it takes that view from anything else that would have had it.
+  const shining = view === "tube" && beam !== undefined;
+  const made = molecule !== undefined && (view === "result" || (view === "tube" && tube === undefined && !shining));
   const ran = view === "result" && gel !== undefined;
-  const fitting = view === "tube" && joining !== undefined && tube === undefined;
-  const wide = made || ran || fitting;
+  const set = view === "result" && scale !== undefined;
+  const fitting = view === "tube" && joining !== undefined && tube === undefined && !shining;
+  const wide = made || ran || fitting || shining || set;
   const pose = stagePose(wide ? "result" : view, size, shape, wide);
   const centre = moleculeCentre(size);
   const placedMolecule = made ? placeMolecule(molecule, centre, pose.position, MOLECULE_RADIUS) : null;
   const placedGel = ran ? placeGel(gel, centre, pose.position, [MOLECULE_RADIUS * 2.3, MOLECULE_RADIUS * 2.1]) : null;
   const placedJoining = fitting ? placeJoining(joining, centre, pose.position, MOLECULE_RADIUS) : null;
+  const placedBeam = shining ? placeBeam(beam, centre, pose.position, [MOLECULE_RADIUS * 2.8, MOLECULE_RADIUS * 1.9]) : null;
+  // A scale and a molecule are both pictured, and both in the result view, so the scale is set below
+  // the molecule rather than through it: the number and the thing it is about, one above the other.
+  const under: [number, number, number] = [centre[0], centre[1] - (made ? MOLECULE_RADIUS * 1.7 : 0), centre[2]];
+  const placedScale = set ? placeScale(scale, under, pose.position, [MOLECULE_RADIUS * 3, MOLECULE_RADIUS * 1.2]) : null;
   const strands = tube === undefined || view !== "tube" ? [] : placeStrands(tube, size, through);
   const close = view === "tube" && tube !== undefined ? lens?.(through) ?? null : null;
   const marked = view === "tube" && tube !== undefined
@@ -152,16 +171,19 @@ export function placeInUse(what: InUse, through: number): PlacedInUse {
     ...(placedMolecule === null ? [] : moleculeLabels(placedMolecule)),
     ...(placedGel === null ? [] : gelLabels(placedGel)),
     ...(placedJoining === null ? [] : joiningLabels(placedJoining)),
+    ...(placedBeam === null ? [] : beamLabels(placedBeam)),
+    ...(placedScale === null ? [] : scaleLabels(placedScale)),
     ...marked.map((one, at): Label => ({ key: `measure ${at}`, at: one.at, rank: 1, content: <span className="measure">{one.label}</span> })),
   ];
   return {
     size, shape, pose, open: lidOpen(view), well: what.well, strands, pairs: pairsOf(strands), polymerases: polymerasesOf(strands),
     close, frame: close === null || tube === undefined ? null : lensFrame(close, tube.length, size),
-    molecule: placedMolecule, gel: placedGel, joining: placedJoining, measures: marked, labels,
+    molecule: placedMolecule, gel: placedGel, joining: placedJoining, beam: placedBeam, scale: placedScale, measures: marked, labels,
     kinds: [...new Set(strands.map((one) => one.kind))], moving: view === "tube" && tube !== undefined && tube.strands.some((one) => one.moves !== undefined),
     // A machine with nothing chosen yet is sitting there dark. Lighting it regardless would be the
     // scene saying something the machine is not.
     lit: screen.length > 0,
+    nm: beam?.nm ?? 0,
   };
 }
 
@@ -209,6 +231,8 @@ export function InUseContent({ placed, theme }: { placed: PlacedInUse; theme: Th
       {placed.molecule !== null && <Molecule placed={placed.molecule} theme={theme} />}
       {placed.gel !== null && <GelSlab placed={placed.gel} theme={theme} />}
       {placed.joining !== null && <Joining placed={placed.joining} theme={theme} />}
+      {placed.beam !== null && <Beam placed={placed.beam} nm={placed.nm} theme={theme} />}
+      {placed.scale !== null && <Scale placed={placed.scale} theme={theme} />}
       {placed.measures.map((one, at) => (
         <Line key={at} points={one.points} color={paint("ink", theme, 0.6).color} lineWidth={1.5} transparent opacity={0.8} toneMapped={false} />
       ))}

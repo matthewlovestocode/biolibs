@@ -17,6 +17,9 @@
  * - `pcr-working.ts` — the working behind what the PCR tool says: each figure with the steps that give it
  * - `protein.ts` — the protein a gene codes for, and what its sequence says about it
  * - `induce.ts` — growing a strain to express what was put into it, and the mass its band should run at
+ * - `spectro.ts` — what a spectrophotometer reads, and what a person infers from it, each resting on something named
+ * - `spectro-working.ts` — the working behind each of those figures, and why a reading can or cannot be believed
+ * - `spectro-bench.tsx` — a reading at the spectrophotometer: the light through the cuvette, and the number set on a scale
  * - `modify.ts` — which residues would be phosphorylated, and whether the host has the enzyme to do it
  * - `remedy.ts` — the ways round a host that will not, and the one of them that can be computed
  * - `induce-bench.tsx` — an induction at the shaking incubator, with the protein gel that answers it
@@ -61,6 +64,9 @@ export * from "./pcr-working.js";
 export * from "./digest-working.js";
 export * from "./protein.js";
 export * from "./induce.js";
+export * from "./spectro.js";
+export * from "./spectro-working.js";
+export * from "./spectro-bench.js";
 export * from "./modify.js";
 export * from "./remedy.js";
 export * from "./induce-bench.js";

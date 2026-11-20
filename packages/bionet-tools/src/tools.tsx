@@ -8,6 +8,7 @@ import { InductionTool } from "./induce-bench.js";
 import { PcrTool } from "./pcr-tool.js";
 import { TOOL_AT, instrumentFor, toolFor, type ToolName } from "./run.js";
 import { LigationTool } from "./ligate-bench.js";
+import { SpectroTool } from "./spectro-bench.js";
 import { AssemblyTool } from "./assembly-bench.js";
 import { FusionTool } from "./fusion-bench.js";
 import { CodonTool } from "./codon-bench.js";
@@ -21,6 +22,7 @@ export type DeskTool = "sequences" | "primers" | "codons" | "construct" | "assem
 /** What each machine a tool is used at is called, for saying so in a sentence. */
 const MACHINE_NAMES: Readonly<Record<string, string>> = {
   thermocycler: "thermocycler", "gel-station": "gel station", "heat-block": "heat block", "shaking-incubator": "shaking incubator",
+  spectrophotometer: "spectrophotometer",
 };
 
 /** A list written out the way it is said: A a, a b, and a c. A tool's name is left as it is written, so PCR stays PCR. */
@@ -30,13 +32,14 @@ const sentence = (parts: readonly string[]): string => {
 };
 
 /** What each tool is called. */
-export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation", induction: "Induction" };
+export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation", induction: "Induction", spectro: "Reading" };
 
 function Tool({ tool, instrument, onDone }: { tool: ToolName; instrument: { id: string; name: string } | null; onDone?: (() => void) | undefined }) {
   const more = onDone === undefined ? {} : { onDone };
   return tool === "pcr" ? <PcrTool instrument={instrument} {...more} />
     : tool === "ligation" ? <LigationTool instrument={instrument} {...more} />
     : tool === "induction" ? <InductionTool instrument={instrument} {...more} />
+    : tool === "spectro" ? <SpectroTool instrument={instrument} {...more} />
     : <DigestTool instrument={instrument} {...more} />;
 }
 

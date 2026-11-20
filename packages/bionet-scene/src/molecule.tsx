@@ -10,7 +10,7 @@
 import { Line } from "@react-three/drei";
 import type { Theme } from "@biolibs/bionet-theme";
 import { paint, type Label } from "./scene.js";
-import type { PlacedGel, PlacedJoining, PlacedMolecule } from "./shapes.js";
+import type { PlacedBeam, PlacedGel, PlacedJoining, PlacedMolecule, PlacedScale } from "./shapes.js";
 
 /**
  * The names to write over a molecule: each stretch marked on it, and what it is.
@@ -114,6 +114,92 @@ export function Joining({ placed, theme }: { placed: PlacedJoining; theme: Theme
         // The join itself is drawn only once the ends have met: until then there is a gap, which is the point.
         return join.closed < 1 ? null : <Line key={at} points={join.points} color={tone.color} lineWidth={4} toneMapped={false} />;
       })}
+    </group>
+  );
+}
+
+/**
+ * What to write over a beam: the wavelength at the lamp, what is in the cuvette, and how much of
+ * the light came out the other side, which is the whole of what the instrument measures.
+ *
+ * @param placed - The beam, worked out by `placeBeam`.
+ * @returns Labels for `Follow`.
+ */
+export function beamLabels(placed: PlacedBeam): Label[] {
+  return placed.labels.map((one): Label => ({
+    key: `beam ${one.key}`, at: one.at, rank: one.key === "through" ? 0 : 2,
+    content: <span className={`beam-said ${one.key}`}>{one.text}</span>,
+  }));
+}
+
+/**
+ * Light going through a cuvette. It goes inside a canvas.
+ *
+ * The beam is drawn in pieces, each at the strength the light still has there, so that what the
+ * instrument does is visible rather than asserted: light goes in, less comes out, and the number on
+ * the screen is how much less. Ultraviolet is drawn in the colour of something that is not there to
+ * be seen; the 600 nm a culture is read at is drawn as the light it is.
+ *
+ * @param props - `placed` is the beam, worked out by `placeBeam`; `nm` is its wavelength; `theme` is the theme.
+ */
+export function Beam({ placed, nm, theme }: { placed: PlacedBeam; nm: number; theme: Theme }) {
+  const glass = paint("ink", theme, 0.4);
+  // Under about 400 nm there is nothing for an eye to see, so it is drawn as the odd thing it is.
+  const light = nm < 400 ? "theirs" : nm < 580 ? "good" : "held";
+  return (
+    <group>
+      <Line points={placed.cuvette} color={glass.color} lineWidth={1.5} transparent opacity={glass.opacity} toneMapped={false} />
+      <Line points={placed.surface} color={glass.color} lineWidth={1} transparent opacity={glass.opacity * 0.8} toneMapped={false} />
+      <Line points={placed.detector} color={glass.color} lineWidth={3} transparent opacity={glass.opacity} toneMapped={false} />
+      {placed.pieces.map((piece, at) => {
+        const tone = paint(light, theme, 1);
+        return <Line key={at} points={piece.points} color={tone.color} lineWidth={3.2} transparent
+                     opacity={Math.max(0.04, piece.strength)} toneMapped={false} />;
+      })}
+      {placed.scattered.map((ray, at) => {
+        const tone = paint(light, theme, 0.7);
+        return <Line key={`out ${at}`} points={ray} color={tone.color} lineWidth={1.4} transparent opacity={0.35} toneMapped={false} />;
+      })}
+    </group>
+  );
+}
+
+/**
+ * What to write over a scale: the reading, what the scale is of, and what each band on it is.
+ *
+ * @param placed - The scale, worked out by `placeScale`.
+ * @returns Labels for `Follow`. The reading matters most; the ticks give way first.
+ */
+export function scaleLabels(placed: PlacedScale): Label[] {
+  return [
+    ...placed.labels.map((one): Label => ({
+      key: `scale ${one.key}`, at: one.at, rank: one.key === "reading" ? 0 : 2,
+      content: <span className={`scale-said ${one.key}${one.key === "reading" && placed.beyond ? " beyond" : ""}`}>{one.text}</span>,
+    })),
+    ...placed.bands.map((one, at): Label => ({ key: `scale band ${at}`, at: one.at, rank: 1, content: <span className={`scale-band tone-${one.tone}`}>{one.label}</span> })),
+    ...placed.ticks.map((one, at): Label => ({ key: `scale tick ${at}`, at: one.at, rank: 4, content: <span className="scale-tick">{one.label}</span> })),
+  ];
+}
+
+/**
+ * A reading on a scale, with the ranges that matter marked on it. It goes inside a canvas.
+ *
+ * @param props - `placed` is the scale, worked out by `placeScale`; `theme` is the theme.
+ */
+export function Scale({ placed, theme }: { placed: PlacedScale; theme: Theme }) {
+  const rule = paint("dim", theme, 0.7);
+  const mark = paint(placed.beyond ? "attention" : "ink", theme, 1);
+  return (
+    <group>
+      <Line points={placed.line} color={rule.color} lineWidth={1.5} transparent opacity={rule.opacity} toneMapped={false} />
+      {placed.ticks.map((tick, at) => (
+        <Line key={`tick ${at}`} points={tick.points} color={rule.color} lineWidth={1.2} transparent opacity={rule.opacity * 0.9} toneMapped={false} />
+      ))}
+      {placed.bands.map((band, at) => {
+        const tone = paint(band.tone, theme, 0.9);
+        return <Line key={`band ${at}`} points={band.points} color={tone.color} lineWidth={5} transparent opacity={0.85} toneMapped={false} />;
+      })}
+      <Line points={placed.pointer} color={mark.color} lineWidth={3} transparent opacity={mark.opacity} toneMapped={false} />
     </group>
   );
 }

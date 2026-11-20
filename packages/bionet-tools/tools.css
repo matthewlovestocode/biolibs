@@ -191,3 +191,8 @@
 .bionet .fusion ol.pieces > li { counter-increment: piece; display: flex; gap: .5rem; align-items: baseline; justify-content: space-between;
                                  border-left: 3px solid var(--bionet-rule); padding: .15rem .4rem }
 .bionet .fusion ol.pieces > li .what::before { content: counter(piece) ". "; color: var(--bionet-dim) }
+
+/* A reading outside the range the instrument is linear over. Everything worked out from it is a
+   figure from a number that is wrong, so it is shown as doubted rather than shown plainly. */
+.bionet .spectro .doubted { opacity: .62; border-left: 2px solid var(--bionet-attention); padding-left: .7rem }
+.bionet .spectro .doubted strong { color: var(--bionet-dim) }

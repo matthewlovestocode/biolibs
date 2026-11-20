@@ -138,3 +138,20 @@
 .bionet-scene .gel-lane { font-size: 11px; color: var(--bionet-dim); white-space: nowrap }
 .bionet-scene .gel-size { display: inline-block; font-size: 11px; font-family: ui-monospace, monospace; white-space: nowrap; color: var(--bionet-ink) }
 .bionet-scene .gel-size.left { transform: translateX(-60%); color: var(--bionet-dim) } .bionet-scene .gel-size.right { transform: translateX(60%) }
+
+/* A spectrophotometer: the light through the cuvette, and the reading set on a scale. */
+.bionet-scene .beam-said { font-size: 11px; font-family: ui-monospace, monospace; white-space: nowrap; color: var(--bionet-dim);
+  padding: 0 .3rem; border-radius: 3px; background: color-mix(in srgb, var(--bionet-ground) 78%, transparent) }
+.bionet-scene .beam-said.through { font-size: 13px; font-weight: 600; color: var(--bionet-ink) }
+.bionet-scene .beam-said.what { color: var(--bionet-ink) }
+.bionet-scene .scale-said { font-size: 11px; font-family: ui-monospace, monospace; white-space: nowrap; color: var(--bionet-dim);
+  padding: 0 .3rem; border-radius: 3px; background: color-mix(in srgb, var(--bionet-ground) 78%, transparent) }
+.bionet-scene .scale-said.reading { font-size: 14px; font-weight: 600; color: var(--bionet-ink) }
+.bionet-scene .scale-said.reading.beyond { color: var(--bionet-attention) }
+.bionet-scene .scale-said.what { font-family: inherit; color: var(--bionet-ink) }
+.bionet-scene .scale-band { font-size: 10px; white-space: nowrap; padding: 0 .25rem; border-radius: 3px;
+  background: color-mix(in srgb, var(--bionet-ground) 78%, transparent) }
+.bionet-scene .scale-band.tone-good { color: var(--bionet-good) } .bionet-scene .scale-band.tone-dim { color: var(--bionet-dim) }
+.bionet-scene .scale-band.tone-held { color: var(--bionet-held) } .bionet-scene .scale-band.tone-attention { color: var(--bionet-attention) }
+.bionet-scene .scale-band.tone-theirs { color: var(--bionet-theirs) } .bionet-scene .scale-band.tone-yours { color: var(--bionet-yours) }
+.bionet-scene .scale-tick { font-size: 10px; font-family: ui-monospace, monospace; color: var(--bionet-dim) }

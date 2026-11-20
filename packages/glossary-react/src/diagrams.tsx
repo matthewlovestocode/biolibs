@@ -1062,6 +1062,59 @@ export function StructureDiagram({ highlight = "all", ...options }: FigureOption
 
 // --- Lookup ---------------------------------------------------------------------------------------
 
+
+/**
+ * Light through a cuvette: what a spectrophotometer does, and what a culture does to it instead.
+ *
+ * @param props - `scatters` draws a sample that throws the light out of the beam rather than taking
+ *   it up, which is what a culture does and why its reading is not an absorbance.
+ */
+export function BeamDiagram({ scatters = false, ...options }: FigureOptions & { scatters?: boolean }) {
+  const [lamp, left, right, cell] = [52, 162, 262, 372];
+  const mid = 92;
+  // The beam in pieces, each at the light left in it, so the fall across the cuvette is visible.
+  const through = scatters ? 0.3 : 0.38;
+  const pieces = Array.from({ length: 20 }, (_, at) => {
+    const from = lamp + ((cell - lamp) * at) / 20;
+    const to = lamp + ((cell - lamp) * (at + 1)) / 20;
+    const middle = (from + to) / 2;
+    const left_ = middle <= left ? 1 : middle >= right ? through : through ** ((middle - left) / (right - left));
+    return { from, to, left: left_ };
+  });
+  const colour = scatters ? "var(--base-g)" : "var(--accent)";
+  return (
+    <Figure
+      width={430}
+      height={186}
+      description={scatters
+        ? "Light from a lamp crosses a cuvette of cells and reaches a detector. Inside the cuvette some of it leaves sideways, so less arrives: 30 per cent of what set out."
+        : "Light from a lamp crosses a cuvette of sample and reaches a detector. The beam dims across the cuvette as the sample takes it up, so 38 per cent of what set out arrives."}
+      caption={scatters
+        ? "Cells do not take the light up; they scatter it out of the beam. Less arrives, so the number looks like an absorbance — but Beer's law does not hold for it, and how much is lost depends on where the detector sits."
+        : "The sample takes up part of the light. Absorbance is the logarithm of how much was stopped: 1.0 is a tenth getting through, 2.0 a hundredth."}
+      {...options}
+    >
+      <rect x={left} y={mid - 46} width={right - left} height={92} rx={3} fill="var(--sunken)" stroke="var(--line)" />
+      <line x1={left} y1={mid - 24} x2={right} y2={mid - 24} stroke="var(--line)" strokeWidth={1} />
+      {pieces.map((piece) => (
+        <line key={piece.from} x1={piece.from} y1={mid} x2={piece.to} y2={mid} stroke={colour} strokeWidth={3} opacity={Math.max(0.08, piece.left)} />
+      ))}
+      {scatters && [0, 1, 2, 3, 4, 5].map((at) => {
+        const x = left + ((right - left) * (at + 0.5)) / 6;
+        const away = at % 2 === 0 ? -1 : 1;
+        return <line key={at} x1={x} y1={mid} x2={x + (at % 3) * 6 - 6} y2={mid + away * (28 + (at % 3) * 8)} stroke={colour} strokeWidth={1.4} opacity={0.5} />;
+      })}
+      <circle cx={lamp - 14} cy={mid} r={12} fill="none" stroke="var(--muted)" strokeWidth={1.5} />
+      <line x1={cell} y1={mid - 22} x2={cell} y2={mid + 22} stroke="var(--muted)" strokeWidth={4} />
+      <Note x={lamp - 14} y={mid - 24} anchor="middle">lamp</Note>
+      <Note x={lamp - 14} y={mid + 34} anchor="middle" mono>100%</Note>
+      <Note x={(left + right) / 2} y={mid + 62} anchor="middle">{scatters ? "a culture" : "the sample"}</Note>
+      <Note x={cell} y={mid - 30} anchor="middle">detector</Note>
+      <Note x={cell} y={mid + 38} anchor="middle" mono bold fill="var(--ink)">{Math.round(through * 100)}%</Note>
+    </Figure>
+  );
+}
+
 /** The diagram for a glossary entry (or one of the extra lesson pictures), or null if it has none. */
 export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string }) {
   switch (slug) {
@@ -1146,6 +1199,11 @@ export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string
       return <PrimerEndDiagram kind="dimer" {...options} />;
     case "gel-electrophoresis":
       return <GelDiagram {...options} />;
+    case "spectrophotometer":
+    case "absorbance":
+      return <BeamDiagram {...options} />;
+    case "optical-density":
+      return <BeamDiagram scatters {...options} />;
     case "alignment":
     case "gap":
       return <AlignmentDiagram {...options} />;
