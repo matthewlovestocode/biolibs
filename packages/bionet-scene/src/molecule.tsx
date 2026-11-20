@@ -10,7 +10,7 @@
 import { Line } from "@react-three/drei";
 import type { Theme } from "@biolibs/bionet-theme";
 import { paint, type Label } from "./scene.js";
-import type { PlacedBeam, PlacedField, PlacedGel, PlacedJoining, PlacedMolecule, PlacedScale, PlacedTrace } from "./shapes.js";
+import type { PlacedBeam, PlacedField, PlacedGel, PlacedJoining, PlacedMolecule, PlacedRotor, PlacedScale, PlacedTrace } from "./shapes.js";
 
 /**
  * The names to write over a molecule: each stretch marked on it, and what it is.
@@ -283,6 +283,52 @@ export function Trace({ placed, theme }: { placed: PlacedTrace; theme: Theme }) 
         <Line key={at} points={mark.points} color={(mark.saturated ? top : rule).color} lineWidth={mark.saturated ? 2.4 : 1.4}
               transparent opacity={mark.saturated ? 0.9 : rule.opacity} toneMapped={false} />
       ))}
+    </group>
+  );
+}
+
+/**
+ * What to write over a rotor: what it is, and whether it is balanced.
+ *
+ * @param placed - The rotor, worked out by `placeRotor`.
+ * @returns Labels for `Follow`. Whether it is balanced matters most; the position numbers give way first.
+ */
+export function rotorLabels(placed: PlacedRotor): Label[] {
+  const out = placed.labels.map((one): Label => ({
+    key: `rotor ${one.key}`, at: one.at, rank: one.key === "offset" ? 0 : 1,
+    content: <span className={`rotor-said ${one.key}${one.key === "offset" && one.text !== "balanced" ? " out" : ""}`}>{one.text}</span>,
+  }));
+  return [...out, ...placed.holes.filter((one) => one.loaded || one.suggested).map((one, at): Label => ({
+    key: `rotor hole ${at}`, at: one.at, rank: one.suggested ? 2 : 4,
+    content: <span className={`rotor-hole${one.suggested ? " put" : ""}`}>{one.label}</span>,
+  }))];
+}
+
+/**
+ * A rotor seen from above, with what is in it. It goes inside a canvas.
+ *
+ * @param props - `placed` is the rotor, worked out by `placeRotor`; `theme` is the theme.
+ */
+export function Rotor({ placed, theme }: { placed: PlacedRotor; theme: Theme }) {
+  const metal = paint("dim", theme, 0.8);
+  const full = paint("held", theme, 1);
+  const empty = paint("ink", theme, 0.4);
+  const put = paint("good", theme, 1);
+  const out = paint("attention", theme, 1);
+  return (
+    <group>
+      <Line points={placed.rim} color={metal.color} lineWidth={1.8} transparent opacity={metal.opacity} toneMapped={false} />
+      {placed.axis.map((one, at) => (
+        <Line key={`axis ${at}`} points={one} color={metal.color} lineWidth={1.4} transparent opacity={metal.opacity} toneMapped={false} />
+      ))}
+      {placed.holes.map((hole, at) => {
+        const tone = hole.loaded ? full : hole.suggested ? put : empty;
+        return <Line key={at} points={hole.ring} color={tone.color} lineWidth={hole.loaded || hole.suggested ? 2.6 : 1.2}
+                     transparent opacity={hole.loaded ? 1 : hole.suggested ? 0.9 : empty.opacity} toneMapped={false} />;
+      })}
+      {placed.pull !== null && (
+        <Line points={placed.pull} color={out.color} lineWidth={3} transparent opacity={0.9} toneMapped={false} />
+      )}
     </group>
   );
 }

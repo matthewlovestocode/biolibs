@@ -165,3 +165,10 @@
 .bionet-scene .trace-said.ceiling { color: var(--bionet-attention) }
 .bionet-scene .trace-band { font-size: 10px; font-family: ui-monospace, monospace; white-space: nowrap; color: var(--bionet-dim) }
 .bionet-scene .trace-band.burnt { color: var(--bionet-attention); font-weight: 600 }
+.bionet-scene .rotor-said { font-size: 11px; white-space: nowrap; color: var(--bionet-dim); padding: 0 .3rem; border-radius: 3px;
+  background: color-mix(in srgb, var(--bionet-ground) 78%, transparent) }
+.bionet-scene .rotor-said.what { font-size: 13px; color: var(--bionet-ink) }
+.bionet-scene .rotor-said.offset { font-size: 13px; font-weight: 600; color: var(--bionet-good) }
+.bionet-scene .rotor-said.offset.out { color: var(--bionet-attention) }
+.bionet-scene .rotor-hole { font-size: 10px; font-family: ui-monospace, monospace; color: var(--bionet-held) }
+.bionet-scene .rotor-hole.put { color: var(--bionet-good); font-weight: 600 }

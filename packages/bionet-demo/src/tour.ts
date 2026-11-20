@@ -30,7 +30,8 @@ export type TourStop =
   | { at: "induction"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; culture?: string; gene?: string; cds?: string; ran?: number } }
   | { at: "spectro"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; tube?: string; sample?: Sample; shown?: number; dilution?: number } }
   | { at: "electro"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; construct?: string; cells?: string; host?: string; volts?: number; gap?: Gap } }
-  | { at: "imager"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; gel?: string; ladder?: string; expected?: readonly number[] } };
+  | { at: "imager"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; gel?: string; ladder?: string; expected?: readonly number[] } }
+  | { at: "spin"; start?: { view?: "machine" | "block" | "screen" | "tube" | "result"; rotor?: string; what?: string; rpm?: number; loaded?: readonly number[] } };
 
 /** One stop on the walk. */
 export interface TourStep {

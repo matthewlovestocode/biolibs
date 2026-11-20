@@ -17,6 +17,8 @@
  * - `pcr-working.ts` — the working behind what the PCR tool says: each figure with the steps that give it
  * - `protein.ts` — the protein a gene codes for, and what its sequence says about it
  * - `induce.ts` — growing a strain to express what was put into it, and the mass its band should run at
+ * - `spin.ts` — a spin in a centrifuge: the force a speed makes in a given rotor, and whether it is balanced
+ * - `spin-bench.tsx` — that at the machine: the rotor from above with where its load pulls, and which half is kept
  * - `imager.ts` — a photograph of a gel read backwards: where a band landed into the size that landed there
  * - `imager-working.ts` — the working behind a size read off a ladder, and behind what a band’s brightness means
  * - `imager-bench.tsx` — a gel read at the imager: the picture, the lane as a profile, and what was expected of it
@@ -70,6 +72,7 @@ export * from "./pcr-working.js";
 export * from "./digest-working.js";
 export * from "./protein.js";
 export * from "./induce.js";
+export * from "./spin.js";
 export * from "./imager.js";
 export * from "./imager-working.js";
 export * from "./electro.js";
@@ -79,6 +82,7 @@ export * from "./spectro-working.js";
 export * from "./spectro-bench.js";
 export * from "./electro-bench.js";
 export * from "./imager-bench.js";
+export * from "./spin-bench.js";
 export * from "./modify.js";
 export * from "./remedy.js";
 export * from "./induce-bench.js";

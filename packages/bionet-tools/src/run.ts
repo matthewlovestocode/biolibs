@@ -598,10 +598,10 @@ export function electroRun(lab: ToolLab & { strains: readonly StrainState[] }, c
 }
 
 /** A tool that is used at a machine. */
-export type ToolName = "pcr" | "digest" | "ligation" | "induction" | "spectro" | "electro" | "imager";
+export type ToolName = "pcr" | "digest" | "ligation" | "induction" | "spectro" | "electro" | "imager" | "spin";
 
 /** The model of instrument each tool is used at. */
-export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station", ligation: "heat-block", induction: "shaking-incubator", spectro: "spectrophotometer", electro: "electroporator", imager: "gel-imager" };
+export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station", ligation: "heat-block", induction: "shaking-incubator", spectro: "spectrophotometer", electro: "electroporator", imager: "gel-imager", spin: "centrifuge" };
 
 /**
  * Which tool an instrument opens.

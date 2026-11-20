@@ -746,6 +746,7 @@ const VIEW_NAMES: Readonly<Record<string, Partial<Record<StageView, string>>>> =
   spectrophotometer: { machine: "The machine", block: "The cuvette well", screen: "The reading", tube: "The light through it", result: "What it means" },
   electroporator: { machine: "The machine", block: "The cuvette", screen: "The pulse", tube: "In the cuvette", result: "What grew" },
   "gel-imager": { machine: "The machine", block: "The gel on the light", screen: "The exposure", tube: "What the bands hold", result: "Against what was expected" },
+  centrifuge: { machine: "The machine", block: "The rotor", screen: "The speed", tube: "What separates", result: "What it leaves" },
 };
 
 /**
@@ -1178,6 +1179,97 @@ export function placeTrace(trace: StageTrace, centre: readonly [number, number, 
     labels: [
       { key: "what", text: trace.what, at: at(0, floor + tall + h * 0.14) },
       { key: "ceiling", text: "as bright as the camera records", at: at(w * 0.5, high(ceiling) + h * 0.07) },
+    ],
+  };
+}
+
+/** A rotor seen from above: which positions are loaded, and where that pulls. */
+export interface StageRotor {
+  /** How many positions it has. */
+  positions: number;
+  /** The ones with a tube in them, counting from 0. */
+  loaded: readonly number[];
+  /** A position a tube would go in to balance it, if one would. */
+  put: readonly number[];
+  /** How far off the axis the load sits, from 0 to 1. */
+  offset: number;
+  /** What the rotor is, written over it. */
+  what: string;
+}
+
+/** That, worked out. */
+export interface PlacedRotor {
+  /** The rotor's rim. */
+  rim: Point[];
+  /** A cross at the axis, which is where a balanced load pulls. */
+  axis: Point[][];
+  /** Each position: its ring, whether it holds a tube, whether one should go in it, and its number. */
+  holes: { ring: Point[]; loaded: boolean; suggested: boolean; at: Point; label: string }[];
+  /** The line from the axis to where the load actually pulls, or `null` when it pulls nowhere. */
+  pull: Point[] | null;
+  /** What to write, and where. */
+  labels: { key: string; text: string; at: Point }[];
+}
+
+/**
+ * Where to draw a rotor and what is in it.
+ *
+ * A centrifuge does not know whether it is balanced; it finds out at full speed. Seen from above
+ * with a line from the axis to where the load pulls, the answer is in the picture before it is in
+ * the arithmetic: a balanced rotor has no line, and an unbalanced one has one pointing at the
+ * problem.
+ *
+ * @param rotor - The positions, what is in them, and how far off the load sits.
+ * @param centre - Where the middle of it goes.
+ * @param toward - A point it should face, usually the camera.
+ * @param radius - How big across to draw it, in metres.
+ * @returns The rim, the positions, and where the load pulls.
+ *
+ * @example
+ * ```ts
+ * import { placeRotor } from "@biolibs/bionet-scene";
+ *
+ * placeRotor({ positions: 24, loaded: [0], put: [12], offset: 1, what: "24 × 1.5 mL" }, centre, camera, 0.22);
+ * ```
+ */
+export function placeRotor(rotor: StageRotor, centre: readonly [number, number, number], toward: readonly [number, number, number],
+                           radius: number): PlacedRotor {
+  const unit = (v: Point): Point => { const n = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / n, v[1] / n, v[2] / n]; };
+  const cross = (a: Point, b: Point): Point => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const facing = unit([toward[0] - centre[0], toward[1] - centre[1], toward[2] - centre[2]]);
+  const right = unit(cross(Math.abs(facing[1]) > 0.98 ? [0, 0, -1] : [0, 1, 0], facing));
+  const up = cross(facing, right);
+  const at = (x: number, y: number): Point => [centre[0] + right[0] * x + up[0] * y, centre[1] + right[1] * x + up[1] * y, centre[2] + right[2] * x + up[2] * y];
+  const circle = (x: number, y: number, size: number, sides = 24): Point[] =>
+    Array.from({ length: sides + 1 }, (_, index) => {
+      const angle = (index / sides) * Math.PI * 2;
+      return at(x + Math.cos(angle) * size, y + Math.sin(angle) * size);
+    });
+  const many = Math.max(1, Math.min(48, Math.floor(rotor.positions)));
+  const ring = radius * 0.74;
+  const hole = Math.min(radius * 0.13, (Math.PI * ring) / (many * 1.3));
+  const angle = (position: number): number => (position / many) * Math.PI * 2;
+  const loaded = new Set(rotor.loaded);
+  const suggested = new Set(rotor.put);
+  // Where the load pulls: the unit masses added up, which is what `balance` works out as a number.
+  const x = [...loaded].reduce((sum, one) => sum + Math.cos(angle(one)), 0);
+  const y = [...loaded].reduce((sum, one) => sum + Math.sin(angle(one)), 0);
+  const length = Math.hypot(x, y);
+  return {
+    rim: circle(0, 0, radius),
+    axis: [[at(-radius * 0.06, 0), at(radius * 0.06, 0)], [at(0, -radius * 0.06), at(0, radius * 0.06)]],
+    holes: Array.from({ length: many }, (_, position) => {
+      const [hx, hy] = [Math.cos(angle(position)) * ring, Math.sin(angle(position)) * ring];
+      return {
+        ring: circle(hx, hy, hole), loaded: loaded.has(position), suggested: suggested.has(position),
+        at: at(hx * 1.3, hy * 1.3), label: `${position + 1}`,
+      };
+    }),
+    pull: length < 1e-6 || loaded.size === 0 ? null
+      : [at(0, 0), at((x / loaded.size) * ring, (y / loaded.size) * ring)],
+    labels: [
+      { key: "what", text: rotor.what, at: at(0, radius * 1.24) },
+      { key: "offset", text: rotor.offset <= 0.02 ? "balanced" : `${Math.round(rotor.offset * 100)}% off the axis`, at: at(0, -radius * 1.24) },
     ],
   };
 }

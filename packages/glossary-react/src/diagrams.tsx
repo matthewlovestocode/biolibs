@@ -1216,6 +1216,53 @@ export function ExposureDiagram({ byMass = false, ...options }: FigureOptions & 
   );
 }
 
+
+/**
+ * Three rotors seen from above: one unbalanced, two balanced in different ways.
+ *
+ * The arrow on the first is where its load pulls. The other two pull nowhere, which is what
+ * balanced means and why three tubes evenly spaced is as good as two opposite each other.
+ */
+export function RotorDiagram(options: FigureOptions) {
+  const rotors = [
+    { x: 86, loaded: [0], says: "one tube" },
+    { x: 226, loaded: [0, 6], says: "two, opposite" },
+    { x: 366, loaded: [0, 4, 8], says: "three, evenly spaced" },
+  ];
+  const [positions, radius, ring, hole] = [12, 54, 38, 7];
+  const mid = 84;
+  return (
+    <Figure
+      width={452}
+      height={188}
+      description="Three rotors of twelve positions seen from above. One holds a single tube and an arrow points from the axis to where its load pulls. One holds two opposite each other and one holds three evenly spaced; neither pulls anywhere."
+      caption="A balanced rotor is one where what the tubes pull adds up to nothing. Two opposite each other do; so do three evenly spaced, which looks wrong and is not. One on its own does not, and at full speed that is what destroys a centrifuge."
+      {...options}
+    >
+      {rotors.map(({ x, loaded, says }) => {
+        const angle = (at: number): number => (at / positions) * Math.PI * 2 - Math.PI / 2;
+        const pullX = loaded.reduce((sum, at) => sum + Math.cos(angle(at)), 0) / loaded.length;
+        const pullY = loaded.reduce((sum, at) => sum + Math.sin(angle(at)), 0) / loaded.length;
+        const out = Math.hypot(pullX, pullY) > 0.02;
+        return (
+          <g key={says}>
+            <circle cx={x} cy={mid} r={radius} fill="none" stroke="var(--line)" strokeWidth={1.5} />
+            {Array.from({ length: positions }, (_, at) => (
+              <circle key={at} cx={x + Math.cos(angle(at)) * ring} cy={mid + Math.sin(angle(at)) * ring} r={hole}
+                      fill={loaded.includes(at) ? "var(--base-g)" : "none"} stroke={loaded.includes(at) ? "var(--base-g)" : "var(--line)"} strokeWidth={1.4} />
+            ))}
+            {out
+              ? <Arrow from={[x, mid]} to={[x + pullX * ring * 0.8, mid + pullY * ring * 0.8]} color="var(--base-t)" width={2} />
+              : <circle cx={x} cy={mid} r={3} fill="var(--accent)" />}
+            <Note x={x} y={mid + radius + 20} anchor="middle">{says}</Note>
+            <Note x={x} y={mid + radius + 34} anchor="middle" fill={out ? "var(--base-t)" : "var(--accent)"}>{out ? "pulls off the axis" : "pulls nowhere"}</Note>
+          </g>
+        );
+      })}
+    </Figure>
+  );
+}
+
 /** The diagram for a glossary entry (or one of the extra lesson pictures), or null if it has none. */
 export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string }) {
   switch (slug) {
@@ -1304,6 +1351,10 @@ export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string
       return <GelDiagram {...options} />;
     case "saturation":
       return <ExposureDiagram {...options} />;
+    case "relative-centrifugal-force":
+    case "centrifuge-balance":
+    case "pellet":
+      return <RotorDiagram {...options} />;
     case "band-intensity":
       return <ExposureDiagram byMass {...options} />;
     case "spectrophotometer":

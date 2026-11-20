@@ -18,8 +18,8 @@ const REVERSE = "GGTATACATACTCTGAAG";
 
 const draw = (lab: Lab, what: ReactElement): string => renderToStaticMarkup(h(LabProvider, { source: sourceOf(lab), children: what })).replace(/&#x27;/g, "'");
 
-/** A lab with a template and two primers in tubes, a thermocycler on a bench, and a centrifuge. */
-async function wren(): Promise<{ lab: Lab; tubes: { template: string; forward: string; reverse: string }; cycler: string; centrifuge: string }> {
+/** A lab with a template and two primers in tubes, a thermocycler on a bench, and a microscope. */
+async function wren(): Promise<{ lab: Lab; tubes: { template: string; forward: string; reverse: string }; cycler: string; noTool: string }> {
   const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
   await lab.setPerson("Ada");
   await lab.found({ name: "The Wren Lab", furnish: false });
@@ -30,8 +30,11 @@ async function wren(): Promise<{ lab: Lab; tubes: { template: string; forward: s
   const tubes = { template: await tube("pWren-402", TEMPLATE), forward: await tube("fwd-1", FORWARD), reverse: await tube("rev-1", REVERSE) };
   const bench = await lab.addPlace({ kind: "bench", name: "Bench 1" });
   const cycler = await lab.addPlace({ kind: "instrument", name: "Thermocycler", parent: bench, model: "thermocycler" });
-  const centrifuge = await lab.addPlace({ kind: "instrument", name: "Centrifuge", parent: bench, model: "centrifuge" });
-  return { lab, tubes, cycler, centrifuge };
+  // A machine no tool opens, for the half of this that is about a machine no tool opens. A
+  // microscope is the one most likely to stay that way: what it has to say is said by the
+  // person looking down it, and nothing in a record can stand in for that.
+  const noTool = await lab.addPlace({ kind: "instrument", name: "Microscope", parent: bench, model: "microscope" });
+  return { lab, tubes, cycler, noTool };
 }
 
 describe("the tubes a PCR is offered", () => {
@@ -93,10 +96,10 @@ describe("a choice of tubes", () => {
 
 describe("the tool an instrument opens", () => {
   it("is the PCR tool for a thermocycler, and says so when there is none", async () => {
-    const { lab, cycler, centrifuge } = await wren();
+    const { lab, cycler, noTool } = await wren();
     const places = lab.snapshot().lab!.places;
     expect(toolFor(places.find((one) => one.place === cycler))).toBe("pcr");
-    expect(toolFor(places.find((one) => one.place === centrifuge))).toBeNull();
+    expect(toolFor(places.find((one) => one.place === noTool))).toBeNull();
     expect(toolFor(undefined)).toBeNull();
 
     const tool = draw(lab, h(InstrumentTool, { place: cycler, onDone: () => {} }));
@@ -104,7 +107,7 @@ describe("the tool an instrument opens", () => {
     expect(tool).toContain("pWren-402 · 20 µL · nowhere recorded");
     expect(tool).toContain("Back to the lab");
     expect(tool).not.toContain("What it makes");            // nothing has been chosen yet
-    expect(draw(lab, h(InstrumentTool, { place: centrifuge }))).toContain("There is no tool for this yet");
+    expect(draw(lab, h(InstrumentTool, { place: noTool }))).toContain("There is no tool for this yet");
     expect(draw(lab, h(InstrumentTool, { place: "no such place" }))).toContain("This place");
     expect(draw(lab, h(PcrTool))).toContain("<h2>PCR</h2>");
   });
