@@ -117,8 +117,13 @@ export function speedFor(rcf: number, radius: number): number {
   return Math.sqrt(rcf / (RCF_CONSTANT * radius));
 }
 
-/** How a rotor is loaded, and whether it will run. */
-export interface Balance {
+/**
+ * How a rotor is loaded, and whether it will run.
+ *
+ * Named for the loading rather than for the machine, so that `Balance` can be the machine you
+ * weigh on — which is the other instrument on this bench and the more usual meaning of the word.
+ */
+export interface Balanced {
   /** How many positions are filled. */
   filled: number;
   /** How far the middle of what is loaded sits from the axis, as a fraction of the rotor's radius. */
@@ -170,7 +175,7 @@ export const OFF_CENTRE = 0.02;
  * balance([0, 12], 24).ok;      // true: opposite each other
  * ```
  */
-export function balance(loaded: readonly number[], positions: number): Balance {
+export function balance(loaded: readonly number[], positions: number): Balanced {
   const clean = [...new Set(loaded.filter((one) => Number.isInteger(one) && one >= 0 && one < positions))];
   if (positions <= 0) return { filled: 0, offset: 0, ok: false, put: [], says: "A rotor with no positions holds nothing." };
   if (clean.length === 0) return { filled: 0, offset: 0, ok: true, put: [], says: "Nothing is in it, which is balanced." };

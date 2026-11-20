@@ -17,6 +17,11 @@ import { AssemblyTool } from "./assembly-bench.js";
 import { FusionTool } from "./fusion-bench.js";
 import { CodonTool } from "./codon-bench.js";
 import { VerifyTool } from "./verify-bench.js";
+import { BalanceTool } from "./balance-bench.js";
+import { CountTool } from "./microscope-bench.js";
+import { SoakTool } from "./waterbath-bench.js";
+import { SterileTool } from "./autoclave-bench.js";
+import { HoodTool } from "./cabinet-bench.js";
 import { PrimerTool } from "./primer-bench.js";
 import { SequencesTool } from "./sequences-tool.js";
 
@@ -26,7 +31,7 @@ export type DeskTool = "sequences" | "primers" | "codons" | "construct" | "assem
 /** What each machine a tool is used at is called, for saying so in a sentence. */
 const MACHINE_NAMES: Readonly<Record<string, string>> = {
   thermocycler: "thermocycler", "gel-station": "gel station", "heat-block": "heat block", "shaking-incubator": "shaking incubator",
-  spectrophotometer: "spectrophotometer", electroporator: "electroporator", "gel-imager": "gel imager", centrifuge: "centrifuge", incubator: "incubator",
+  spectrophotometer: "spectrophotometer", electroporator: "electroporator", "gel-imager": "gel imager", centrifuge: "centrifuge", incubator: "incubator", balance: "balance", microscope: "microscope", "water-bath": "water bath", autoclave: "autoclave", "biosafety-cabinet": "biosafety cabinet",
 };
 
 /** A list written out the way it is said: A a, a b, and a c. A tool's name is left as it is written, so PCR stays PCR. */
@@ -36,7 +41,7 @@ const sentence = (parts: readonly string[]): string => {
 };
 
 /** What each tool is called. */
-export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation", induction: "Induction", spectro: "Reading", electro: "Transformation", imager: "Read a gel", spin: "Spin", grow: "Grow a plate" };
+export const TOOL_NAMES: Readonly<Record<ToolName, string>> = { pcr: "PCR", digest: "Digest and gel", ligation: "Ligation", induction: "Induction", spectro: "Reading", electro: "Transformation", imager: "Read a gel", spin: "Spin", grow: "Grow a plate", weigh: "Weigh out", count: "Count cells", soak: "Hold at a temperature", sterilise: "Sterilise", aseptic: "Work in it" };
 
 function Tool({ tool, instrument, onDone }: { tool: ToolName; instrument: { id: string; name: string } | null; onDone?: (() => void) | undefined }) {
   const more = onDone === undefined ? {} : { onDone };
@@ -48,6 +53,11 @@ function Tool({ tool, instrument, onDone }: { tool: ToolName; instrument: { id: 
     : tool === "imager" ? <ImagerTool instrument={instrument} {...more} />
     : tool === "spin" ? <SpinTool instrument={instrument} {...more} />
     : tool === "grow" ? <GrowTool instrument={instrument} {...more} />
+    : tool === "weigh" ? <BalanceTool instrument={instrument} {...more} />
+    : tool === "count" ? <CountTool instrument={instrument} {...more} />
+    : tool === "soak" ? <SoakTool instrument={instrument} {...more} />
+    : tool === "sterilise" ? <SterileTool instrument={instrument} {...more} />
+    : tool === "aseptic" ? <HoodTool instrument={instrument} {...more} />
     : <DigestTool instrument={instrument} {...more} />;
 }
 

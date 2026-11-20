@@ -252,22 +252,25 @@ const SHAPES: Readonly<Record<string, Shape>> = {
     screen: { at: [0, 0.14, 0.5], size: [0.36, 0.1], leans: 0 },
     block: { at: [0, 0.04, -0.04], size: [0.72, 0.64], rows: 3, columns: 8 },
   },
-  // A pan behind glass, on a base heavy enough not to move. Everything a lab makes up by hand —
-  // the medium, the agarose, the buffer — starts on one of these.
+  // A pan inside a glass case, on a base heavy enough not to move, with the reading on an apron at
+  // the front where you stand. The case is the point of the machine: a draught across the pan is
+  // milligrams, so it is shut on all four sides and the top, and the apron is outside it. Drawn as
+  // three open walls it read as a crate with a box jammed into the front of it, which is what it was.
   balance: {
     body: [
-      { at: [0, -0.37, 0.06], size: [1, 0.22, 0.86], skin: "metal" },
-      { at: [0, -0.22, -0.08], size: [0.5, 0.08, 0.5], round: true, skin: "metal" },
-      { at: [-0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7], skin: "glass" },
-      { at: [0.44, 0.06, -0.08], size: [0.04, 0.64, 0.7], skin: "glass" },
-      { at: [0, 0.06, -0.42], size: [0.88, 0.64, 0.04], skin: "glass" },
-      { at: [0, 0.36, -0.08], size: [0.88, 0.04, 0.7], skin: "glass" },
-      { at: [0, -0.3, 0.46], size: [0.34, 0.12, 0.06], skin: "metal" },
-      { at: [-0.38, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
-      { at: [0.38, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
+      { at: [0, -0.33, 0], size: [1, 0.3, 0.9], skin: "metal" },
+      { at: [0, -0.16, -0.06], size: [0.46, 0.04, 0.46], round: true, skin: "metal" },
+      { at: [-0.4, 0.06, -0.06], size: [0.03, 0.48, 0.7], skin: "glass" },
+      { at: [0.4, 0.06, -0.06], size: [0.03, 0.48, 0.7], skin: "glass" },
+      { at: [0, 0.06, -0.4], size: [0.77, 0.48, 0.03], skin: "glass" },
+      { at: [0, 0.06, 0.28], size: [0.77, 0.48, 0.03], skin: "glass" },
+      { at: [0, 0.315, -0.06], size: [0.83, 0.03, 0.7], skin: "glass" },
+      { at: [0, -0.3, 0.46], size: [0.44, 0.12, 0.02], skin: "metal" },
+      { at: [-0.38, -0.48, 0.38], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
+      { at: [0.38, -0.48, 0.38], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
       { at: [0, -0.48, -0.3], size: [0.1, 0.04, 0.1], round: true, loud: 0.18 },
     ],
-    screen: { at: [0, -0.3, 0.5], size: [0.28, 0.08], leans: 0 },
+    screen: { at: [0, -0.3, 0.48], size: [0.38, 0.1], leans: 0 },
   },
   // A cup on a heavy foot that shakes whatever is pressed into it. Small, and in constant use.
   vortex: {
@@ -902,6 +905,11 @@ const VIEW_NAMES: Readonly<Record<string, Partial<Record<StageView, string>>>> =
   "gel-imager": { machine: "The machine", block: "The gel on the light", screen: "The exposure", tube: "What the bands hold", result: "Against what was expected" },
   centrifuge: { machine: "The machine", block: "The rotor", screen: "The speed", tube: "What separates", result: "What it leaves" },
   incubator: { machine: "The machine", block: "The shelves", screen: "The temperature", tube: "On the plate", result: "What came up" },
+  balance: { machine: "The balance", block: "The pan", screen: "The reading", tube: "In the weighing boat", result: "The solution" },
+  microscope: { machine: "The microscope", block: "The grid", screen: "What it comes to", tube: "In the drop", result: "What the culture is" },
+  "water-bath": { machine: "The bath", block: "In the rack", screen: "What it is set to", tube: "In the tube", result: "What it got" },
+  autoclave: { machine: "The autoclave", block: "The load", screen: "The cycle", tube: "What says it worked", result: "What came out" },
+  "biosafety-cabinet": { machine: "The cabinet", block: "The deck", screen: "The sash", tube: "What it does not protect", result: "How it was set up" },
 };
 
 /**

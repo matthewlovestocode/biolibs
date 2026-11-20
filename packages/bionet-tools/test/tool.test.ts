@@ -33,7 +33,10 @@ async function wren(): Promise<{ lab: Lab; tubes: { template: string; forward: s
   // A machine no tool opens, for the half of this that is about a machine no tool opens. A
   // microscope is the one most likely to stay that way: what it has to say is said by the
   // person looking down it, and nothing in a record can stand in for that.
-  const noTool = await lab.addPlace({ kind: "instrument", name: "Microscope", parent: bench, model: "microscope" });
+  // A vortex, because it is the instrument least likely to be given a tool: it shakes a tube, and
+  // there is nothing about that a lab needs software for. The microscope stood here until it got
+  // one, which is the way this fixture goes stale — it has to be something still unanswered.
+  const noTool = await lab.addPlace({ kind: "instrument", name: "Vortex", parent: bench, model: "vortex" });
   return { lab, tubes, cycler, noTool };
 }
 
