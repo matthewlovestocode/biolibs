@@ -224,6 +224,40 @@ describe("looking at a place", () => {
     near(poseFor(arranged, "minus80").target, arranged.find((one) => one.place.id === "minus80")!.center);
   });
 
+  it("frames a room by what is in it, not by its walls", () => {
+    // A room with one bench against one wall: looking at the whole lab should be a look at the
+    // bench and the floor round it, not at four empty metres of the room it happens to stand in.
+    const roomy = arrange({ places: [
+      { id: "room", kind: "room", name: "Main lab", parent: null, standing: { position: [0, 0, 0], size: [9, 2.8, 7] } },
+      { id: "bench", kind: "bench", name: "The bench", parent: "room", standing: { position: [-3.5, 0, -3], size: [1.6, 0.9, 0.7] } },
+    ], stored: [] });
+    const near_ = poseFor(roomy, null);
+    const away = Math.hypot(...near_.position.map((value, at) => value - near_.target[at]!));
+    // Close enough that the bench and its margin fill the shot, rather than the nine-metre room.
+    expect(away).toBeLessThan(6);
+    // And looking at what is in the room, not at the middle of the empty floor.
+    expect(near_.target[0]).toBeLessThan(-2);
+    expect(near_.target[2]).toBeLessThan(-2);
+  });
+
+  it("frames an empty room by its walls, there being nothing else to frame", () => {
+    const empty = arrange({ places: [
+      { id: "room", kind: "room", name: "Main lab", parent: null, standing: { position: [0, 0, 0], size: [9, 2.8, 7] } },
+    ], stored: [] });
+    near(poseFor(empty, null).target, [0, 1.4, 0]);
+  });
+
+  it("never frames a room from outside its own walls", () => {
+    const tight = arrange({ places: [
+      { id: "room", kind: "room", name: "Main lab", parent: null, standing: { position: [0, 0, 0], size: [3, 2.8, 3] } },
+      { id: "bench", kind: "bench", name: "The bench", parent: "room", standing: { position: [-1.2, 0, -1.2], size: [1.4, 0.9, 0.7] } },
+    ], stored: [] });
+    const framed = poseFor(tight, null);
+    // The margin would reach past the wall; the walls win, so the target stays inside the room.
+    expect(Math.abs(framed.target[0])).toBeLessThanOrEqual(1.5);
+    expect(Math.abs(framed.target[2])).toBeLessThanOrEqual(1.5);
+  });
+
   it("looks at a box from above, and at a turned bench from its own front", () => {
     const box = poseFor(arranged, "minus80-s1-A-1");
     expect(box.position[1] - box.target[1]).toBeGreaterThan(Math.abs(box.position[2] - box.target[2]));

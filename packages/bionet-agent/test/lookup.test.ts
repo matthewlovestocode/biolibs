@@ -228,7 +228,7 @@ describe("an adviser given them", () => {
   const hosting = async (outside?: { outside: boolean }): Promise<ReturnType<typeof agentTools>> => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     const { key } = await lab.hostAdviser();
     await lab.addMember({ key, person: "Claude", role: "adviser" });
     return agentTools(lab, outside === undefined ? {} : { outside });
@@ -244,7 +244,7 @@ describe("an adviser given them", () => {
   it("keeps a record with what it says is marked on it, and no tube", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     const { key } = await lab.hostAdviser();
     await lab.addMember({ key, person: "Claude", role: "adviser" });
     const tools = agentTools(lab);
@@ -265,7 +265,7 @@ describe("an adviser given them", () => {
   it("leaves alone what this lab has already said about a sequence, and says that it did", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     // Ada knows this sequence already, and has marked it her way.
     const bases = "ATGGGATCACAGTCTACACTGCTCACTCCAACCCCGGCCCCTGAGTCCGAGGAGAGGGTG";
     await lab.addPart({ name: "ours", sequence: bases, features: [{ type: "CDS", label: "as Ada reads it", strand: 1, parts: [{ start: 0, end: 30 }] }] });
@@ -290,7 +290,7 @@ describe("an adviser given them", () => {
     const calls: { tool: string; shows: unknown }[] = [];
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     answers = [searched([])];
     const tools = agentTools(lab, { watch: (call) => calls.push({ tool: call.tool, shows: call.shows }) });
     await tools.find((one) => one.name === "search_ncbi")!.run({ database: "gene", term: "CSN2" });

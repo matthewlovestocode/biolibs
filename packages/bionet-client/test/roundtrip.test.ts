@@ -23,7 +23,7 @@ const fresh = async (name: string): Promise<Lab> => {
 describe("a conditional sent to another lab", () => {
   it("arrives as the same contingency, pointing at the same reading", async () => {
     const wren = await fresh("Ada");
-    await wren.found({ name: "The Wren Lab" });
+    await wren.found({ name: "The Wren Lab", furnish: false });
     await wren.addPart({ name: "pWren1", sequence: BACKBONE });
     const part = wren.snapshot().lab!.parts[0]!.checksum;
     const tube = await wren.addItem({ part, amount: 20, unit: "µL" });
@@ -46,7 +46,7 @@ describe("a conditional sent to another lab", () => {
     const published = await wren.publishMethod();
 
     const finch = await fresh("Bob");
-    await finch.found({ name: "The Finch Lab" });
+    await finch.found({ name: "The Finch Lab", furnish: false });
     const taken = await finch.takeMethod({ method: published });
     expect(taken.missing).toHaveLength(0);
     expect(taken.proposed).toHaveLength(2);

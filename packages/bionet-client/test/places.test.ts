@@ -60,7 +60,7 @@ describe("a new device standing in for a lost one", () => {
 
     const ada = await device();
     await ada.setPerson("Ada");
-    await ada.found({ name: "The Wren Lab" });
+    await ada.found({ name: "The Wren Lab", furnish: false });
     await ada.addPart({ name: "f1", sequence: F1 });
     const peer = createPeer({ lab: ada.labId!, origin: "https://lab-wren.onrender.com", store: memoryPeerStore() });
     hold.WebSocket = loopback(peer).WebSocket as unknown as typeof WebSocket;
@@ -106,7 +106,7 @@ describe("a lab that knows where things are", () => {
   it("adds places, puts a tube in a box, and can be drawn", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     await lab.addPart({ name: "f1", sequence: F1 });
     const part = lab.snapshot().lab!.parts[0]!.checksum;
     const tube = await lab.addItem({ part, amount: 10, unit: "µL" });
@@ -152,7 +152,7 @@ describe("a lab that records what was done", () => {
   it("takes what a run used, keeps the tube it made, and says where the tube came from", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     await lab.addPart({ name: "template", sequence: F1 });
     const template = await lab.addItem({ part: lab.snapshot().lab!.parts[0]!.checksum, amount: 20, unit: "µL" });
     const cycler = await lab.addPlace({ kind: "instrument", name: "Thermocycler", model: "thermocycler" });
@@ -193,7 +193,7 @@ describe("a copy of the whole lab", () => {
   it("brings the lab back on a new device with the restored key and no peer at all", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     await lab.addPart({ name: "f1", sequence: F1 });
     const tube = await lab.addItem({ part: lab.snapshot().lab!.parts[0]!.checksum, amount: 10, unit: "µL" });
     const box = await lab.addPlace({ kind: "box", name: "Box 1", grid: { rows: 9, columns: 9 } });
@@ -222,7 +222,7 @@ describe("a copy of the whole lab", () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     await expect(lab.exportLab()).rejects.toThrow(/not in a lab/);
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     await lab.addPart({ name: "f1", sequence: F1 });
     const copy = await lab.exportLab();
 
@@ -242,7 +242,7 @@ describe("a copy of the whole lab", () => {
 
     const other = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     await other.setPerson("Cyd");
-    await other.found({ name: "Another lab" });
+    await other.found({ name: "Another lab", furnish: false });
     await expect(other.importLab(copy)).rejects.toThrow(/different lab/);
     expect((await perform(lab, "exportLab")).ok).toBe(true);
     for (const one of [lab, stranger, other]) one.close();
@@ -253,7 +253,7 @@ describe("a lab that keeps what was proposed", () => {
   it("keeps a plan without changing what it holds, and settles it as the run that carried it out", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     await lab.addPart({ name: "template", sequence: F1 });
     const part = lab.snapshot().lab!.parts[0]!.checksum;
     const template = await lab.addItem({ part, amount: 20, unit: "µL" });
@@ -282,7 +282,7 @@ describe("a lab that keeps what was proposed", () => {
   it("sets a plan aside, refuses one the lab could not keep, and takes both through the door a window uses", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     await lab.addPart({ name: "template", sequence: F1 });
     const part = lab.snapshot().lab!.parts[0]!.checksum;
     await expect(lab.planRun({ kind: "pcr", inputs: [{ item: "no-such-item", amount: 1, role: "template" }] })).rejects.toThrow(/not an item the lab has/);
@@ -299,7 +299,7 @@ describe("a device that hosts an adviser", () => {
   const hosting = async (): Promise<{ lab: Lab; tube: string; part: string }> => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     await lab.addPart({ name: "template", sequence: F1 });
     const part = lab.snapshot().lab!.parts[0]!.checksum;
     return { lab, part, tube: await lab.addItem({ part, amount: 20, unit: "µL" }) };
@@ -363,5 +363,77 @@ describe("a device that hosts an adviser", () => {
   it("cannot host one with nowhere to keep its key", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     await expect(lab.hostAdviser()).rejects.toThrow("This device has nowhere to keep an adviser's key.");
+  });
+});
+
+/**
+ * The kit a lab is founded with.
+ *
+ * A lab that has to be told it owns a thermocycler before it can run a PCR is asking the wrong
+ * question first. So a new lab comes with the usual machines in it, and the ones it has not got are
+ * retired — which is a thing worth recording, and the only direction that is honest: the lab says
+ * what it has not got, rather than the software waiting to be told what it has.
+ */
+describe("a lab founded with the usual kit", () => {
+  const furnished = async (): Promise<Lab> => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab" });
+    return lab;
+  };
+
+  it("has a room, benches, cold storage and every machine a tool is used at", async () => {
+    const lab = await furnished();
+    const places = lab.snapshot().lab!.places;
+    expect(places.filter((one) => one.kind === "room")).toHaveLength(1);
+    expect(places.filter((one) => one.kind === "bench").length).toBeGreaterThanOrEqual(1);
+    const models = places.filter((one) => one.kind === "instrument").map((one) => one.fields["model"]);
+    for (const model of ["thermocycler", "gel-station", "heat-block", "shaking-incubator"]) expect(models).toContain(model);
+    // Somewhere to put a tube the moment there is one.
+    expect(places.some((one) => one.kind === "box" && one.grid !== null)).toBe(true);
+    // And everything stands in something: nothing is left loose in the lab but the room.
+    for (const one of places) if (one.kind !== "room") expect(one.parent).not.toBeNull();
+    lab.close();
+  });
+
+  it("adds nothing the second time it is asked", async () => {
+    const lab = await furnished();
+    const before = lab.snapshot().lab!.places.length;
+    expect(await lab.furnish()).toEqual([]);
+    expect(lab.snapshot().lab!.places).toHaveLength(before);
+    lab.close();
+  });
+
+  it("does not give back a machine the lab has said it has not got", async () => {
+    const lab = await furnished();
+    const cycler = lab.snapshot().lab!.places.find((one) => one.fields["model"] === "thermocycler")!;
+    await lab.retirePlace({ place: cycler.place });
+    expect(await lab.furnish()).toEqual([]);
+    const again = lab.snapshot().lab!.places.filter((one) => one.fields["model"] === "thermocycler");
+    expect(again).toHaveLength(1);
+    expect(again[0]!.retired).toBe(true);
+    lab.close();
+  });
+
+  it("leaves a lab bare when it is told to", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab", furnish: false });
+    expect(lab.snapshot().lab!.places).toEqual([]);
+    // And can be furnished later, which is the same kit.
+    expect((await lab.furnish()).length).toBeGreaterThan(0);
+    lab.close();
+  });
+
+  it("hangs the kit off the room a lab already has, rather than adding a second one", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab", furnish: false });
+    const theirs = await lab.addPlace({ kind: "room", name: "The garage" });
+    await lab.furnish();
+    const places = lab.snapshot().lab!.places;
+    expect(places.filter((one) => one.kind === "room").map((one) => one.name)).toEqual(["The garage"]);
+    expect(places.find((one) => one.name === "Bench 1")!.parent).toBe(theirs);
+    lab.close();
   });
 });

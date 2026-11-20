@@ -48,15 +48,25 @@ export async function demoLab({ person = "Ada", name = "The Wren Lab" }: { perso
   await lab.found({ name });
   const molecules = demoMolecules();
 
-  const room = await lab.addPlace({ kind: "room", name: "Main lab" });
-  const bench = await lab.addPlace({ kind: "bench", name: "The bench", parent: room });
-  const freezer = await lab.addPlace({ kind: "freezer", name: "−80", parent: room });
-  const box = await lab.addPlace({ kind: "box", name: "Box 1", parent: freezer, grid: { rows: 9, columns: 9 } });
+  // The room, the benches, the freezer and the machines are the kit any lab is founded with, so the
+  // demo does not build its own: a lab shown to somebody should be the lab they would get.
+  const placed = (model: string): string => {
+    const found = lab.snapshot().lab?.places.find((one) => !one.retired && one.fields["model"] === model);
+    if (found === undefined) throw new Error(`The lab was founded without a ${model}.`);
+    return found.place;
+  };
+  const named = (name: string): string => {
+    const found = lab.snapshot().lab?.places.find((one) => !one.retired && one.name === name);
+    if (found === undefined) throw new Error(`The lab was founded without ${name}.`);
+    return found.place;
+  };
+  const room = named("Main lab");
+  const bench = named("Bench 1");
+  const freezer = named("−80 freezer");
+  const box = named("Box 1");
   const instruments = {
-    pcr: await lab.addPlace({ kind: "instrument", name: "Thermocycler", parent: bench, model: "thermocycler" }),
-    digest: await lab.addPlace({ kind: "instrument", name: "Gel station", parent: bench, model: "gel-station" }),
-    ligation: await lab.addPlace({ kind: "instrument", name: "Heat block", parent: bench, model: "heat-block" }),
-    induction: await lab.addPlace({ kind: "instrument", name: "Shaking incubator", parent: bench, model: "shaking-incubator" }),
+    pcr: placed("thermocycler"), digest: placed("gel-station"),
+    ligation: placed("heat-block"), induction: placed("shaking-incubator"),
   };
 
   /** Add a molecule and a tube of it, and put the tube in the box. @returns The tube's ID. */

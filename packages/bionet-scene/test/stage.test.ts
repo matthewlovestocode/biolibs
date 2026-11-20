@@ -9,22 +9,26 @@ import { placeGel, placeJoining, stageViewName, measureLine, MOLECULE_RADIUS, mo
          stagePose, type Part, type StageLens } from "@biolibs/bionet-scene";
 import { createElement as h } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { VIEWED_FROM, exampleLab } from "@biolibs/bionet-space";
+import { INSTRUMENT_SIZE, VIEWED_FROM, exampleLab } from "@biolibs/bionet-space";
 import { describe, expect, it } from "vitest";
 
 const SIZE: [number, number, number] = [0.35, 0.25, 0.45];
 
 describe("what an instrument is made of", () => {
-  it("is known for a thermocycler and a gel station, and is a plain box for anything else", () => {
+  it("is known for every instrument a lab can place, and is a plain box for anything else", () => {
     expect(shapeOf("thermocycler")).toMatchObject({ block: { rows: 8, columns: 12 } });
     expect(shapeOf("gel-station")?.screen).toBeDefined();
-    for (const not of ["centrifuge", "no such instrument", "constructor", undefined]) expect(shapeOf(not)).toBeNull();
+    // A microscope has nothing to say and nothing to open: it is a shape and no more.
+    const microscope = shapeOf("microscope")!;
+    expect(microscope.body.length).toBeGreaterThan(1);
+    expect([microscope.screen, microscope.lid, microscope.block]).toEqual([undefined, undefined, undefined]);
+    for (const not of ["no such instrument", "constructor", undefined]) expect(shapeOf(not)).toBeNull();
   });
 
   it("keeps every part inside the instrument when its lid is shut, with the block under the lid", () => {
     for (const model of ["thermocycler", "gel-station"]) {
       const shape = shapeOf(model)!;
-      const parts: Part[] = [...shape.body, ...(shape.lid === undefined ? [] : [shape.lid.part])];
+      const parts: Part[] = [...shape.body, ...(shape.lid === undefined ? [] : shape.lid.parts)];
       for (const part of parts) {
         for (const axis of [0, 1, 2] as const) {
           expect(Math.abs(part.at[axis]) + part.size[axis] / 2).toBeLessThanOrEqual(0.5 + 1e-9);
@@ -32,8 +36,10 @@ describe("what an instrument is made of", () => {
         }
       }
       const { block, lid } = shape;
-      expect(Math.abs(block!.at[0] - lid!.part.at[0])).toBeLessThan(lid!.part.size[0] / 2);
-      expect(block!.at[1]).toBeLessThan(lid!.part.at[1]);
+      // The first piece of a lid is the lid itself; the rest are its handle and such.
+      const cover = lid!.parts[0]!;
+      expect(Math.abs(block!.at[0] - cover.at[0])).toBeLessThan(cover.size[0] / 2);
+      expect(block!.at[1]).toBeLessThan(cover.at[1]);
       expect(lid!.opens).toBeGreaterThan(45);
     }
   });
@@ -427,5 +433,59 @@ describe("walking up to a machine and then being at it", () => {
     expect(looking).toEqual(unit(VIEWED_FROM.inside));
     // And from in front of it, far enough out that the whole machine is in the picture.
     expect(pose.position[2]).toBeGreaterThan(Math.max(...size));
+  });
+});
+
+/**
+ * What a lab's instruments are made of.
+ *
+ * A model with a size but no shape is drawn as a featureless box, which is the one thing a scene of
+ * a real lab should never show: a person cannot walk up to a box. And a part written in fractions
+ * is easy to put outside the instrument it belongs to without anybody noticing from one angle.
+ */
+describe("every instrument a lab can place", () => {
+  const models = Object.keys(INSTRUMENT_SIZE);
+
+  it("is made of something, rather than being drawn as a plain box", () => {
+    const bare = models.filter((model) => shapeOf(model) === null);
+    expect(bare).toEqual([]);
+  });
+
+  it("keeps every part of itself inside itself", () => {
+    const outside: string[] = [];
+    for (const model of models) {
+      const shape = shapeOf(model);
+      if (shape === null) continue;
+      const parts = [...shape.body, ...(shape.lid === undefined ? [] : shape.lid.parts)];
+      for (const [at, part] of parts.entries()) {
+        for (const axis of [0, 1, 2] as const) {
+          const low = part.at[axis] - part.size[axis] / 2;
+          const high = part.at[axis] + part.size[axis] / 2;
+          if (low < -0.5001 || high > 0.5001) outside.push(`${model} part ${at + 1} on axis ${axis}`);
+        }
+      }
+    }
+    expect(outside).toEqual([]);
+  });
+
+  it("puts its block and its screen on itself, not beside it", () => {
+    const astray: string[] = [];
+    for (const model of models) {
+      const shape = shapeOf(model);
+      if (shape === null) continue;
+      for (const [what, at] of [["screen", shape.screen?.at], ["block", shape.block?.at]] as const) {
+        if (at === undefined) continue;
+        if (at.some((one) => one < -0.5001 || one > 0.5001)) astray.push(`${model} ${what}`);
+      }
+    }
+    expect(astray).toEqual([]);
+  });
+
+  it("gives a block at least one well, since a block with none is not a block", () => {
+    for (const model of models) {
+      const block = shapeOf(model)?.block;
+      if (block === undefined) continue;
+      expect(block.rows * block.columns, model).toBeGreaterThan(0);
+    }
   });
 });

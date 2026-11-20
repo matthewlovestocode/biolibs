@@ -10,6 +10,7 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
+import { STANDARD_KIT } from "./kit.js";
 import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, expectLeadsTo, isMember, meetExpectation, planReplaces, mergeLog, newExpectationId, newProspectId, withdrawExpectation, addProspect, realiseProspect,
          movePlace, newItemId, newPlaceId, newPlanId, newRunId, newSpecimenId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
          readMethod, signMethod,
@@ -323,7 +324,7 @@ export class Lab {
    *
    * @param about - What the lab is called, and its peer's address if it has one yet.
    */
-  async found(about: { name: string; peer?: string | null }): Promise<void> {
+  async found(about: { name: string; peer?: string | null; furnish?: boolean }): Promise<void> {
     if (this.labId !== null) throw new Error("This device is already in a lab.");
     if (this.person === null) throw new Error("Say who you are first.");
     if (about.name.trim() === "") throw new Error("A lab needs a name.");
@@ -335,7 +336,51 @@ export class Lab {
     this.store.set("lab", id);
     this.store.set("peer", peer);
     await this.remerge();
+    if (about.furnish !== false) await this.furnish();
     this.connect();
+  }
+
+  /**
+   * Put the usual kit in the lab: a room, two benches, a freezer and a fridge with a box in each,
+   * and one of each machine the tools are used at.
+   *
+   * It writes only what is missing, by name, so calling it again adds nothing and a lab that has
+   * retired a machine it has not got is not given it back. A lab that has its own room already
+   * keeps it: the kit is hung off whatever that room is called.
+   *
+   * @returns What it wrote: the name of each place added.
+   *
+   * @example
+   * ```ts
+   * await lab.furnish();     // ["Main lab", "Bench 1", …]
+   * await lab.furnish();     // []: everything is already there
+   * ```
+   */
+  async furnish(): Promise<string[]> {
+    const here = this.snapshot().lab;
+    if (here === null) throw new Error("Found or join a lab first.");
+    // A place already in the lab, by name, whether or not this wrote it. Retired places count, so
+    // that a machine somebody has said the lab has not got is not written again.
+    const already = new Map(here.places.map((one) => [one.name.trim().toLowerCase(), one.place]));
+    const room = here.places.find((one) => one.kind === "room" && !one.retired);
+    const written: string[] = [];
+    for (const want of STANDARD_KIT) {
+      // The kit's own room is only written if the lab has none; the rest hangs off whatever it has.
+      const named = want.at === null ? null
+        : want.at === "Main lab" && room !== undefined ? room.place
+        : already.get(want.at.trim().toLowerCase()) ?? null;
+      if (want.kind === "room" && room !== undefined) { already.set(want.name.trim().toLowerCase(), room.place); continue; }
+      if (already.has(want.name.trim().toLowerCase())) continue;
+      if (want.at !== null && named === null) continue;
+      const id = await this.addPlace({
+        kind: want.kind, name: want.name, parent: named,
+        ...(want.grid === undefined ? {} : { grid: want.grid }),
+        ...(want.model === undefined ? {} : { model: want.model }),
+      });
+      already.set(want.name.trim().toLowerCase(), id);
+      written.push(want.name);
+    }
+    return written;
   }
 
   /**

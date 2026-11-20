@@ -12,18 +12,28 @@
 import { VIEWED_FROM, type Pose } from "@biolibs/bionet-space";
 import type { Meaning } from "@biolibs/bionet-theme";
 
-/** A box that is part of an instrument: where its middle is and how big it is, as fractions of the whole. */
+/**
+ * A piece of an instrument: where its middle is and how big it is, as fractions of the whole.
+ *
+ * A piece is a box unless it says otherwise. `round` makes it a cylinder standing on its ends,
+ * which is what a drum, a knob, a foot, a flask clamp and an eyepiece all are, and `lying` lays
+ * that cylinder on its side along x or z — a hinge, a roller, a lens barrel pointing at somebody.
+ */
 export interface Part {
   at: [number, number, number];
   size: [number, number, number];
+  /** Drawn as a cylinder rather than a box. */
+  round?: boolean;
+  /** For a round piece, the way its ends face. `y` (the default) stands it up. */
+  along?: "x" | "y" | "z";
 }
 
 /** What an instrument is made of. */
 export interface Shape {
   /** The boxes that do not move. */
   body: Part[];
-  /** A lid: the box, the line along the back it turns about, and how far it opens, in degrees. */
-  lid?: { part: Part; hinge: [number, number, number]; opens: number };
+  /** A lid: the pieces it is made of, the line along the back it turns about, and how far it opens, in degrees. */
+  lid?: { parts: Part[]; hinge: [number, number, number]; opens: number };
   /** A screen: where it is, how big across and up, and how far it leans back from upright, in degrees. */
   screen?: { at: [number, number, number]; size: [number, number]; leans: number };
   /** A block of wells on a flat top: where its middle is, how big across and deep, and how many wells. */
@@ -32,32 +42,138 @@ export interface Shape {
 
 const SHAPES: Readonly<Record<string, Shape>> = {
   // A base with a control panel at the front, and a heated lid over a block of 96 wells behind it.
+  // The feet, the vent and the hinge knuckles are there because an instrument drawn as two boxes is
+  // a diagram of a thermocycler; the thing a person walks up to has a handle to lift.
   thermocycler: {
-    body: [{ at: [0, -0.2, 0], size: [1, 0.6, 1] }, { at: [0, 0.16, 0.36], size: [0.92, 0.12, 0.26] }],
-    lid: { part: { at: [0, 0.3, -0.13], size: [0.9, 0.4, 0.7] }, hinge: [0, 0.1, -0.48], opens: 78 },
+    body: [
+      { at: [0, -0.2, 0], size: [1, 0.56, 1] },
+      { at: [0, 0.16, 0.36], size: [0.92, 0.12, 0.26] },
+      { at: [0, -0.2, -0.49], size: [0.66, 0.34, 0.02] },
+      { at: [-0.3, 0.1, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x" },
+      { at: [0.3, 0.1, -0.455], size: [0.16, 0.07, 0.07], round: true, along: "x" },
+      { at: [0.36, 0.17, 0.3], size: [0.1, 0.1, 0.1], round: true },
+      { at: [-0.4, -0.47, -0.36], size: [0.1, 0.06, 0.1], round: true },
+      { at: [0.4, -0.47, -0.36], size: [0.1, 0.06, 0.1], round: true },
+      { at: [-0.4, -0.47, 0.36], size: [0.1, 0.06, 0.1], round: true },
+      { at: [0.4, -0.47, 0.36], size: [0.1, 0.06, 0.1], round: true },
+    ],
+    lid: { parts: [{ at: [0, 0.3, -0.13], size: [0.9, 0.4, 0.7] },
+                   { at: [0, 0.48, 0.18], size: [0.34, 0.04, 0.04], round: true, along: "x" }],
+           hinge: [0, 0.1, -0.48], opens: 78 },
     screen: { at: [0, 0.225, 0.36], size: [0.5, 0.16], leans: 62 },
     block: { at: [0, 0.105, -0.13], size: [0.74, 0.56], rows: 8, columns: 12 },
   },
-  // A shallow tank with a lid, and beside it the power supply with its display.
+  // A shallow tank with a lid, the tray and the two electrode walls the current runs between, the
+  // comb that makes the wells, and beside it the power supply with its display, dial and lamp.
   "gel-station": {
-    body: [{ at: [-0.18, -0.2, 0], size: [0.62, 0.6, 0.96] }, { at: [0.36, -0.05, -0.1], size: [0.26, 0.9, 0.6] }],
-    lid: { part: { at: [-0.18, 0.22, 0], size: [0.6, 0.24, 0.94] }, hinge: [-0.18, 0.1, -0.48], opens: 70 },
+    body: [
+      { at: [-0.18, -0.2, 0], size: [0.62, 0.6, 0.96] },
+      { at: [0.36, -0.05, -0.1], size: [0.26, 0.9, 0.6] },
+      { at: [-0.18, 0.02, 0], size: [0.5, 0.06, 0.8] },
+      { at: [-0.44, 0.08, 0], size: [0.04, 0.3, 0.86] },
+      { at: [0.08, 0.08, 0], size: [0.04, 0.3, 0.86] },
+      { at: [-0.18, 0.14, -0.3], size: [0.46, 0.1, 0.03] },
+      { at: [0.36, -0.12, 0.205], size: [0.1, 0.1, 0.06], round: true, along: "z" },
+      { at: [0.36, -0.3, 0.205], size: [0.05, 0.05, 0.04], round: true, along: "z" },
+      { at: [-0.4, -0.48, -0.4], size: [0.1, 0.04, 0.1], round: true },
+      { at: [0.04, -0.48, -0.4], size: [0.1, 0.04, 0.1], round: true },
+      { at: [-0.4, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true },
+      { at: [0.04, -0.48, 0.4], size: [0.1, 0.04, 0.1], round: true },
+    ],
+    lid: { parts: [{ at: [-0.18, 0.22, 0], size: [0.6, 0.24, 0.94] },
+                   { at: [-0.18, 0.35, 0.2], size: [0.22, 0.04, 0.04], round: true, along: "x" }],
+           hinge: [-0.18, 0.1, -0.48], opens: 70 },
     screen: { at: [0.36, 0.2, 0.205], size: [0.18, 0.2], leans: 0 },
     block: { at: [-0.18, 0.105, 0], size: [0.46, 0.7], rows: 1, columns: 8 },
   },
-  // A cabinet with a lid that lifts, a platform of flask clamps inside it, and a control panel
-  // leaning up at the front. What it shows is a temperature, a speed and a time; what is going on
-  // inside it is cells growing, which no part of it displays.
+  // A cabinet with a lid that lifts, the platform that shakes and the clamps a flask sits in, and a
+  // control panel leaning up at the front. What it shows is a temperature, a speed and a time; what
+  // is going on inside it is cells growing, which no part of it displays.
   "shaking-incubator": {
-    body: [{ at: [0, -0.22, 0], size: [1, 0.56, 1] }, { at: [0, 0.14, 0.4], size: [0.96, 0.12, 0.2] }],
-    lid: { part: { at: [0, 0.28, -0.1], size: [0.94, 0.3, 0.78] }, hinge: [0, 0.13, -0.49], opens: 72 },
+    body: [
+      { at: [0, -0.22, 0], size: [1, 0.56, 1] },
+      { at: [0, 0.14, 0.4], size: [0.96, 0.12, 0.2] },
+      { at: [0, -0.22, -0.49], size: [0.7, 0.4, 0.02] },
+      { at: [0, 0.06, -0.1], size: [0.84, 0.04, 0.7] },
+      { at: [-0.3, 0.13, -0.47], size: [0.18, 0.06, 0.06], round: true, along: "x" },
+      { at: [0.3, 0.13, -0.47], size: [0.18, 0.06, 0.06], round: true, along: "x" },
+      { at: [0.4, 0.15, 0.4], size: [0.09, 0.09, 0.09], round: true },
+      { at: [-0.42, -0.48, -0.42], size: [0.1, 0.04, 0.1], round: true },
+      { at: [0.42, -0.48, -0.42], size: [0.1, 0.04, 0.1], round: true },
+      { at: [-0.42, -0.48, 0.42], size: [0.1, 0.04, 0.1], round: true },
+      { at: [0.42, -0.48, 0.42], size: [0.1, 0.04, 0.1], round: true },
+    ],
+    lid: { parts: [{ at: [0, 0.28, -0.1], size: [0.94, 0.3, 0.78] },
+                   { at: [0, 0.44, 0.26], size: [0.4, 0.05, 0.05], round: true, along: "x" }],
+           hinge: [0, 0.13, -0.49], opens: 72 },
     screen: { at: [0, 0.2, 0.4], size: [0.44, 0.14], leans: 55 },
     block: { at: [0, 0.1, -0.1], size: [0.8, 0.66], rows: 2, columns: 3 },
   },
-  // A metal block with two rows of holes for tubes, and a small display on the front of its base.
+  // A drum with a lid over a rotor of eight buckets, which is what a centrifuge is: everything it
+  // does is the rotor going round, and the positions are numbered so a tube is found again after.
+  centrifuge: {
+    body: [
+      { at: [0, -0.22, 0], size: [1, 0.56, 1], round: true },
+      { at: [0, 0.1, 0.42], size: [0.56, 0.2, 0.16] },
+      { at: [0, 0.06, -0.02], size: [0.76, 0.05, 0.76], round: true },
+      { at: [0, 0.13, -0.02], size: [0.1, 0.12, 0.1], round: true },
+      { at: [0.34, 0.08, 0.42], size: [0.1, 0.1, 0.08], round: true, along: "z" },
+      // Eight buckets round the rotor, at the eighth-turns of a circle of radius 0.27.
+      { at: [0, 0.06, 0.25], size: [0.13, 0.14, 0.13], round: true },
+      { at: [0.19, 0.06, 0.17], size: [0.13, 0.14, 0.13], round: true },
+      { at: [0.27, 0.06, -0.02], size: [0.13, 0.14, 0.13], round: true },
+      { at: [0.19, 0.06, -0.21], size: [0.13, 0.14, 0.13], round: true },
+      { at: [0, 0.06, -0.29], size: [0.13, 0.14, 0.13], round: true },
+      { at: [-0.19, 0.06, -0.21], size: [0.13, 0.14, 0.13], round: true },
+      { at: [-0.27, 0.06, -0.02], size: [0.13, 0.14, 0.13], round: true },
+      { at: [-0.19, 0.06, 0.17], size: [0.13, 0.14, 0.13], round: true },
+    ],
+    lid: { parts: [{ at: [0, 0.2, -0.02], size: [0.92, 0.24, 0.92], round: true },
+                   { at: [0, 0.33, 0.28], size: [0.28, 0.05, 0.05], round: true, along: "x" }],
+           hinge: [0, 0.08, -0.47], opens: 74 },
+    screen: { at: [0, 0.14, 0.5], size: [0.34, 0.1], leans: 0 },
+  },
+  // A screen on a foot, the keyboard in front of it and a mouse beside that. Nothing in a lab's
+  // record is kept on it; it is here because a bench has one, and a room without one is a diagram.
+  computer: {
+    body: [
+      { at: [0, -0.44, 0.26], size: [0.88, 0.08, 0.4] },
+      { at: [0, -0.2, -0.1], size: [0.12, 0.4, 0.08] },
+      { at: [0, -0.44, -0.1], size: [0.46, 0.08, 0.34] },
+      { at: [0, 0.12, -0.07], size: [0.98, 0.68, 0.05] },
+      { at: [0.44, -0.42, 0.3], size: [0.1, 0.06, 0.16], round: true },
+    ],
+    screen: { at: [0, 0.12, -0.03], size: [0.9, 0.6], leans: 6 },
+  },
+  // The base and its lamp, the arm up the back with the focus knobs on it, the stage a slide sits
+  // on, the condenser under it, the turret of objectives, and the eyepieces leaning out at whoever
+  // is at it. It shows nothing: all it has to say is said by the person looking down it.
+  microscope: {
+    body: [
+      { at: [0, -0.42, 0.04], size: [0.82, 0.16, 0.9] },
+      { at: [0, -0.42, -0.38], size: [0.2, 0.1, 0.1], round: true, along: "z" },
+      { at: [0, 0.02, -0.3], size: [0.3, 0.84, 0.3] },
+      { at: [0, -0.12, 0.08], size: [0.66, 0.06, 0.5] },
+      { at: [0, -0.26, 0.08], size: [0.16, 0.16, 0.16], round: true },
+      { at: [0, -0.02, 0.04], size: [0.22, 0.1, 0.22], round: true },
+      { at: [-0.06, -0.1, 0.04], size: [0.07, 0.14, 0.07], round: true },
+      { at: [0.06, -0.1, 0.04], size: [0.07, 0.14, 0.07], round: true },
+      { at: [-0.2, 0.06, -0.3], size: [0.12, 0.12, 0.12], round: true, along: "x" },
+      { at: [0.2, 0.06, -0.3], size: [0.12, 0.12, 0.12], round: true, along: "x" },
+      { at: [0, 0.3, -0.14], size: [0.26, 0.18, 0.3] },
+      { at: [-0.07, 0.36, 0.08], size: [0.1, 0.1, 0.22], round: true, along: "z" },
+      { at: [0.07, 0.36, 0.08], size: [0.1, 0.1, 0.22], round: true, along: "z" },
+    ],
+  },
+  // A metal block with two rows of holes for tubes, a dial, and a small display on its base.
   "heat-block": {
-    body: [{ at: [0, -0.28, 0], size: [1, 0.44, 1] }, { at: [0, 0.02, 0], size: [0.86, 0.16, 0.86] }],
-    screen: { at: [0, -0.18, 0.5], size: [0.3, 0.14], leans: 0 },
+    body: [
+      { at: [0, -0.26, 0], size: [1, 0.48, 1] },
+      { at: [0, 0.02, 0], size: [0.86, 0.16, 0.86] },
+      { at: [-0.34, -0.24, 0.46], size: [0.18, 0.18, 0.08], round: true, along: "z" },
+      { at: [0.38, -0.4, 0.46], size: [0.07, 0.07, 0.06], round: true, along: "z" },
+    ],
+    screen: { at: [0.06, -0.18, 0.5], size: [0.3, 0.14], leans: 0 },
     block: { at: [0, 0.1, 0], size: [0.72, 0.6], rows: 2, columns: 6 },
   },
 };

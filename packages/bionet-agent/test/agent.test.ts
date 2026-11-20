@@ -19,7 +19,7 @@ interface Wren { lab: Lab; tools: AgentTool[]; calls: AgentCall[]; tubes: { pGen
 async function wren(letIn: "adviser" | "member" | null = "adviser"): Promise<Wren> {
   const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
   await lab.setPerson("Ada");
-  await lab.found({ name: "The Wren Lab" });
+  await lab.found({ name: "The Wren Lab", furnish: false });
   const molecules = demoMolecules();
   const room = await lab.addPlace({ kind: "room", name: "Main lab" });
   const bench = await lab.addPlace({ kind: "bench", name: "The bench", parent: room });
@@ -744,7 +744,7 @@ describe("an adviser reading the literature", () => {
   it("can be left out by a host that does not want the lab reaching outside", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     const names = agentTools(lab, { outside: { papers: false, outside: false } }).map((one) => one.name);
     expect(names.some((one) => one.endsWith("_papers") || one === "papers_around" || one.includes("ncbi"))).toBe(false);
   });
@@ -879,7 +879,7 @@ describe("an adviser asking what is known about a protein", () => {
   it("can be left out by a host that does not want the lab reaching outside", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
     await lab.setPerson("Ada");
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     const names = agentTools(lab, { outside: { known: false, papers: false, outside: false } }).map((one) => one.name);
     expect(names.some((one) => one.includes("protein") || one.includes("phosphorylation"))).toBe(false);
   });

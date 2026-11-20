@@ -7,6 +7,7 @@
  * or plainly on a pale ground.
  *
  * - `view.ts` — what to draw at each distance, as plain data, with nothing drawn
+ * - `inspect.ts` — what a scene ended up drawing, as a list: name, colour, where and how big
  * - `scene.tsx` — that list, drawn with three.js
  * - `arranging.ts` — a room being arranged by hand, as plain data
  * - `builder.tsx` — dragging, turning and resizing what stands in a room
@@ -21,6 +22,7 @@
  * Import `@biolibs/bionet-theme/theme.css` and `@biolibs/bionet-scene/scene.css` once.
  */
 export * from "./view.js";
+export * from "./inspect.js";
 export * from "./scene.js";
 export * from "./explorer.js";
 export * from "./arranging.js";

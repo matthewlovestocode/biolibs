@@ -15,7 +15,7 @@ import { describe, expect, it } from "vitest";
 async function lab(): Promise<Lab> {
   const made = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
   await made.setPerson("Ada");
-  await made.found({ name: "The Wren Lab" });
+  await made.found({ name: "The Wren Lab", furnish: false });
   return made;
 }
 

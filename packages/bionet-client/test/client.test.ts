@@ -40,7 +40,7 @@ async function setUp(): Promise<{ ada: Lab; network: Loopback; peerStore: PeerSt
               WebSocket: function (url: string) { return new hold.network!.WebSocket(url); } as unknown as typeof WebSocket }).open();
   const ada = await device();
   await ada.setPerson("Ada");
-  await ada.found({ name: "The Wren Lab" });
+  await ada.found({ name: "The Wren Lab", furnish: false });
   const peerStore = memoryPeerStore();
   hold.network = loopback(createPeer({ lab: ada.labId, origin: ORIGIN, store: peerStore }));
   return { ada, network: hold.network, peerStore, device };
@@ -53,13 +53,13 @@ describe("a device on its own", () => {
   it("makes a key, asks for a name, and founds a lab with no peer anywhere", async () => {
     const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     expect(lab.snapshot()).toMatchObject({ device: { person: null }, lab: null, peer: { status: "offline", url: null } });
-    await expect(lab.found({ name: "Too soon" })).rejects.toThrow("Say who you are first.");
+    await expect(lab.found({ name: "Too soon", furnish: false })).rejects.toThrow("Say who you are first.");
     await expect(lab.setPerson("  ")).rejects.toThrow(/A name/);
     await lab.setPerson("Ada");
-    await expect(lab.found({ name: " " })).rejects.toThrow("A lab needs a name.");
-    await lab.found({ name: "The Wren Lab" });
+    await expect(lab.found({ name: " ", furnish: false })).rejects.toThrow("A lab needs a name.");
+    await lab.found({ name: "The Wren Lab", furnish: false });
     expect(lab.snapshot().lab).toMatchObject({ name: "The Wren Lab", member: true, keeper: true, arrived: true });
-    await expect(lab.found({ name: "Another" })).rejects.toThrow("already in a lab");
+    await expect(lab.found({ name: "Another", furnish: false })).rejects.toThrow("already in a lab");
     expect(lab.snapshot().device.fingerprint).toMatch(/^[0-9a-f]{4}(-[0-9a-f]{4}){3}$/);
   });
 
@@ -239,7 +239,7 @@ describe("keeping it on disk", () => {
     const keys = memoryKeys();
     const first = await new Lab({ store: sqliteStore(dir), keys }).open();
     await first.setPerson("Ada");
-    await first.found({ name: "The Wren Lab" });
+    await first.found({ name: "The Wren Lab", furnish: false });
     await first.addPart({ name: "f1", sequence: F1 });
     const tube = await first.addItem({ part: first.snapshot().lab!.parts[0]!.checksum, amount: 4, unit: "tubes" });
     const key = first.snapshot().device.key;

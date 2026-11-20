@@ -26,7 +26,7 @@ const draw = (lab: Lab | LabSource, what: ReactElement): string =>
 async function wren(): Promise<{ lab: Lab; tube: string }> {
   const lab = await fresh();
   await lab.setPerson("Ada");
-  await lab.found({ name: "The Wren Lab" });
+  await lab.found({ name: "The Wren Lab", furnish: false });
   await lab.addMember({ key: BOBS_KEY, person: "Bob" });
   await lab.addPart({ name: "f1", sequence: F1 });
   const part = lab.snapshot().lab!.parts[0]!.checksum;
@@ -47,7 +47,7 @@ describe("the window", () => {
     expect(noLab).toContain("Found a lab");
     expect(noLab).toContain("Join a lab");
     expect(noLab).toContain(lab.snapshot().device.key);
-    await lab.found({ name: "The Wren Lab" });
+    await lab.found({ name: "The Wren Lab", furnish: false });
     const inLab = draw(lab, h(LabWindow));
     expect(inLab).toContain("<h1>The Wren Lab</h1>");
     expect(inLab).toContain("Ada · keeper · this device");
@@ -220,7 +220,7 @@ describe("the freezer", () => {
     const lab = await fresh();
     expect(draw(lab, h(Freezer))).toBe("");
     await lab.setPerson("Ada");
-    await lab.found({ name: "Empty" });
+    await lab.found({ name: "Empty", furnish: false });
     expect(draw(lab, h(Freezer))).toContain("Nothing in the freezer yet.");
     expect(amountOf({ amount: 4, unit: null })).toBe("4");
     expect(amountOf({ amount: 4, unit: "tubes" })).toBe("4 tubes");

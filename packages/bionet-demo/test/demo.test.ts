@@ -72,7 +72,12 @@ describe("the demo lab", () => {
     expect(lab.member).toBe(true);
     // No primers: the tour designs them, and they arrive.
     expect(lab.parts.map((one) => one.name)).toEqual(["pGene", "pWren backbone"]);
-    expect(lab.places.map((one) => one.name)).toEqual(["Main lab", "The bench", "−80", "Box 1", "Thermocycler", "Gel station", "Heat block", "Shaking incubator"]);
+    // The kit a lab is founded with, and nothing of the demo's own: a lab shown to somebody is the
+    // lab they would get. The four machines the tools are used at are the first four instruments.
+    expect(lab.places.map((one) => one.name)).toEqual([
+      "Main lab", "Bench 1", "Bench 2", "−80 freezer", "4 °C fridge",
+      "Thermocycler", "Gel station", "Heat block", "Shaking incubator",
+      "Centrifuge", "Microscope", "Computer", "Box 1", "Box F1"]);
     // Two tubes and one culture: the lab keeps something alive, so there is something to induce.
     expect(lab.items).toHaveLength(3);
     expect(lab.items.filter((one) => one.part !== null).every((one) => one.where?.place === demo.places.box)).toBe(true);

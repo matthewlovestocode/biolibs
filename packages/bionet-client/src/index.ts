@@ -17,6 +17,7 @@
  * - `store.ts` — the interfaces for storage and key keeping, with in-memory versions
  * - `sqlite.ts` — storage in a SQLite file, at `@biolibs/bionet-client/sqlite` because it needs Node
  */
+export * from "./kit.js";
 export * from "./lab.js";
 export * from "./link.js";
 export * from "./store.js";

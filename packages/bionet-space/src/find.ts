@@ -74,6 +74,36 @@ export const VIEWED_FROM: Readonly<Record<Level, readonly [number, number, numbe
   box: [0, 1, 0.42],
 };
 
+/** How much floor is left round what a room holds, in metres. */
+const ROOM_MARGIN = 0.9;
+
+/**
+ * The box a room is framed by: what stands in it, with a little floor round it, kept inside its walls.
+ *
+ * @param arranged - Every place, arranged.
+ * @param room - The room being looked at, or `null` for the whole lab.
+ * @param walls - The room's own box, which the framing never grows past.
+ * @returns The box to frame.
+ */
+function framing(arranged: readonly Arranged[], room: Arranged | null, walls: Bounds): Bounds {
+  const inside = arranged.filter((each) => (room === null
+    ? each.place.parent !== null && each.path.length === 2
+    : each.place.parent === room.place.id));
+  const held = boundsOf(inside);
+  if (held === null) return walls;
+  const center: [number, number, number] = [0, 0, 0];
+  const size: [number, number, number] = [0, 0, 0];
+  for (let axis = 0; axis < 3; axis++) {
+    // Up and down, what is in the room already reaches the floor, so only the sides are let out.
+    const margin = axis === 1 ? 0 : ROOM_MARGIN;
+    const low = Math.max(held.center[axis]! - held.size[axis]! / 2 - margin, walls.center[axis]! - walls.size[axis]! / 2);
+    const high = Math.min(held.center[axis]! + held.size[axis]! / 2 + margin, walls.center[axis]! + walls.size[axis]! / 2);
+    center[axis] = (low + high) / 2;
+    size[axis] = Math.max(high - low, 0.1);
+  }
+  return { center, size };
+}
+
 /**
  * Where a camera should stand to see a place whole.
  *
@@ -88,8 +118,13 @@ export const VIEWED_FROM: Readonly<Record<Level, readonly [number, number, numbe
  */
 export function poseFor(arranged: readonly Arranged[], id: string | null, fov = 45): Pose {
   const one = id === null ? null : arranged.find((each) => each.place.id === id) ?? null;
-  const bounds = one ?? boundsOf(arranged.filter((each) => each.place.parent === null)) ?? { center: [0, 0, 0], size: [4, 3, 4] };
+  const walls = one ?? boundsOf(arranged.filter((each) => each.place.parent === null)) ?? { center: [0, 0, 0], size: [4, 3, 4] };
   const level = levelOf(one);
+  // A room is framed by what is in it, not by its walls. A lab that has drawn a 7-metre room and
+  // put two things in it would otherwise open on a field of floor with its bench a thumbnail in the
+  // middle. The walls still bound the shot, so the room is never framed from outside itself, and a
+  // room with nothing in it is framed by its walls, there being nothing else to frame.
+  const bounds = level === "lab" || level === "room" ? framing(arranged, one, walls) : walls;
   const [x, y, z] = VIEWED_FROM[level];
   // Turn the direction with the place, so a freezer facing a side wall is still seen from its front.
   const turn = one?.turn ?? 0;

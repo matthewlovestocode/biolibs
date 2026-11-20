@@ -24,7 +24,7 @@ const draw = (lab: Lab, what: ReactElement): string => renderToStaticMarkup(h(La
 async function wren(): Promise<{ lab: Lab; part: string; tube: string; box: string }> {
   const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
   await lab.setPerson("Ada");
-  await lab.found({ name: "The Wren Lab" });
+  await lab.found({ name: "The Wren Lab", furnish: false });
   await lab.addPart({ name: "pTest", sequence: PLASMID, circular: true, features: FEATURES });
   await lab.addPart({ name: "an oligo", sequence: "ACGTACGTACGTACGTACGT" });
   const part = lab.snapshot().lab!.parts.find((one) => one.name === "pTest")!.checksum;

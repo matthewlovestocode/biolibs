@@ -22,7 +22,7 @@ const draw = (lab: Lab, what: ReactElement): string => renderToStaticMarkup(h(La
 async function wren(): Promise<{ lab: Lab; tubes: { template: string; forward: string; reverse: string }; cycler: string; centrifuge: string }> {
   const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
   await lab.setPerson("Ada");
-  await lab.found({ name: "The Wren Lab" });
+  await lab.found({ name: "The Wren Lab", furnish: false });
   const tube = async (name: string, sequence: string): Promise<string> => {
     await lab.addPart({ name, sequence });
     return lab.addItem({ part: lab.snapshot().lab!.parts.at(-1)!.checksum, amount: 20, unit: "µL" });
@@ -120,7 +120,7 @@ describe("the tool an instrument opens", () => {
 
     const empty = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
     await empty.setPerson("Ada");
-    await empty.found({ name: "Empty" });
+    await empty.found({ name: "Empty", furnish: false });
     expect(draw(empty, h(PcrTool))).toContain("There are no tubes to run a PCR from");
   });
 });

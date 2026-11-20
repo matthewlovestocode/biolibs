@@ -140,7 +140,7 @@ function OnItsOwnStage(props: StageProps) {
                 <boxGeometry args={[1, 1, 1]} />
                 <lineBasicMaterial color={paint("yours", shown, 1).color} toneMapped={false} />
               </lineSegments>
-            ) : <InstrumentShape shape={shape} size={size} theme={shown} open={placed.open} well={placed.well} lit={(props.screen ?? []).length > 0} motion={motion} />}
+            ) : <InstrumentShape shape={shape} size={size} theme={shown} open={placed.open} well={placed.well} lit={placed.lit} motion={motion} name={props.name} />}
           </group>
           <InUseContent placed={placed} theme={shown} />
           <Follow labels={labels} layer={layer} />

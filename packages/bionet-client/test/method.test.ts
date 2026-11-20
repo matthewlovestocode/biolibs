@@ -19,7 +19,7 @@ const RING = INSERT + VECTOR;
 const open = async (person: string, name: string): Promise<Lab> => {
   const lab = await new Lab({ store: memoryStore(), keys: memoryKeys(), adviserKeys: memoryKeys() }).open();
   await lab.setPerson(person);
-  await lab.found({ name });
+  await lab.found({ name, furnish: false });
   return lab;
 };
 

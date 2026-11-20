@@ -94,6 +94,8 @@ export interface PlacedInUse {
   kinds: StageTube["strands"][number]["kind"][];
   /** Whether anything in the tube moves during this step. */
   moving: boolean;
+  /** Whether the machine's screen is saying anything, which is the only reason to light it. */
+  lit: boolean;
 }
 
 /**
@@ -124,13 +126,19 @@ export function placeInUse(what: InUse, through: number): PlacedInUse {
     ? measures.map((one, at) => ({ ...measureLine(one, tube.length, size, at), label: one.label })) : [];
 
   const point = (at: readonly [number, number, number]): [number, number, number] => [at[0] * size[0], size[1] / 2 + at[1] * size[1], at[2] * size[2]];
+  // From across the bench a screen is one line: the one the machine is on, or, for a machine that is
+  // on but not running, its first. Reading only the lit line would leave a machine saying
+  // "No programme" showing an empty lit box, which is the scene inventing a state the machine is not in.
+  const nearLines = screen.filter((line) => line.lit === true).slice(0, 1);
+  const oneLine = nearLines.length > 0 ? nearLines : screen.slice(0, 1);
+  const shows = view === "screen" ? screen : oneLine;
   const labels: Label[] = [
     // The screen is read where it is on the machine, small from across the bench and large up close.
-    ...(shape?.screen === undefined || screen.length === 0 || view === "tube" || view === "block" ? [] : [{
+    ...(shape?.screen === undefined || shows.length === 0 || view === "tube" || view === "block" ? [] : [{
       key: "screen", at: point(shape.screen.at), rank: 0,
       content: (
         <div className={view === "screen" ? "lcd large" : "lcd"}>
-          {(view === "screen" ? screen : screen.filter((line) => line.lit === true).slice(0, 1)).map((line, at) => (
+          {shows.map((line, at) => (
             <div key={at} className={line.lit === true ? "lit" : undefined}>{line.text}</div>
           ))}
         </div>
@@ -151,6 +159,9 @@ export function placeInUse(what: InUse, through: number): PlacedInUse {
     close, frame: close === null || tube === undefined ? null : lensFrame(close, tube.length, size),
     molecule: placedMolecule, gel: placedGel, joining: placedJoining, measures: marked, labels,
     kinds: [...new Set(strands.map((one) => one.kind))], moving: view === "tube" && tube !== undefined && tube.strands.some((one) => one.moves !== undefined),
+    // A machine with nothing chosen yet is sitting there dark. Lighting it regardless would be the
+    // scene saying something the machine is not.
+    lit: screen.length > 0,
   };
 }
 

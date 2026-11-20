@@ -19,6 +19,7 @@ import { BoxGeometry, Color, CylinderGeometry, EdgesGeometry, Object3D, Plane, Q
          type InstancedMesh, type Mesh, type PerspectiveCamera } from "three";
 import { colour, type Meaning, type Theme } from "@biolibs/bionet-theme";
 import { InUseContent, atInstrument, type PlacedInUse } from "./in-use.js";
+import { describeScene, pointOnScreen, reportScene } from "./inspect.js";
 import { InstrumentShape } from "./instruments.js";
 import type { Motion } from "./motion.js";
 import { shapeOf } from "./shapes.js";
@@ -190,7 +191,7 @@ function PlaceBox({ place, theme, onPick, drag, inUse }: { place: DrawnPlace; th
         </lineSegments>
       ) : (
         <group rotation={[0, -(place.turn * Math.PI) / 180, 0]}>
-          <InstrumentShape shape={shape} size={own} theme={theme} tone={place.tone} strength={place.strength}
+          <InstrumentShape shape={shape} size={own} theme={theme} tone={place.tone} strength={place.strength} name={place.name}
                            {...(inUse === undefined ? {} : inUse)} />
         </group>
       )}
@@ -335,6 +336,28 @@ function NeighbourLab({ neighbour, from, to, theme, onPick }: {
  * @param props - `view` is where to stand and through what lens; `motion` says whether to travel
  *   there or cut.
  */
+/**
+ * A way to ask the scene what it is drawing, from outside it.
+ *
+ * Put inside the canvas, it leaves `bionetScene` on the window: calling it walks the scene and
+ * answers with every drawn object — its name, its colour, where it is and how big — and calling it
+ * with a word keeps only the objects whose name or colour contains it. Nothing is worked out until
+ * it is called, so this costs nothing to leave in. It is how a scene is argued with: "what is that
+ * pink rectangle" is one call rather than a changed colour and another build.
+ */
+function Inspectable() {
+  const scene = useThree((state) => state.scene);
+  const camera = useThree((state) => state.camera);
+  const canvas = useThree((state) => state.gl.domElement);
+  useEffect(() => {
+    const window_ = globalThis as unknown as { bionetScene?: unknown; bionetScenePoint?: unknown };
+    window_.bionetScene = (only?: string) => describeScene(reportScene(scene, only));
+    window_.bionetScenePoint = (name: string) => pointOnScreen(scene, camera, canvas.getBoundingClientRect(), name);
+    return () => { delete window_.bionetScene; delete window_.bionetScenePoint; };
+  }, [scene, camera, canvas]);
+  return null;
+}
+
 export function Rig({ view, motion = "on" }: { view: Pick<SceneView, "pose" | "fov">; motion?: Motion }) {
   const camera = useThree((state) => state.camera);
   const controls = useThree((state) => state.controls) as unknown as { target: Vector3; update: () => void } | null;
@@ -436,7 +459,7 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
       </gridHelper>
       {view.places.map((place) => (
         <PlaceBox key={place.id} place={place} theme={theme} onPick={(id) => onFocus({ place: id })} drag={drag}
-                  {...(using === undefined || place.id !== using.place ? {} : { inUse: { open: using.placed.open, lit: true, ...(using.placed.well === undefined ? {} : { well: using.placed.well }) } })} />
+                  {...(using === undefined || place.id !== using.place ? {} : { inUse: { open: using.placed.open, lit: using.placed.lit, ...(using.placed.well === undefined ? {} : { well: using.placed.well }) } })} />
       ))}
       {using !== undefined && under !== null && worked !== null && (
         <group position={under}>
@@ -454,6 +477,7 @@ export function LabScene({ view, theme, onFocus, neighbours = [], onNeighbour, d
       <Follow labels={labels} layer={layer} />
       <OrbitControls makeDefault enableDamping dampingFactor={0.12} maxPolarAngle={Math.PI / 2 - 0.03} minDistance={0.08} maxDistance={60} />
       <Rig view={view} motion={motion} />
+      <Inspectable />
       {theme === "dark" && (
         <EffectComposer>
           <Bloom mipmapBlur intensity={0.85} luminanceThreshold={0.55} luminanceSmoothing={0.3} />
