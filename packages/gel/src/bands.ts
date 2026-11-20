@@ -45,6 +45,90 @@ export function bandPosition(size: number, gel: Resolving): number {
 }
 
 /**
+ * What size ran to a place on the gel: the inverse of {@link bandPosition}.
+ *
+ * It is the gel's own idealised model read backwards, which is what to use when there is no ladder
+ * to go by. Where there is one, {@link sizeFromLadder} is better: a real gel is read against the
+ * markers that ran beside the sample on it, not against a model of how it should have run.
+ *
+ * @param position - How far down the gel, from 0 at the wells to 1 at the front.
+ * @param gel - The range the gel separates.
+ * @returns The size, in base pairs for DNA or kilodaltons for protein.
+ * @throws {@link ValueError} for a position outside 0 to 1.
+ * @example
+ * ```ts
+ * const gel = { id: "1.0", percent: 1, largest: 10000, smallest: 250 };
+ * Math.round(sizeAt(0, gel));      // 10000
+ * Math.round(sizeAt(1, gel));      // 250
+ * Math.round(sizeAt(0.5, gel));    // 1581 — the geometric mean of the two ends
+ * ```
+ */
+export function sizeAt(position: number, gel: Resolving): number {
+  if (!Number.isFinite(position) || position < 0 || position > 1) {
+    throw new ValueError(`a position must be between 0 and 1, got ${position}`);
+  }
+  const high = Math.log10(gel.largest);
+  const low = Math.log10(gel.smallest);
+  return 10 ** (high - position * (high - low));
+}
+
+/** A size read off a gel against the ladder that ran beside it. */
+export interface Read {
+  /** The size it works out to. */
+  size: number;
+  /** Where it was measured, from 0 at the wells to 1 at the front. */
+  position: number;
+  /** The two ladder bands it was read between, or the nearest one where it was outside them. */
+  between: readonly number[];
+  /** True when the band ran outside the ladder's own range, so the size is an extrapolation. */
+  extrapolated: boolean;
+}
+
+/**
+ * What size ran to a place on the gel, read against the ladder that ran beside it.
+ *
+ * This is what a person does with a photograph of a gel: find the two markers the band sits between
+ * and read off where it falls between them. Size against distance is straight in the logarithm over
+ * the gel's working range, so the interpolation is done there.
+ *
+ * A band outside the ladder's range is extrapolated rather than interpolated, and says so. Past the
+ * top marker the gel is compressing everything large together and the number means very little;
+ * past the bottom one it is running off the end.
+ *
+ * @param position - How far down the gel the band is, from 0 at the wells to 1 at the front.
+ * @param ladder - The ladder's bands as they ran, in any order. Needs at least two.
+ * @returns The size, which markers it was read between, and whether it was extrapolated.
+ * @throws {@link ValueError} for fewer than two ladder bands, or a position outside 0 to 1.
+ * @example
+ * ```ts
+ * const ladder = ladderBands(ladderById("1kb").sizes, gelById("1.0"));
+ * sizeFromLadder(0.5, ladder).size;           // the size half way down
+ * sizeFromLadder(0, ladder).extrapolated;     // true: above the largest marker
+ * ```
+ */
+export function sizeFromLadder(position: number, ladder: readonly Pick<Band, "size" | "position">[]): Read {
+  if (!Number.isFinite(position) || position < 0 || position > 1) {
+    throw new ValueError(`a position must be between 0 and 1, got ${position}`);
+  }
+  const rungs = [...ladder].filter((one) => one.size > 0).sort((a, b) => a.position - b.position);
+  if (rungs.length < 2) throw new ValueError("reading a size off a ladder needs at least two of its bands");
+  const first = rungs[0]!;
+  const last = rungs[rungs.length - 1]!;
+  // Two markers to read between: the pair that brackets it, or the outermost pair where it is outside them.
+  const after = rungs.findIndex((one) => one.position >= position);
+  const [below, above] = position <= first.position ? [rungs[0]!, rungs[1]!]
+    : position >= last.position ? [rungs[rungs.length - 2]!, last]
+    : [rungs[after - 1]!, rungs[after]!];
+  const extrapolated = position < first.position || position > last.position;
+  const span = above.position - below.position;
+  // Two markers at the same place say nothing about what is between them.
+  if (span === 0) return { size: below.size, position, between: [below.size, above.size], extrapolated };
+  const through = (position - below.position) / span;
+  const size = 10 ** (Math.log10(below.size) + through * (Math.log10(above.size) - Math.log10(below.size)));
+  return { size, position, between: [below.size, above.size], extrapolated };
+}
+
+/**
  * Whether a gel separates a fragment of this size from its neighbours, i.e. whether it falls inside the gel's
  * resolving range.
  *

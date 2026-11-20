@@ -17,6 +17,9 @@
  * - `pcr-working.ts` — the working behind what the PCR tool says: each figure with the steps that give it
  * - `protein.ts` — the protein a gene codes for, and what its sequence says about it
  * - `induce.ts` — growing a strain to express what was put into it, and the mass its band should run at
+ * - `imager.ts` — a photograph of a gel read backwards: where a band landed into the size that landed there
+ * - `imager-working.ts` — the working behind a size read off a ladder, and behind what a band’s brightness means
+ * - `imager-bench.tsx` — a gel read at the imager: the picture, the lane as a profile, and what was expected of it
  * - `electro.ts` — a pulse through a cuvette: the field across the gap, the time constant, and what each says
  * - `electro-working.ts` — the working behind each of those, and what the one that came back is evidence of
  * - `electro-bench.tsx` — a transformation at the electroporator: the field in the cuvette, and the strain it makes
@@ -67,12 +70,15 @@ export * from "./pcr-working.js";
 export * from "./digest-working.js";
 export * from "./protein.js";
 export * from "./induce.js";
+export * from "./imager.js";
+export * from "./imager-working.js";
 export * from "./electro.js";
 export * from "./electro-working.js";
 export * from "./spectro.js";
 export * from "./spectro-working.js";
 export * from "./spectro-bench.js";
 export * from "./electro-bench.js";
+export * from "./imager-bench.js";
 export * from "./modify.js";
 export * from "./remedy.js";
 export * from "./induce-bench.js";

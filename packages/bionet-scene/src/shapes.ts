@@ -745,6 +745,7 @@ const VIEW_NAMES: Readonly<Record<string, Partial<Record<StageView, string>>>> =
   "shaking-incubator": { machine: "The incubator", block: "The flasks", screen: "The display", tube: "In the cells", result: "The gel" },
   spectrophotometer: { machine: "The machine", block: "The cuvette well", screen: "The reading", tube: "The light through it", result: "What it means" },
   electroporator: { machine: "The machine", block: "The cuvette", screen: "The pulse", tube: "In the cuvette", result: "What grew" },
+  "gel-imager": { machine: "The machine", block: "The gel on the light", screen: "The exposure", tube: "What the bands hold", result: "Against what was expected" },
 };
 
 /**
@@ -1099,6 +1100,84 @@ export function placeField(field: StageField, centre: readonly [number, number, 
       { key: "gap", text: `${field.gap} mm`, at: at(0, -h * 0.66) },
       { key: "field", text: `${field.strength} kV/cm`, at: at(0, h * 0.6) },
       ...(field.taken > 0 ? [{ key: "taken", text: `${field.taken} of ${many} took it up`, at: at(0, -h * 0.9) }] : []),
+    ],
+  };
+}
+
+/** A lane of a gel as a profile along it, which is where an exposure that has burnt out shows. */
+export interface StageTrace {
+  /** What the lane is, written over it. */
+  what: string;
+  /** The brightness along the lane, from the wells to the front, each from 0 to 1. */
+  along: readonly number[];
+  /** Where the camera stops being able to record a greater brightness, from 0 to 1. */
+  ceiling: number;
+  /** The bands on it: where along, what to call them, and whether they are at the ceiling. */
+  marks: readonly { at: number; label: string; saturated: boolean }[];
+}
+
+/** That, worked out. */
+export interface PlacedTrace {
+  /** The lane's own line, from the wells to the front. */
+  axis: Point[];
+  /** The profile, as a line. */
+  curve: Point[];
+  /** The ceiling, as a line across it. */
+  ceiling: Point[];
+  /** Each band: a tick up from the axis, where to write it, and whether it is at the ceiling. */
+  marks: { points: Point[]; at: Point; label: string; saturated: boolean }[];
+  /** What to write, and where. */
+  labels: { key: string; text: string; at: Point }[];
+}
+
+/**
+ * Where to draw a lane as a profile along it.
+ *
+ * A photograph of a gel shows a band as bright or not bright. It cannot show that a band is at the
+ * top of what the camera can record, because a band at the top and a band well past the top look
+ * exactly the same — brighter, and no more. Drawn as a profile they do not: one is a peak and the
+ * other is a peak with its top cut off, against a line that says where the cut is.
+ *
+ * @param trace - The profile, the ceiling, and the bands on it.
+ * @param centre - Where the middle of it goes.
+ * @param toward - A point it should face, usually the camera.
+ * @param size - How wide and tall to draw it, in metres.
+ * @returns The axis, the profile, the ceiling and the bands.
+ *
+ * @example
+ * ```ts
+ * import { placeTrace } from "@biolibs/bionet-scene";
+ *
+ * placeTrace({ what: "the cut lane", along, ceiling: 0.98, marks }, centre, camera, [0.6, 0.3]);
+ * ```
+ */
+export function placeTrace(trace: StageTrace, centre: readonly [number, number, number], toward: readonly [number, number, number],
+                           size: readonly [number, number]): PlacedTrace {
+  const unit = (v: Point): Point => { const n = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / n, v[1] / n, v[2] / n]; };
+  const cross = (a: Point, b: Point): Point => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const facing = unit([toward[0] - centre[0], toward[1] - centre[1], toward[2] - centre[2]]);
+  const right = unit(cross(Math.abs(facing[1]) > 0.98 ? [0, 0, -1] : [0, 1, 0], facing));
+  const up = cross(facing, right);
+  const at = (x: number, y: number): Point => [centre[0] + right[0] * x + up[0] * y, centre[1] + right[1] * x + up[1] * y, centre[2] + right[2] * x + up[2] * y];
+  const [w, h] = size;
+  const floor = -h * 0.34;
+  const tall = h * 0.68;
+  const along = (fraction: number): number => (Math.min(1, Math.max(0, fraction)) - 0.5) * w;
+  const high = (value: number): number => floor + Math.min(1, Math.max(0, value)) * tall;
+  const ceiling = Math.min(1, Math.max(0, trace.ceiling));
+  // A profile of one point is a point, not a line; two make the shortest line there is.
+  const points = trace.along.length >= 2 ? trace.along : [0, ...trace.along, 0];
+  return {
+    axis: [at(-w / 2, floor), at(w / 2, floor)],
+    curve: points.map((value, index) => at(along(index / (points.length - 1)), high(value))),
+    ceiling: [at(-w / 2, high(ceiling)), at(w / 2, high(ceiling))],
+    marks: trace.marks.map((mark) => ({
+      points: [at(along(mark.at), floor), at(along(mark.at), floor - h * 0.1)],
+      at: at(along(mark.at), floor - h * 0.2), label: mark.label, saturated: mark.saturated,
+    })),
+    labels: [
+      { key: "what", text: trace.what, at: at(0, floor + tall + h * 0.14) },
+      { key: "ceiling", text: "as bright as the camera records", at: at(w * 0.5, high(ceiling) + h * 0.07) },
     ],
   };
 }

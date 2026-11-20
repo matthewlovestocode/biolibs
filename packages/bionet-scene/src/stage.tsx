@@ -29,7 +29,7 @@ import { useMotion, type Motion } from "./motion.js";
 import { InUseContent, useInUse, type InUseHere } from "./in-use.js";
 export type { StageLine } from "./in-use.js";
 import { Follow, Rig, paint, useSystemTheme } from "./scene.js";
-import type { StageBeam, StageField, StageGel, StageJoining, StageLens, StageMeasure, StageMolecule, StageScale, StageTube, StageView } from "./shapes.js";
+import type { StageBeam, StageField, StageGel, StageJoining, StageLens, StageMeasure, StageMolecule, StageScale, StageTrace, StageTube, StageView } from "./shapes.js";
 import type { StageLine } from "./in-use.js";
 
 /** What a host hands over to have one instrument's use drawn, wherever it is drawn. */
@@ -49,6 +49,7 @@ interface StageProps {
   beam?: StageBeam;
   scale?: StageScale;
   field?: StageField;
+  trace?: StageTrace;
   measures?: readonly StageMeasure[];
   theme?: Theme;
   motion?: Motion;
@@ -70,6 +71,7 @@ const handedOver = (props: StageProps): InUseHere => ({
   ...(props.beam === undefined ? {} : { beam: props.beam }),
   ...(props.scale === undefined ? {} : { scale: props.scale }),
   ...(props.field === undefined ? {} : { field: props.field }),
+  ...(props.trace === undefined ? {} : { trace: props.trace }),
   measures: props.measures ?? [],
   ...(props.seconds === undefined ? {} : { seconds: props.seconds }),
   ...(props.onPlayed === undefined ? {} : { onPlayed: props.onPlayed }),

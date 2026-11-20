@@ -1162,6 +1162,60 @@ export function PulseDiagram(options: FigureOptions) {
   );
 }
 
+
+/**
+ * A lane drawn as a profile, where the two things a gel photograph hides are visible.
+ *
+ * With `byMass` it shows two bands at the same number of molecules, one six times the length of
+ * the other, so the shorter one is a sixth the height — which in a photograph looks like failure.
+ * Without it, two peaks against the line where the camera gives out, one of them with its top cut
+ * off, which is what a saturated band is and what no photograph can show.
+ */
+export function ExposureDiagram({ byMass = false, ...options }: FigureOptions & { byMass?: boolean }) {
+  const [left, right, floor, tall] = [40, 400, 136, 104];
+  const peaks = byMass
+    ? [{ at: 0.3, high: 1, label: "3,000 bp" }, { at: 0.7, high: 1 / 6, label: "500 bp" }]
+    : [{ at: 0.3, high: 1.45, label: "cut off" }, { at: 0.7, high: 0.55, label: "a peak" }];
+  const ceiling = byMass ? 1.25 : 1;
+  const at = (fraction: number): number => left + fraction * (right - left);
+  const high = (value: number): number => floor - Math.min(ceiling, value) * tall;
+  const points = Array.from({ length: 73 }, (_, index) => {
+    const along = index / 72;
+    const value = peaks.reduce((sum, peak) => sum + peak.high * Math.exp(-(((along - peak.at) / 0.055) ** 2)), 0);
+    return `${at(along)},${high(value)}`;
+  }).join(" ");
+  return (
+    <Figure
+      width={440}
+      height={186}
+      description={byMass
+        ? "Two bands holding the same number of molecules, drawn as a profile along the lane. The 3,000 bp one is six times the height of the 500 bp one, because the stain binds along the DNA."
+        : "Two bands drawn as a profile along the lane, against the line where the camera stops recording. One peak is below it; the other has its top cut off by it."}
+      caption={byMass
+        ? "The same number of molecules in both. The stain binds along the DNA, so the longer band is six times brighter — which is why a short insert beside its vector looks like it failed when it did not."
+        : "A photograph shows both of these as a bright band. Only the profile shows that one of them has run into the top of what the camera records, where a brighter band would look no different."}
+      {...options}
+    >
+      <line x1={left} y1={floor} x2={right} y2={floor} stroke="var(--line)" strokeWidth={1.4} />
+      {!byMass && (
+        <>
+          <line x1={left} y1={high(ceiling)} x2={right} y2={high(ceiling)} stroke="var(--base-t)" strokeWidth={1.4} strokeDasharray="5 4" />
+          <Note x={right} y={high(ceiling) - 7} anchor="end" fill="var(--base-t)">as bright as the camera records</Note>
+        </>
+      )}
+      <polyline points={points} fill="none" stroke="var(--ink)" strokeWidth={2.4} strokeLinejoin="round" />
+      {peaks.map((peak) => (
+        <g key={peak.label}>
+          <line x1={at(peak.at)} y1={floor} x2={at(peak.at)} y2={floor + 8} stroke="var(--muted)" strokeWidth={1.2} />
+          <Note x={at(peak.at)} y={floor + 22} anchor="middle" mono>{peak.label}</Note>
+        </g>
+      ))}
+      <Note x={left} y={floor + 22} anchor="start">wells</Note>
+      <Note x={right} y={floor + 22} anchor="end">front</Note>
+    </Figure>
+  );
+}
+
 /** The diagram for a glossary entry (or one of the extra lesson pictures), or null if it has none. */
 export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string }) {
   switch (slug) {
@@ -1246,6 +1300,12 @@ export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string
       return <PrimerEndDiagram kind="dimer" {...options} />;
     case "gel-electrophoresis":
       return <GelDiagram {...options} />;
+    case "ladder":
+      return <GelDiagram {...options} />;
+    case "saturation":
+      return <ExposureDiagram {...options} />;
+    case "band-intensity":
+      return <ExposureDiagram byMass {...options} />;
     case "spectrophotometer":
     case "absorbance":
       return <BeamDiagram {...options} />;

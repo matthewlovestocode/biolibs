@@ -10,7 +10,7 @@
 import { Line } from "@react-three/drei";
 import type { Theme } from "@biolibs/bionet-theme";
 import { paint, type Label } from "./scene.js";
-import type { PlacedBeam, PlacedField, PlacedGel, PlacedJoining, PlacedMolecule, PlacedScale } from "./shapes.js";
+import type { PlacedBeam, PlacedField, PlacedGel, PlacedJoining, PlacedMolecule, PlacedScale, PlacedTrace } from "./shapes.js";
 
 /**
  * The names to write over a molecule: each stretch marked on it, and what it is.
@@ -246,6 +246,43 @@ export function Field({ placed, theme }: { placed: PlacedField; theme: Theme }) 
         </group>
       ))}
       <Line points={placed.measure.points} color={metal.color} lineWidth={1.4} transparent opacity={metal.opacity * 0.8} toneMapped={false} />
+    </group>
+  );
+}
+
+/**
+ * What to write over a lane's profile: which lane it is, where the camera gives out, and each band.
+ *
+ * @param placed - The profile, worked out by `placeTrace`.
+ * @returns Labels for `Follow`. A band at the ceiling is the thing to read first.
+ */
+export function traceLabels(placed: PlacedTrace): Label[] {
+  return [
+    ...placed.labels.map((one): Label => ({ key: `trace ${one.key}`, at: one.at, rank: one.key === "what" ? 1 : 3,
+                                            content: <span className={`trace-said ${one.key}`}>{one.text}</span> })),
+    ...placed.marks.map((one, at): Label => ({ key: `trace band ${at}`, at: one.at, rank: one.saturated ? 0 : 2,
+                                               content: <span className={`trace-band${one.saturated ? " burnt" : ""}`}>{one.label}</span> })),
+  ];
+}
+
+/**
+ * A lane of a gel as a profile along it. It goes inside a canvas.
+ *
+ * @param props - `placed` is the profile, worked out by `placeTrace`; `theme` is the theme.
+ */
+export function Trace({ placed, theme }: { placed: PlacedTrace; theme: Theme }) {
+  const rule = paint("dim", theme, 0.7);
+  const line = paint("ink", theme, 0.9);
+  const top = paint("attention", theme, 0.9);
+  return (
+    <group>
+      <Line points={placed.axis} color={rule.color} lineWidth={1.4} transparent opacity={rule.opacity} toneMapped={false} />
+      <Line points={placed.ceiling} color={top.color} lineWidth={1.4} transparent opacity={0.7} dashed dashSize={0.012} gapSize={0.008} toneMapped={false} />
+      <Line points={placed.curve} color={line.color} lineWidth={2.4} transparent opacity={line.opacity} toneMapped={false} />
+      {placed.marks.map((mark, at) => (
+        <Line key={at} points={mark.points} color={(mark.saturated ? top : rule).color} lineWidth={mark.saturated ? 2.4 : 1.4}
+              transparent opacity={mark.saturated ? 0.9 : rule.opacity} toneMapped={false} />
+      ))}
     </group>
   );
 }
