@@ -10,7 +10,7 @@
 import { Line } from "@react-three/drei";
 import type { Theme } from "@biolibs/bionet-theme";
 import { paint, type Label } from "./scene.js";
-import type { PlacedBeam, PlacedGel, PlacedJoining, PlacedMolecule, PlacedScale } from "./shapes.js";
+import type { PlacedBeam, PlacedField, PlacedGel, PlacedJoining, PlacedMolecule, PlacedScale } from "./shapes.js";
 
 /**
  * The names to write over a molecule: each stretch marked on it, and what it is.
@@ -200,6 +200,52 @@ export function Scale({ placed, theme }: { placed: PlacedScale; theme: Theme }) 
         return <Line key={`band ${at}`} points={band.points} color={tone.color} lineWidth={5} transparent opacity={0.85} toneMapped={false} />;
       })}
       <Line points={placed.pointer} color={mark.color} lineWidth={3} transparent opacity={mark.opacity} toneMapped={false} />
+    </group>
+  );
+}
+
+/**
+ * What to write over a field: the gap, the field it makes, and how many cells took something up.
+ *
+ * @param placed - The field, worked out by `placeField`.
+ * @returns Labels for `Follow`. The field matters most: it is the number the voltage is not.
+ */
+export function fieldLabels(placed: PlacedField): Label[] {
+  return placed.labels.map((one): Label => ({
+    key: `field ${one.key}`, at: one.at, rank: one.key === "field" ? 0 : 2,
+    content: <span className={`field-said ${one.key}`}>{one.text}</span>,
+  }));
+}
+
+/**
+ * The inside of a cuvette during a pulse. It goes inside a canvas.
+ *
+ * The two electrodes, the field between them drawn at the strength it is against what this host is
+ * usually given, the cells in it, and the DNA going into the ones that took it up.
+ *
+ * @param props - `placed` is the field, worked out by `placeField`; `theme` is the theme.
+ */
+export function Field({ placed, theme }: { placed: PlacedField; theme: Theme }) {
+  const metal = paint("dim", theme, 0.9);
+  const live = paint("held", theme, 1);
+  const wall = paint("ink", theme, 0.6);
+  const took = paint("good", theme, 1);
+  return (
+    <group>
+      {placed.electrodes.map((one, at) => (
+        <Line key={`electrode ${at}`} points={one} color={metal.color} lineWidth={5} transparent opacity={metal.opacity} toneMapped={false} />
+      ))}
+      {placed.lines.map((one, at) => (
+        <Line key={`field ${at}`} points={one.points} color={live.color} lineWidth={1.3} transparent opacity={one.strength * 0.55} toneMapped={false} />
+      ))}
+      {placed.cells.map((cell, at) => (
+        <group key={`cell ${at}`}>
+          <Line points={cell.ring} color={cell.taken ? took.color : wall.color} lineWidth={cell.taken ? 2.4 : 1.6}
+                transparent opacity={cell.taken ? 1 : wall.opacity} toneMapped={false} />
+          {cell.dna !== null && <Line points={cell.dna} color={took.color} lineWidth={2} transparent opacity={0.85} toneMapped={false} />}
+        </group>
+      ))}
+      <Line points={placed.measure.points} color={metal.color} lineWidth={1.4} transparent opacity={metal.opacity * 0.8} toneMapped={false} />
     </group>
   );
 }

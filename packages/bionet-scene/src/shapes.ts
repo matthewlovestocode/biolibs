@@ -744,6 +744,7 @@ const VIEW_NAMES: Readonly<Record<string, Partial<Record<StageView, string>>>> =
   "heat-block": { machine: "The heat block", block: "The wells", screen: "The temperature", tube: "In the tube", result: "What it makes" },
   "shaking-incubator": { machine: "The incubator", block: "The flasks", screen: "The display", tube: "In the cells", result: "The gel" },
   spectrophotometer: { machine: "The machine", block: "The cuvette well", screen: "The reading", tube: "The light through it", result: "What it means" },
+  electroporator: { machine: "The machine", block: "The cuvette", screen: "The pulse", tube: "In the cuvette", result: "What grew" },
 };
 
 /**
@@ -996,6 +997,108 @@ export function placeScale(scale: StageScale, centre: readonly [number, number, 
     labels: [
       { key: "reading", text: scale.label, at: at(along(scale.at), -h * 0.56) },
       { key: "what", text: scale.what, at: at(0, h * 0.68) },
+    ],
+  };
+}
+
+/** The field between two electrodes, for the machine that puts DNA in by breaking cells open. */
+export interface StageField {
+  /** The gap between the electrodes, in millimetres. */
+  gap: number;
+  /** The field across it, in kilovolts per centimetre, which is what the cells are in. */
+  strength: number;
+  /** The field this host is usually given, for drawing the one set against it, or `null` if unknown. */
+  usual: number | null;
+  /** How many cells to draw. */
+  cells: number;
+  /** How many of them took something up. */
+  taken: number;
+}
+
+/** That, worked out. */
+export interface PlacedField {
+  /** The two electrodes, each as a line. */
+  electrodes: [Point[], Point[]];
+  /** The field between them, as lines across the gap, each at the strength it is drawn at. */
+  lines: { points: [Point, Point]; strength: number }[];
+  /** The cells in it: a ring each, whether it took something up, and the DNA going in if it did. */
+  cells: { ring: Point[]; taken: boolean; dna: [Point, Point] | null }[];
+  /** The gap, marked off under them. */
+  measure: { points: Point[]; at: Point };
+  /** What to write, and where. */
+  labels: { key: string; text: string; at: Point }[];
+}
+
+/**
+ * Where to draw the field inside a cuvette.
+ *
+ * What a protocol writes down is a voltage; what the cells are in is a field, which is that voltage
+ * over the gap. Drawing the gap with its measurement beside the field it makes is the one picture
+ * that keeps those two apart, which is the thing people get wrong when they carry a voltage over
+ * from a protocol written for another cuvette.
+ *
+ * @param field - The gap, the field, and the cells in it.
+ * @param centre - Where the middle of the cuvette goes.
+ * @param toward - A point it should face, usually the camera.
+ * @param size - How wide and tall to draw the whole thing, in metres.
+ * @returns The electrodes, the field lines, the cells and the gap.
+ *
+ * @example
+ * ```ts
+ * import { placeField } from "@biolibs/bionet-scene";
+ *
+ * placeField({ gap: 2, strength: 7.5, usual: 7.5, cells: 14, taken: 2 }, centre, camera, [0.5, 0.3]);
+ * ```
+ */
+export function placeField(field: StageField, centre: readonly [number, number, number], toward: readonly [number, number, number],
+                           size: readonly [number, number]): PlacedField {
+  const unit = (v: Point): Point => { const n = Math.hypot(v[0], v[1], v[2]) || 1; return [v[0] / n, v[1] / n, v[2] / n]; };
+  const cross = (a: Point, b: Point): Point => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]];
+  const facing = unit([toward[0] - centre[0], toward[1] - centre[1], toward[2] - centre[2]]);
+  const right = unit(cross(Math.abs(facing[1]) > 0.98 ? [0, 0, -1] : [0, 1, 0], facing));
+  const up = cross(facing, right);
+  const at = (x: number, y: number): Point => [centre[0] + right[0] * x + up[0] * y, centre[1] + right[1] * x + up[1] * y, centre[2] + right[2] * x + up[2] * y];
+  const [w, h] = size;
+  // The gap is drawn to scale against the others a lab has, so a 4 mm cuvette looks twice a 2 mm one.
+  const across = (w * 0.76 * Math.min(4, Math.max(1, field.gap))) / 4;
+  const [left, far] = [-across / 2, across / 2];
+  // How hard the field is drawn: against the one this host is usually given, where that is known.
+  const hard = field.usual === null || field.usual <= 0 ? 0.7 : Math.min(1.3, field.strength / field.usual) / 1.3;
+  // Enough of them, drawn thinly, to read as a field rather than as the rungs of a ladder.
+  const LINES = 13;
+  const lines = Array.from({ length: LINES }, (_, index) => {
+    const y = h * 0.34 * (1 - (2 * index) / (LINES - 1));
+    return { points: [at(left, y), at(far, y)] as [Point, Point], strength: Math.max(0.08, hard) };
+  });
+  // A ring of twelve, which reads as round without being a circle of a hundred points.
+  const ring = (x: number, y: number, radius: number): Point[] =>
+    Array.from({ length: 13 }, (_, index) => {
+      const angle = (index / 12) * Math.PI * 2;
+      return at(x + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
+    });
+  const many = Math.max(0, Math.min(40, Math.floor(field.cells)));
+  const columns = Math.max(1, Math.ceil(Math.sqrt(many * (across / (h * 0.6)))));
+  const rows = Math.max(1, Math.ceil(many / columns));
+  const radius = Math.min(across / (columns * 3.2), (h * 0.6) / (rows * 3.2));
+  const cells = Array.from({ length: many }, (_, index) => {
+    const column = index % columns;
+    const row = Math.floor(index / columns);
+    const x = left + (across * (column + 0.5)) / columns;
+    const y = h * 0.3 - (h * 0.6 * (row + 0.5)) / rows;
+    const taken = index < Math.max(0, Math.min(many, Math.floor(field.taken)));
+    return {
+      ring: ring(x, y, radius), taken,
+      dna: taken ? [at(x - radius * 2.4, y + radius * 1.4), at(x, y)] as [Point, Point] : null,
+    };
+  });
+  return {
+    electrodes: [[at(left, h * 0.46), at(left, -h * 0.46)], [at(far, h * 0.46), at(far, -h * 0.46)]],
+    lines, cells,
+    measure: { points: [at(left, -h * 0.54), at(far, -h * 0.54)], at: at(0, -h * 0.66) },
+    labels: [
+      { key: "gap", text: `${field.gap} mm`, at: at(0, -h * 0.66) },
+      { key: "field", text: `${field.strength} kV/cm`, at: at(0, h * 0.6) },
+      ...(field.taken > 0 ? [{ key: "taken", text: `${field.taken} of ${many} took it up`, at: at(0, -h * 0.9) }] : []),
     ],
   };
 }

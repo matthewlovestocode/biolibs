@@ -89,9 +89,9 @@ const KINDS: Readonly<Record<string, { title: string; records: string; notSaid: 
     notSaid: ["which assembly mix", "what temperature to hold it at, and for how long", "how much of each piece, by concentration"],
   },
   transformation: {
-    records: "on the Strains page. Whether it worked is whether colonies grew, which only you can say, and either way it used what it used.", title: "Put it into a host",
-    notSaid: ["how the cells are made competent", "heat shock or electroporation, and the settings for it",
-              "how long to let them recover, and in what", "what to select on"],
+    records: "at the electroporator, which takes what it used and, if colonies grew, puts the strain in the lab. Whether it worked is whether colonies grew, which only you can say.", title: "Put it into a host",
+    notSaid: ["how the cells are made competent", "how long to let them recover, and in what",
+              "whether it was done by heat shock instead, which this does not record"],
   },
   induction: {
     records: "at the induction tool, which takes what it used and, if the band is there, puts the protein in the freezer.", title: "Grow it and look for the protein",
@@ -257,8 +257,7 @@ export function protocolsFor(lab: ProtocolLab, options: { project?: string; titl
         number,
         title: known?.title ?? `Carry out the ${step.plan.kind}`,
         takeOut, set, doThis,
-        // Recording is what keeps the lab's history true, and where it is done differs by kind:
-        // a transformation is not run at a machine and is said on the Strains page.
+        // Recording is what keeps the lab's history true, and where it is done differs by kind.
         thenRecord: `Record it ${known?.records ?? `at the ${step.plan.kind} tool.`}`,
         notSaid: [...(known?.notSaid ?? ["what this plan does not record, the lab supplies as usual"])],
         note: step.plan.note,

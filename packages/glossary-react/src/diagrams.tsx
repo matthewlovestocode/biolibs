@@ -1115,6 +1115,53 @@ export function BeamDiagram({ scatters = false, ...options }: FigureOptions & { 
   );
 }
 
+
+/**
+ * A cuvette between two electrodes: the gap, the field it makes, and the cells in it.
+ *
+ * It draws the same thing twice, in two cuvettes, at one voltage — because the one thing worth
+ * knowing here is that the same setting is two different fields in two different gaps.
+ */
+export function PulseDiagram(options: FigureOptions) {
+  const volts = 1_500;
+  const mid = 96;
+  const cuvettes = [
+    { gap: 1, x: 112, half: 22 },
+    { gap: 2, x: 300, half: 44 },
+  ];
+  return (
+    <Figure
+      width={440}
+      height={176}
+      description="The same 1,500 volts across a 1 mm gap and a 2 mm gap. The narrow cuvette is in 15 kV/cm and the wide one in 7.5 kV/cm: the same setting, half the field."
+      caption="What a protocol writes down is a voltage; what the cells are in is a field, which is that voltage divided by the gap. The same setting in a cuvette twice as wide is half the field, and the machine does not know which cuvette is in it."
+      {...options}
+    >
+      {cuvettes.map(({ gap, x, half }) => {
+        const strength = (volts / 1000) / (gap / 10);
+        const hard = strength / 15;
+        return (
+          <g key={gap}>
+            {[0, 1, 2, 3, 4, 5, 6].map((at) => {
+              const y = mid - 36 + at * 12;
+              return <line key={at} x1={x - half} y1={y} x2={x + half} y2={y} stroke="var(--base-g)" strokeWidth={1.2} opacity={0.25 + hard * 0.6} />;
+            })}
+            {[0, 1, 2, 3].map((at) => (
+              <circle key={at} cx={x - half + ((at + 0.5) * half * 2) / 4} cy={mid} r={Math.min(7, half / 2.4)} fill="none" stroke="var(--ink)" strokeWidth={1.4} opacity={0.75} />
+            ))}
+            <line x1={x - half} y1={mid - 48} x2={x - half} y2={mid + 48} stroke="var(--muted)" strokeWidth={4} />
+            <line x1={x + half} y1={mid - 48} x2={x + half} y2={mid + 48} stroke="var(--muted)" strokeWidth={4} />
+            <line x1={x - half} y1={mid + 58} x2={x + half} y2={mid + 58} stroke="var(--line)" strokeWidth={1.2} />
+            <Note x={x} y={mid + 74} anchor="middle" mono>{gap} mm</Note>
+            <Note x={x} y={mid - 58} anchor="middle" mono bold fill="var(--ink)">{strength} kV/cm</Note>
+          </g>
+        );
+      })}
+      <Note x={220} y={18} anchor="middle" bold fill="var(--ink)">{volts.toLocaleString("en-US")} V in both</Note>
+    </Figure>
+  );
+}
+
 /** The diagram for a glossary entry (or one of the extra lesson pictures), or null if it has none. */
 export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string }) {
   switch (slug) {
@@ -1204,6 +1251,10 @@ export function TermDiagram({ slug, ...options }: FigureOptions & { slug: string
       return <BeamDiagram {...options} />;
     case "optical-density":
       return <BeamDiagram scatters {...options} />;
+    case "electroporation":
+    case "time-constant":
+    case "transformation":
+      return <PulseDiagram {...options} />;
     case "alignment":
     case "gap":
       return <AlignmentDiagram {...options} />;

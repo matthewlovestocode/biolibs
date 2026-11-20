@@ -13,6 +13,7 @@ import { endBases, planLigation, type LigationPiece, type LigationPlan, type Lig
 import { ANNEAL_AT_LEAST, looksLikePrimer, planPcr, type PcrPlan } from "./pcr.js";
 import { primerBinding, type PcrProgramme } from "./pcr-scene.js";
 import { carryFeatures } from "./sequence-file.js";
+import { fieldStrength, type Pulse } from "./electro.js";
 import { SAMPLE_NM, trust, type Sample, type Trust } from "./spectro.js";
 
 /** As much of a lab as a tool reads. */
@@ -485,11 +486,122 @@ export function spectroRun(lab: ToolLab & { strains: readonly StrainState[] }, c
   };
 }
 
+/** What somebody put into what, and how. */
+export interface ElectroChoice {
+  /** The tube of DNA going in. */
+  construct: string;
+  /** The tube of cells it went into, if the lab holds one as a culture. */
+  cells?: string | null;
+  /** The organism, as the lab writes it. Taken from the culture's strain where there is one. */
+  host: string;
+  /** What the machine was set to, and which cuvette was in it. */
+  pulse: Pulse;
+  /** How much DNA solution went in, and how much cell suspension, both in microlitres. */
+  dna?: number;
+  /** How much cell suspension it went into, in microlitres. */
+  suspension?: number;
+  /** The time constant the machine showed afterwards, in milliseconds. */
+  measured?: number | null;
+  /** What was plated, and what grew: the colonies counted, and the volumes they came from. */
+  counted?: { colonies: number; recovered: number; plated: number } | null;
+  /** What it was selected on. */
+  selection?: string;
+  /** What to call the strain this makes. */
+  name?: string;
+  /** How much of the construct's tube was used. */
+  used?: number;
+  instrument?: string | null;
+  note?: string;
+}
+
+/** A transformation, worked out. */
+export interface ElectroRun {
+  /** The DNA going in, or `null` if the tube is not one the lab has. */
+  construct: PartState | null;
+  /** The strain the cells are of, if they came from a culture the lab holds. */
+  cells: StrainState | null;
+  /** What to hand to `recordRun`, or `null` while there is nothing to record. */
+  record: Record<string, unknown> | null;
+  /** What to hand to `addStrain` afterwards, with the run's ID as `from`. `null` if nothing grew. */
+  strain: { name: string; host: string; carries: string[]; parent: string | null } | null;
+}
+
+/**
+ * The tubes a transformation could be set up from.
+ *
+ * @param lab - The lab.
+ * @returns The DNA that could go in, and the cultures that could be the cells it goes into.
+ */
+export function electroTubes(lab: ToolLab & { strains: readonly StrainState[] }): { constructs: TubeChoice[]; cells: { item: string; strain: StrainState; label: string }[] } {
+  const constructs: TubeChoice[] = [];
+  const cells: { item: string; strain: StrainState; label: string }[] = [];
+  for (const item of lab.items) {
+    if (item.retired || item.amount <= 0) continue;
+    const part = dnaOf(lab, item.part);
+    if (part !== undefined) {
+      constructs.push({ item: item.item, part, label: `${part.name} · ${part.circular ? "circle" : "line"} · ${amountOf(item)} · ${whereWords(item, lab.places)}` });
+      continue;
+    }
+    const strain = lab.strains.find((one) => one.strain === item.strain);
+    if (strain !== undefined) cells.push({ item: item.item, strain, label: `${strain.name} · ${amountOf(item)} · ${whereWords(item, lab.places)}` });
+  }
+  return { constructs, cells };
+}
+
+/**
+ * Work a transformation out into what to record and what it makes.
+ *
+ * What a transformation makes is alive and has no checksum, so it is not an output of the run the
+ * way a cut piece is: the run is recorded, and the strain is added afterwards saying which run made
+ * it. Whether it worked is whether colonies grew, which only the person at the plate can say.
+ *
+ * @param lab - The lab.
+ * @param choice - What went into what, how, and what grew.
+ * @returns What to record, and the strain to add if anything grew.
+ */
+export function electroRun(lab: ToolLab & { strains: readonly StrainState[] }, choice: ElectroChoice): ElectroRun {
+  const item = lab.items.find((one) => one.item === choice.construct);
+  const construct = item === undefined ? null : dnaOf(lab, item.part) ?? null;
+  const held = choice.cells == null ? undefined : lab.items.find((one) => one.item === choice.cells);
+  const cells = held === undefined ? null : lab.strains.find((one) => one.strain === held.strain) ?? null;
+  if (construct === null) return { construct: null, cells, record: null, strain: null };
+  const host = (choice.host.trim() !== "" ? choice.host.trim() : cells?.host ?? "").slice(0, 200);
+  const used = choice.used === undefined || !Number.isSafeInteger(choice.used) || choice.used < 0 ? 1 : choice.used;
+  const grew = choice.counted != null && choice.counted.colonies > 0;
+  const said = (value: number | undefined | null): string | undefined => (value == null || !Number.isFinite(value) ? undefined : `${value}`);
+  const record = {
+    kind: "transformation", instrument: choice.instrument ?? null,
+    inputs: [
+      { item: choice.construct, amount: used, role: "construct" },
+      ...(choice.cells == null ? [] : [{ item: choice.cells, amount: 1, role: "host" }]),
+    ],
+    outputs: [],
+    outcome: grew ? "worked" : "failed",
+    settings: {
+      by: "electroporation", host, volts: `${choice.pulse.volts}`, microfarads: `${choice.pulse.microfarads}`,
+      ohms: `${choice.pulse.ohms}`, gap_mm: `${choice.pulse.gap}`, field_kv_cm: `${fieldStrength(choice.pulse)}`,
+      ...(said(choice.measured) === undefined ? {} : { time_constant_ms: said(choice.measured)! }),
+      ...(choice.counted == null ? {} : { colonies: `${choice.counted.colonies}`, plated_ul: `${choice.counted.plated}`, recovered_ul: `${choice.counted.recovered}` }),
+      ...(choice.selection === undefined || choice.selection.trim() === "" ? {} : { selection: choice.selection.trim().slice(0, 200) }),
+    },
+    note: choice.note ?? null,
+  };
+  const named = choice.name?.trim() ?? "";
+  return {
+    construct, cells, record,
+    strain: !grew || host === "" ? null : {
+      name: (named !== "" ? named : `${cells?.name ?? host} ${construct.name}`).slice(0, 200),
+      host, carries: [...(cells?.carries ?? []), construct.checksum],
+      parent: cells?.strain ?? null,
+    },
+  };
+}
+
 /** A tool that is used at a machine. */
-export type ToolName = "pcr" | "digest" | "ligation" | "induction" | "spectro";
+export type ToolName = "pcr" | "digest" | "ligation" | "induction" | "spectro" | "electro";
 
 /** The model of instrument each tool is used at. */
-export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station", ligation: "heat-block", induction: "shaking-incubator", spectro: "spectrophotometer" };
+export const TOOL_AT: Readonly<Record<ToolName, string>> = { pcr: "thermocycler", digest: "gel-station", ligation: "heat-block", induction: "shaking-incubator", spectro: "spectrophotometer", electro: "electroporator" };
 
 /**
  * Which tool an instrument opens.

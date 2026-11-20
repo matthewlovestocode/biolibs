@@ -17,6 +17,9 @@
  * - `pcr-working.ts` — the working behind what the PCR tool says: each figure with the steps that give it
  * - `protein.ts` — the protein a gene codes for, and what its sequence says about it
  * - `induce.ts` — growing a strain to express what was put into it, and the mass its band should run at
+ * - `electro.ts` — a pulse through a cuvette: the field across the gap, the time constant, and what each says
+ * - `electro-working.ts` — the working behind each of those, and what the one that came back is evidence of
+ * - `electro-bench.tsx` — a transformation at the electroporator: the field in the cuvette, and the strain it makes
  * - `spectro.ts` — what a spectrophotometer reads, and what a person infers from it, each resting on something named
  * - `spectro-working.ts` — the working behind each of those figures, and why a reading can or cannot be believed
  * - `spectro-bench.tsx` — a reading at the spectrophotometer: the light through the cuvette, and the number set on a scale
@@ -64,9 +67,12 @@ export * from "./pcr-working.js";
 export * from "./digest-working.js";
 export * from "./protein.js";
 export * from "./induce.js";
+export * from "./electro.js";
+export * from "./electro-working.js";
 export * from "./spectro.js";
 export * from "./spectro-working.js";
 export * from "./spectro-bench.js";
+export * from "./electro-bench.js";
 export * from "./modify.js";
 export * from "./remedy.js";
 export * from "./induce-bench.js";

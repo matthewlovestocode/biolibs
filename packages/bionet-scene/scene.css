@@ -155,3 +155,7 @@
 .bionet-scene .scale-band.tone-held { color: var(--bionet-held) } .bionet-scene .scale-band.tone-attention { color: var(--bionet-attention) }
 .bionet-scene .scale-band.tone-theirs { color: var(--bionet-theirs) } .bionet-scene .scale-band.tone-yours { color: var(--bionet-yours) }
 .bionet-scene .scale-tick { font-size: 10px; font-family: ui-monospace, monospace; color: var(--bionet-dim) }
+.bionet-scene .field-said { font-size: 11px; font-family: ui-monospace, monospace; white-space: nowrap; color: var(--bionet-dim);
+  padding: 0 .3rem; border-radius: 3px; background: color-mix(in srgb, var(--bionet-ground) 78%, transparent) }
+.bionet-scene .field-said.field { font-size: 14px; font-weight: 600; color: var(--bionet-held) }
+.bionet-scene .field-said.taken { color: var(--bionet-good) }

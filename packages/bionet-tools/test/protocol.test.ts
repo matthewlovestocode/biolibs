@@ -129,9 +129,11 @@ describe("each kind of step", () => {
         items: [tube({ item: "t-gene", part: "c-gene" }), tube({ item: "t-cul", strain: "s1", amount: 50, unit: "mL" })] });
     expect(sheet.steps[0]!.doThis[0]).toBe("Put 1 µL of pGene into 1 mL of W303.");
     expect(sheet.steps[0]!.doThis.join(" ")).toMatch(/only you can say/);
-    // It is not run at a machine, so it is not recorded at one.
-    expect(sheet.steps[0]!.thenRecord).toMatch(/on the Strains page/);
-    expect(sheet.steps[0]!.notSaid).toContain("what to select on");
+    // It is run at a machine after all — the electroporator — so it is recorded at that one, and
+    // what it was selected on is recorded there too rather than left to the lab to supply.
+    expect(sheet.steps[0]!.thenRecord).toMatch(/at the electroporator/);
+    expect(sheet.steps[0]!.notSaid).not.toContain("what to select on");
+    expect(sheet.steps[0]!.notSaid).toContain("how the cells are made competent");
   });
 
   it("says something about a kind it has never heard of, rather than nothing", () => {

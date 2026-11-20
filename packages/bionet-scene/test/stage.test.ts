@@ -489,3 +489,18 @@ describe("every instrument a lab can place", () => {
     }
   });
 });
+
+describe("what each machine calls its own views", () => {
+  it("names them for every model a tool is used at, rather than calling them all the block", () => {
+    // The mistake this catches: a machine wired into the lab scene without its own names, so the
+    // same view is "The cuvette" in the tool's own tabs and "The block" where it stands in the room.
+    for (const model of ["thermocycler", "gel-station", "heat-block", "shaking-incubator", "spectrophotometer", "electroporator"]) {
+      const named = STAGE_VIEWS.map((view) => stageViewName(model, view));
+      expect(new Set(named).size, model).toBe(STAGE_VIEWS.length);
+      // A thermocycler is the one that keeps the plain names, since they were written for it.
+      if (model !== "thermocycler") {
+        expect(named.join("|"), model).not.toBe(STAGE_VIEWS.map((view) => STAGE_VIEW_NAMES[view]).join("|"));
+      }
+    }
+  });
+});
