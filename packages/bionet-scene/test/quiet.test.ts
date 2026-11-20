@@ -187,8 +187,10 @@ describe("a piece made of something the rest of the thing is not", () => {
       "balance", "biosafety-cabinet", "fridge", "gel-imager", "gel-station", "incubator", "microscope",
     ]);
     // A freezer has no window: what is in it is found by opening it, not by looking through it.
+    // It has a handle and hinges like any cabinet, so this is about glass and not about skins.
     const freezer = shapeFor({ kind: "freezer" })!;
-    expect(freezer.body.some((part) => part.skin !== undefined)).toBe(false);
+    expect(freezer.body.some((part) => part.skin === "glass")).toBe(false);
+    expect(freezer.body.filter((part) => part.skin === "metal").length).toBeGreaterThan(0);
   });
 
   it("names a skin that exists, or it would quietly fall back to the thing's own", () => {
@@ -273,6 +275,23 @@ describe("a skin that never clears, wherever it is put", () => {
       expect(SOLID.includes(shape.body[0]?.skin ?? ""), `${name} is looked into`).toBe(false);
       expect(shape.body.some((part) => part.skin === "metal"), `${name} has fittings too`).toBe(true);
     }
+  });
+
+  it("is on a cabinet's door furniture, and never on the door or the shelves", () => {
+    // A door clears as you walk up because that is how you see the racks; a shelf clears because
+    // what you are looking for is a box on the shelf under it. The handle, the hinges, the panel
+    // the reading is on and the compressor are none of those.
+    for (const kind of ["freezer", "fridge"] as const) {
+      const shape = shapeFor({ kind })!;
+      expect(shape.body[0]?.skin, `${kind}'s case`).toBeUndefined();
+      expect(shape.body[1]?.skin, `${kind}'s door`).toBeUndefined();
+      expect(shape.body.filter((part) => part.skin === "metal").length).toBeGreaterThan(2);
+    }
+    // The fridge's shelves, which are the three plates across the inside of it.
+    const fridge = shapeFor({ kind: "fridge" })!;
+    const shelves = fridge.body.filter((part) => part.size[1] < 0.05 && part.size[0] > 0.8 && part.at[2] < 0);
+    expect(shelves.length).toBe(3);
+    for (const shelf of shelves) expect(shelf.skin).toBeUndefined();
   });
 
   it("is on what a machine is mostly made of, now that it is on anything", () => {
