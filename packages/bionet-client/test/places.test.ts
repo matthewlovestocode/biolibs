@@ -6,7 +6,7 @@
  * what they are for.
  */
 import { exportSigningKey, generateSigningKey } from "@biolibs/opencloning";
-import { Lab, memoryKeys, memoryStore, openKey, perform, readBackup, sealKey, type KeyKeeper } from "@biolibs/bionet-client";
+import { Lab, memoryKeys, memoryStore, openKey, perform, readBackup, sealKey, sourceOf, type KeyKeeper } from "@biolibs/bionet-client";
 import { createPeer, loopback, memoryPeerStore } from "@biolibs/bionet-peer";
 import { arrange, layoutFrom, UNNAMED_ROOM } from "@biolibs/bionet-space";
 import { describe, expect, it } from "vitest";
@@ -434,6 +434,41 @@ describe("a lab founded with the usual kit", () => {
     const places = lab.snapshot().lab!.places;
     expect(places.filter((one) => one.kind === "room").map((one) => one.name)).toEqual(["The garage"]);
     expect(places.find((one) => one.name === "Bench 1")!.parent).toBe(theirs);
+    lab.close();
+  });
+});
+
+describe("furnishing a lab that was founded before the kit existed", () => {
+  it("can be asked for through the door a window reaches the lab by", async () => {
+    // The gap this closes: furnish() ran only on found(), so a lab founded earlier could never get
+    // the kit. Nothing a window could ask for would put it in.
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab", furnish: false });
+    await lab.addPlace({ kind: "room", name: "Main lab" });
+    await lab.addPlace({ kind: "instrument", name: "Thermocycler", parent: lab.snapshot().lab!.places[0]!.place, model: "thermocycler" });
+
+    const door = sourceOf(lab);
+    const answer = await door.act("furnish");
+    expect(answer.ok).toBe(true);
+    const added = (answer as { ok: true; result: string[] }).result;
+    // It added what was missing and not what was there.
+    expect(added).not.toContain("Main lab");
+    expect(added).not.toContain("Thermocycler");
+    expect(added).toContain("Gel station");
+    const models = lab.snapshot().lab!.places.filter((one) => one.kind === "instrument").map((one) => one.fields["model"]);
+    for (const model of ["thermocycler", "gel-station", "heat-block", "shaking-incubator", "spectrophotometer", "electroporator", "gel-imager", "centrifuge"]) {
+      expect(models, model).toContain(model);
+    }
+    // And asking again adds nothing, so a button that does this is safe to press twice.
+    expect((await door.act("furnish") as { ok: true; result: string[] }).result).toEqual([]);
+    lab.close();
+  });
+
+  it("is refused on a device that is not in a lab, rather than throwing", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    const answer = await sourceOf(lab).act("furnish");
+    expect(answer.ok).toBe(false);
     lab.close();
   });
 });
