@@ -9,7 +9,7 @@
 import { DEFAULT_SIZE, UNNAMED_ROOM, arrange, boundsOf, exampleLab, firstFreeSlot, layoutFrom, levelOf, overlapping, poseFor, quarterTurned, search, slotCenter, slotFrom, slotName, snapped, standingAt,
          standingOf, sticking,
          type RecordedItem, type RecordedPlace,
-         slotSize, storedWithin, type Arranged, type Layout, type Place } from "@biolibs/bionet-space";
+         slotSize, storedWithin, roomFor, type Arranged, type Layout, type Place } from "@biolibs/bionet-space";
 import { describe, expect, it } from "vitest";
 
 const near = (a: readonly number[], b: readonly number[]): void => a.forEach((value, at) => expect(value).toBeCloseTo(b[at]!, 6));
@@ -540,5 +540,55 @@ describe("the room a lab comes with", () => {
     // The clear floor left once a metre of equipment stands against each wall.
     expect(room[0] - 2).toBeGreaterThanOrEqual(8);
     expect(room[2] - 2).toBeGreaterThanOrEqual(6);
+  });
+});
+
+/**
+ * How big a room has to be for what is in it.
+ *
+ * A room is laid out round its walls, so what it needs is wall and not floor. The case this is
+ * really for is the one that bit: a room stood by hand years ago, at whatever the default was then,
+ * still holding what was put in it since.
+ */
+describe("the room a set of things needs", () => {
+  const bench = [1.8, 0.9, 0.75] as const;
+  const freezer = [0.9, 2, 0.85] as const;
+
+  it("gives a small room for nothing, and not the room a full kit needs", () => {
+    const empty = roomFor([]);
+    expect(empty[0]).toBeLessThan(DEFAULT_SIZE.room![0]);
+    expect(empty[0]).toBeGreaterThan(0);
+  });
+
+  it("grows with what has to go round the walls", () => {
+    const few = roomFor([bench, bench]);
+    const many = roomFor(Array.from({ length: 10 }, () => bench));
+    expect(many[0]).toBeGreaterThan(few[0]);
+    expect(many[2]).toBeGreaterThan(few[2]);
+  });
+
+  it("gives a room whose walls hold what is in it twice over", () => {
+    for (const many of [2, 5, 9, 14]) {
+      const things = [...Array.from({ length: many }, () => bench), freezer];
+      const [wide, , deep] = roomFor(things);
+      const run = things.reduce((sum, one) => sum + one[0], 0) + 0.4 * (things.length - 1);
+      const deepest = Math.max(...things.map((one) => one[2]));
+      const walls = 2 * (wide * 0.88 - 2 * deepest) + 2 * (deep * 0.88 - 2 * deepest);
+      expect(walls, `${many} benches`).toBeGreaterThanOrEqual(run * 2 - 1e-6);
+    }
+  });
+
+  it("is the size the default room already is, for the kit a lab is founded with", () => {
+    // The default was chosen by hand first and is derived here, so the two have to agree.
+    const kit = [bench, bench, bench, bench, freezer, [0.7, 1.8, 0.7], [0.6, 0.9, 0.6], [1.3, 1.5, 0.8], [0.7, 1.2, 0.8]] as const;
+    expect(roomFor(kit)).toEqual(DEFAULT_SIZE.room);
+  });
+
+  it("keeps a sensible shape rather than a corridor", () => {
+    for (const many of [1, 6, 20]) {
+      const [wide, , deep] = roomFor(Array.from({ length: many }, () => bench));
+      expect(wide / deep).toBeGreaterThan(1);
+      expect(wide / deep).toBeLessThan(2);
+    }
   });
 });

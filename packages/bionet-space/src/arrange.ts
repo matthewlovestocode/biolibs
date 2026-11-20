@@ -46,6 +46,43 @@ export const INSTRUMENT_SIZE: Readonly<Record<string, readonly [number, number, 
   autoclave: [0.7, 1.2, 0.8],
 };
 
+/** The smallest room this would ever ask for, in metres: a room somebody can work in at all. */
+const SMALLEST_ROOM: readonly [number, number] = [5, 4];
+
+/**
+ * How big a room has to be to hold these things round its walls, with room to spare.
+ *
+ * A room is laid out round its walls, so what it needs is wall rather than floor: the widths of
+ * what stands in it, the gaps between them, and a corner at each end of each wall that nothing can
+ * use. This works back from that to a room that holds them twice over, because a room that holds
+ * its contents exactly is a room laid out in a single unbroken ring with nowhere to stand.
+ *
+ * @param sizes - What stands on the floor: how wide, tall and deep each one is, in metres.
+ * @param tall - How high to make it, in metres.
+ * @returns A room size, as wide, tall and deep, three parts wide to four deep.
+ *
+ * @example
+ * ```ts
+ * import { roomFor } from "@biolibs/bionet-space";
+ *
+ * // Four benches, a freezer, a fridge and three floor units: about twelve metres by nine.
+ * roomFor([[1.8, 0.9, 0.75], [0.9, 2, 0.85]]);
+ * ```
+ */
+export function roomFor(sizes: readonly (readonly [number, number, number])[], tall = 3): [number, number, number] {
+  // A room with nothing in it is a small room. The floor is not the default room, which is the
+  // size the kit needs: a lab that has a bench and nothing else should not be given a hall.
+  if (sizes.length === 0) return [SMALLEST_ROOM[0], tall, SMALLEST_ROOM[1]];
+  const run = sizes.reduce((sum, size) => sum + size[0], 0) + ROOM_GAP * (sizes.length - 1);
+  const deepest = Math.max(...sizes.map((size) => size[2]));
+  // A room three parts wide to four deep, whose walls come to twice the run that has to go on them.
+  // The corners are the eight ends of the four walls, each costing the depth of the deepest thing.
+  const DEEP = 0.75;
+  const wide = (2 * run + 8 * deepest) / (2 * (1 - 2 * INSET) * (1 + DEEP));
+  const round = (value: number): number => Math.max(1, Math.ceil(value * 2) / 2);
+  return [Math.max(SMALLEST_ROOM[0], round(wide)), tall, Math.max(SMALLEST_ROOM[1], round(wide * DEEP))];
+}
+
 /** How much of a place's inside is kept clear of its walls, as a fraction of each side. */
 const INSET = 0.06;
 /** The gap left between things arranged side by side, in metres. */

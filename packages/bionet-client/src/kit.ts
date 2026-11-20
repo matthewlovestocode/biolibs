@@ -68,3 +68,50 @@ export const STANDARD_KIT: readonly KitPlace[] = [
   { kind: "box", name: "Box 1", at: "−80 freezer", grid: { rows: 9, columns: 9 } },
   { kind: "box", name: "Box F1", at: "4 °C fridge", grid: { rows: 5, columns: 5 } },
 ];
+
+/** A lab, as `missingKit` reads it: enough of one to say what it has not got. */
+export interface KitLab {
+  places: readonly { place: string; kind: string; name: string; parent: string | null; retired: boolean }[];
+}
+
+/**
+ * What of the usual kit a lab has not got.
+ *
+ * Both the writing and the offering go through this, so what a window says it will add is what gets
+ * added. Working it out twice is how a button comes to promise two empty boxes that the writing
+ * then declines to make.
+ *
+ * A place counts as there if the lab has one by that name, retired or not — a machine somebody has
+ * said the lab has not got is not written back. The kit's own room is only wanted by a lab with no
+ * room at all, and its boxes only by cold storage with nothing in it yet, whatever that lab calls
+ * the boxes it keeps.
+ *
+ * @param lab - The lab, as it stands.
+ * @returns What is missing, in the order the kit writes it, each with the place it would stand in.
+ *
+ * @example
+ * ```ts
+ * import { missingKit } from "@biolibs/bionet-client";
+ *
+ * missingKit(lab.snapshot().lab!).map((one) => one.name);    // ["Bench 2", "Heat block", …]
+ * ```
+ */
+export function missingKit(lab: KitLab): { place: KitPlace; parent: string | null }[] {
+  const named = (what: string): string => what.trim().toLowerCase();
+  const already = new Map(lab.places.map((one) => [named(one.name), one.place]));
+  const room = lab.places.find((one) => one.kind === "room" && !one.retired);
+  const missing: { place: KitPlace; parent: string | null }[] = [];
+  for (const want of STANDARD_KIT) {
+    const parent = want.at === null ? null
+      : want.at === "Main lab" && room !== undefined ? room.place
+      : already.get(named(want.at)) ?? null;
+    if (want.kind === "room" && room !== undefined) { already.set(named(want.name), room.place); continue; }
+    if (already.has(named(want.name))) continue;
+    if (want.at !== null && parent === null) continue;
+    if (want.kind === "box" && lab.places.some((one) => one.kind === "box" && !one.retired && one.parent === parent)) continue;
+    // Taken as there from here on, so that what stands in it is wanted too.
+    already.set(named(want.name), `would be ${want.name}`);
+    missing.push({ place: want, parent });
+  }
+  return missing;
+}

@@ -472,3 +472,23 @@ describe("furnishing a lab that was founded before the kit existed", () => {
     lab.close();
   });
 });
+
+describe("furnishing a lab that keeps its own boxes", () => {
+  it("adds no box to cold storage that already has one, whatever the lab calls it", async () => {
+    const lab = await new Lab({ store: memoryStore(), keys: memoryKeys() }).open();
+    await lab.setPerson("Ada");
+    await lab.found({ name: "The Wren Lab", furnish: false });
+    const room = await lab.addPlace({ kind: "room", name: "Main lab" });
+    const freezer = await lab.addPlace({ kind: "freezer", name: "−80 freezer", parent: room });
+    await lab.addPlace({ kind: "box", name: "Fragments and plasmids", parent: freezer, grid: { rows: 9, columns: 9 } });
+
+    const added = await lab.furnish();
+    expect(added).not.toContain("Box 1");
+    // The fridge it just added has nothing in it, so that one does get a box.
+    expect(added).toContain("4 °C fridge");
+    expect(added).toContain("Box F1");
+    const boxes = lab.snapshot().lab!.places.filter((one) => one.kind === "box" && one.parent === freezer);
+    expect(boxes.map((one) => one.name)).toEqual(["Fragments and plasmids"]);
+    lab.close();
+  });
+});

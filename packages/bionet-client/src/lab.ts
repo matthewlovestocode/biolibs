@@ -10,7 +10,7 @@
  * holds is worked out from the entries each time they change, by `mergeLog`, which is why two devices
  * that have been apart agree the moment they have each other's entries.
  */
-import { STANDARD_KIT } from "./kit.js";
+import { STANDARD_KIT, missingKit } from "./kit.js";
 import { addItem, addPart, addPlace, addSpecimen, addStrain, addToRoster, adjustItem, annotatePart, entryId, expectOf, fetchInventory, foundLab, identifySpecimen, expectLeadsTo, isMember, meetExpectation, planReplaces, mergeLog, newExpectationId, newProspectId, withdrawExpectation, addProspect, realiseProspect,
          movePlace, newItemId, newPlaceId, newPlanId, newRunId, newSpecimenId, newStrainId, nextEntry, offerPart, planRun, publicInventory, publicMethod, putItem, recordRun, recountItem, retireItem, retirePlace,
          readMethod, signMethod,
@@ -359,29 +359,24 @@ export class Lab {
   async furnish(): Promise<string[]> {
     const here = this.snapshot().lab;
     if (here === null) throw new Error("Found or join a lab first.");
-    // A place already in the lab, by name, whether or not this wrote it. Retired places count, so
-    // that a machine somebody has said the lab has not got is not written again.
-    const already = new Map(here.places.map((one) => [one.name.trim().toLowerCase(), one.place]));
-    const room = here.places.find((one) => one.kind === "room" && !one.retired);
     const written: string[] = [];
-    for (const want of STANDARD_KIT) {
-      // The kit's own room is only written if the lab has none; the rest hangs off whatever it has.
-      const named = want.at === null ? null
-        : want.at === "Main lab" && room !== undefined ? room.place
-        : already.get(want.at.trim().toLowerCase()) ?? null;
-      if (want.kind === "room" && room !== undefined) { already.set(want.name.trim().toLowerCase(), room.place); continue; }
-      if (already.has(want.name.trim().toLowerCase())) continue;
-      if (want.at !== null && named === null) continue;
-      const id = await this.addPlace({
-        kind: want.kind, name: want.name, parent: named,
-        ...(want.grid === undefined ? {} : { grid: want.grid }),
-        ...(want.model === undefined ? {} : { model: want.model }),
+    // What is missing is worked out once, by the same function the window asks before offering to
+    // do this, so that what it says it will add is what gets added. Each is written in turn and the
+    // next is worked out against the lab as it now stands, since a bench has to exist before
+    // anything can be put on it.
+    for (let guard = 0; guard < STANDARD_KIT.length + 1; guard++) {
+      const next = missingKit(this.snapshot().lab!)[0];
+      if (next === undefined) break;
+      await this.addPlace({
+        kind: next.place.kind, name: next.place.name, parent: next.parent,
+        ...(next.place.grid === undefined ? {} : { grid: next.place.grid }),
+        ...(next.place.model === undefined ? {} : { model: next.place.model }),
       });
-      already.set(want.name.trim().toLowerCase(), id);
-      written.push(want.name);
+      written.push(next.place.name);
     }
     return written;
   }
+
 
   /**
    * Join a lab somebody else founded. Nothing arrives until a keeper has added this device's key.
